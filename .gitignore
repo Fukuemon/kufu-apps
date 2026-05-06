@@ -1,0 +1,10 @@
+.env
+.DS_Store
+*.log
+*.tmp
+*.swp
+*~
+.ai-out/*
+node_modules/
+dist/
+build/
