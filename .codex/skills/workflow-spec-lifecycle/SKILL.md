@@ -2,7 +2,6 @@
 name: workflow-spec-lifecycle
 description: Kufu Monorepo の spec を、下書きから論点解決、レビュー、実装分割まで進める phase guide。
 ---
-
 # Workflow Spec Lifecycle
 
 spec を段階的に固めるための phase guide。

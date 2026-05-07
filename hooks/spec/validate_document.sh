@@ -30,8 +30,9 @@ REQUIRED_SECTIONS=(
   "## 実装対象"
   "## 機能仕様"
   "## Interface 設計"
-  "## Data / Storage 設計"
-  "## Error / Permission 設計"
+  "## Content / Data 設計"
+  "## Performance / Security 設計"
+  "## Error / Fallback 設計"
   "## テスト / 評価方針"
   "## 実装分割"
   "## 既存資料からの変更点"
@@ -58,18 +59,18 @@ if grep -qF "## スコープ" "$FILE_PATH" 2>/dev/null; then
   fi
 fi
 
-KUFUAPP_TOPICS=(
-  "### Provider Adapter"
-  "### Search Scope Control"
-  "### Answer / Citation"
-  "### Freshness"
-  "### Access Control"
-  "### Observability / Metrics"
+KUFU_MONOREPO_TOPICS=(
+  "### Performance"
+  "### Routing / URL State"
+  "### Content / Assets"
+  "### UI Reuse"
+  "### React Compiler"
+  "### Testing"
 )
 
-for topic in "${KUFUAPP_TOPICS[@]}"; do
+for topic in "${KUFU_MONOREPO_TOPICS[@]}"; do
   if ! grep -qF "$topic" "$FILE_PATH" 2>/dev/null; then
-    ERRORS+=("KufuApp 固有論点の節がありません: $topic")
+    ERRORS+=("Kufu Monorepo 固有論点の節がありません: $topic")
   fi
 done
 
