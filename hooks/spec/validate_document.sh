@@ -39,22 +39,53 @@ REQUIRED_SECTIONS=(
   "## 変更履歴"
 )
 
+has_exact_line() {
+  local line="$1"
+  grep -qFx "$line" "$FILE_PATH" 2>/dev/null
+}
+
+extract_level2_section() {
+  local heading="$1"
+  awk -v heading="$heading" '
+    $0 == heading {
+      in_section = 1
+      next
+    }
+    in_section && /^## / {
+      exit
+    }
+    in_section {
+      print
+    }
+  ' "$FILE_PATH"
+}
+
+section_has_exact_line() {
+  local heading="$1"
+  local line="$2"
+  extract_level2_section "$heading" | grep -qFx "$line" 2>/dev/null
+}
+
 for section in "${REQUIRED_SECTIONS[@]}"; do
-  if ! grep -qF "$section" "$FILE_PATH" 2>/dev/null; then
+  if ! has_exact_line "$section"; then
     ERRORS+=("必須セクション欠落: $section")
   fi
 done
 
-PHASE_COUNT=$(grep -cE '^\|\s*[0-9]+\s*\|' "$FILE_PATH" 2>/dev/null || echo "0")
+PHASE_COUNT=$(
+  extract_level2_section "## 設計フェーズ状況" \
+    | grep -cE '^\|[[:space:]]*[0-9]+[[:space:]]*\|' 2>/dev/null \
+    || echo "0"
+)
 if [ "$PHASE_COUNT" -lt 11 ]; then
   ERRORS+=("設計フェーズ状況に 11 フェーズ必要ですが ${PHASE_COUNT} 件しかありません")
 fi
 
-if grep -qF "## スコープ" "$FILE_PATH" 2>/dev/null; then
-  if ! grep -qF '### やること' "$FILE_PATH" 2>/dev/null; then
+if has_exact_line "## スコープ"; then
+  if ! section_has_exact_line "## スコープ" '### やること'; then
     ERRORS+=("スコープに「やること」がありません")
   fi
-  if ! grep -qF '### やらないこと' "$FILE_PATH" 2>/dev/null; then
+  if ! section_has_exact_line "## スコープ" '### やらないこと'; then
     ERRORS+=("スコープに「やらないこと」がありません")
   fi
 fi
@@ -69,7 +100,7 @@ KUFU_MONOREPO_TOPICS=(
 )
 
 for topic in "${KUFU_MONOREPO_TOPICS[@]}"; do
-  if ! grep -qF "$topic" "$FILE_PATH" 2>/dev/null; then
+  if ! section_has_exact_line "## 機能仕様" "$topic"; then
     ERRORS+=("Kufu Monorepo 固有論点の節がありません: $topic")
   fi
 done
