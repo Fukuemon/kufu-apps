@@ -1,6 +1,6 @@
 ---
 name: workflow-spec-draft
-description: KufuApp の spec 下書き workflow。PRD と Design Doc を起点に spec の雛形を作る。
+description: Kufu Monorepo の spec 下書き workflow。PRD と Design Doc を起点に spec の雛形を作る。
 ---
 
 # Workflow Spec Draft
@@ -34,13 +34,13 @@ spec の新規下書きを作るための入口スキル。
    - `## 未確定事項`
    - `## 実装対象`
 6. `## 設計フェーズ状況` には 11 フェーズを template のまま保持する
-7. `## 機能仕様` には KufuApp 固有論点の節を残す
-   - `### Provider Adapter`
-   - `### Search Scope Control`
-   - `### Answer / Citation`
-   - `### Freshness`
-   - `### Access Control`
-   - `### Observability / Metrics`
+7. `## 機能仕様` には Kufu Monorepo 固有論点の節を残す
+   - `### Performance`
+   - `### Routing / URL State`
+   - `### Content / Assets`
+   - `### UI Reuse`
+   - `### React Compiler`
+   - `### Testing`
 8. `## スコープ` の `### やること` / `### やらないこと` を必ず埋める
 9. 次に進む前に、未確定事項と cross-repo 影響を明示する
 
@@ -48,6 +48,6 @@ spec の新規下書きを作るための入口スキル。
 
 - 上位文書と矛盾する
 - 対象 issue / spec directory が決まらない
-- 実装対象 repo が特定できない
-- provider / permission / freshness など重要論点が起こせない
+- 実装対象 app / package が特定できない
+- performance / routing / UI reuse / React Compiler など重要論点が起こせない
 - template の必須節や phase 表を保てない

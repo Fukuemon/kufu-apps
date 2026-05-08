@@ -16,10 +16,10 @@
 - Related Issues: `Closes` / `Refs`
 - Notes: 残課やレビュー観点
 
-## documents repo の PR で意識すること
+## Kufu Monorepo の PR で意識すること
 
 - PRD / Design Doc / spec / ADR のどこを更新したかを明示する
-- sibling repo 側の実装前提が変わる場合は Notes で伝える
+- app / package 側の実装前提が変わる場合は Notes で伝える
 
 ## 停止条件
 
