@@ -47,6 +47,7 @@
 
 ### 実装する範囲
 
+- `packages/ui/package.json` の最小 manifest 作成
 - `packages/ui/package.json`
 - public entrypoint
 - React / TypeScript library としての最小構成
@@ -69,7 +70,7 @@
 
 ## インストールコマンド
 
-対象 directory と最小 `package.json` を先に作り、workspace へ認識させてから依存を追加する。
+対象 directory と最小 `package.json` を先に作り、workspace へ認識させてから依存を追加する。少なくとも package 名は `@kufu/ui`、`name` と `version` を持つ manifest を先に用意する。
 
 ```sh
 mkdir -p packages/ui
@@ -93,6 +94,7 @@ pnpm typecheck
 ## 完了条件
 
 - [ ] `@kufu/ui` が workspace package として追加されている
+- [ ] `packages/ui/package.json` の最小 manifest が存在する
 - [ ] public entrypoint が存在する
 - [ ] `typecheck` script が定義されている
 - [ ] UI 本実装を過剰に先回りしていない

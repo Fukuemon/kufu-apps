@@ -11,9 +11,10 @@
 
 1. spec の該当節を確認する
 2. prompt 内に埋め込まれた前提と仕様を確認する
-3. 対象 path を読む
-4. root workspace 基盤を実装する
-5. 検証する
+3. root `package.json` と `pnpm-workspace.yaml` の初期化方針を決める
+4. 対象 path を読む
+5. root workspace 基盤を実装する
+6. 検証する
 
 ## 実装コンテキスト
 
@@ -51,6 +52,7 @@
 
 ### 実装する範囲
 
+- root `package.json` の最小 manifest を作成し、pnpm workspace の起点を作る
 - root `package.json` の workspace scripts と root devDependencies の定義
 - `pnpm-workspace.yaml` に `apps/*` と `packages/*` を含める
 - `turbo.json` に `dev`、`build`、`lint`、`typecheck`、`test` を束ねる最小設定を入れる
@@ -67,6 +69,8 @@
 ## 設計仕様
 
 - package manager は pnpm workspace、task runner は Turborepo
+- root の `package.json` と `pnpm-workspace.yaml` を先に成立させ、その後に root devDependencies と task runner を追加する
+- root `package.json` には少なくとも `name`、`private`、`packageManager`、`scripts` を持たせる
 - root scripts の責務は「集約」であり、app / package 個別実装の詳細を持ち込みすぎない
 - `dev` は `turbo run dev --parallel`
 - `dev:lp` は `turbo run dev --filter=@kufu/lp-site`
@@ -76,6 +80,28 @@
 - `playwright.config.ts` は `E2E_TARGET`、`E2E_PORT`、`E2E_BASE_URL` を将来扱える構造にするが、この prompt では接続先実装を固定しない
 
 ## インストールコマンド
+
+root workspace の初期化を先に行い、その後に root devDependencies を追加する。`pnpm init` の対話に依存せず、最終的に次のような root `package.json` を満たすこと。
+
+```json
+{
+  "name": "kufu-apps",
+  "private": true,
+  "packageManager": "pnpm@<version>"
+}
+```
+
+```sh
+pnpm init
+```
+
+`pnpm-workspace.yaml` は手動で作成し、少なくとも次を含める。
+
+```yaml
+packages:
+  - apps/*
+  - packages/*
+```
 
 ```sh
 pnpm add -D turbo typescript oxlint oxlint-tsgolint oxfmt @playwright/test vitest @types/node
@@ -99,6 +125,8 @@ pnpm typecheck
 
 ## 完了条件
 
+- [ ] root `package.json` が存在し、pnpm workspace の起点になっている
+- [ ] root `package.json` に `name`、`private`、`packageManager` が定義されている
 - [ ] root `package.json` に required scripts が定義されている
 - [ ] `pnpm-workspace.yaml` と `turbo.json` が追加されている
 - [ ] root `playwright.config.ts` の雛形が存在する
