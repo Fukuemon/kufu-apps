@@ -1,13 +1,13 @@
 ---
 name: workflow-git
-description: KufuApp の Git / GitHub 運用 workflow。ブランチ作成、コミット、Issue、PR の順序と停止条件を扱う。
+description: Kufu Monorepo の Git / GitHub 運用 workflow。ブランチ作成、コミット、Issue、PR の順序と停止条件を扱う。
 targets:
   - "*"
 ---
 
 # Workflow Git
 
-KufuApp の Git / GitHub 操作を進めるときの入口スキル。
+Kufu Monorepo の Git / GitHub 操作を進めるときの入口スキル。
 
 ## いつ使うか
 
@@ -38,5 +38,5 @@ KufuApp の Git / GitHub 操作を進めるときの入口スキル。
 
 - 変更理由や関連 Issue が不明で、差分からも判断できない
 - `main` / `master` / `develop` に直接コミットしようとしている
-- cross-repo の関連付けが必要なのに、リンク先や対象 repo が確定していない
+- app / package をまたぐ関連付けが必要なのに、リンク先や対象範囲が確定していない
 - hook や validation が失敗し、原因を説明できない

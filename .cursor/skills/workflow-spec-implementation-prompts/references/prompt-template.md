@@ -8,7 +8,7 @@
 - spec に明記された範囲だけを対象にする
 - 不明点は推測で埋めず、停止して確認する
 - 参照 path を外れて広く探索しない
-- 他 repository を追加探索せず、この prompt 内の情報だけで判断する
+- 別 app / package を追加探索せず、この prompt 内の情報だけで判断する
 
 ## 作業ステップ
 
@@ -20,7 +20,7 @@
 
 ## 実装コンテキスト
 
-- Spec: `$(ghq root)/github.com/<repo-path>/specs/<spec-dir>/index.md`
+- Spec: `$(ghq root)/github.com/Fukuemon/kufu-apps/specs/<spec-dir>/index.md`
 - 参照ファイル:
 
 ## 前提条件

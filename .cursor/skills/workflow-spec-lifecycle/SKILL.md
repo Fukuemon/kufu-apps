@@ -1,8 +1,7 @@
 ---
 name: workflow-spec-lifecycle
-description: KufuApp の spec を、下書きから論点解決、レビュー、実装分割まで進める phase guide。
+description: Kufu Monorepo の spec を、下書きから論点解決、レビュー、実装分割まで進める phase guide。
 ---
-
 # Workflow Spec Lifecycle
 
 spec を段階的に固めるための phase guide。
@@ -14,7 +13,6 @@ spec を段階的に固めるための phase guide。
 
 ## 先に読むもの
 
-- `../shared-repo-knowledge/references/repository-map.md`
 - `../shared-rules/references/path-resolution.md`
 - `../shared-rules/references/issue-traceability.md`
 - `references/phase-guide.md`
@@ -31,5 +29,5 @@ spec を段階的に固めるための phase guide。
 
 - PRD / Design Doc / ADR と矛盾する
 - 未解決論点が残ったまま次フェーズへ進もうとしている
-- 実装対象 repo、interface、permission 境界のいずれかが曖昧
+- 実装対象 app / package、interface、performance / security 境界のいずれかが曖昧
 - prompt に落とせる粒度まで slice できない
