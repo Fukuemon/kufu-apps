@@ -2,7 +2,7 @@
 
 ## Latest Updated At
 
-- 2026-05-07
+- 2026-05-08
 
 ## Related PRD
 
@@ -43,52 +43,51 @@ Kufu Monorepo は、Phase 1 で LP サイトを作ることを主目的とする
 ### 設計上の前提
 
 - Phase 1 の主対象は `apps/lp-site` である。
-- `apps/base` は将来の React 業務アプリ枠として定義する。
-- UI の共通化は `packages/ui` に集約する。
+- `apps/base` は将来の React 業務アプリ枠として定義し、Phase 1 では skeleton まで作る。
+- UI の共通化は、Phase 1 で `packages/ui` skeleton を置き、本格運用は複数 consumer が出た時点で進める。
 - TypeScript、lint、format、test 設定は `packages/config` に寄せる。
 - pnpm workspace と Turborepo を使い、app / package 単位でタスクを実行する。
 - CMS/API は初期スコープ外で、必要時に ADR と spec を作成して採否を決める。
 
 ## Overview
 
-Kufu Monorepo は、`apps`、`packages`、`e2e`、`docs workflow` の 4 つの領域で構成する。
+Kufu Monorepo は、`apps`、`packages`、root 管理の `e2e`、`docs workflow` の 4 つの領域で構成する。
 
 ```mermaid
 flowchart LR
     VISITOR["Visitor"]
     LP["apps/lp-site (Astro)"]
-    BASE["apps/base (React future)"]
-    UI["packages/ui"]
+    BASE["apps/base (React skeleton)"]
+    UI["packages/ui (shared UI skeleton)"]
     CONFIG["packages/config"]
-    E2E["e2e (Playwright)"]
+    E2E["e2e/ + playwright.config.ts"]
     DOCS["PRD / Design Docs / specs / ADR"]
 
     VISITOR --> LP
-    LP --> UI
     BASE --> UI
     LP --> CONFIG
     BASE --> CONFIG
     UI --> CONFIG
     E2E --> LP
-    E2E --> BASE
     DOCS --> LP
     DOCS --> BASE
     DOCS --> UI
+    DOCS --> CONFIG
 ```
 
 ## Detailed Design
 
 ### モジュール責務
 
-| Module            | Responsibility                                                          |
-| ----------------- | ----------------------------------------------------------------------- |
-| `apps/lp-site`    | Astro による LP。静的生成、コンテンツ構成、必要最小限の island を担う。 |
-| `apps/base`       | 将来の React 業務アプリ。TanStack Router / Query などの標準を採用する。 |
-| `packages/ui`     | 複数 app で共有する React UI。shadcn/ui ベースの部品を集約する。        |
-| `packages/config` | TypeScript、oxlint、oxfmt、Vitest、Storybook などの共有設定を集約する。 |
-| `e2e`             | Playwright による公開前検証と主要導線の回帰テストを担う。               |
-| `specs`           | issue / 機能単位の要求、論点、設計、テスト観点を整理する。              |
-| `adr`             | 長期参照する技術選定や責務境界の意思決定を残す。                        |
+| Module            | Responsibility                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------ |
+| `apps/lp-site`    | Astro による LP。静的生成、コンテンツ構成、必要最小限の island を担う。                    |
+| `apps/base`       | 将来の React 業務アプリ。Phase 1 で skeleton を置き、Phase 2 以降に app shell を追加する。 |
+| `packages/ui`     | 複数 app で共有する React UI。Phase 1 で skeleton を置き、共有需要に応じて育てる。         |
+| `packages/config` | TypeScript、oxlint、Vitest など共有価値の高い設定を集約する。                              |
+| `e2e`             | root 管理の Playwright による公開前検証と主要導線の回帰テストを担う。                      |
+| `specs`           | issue / 機能単位の要求、論点、設計、テスト観点を整理する。                                 |
+| `adr`             | 長期参照する技術選定や責務境界の意思決定を残す。                                           |
 
 ### Phase 1 設計方針
 
@@ -96,17 +95,34 @@ flowchart LR
 - React island はフォーム、動的 UI、外部 widget など必要な箇所に限定する。
 - LP の画像、フォント、スクリプトは性能予算を意識して管理する。
 - 共通 UI は利用箇所が複数 app にまたがる時点で `packages/ui` へ移す。
-- 初期の `packages/ui` は実利用に基づく最小構成にし、将来未確定のコンポーネントは先回りしない。
+- Phase 1 では `packages/ui` の skeleton を置くが、LP 内で閉じる UI は引き続き `apps/lp-site` に置く。
 - E2E は LP の表示、主要導線、問い合わせ導線を優先する。
+- E2E 実行入口は root `playwright.config.ts` と `e2e/` 配下に置き、workspace package 化しない。
 
 ### React アプリ設計方針
 
+- 以下は `apps/base` skeleton を将来の React app へ育てる際の標準であり、Phase 1 では骨組みまでを対象とする。
 - ルーティングは TanStack Router を標準とする。
 - データフェッチは TanStack Query を標準とし、axios などの追加は spec で必要性を確認する。
 - 状態管理は Zustand を必要箇所に限定し、URL に表現できる状態は router 側へ寄せる。
 - フォームは React Hook Form を標準とする。
 - React Compiler を使う前提で実装する。
 - React Compiler に対応していないライブラリや実装パターンを使う場合は、事前に公式情報や一次情報を確認し、必要なら `'use no memo'` を追加する。
+
+### Shared Config Boundary
+
+- `packages/config` は少なくとも `tsconfig`、`oxlint`、`vitest` の共有設定を export する。
+- export は用途別 subpath を正とし、`tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`oxlint/base`、`vitest/base` を初期対象にする。
+- `oxfmt` は config file をほぼ持たない前提のため、root script と実行ルールを正本にする。
+- `knip` と `dependency-cruiser` は workspace 全体を検査するため、root config と root script を正とする。
+- `Storybook` は `packages/ui` skeleton の入口として扱うが、本格運用ルールは後続 issue で定義する。
+
+### Root Task Boundary
+
+- workspace task は root script から `turbo run` で束ねる。
+- `dev`、`dev:lp`、`dev:base`、`build`、`lint`、`typecheck`、`test` は `turbo run` を使う。
+- `format`、`e2e`、`knip`、`depcruise` は root 管理ツールとして直実行する。
+- `e2e`、`knip`、`dependency-cruiser` は package task ではなく repository task として扱う。
 
 ### Toolchain
 
@@ -124,6 +140,10 @@ flowchart LR
 - Dead code detection: knip
 - Dependency analysis: dependency-cruiser
 - Library build: tsdown
+
+- `Rolldown` は採用方針として先に固定し、`apps/base` skeleton の Vite 設定へ反映する。
+- `React Compiler` は React app 導入時の標準として先に固定し、`apps/base` / `packages/ui` skeleton に実効設定を入れる。
+- `knip` と `dependency-cruiser` は issue #3 で実導入し、root script から実行できる状態まで整える。
 
 ### Infrastructure / Deployment
 
@@ -148,11 +168,11 @@ flowchart LR
 
 ### Environment Strategy
 
-| Environment | Purpose | Cloudflare Role |
-| ----------- | ------- | --------------- |
-| local | 開発者のローカル確認 | `pnpm dev` で app を起動し、Cloudflare 依存を持ち込まない。 |
-| preview | PR / branch ごとの確認 | Cloudflare Pages preview deployment で実ページ確認を行う。 |
-| production | 公開サイト | Cloudflare Pages production deployment を正本とする。 |
+| Environment | Purpose                | Cloudflare Role                                             |
+| ----------- | ---------------------- | ----------------------------------------------------------- |
+| local       | 開発者のローカル確認   | `pnpm dev` で app を起動し、Cloudflare 依存を持ち込まない。 |
+| preview     | PR / branch ごとの確認 | Cloudflare Pages preview deployment で実ページ確認を行う。  |
+| production  | 公開サイト             | Cloudflare Pages production deployment を正本とする。       |
 
 - Preview URL を使って、レイアウト崩れ、リンク、フォーム導線、SEO メタデータをレビューする。
 - 本番 deploy は `main` へのマージを起点に行う前提で設計する。
@@ -188,7 +208,7 @@ flowchart LR
 
 1. 複数 app または将来の再利用が明確な UI だけを `packages/ui` に追加する。
 2. shadcn/ui ベースの実装は app 配下で重複定義しない。
-3. Storybook で利用状態を確認できるようにする。
+3. Storybook は `packages/ui` skeleton の入口として置き、利用状態確認の本格運用は後続で整える。
 4. LP 側で使う場合は、不要な client directive が増えないか確認する。
 
 #### 3. React 業務アプリを追加する
@@ -218,8 +238,8 @@ flowchart LR
 ### Package Boundary
 
 - app から別 app の内部実装へ依存しない。
-- app から `packages/ui`、`packages/config` など公開 package を経由して共有する。
-- app 固有の UI は app 内に置き、複数 app で使う段階で `packages/ui` へ昇格する。
+- app から `packages/config` など公開 package を経由して共有する。
+- UI は app 内に置き、複数 consumer が揃った時点で `packages/ui` へ昇格する。
 - 共通 utility は必要性が明確な場合だけ package 化する。
 
 ### 設計上の重要ポイント
@@ -276,7 +296,7 @@ flowchart LR
 ## Open Questions
 
 - LP の具体的なページ構成とコンテンツ更新フローをどこまで初期 spec に含めるか。
-- `packages/ui` の初期コンポーネント範囲をどこまでにするか。
+- `packages/ui` skeleton から本格共有 package へ移行する判断条件をどの時点で固定するか。
 - CMS が必要になる判断基準をどの指標で固定するか。
 - infra repo と app repo の変更をどの workflow で相互参照し、review 漏れを防ぐか。
 - Cloudflare Pages の preview / production に紐づく domain, branch, secret の運用ルールをどの粒度で repo に明文化するか。
