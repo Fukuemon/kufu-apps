@@ -11,9 +11,10 @@
 
 1. spec の該当節を確認する
 2. prompt 内に埋め込まれた前提と仕様を確認する
-3. 対象 path を読む
-4. `apps/lp-site` skeleton を実装する
-5. 検証する
+3. `Astro` の scaffold を非対話で再現できる条件を固定する
+4. 対象 path を読む
+5. `apps/lp-site` skeleton を実装する
+6. 検証する
 
 ## 実装コンテキスト
 
@@ -49,7 +50,7 @@
 
 - `apps/lp-site` の `package.json`
 - Astro の最小 app 構成
-- `dev`、`build`、`preview`、`typecheck`、必要なら `e2e:serve` script
+- `dev`、`build`、`preview`、`typecheck`、`e2e:serve` script
 - 最小の route / page と静的配信前提の構成
 
 ### 実装しない範囲
@@ -65,14 +66,15 @@
 - `dev` / `build` / `preview` / `typecheck` を root から呼べるようにする
 - `typecheck` は `astro check`
 - `preview` は build artifact をローカル配信できること
-- `e2e:serve` は必要なら `preview` の alias としてよい
+- `e2e:serve` は `preview` の alias でもよいが、必ず定義する
 - LP 内で閉じる UI は `apps/lp-site` 配下に置き、`packages/ui` への依存を前提にしない
 - 初期生成は公式 scaffold を使い、生成後に monorepo の package 名と script 契約へ合わせる
+- 生成後は少なくとも package 名を `@kufu/lp-site` に揃え、root `dev:lp` / `build` / `typecheck` / `e2e` から呼べる script 構成へ寄せる
 
 ## インストールコマンド
 
 ```sh
-pnpm create astro@latest apps/lp-site
+pnpm create astro@latest apps/lp-site -- --template minimal --install --no-git
 ```
 
 ## テスト観点
@@ -80,6 +82,7 @@ pnpm create astro@latest apps/lp-site
 - `pnpm --filter @kufu/lp-site dev` が起動可能である
 - `pnpm --filter @kufu/lp-site build` が通る
 - `pnpm --filter @kufu/lp-site typecheck` が `astro check` で通る
+- `pnpm --filter @kufu/lp-site e2e:serve` で preview 起動できる
 - root `dev:lp` と `build` から呼び出せる
 
 ## 検証コマンド
@@ -88,6 +91,7 @@ pnpm create astro@latest apps/lp-site
 pnpm --filter @kufu/lp-site dev
 pnpm --filter @kufu/lp-site build
 pnpm --filter @kufu/lp-site typecheck
+pnpm --filter @kufu/lp-site e2e:serve
 pnpm dev:lp
 ```
 
@@ -95,6 +99,7 @@ pnpm dev:lp
 
 - [ ] `apps/lp-site` が workspace package として追加されている
 - [ ] Astro app の最小 route / page が存在する
-- [ ] `dev`、`build`、`preview`、`typecheck` が定義されている
+- [ ] `dev`、`build`、`preview`、`typecheck`、`e2e:serve` が定義されている
 - [ ] 将来 E2E を接続できる起動 contract が壊れていない
 - [ ] 公式 scaffold の生成物が monorepo contract に合わせて整理されている
+- [ ] `package.json` の package 名が `@kufu/lp-site` へ調整されている

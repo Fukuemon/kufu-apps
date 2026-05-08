@@ -48,6 +48,7 @@
 
 ### 実装する範囲
 
+- `packages/config/package.json` の最小 manifest 作成
 - `packages/config/package.json`
 - `tsconfig/base.json`、`tsconfig/react.json`、`tsconfig/astro.json`
 - `oxlint/base.json`
@@ -70,7 +71,7 @@
 
 ## インストールコマンド
 
-対象 directory と最小 `package.json` を先に作り、workspace へ認識させてから依存を追加する。
+対象 directory と最小 `package.json` を先に作り、workspace へ認識させてから依存を追加する。少なくとも package 名は `@kufu/config`、`private` は `true` ではなく publish 可能な shared config package として扱える形を検討し、`name` と `version` を持たせる。
 
 ```sh
 mkdir -p packages/config
@@ -93,6 +94,7 @@ pnpm typecheck
 ## 完了条件
 
 - [ ] `@kufu/config` が workspace package として追加されている
+- [ ] `packages/config/package.json` の最小 manifest が存在する
 - [ ] spec で定義した subpath export が揃っている
 - [ ] root `typecheck` から `packages/config` を検証できる
 - [ ] root 管理ツールを export に混ぜていない

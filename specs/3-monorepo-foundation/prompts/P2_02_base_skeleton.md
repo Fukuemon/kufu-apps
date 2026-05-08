@@ -11,9 +11,10 @@
 
 1. spec の該当節を確認する
 2. prompt 内に埋め込まれた前提と仕様を確認する
-3. 対象 path を読む
-4. `apps/base` skeleton を実装する
-5. 検証する
+3. `Vite` の scaffold を非対話で再現できる条件を固定する
+4. 対象 path を読む
+5. `apps/base` skeleton を実装する
+6. 検証する
 
 ## 実装コンテキスト
 
@@ -49,7 +50,7 @@
 
 - `apps/base` の `package.json`
 - React + Vite の最小 app shell
-- `dev`、`build`、`preview`、`typecheck`、必要なら `e2e:serve` script
+- `dev`、`build`、`preview`、`typecheck`、`e2e:serve` script
 - Rolldown / React Compiler 方針を skeleton に反映した最小設定
 
 ### 実装しない範囲
@@ -63,14 +64,15 @@
 - package 名は `@kufu/base`
 - `typecheck` は `tsc --noEmit`
 - `preview` は build artifact をローカル配信できる構成にする
-- `e2e:serve` は必要なら `preview` の alias としてよい
+- `e2e:serve` は `preview` の alias でもよいが、必ず定義する
 - React app 標準の将来方針は維持するが、Phase 1 では route / data / form 実装まで入れない
 - 初期生成は公式 scaffold を使い、生成後に monorepo の package 名と script 契約へ合わせる
+- 生成後は少なくとも package 名を `@kufu/base` に揃え、root `dev:base` / `build` / `typecheck` / `e2e` から呼べる script 構成へ寄せる
 
 ## インストールコマンド
 
 ```sh
-pnpm create vite apps/base --template react-ts
+pnpm create vite apps/base --template react-ts -- --no-git --install
 ```
 
 ## テスト観点
@@ -78,6 +80,7 @@ pnpm create vite apps/base --template react-ts
 - `pnpm --filter @kufu/base dev` が起動可能である
 - `pnpm --filter @kufu/base build` が通る
 - `pnpm --filter @kufu/base typecheck` が `tsc --noEmit` で通る
+- `pnpm --filter @kufu/base e2e:serve` で preview 起動できる
 - root `dev:base` と `build` から呼び出せる
 
 ## 検証コマンド
@@ -86,6 +89,7 @@ pnpm create vite apps/base --template react-ts
 pnpm --filter @kufu/base dev
 pnpm --filter @kufu/base build
 pnpm --filter @kufu/base typecheck
+pnpm --filter @kufu/base e2e:serve
 pnpm dev:base
 ```
 
@@ -93,6 +97,7 @@ pnpm dev:base
 
 - [ ] `apps/base` が workspace package として追加されている
 - [ ] React + Vite app shell の最小構成が存在する
-- [ ] `dev`、`build`、`preview`、`typecheck` が定義されている
+- [ ] `dev`、`build`、`preview`、`typecheck`、`e2e:serve` が定義されている
 - [ ] Rolldown / React Compiler の採用方針が skeleton 設定に反映されている
 - [ ] 公式 scaffold の生成物が monorepo contract に合わせて整理されている
+- [ ] `package.json` の package 名が `@kufu/base` へ調整されている

@@ -54,6 +54,7 @@
 - root `playwright.config.ts` の `webServer` / `baseURL` / env contract
 - `e2e/lp-site/` を中心とした最小 suite 構成
 - `pnpm e2e` で既定 target が起動できる wiring
+- `apps/lp-site` と `apps/base` に定義済みの `e2e:serve` を利用して起動できる接続確認
 
 ### 実装しない範囲
 
@@ -68,6 +69,7 @@
 - `webServer.command` は target app の `e2e:serve` を呼ぶ
 - `e2e/<target>/` 配下に app 別 suite を増設できる構造にする
 - Phase 1 は起動 contract が壊れていないことを優先し、シナリオ密度は求めない
+- `P2` で `e2e:serve` が必須になっている前提で接続し、root 側で app 固有の preview コマンドを直書きしない
 
 ## インストールコマンド
 
