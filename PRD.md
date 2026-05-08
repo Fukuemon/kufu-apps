@@ -13,7 +13,7 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - LP の性能を最優先する
   - 不要なクライアント JavaScript を増やさず、Astro の静的生成と island を適切に使う。
 - 共通化は利用実績に基づく
-  - `packages/ui` と `packages/config` に集約するが、過剰な抽象化は避ける。
+  - 設定は `packages/config` に集約し、UI は複数 consumer が出た時点で `packages/ui` へ切り出す。
 - AI が迷わない構造にする
   - 責務境界、命名、禁止事項、将来拡張の扱いを文書で明確にする。
 - TypeScript first で保守する
@@ -38,8 +38,8 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 
 ### フェーズ展望
 
-- Phase 1: Astro LP サイト、共通設定、最低限の UI 基盤、E2E の入口を成立させる。
-- Phase 2: React ベースの業務効率化ツールまたは管理画面の app shell を追加する。
+- Phase 1: Astro LP サイト、共通設定、root 管理の E2E 入口、将来拡張用の `apps/base` / `packages/ui` skeleton を成立させる。
+- Phase 2: `apps/base` skeleton を起点に、React ベースの業務効率化ツールまたは管理画面の app shell を追加する。
 - Phase 3: CMS/API が必要になった場合、Hono API、Inertia、React の採否を検討し、コンテンツ配信や認証を拡張する。
 
 ## ペルソナ
@@ -97,9 +97,10 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 ### Phase 1 スコープイン
 
 - `apps/lp-site` を Astro LP として構築する。
+- `apps/base` に将来の React app 用 skeleton を置く。
+- `packages/ui` に shared UI package の skeleton を置く。
 - `packages/config` に TypeScript、lint、format などの共有設定を置く。
-- `packages/ui` に複数 app で再利用する UI コンポーネントを集約する。
-- `e2e` に LP の主要導線を検証する Playwright テストを置く。
+- root 管理の `e2e/` と `playwright.config.ts` に LP の主要導線を検証する Playwright テスト入口を置く。
 - `AGENTS.md`、`CLAUDE.md`、`.codex`、`.claude`、`.cursor` など AI 向け設定を monorepo 方針に合わせる。
 - spec / ADR により、実装前にスコープ、責務、検証方法を整理できる状態にする。
 
@@ -113,9 +114,11 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 ## Phase 1 完成条件
 
 - `apps/lp-site` の責務、技術選定、禁止事項が Design Docs と AI 設定に明記されている。
-- `packages/ui` と `packages/config` の役割が明確で、app から直接重複実装しない方針が文書化されている。
+- `apps/base` と `packages/ui` の skeleton が将来拡張の入口として配置され、Phase 2 の実装対象と区別されている。
+- `packages/config` の役割と export 対象が明確で、root / app / package の責務境界が文書化されている。
 - LP の主要ページと問い合わせ導線を検証する E2E 方針がある。
-- React Compiler を使う前提と、非対応ライブラリ利用時の確認ルールが明文化されている。
+- `apps/base` / `packages/ui` skeleton に対する Rolldown と React Compiler の適用方針が明文化されている。
+- `knip` と `dependency-cruiser` が root から実行でき、不要依存と境界違反を検査できる。
 - CMS/API は初期スコープ外であり、必要時に ADR / spec で判断することが明記されている。
 - コピー元固有のコード検索やインデックス前提がドキュメントや AI workflow から取り除かれている。
 
@@ -130,6 +133,7 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 
 ### React 業務アプリ要求
 
+- Phase 1 では `apps/base` の skeleton のみを作り、以下は Phase 2 以降の標準として扱う。
 - UI は `@kufu/ui` を経由する。
 - ルーティングは TanStack Router を標準とする。
 - データフェッチは TanStack Query を標準とし、axios などの追加は必要性を spec で確認する。
@@ -141,8 +145,11 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 
 - pnpm workspace と Turborepo で app / package のタスクを管理する。
 - 依存追加は `pnpm --filter` を使い、対象 package を明確にする。
-- app ごとの独自 UI 実装を避け、共通化すべきものは `packages/ui` へ移す。
+- app ごとの独自 UI 実装を避け、共通化すべきものは複数 consumer が揃った時点で `packages/ui` へ移す。
 - lint / format / tsconfig は `packages/config` から共有する。
+- Playwright は root 管理を正とし、`e2e/` と `playwright.config.ts` から実行する。
+- `knip` と `dependency-cruiser` は root script から実行する。
+- `packages/config` は用途別 subpath export を持ち、少なくとも `tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`oxlint/base`、`vitest/base` を公開する。
 
 ## 前提・依存関係
 
@@ -150,6 +157,7 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - npm package prefix は `@kufu/*` とする。
 - Phase 1 の主対象は Astro LP である。
 - `apps/base` は将来の React 業務アプリ枠として扱う。
+- `apps/base` と `packages/ui` は Phase 1 で skeleton まで作り、機能実装や本格運用は次フェーズへ送る。
 - CMS/API は初期スコープ外で、必要になった時点で Hono API、Inertia、React の採否を判断する。
 - 実体コードが未作成の場合でも、ドキュメントは構築予定の repo contract として扱う。
 
