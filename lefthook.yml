@@ -1,0 +1,15 @@
+pre-commit:
+  commands:
+    protected-branch:
+      run: python3 hooks/protected-branch/git_hook.py pre-commit
+
+pre-push:
+  commands:
+    protected-branch:
+      run: python3 hooks/protected-branch/git_hook.py pre-push
+
+commit-msg:
+  commands:
+    ticket-number:
+      glob: "**/*"
+      run: hooks/commit-msg/check_ticket_number.sh {1}
