@@ -28,6 +28,9 @@
 - ADR 起票要否
 - LP performance への影響
 - UI 共通化要否
+  - 第一原則は feature / colocation になっているか
+  - app / feature 内で閉じる UI を無理に `packages/ui` へ寄せていないか
+  - 複数 feature / app をまたぐ再利用が明確なものだけを共通化しているか
 - React Compiler 互換性確認要否
 - E2E / Storybook / unit test の要否
 

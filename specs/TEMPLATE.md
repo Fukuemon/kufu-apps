@@ -87,7 +87,7 @@
 | ------------ | :------: | --------------------------------------------- |
 | `lp-site`    |  ◯ / -   | Astro LP、ページ、section、assets             |
 | `cms`        |  ◯ / -   | LP 掲載投稿管理 app、routing、form、client state |
-| `ui`         |  ◯ / -   | 共通 UI、Storybook、shadcn/ui ベース部品      |
+| `ui`         |  ◯ / -   | 共通 UI 基盤、Storybook、shadcn/ui ベース部品、design token、font |
 | `config`     |  ◯ / -   | tsconfig、lint、format、test 設定             |
 | `e2e`        |  ◯ / -   | Playwright の主要導線検証                     |
 | `future-api` |  ◯ / -   | 将来の Hono API / CMS 連携候補                |
@@ -99,6 +99,12 @@
 1.
 2.
 3.
+
+### Reuse Policy
+
+- 第一原則は feature / colocation とする
+- 共通化は複数 feature / app をまたぐ再利用が明確になってから行う
+- app や feature 内で閉じる UI / utility / asset はローカルに置く
 
 ### Performance
 

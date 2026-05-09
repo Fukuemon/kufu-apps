@@ -135,7 +135,7 @@
 | モジュール   | 実装有無 | 主な責務                                                             |
 | ------------ | :------: | -------------------------------------------------------------------- |
 | `lp-site`    |    ◯     | Astro LP、静的ページ、section、assets、最小 dev/build 導線           |
-| `ui`         |    ◯     | 共有 UI package の骨組み、public entrypoint、将来の Storybook 入口   |
+| `ui`         |    ◯     | 共有 UI 基盤の骨組み、public entrypoint、将来の Storybook 入口       |
 | `config`     |    ◯     | TypeScript、lint、test などの共有設定                                |
 | `e2e`        |    ◯     | root 管理の Playwright 実行入口、LP の smoke / critical flow 検証    |
 | `cms`        |    -     | LP 掲載投稿の管理 app 候補。技術選定と設計のみ後続で扱う             |
@@ -168,8 +168,10 @@
 
 ### UI Reuse
 
+- 第一原則は feature / colocation とし、各 feature や app の文脈で閉じる UI はその feature 配下に置く
 - LP 内で閉じる UI は `apps/lp-site` 配下に置く
-- 共通 UI package は `packages/ui` として骨組みだけを置く
+- 共通 UI package は `packages/ui` として骨組みを置き、複数 feature / app をまたいで再利用が明確になったものだけを集約する正規入口にする
+- `packages/ui` には shadcn/ui ベース部品、design token、font、theme を置けるが、先回りした共通化はしない
 - 初回 scaffold では過剰な UI 抽象化を避け、public entrypoint と最小構成だけを定義する
 
 ### Rolldown / React Compiler
@@ -221,7 +223,7 @@
   - language: TypeScript
 - app / package toolchain
   - `apps/lp-site`: Astro
-  - `packages/ui`: shared UI package + Storybook 入口
+  - `packages/ui`: shared UI foundation package + Storybook 入口
   - `packages/config`: shared config package
 - build / quality tools
   - bundler: Rolldown
@@ -369,7 +371,9 @@ pnpm --filter @kufu/ui add react react-dom
 pnpm --filter @kufu/ui add -D typescript tsdown storybook
 ```
 
-- `packages/ui` は shared UI の public entrypoint と最小 build 入口を持つ
+- `packages/ui` は shared UI foundation の public entrypoint と最小 build 入口を持つ
+- `packages/ui` は shadcn/ui ベース部品、design token、font、theme など、複数 feature / app をまたいで再利用が確定した UI 基盤の置き場とする
+- feature / colocation を優先し、app や feature 内で閉じる UI は `packages/ui` へ移さない
 - `Storybook` と `tsdown` は、骨組みとしての入口だけ整え、本格運用は後続に送る
 - `typecheck` は `tsc --noEmit` を標準とする
 
@@ -440,7 +444,7 @@ pnpm depcruise
 
 - root: workspace 定義、task runner、共通 scripts、Playwright 設定
 - `apps/lp-site`: Astro app 本体、静的 asset、LP 用 route / page の土台
-- `packages/ui`: 共通 React UI の public entry と最小 build 入口
+- `packages/ui`: 共通 UI 基盤の public entry と最小 build 入口
 - `packages/config`: tsconfig / oxlint / vitest の shared config
 - `e2e`: Playwright tests と共通 test utility の入口
 - `apps/cms`: LP 掲載投稿の管理 app 候補。issue #3 では実装せず、文書上の将来配置先としてのみ扱う

@@ -32,7 +32,8 @@ Kufu Monorepo の spec は次のフェーズで進める。
 - Cloudflare Workers を使うべき処理と静的配信で閉じる処理の境界
 - secret を client / build-time / runtime のどこに置くべきか
 - URL state / routing をどこで表現するか
-- `packages/ui` へ昇格する UI と app 固有 UI の境界
+- `packages/ui` へ昇格する UI と app / feature 固有 UI の境界
+- Feature / colocation を崩してまで先回りした共通化をしていないか
 - React Compiler 互換性と `'use no memo'` の要否
 - CMS/API を初期スコープに含めるか、将来 ADR に送るか
 - Playwright / Vitest / Storybook の検証境界

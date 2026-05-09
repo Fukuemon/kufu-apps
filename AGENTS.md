@@ -100,7 +100,9 @@ $(ghq root)/github.com/Fukuemon/
 ### 基本方針
 
 - shadcn/ui をベースにする
-- packages/ui に集約する
+- 第一原則は Feature / colocation とする
+- app や Feature 内で閉じる UI はローカルに置く
+- `packages/ui` には複数 app / Feature をまたぐ再利用が明確になった UI 基盤だけを集約する
 - 各アプリでの直接利用は禁止
 
 ### ディレクトリ構造
@@ -118,7 +120,7 @@ packages/ui/
 ### 禁止事項
 
 - apps配下で shadcn/ui を直接 init すること
-- UIの重複実装
+- Feature / colocation を崩してまで UI を早期に共通化すること
 - デザインの分岐（統一感を壊す変更）
 
 ## Toolchain Rules
