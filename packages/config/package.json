@@ -1,0 +1,20 @@
+{
+  "name": "@kufu/config",
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "oxlint",
+    "tsconfig",
+    "vitest"
+  ],
+  "exports": {
+    "./tsconfig/base": "./tsconfig/base.json",
+    "./tsconfig/react": "./tsconfig/react.json",
+    "./tsconfig/astro": "./tsconfig/astro.json",
+    "./oxlint/base": "./oxlint/base.json",
+    "./vitest/base": "./vitest/base.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --ignoreConfig --noEmit --module NodeNext --moduleResolution NodeNext --target ES2022 --types node ./vitest/base.ts"
+  }
+}
