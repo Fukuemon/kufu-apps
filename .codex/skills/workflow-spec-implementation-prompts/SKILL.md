@@ -2,7 +2,6 @@
 name: workflow-spec-implementation-prompts
 description: Kufu Monorepo の spec から、自己完結な実装 prompt を `specs/*/prompts/` に生成する。
 ---
-
 # Workflow Spec Implementation Prompts
 
 spec から実装セッション用 prompt を生成するスキル。

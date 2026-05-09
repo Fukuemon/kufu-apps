@@ -4,7 +4,6 @@
   "scripts": {
     "dev": "turbo run dev --parallel",
     "dev:lp": "turbo run dev --filter=@kufu/lp-site",
-    "dev:base": "turbo run dev --filter=@kufu/base",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "format": "oxfmt . --write",
