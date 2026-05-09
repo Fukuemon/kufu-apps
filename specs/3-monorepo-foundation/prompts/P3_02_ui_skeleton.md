@@ -86,6 +86,69 @@ pnpm --filter @kufu/ui add react react-dom
 pnpm --filter @kufu/ui add -D typescript tsdown storybook
 ```
 
+## shadcn/ui セットアップメモ
+
+公式 docs では monorepo 対応 CLI が提供されている。新規 monorepo を shadcn/ui 前提で作る場合の初期化コマンドは次を参考にする。
+
+```sh
+npx shadcn@latest init --monorepo
+```
+
+ただしこの issue は既存 monorepo 上の `packages/ui` skeleton を整える作業なので、既存 repo に対して root で再初期化はしない。ここでは `packages/ui` と consumer app に `components.json` を置ける構造を整え、後続 issue で CLI `add` を安全に使える状態を目標にする。
+
+### `packages/ui` 側の想定
+
+- `packages/ui/components.json` を置ける構造にする
+- `tailwind.css` の参照先は `packages/ui` 配下の shared stylesheet に向ける
+- alias は `@kufu/ui` の export 設計と整合するように定義する
+- component / hook / utility の配置先を `packages/ui` 配下で明確にする
+
+`components.json` の初期案:
+
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "radix-nova",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@kufu/ui/components",
+    "utils": "@kufu/ui/lib/utils",
+    "hooks": "@kufu/ui/hooks",
+    "lib": "@kufu/ui/lib",
+    "ui": "@kufu/ui/components"
+  }
+}
+```
+
+### consumer app 側の想定
+
+- app 側にも `components.json` を置き、shared stylesheet と `@kufu/ui` alias を参照できるようにする
+- app から shared component を import する時は `@kufu/ui/components/*` を経由する
+- app / feature 内で閉じる component は app ローカルに置く
+
+### 後続 issue での CLI 利用例
+
+component 追加は CLI を app 側の context で実行する。公式 docs では app directory へ移動して実行するか、`-c` で対象 workspace を渡す。
+
+```sh
+cd apps/lp-site
+pnpm dlx shadcn@latest add button
+```
+
+```sh
+pnpm dlx shadcn@latest add button -c apps/lp-site
+```
+
+CLI が monorepo 構造を解釈し、component 本体、依存、registry dependency を適切な workspace へ配置できる前提で進める。
+
 ## テスト観点
 
 - `pnpm --filter @kufu/ui typecheck` が通る
