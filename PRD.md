@@ -119,7 +119,7 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - LP の主要ページと問い合わせ導線を検証する E2E 方針がある。
 - `packages/ui` と将来の `apps/cms` に対する Rolldown と React Compiler の適用方針が明文化されている。
 - `knip` と `dependency-cruiser` が root から実行でき、不要依存と境界違反を検査できる。
-- `lefthook` の `pre-push` で `pnpm depcruise` と `pnpm knip` が自動実行され、push 前に repository quality gate を通せる。
+- `lefthook` の `pre-commit` で `pnpm depcruise` と `pnpm knip` が自動実行され、commit 前に repository quality gate を通せる。
 - CMS/API は初期スコープ外であり、必要時に ADR / spec で判断することが明記されている。
 - コピー元固有のコード検索やインデックス前提がドキュメントや AI workflow から取り除かれている。
 
@@ -151,7 +151,7 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - Playwright は root 管理を正とし、`e2e/` と `playwright.config.ts` から実行する。
 - `knip` と `dependency-cruiser` は root script から実行する。
 - `dependency-cruiser` は app 間直接依存を禁止する境界検査に使う。
-- push 前の自動検証は `lefthook` を正本とする。
+- commit 前の自動検証は `lefthook` を正本とする。
 - `packages/config` は用途別 subpath export を持ち、少なくとも `tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`oxlint/base`、`vitest/base` を公開する。
 
 ## 前提・依存関係
