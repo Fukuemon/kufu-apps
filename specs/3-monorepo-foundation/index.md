@@ -215,6 +215,7 @@
   - app 間の直接依存は禁止
   - 共有設定は `@kufu/config` を正規入口とする
   - `e2e`、`knip`、`dependency-cruiser`、`oxfmt` は root script から直実行する
+  - push 前の自動検証は `lefthook` を正本とし、`pnpm depcruise` と `pnpm knip` を通す
 
 ### Tooling / Command Contract
 
@@ -252,6 +253,7 @@
   - `preview`: build artifact をローカル配信する
   - `e2e:serve`: root Playwright から呼び出す E2E 用起動 command。初期は `preview` の alias でもよい
 - root Playwright 設定は `webServer` を使う前提とし、対象 app の `e2e:serve` を起動してから test を流す
+- 初期実装の `apps/lp-site` は `e2e:serve = build && preview` で接続する
 - root 側の標準 env は以下を初期 contract とする
   - `E2E_TARGET`: 既定は `lp-site`
   - `E2E_BASE_URL`: 既定は `http://127.0.0.1:<E2E_PORT>`
@@ -475,6 +477,7 @@ pnpm depcruise
 | 1   | install 不整合で workspace 依存解決に失敗する     | root install 時に失敗ログが出る            | package 名、workspace 定義、依存の整合を見直す             |
 | 2   | workspace 解決失敗で app / package が認識されない | root scripts が対象 package を解決できない | `pnpm-workspace.yaml` と package 名、配置を確認する        |
 | 3   | app / package 間で import 境界違反が起きる        | build / typecheck / lint で検知する        | 共有コードを `packages/*` へ寄せ、app 間直接依存を解消する |
+| 5   | push 前に repository quality gate を通さずに差分を送る | pre-push で hook が失敗する                | `pnpm depcruise` と `pnpm knip` を解消してから再 push する |
 | 4   | 開発コマンド未整備で dev / check 導線が使えない   | root scripts 実行時に失敗する              | root scripts と各 workspace の entrypoint を揃える         |
 
 ### Fallback
@@ -492,6 +495,7 @@ pnpm depcruise
 - `lint`、`format`、`typecheck`、`test`、`e2e` の root scripts が揃っていること
 - `playwright.config.ts` が app 側 `e2e:serve` と env contract で接続できること
 - `knip` と `depcruise` の root scripts が揃っていること
+- `lefthook` の `pre-push` で `pnpm depcruise` と `pnpm knip` が自動実行されること
 - Playwright の root 実行入口があり、後続で critical flow を追加できること
 
 ### 計測指標

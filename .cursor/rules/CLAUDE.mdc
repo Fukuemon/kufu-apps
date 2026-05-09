@@ -171,6 +171,15 @@ pnpm format
 - UI: Storybook
 - e2e: Playwright
 
+### E2E Runtime Contract
+
+- `pnpm e2e` は root `playwright.config.ts` から実行する repository task とする
+- root 側の標準 env contract は `E2E_TARGET`、`E2E_PORT`、`E2E_BASE_URL` とする
+- `E2E_TARGET` の既定値は `lp-site` とし、初期 port は `lp-site=4321`、`cms=4173` を割り当てる
+- E2E 対象 app は `build`、`preview`、`e2e:serve` を持つ
+- root Playwright は app 固有の preview command を直書きせず、workspace 側 `e2e:serve` だけを呼び出す
+- test 配置は `e2e/<target>/` を基本とする
+
 ### Storybook
 
 - UIコンポーネントは Storybook で管理
@@ -180,6 +189,13 @@ pnpm format
 
 - dead code detection: knip
 - dependency analysis: dependency-cruiser
+
+### Repository Quality Gate
+
+- `knip` と `dependency-cruiser` は root config / root script を正本とする
+- `dependency-cruiser` は少なくとも circular dependency、未宣言依存、devDependency 流入、app 間直接依存を検査対象にする
+- app 間で直接 import せず、共有コードは `packages/*` の公開入口へ寄せる
+- `lefthook` の `pre-push` で `pnpm depcruise` と `pnpm knip` を自動実行し、push 前に repository quality gate を通す
 
 ### Library Development
 
@@ -210,6 +226,13 @@ pnpm build
 ```bash
 pnpm test
 pnpm e2e
+```
+
+##### Analysis
+
+```bash
+pnpm knip
+pnpm depcruise
 ```
 
 ## Infrastructure Rules

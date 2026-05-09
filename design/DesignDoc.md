@@ -124,6 +124,23 @@ flowchart LR
 - `dev`、`dev:lp`、`build`、`lint`、`typecheck`、`test` は `turbo run` を使う。
 - `format`、`e2e`、`knip`、`depcruise` は root 管理ツールとして直実行する。
 - `e2e`、`knip`、`dependency-cruiser` は package task ではなく repository task として扱う。
+- `lefthook` の `pre-push` で `pnpm depcruise` と `pnpm knip` を自動実行し、push 前に repository quality gate を通す。
+
+### E2E Runtime Contract
+
+- `pnpm e2e` は root `playwright.config.ts` を正本とし、`e2e/<target>/` 配下の suite を読む。
+- root 側の標準 env contract は `E2E_TARGET`、`E2E_PORT`、`E2E_BASE_URL` とする。
+- `E2E_TARGET` の既定値は `lp-site` とし、初期 port は `lp-site=4321`、`cms=4173` を割り当てる。
+- 対象 app は `build`、`preview`、`e2e:serve` を持ち、root Playwright は `e2e:serve` だけを呼び出す。
+- 初期実装の `apps/lp-site` は `e2e:serve` で `build` 後に `preview` を起動する。
+- app 固有の preview command は root に直書きせず、workspace script contract で接続する。
+
+### Repository Analysis Contract
+
+- `knip` は workspace ごとの `project` / `entry` を持つ monorepo config を root `knip.json` に持つ。
+- `dependency-cruiser` は root `.dependency-cruiser.cjs` を正本とし、少なくとも circular dependency、未宣言依存、devDependency 流入、app 間直接依存を検査する。
+- app 間直接依存は禁止し、共有コードは `packages/*` の公開入口へ寄せる。
+- false positive を避けるため、generated file や root 管理の設定ファイルは root config 側で除外する。
 
 ### Toolchain
 
