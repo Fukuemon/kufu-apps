@@ -86,7 +86,7 @@
 | モジュール   | 実装有無 | 主な責務                                      |
 | ------------ | :------: | --------------------------------------------- |
 | `lp-site`    |  ◯ / -   | Astro LP、ページ、section、assets             |
-| `base`       |  ◯ / -   | React 業務アプリ、routing、form、client state |
+| `cms`        |  ◯ / -   | LP 掲載投稿管理 app、routing、form、client state |
 | `ui`         |  ◯ / -   | 共通 UI、Storybook、shadcn/ui ベース部品      |
 | `config`     |  ◯ / -   | tsconfig、lint、format、test 設定             |
 | `e2e`        |  ◯ / -   | Playwright の主要導線検証                     |
@@ -186,7 +186,7 @@
 
 ### prompts 生成方針
 
-- `lp-site` / `base` / `ui` / `config` / `e2e` のどこで分けるか
+- `lp-site` / `cms` / `ui` / `config` / `e2e` のどこで分けるか
 - 並列実装できる境界
 
 ## 既存資料からの変更点

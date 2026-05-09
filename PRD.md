@@ -1,12 +1,12 @@
 # Kufu Monorepo PRD
 
-この文書は Kufu Monorepo のプロダクト要求を整理する PRD である。実装方式の詳細ではなく、Kufu の Web サイトと業務効率化ツール群が誰のどの課題を解決し、どの価値を提供するかを記述する。
+この文書は Kufu Monorepo のプロダクト要求を整理する PRD である。実装方式の詳細ではなく、Kufu の Web サイトと将来の CMS / 運用アプリ群が誰のどの課題を解決し、どの価値を提供するかを記述する。
 
 ## 概要
 
-Kufu Monorepo は、Kufu の LP サイト、将来の管理画面、内部業務ツール、共通 UI / 設定 / テスト基盤を pnpm workspace で一元管理するためのリポジトリである。
+Kufu Monorepo は、Kufu の LP サイト、将来の CMS アプリ、管理画面、内部業務ツール、共通 UI / 設定 / テスト基盤を pnpm workspace で一元管理するためのリポジトリである。
 
-Phase 1 では Astro による LP サイト構築を最優先にする。将来、CMS によるコンテンツ配信や業務アプリが必要になった場合は、Hono API、Inertia、React などの採用を spec / ADR で判断する。
+Phase 1 では Astro による LP サイト構築を最優先にする。将来、LP 掲載投稿を管理する CMS アプリや業務アプリが必要になった場合は、Hono API、Inertia、React などの採用を spec / ADR で判断する。
 
 ## プロダクト原則
 
@@ -33,14 +33,14 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 ### なぜ今やるか
 
 - Phase 1 の LP サイト構築前に、monorepo の正本ドキュメントを整えることで、後続実装の判断コストを下げられる。
-- Astro LP と React 業務アプリでは最適な設計が異なるため、初期から境界を明文化する必要がある。
+- Astro LP と将来の React ベース CMS アプリでは最適な設計が異なるため、初期から境界を明文化する必要がある。
 - React Compiler、TanStack Router、TanStack Query などの前提は、導入時にライブラリ互換性と実装規約を合わせて確認する必要がある。
 
 ### フェーズ展望
 
-- Phase 1: Astro LP サイト、共通設定、root 管理の E2E 入口、将来拡張用の `apps/base` / `packages/ui` skeleton を成立させる。
-- Phase 2: `apps/base` skeleton を起点に、React ベースの業務効率化ツールまたは管理画面の app shell を追加する。
-- Phase 3: CMS/API が必要になった場合、Hono API、Inertia、React の採否を検討し、コンテンツ配信や認証を拡張する。
+- Phase 1: Astro LP サイト、共通設定、root 管理の E2E 入口、`packages/ui` skeleton を成立させる。
+- Phase 2: LP 掲載投稿を管理する `apps/cms` の責務、公開フロー、データモデル、app shell を設計する。
+- Phase 3: `apps/cms` や追加 app の実装、必要に応じた CMS/API 連携や認証を拡張する。
 
 ## ペルソナ
 
@@ -55,13 +55,13 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 
 - 訪問者として、事業内容や問い合わせ方法をすばやく把握したい。そうすれば必要な判断や連絡に進める。
 - 運用者として、LP のセクションや文言を安全に更新したい。そうすれば公開サイトを継続的に改善できる。
-- 開発者として、LP、業務アプリ、共通 UI の責務境界を迷わず判断したい。そうすれば重複実装や不要な JavaScript を避けられる。
+- 開発者として、LP、CMS アプリ候補、共通 UI の責務境界を迷わず判断したい。そうすれば重複実装や不要な JavaScript を避けられる。
 - AI エージェントとして、対象 app / package と禁止事項を明確に把握したい。そうすればプロジェクト方針に沿った実装ができる。
 
 ### Primary Jobs To Be Done
 
 1. Astro LP を高いパフォーマンスと保守性で公開できる状態にする。
-2. 将来の React 業務アプリや CMS/API 追加に耐える monorepo 境界を用意する。
+2. 将来の CMS アプリや業務アプリ追加に耐える monorepo 境界を用意する。
 3. AI 向け設定と spec workflow により、実装依頼時の判断ぶれを減らす。
 
 ## 期待されるアウトカム
@@ -97,7 +97,6 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 ### Phase 1 スコープイン
 
 - `apps/lp-site` を Astro LP として構築する。
-- `apps/base` に将来の React app 用 skeleton を置く。
 - `packages/ui` に shared UI package の skeleton を置く。
 - `packages/config` に TypeScript、lint、format などの共有設定を置く。
 - root 管理の `e2e/` と `playwright.config.ts` に LP の主要導線を検証する Playwright テスト入口を置く。
@@ -114,10 +113,10 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 ## Phase 1 完成条件
 
 - `apps/lp-site` の責務、技術選定、禁止事項が Design Docs と AI 設定に明記されている。
-- `apps/base` と `packages/ui` の skeleton が将来拡張の入口として配置され、Phase 2 の実装対象と区別されている。
+- `packages/ui` の skeleton が将来拡張の入口として配置され、Phase 2 の実装対象と区別されている。
 - `packages/config` の役割と export 対象が明確で、root / app / package の責務境界が文書化されている。
 - LP の主要ページと問い合わせ導線を検証する E2E 方針がある。
-- `apps/base` / `packages/ui` skeleton に対する Rolldown と React Compiler の適用方針が明文化されている。
+- `packages/ui` と将来の `apps/cms` に対する Rolldown と React Compiler の適用方針が明文化されている。
 - `knip` と `dependency-cruiser` が root から実行でき、不要依存と境界違反を検査できる。
 - CMS/API は初期スコープ外であり、必要時に ADR / spec で判断することが明記されている。
 - コピー元固有のコード検索やインデックス前提がドキュメントや AI workflow から取り除かれている。
@@ -131,9 +130,9 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - コンテンツ更新時にセクション責務と配置先が分かる。
 - 公開前に主要導線を E2E で確認できる。
 
-### React 業務アプリ要求
+### CMS / React アプリ要求
 
-- Phase 1 では `apps/base` の skeleton のみを作り、以下は Phase 2 以降の標準として扱う。
+- Phase 1 では `apps/cms` を実装せず、以下は Phase 2 以降の標準として扱う。
 - UI は `@kufu/ui` を経由する。
 - ルーティングは TanStack Router を標準とする。
 - データフェッチは TanStack Query を標準とし、axios などの追加は必要性を spec で確認する。
@@ -156,8 +155,8 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - 文書上の正式名は `Kufu Monorepo` とする。
 - npm package prefix は `@kufu/*` とする。
 - Phase 1 の主対象は Astro LP である。
-- `apps/base` は将来の React 業務アプリ枠として扱う。
-- `apps/base` と `packages/ui` は Phase 1 で skeleton まで作り、機能実装や本格運用は次フェーズへ送る。
+- `apps/cms` は LP 掲載投稿を管理する将来 app 候補として扱う。
+- `packages/ui` は Phase 1 で skeleton まで作り、`apps/cms` の技術選定と機能実装は次フェーズへ送る。
 - CMS/API は初期スコープ外で、必要になった時点で Hono API、Inertia、React の採否を判断する。
 - 実体コードが未作成の場合でも、ドキュメントは構築予定の repo contract として扱う。
 

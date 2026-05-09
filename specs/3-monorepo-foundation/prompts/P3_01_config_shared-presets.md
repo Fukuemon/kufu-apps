@@ -24,7 +24,6 @@
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/specs/3-monorepo-foundation/index.md`
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/package.json`
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/apps/lp-site/`
-  - `$(ghq root)/github.com/Fukuemon/kufu-apps/apps/base/`
 
 ## 前提条件
 
@@ -36,7 +35,7 @@
 - `packages/config` 自身も `typecheck` script を持つ
 - ## 実装前に満たしている依存条件:
 - P1 root workspace foundation が完了している
-- P2 `apps/lp-site` と `apps/base` の package 名が決まっている
+- P2 `apps/lp-site` の package 名が決まっている
 
 ## 不明点ハンドリング
 
@@ -81,7 +80,8 @@ pnpm --filter @kufu/config add -D typescript oxlint vitest
 ## テスト観点
 
 - `package.json` の `exports` が spec どおりに定義されている
-- `apps/lp-site` と `apps/base` が各 preset を参照できる
+- `apps/lp-site` が `tsconfig/astro` を参照できる
+- 将来の React app が `tsconfig/react` を参照できる前提が保たれている
 - `pnpm --filter @kufu/config typecheck` が通る
 
 ## 検証コマンド
