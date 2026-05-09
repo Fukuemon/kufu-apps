@@ -2,43 +2,26 @@
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "workspaces": {
     ".": {
-      "project": [
-        "e2e/**/*.ts"
-      ]
+      "project": ["e2e/**/*.ts"]
     },
     "apps/lp-site": {
-      "entry": [
-        "src/pages/**/*.astro"
-      ],
-      "project": [
-        "src/**/*.{astro,ts,css}",
-        "public/**/*"
-      ],
-      "ignoreDependencies": [
-        "@kufu/ui"
-      ]
+      "entry": ["src/pages/**/*.astro"],
+      "project": ["src/**/*.{astro,ts,css}", "public/**/*"],
+      "ignoreDependencies": ["@kufu/ui"]
     },
     "packages/ui": {
-      "project": [
-        "src/**/*.{ts,tsx,css}",
-        "components.json"
-      ],
+      "project": ["src/**/*.{ts,tsx,css}", "components.json"],
       "ignoreDependencies": [
         "@fontsource-variable/geist",
         "@kufu/config",
         "lucide-react",
         "shadcn",
         "storybook",
-        "tsdown",
         "tw-animate-css"
       ]
     },
     "packages/config": {
-      "project": [
-        "tsconfig/**/*.json",
-        "oxlint/**/*.json",
-        "vitest/**/*.ts"
-      ]
+      "project": ["tsconfig/**/*.json", "oxlint/**/*.json", "vitest/**/*.ts"]
     }
   }
 }
