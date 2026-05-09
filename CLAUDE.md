@@ -18,10 +18,10 @@ $(ghq root)/github.com/Fukuemon/
 
 ## Repository Overview
 
-本リポジトリは、Kufuのプロダクト群（LP・業務効率化ツール）を管理する pnpm monorepo である。
+本リポジトリは、Kufuのプロダクト群（LP・CMS候補・共通基盤）を管理する pnpm monorepo である。
 
 - LP（マーケティングサイト）
-- 業務ツール（Reactベース）
+- CMS候補（将来の投稿管理アプリ）
 - 共通UI・設定・テスト基盤
 
 を単一リポジトリで管理する。
@@ -31,8 +31,8 @@ $(ghq root)/github.com/Fukuemon/
 ```bash
 <repo-root>/
 ├── apps/
-│   ├── base/        # React + Vite 業務アプリ
-│   └── lp-site/     # Astro LP
+│   ├── lp-site/     # Astro LP
+│   └── cms/         # 将来の投稿管理アプリ候補（Phase 1 では未実装）
 ├── packages/
 │   ├── ui/          # 共通UI（shadcn/uiベース）
 │   └── config/      # 共通設定（lint / tsconfig 等）
@@ -46,7 +46,7 @@ $(ghq root)/github.com/Fukuemon/
 
 | モジュール | 用途                             | 技術                      |
 | ---------- | -------------------------------- | ------------------------- |
-| base       | 業務効率化ツール（メインアプリ） | React + Vite + TypeScript |
+| cms        | LP掲載投稿の管理アプリ候補       | Hono + Inertia + React    |
 | lp-site    | LP・マーケティングサイト         | Astro                     |
 | ui         | 共通UIコンポーネント             | React + shadcn/ui         |
 | config     | 共通設定                         | TypeScript / lint config  |
@@ -66,7 +66,7 @@ $(ghq root)/github.com/Fukuemon/
 
 ## Frontend Architecture Rules
 
-### React（base）
+### React / CMS（future）
 
 - UIライブラリは React を標準とする
 - UIは @kufu/ui を必ず経由する
@@ -131,7 +131,7 @@ packages/ui/
 例：
 
 ```sh
-pnpm --filter @kufu/base add <package>
+pnpm --filter @kufu/<module> add <package>
 ```
 
 ### Build Tools
@@ -183,7 +183,6 @@ pnpm dev
 ##### 個別
 
 ```bash
-pnpm dev:base
 pnpm dev:lp
 ```
 
@@ -205,14 +204,14 @@ pnpm e2e
 - Phase 1 の公開基盤は Cloudflare を標準とする
 - `apps/lp-site` は Cloudflare Pages への deploy を第一候補とし、Astro の静的生成を前提に設計する
 - LP は build artifact 配信を前提とし、Node.js 常駐サーバを初期前提にしない
-- 将来 `apps/base` や追加 app を公開する場合も、まずは Cloudflare Pages または Cloudflare Workers で閉じる構成を優先する
+- 将来 `apps/cms` や追加 app を公開する場合も、まずは Cloudflare Pages または Cloudflare Workers で閉じる構成を優先する
 - API や BFF が必要になった場合だけ Cloudflare Workers を検討し、専用サーバや VM を安易に前提化しない
 - 画像、フォント、動画などの公開 asset は Cloudflare CDN 配信を前提に最適化する
 - DNS、TLS、キャッシュ、圧縮は Cloudflare の標準機能を優先し、app 側で重複実装しない
 
 ### Environment Strategy
 
-- local では Cloudflare 依存を前提にせず、`pnpm dev` / `pnpm dev:lp` / `pnpm dev:base` で完結する構成を優先する
+- local では Cloudflare 依存を前提にせず、`pnpm dev` / `pnpm dev:lp` で完結する構成を優先する
 - preview は Cloudflare Pages preview deployment を標準とし、PR / branch ごとの実ページ確認に使う
 - production は Cloudflare Pages production deployment を正本とする
 - preview URL を使った導線確認を、LP 変更時の標準レビュー手順に含める
@@ -263,7 +262,7 @@ feature/2
 例：
 
 ```bash
-- @kufu/base
+- @kufu/lp-site
 - @kufu/ui
 ```
 
@@ -294,6 +293,7 @@ UserCard.tsx
 
 将来的に以下を追加可能：
 
+- apps/cms
 - apps/admin
 - apps/internal-tool
 - packages/api-client
