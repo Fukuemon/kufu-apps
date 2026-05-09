@@ -124,7 +124,7 @@ flowchart LR
 - `dev`、`dev:lp`、`build`、`lint`、`typecheck`、`test` は `turbo run` を使う。
 - `format`、`e2e`、`knip`、`depcruise` は root 管理ツールとして直実行する。
 - `e2e`、`knip`、`dependency-cruiser` は package task ではなく repository task として扱う。
-- `lefthook` の `pre-push` で `pnpm depcruise` と `pnpm knip` を自動実行し、push 前に repository quality gate を通す。
+- `lefthook` の `pre-commit` で `pnpm depcruise` と `pnpm knip` を自動実行し、commit 前に repository quality gate を通す。
 
 ### E2E Runtime Contract
 

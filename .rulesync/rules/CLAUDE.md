@@ -199,7 +199,7 @@ pnpm format
 - `knip` と `dependency-cruiser` は root config / root script を正本とする
 - `dependency-cruiser` は少なくとも circular dependency、未宣言依存、devDependency 流入、app 間直接依存を検査対象にする
 - app 間で直接 import せず、共有コードは `packages/*` の公開入口へ寄せる
-- `lefthook` の `pre-push` で `pnpm depcruise` と `pnpm knip` を自動実行し、push 前に repository quality gate を通す
+- `lefthook` の `pre-commit` で `pnpm depcruise` と `pnpm knip` を自動実行し、commit 前に repository quality gate を通す
 
 ### Library Development
 
