@@ -83,7 +83,7 @@ flowchart LR
 | ----------------- | ------------------------------------------------------------------------------------------ |
 | `apps/lp-site`    | Astro による LP。静的生成、コンテンツ構成、必要最小限の island を担う。                    |
 | `apps/cms`        | LP 掲載投稿を管理する将来 app。Phase 1 では実装せず、Phase 2 で app shell と責務を設計する。 |
-| `packages/ui`     | 複数 app で共有する React UI。Phase 1 で skeleton を置き、共有需要に応じて育てる。         |
+| `packages/ui`     | 複数 app / feature で再利用が明確になった UI 基盤を置く。Phase 1 で skeleton を置き、共有需要に応じて育てる。 |
 | `packages/config` | TypeScript、oxlint、Vitest など共有価値の高い設定を集約する。                              |
 | `e2e`             | root 管理の Playwright による公開前検証と主要導線の回帰テストを担う。                      |
 | `specs`           | issue / 機能単位の要求、論点、設計、テスト観点を整理する。                                 |
@@ -94,7 +94,8 @@ flowchart LR
 - LP は Astro の `.astro` コンポーネントを基本にする。
 - React island はフォーム、動的 UI、外部 widget など必要な箇所に限定する。
 - LP の画像、フォント、スクリプトは性能予算を意識して管理する。
-- 共通 UI は利用箇所が複数 app にまたがる時点で `packages/ui` へ移す。
+- 第一原則は feature / colocation とし、app や feature 内で閉じる UI はローカルに置く。
+- 共通 UI は利用箇所が複数 app / feature にまたがる時点で `packages/ui` へ移す。
 - Phase 1 では `packages/ui` の skeleton を置くが、LP 内で閉じる UI は引き続き `apps/lp-site` に置く。
 - E2E は LP の表示、主要導線、問い合わせ導線を優先する。
 - E2E 実行入口は root `playwright.config.ts` と `e2e/` 配下に置き、workspace package 化しない。
@@ -201,12 +202,12 @@ flowchart LR
 1. `apps/lp-site` に Astro ページまたは section component を追加する。
 2. 静的な表示で足りる場合は `.astro` に閉じる。
 3. 動的 UI が必要な場合だけ React island を使う。
-4. 共通化すべき UI がある場合は `packages/ui` へ移す。
+4. 複数 app / feature をまたぐ再利用が明確な UI だけを `packages/ui` へ移す。
 5. Playwright で主要導線を確認する。
 
 #### 2. 共通 UI を追加する
 
-1. 複数 app または将来の再利用が明確な UI だけを `packages/ui` に追加する。
+1. 第一原則は feature / colocation とし、複数 app または feature をまたぐ再利用が明確な UI だけを `packages/ui` に追加する。
 2. shadcn/ui ベースの実装は app 配下で重複定義しない。
 3. Storybook は `packages/ui` skeleton の入口として置き、利用状態確認の本格運用は後続で整える。
 4. LP 側で使う場合は、不要な client directive が増えないか確認する。
