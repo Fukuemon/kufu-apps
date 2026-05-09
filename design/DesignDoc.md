@@ -2,7 +2,7 @@
 
 ## Latest Updated At
 
-- 2026-05-08
+- 2026-05-09
 
 ## Related PRD
 
@@ -15,7 +15,7 @@
 
 ## Goal
 
-Kufu の LP サイトを Astro で高いパフォーマンスと保守性を保って構築し、将来の React 業務アプリ、管理画面、CMS/API 連携を追加できる pnpm monorepo の責務境界を定義する。
+Kufu の LP サイトを Astro で高いパフォーマンスと保守性を保って構築し、将来の CMS アプリ、管理画面、CMS/API 連携を追加できる pnpm monorepo の責務境界を定義する。
 
 ## Non Goals
 
@@ -38,12 +38,12 @@ Kufu の LP サイトを Astro で高いパフォーマンスと保守性を保�
 
 Kufu Monorepo は、Phase 1 で LP サイトを作ることを主目的とする。LP は表示速度、情報の分かりやすさ、公開前検証が重要であり、不要な React 化やクライアント JavaScript の増加を避ける必要がある。
 
-一方で、将来は React ベースの業務効率化ツールや管理画面、CMS/API 連携が必要になる可能性がある。初期から app / package の責務と AI 向けルールを定義しておくことで、将来拡張時も LP の性能と monorepo の一貫性を守れる。
+一方で、将来は React ベースの CMS アプリや管理画面、CMS/API 連携が必要になる可能性がある。初期から app / package の責務と AI 向けルールを定義しておくことで、将来拡張時も LP の性能と monorepo の一貫性を守れる。
 
 ### 設計上の前提
 
 - Phase 1 の主対象は `apps/lp-site` である。
-- `apps/base` は将来の React 業務アプリ枠として定義し、Phase 1 では skeleton まで作る。
+- `apps/cms` は LP 掲載投稿を管理する将来 app 候補として定義し、Phase 1 では実装せず設計だけを後続 issue / spec に送る。
 - UI の共通化は、Phase 1 で `packages/ui` skeleton を置き、本格運用は複数 consumer が出た時点で進める。
 - TypeScript、lint、format、test 設定は `packages/config` に寄せる。
 - pnpm workspace と Turborepo を使い、app / package 単位でタスクを実行する。
@@ -57,20 +57,20 @@ Kufu Monorepo は、`apps`、`packages`、root 管理の `e2e`、`docs workflow`
 flowchart LR
     VISITOR["Visitor"]
     LP["apps/lp-site (Astro)"]
-    BASE["apps/base (React skeleton)"]
+    CMS["apps/cms (future app)"]
     UI["packages/ui (shared UI skeleton)"]
     CONFIG["packages/config"]
     E2E["e2e/ + playwright.config.ts"]
     DOCS["PRD / Design Docs / specs / ADR"]
 
     VISITOR --> LP
-    BASE --> UI
+    CMS --> UI
     LP --> CONFIG
-    BASE --> CONFIG
+    CMS --> CONFIG
     UI --> CONFIG
     E2E --> LP
     DOCS --> LP
-    DOCS --> BASE
+    DOCS --> CMS
     DOCS --> UI
     DOCS --> CONFIG
 ```
@@ -82,7 +82,7 @@ flowchart LR
 | Module            | Responsibility                                                                             |
 | ----------------- | ------------------------------------------------------------------------------------------ |
 | `apps/lp-site`    | Astro による LP。静的生成、コンテンツ構成、必要最小限の island を担う。                    |
-| `apps/base`       | 将来の React 業務アプリ。Phase 1 で skeleton を置き、Phase 2 以降に app shell を追加する。 |
+| `apps/cms`        | LP 掲載投稿を管理する将来 app。Phase 1 では実装せず、Phase 2 で app shell と責務を設計する。 |
 | `packages/ui`     | 複数 app で共有する React UI。Phase 1 で skeleton を置き、共有需要に応じて育てる。         |
 | `packages/config` | TypeScript、oxlint、Vitest など共有価値の高い設定を集約する。                              |
 | `e2e`             | root 管理の Playwright による公開前検証と主要導線の回帰テストを担う。                      |
@@ -99,9 +99,9 @@ flowchart LR
 - E2E は LP の表示、主要導線、問い合わせ導線を優先する。
 - E2E 実行入口は root `playwright.config.ts` と `e2e/` 配下に置き、workspace package 化しない。
 
-### React アプリ設計方針
+### CMS / React アプリ設計方針
 
-- 以下は `apps/base` skeleton を将来の React app へ育てる際の標準であり、Phase 1 では骨組みまでを対象とする。
+- 以下は `apps/cms` を実装する場合の React app 標準であり、Phase 1 では設計対象に留める。
 - ルーティングは TanStack Router を標準とする。
 - データフェッチは TanStack Query を標準とし、axios などの追加は spec で必要性を確認する。
 - 状態管理は Zustand を必要箇所に限定し、URL に表現できる状態は router 側へ寄せる。
@@ -120,7 +120,7 @@ flowchart LR
 ### Root Task Boundary
 
 - workspace task は root script から `turbo run` で束ねる。
-- `dev`、`dev:lp`、`dev:base`、`build`、`lint`、`typecheck`、`test` は `turbo run` を使う。
+- `dev`、`dev:lp`、`build`、`lint`、`typecheck`、`test` は `turbo run` を使う。
 - `format`、`e2e`、`knip`、`depcruise` は root 管理ツールとして直実行する。
 - `e2e`、`knip`、`dependency-cruiser` は package task ではなく repository task として扱う。
 
@@ -129,7 +129,7 @@ flowchart LR
 - Package manager: pnpm workspace
 - Task runner: Turborepo
 - LP framework: Astro
-- React app build: Vite
+- CMS app candidate: Hono + Inertia + React
 - Bundler: Rolldown
 - Language: TypeScript
 - Linter: oxlint
@@ -141,8 +141,8 @@ flowchart LR
 - Dependency analysis: dependency-cruiser
 - Library build: tsdown
 
-- `Rolldown` は採用方針として先に固定し、`apps/base` skeleton の Vite 設定へ反映する。
-- `React Compiler` は React app 導入時の標準として先に固定し、`apps/base` / `packages/ui` skeleton に実効設定を入れる。
+- `Rolldown` は採用候補として先に固定し、将来 `apps/cms` を実装する場合の build 構成で採否を確認する。
+- `React Compiler` は React app 導入時の標準として先に固定し、`packages/ui` と将来の `apps/cms` 実装時に適用する。
 - `knip` と `dependency-cruiser` は issue #3 で実導入し、root script から実行できる状態まで整える。
 
 ### Infrastructure / Deployment
@@ -150,7 +150,7 @@ flowchart LR
 - Phase 1 の公開基盤は Cloudflare を標準とする。
 - `apps/lp-site` は Cloudflare Pages への deploy を第一候補とし、Astro の静的生成を前提に構成する。
 - LP は build artifact を Cloudflare 側へ配信し、app server 常駐を前提にしない。
-- 将来 `apps/base` などの React app を公開する場合も、まずは Cloudflare Pages または Cloudflare Workers 上で完結できる構成を優先する。
+- 将来 `apps/cms` などの app を公開する場合も、まずは Cloudflare Pages または Cloudflare Workers 上で完結できる構成を優先する。
 - API や BFF が必要になった場合だけ Cloudflare Workers を追加し、Node.js 常駐サーバや専用 VM を初期前提にしない。
 - 画像、動画、フォントなどの静的 asset は Cloudflare CDN 配信を前提に最適化し、オリジン負荷を増やさない。
 - DNS、TLS、キャッシュ、圧縮は Cloudflare の標準機能を優先し、app 側で重複実装しない。
@@ -211,9 +211,9 @@ flowchart LR
 3. Storybook は `packages/ui` skeleton の入口として置き、利用状態確認の本格運用は後続で整える。
 4. LP 側で使う場合は、不要な client directive が増えないか確認する。
 
-#### 3. React 業務アプリを追加する
+#### 3. CMS アプリを追加する
 
-1. `apps/base` または新規 `apps/*` に app shell を作る。
+1. `apps/cms` または新規 `apps/*` に app shell を作る。
 2. ルーティング、データフェッチ、フォーム、状態管理は標準ライブラリを使う。
 3. UI は `@kufu/ui` を経由する。
 4. React Compiler 互換性を確認する。
@@ -290,7 +290,7 @@ flowchart LR
 - Astro ページに不要な React island や client directive が増えていないこと。
 - `packages/ui` の共有 UI が Storybook / unit test で確認できること。
 - `packages/config` の共有設定を各 app / package が利用できること。
-- React app 追加時に TanStack Router、TanStack Query、React Hook Form、Zustand、React Compiler 前提が守られること。
+- `apps/cms` 追加時に TanStack Router、TanStack Query、React Hook Form、Zustand、React Compiler 前提が守られること。
 - CMS/API を導入する場合は、ADR と spec が先に作成されていること。
 
 ## Open Questions

@@ -37,7 +37,7 @@
 2. `design/DesignDoc.md` で app / package の責務、LP-first 方針、React 標準、CMS/API の扱いを確認する。
 3. `workflow-spec-draft` を使って 1 issue ごとに 1 spec を起こし、対象機能の論点を `index.md` に閉じ込める。
 4. `workflow-spec-lifecycle` を使って Performance / Routing / Content / UI reuse / React Compiler / Testing 観点を埋める。
-5. 実装可能になったら `workflow-spec-implementation-prompts` を使って `prompts/` 配下へ `lp-site` / `base` / `ui` / `config` / `e2e` 単位で分割する。
+5. 実装可能になったら `workflow-spec-implementation-prompts` を使って `prompts/` 配下へ `lp-site` / `cms` / `ui` / `config` / `e2e` 単位で分割する。
 
 ## Kufu Monorepo での spec 分割指針
 
@@ -48,7 +48,7 @@ Phase 1 では、次の粒度で spec を切るのを基本とする。
 - `design-system-foundation`
 - `shared-config-foundation`
 - `e2e-critical-flows`
-- `base-app-shell`
+- `cms-app-architecture`
 - `cms-content-delivery`
 
 1 spec で複数 package をまたぐ実装が発生してもよいが、論点は 1 つの機能テーマに閉じる。

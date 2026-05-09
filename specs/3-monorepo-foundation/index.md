@@ -5,7 +5,7 @@
 - Issue: #3
 - ステータス: Draft
 - 作成日: 2026-05-08
-- 更新日: 2026-05-08
+- 更新日: 2026-05-09
 
 ## 設計フェーズ状況
 
@@ -42,16 +42,16 @@
 
 - 現状の repository は docs / rules / hooks が中心で、`apps/`、`packages/`、`e2e/`、workspace 設定など monorepo の実体がまだ存在しない
 - PRD、Design Docs、AI 向けルールは将来的な monorepo 構成を前提に整備済みであり、文書上の contract と実ファイル構成に差がある
-- issue #3 は、この差を埋めるために Kufu Monorepo の最小 scaffold を作成し、後続の LP 実装と React app 追加の判断基盤を揃えるためのもの
+- issue #3 は、この差を埋めるために Kufu Monorepo の最小 scaffold を作成し、後続の LP 実装と CMS 設計判断の基盤を揃えるためのもの
 - Phase 1 の完成条件のうち、LP 用 app 境界、共通 package 境界、workspace task 導線、AI が迷わない構成整備に直接関わる
-- 影響範囲は `apps/lp-site`、`apps/base`、`packages/ui`、`packages/config`、`e2e`、および root workspace 設定一式である
+- 影響範囲は `apps/lp-site`、`packages/ui`、`packages/config`、`e2e`、および root workspace 設定一式である
 
 ## スコープ
 
 ### やること
 
 - root に monorepo として必要な workspace 設定、task runner 設定、主要 scripts を定義する
-- `apps/lp-site`、`apps/base`、`packages/ui`、`packages/config`、`e2e` の最小 scaffold を作成する前提を整理する
+- `apps/lp-site`、`packages/ui`、`packages/config`、`e2e` の最小 scaffold を作成する前提を整理する
 - `pnpm install` 後に `dev`、`dev:lp`、`build`、`lint`、`format`、`typecheck`、`test`、`e2e` の最小導線を成立させる contract を定義する
 - app / package / root config の責務境界と共有ルールを明文化する
 - PRD / Design Docs / ADR と scaffold 実装のズレが出ないよう確認観点を定義する
@@ -76,7 +76,7 @@
 ### 成功条件
 
 - root に必要な主要ファイルが揃い、pnpm workspace として package 解決できる
-- `apps/lp-site`、`apps/base`、`packages/ui`、`packages/config`、`e2e` の最小構成と責務が一致している
+- `apps/lp-site`、`packages/ui`、`packages/config`、`e2e` の最小構成と責務が一致している
 - root scripts と workspace package 名、および root 管理の設定ファイル責務が明記されている
 - 今回採用する toolchain と補助ツールの導入対象、用途、導入順が spec 上で明示されている
 - 開発、build、check、test の最小導線が root から実行できる前提になっている
@@ -87,7 +87,7 @@
 ### 対象ユーザー / 操作主体
 
 - 主操作主体は Kufu Monorepo の開発者と AI エージェント
-- 二次的な利用者は、後続の LP 実装、React app 実装、共通 package 整備を行う実装担当者
+- 二次的な利用者は、後続の LP 実装、CMS 設計、共通 package 整備を行う実装担当者
 
 ## 論点一覧
 
@@ -101,19 +101,19 @@
 
 ## 解決済みの論点
 
-- issue #3 の対象は root 設定、`apps/lp-site`、`apps/base`、`packages/ui`、`packages/config`、root 管理の `e2e` を含む最小 foundation とする
+- issue #3 の対象は root 設定、`apps/lp-site`、`packages/ui`、`packages/config`、root 管理の `e2e` を含む最小 foundation とする
 - 初回 scaffold は「起動可能最小」を目標にし、詳細な Storybook / E2E シナリオ整備は後続に回す
-- `apps/base` と `packages/ui` は骨組みだけを作り、業務要件や本格的な UI カタログ整備は後続 issue / spec に送る
+- `apps/cms` は issue #3 では実装しない。LP 投稿管理向けの将来 app 候補として文書にだけ記載し、技術選定と設計は後続 issue / spec に送る
 - Cloudflare / Terraform は contract だけを文書化し、実装スコープ外とする
 - `e2e` は root `playwright.config.ts` と `e2e/` 配下で管理し、workspace package にはしない
 - `packages/config` は少なくとも `tsconfig`、`oxlint`、`vitest` の shared config を公開する
 - `oxfmt`、`knip`、`dependency-cruiser` は root script / root config を正本とし、`packages/config` export には含めない
 - `Storybook` と `tsdown` は `packages/ui` の骨組みに必要な入口だけ整え、本格運用は後続 issue に送る
-- `Rolldown` と `React Compiler` は採用方針をこの issue で固定し、骨組みの `apps/base` / `packages/ui` に実効設定まで入れる
+- `Rolldown` と `React Compiler` は repository 方針として維持するが、issue #3 では `packages/ui` 側のルール明文化に留める。`apps/cms` 実装時の実効設定は後続 issue で扱う
 - `knip` と `dependency-cruiser` は issue #3 で実導入し、root script から実行できる状態まで作る
 - root scripts は workspace task を `turbo run` で束ね、root 管理ツールは直実行に分ける
 - `packages/config` の export は用途別 subpath に分け、`tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`oxlint/base`、`vitest/base` を初期対象とする
-- app scaffold は手動 `add` よりも公式 `create` command を優先し、`apps/lp-site` は `pnpm create astro@latest apps/lp-site`、`apps/base` は `pnpm create vite apps/base --template react-ts` を正とする
+- app scaffold は手動 `add` よりも公式 `create` command を優先し、issue #3 では `apps/lp-site` の `pnpm create astro@latest apps/lp-site` を正とする
 - `Vite+` は monorepo 全体の toolchain 契約を見直す論点が大きいため、issue #3 では採用しない
 
 ## 未確定事項
@@ -127,16 +127,18 @@
 - preview URL を使ったレビュー手順を repo ルールとしてどの文書に固定するか
 - Cloudflare Turnstile や Analytics など edge サービスを採用する場合の責務境界
 - 上記は `$(ghq root)/github.com/Fukuemon/kufu-infra` 側で設計が必要になりうるため、foundation 完了後に infra repo 側の design issue 候補として洗い出す
+- LP 掲載投稿を管理する `apps/cms` の責務、公開フロー、権限、データモデル
+- `apps/cms` を作る場合の技術選定。初期案として Hono + Inertia + React を候補に置くが、採否は別 spec で判断する
 
 ## 実装対象
 
 | モジュール   | 実装有無 | 主な責務                                                             |
 | ------------ | :------: | -------------------------------------------------------------------- |
 | `lp-site`    |    ◯     | Astro LP、静的ページ、section、assets、最小 dev/build 導線           |
-| `base`       |    ◯     | React + Vite app shell の骨組み、最小 dev/build 導線、将来拡張の入口 |
 | `ui`         |    ◯     | 共有 UI package の骨組み、public entrypoint、将来の Storybook 入口   |
 | `config`     |    ◯     | TypeScript、lint、test などの共有設定                                |
 | `e2e`        |    ◯     | root 管理の Playwright 実行入口、LP の smoke / critical flow 検証    |
+| `cms`        |    -     | LP 掲載投稿の管理 app 候補。技術選定と設計のみ後続で扱う             |
 | `future-api` |    -     | 初期スコープ外。将来の Hono API / CMS 連携候補                       |
 
 ## 機能仕様
@@ -144,7 +146,7 @@
 ### User Flow
 
 1. 開発者が root で依存解決を行い、workspace 全体の package を認識できる
-2. 開発者が `dev` / `dev:lp` / `dev:base` や各種 check scripts を実行し、LP と monorepo foundation の最小導線を確認できる
+2. 開発者が `dev` / `dev:lp` や各種 check scripts を実行し、LP と monorepo foundation の最小導線を確認できる
 3. 開発者が app と root / package 設定の責務境界を把握し、後続実装を適切な配置先で始められる
 
 ### Performance
@@ -155,9 +157,9 @@
 
 ### Routing / URL State
 
-- この issue では React app の route 設計は扱わない
+- この issue では CMS app の route 設計は扱わない
 - `apps/lp-site` の page / route は Astro 標準の file-based routing に従う
-- 将来 React app を導入する際は、URL で表現できる状態を router 側へ寄せる、という repository 標準方針を引き継ぐ
+- 将来 `apps/cms` を導入する際は、URL で表現できる状態を router 側へ寄せる、という repository 標準方針を引き継ぐ
 
 ### Content / Assets
 
@@ -172,9 +174,9 @@
 
 ### Rolldown / React Compiler
 
-- `Rolldown` は repository の採用方針としてこの issue で明文化し、`apps/base` の骨組み設定へ反映する
+- `Rolldown` は repository の採用方針としてこの issue で明文化する
 - `React Compiler` も repository 標準方針としてこの issue で明文化する
-- 実際の compiler 設定は `apps/base` と `packages/ui` の骨組みに入れ、`'use no memo'` 判断は後続の React 実装 spec で継続する
+- 実際の compiler 設定は `packages/ui` と将来の `apps/cms` 実装時に判断し、`'use no memo'` 判断は後続の React 実装 spec で継続する
 
 ### Testing
 
@@ -192,7 +194,6 @@
 - root public scripts
   - `dev`
   - `dev:lp`
-  - `dev:base`
   - `build`
   - `lint`
   - `format`
@@ -204,7 +205,6 @@
   - `depcruise`
 - workspace public packages
   - `@kufu/lp-site`
-  - `@kufu/base`
   - `@kufu/ui`
   - `@kufu/config`
 - 共有境界
@@ -221,7 +221,6 @@
   - language: TypeScript
 - app / package toolchain
   - `apps/lp-site`: Astro
-  - `apps/base`: React + Vite
   - `packages/ui`: shared UI package + Storybook 入口
   - `packages/config`: shared config package
 - build / quality tools
@@ -235,8 +234,8 @@
   - dependency analysis: dependency-cruiser
   - package build: tsdown
 - 初回 scaffold での扱い
-  - 必須で実行導線まで作る: pnpm workspace, Turborepo, Astro, React + Vite, TypeScript, oxlint, oxlint-tsgolint, oxfmt, Vitest, Playwright
-  - issue #3 で採用方針と骨組み設定まで入れる: Rolldown, React Compiler
+  - 必須で実行導線まで作る: pnpm workspace, Turborepo, Astro, TypeScript, oxlint, oxlint-tsgolint, oxfmt, Vitest, Playwright
+  - issue #3 で採用方針だけ明文化する: Rolldown, React Compiler
   - root 管理の analysis tool として実導入する: knip, dependency-cruiser
   - 骨組みの入口だけ整え、詳細運用は後続に送る: Storybook, tsdown
   - ESLint は初期必須ツールに含めない。oxlint で不足するルールや plugin 互換が見つかった場合のみ併用を再検討する
@@ -244,7 +243,7 @@
 ### E2E Command Contract
 
 - `pnpm e2e` は root `playwright.config.ts` から実行する repository task とする
-- Phase 1 の既定対象は `apps/lp-site` とし、将来 `apps/base` や追加 app も同じ contract で接続できるようにする
+- Phase 1 の既定対象は `apps/lp-site` とし、将来 `apps/cms` や追加 app も同じ contract で接続できるようにする
 - app 側で E2E 対象になる workspace は、少なくとも次の script を持てる構成に揃える
   - `build`: E2E 前提の build を作る
   - `preview`: build artifact をローカル配信する
@@ -253,7 +252,7 @@
 - root 側の標準 env は以下を初期 contract とする
   - `E2E_TARGET`: 既定は `lp-site`
   - `E2E_BASE_URL`: 既定は `http://127.0.0.1:<E2E_PORT>`
-  - `E2E_PORT`: app ごとに固定値を割り当てる。初期案は `lp-site=4321`、`base=4173`
+  - `E2E_PORT`: app ごとに固定値を割り当てる。初期案は `lp-site=4321`、`cms=4173`
 - test 配置は `e2e/<target>/` を基本とし、app 実装と並走して対象 app の suite を追加できるようにする
 - issue #3 時点では test 本数よりも、root config と app script をつなぐ起動契約が成立していることを受け入れ条件とする
 
@@ -263,7 +262,6 @@
 - typecheck は app / package ごとに自前 script を持ち、root は集約だけを担う
 - 初期の標準 command は次を採用する
   - `apps/lp-site`: `astro check`
-  - `apps/base`: `tsc --noEmit`
   - `packages/ui`: `tsc --noEmit`
   - `packages/config`: `tsc --noEmit`
 - `packages/config` は shared tsconfig preset を配布するが、typecheck の実行主体は各 workspace 自身とする
@@ -274,18 +272,17 @@
 
 1. root workspace 基盤を作成し、pnpm workspace と Turborepo を導入する
 2. root quality scripts の前提として TypeScript、oxlint、oxlint-tsgolint、oxfmt、Vitest、Playwright の依存を追加する
-3. `apps/lp-site` に Astro、`apps/base` に React + Vite を導入し、各 app の最小 entrypoint を作る
+3. `apps/lp-site` に Astro を導入し、最小 entrypoint を作る
 4. `packages/ui` と `packages/config` を作成し、shared package として解決できる状態にする
-5. `Rolldown` と `React Compiler` の採用位置を明文化し、`apps/base` / `packages/ui` の骨組み設定へ反映する
+5. `Rolldown` と `React Compiler` の採用位置を明文化し、`packages/ui` と将来の `apps/cms` 設計へ引き継ぐ
 6. `knip` と `dependency-cruiser` を root analysis tool として導入し、root script へ接続する
-7. 最後に root scripts から `dev`、`dev:lp`、`dev:base`、`build`、`lint`、`format`、`typecheck`、`test`、`e2e` を順に確認する
+7. 最後に root scripts から `dev`、`dev:lp`、`build`、`lint`、`format`、`typecheck`、`test`、`e2e` を順に確認する
 
 ### Root Script Contract
 
 - `turbo run` で束ねる script
   - `dev`
   - `dev:lp`
-  - `dev:base`
   - `build`
   - `lint`
   - `typecheck`
@@ -299,7 +296,6 @@
 - 代表コマンド案
   - `dev`: `turbo run dev --parallel`
   - `dev:lp`: `turbo run dev --filter=@kufu/lp-site`
-  - `dev:base`: `turbo run dev --filter=@kufu/base`
   - `build`: `turbo run build`
   - `lint`: `turbo run lint`
   - `typecheck`: `turbo run typecheck`
@@ -346,7 +342,7 @@ pnpm add -D turbo typescript oxlint oxlint-tsgolint oxfmt @playwright/test vites
 pnpm add -D @types/node
 ```
 
-- root `package.json` に `dev`、`dev:lp`、`dev:base`、`build`、`lint`、`format`、`format:check`、`typecheck`、`test`、`e2e` を定義する
+- root `package.json` に `dev`、`dev:lp`、`build`、`lint`、`format`、`format:check`、`typecheck`、`test`、`e2e` を定義する
 - root に `pnpm-workspace.yaml`、`turbo.json`、`playwright.config.ts`、共通 `tsconfig` の入口を配置する
 - `lint` script は `oxlint`、必要に応じて `--type-aware` を含む構成を前提にする
 - `format` script は `oxfmt`、確認用は `oxfmt --check` を前提にする
@@ -362,18 +358,6 @@ pnpm create astro@latest apps/lp-site
 - build / dev script は root から `pnpm --filter @kufu/lp-site ...` で呼べる形に揃える
 - 初期 scaffold は `pnpm create astro@latest apps/lp-site` をベースにし、monorepo 契約に合わせて script と設定を調整する
 - `typecheck` は `astro check` を標準とし、将来 E2E 対象になった時は `e2e:serve` を追加する
-
-#### P2: `apps/base`
-
-```sh
-pnpm create vite apps/base --template react-ts
-```
-
-- `apps/base` は React + Vite app shell の骨組みを作る
-- `Rolldown` と `React Compiler` の設定は、この app skeleton に反映する
-- 業務要件、router / query / form / Zustand の本格導入は後続 spec に送る
-- 初期 scaffold は `pnpm create vite apps/base --template react-ts` をベースにし、monorepo 契約に合わせて script と設定を調整する
-- `typecheck` は `tsc --noEmit` を標準とし、E2E を追加する場合は `preview` / `e2e:serve` を備える
 
 #### P3: `packages/ui`
 
@@ -417,7 +401,6 @@ pnpm add -D knip dependency-cruiser
 pnpm install
 pnpm dev
 pnpm dev:lp
-pnpm dev:base
 pnpm build
 pnpm lint
 pnpm format
@@ -431,8 +414,8 @@ pnpm depcruise
 
 #### 補足
 
-- `Rolldown` は `apps/base` の Vite 設定で有効化する前提とし、issue #3 で骨組みへ反映する
-- `React Compiler` は `apps/base` / `packages/ui` の設定ルールをこの issue で先に明文化する
+- `Rolldown` は将来の `apps/cms` 採用候補を含む repository 方針として扱い、issue #3 では実装を入れない
+- `React Compiler` は `packages/ui` と将来の React app での設定ルールをこの issue で先に明文化する
 - `knip` と `dependency-cruiser` は root analysis tool として扱い、`packages/config` export には含めない
 - `Storybook` と `tsdown` は `packages/ui` の骨組みに入口だけ置き、詳細運用は後続 issue へ送る
 - 依存追加はすべて `pnpm --filter` を優先し、root 専用ツールだけ root に追加する
@@ -444,7 +427,7 @@ pnpm depcruise
 - この spec では API request / response は定義しない
 - `packages/ui` は app から import 可能な public entrypoint を持つ
 - `packages/config` は app / package から参照できる shared config entrypoint を持つ
-- `apps/base` と `apps/lp-site` はそれぞれ dev / build の entrypoint を持つ
+- `apps/lp-site` は dev / build の entrypoint を持つ
 
 ## Content / Data 設計
 
@@ -457,10 +440,10 @@ pnpm depcruise
 
 - root: workspace 定義、task runner、共通 scripts、Playwright 設定
 - `apps/lp-site`: Astro app 本体、静的 asset、LP 用 route / page の土台
-- `apps/base`: React + Vite app shell の骨組み
 - `packages/ui`: 共通 React UI の public entry と最小 build 入口
 - `packages/config`: tsconfig / oxlint / vitest の shared config
 - `e2e`: Playwright tests と共通 test utility の入口
+- `apps/cms`: LP 掲載投稿の管理 app 候補。issue #3 では実装せず、文書上の将来配置先としてのみ扱う
 - app ごとの E2E suite は `e2e/<target>/` へ増設する
 
 ## Performance / Security 設計
@@ -498,7 +481,7 @@ pnpm depcruise
 ### テスト観点
 
 - root から workspace 依存解決できること
-- `apps/lp-site` と `apps/base` がそれぞれ build / typecheck / dev の入口を持つこと
+- `apps/lp-site` が build / typecheck / dev の入口を持つこと
 - `packages/ui` と `packages/config` が共有 package として参照可能であること
 - `lint`、`format`、`typecheck`、`test`、`e2e` の root scripts が揃っていること
 - `playwright.config.ts` が app 側 `e2e:serve` と env contract で接続できること
@@ -509,7 +492,7 @@ pnpm depcruise
 
 - Workspace Resolve Pass: root install 後に各 package が解決できるか
 - Script Availability Pass: root scripts が定義されているか
-- App Build Pass: `apps/lp-site` と `apps/base` の build 導線が通るか
+- App Build Pass: `apps/lp-site` の build 導線が通るか
 - Typecheck Pass: app / package ごとの `typecheck` script が root `typecheck` から実行できるか
 - Check Pipeline Pass: lint / format / typecheck / test / e2e の最小実行導線が通るか
 - E2E Wiring Pass: `E2E_TARGET` を切り替えても root Playwright 設定と app script contract で接続できるか
@@ -523,7 +506,7 @@ pnpm depcruise
 | Phase | 対象                              | 概要                                                                                                                                        | 依存       |
 | ----- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
 | P1    | root workspace / task runner      | `package.json`、`pnpm-workspace.yaml`、`turbo.json`、共通 scripts、TypeScript / oxlint / oxfmt / Vitest / Playwright の root 導線を整備する | なし       |
-| P2    | `apps/lp-site` / `apps/base`      | Astro LP と React + Vite skeleton を作り、root から `dev:lp` / `dev:base` / `build` を呼べる状態にする                                      | P1         |
+| P2    | `apps/lp-site`                    | Astro LP skeleton を作り、root から `dev:lp` / `build` を呼べる状態にする                                                                  | P1         |
 | P3    | `packages/ui` / `packages/config` | UI package skeleton と tsconfig / oxlint / vitest の shared config package を作り、root と app から参照できる状態にする                     | P1         |
 | P4    | `e2e` / analysis / docs alignment | root 管理の Playwright 実行入口、knip / dependency-cruiser の導入方針、Rolldown / React Compiler の骨組み設定、文書差分の最終調整を行う     | P1, P2, P3 |
 
@@ -531,7 +514,7 @@ pnpm depcruise
 
 - `root workspace`、`apps`、`packages`、`e2e/docs` の単位で prompt 分割する
 - root scripts と shared config package の contract を先に固定する
-- `apps/base` と `packages/ui` の骨組みは今回扱い、業務仕様や本格 UI 運用は別 issue / spec に分離する
+- `apps/cms` は今回の prompt 分割に含めず、別 issue / spec で技術選定と設計から着手する
 
 ## 既存資料からの変更点
 
@@ -545,6 +528,7 @@ pnpm depcruise
 
 | 日付       | 変更者 | 変更内容                                            |
 | ---------- | ------ | --------------------------------------------------- |
+| 2026-05-09 | Codex  | `apps/base` を実装対象から外し、`apps/cms` を将来設計の文書対象へ変更 |
 | 2026-05-08 | Codex  | issue #3 向けの monorepo foundation spec を新規作成 |
 
 ## 備考
