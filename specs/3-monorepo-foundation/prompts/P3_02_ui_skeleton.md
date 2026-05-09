@@ -71,6 +71,8 @@
 - package 名は `@kufu/ui`
 - `@kufu/ui` は app 固有 UI ではなく、複数 feature / app をまたいで再利用が確定した UI 基盤の正規入口とする
 - shadcn/ui ベース部品、design token、font、theme の公開責務は `@kufu/ui` に集約できるが、feature / colocation を崩してまで共通化しない
+- shadcn registry 由来 component は React app 向け shared component として `@kufu/ui` に集約する
+- `apps/lp-site` のような Astro app は `@kufu/ui` の React component を標準では利用せず、shared stylesheet、design token、font、theme を参照する
 - 依存先は app ではなく共有 package と React 基盤に限る
 - `typecheck` は `tsc --noEmit`
 - React Compiler 前提を壊さない最小構成にする
@@ -94,7 +96,7 @@ pnpm --filter @kufu/ui add -D typescript tsdown storybook
 npx shadcn@latest init --monorepo
 ```
 
-ただしこの issue は既存 monorepo 上の `packages/ui` skeleton を整える作業なので、既存 repo に対して root で再初期化はしない。ここでは `packages/ui` と consumer app に `components.json` を置ける構造を整え、後続 issue で CLI `add` を安全に使える状態を目標にする。
+ただしこの issue は既存 monorepo 上の `packages/ui` skeleton を整える作業なので、既存 repo に対して root で再初期化はしない。ここでは `packages/ui` に `components.json` を置ける構造を整え、React app が後続 issue で CLI `add` を安全に使える状態を目標にする。
 
 ### `packages/ui` 側の想定
 
@@ -119,32 +121,33 @@ npx shadcn@latest init --monorepo
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@kufu/ui/components",
-    "utils": "@kufu/ui/lib/utils",
-    "hooks": "@kufu/ui/hooks",
-    "lib": "@kufu/ui/lib",
-    "ui": "@kufu/ui/components"
+    "components": "#components",
+    "utils": "#lib/utils",
+    "hooks": "#hooks",
+    "lib": "#lib",
+    "ui": "#components"
   }
 }
 ```
 
 ### consumer app 側の想定
 
-- app 側にも `components.json` を置き、shared stylesheet と `@kufu/ui` alias を参照できるようにする
+- React app 側に `components.json` を置き、`@kufu/ui` alias と shared stylesheet を参照できるようにする
 - app から shared component を import する時は `@kufu/ui/components/*` を経由する
+- `apps/lp-site` のような Astro app は `@kufu/ui/styles.css` や token export を参照し、shadcn registry component の追加先にはしない
 - app / feature 内で閉じる component は app ローカルに置く
 
 ### 後続 issue での CLI 利用例
 
-component 追加は CLI を app 側の context で実行する。公式 docs では app directory へ移動して実行するか、`-c` で対象 workspace を渡す。
+component 追加は React app 側の context で CLI を実行する。公式 docs では app directory へ移動して実行するか、`-c` で対象 workspace を渡す。
 
 ```sh
-cd apps/lp-site
+cd apps/cms
 pnpm dlx shadcn@latest add button
 ```
 
 ```sh
-pnpm dlx shadcn@latest add button -c apps/lp-site
+pnpm dlx shadcn@latest add button -c apps/cms
 ```
 
 CLI が monorepo 構造を解釈し、component 本体、依存、registry dependency を適切な workspace へ配置できる前提で進める。
