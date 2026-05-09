@@ -52,13 +52,13 @@ $(ghq root)/github.com/Fukuemon/
 
 ### Module Responsibilities
 
-| モジュール | 用途                             | 技術                      |
-| ---------- | -------------------------------- | ------------------------- |
-| cms        | LP掲載投稿の管理アプリ候補       | Hono + Inertia + React    |
-| lp-site    | LP・マーケティングサイト         | Astro                     |
-| ui         | 共通UIコンポーネント             | React + shadcn/ui         |
-| config     | 共通設定                         | TypeScript / lint config  |
-| e2e        | E2Eテスト                        | Playwright                |
+| モジュール | 用途                       | 技術                     |
+| ---------- | -------------------------- | ------------------------ |
+| cms        | LP掲載投稿の管理アプリ候補 | Hono + Inertia + React   |
+| lp-site    | LP・マーケティングサイト   | Astro                    |
+| ui         | 共通UIコンポーネント       | React + shadcn/ui        |
+| config     | 共通設定                   | TypeScript / lint config |
+| e2e        | E2Eテスト                  | Playwright               |
 
 ## Architecture Policy
 

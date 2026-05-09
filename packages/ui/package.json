@@ -1,12 +1,12 @@
 {
   "name": "@kufu/ui",
   "version": "0.0.1",
-  "type": "module",
   "private": true,
   "files": [
     "src",
     "components.json"
   ],
+  "type": "module",
   "imports": {
     "#components/*": "./src/components/*.tsx",
     "#hooks/*": "./src/hooks/*.ts",
@@ -27,6 +27,7 @@
     "./fonts": "./src/fonts/index.ts"
   },
   "scripts": {
+    "build": "tsdown src/index.ts --dts --format esm --platform neutral --external react --external react-dom --out-dir dist",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {

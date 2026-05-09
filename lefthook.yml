@@ -2,6 +2,8 @@ pre-commit:
   commands:
     protected-branch:
       run: python3 hooks/protected-branch/git_hook.py pre-commit
+    format:
+      run: hooks/format/run_oxfmt.sh
 
 pre-push:
   commands:

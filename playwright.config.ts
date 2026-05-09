@@ -5,15 +5,10 @@ const targetContracts = {
     port: 4321,
     workspace: "@kufu/lp-site",
   },
-  cms: {
-    port: 4173,
-    workspace: "@kufu/cms",
-  },
 } as const;
 
 const target = process.env.E2E_TARGET ?? "lp-site";
-const targetContract =
-  targetContracts[target as keyof typeof targetContracts];
+const targetContract = targetContracts[target as keyof typeof targetContracts];
 
 if (!targetContract) {
   throw new Error(

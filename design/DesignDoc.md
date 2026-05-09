@@ -79,15 +79,15 @@ flowchart LR
 
 ### モジュール責務
 
-| Module            | Responsibility                                                                             |
-| ----------------- | ------------------------------------------------------------------------------------------ |
-| `apps/lp-site`    | Astro による LP。静的生成、コンテンツ構成、必要最小限の island を担う。                    |
-| `apps/cms`        | LP 掲載投稿を管理する将来 app。Phase 1 では実装せず、Phase 2 で app shell と責務を設計する。 |
+| Module            | Responsibility                                                                                                |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- |
+| `apps/lp-site`    | Astro による LP。静的生成、コンテンツ構成、必要最小限の island を担う。                                       |
+| `apps/cms`        | LP 掲載投稿を管理する将来 app。Phase 1 では実装せず、Phase 2 で app shell と責務を設計する。                  |
 | `packages/ui`     | 複数 app / feature で再利用が明確になった UI 基盤を置く。Phase 1 で skeleton を置き、共有需要に応じて育てる。 |
-| `packages/config` | TypeScript、oxlint、Vitest など共有価値の高い設定を集約する。                              |
-| `e2e`             | root 管理の Playwright による公開前検証と主要導線の回帰テストを担う。                      |
-| `specs`           | issue / 機能単位の要求、論点、設計、テスト観点を整理する。                                 |
-| `adr`             | 長期参照する技術選定や責務境界の意思決定を残す。                                           |
+| `packages/config` | TypeScript、oxlint、Vitest など共有価値の高い設定を集約する。                                                 |
+| `e2e`             | root 管理の Playwright による公開前検証と主要導線の回帰テストを担う。                                         |
+| `specs`           | issue / 機能単位の要求、論点、設計、テスト観点を整理する。                                                    |
+| `adr`             | 長期参照する技術選定や責務境界の意思決定を残す。                                                              |
 
 ### Phase 1 設計方針
 

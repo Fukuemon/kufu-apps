@@ -13,7 +13,8 @@ module.exports = {
     {
       name: "no-orphans",
       severity: "warn",
-      comment: "Orphan modules are often dead code or missing public entrypoints.",
+      comment:
+        "Orphan modules are often dead code or missing public entrypoints.",
       from: {
         orphan: true,
         pathNot:
@@ -24,7 +25,8 @@ module.exports = {
     {
       name: "no-non-package-json",
       severity: "error",
-      comment: "Every external dependency should be declared in the nearest package.json.",
+      comment:
+        "Every external dependency should be declared in the nearest package.json.",
       from: {},
       to: {
         dependencyTypes: ["npm-no-pkg", "npm-unknown"],
@@ -33,10 +35,12 @@ module.exports = {
     {
       name: "not-to-dev-dep",
       severity: "error",
-      comment: "Application and package runtime code should not depend on devDependencies.",
+      comment:
+        "Application and package runtime code should not depend on devDependencies.",
       from: {
         path: "^(apps|packages)/",
-        pathNot: "(^|/)(vitest\\.config\\.ts|.*\\.test\\.(ts|tsx)|.*\\.spec\\.(ts|tsx))$",
+        pathNot:
+          "(^|/)(vitest\\.config\\.ts|.*\\.test\\.(ts|tsx)|.*\\.spec\\.(ts|tsx))$",
       },
       to: {
         dependencyTypes: ["npm-dev"],
@@ -45,7 +49,8 @@ module.exports = {
     {
       name: "lp-site-no-cross-app-imports",
       severity: "error",
-      comment: "Apps should depend on shared packages, not on other apps' internals.",
+      comment:
+        "Apps should depend on shared packages, not on other apps' internals.",
       from: {
         path: "^apps/lp-site/",
       },

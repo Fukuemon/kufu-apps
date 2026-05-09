@@ -132,14 +132,14 @@
 
 ## 実装対象
 
-| モジュール   | 実装有無 | 主な責務                                                             |
-| ------------ | :------: | -------------------------------------------------------------------- |
-| `lp-site`    |    ◯     | Astro LP、静的ページ、section、assets、最小 dev/build 導線           |
-| `ui`         |    ◯     | 共有 UI 基盤の骨組み、public entrypoint、将来の Storybook 入口       |
-| `config`     |    ◯     | TypeScript、lint、test などの共有設定                                |
-| `e2e`        |    ◯     | root 管理の Playwright 実行入口、LP の smoke / critical flow 検証    |
-| `cms`        |    -     | LP 掲載投稿の管理 app 候補。技術選定と設計のみ後続で扱う             |
-| `future-api` |    -     | 初期スコープ外。将来の Hono API / CMS 連携候補                       |
+| モジュール   | 実装有無 | 主な責務                                                          |
+| ------------ | :------: | ----------------------------------------------------------------- |
+| `lp-site`    |    ◯     | Astro LP、静的ページ、section、assets、最小 dev/build 導線        |
+| `ui`         |    ◯     | 共有 UI 基盤の骨組み、public entrypoint、将来の Storybook 入口    |
+| `config`     |    ◯     | TypeScript、lint、test などの共有設定                             |
+| `e2e`        |    ◯     | root 管理の Playwright 実行入口、LP の smoke / critical flow 検証 |
+| `cms`        |    -     | LP 掲載投稿の管理 app 候補。技術選定と設計のみ後続で扱う          |
+| `future-api` |    -     | 初期スコープ外。将来の Hono API / CMS 連携候補                    |
 
 ## 機能仕様
 
@@ -472,13 +472,13 @@ pnpm depcruise
 
 ### エラーケース
 
-| #   | ケース                                            | ユーザーへの見せ方                         | リカバリ                                                   |
-| --- | ------------------------------------------------- | ------------------------------------------ | ---------------------------------------------------------- |
-| 1   | install 不整合で workspace 依存解決に失敗する     | root install 時に失敗ログが出る            | package 名、workspace 定義、依存の整合を見直す             |
-| 2   | workspace 解決失敗で app / package が認識されない | root scripts が対象 package を解決できない | `pnpm-workspace.yaml` と package 名、配置を確認する        |
-| 3   | app / package 間で import 境界違反が起きる        | build / typecheck / lint で検知する        | 共有コードを `packages/*` へ寄せ、app 間直接依存を解消する |
+| #   | ケース                                                 | ユーザーへの見せ方                         | リカバリ                                                   |
+| --- | ------------------------------------------------------ | ------------------------------------------ | ---------------------------------------------------------- |
+| 1   | install 不整合で workspace 依存解決に失敗する          | root install 時に失敗ログが出る            | package 名、workspace 定義、依存の整合を見直す             |
+| 2   | workspace 解決失敗で app / package が認識されない      | root scripts が対象 package を解決できない | `pnpm-workspace.yaml` と package 名、配置を確認する        |
+| 3   | app / package 間で import 境界違反が起きる             | build / typecheck / lint で検知する        | 共有コードを `packages/*` へ寄せ、app 間直接依存を解消する |
 | 5   | push 前に repository quality gate を通さずに差分を送る | pre-push で hook が失敗する                | `pnpm depcruise` と `pnpm knip` を解消してから再 push する |
-| 4   | 開発コマンド未整備で dev / check 導線が使えない   | root scripts 実行時に失敗する              | root scripts と各 workspace の entrypoint を揃える         |
+| 4   | 開発コマンド未整備で dev / check 導線が使えない        | root scripts 実行時に失敗する              | root scripts と各 workspace の entrypoint を揃える         |
 
 ### Fallback
 
@@ -516,7 +516,7 @@ pnpm depcruise
 | Phase | 対象                              | 概要                                                                                                                                        | 依存       |
 | ----- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
 | P1    | root workspace / task runner      | `package.json`、`pnpm-workspace.yaml`、`turbo.json`、共通 scripts、TypeScript / oxlint / oxfmt / Vitest / Playwright の root 導線を整備する | なし       |
-| P2    | `apps/lp-site`                    | Astro LP skeleton を作り、root から `dev:lp` / `build` を呼べる状態にする                                                                  | P1         |
+| P2    | `apps/lp-site`                    | Astro LP skeleton を作り、root から `dev:lp` / `build` を呼べる状態にする                                                                   | P1         |
 | P3    | `packages/ui` / `packages/config` | UI package skeleton と tsconfig / oxlint / vitest の shared config package を作り、root と app から参照できる状態にする                     | P1         |
 | P4    | `e2e` / analysis / docs alignment | root 管理の Playwright 実行入口、knip / dependency-cruiser の導入方針、Rolldown / React Compiler の骨組み設定、文書差分の最終調整を行う     | P1, P2, P3 |
 
@@ -536,10 +536,10 @@ pnpm depcruise
 
 ## 変更履歴
 
-| 日付       | 変更者 | 変更内容                                            |
-| ---------- | ------ | --------------------------------------------------- |
+| 日付       | 変更者 | 変更内容                                                              |
+| ---------- | ------ | --------------------------------------------------------------------- |
 | 2026-05-09 | Codex  | `apps/base` を実装対象から外し、`apps/cms` を将来設計の文書対象へ変更 |
-| 2026-05-08 | Codex  | issue #3 向けの monorepo foundation spec を新規作成 |
+| 2026-05-08 | Codex  | issue #3 向けの monorepo foundation spec を新規作成                   |
 
 ## 備考
 
