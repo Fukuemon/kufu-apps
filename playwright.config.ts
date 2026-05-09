@@ -1,9 +1,29 @@
 import { defineConfig } from "@playwright/test";
 
+const targetContracts = {
+  "lp-site": {
+    port: 4321,
+    workspace: "@kufu/lp-site",
+  },
+  cms: {
+    port: 4173,
+    workspace: "@kufu/cms",
+  },
+} as const;
+
 const target = process.env.E2E_TARGET ?? "lp-site";
-const port = Number(process.env.E2E_PORT ?? "4321");
+const targetContract =
+  targetContracts[target as keyof typeof targetContracts];
+
+if (!targetContract) {
+  throw new Error(
+    `Unsupported E2E_TARGET: ${target}. Add an app contract in playwright.config.ts.`,
+  );
+}
+
+const port = Number(process.env.E2E_PORT ?? String(targetContract.port));
 const baseURL = process.env.E2E_BASE_URL ?? `http://127.0.0.1:${port}`;
-const webServerCommand = process.env.E2E_WEB_SERVER_COMMAND;
+const webServerCommand = `pnpm --filter ${targetContract.workspace} run e2e:serve`;
 
 export default defineConfig({
   testDir: `./e2e/${target}`,

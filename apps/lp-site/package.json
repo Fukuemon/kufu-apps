@@ -12,7 +12,7 @@
     "lint": "oxlint --config .oxlintrc.json astro.config.mjs vitest.config.ts",
     "test": "vitest run --config vitest.config.ts --passWithNoTests",
     "typecheck": "ASTRO_TELEMETRY_DISABLED=1 astro check",
-    "e2e:serve": "pnpm preview",
+    "e2e:serve": "pnpm build && pnpm preview",
     "astro": "astro"
   },
   "dependencies": {
