@@ -79,6 +79,8 @@ $(ghq root)/github.com/Fukuemon/
 - UIライブラリは React を標準とする
 - UIは @kufu/ui を必ず経由する
 - 直接shadcn/uiを各アプリで重複定義しない
+- shadcn registry 由来の共有コンポーネントは `packages/ui` に追加する
+- React app は `@kufu/ui` の shared component を利用し、app 固有の見た目差分は wrapper / composition で吸収する
 - state管理は局所化（過度なグローバル状態を避ける）
 - ルーティングは TanStack Router を標準とする
 - データフェッチは TanStack Query を標準とする
@@ -94,11 +96,13 @@ $(ghq root)/github.com/Fukuemon/
 - LP フレームワークは Astro を標準とする
 - 原則 .astro コンポーネントを使用する
 - Reactコンポーネントは 必要な箇所のみ island として利用
+- `apps/lp-site` は `@kufu/ui` の React component を標準では利用せず、styles / design token / font などの design foundation を利用する
+- LP 固有 UI は `apps/lp-site` 配下に置き、Astro で解決できるものを不要に React 化しない
 
 例：
 
-```astro
-<Button client:load />
+```css
+@import "@kufu/ui/styles.css";
 ```
 
 - 不要なクライアントJSを増やさない
@@ -111,6 +115,8 @@ $(ghq root)/github.com/Fukuemon/
 - 第一原則は Feature / colocation とする
 - app や Feature 内で閉じる UI はローカルに置く
 - `packages/ui` には複数 app / Feature をまたぐ再利用が明確になった UI 基盤だけを集約する
+- `packages/ui` は React app 向け shadcn component の正規置き場であり、あわせて全 app が参照する design token / font / theme / shared stylesheet を持つ
+- Astro app は `@kufu/ui/styles.css` などの design foundation を利用し、shadcn registry component の consumer にはしない
 - 各アプリでの直接利用は禁止
 
 ### ディレクトリ構造
@@ -128,6 +134,7 @@ packages/ui/
 ### 禁止事項
 
 - apps配下で shadcn/ui を直接 init すること
+- Astro app に shadcn registry component の追加先を分散させること
 - Feature / colocation を崩してまで UI を早期に共通化すること
 - デザインの分岐（統一感を壊す変更）
 

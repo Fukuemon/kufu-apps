@@ -87,7 +87,7 @@
 | ------------ | :------: | --------------------------------------------- |
 | `lp-site`    |  ◯ / -   | Astro LP、ページ、section、assets             |
 | `cms`        |  ◯ / -   | LP 掲載投稿管理 app、routing、form、client state |
-| `ui`         |  ◯ / -   | 共通 UI 基盤、Storybook、shadcn/ui ベース部品、design token、font |
+| `ui`         |  ◯ / -   | React app 向け shadcn/ui 基盤、design token、font、shared stylesheet |
 | `config`     |  ◯ / -   | tsconfig、lint、format、test 設定             |
 | `e2e`        |  ◯ / -   | Playwright の主要導線検証                     |
 | `future-api` |  ◯ / -   | 将来の Hono API / CMS 連携候補                |
