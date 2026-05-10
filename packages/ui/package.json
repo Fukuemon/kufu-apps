@@ -27,6 +27,7 @@
     "./fonts": "./src/fonts/index.ts"
   },
   "scripts": {
+    "lint": "oxlint --type-aware --config ../config/oxlint/base.json src",
     "build": "tsdown src/index.ts --dts --format esm --platform neutral --external react --external react-dom --out-dir dist",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },

@@ -3,39 +3,41 @@
 ## メタ情報
 
 - Issue: #3
-- ステータス: Draft
+- ステータス: レビュー済
 - 作成日: 2026-05-08
-- 更新日: 2026-05-09
+- 更新日: 2026-05-10
 
 ## 設計フェーズ状況
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態   | 最終更新   | 備考                                   |
-| --- | --------------------------- | ------ | ---------- | -------------------------------------- |
-| 1   | 起票                        | 完了   | 2026-05-08 | issue #3 起票済み                      |
-| 2   | 下書き                      | 進行中 | 2026-05-08 | monorepo scaffold の contract を整理中 |
-| 3   | 上位文書突合                | 完了   | 2026-05-08 | PRD / Design Doc の Phase 境界を更新   |
-| 4   | 論点整理                    | 未着手 |            |                                        |
-| 5   | 論点解決                    | 未着手 |            |                                        |
-| 6   | Interface / Routing 設計    | 未着手 |            |                                        |
-| 7   | Content / Data 設計         | 未着手 |            |                                        |
-| 8   | Performance / Security 設計 | 未着手 |            |                                        |
-| 9   | Test / Metrics 設計         | 未着手 |            |                                        |
-| 10  | 実装分割                    | 未着手 |            |                                        |
-| 11  | レビュー済                  | 未着手 |            |                                        |
+| #   | フェーズ                    | 状態 | 最終更新   | 備考                                     |
+| --- | --------------------------- | ---- | ---------- | ---------------------------------------- |
+| 1   | 起票                        | 完了 | 2026-05-08 | issue #3 起票済み                        |
+| 2   | 下書き                      | 完了 | 2026-05-09 | monorepo scaffold の contract を確定     |
+| 3   | 上位文書突合                | 完了 | 2026-05-09 | PRD / Design Doc / AI rules を更新       |
+| 4   | 論点整理                    | 完了 | 2026-05-09 | app 範囲、E2E、analysis tool を確定      |
+| 5   | 論点解決                    | 完了 | 2026-05-09 | Phase 1 対象と後続論点を切り分けた       |
+| 6   | Interface / Routing 設計    | 完了 | 2026-05-09 | root script と E2E contract を定義       |
+| 7   | Content / Data 設計         | 完了 | 2026-05-09 | app / package / root の責務境界を定義    |
+| 8   | Performance / Security 設計 | 完了 | 2026-05-09 | LP 優先と secret 境界を明文化            |
+| 9   | Test / Metrics 設計         | 完了 | 2026-05-10 | lint / typecheck / e2e / analysis を確認 |
+| 10  | 実装分割                    | 完了 | 2026-05-09 | P1-P4 の prompt と実装分割を確定         |
+| 11  | レビュー済                  | 完了 | 2026-05-10 | 実装との差分を是正済み                   |
 
 ## 上位ドキュメント確認
 
 - PRD 更新要否: 更新済み。Phase 1 を LP foundation に絞る前提へ修正
 - Design Docs 更新要否: 更新済み。`e2e` と `packages/config` の責務境界を修正
-- ADR 起票要否: 不要
+- ADR 起票要否: 更新済み。`adr/0002` と `adr/0003` を追加
 
 ## 関連資料
 
 - `PRD.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/PRD.md`
 - `design/DesignDoc.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/design/DesignDoc.md`
 - `adr/0001-terraform-infra-repository-boundary.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/adr/0001-terraform-infra-repository-boundary.md`
+- `adr/0002-monorepo-scaffold-create-command-policy.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/adr/0002-monorepo-scaffold-create-command-policy.md`
+- `adr/0003-phase1-lp-only-and-cms-deferred.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/adr/0003-phase1-lp-only-and-cms-deferred.md`
 - 関連 issue / ticket: `#3 🛠 task: Kufu Monorepo の基盤構成を作成する`
 
 ## 背景
@@ -326,7 +328,7 @@
 
 ### Lint / Format 方針
 
-- `lint` は `oxlint` を正とし、TypeScript project では `oxlint-tsgolint` を併用して type-aware lint を有効化する
+- `lint` は `oxlint` を正とし、TypeScript source や TypeScript config を持つ project では `oxlint-tsgolint` を有効にした `--type-aware` 実行を使う
 - `format` は `oxfmt` を正とし、`prettier` は導入しない
 - 日常運用では `format` による自動整形を基本とし、必要なら `format:check` を CI や確認用途で使う
 - `eslint` は初期必須ではない
@@ -349,7 +351,7 @@ pnpm add -D @types/node
 
 - root `package.json` に `dev`、`dev:lp`、`build`、`lint`、`format`、`format:check`、`typecheck`、`test`、`e2e` を定義する
 - root に `pnpm-workspace.yaml`、`turbo.json`、`playwright.config.ts`、共通 `tsconfig` の入口を配置する
-- `lint` script は `oxlint`、必要に応じて `--type-aware` を含む構成を前提にする
+- `lint` script は `oxlint` を正とし、TypeScript を含む workspace では `--type-aware` を含む構成を前提にする
 - `format` script は `oxfmt`、確認用は `oxfmt --check` を前提にする
 - `playwright.config.ts` は `webServer` と `E2E_TARGET` / `E2E_PORT` / `E2E_BASE_URL` の env contract を扱える形にする
 
@@ -528,16 +530,19 @@ pnpm depcruise
 
 ## 既存資料からの変更点
 
-| 対象                                              | 変更内容 | 理由                                                                       |
-| ------------------------------------------------- | -------- | -------------------------------------------------------------------------- |
-| `PRD.md`                                          | 更新あり | issue #3 を LP foundation に絞り、Phase 1 / Phase 2 の境界を明確にするため |
-| `design/DesignDoc.md`                             | 更新あり | root 管理の `e2e` と `packages/config` の責務を明確にするため              |
-| `adr/0001-terraform-infra-repository-boundary.md` | 変更なし | infra repo 分離方針は issue #3 の前提として流用できるため                  |
+| 対象                                                  | 変更内容 | 理由                                                                       |
+| ----------------------------------------------------- | -------- | -------------------------------------------------------------------------- |
+| `PRD.md`                                              | 更新あり | issue #3 を LP foundation に絞り、Phase 1 / Phase 2 の境界を明確にするため |
+| `design/DesignDoc.md`                                 | 更新あり | root 管理の `e2e` と `packages/config` の責務を明確にするため              |
+| `adr/0001-terraform-infra-repository-boundary.md`     | 変更なし | infra repo 分離方針は issue #3 の前提として流用できるため                  |
+| `adr/0002-monorepo-scaffold-create-command-policy.md` | 更新あり | app scaffold 方針を issue #3 の判断として残すため                          |
+| `adr/0003-phase1-lp-only-and-cms-deferred.md`         | 更新あり | app 対象範囲の判断を issue #3 の判断として残すため                         |
 
 ## 変更履歴
 
 | 日付       | 変更者 | 変更内容                                                              |
 | ---------- | ------ | --------------------------------------------------------------------- |
+| 2026-05-10 | Codex  | lint contract と spec の進捗・ADR 記述を実装に合わせて更新            |
 | 2026-05-09 | Codex  | `apps/base` を実装対象から外し、`apps/cms` を将来設計の文書対象へ変更 |
 | 2026-05-08 | Codex  | issue #3 向けの monorepo foundation spec を新規作成                   |
 
