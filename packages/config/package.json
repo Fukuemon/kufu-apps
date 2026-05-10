@@ -15,6 +15,7 @@
     "./vitest/base": "./vitest/base.ts"
   },
   "scripts": {
+    "lint": "oxlint --type-aware --config ./oxlint/base.json vitest/base.ts",
     "typecheck": "tsc --ignoreConfig --noEmit --module NodeNext --moduleResolution NodeNext --target ES2022 --types node ./vitest/base.ts"
   }
 }
