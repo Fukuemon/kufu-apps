@@ -18,10 +18,10 @@ $(ghq root)/github.com/Fukuemon/
 
 ## Repository Overview
 
-本リポジトリは、Kufuのプロダクト群（LP・CMS候補・共通基盤）を管理する pnpm monorepo である。
+本リポジトリは、Kufuのプロダクト群（LP・CMS・共通基盤）を管理する pnpm monorepo である。
 
 - LP（マーケティングサイト）
-- CMS候補（将来の投稿管理アプリ）
+- CMS （コンテンツ管理アプリ）
 - 共通UI・設定・テスト基盤
 
 を単一リポジトリで管理する。
@@ -32,7 +32,7 @@ $(ghq root)/github.com/Fukuemon/
 <repo-root>/
 ├── apps/
 │   ├── lp-site/     # Astro LP
-│   └── cms/         # 将来の投稿管理アプリ候補（Phase 1 では未実装）
+│   └── cms/         # コンテンツ管理アプリ候補（Phase 1 では未実装）
 ├── packages/
 │   ├── ui/          # 共通UI（shadcn/uiベース）
 │   └── config/      # 共通設定（lint / tsconfig 等）
@@ -268,6 +268,74 @@ npx rulesync@latest generate
 
 - 生成後は `git diff` で `.rulesync/` と生成先の差分が意図どおりであることを確認する
 - `npx rulesync@latest generate` が失敗した場合は、生成先を手作業で合わせず、失敗理由を解消して再実行する
+
+## Spec Workflow Contract
+
+Kufu Monorepo の Spec Driven Development (SDD) skill 群が参照する唯一の contract。
+skill (`.rulesync/skills/spec-*/SKILL.md`) は **project 固有名 (CLI / path / framework) を直書きせず**、本節の値を参照する。
+
+### 正本ドキュメント (Single Source of Truth)
+
+- PRD: `PRD.md`
+- Design Doc: `design/DesignDoc.md`
+- ADR: `adr/`
+- spec dir: `specs/<issue-id>-<slug>/`
+- spec body: `specs/<issue-id>-<slug>/index.md`
+- spec prompts: `specs/<issue-id>-<slug>/prompts/`
+- spec requirements (optional): `specs/<issue-id>-<slug>/requirements.md`
+- spec review report (optional): `specs/<issue-id>-<slug>/review.md`
+
+### Templates
+
+- spec core: `templates/specs/template.md`
+- spec appendices: `templates/specs/appendices/<topic>.md`
+- requirements: `templates/requirements/template.md`
+- adr: `templates/adr/template.md`
+
+### Issue Tracker
+
+- Tracker: GitHub
+- CLI: `gh`
+- Repo: `Fukuemon/kufu-apps`
+- Branch pattern: `feature/<issue-id>`
+
+### Spec の対象ドメイン
+
+spec の「実装対象」テーブルで利用する Kufu monorepo の正規 target:
+
+- `lp-site`, `cms`, `ui`, `config`, `e2e`, `future-api`
+
+### Phase Gate ルール
+
+- 各 phase 完了時に `spec-review` (fresh-context evaluator) を通す
+- PRD / Design Doc / ADR と矛盾を検出した場合は `spec-sync` を先に提案し、未解決のまま下流 phase に進まない
+- spec 内「設計フェーズ状況」表が phase 状態 (`未着手 / 進行中 / 完了 / レビュー済 / 保留`) を管理する
+- 確定済みの判断 (解決済みの論点) を skill から上書きしない
+
+### Skill 共通契約
+
+- skill 内に project 固有名 (Casbin / Hono / Inertia / glab / 認可マトリクス 等) を直書きしない
+- skill が参照する path / CLI / project 名は本 contract の値を読む
+- skill 本体 (SKILL.md) は 200 行未満、詳細は `references/` へ 1 階層深さで分離する
+- skill の description は third-person、何をする skill か + いつ起動するか を含める
+- skill には必ず「停止条件」セクションを置き、推測で進めない
+
+### SDD Skill 一覧
+
+| Skill              | 役割                                                 | 対応 phase         |
+| ------------------ | ---------------------------------------------------- | ------------------ |
+| `spec-issue-read`  | Issue 取得 + 要約                                    | intake             |
+| `spec-requirement` | 要求の対話整理 → requirements doc / Issue 起票       | intake → specify   |
+| `spec-draft`       | spec dir + `index.md` を template から生成           | specify (scaffold) |
+| `spec-resolve`     | 論点を 1 件ずつ解決し spec 内全箇所を同期更新        | clarify            |
+| `spec-diagrams`    | spec の flow / sequence を Mermaid 図に落とす        | design             |
+| `spec-track`       | spec の「上位資料からの変更点」を更新                | design             |
+| `spec-sync`        | spec 決定を PRD / Design Doc / ADR へ back-propagate | upstream sync      |
+| `spec-prompts`     | spec から自己完結な実装 prompt を生成                | tasks → implement  |
+| `spec-review`      | fresh-context evaluator が PASS / NEEDS_WORK を返す  | review gate        |
+| `spec-lifecycle`   | 上記を phase 順に orchestration する半自律 runner    | orchestrator       |
+
+orthogonal な Git / GitHub 操作は `workflow-git` を使う。
 
 ## Git Workflow Guardrails
 
