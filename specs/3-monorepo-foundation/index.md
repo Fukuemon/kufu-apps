@@ -177,10 +177,14 @@
 - `apps/lp-site` は `@kufu/ui` の React component を標準では利用せず、design foundation のみを参照する
 - 初回 scaffold では過剰な UI 抽象化を避け、public entrypoint と最小構成だけを定義する
 
-### Rolldown / React Compiler
+### Rolldown
 
 - `Rolldown` は repository の採用方針としてこの issue で明文化する
-- `React Compiler` も repository 標準方針としてこの issue で明文化する
+- 実際の bundler 設定は `packages/ui` と将来の `apps/cms` 実装時に判断する
+
+### React Compiler
+
+- `React Compiler` は repository 標準方針としてこの issue で明文化する
 - 実際の compiler 設定は `packages/ui` と将来の `apps/cms` 実装時に判断し、`'use no memo'` 判断は後続の React 実装 spec で継続する
 
 ### Testing
@@ -509,7 +513,7 @@ pnpm depcruise
 - Check Pipeline Pass: lint / format / typecheck / test / e2e の最小実行導線が通るか
 - E2E Wiring Pass: `E2E_TARGET` を切り替えても root Playwright 設定と app script contract で接続できるか
 - Analysis Pass: `knip` と `dependency-cruiser` の実行導線が通るか
-- Toolchain Coverage Pass: Design Docs / AGENTS.md にある採用技術が spec の導入対象または後続判断対象として列挙されているか
+- Toolchain Coverage Pass: Design Doc Toolchain 節にある採用技術が spec の導入対象または後続判断対象として列挙されているか
 
 ## 実装分割
 
