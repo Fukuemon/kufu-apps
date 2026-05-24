@@ -20,5 +20,23 @@
   },
   "[markdown]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
-  }
+  },
+  "cSpell.words": [
+    "autonumber",
+    "codexcli",
+    "depcruise",
+    "Fukuemon",
+    "ghq",
+    "knip",
+    "kufu",
+    "lefthook",
+    "oxfmt",
+    "oxlint",
+    "Rolldown",
+    "rulesync",
+    "shadcn",
+    "tsdown",
+    "Turborepo",
+    "Zustand"
+  ]
 }
