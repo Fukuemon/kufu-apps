@@ -8,6 +8,14 @@
 
 - [PRD.md](../PRD.md)
 
+## Related ADRs
+
+| ADR                                                                | 決定                                                        | 本 Design Doc 内の関連節                                   |
+| ------------------------------------------------------------------ | ----------------------------------------------------------- | ---------------------------------------------------------- |
+| [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md)     | Cloudflare の Terraform は別 repo (`kufu-infra`) で管理する | Infrastructure / Deployment, Infrastructure Code Ownership |
+| [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md) | app scaffold は公式 create command を優先する               | Toolchain                                                  |
+| [ADR-0003](../adr/0003-phase1-lp-only-and-cms-deferred.md)         | Phase 1 は `apps/lp-site` のみ。`apps/cms` は後続           | Phase 1 設計方針, CMS / React アプリ設計方針               |
+
 ## Repository References
 
 - app repo: `$(ghq root)/github.com/Fukuemon/kufu-apps`
@@ -126,6 +134,32 @@ flowchart LR
 - `e2e`、`knip`、`dependency-cruiser` は package task ではなく repository task として扱う。
 - `lefthook` の `pre-commit` で `pnpm depcruise` と `pnpm knip` を自動実行し、commit 前に repository quality gate を通す。
 
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Dev as Developer
+    participant Git as git commit
+    participant Hook as lefthook (pre-commit)
+    participant Dep as pnpm depcruise
+    participant Knip as pnpm knip
+    Dev->>Git: commit 実行
+    Git->>Hook: pre-commit 起動
+    par 依存境界検査
+        Hook->>Dep: dependency-cruiser
+        Dep-->>Hook: OK / NG (循環 / 未宣言 / app間直接依存)
+    and 不要コード検査
+        Hook->>Knip: knip
+        Knip-->>Hook: OK / NG (dead code / 未使用 export)
+    end
+    alt 全てOK
+        Hook-->>Git: commit 通過
+        Git-->>Dev: commit 成立
+    else いずれかNG
+        Hook-->>Git: commit 中断
+        Git-->>Dev: 失敗内容 (修正してから再 commit)
+    end
+```
+
 ### E2E Runtime Contract
 
 - `pnpm e2e` は root `playwright.config.ts` を正本とし、`e2e/<target>/` 配下の suite を読む。
@@ -134,6 +168,26 @@ flowchart LR
 - 対象 app は `build`、`preview`、`e2e:serve` を持ち、root Playwright は `e2e:serve` だけを呼び出す。
 - 初期実装の `apps/lp-site` は `e2e:serve` で `build` 後に `preview` を起動する。
 - app 固有の preview command は root に直書きせず、workspace script contract で接続する。
+
+```mermaid
+flowchart TD
+    Dev["Developer / CI<br/>pnpm e2e"] --> Root["root<br/>playwright.config.ts"]
+    Root -->|"E2E_TARGET<br/>(既定: lp-site)"| Selector{対象 app}
+    Root -->|"E2E_PORT / E2E_BASE_URL<br/>を解決"| Selector
+    Selector -->|lp-site| LP["apps/lp-site<br/>e2e:serve"]
+    Selector -->|cms (将来)| CMS["apps/cms<br/>e2e:serve"]
+    LP --> LPBuild["build → preview<br/>:4321"]
+    CMS --> CMSBuild["build → preview<br/>:4173"]
+    LPBuild --> Suite["e2e/&lt;target&gt;/<br/>Playwright suite"]
+    CMSBuild --> Suite
+    Suite --> Result["pass / fail"]
+```
+
+図の要点:
+
+- root は `e2e:serve` 契約だけに依存し、app 固有 command を知らない。
+- 新 app を E2E 対象にするには `build` / `preview` / `e2e:serve` を実装し、`E2E_TARGET` に追加するだけで足りる。
+- port 衝突を避けるため、各 app の preview port は本 contract で固定する。
 
 ### Repository Analysis Contract
 
@@ -165,24 +219,24 @@ flowchart LR
 
 ### Infrastructure / Deployment
 
-- Phase 1 の公開基盤は Cloudflare を標準とする。
-- `apps/lp-site` は Cloudflare Pages への deploy を第一候補とし、Astro の静的生成を前提に構成する。
-- LP は build artifact を Cloudflare 側へ配信し、app server 常駐を前提にしない。
-- 将来 `apps/cms` などの app を公開する場合も、まずは Cloudflare Pages または Cloudflare Workers 上で完結できる構成を優先する。
-- API や BFF が必要になった場合だけ Cloudflare Workers を追加し、Node.js 常駐サーバや専用 VM を初期前提にしない。
-- 画像、動画、フォントなどの静的 asset は Cloudflare CDN 配信を前提に最適化し、オリジン負荷を増やさない。
-- DNS、TLS、キャッシュ、圧縮は Cloudflare の標準機能を優先し、app 側で重複実装しない。
-- Cloudflare の infra code は Terraform で管理し、Kufu Monorepo とは別リポジトリを正本とする。
-- この monorepo には Terraform 本体を置かず、app 側が依存する infra contract と運用前提だけを残す。
-- Terraform の実体は `$(ghq root)/github.com/Fukuemon/kufu-infra` で管理する。
+Phase 1 の公開基盤と infra repo 分離は [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md) で決定済。本 Design Doc では **app 側が依存する contract** だけを定義する。
 
-### Infrastructure Code Ownership
+- 公開基盤: Cloudflare (Pages を第一候補、Workers は API / BFF 必要時のみ)。
+- `apps/lp-site` は Astro 静的生成 → Cloudflare Pages への build artifact 配信を前提に構成する。
+- API / BFF を導入しない限り、Node.js 常駐サーバや専用 VM を前提にしない。
+- 静的 asset (画像 / 動画 / フォント) は Cloudflare CDN 配信を前提に最適化する。
+- DNS / TLS / キャッシュ / 圧縮は Cloudflare 標準機能に寄せ、app 側で重複実装しない。
+- Terraform の実体は `kufu-infra` repo を正本とし、本 monorepo には Terraform 本体を置かない。
 
-- Terraform state、apply 権限、Cloudflare secret 管理はアプリ実装 repo から分離する。
-- DNS、Pages project、Workers、custom domain、secret、binding など本番影響の大きい変更は infra repo 側でレビュー、plan、apply する。
-- この monorepo では `apps/lp-site` から必要な infra contract を文書化する。
-- infra contract には少なくとも Pages project 名、preview / production の domain、必要な secret 名、Workers 依存の有無を含める。
-- app 実装の変更で infra 差分が必要な場合は、spec または ADR から別 repo の Terraform 変更へトレースできる状態を保つ。
+### Infrastructure Contract (app → infra)
+
+app 側から infra repo へ受け渡す contract:
+
+- Pages project 名 (preview / production)
+- preview / production の domain
+- 必要な secret 名 (実値は repo に保存しない)
+- Workers 依存の有無
+- app 変更で infra 差分が必要な場合の参照リンク (spec / ADR → infra repo PR)
 
 ### Environment Strategy
 
@@ -195,6 +249,36 @@ flowchart LR
 - Preview URL を使って、レイアウト崩れ、リンク、フォーム導線、SEO メタデータをレビューする。
 - 本番 deploy は `main` へのマージを起点に行う前提で設計する。
 - branch 単位で安全に確認できることを、LP 改修の標準 workflow に含める。
+
+```mermaid
+flowchart LR
+    subgraph Dev["Local"]
+        Local["pnpm dev / dev:lp<br/>(Cloudflare 依存なし)"]
+    end
+    subgraph GH["GitHub"]
+        FB["feature/&lt;issue&gt; branch"]
+        PR["Pull Request"]
+        Main["main (protected)"]
+    end
+    subgraph CF["Cloudflare Pages"]
+        Preview["Preview Deployment<br/>(PR / branch 毎)"]
+        Prod["Production Deployment"]
+    end
+    Local --> FB
+    FB --> PR
+    PR -->|push| Preview
+    Preview -->|レビュー: 表示 / 導線 / SEO| PR
+    PR -->|approve & merge| Main
+    Main -->|merge トリガ| Prod
+    Prod --> Users["公開サイト訪問者"]
+```
+
+図の要点:
+
+- preview と production はどちらも Cloudflare Pages 上で同じ build 経路を通る。
+- preview レビュー (レイアウト / リンク / フォーム / SEO) を通過しない PR は merge しない。
+- production への昇格は **`main` へのマージのみ**が起点で、手動 deploy 経路を標準にしない。
+- infra 側 (Pages project / domain / secret) の変更は [Infrastructure Contract (app → infra)](#infrastructure-contract-app--infra) 経由で `kufu-infra` repo へ依頼する。
 
 ### Runtime Boundary
 
