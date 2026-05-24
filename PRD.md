@@ -99,9 +99,8 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - `apps/lp-site` を Astro LP として構築する。
 - `packages/ui` に shared UI package の skeleton を置く。
 - `packages/config` に TypeScript、lint、format などの共有設定を置く。
-- root 管理の `e2e/` と `playwright.config.ts` に LP の主要導線を検証する Playwright テスト入口を置く。
-- root `playwright.config.ts` は `E2E_TARGET`、`E2E_PORT`、`E2E_BASE_URL` の contract で app 側 `e2e:serve` と接続する。
-- `AGENTS.md`、`CLAUDE.md`、`.codex`、`.claude`、`.cursor` など AI 向け設定を monorepo 方針に合わせる。
+- root 管理の E2E 入口を整備し、LP の主要導線を公開前に検証できる状態にする。
+- AI 向け設定 (`AGENTS.md`、`CLAUDE.md`、`.codex`、`.claude`、`.cursor`) を monorepo 方針に合わせる。
 - spec / ADR により、実装前にスコープ、責務、検証方法を整理できる状態にする。
 
 ### Phase 1 スコープアウト
@@ -118,8 +117,8 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - `packages/config` の役割と export 対象が明確で、root / app / package の責務境界が文書化されている。
 - LP の主要ページと問い合わせ導線を検証する E2E 方針がある。
 - `packages/ui` と将来の `apps/cms` に対する Rolldown と React Compiler の適用方針が明文化されている。
-- `knip` と `dependency-cruiser` が root から実行でき、不要依存と境界違反を検査できる。
-- `lefthook` の `pre-commit` で `pnpm depcruise` と `pnpm knip` が自動実行され、commit 前に repository quality gate を通せる。
+- 不要依存と境界違反 (循環、未宣言依存、app 間直接依存など) を root から検査できる。
+- commit 前に repository quality gate (依存検査・dead code 検出) が自動実行される。
 - CMS/API は初期スコープ外であり、必要時に ADR / spec で判断することが明記されている。
 - コピー元固有のコード検索やインデックス前提がドキュメントや AI workflow から取り除かれている。
 
@@ -134,25 +133,21 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 
 ### CMS / React アプリ要求
 
-- Phase 1 では `apps/cms` を実装せず、以下は Phase 2 以降の標準として扱う。
-- UI は `@kufu/ui` を経由する。
-- ルーティングは TanStack Router を標準とする。
-- データフェッチは TanStack Query を標準とし、axios などの追加は必要性を spec で確認する。
-- 状態管理は Zustand を必要箇所に限定して使い、URL で表現できる状態は router 側へ寄せる。
-- フォームは React Hook Form を標準とする。
-- React Compiler 対応を前提に、非対応ライブラリや実装は事前確認し、必要なら `'use no memo'` を使う。
+- Phase 1 では `apps/cms` を実装せず、以下は Phase 2 以降の要求として扱う。
+- UI は `@kufu/ui` を経由し、app 配下で UI を重複実装しない。
+- URL を状態管理の一部として扱い、ルーティング中心で設計する。
+- データフェッチ、フォーム、client state、追加ライブラリの採否は Design Doc / ADR で標準を決定する。
+- React Compiler 適用を前提とし、非対応ライブラリ・実装の扱いは Design Doc で運用する。
 
 ### Monorepo 要求
 
-- pnpm workspace と Turborepo で app / package のタスクを管理する。
-- 依存追加は `pnpm --filter` を使い、対象 package を明確にする。
+- monorepo task は workspace 全体で一貫した task runner から実行できる。
+- 依存追加は対象 package を明示する手順で行う。
 - app ごとの独自 UI 実装を避け、共通化すべきものは複数 consumer が揃った時点で `packages/ui` へ移す。
-- lint / format / tsconfig は `packages/config` から共有する。
-- Playwright は root 管理を正とし、`e2e/` と `playwright.config.ts` から実行する。
-- `knip` と `dependency-cruiser` は root script から実行する。
-- `dependency-cruiser` は app 間直接依存を禁止する境界検査に使う。
-- commit 前の自動検証は `lefthook` を正本とする。
-- `packages/config` は用途別 subpath export を持ち、少なくとも `tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`oxlint/base`、`vitest/base` を公開する。
+- lint / format / tsconfig などの開発設定は `packages/config` から共有する。
+- 公開前検証 (E2E) は root 管理を正とする。
+- 不要依存検出と app 間直接依存禁止を含む repository quality gate を持つ。
+- commit 前にこの quality gate が自動実行される。
 
 ## 前提・依存関係
 
@@ -163,6 +158,13 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - `packages/ui` は Phase 1 で skeleton まで作り、`apps/cms` の技術選定と機能実装は次フェーズへ送る。
 - CMS/API は初期スコープ外で、必要になった時点で Hono API、Inertia、React の採否を判断する。
 - 実体コードが未作成の場合でも、ドキュメントは構築予定の repo contract として扱う。
+
+## Open Questions
+
+- LP の主要 KPI (訪問数、問い合わせ転換率、Lighthouse スコア目標値) はいつ・誰が確定するか。
+- `apps/cms` の立ち上げ判断基準 (LP 投稿数、運用者人数、外部編集者の有無など) はどの指標で固定するか。
+- LP コンテンツ更新の責務分担と承認フローはどのタイミングで明文化するか。
+- Cloudflare Pages の preview / production に紐づく domain / branch / secret 運用ルールをどの粒度で repo に残すか (実装方針は Design Doc に委譲)。
 
 ## 関連ドキュメント
 
