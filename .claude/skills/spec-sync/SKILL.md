@@ -1,28 +1,28 @@
 ---
 name: spec-sync
 description: >-
-  Back-propagates spec decisions into PRD, Design Doc, or ADR when the spec
-  exceeds the current scope of those sources of truth. Use when "上位資料からの変更点"
-  contains 変更提案 rows, or when spec-draft / spec-resolve flags upstream
-  conflicts.
+  Back-propagates spec decisions into PRD, Design Doc, feature doc, context, or
+  ADR when the spec exceeds the current scope of those sources of truth. Use
+  when "上位資料からの変更点" contains 変更提案 rows, or when spec-draft / spec-resolve flags
+  upstream conflicts.
 ---
 
 # Spec Sync
 
-spec で確定した決定のうち、PRD / Design Doc / ADR の範囲を超えるものを **上位文書に書き戻す** ための skill。
+spec で確定した決定のうち、PRD / Design Doc / feature doc / context / ADR の範囲を超えるものを **上位文書に書き戻す** ための skill。
 spec が `## 上位資料からの変更点` テーブルに残した「変更提案」行を処理する。
 
 ## いつ使うか
 
 - spec の `## 上位資料からの変更点` に上位文書への変更提案が残っている
 - `spec-draft` / `spec-resolve` が「変更提案」を理由に停止した
-- 既存 spec の決定が PRD / Design Doc / ADR と矛盾している
+- 既存 spec の決定が PRD / Design Doc / feature doc / context / ADR と矛盾している
 
 ## 先に読むもの
 
 - `AGENTS.md` の `Spec Workflow Contract`
 - 対象 spec の `index.md`
-- 反映候補の上位文書 (PRD / Design Doc / 関連 ADR)
+- 反映候補の上位文書 (PRD / Design Doc / feature doc / context / 関連 ADR)
 
 ## 入力
 
@@ -40,18 +40,20 @@ spec-resolve が決めた決定の中で、上位文書を書き換えるべき�
 
 各変更提案に対し、以下のいずれかを **ユーザーに確認した上で** 選ぶ:
 
-| 反映先     | 採用条件                                                        |
-| ---------- | --------------------------------------------------------------- |
-| PRD        | プロダクト原則 / 成功条件 / スコープ / Persona / Outcome の変更 |
-| Design Doc | モジュール責務 / Phase 方針 / Toolchain / Infrastructure の変更 |
-| ADR (新規) | 技術選定 / 責務境界 / 不可逆な意思決定の記録                    |
-| spec のみ  | 上位文書側の変更不要 (spec で閉じる) — テーブルから除去         |
+| 反映先      | 採用条件                                                             |
+| ----------- | -------------------------------------------------------------------- |
+| PRD         | プロダクト原則 / 成功条件 / スコープ / Persona / Outcome の変更      |
+| Design Doc  | モジュール責務 / Phase 方針 / 全体像 (landscape) の変更              |
+| feature doc | 特定 feature の設計方針 / データ構造 / 主要ユースケースの変更        |
+| context     | architecture / toolchain / engineering 規約 / testing / infra の変更 |
+| ADR (新規)  | 技術選定 / 責務境界 / 不可逆な意思決定の記録                         |
+| spec のみ   | 上位文書側の変更不要 (spec で閉じる) — テーブルから除去              |
 
-> **重要**: ユーザーの承認なしに PRD / Design Doc を書き換えてはならない。
+> **重要**: ユーザーの承認なしに PRD / Design Doc / feature doc / context を書き換えてはならない。
 
 ### 3. 上位文書への差分適用
 
-- PRD / Design Doc は `Edit` で対象節のみ差し替える
+- PRD / Design Doc / feature doc / context は `Edit` で対象節のみ差し替える
 - ADR を新規作成する場合は `templates/adr/template.md` をコピーし、`<adr dir>/<NNNN>-<slug>.md` で作る
 - ADR の番号は `<adr dir>` の最大連番 + 1 を採番する
 - 影響範囲を上位文書側に必ず明記する
@@ -63,13 +65,13 @@ spec-resolve が決めた決定の中で、上位文書を書き換えるべき�
 
 ### 5. ユーザー報告
 
-- 反映ファイル一覧 (PRD / Design Doc / ADR)
+- 反映ファイル一覧 (PRD / Design Doc / feature doc / context / ADR)
 - spec 側の更新箇所
 - 次アクション提案 (`spec-track` で差分仕上げ、または phase を先に進める)
 
 ## 停止条件
 
-- 反映先 (PRD / Design Doc / ADR / spec のみ) の振り分けにユーザー承認が得られていない
+- 反映先 (PRD / Design Doc / feature doc / context / ADR / spec のみ) の振り分けにユーザー承認が得られていない
 - 変更提案の影響範囲が読めない (関連 app / package が不明)
 - 上位文書を書き換えるべきか、新規 ADR を起こすべきかの判断がつかない
 - 反映対象が `Spec Workflow Contract` の正本 path から逸脱している (path を勝手に増やさない)

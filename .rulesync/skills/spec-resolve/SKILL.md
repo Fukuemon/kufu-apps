@@ -29,7 +29,7 @@ spec (`specs/<...>/index.md`) の `## 設計時の論点` テーブルから論�
 
 ### 1. 上位文書整合の前提チェック
 
-論点が上位文書 (PRD / Design Doc / ADR) のスコープを超えるか確認する。
+論点が上位文書 (PRD / Design Doc / feature doc / context / ADR) のスコープを超えるか確認する。
 超える場合は **その論点だけ先に `spec-sync` を提案する**。
 spec 単独で上位文書を書き換えてはならない。
 
@@ -58,7 +58,7 @@ spec 単独で上位文書を書き換えてはならない。
 
 ### 5. 差分セクションに追記
 
-`## 上位資料からの変更点` のうち、決定に伴う変更を該当テーブル (PRD / Design Doc / ADR) に追記する。
+`## 上位資料からの変更点` のうち、決定に伴う変更を該当テーブル (PRD / Design Doc / feature doc / context / ADR) に追記する。
 `spec-track` での二重追記を避けるため、本 skill で追記したものは「source: spec-resolve」とコメントを残す。
 
 ### 6. 残り論点の報告

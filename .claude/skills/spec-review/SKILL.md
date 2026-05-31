@@ -34,7 +34,7 @@ cwc-long-running-agents の "Fresh-Context Evaluator" パターンに沿った s
 ### 1. レビュー材料の特定
 
 - spec path: `<spec dir>/index.md`
-- PRD path / Design Doc path / ADR dir: `Spec Workflow Contract` から取得
+- PRD path / Design Doc path / feature doc dir / context dir / ADR dir: `Spec Workflow Contract` から取得
 - review rubric path: `references/review-rubric.md`
 - (任意) `prompts/` を含めるかを判定
 
@@ -50,6 +50,8 @@ prompt:
   - spec: <spec path>
   - PRD: <PRD path>
   - Design Doc: <Design Doc path>
+  - feature doc: <feature doc dir / 関連 feature doc>
+  - context: <context dir / 関連 topic>
   - ADR dir: <ADR dir>
   - rubric: <rubric path>
   - (任意) prompts: <prompts dir>
