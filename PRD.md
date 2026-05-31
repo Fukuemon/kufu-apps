@@ -116,7 +116,7 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - `packages/ui` の skeleton が将来拡張の入口として配置され、Phase 2 の実装対象と区別されている。
 - `packages/config` の役割と export 対象が明確で、root / app / package の責務境界が文書化されている。
 - LP の主要ページと問い合わせ導線を検証する E2E 方針がある。
-- `packages/ui` と将来の `apps/cms` に対する Rolldown と React Compiler の適用方針が明文化されている。
+- 将来の React 化と build 最適化の適用方針が Design Doc / context / ADR で明文化されている。
 - 不要依存と境界違反 (循環、未宣言依存、app 間直接依存など) を root から検査できる。
 - commit 前に repository quality gate (依存検査・dead code 検出) が自動実行される。
 - CMS/API は初期スコープ外であり、必要時に ADR / spec で判断することが明記されている。
@@ -136,8 +136,8 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - Phase 1 では `apps/cms` を実装せず、以下は Phase 2 以降の要求として扱う。
 - UI は `@kufu/ui` を経由し、app 配下で UI を重複実装しない。
 - URL を状態管理の一部として扱い、ルーティング中心で設計する。
-- データフェッチ、フォーム、client state、追加ライブラリの採否は Design Doc / ADR で標準を決定する。
-- React Compiler 適用を前提とし、非対応ライブラリ・実装の扱いは Design Doc で運用する。
+- データフェッチ、フォーム、client state、追加ライブラリの採否は feature doc / ADR で標準を決定する。
+- React Compiler 適用を前提とし、非対応ライブラリ・実装の扱いは feature doc で運用する。
 
 ### Monorepo 要求
 
@@ -164,10 +164,12 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 - LP の主要 KPI (訪問数、問い合わせ転換率、Lighthouse スコア目標値) はいつ・誰が確定するか。
 - `apps/cms` の立ち上げ判断基準 (LP 投稿数、運用者人数、外部編集者の有無など) はどの指標で固定するか。
 - LP コンテンツ更新の責務分担と承認フローはどのタイミングで明文化するか。
-- Cloudflare Pages の preview / production に紐づく domain / branch / secret 運用ルールをどの粒度で repo に残すか (実装方針は Design Doc に委譲)。
+- Cloudflare Pages の preview / production に紐づく domain / branch / secret 運用ルールをどの粒度で repo に残すか (実装方針は context / Design Doc に委譲)。
 
 ## 関連ドキュメント
 
-- 全体設計: [design/DesignDoc.md](design/DesignDoc.md)
+- 全体設計 (landscape): [design/DesignDoc.md](design/DesignDoc.md)
+- feature 設計 (How): [design/features/](design/features/)
+- 技術規約 / 運用契約: [context/](context/)
 - spec 運用: [specs/README.md](specs/README.md)
 - ADR 運用: [adr/README.md](adr/README.md)
