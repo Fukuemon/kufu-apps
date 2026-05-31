@@ -7,7 +7,9 @@
 
 - spec の `## 上位文書整合` テーブルが埋まっているか
 - spec の決定が PRD (`PRD.md`) のスコープ / Non Goals / Persona / Outcome と矛盾していないか
-- spec の決定が Design Doc (`design/DesignDoc.md`) のモジュール責務 / Phase 方針 / Toolchain / Infrastructure と矛盾していないか
+- spec の決定が Design Doc (`design/DesignDoc.md`) のモジュール責務 / Phase 方針 / 全体像と矛盾していないか
+- spec の決定が feature doc (`design/features/<feature>.md`) の設計方針 / データ構造 / 主要ユースケースと矛盾していないか
+- spec の決定が context (`context/<topic>.md`) の architecture / toolchain / engineering 規約 / testing / infrastructure と矛盾していないか
 - 関連 ADR の決定を覆していないか / 覆す場合に新規 ADR の提案があるか
 
 → 矛盾を 1 件でも検出したら `NEEDS_WORK`、対応として `spec-sync` を提案する。
@@ -43,7 +45,7 @@
 - 実装対象
 - 機能仕様 (Performance / Routing / Content / UI Reuse / React Compiler / Testing)
 - フロー / シーケンス
-- 上位資料からの変更点 (PRD / Design Doc / ADR)
+- 上位資料からの変更点 (PRD / Design Doc / feature doc / context / ADR)
 - レビュー
 - 備考
 

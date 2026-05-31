@@ -2,14 +2,14 @@
 name: spec-draft
 description: >-
   Scaffolds a spec directory and index.md from the spec template after
-  reconciling PRD and Design Doc. Use when starting a new feature spec or when
-  the user asks for "spec 雛形" / "spec-draft" / "下書き".
+  reconciling PRD, Design Doc, feature doc, and context. Use when starting a new
+  feature spec or when the user asks for "spec 雛形" / "spec-draft" / "下書き".
 ---
 
 # Spec Draft
 
 issue から spec dir と `index.md` を template ベースで生成する。
-PRD / Design Doc / ADR と整合をとった上でスキャフォルディングし、矛盾を検知したら `spec-sync` を提案する。
+PRD / Design Doc / feature doc / context / ADR と整合をとった上でスキャフォルディングし、矛盾を検知したら `spec-sync` を提案する。
 
 ## いつ使うか
 
@@ -30,19 +30,20 @@ PRD / Design Doc / ADR と整合をとった上でスキャフォルディング
 ## 実行フロー
 
 1. **issue 把握**: `spec-issue-read` を呼んで対象 issue 内容を取得 (既に把握済みならスキップ可)
-2. **上位文書読み込み**: `Spec Workflow Contract` の PRD path / Design Doc path / ADR dir を読み、対象機能に関係する節だけを抽出する
+2. **上位文書読み込み**: `Spec Workflow Contract` の PRD / Design Doc / feature doc / context / ADR path を読み、対象機能に関係する節だけを抽出する
 3. **spec dir 決定**:
    - 形式: `<spec dir base>/<issue-id>-<slug>/`
    - 既存ディレクトリがあれば上書きせず、差分提案のみ
 4. **整合チェック** (`references/reconcile-upstream.md`):
    - PRD のスコープ / Non Goals と矛盾していないか
-   - Design Doc のモジュール責務 / Phase / 禁止事項と矛盾していないか
+   - Design Doc のモジュール責務 / Phase / 全体像と矛盾していないか
+   - feature doc の設計方針 / context の architecture・規約・運用契約と矛盾していないか
    - 関連 ADR があれば該当 ID を控える
    - 矛盾を検出した場合は **`spec-sync` を提案して停止**
 5. **`index.md` 生成**: `templates/specs/template.md` (minimal core) をコピーし、以下を埋める:
    - メタ情報 (Issue 番号 / Branch / Owner / Status)
    - 設計フェーズ状況 (intake = 完了, scaffold = 進行中)
-   - 上位文書整合 (PRD / Design Doc / ADR の節と整合方針)
+   - 上位文書整合 (PRD / Design Doc / feature doc / context / ADR の節と整合方針)
    - 関連資料 / 背景 / スコープ / 要件の解釈
    - 実装対象 (target 一覧から該当を ◯)
    - 機能仕様の各サブセクション (該当しない場合は空のまま残す)
@@ -58,7 +59,7 @@ PRD / Design Doc / ADR と整合をとった上でスキャフォルディング
 
 ## 停止条件
 
-- 上位文書 (PRD / Design Doc / 既存 ADR) と矛盾しており、解決方針が決まらない
+- 上位文書 (PRD / Design Doc / feature doc / context / 既存 ADR) と矛盾しており、解決方針が決まらない
 - 対象 issue または spec dir が決まらない
 - 実装対象 app / package が `Spec Workflow Contract` の target 一覧から特定できない
 - `templates/specs/template.md` が見つからない

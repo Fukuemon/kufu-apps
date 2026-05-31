@@ -27,15 +27,17 @@
 
 ## 上位文書整合
 
-正本 ([PRD](../../PRD.md) / [Design Doc](../../design/DesignDoc.md) / ADR) のどの節と整合させたかを記録する。
+正本 ([PRD](../../PRD.md) / [Design Doc](../../design/DesignDoc.md) / [feature doc](../../design/features/) / [context](../../context/) / ADR) のどの節と整合させたかを記録する。
 
 | 上位文書      | 節 / 該当箇所 | 整合方針 (継承 / 補足 / 変更提案) |
 | ------------- | ------------- | --------------------------------- |
 | PRD           |               | 継承                              |
 | Design Doc    |               | 継承                              |
+| feature doc   |               |                                   |
+| context       |               |                                   |
 | ADR (なら ID) |               |                                   |
 
-> 矛盾を検出した場合は `spec-sync` で PRD / Design Doc / ADR への back-propagation を提案する。
+> 矛盾を検出した場合は `spec-sync` で PRD / Design Doc / feature doc / context / ADR への back-propagation を提案する。
 
 ## 関連資料
 
@@ -132,7 +134,7 @@ sequenceDiagram
 
 ## 上位資料からの変更点
 
-本 spec で PRD / Design Doc / 既存 ADR から変更・追加した内容。
+本 spec で PRD / Design Doc / feature doc / context / 既存 ADR から変更・追加した内容。
 反映先別に分けて記録する。`spec-track` / `spec-sync` で更新する。
 
 ### PRD への影響
@@ -146,6 +148,18 @@ sequenceDiagram
 | 対象節 | 変更内容 | 理由 |
 | ------ | -------- | ---- |
 |        |          |      |
+
+### feature doc への影響
+
+| 対象 doc / 節 | 変更内容 | 理由 |
+| ------------- | -------- | ---- |
+|               |          |      |
+
+### context への影響
+
+| 対象 doc / 節 | 変更内容 | 理由 |
+| ------------- | -------- | ---- |
+|               |          |      |
 
 ### ADR の新規 / 更新
 

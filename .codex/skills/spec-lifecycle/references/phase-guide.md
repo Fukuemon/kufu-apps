@@ -5,16 +5,16 @@ project 共通の SDD 流れと、Kufu 固有の論点を分けて記述する�
 
 ## Phase 一覧 (project 共通)
 
-| Phase            | 作業                                                    | 完了条件                                 | 次アクション    |
-| ---------------- | ------------------------------------------------------- | ---------------------------------------- | --------------- |
-| 1. intake        | issue / requirements doc を読み、対象機能を確認         | 要求の起点が明確                         | `spec-draft`    |
-| 2. scaffold      | `templates/specs/template.md` を埋める / 上位文書整合   | 背景 / スコープ / 論点 / 実装対象がある  | draft review    |
-| 3. clarify       | `spec-resolve` で未確定論点を 1 件ずつ確定              | 未解決論点ゼロ                           | diagram         |
-| 4. diagram       | `spec-diagrams` で flow / sequence を描く               | 図と機能仕様が整合する                   | track           |
-| 5. track         | `spec-track` で `## 上位資料からの変更点` を最新化      | 差分が PRD / Design Doc / ADR 別に整理済 | sync (任意)     |
-| 6. upstream sync | `spec-sync` で PRD / Design Doc / ADR に back-propagate | 変更提案行がゼロ                         | tasks           |
-| 7. tasks         | `spec-prompts` で実装 prompt を生成                     | 各 prompt が自己完結 / phase 依存表      | review          |
-| 8. review        | `spec-review` で fresh-context evaluator を通す         | PASS                                     | 実装 or handoff |
+| Phase            | 作業                                                                            | 完了条件                                                         | 次アクション    |
+| ---------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------- | --------------- |
+| 1. intake        | issue / requirements doc を読み、対象機能を確認                                 | 要求の起点が明確                                                 | `spec-draft`    |
+| 2. scaffold      | `templates/specs/template.md` を埋める / 上位文書整合                           | 背景 / スコープ / 論点 / 実装対象がある                          | draft review    |
+| 3. clarify       | `spec-resolve` で未確定論点を 1 件ずつ確定                                      | 未解決論点ゼロ                                                   | diagram         |
+| 4. diagram       | `spec-diagrams` で flow / sequence を描く                                       | 図と機能仕様が整合する                                           | track           |
+| 5. track         | `spec-track` で `## 上位資料からの変更点` を最新化                              | 差分が PRD / Design Doc / feature doc / context / ADR 別に整理済 | sync (任意)     |
+| 6. upstream sync | `spec-sync` で PRD / Design Doc / feature doc / context / ADR に back-propagate | 変更提案行がゼロ                                                 | tasks           |
+| 7. tasks         | `spec-prompts` で実装 prompt を生成                                             | 各 prompt が自己完結 / phase 依存表                              | review          |
+| 8. review        | `spec-review` で fresh-context evaluator を通す                                 | PASS                                                             | 実装 or handoff |
 
 ## Phase Gate (review が必須なタイミング)
 
@@ -44,8 +44,8 @@ project 共通の SDD 流れと、Kufu 固有の論点を分けて記述する�
 ## Phase を止めるべき条件 (Kufu 固有)
 
 - 実装対象 app / package が特定できない (target 一覧から外れる)
-- 変更が `PRD.md` で扱うべきか `design/DesignDoc.md` で扱うべきか逆転している
+- 変更が `PRD.md` (Why/What) か `design/DesignDoc.md` / feature doc / context (How) のどちらで扱うべきか逆転している
 - spec 自体が app / package をまたいだ要求追跡に使えない
 - Cloudflare Pages / Workers 境界が不明 (静的配信 vs Workers 中継)
-- secret / runtime boundary が `Design Doc → Secrets / Runtime Boundary` と矛盾
+- secret / runtime boundary が `context/infrastructure.md` / `context/architecture.md` と矛盾
 - LP performance に直接影響する判断 (例: 不要 React 化) を独断で進めようとしている

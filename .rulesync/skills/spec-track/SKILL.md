@@ -1,6 +1,6 @@
 ---
 name: spec-track
-description: Updates the spec's "上位資料からの変更点" section with deltas the spec introduces against PRD, Design Doc, and ADR. Use after spec-resolve, spec-diagrams, or when manually adding design changes that need recording.
+description: Updates the spec's "上位資料からの変更点" section with deltas the spec introduces against PRD, Design Doc, feature doc, context, and ADR. Use after spec-resolve, spec-diagrams, or when manually adding design changes that need recording.
 targets:
   - "*"
 ---
@@ -8,7 +8,7 @@ targets:
 # Spec Track
 
 spec (`specs/<...>/index.md`) の `## 上位資料からの変更点` を最新にする。
-PRD / Design Doc / ADR 別の 3 つのテーブルに差分を分類して追記する。
+PRD / Design Doc / feature doc / context / ADR 別のテーブルに差分を分類して追記する。
 
 ## いつ使うか
 
@@ -31,7 +31,7 @@ PRD / Design Doc / ADR 別の 3 つのテーブルに差分を分類して追記
 
 ### 1. 現状把握
 
-`## 上位資料からの変更点` 配下の 3 テーブル (PRD / Design Doc / ADR) を読み、既に記録済の行を把握する。
+`## 上位資料からの変更点` 配下のテーブル (PRD / Design Doc / feature doc / context / ADR) を読み、既に記録済の行を把握する。
 
 ### 2. 直近の変更を特定
 
@@ -50,11 +50,13 @@ PRD / Design Doc / ADR 別の 3 つのテーブルに差分を分類して追記
 
 ### 4. テーブル別追記
 
-| 反映先     | 例                                 |
-| ---------- | ---------------------------------- |
-| PRD        | スコープ / 成功条件 / Persona 変更 |
-| Design Doc | モジュール責務 / Phase 方針 変更   |
-| ADR        | 新規 ADR が必要な技術判断          |
+| 反映先      | 例                                          |
+| ----------- | ------------------------------------------- |
+| PRD         | スコープ / 成功条件 / Persona 変更          |
+| Design Doc  | モジュール責務 / Phase 方針 / 全体像 変更   |
+| feature doc | feature の設計方針 / データ構造 / UC 変更   |
+| context     | architecture / toolchain / 規約 / 運用 変更 |
+| ADR         | 新規 ADR が必要な技術判断                   |
 
 各行に「対象 / 変更内容 / 理由」を埋める。
 
