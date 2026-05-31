@@ -5,11 +5,13 @@
 ## Documents (正本)
 
 - プロダクト要求 (Why / What): [PRD.md](PRD.md)
-- アーキテクチャ / 標準ライブラリ / Toolchain (How): [design/DesignDoc.md](design/DesignDoc.md)
+- 全体像 / モジュール責務 (How: landscape): [design/DesignDoc.md](design/DesignDoc.md)
+- feature 単位の設計 (How: feature): [design/features/](design/features/)
+- 技術規約 / codebase architecture / 運用契約 (How: 横断): [context/](context/)
 - 個別の意思決定: [adr/](adr/)
 - 機能単位の作業文書: [specs/](specs/)
 
-迷ったら **PRD → Design Doc → ADR → spec** の順に読む。AGENTS.md と内容が衝突したら **Design Doc が正**。
+迷ったら **PRD → Design Doc → feature doc / context → ADR → spec** の順に読む。AGENTS.md と内容が衝突したら **Design Doc が正**。
 
 ## Repository Reference Rules
 
@@ -32,6 +34,10 @@ $(ghq root)/github.com/Fukuemon/
 ├── packages/
 │   ├── ui/             # 共通 UI (shadcn/ui ベース、skeleton)
 │   └── config/         # 共通設定 (tsconfig / lint 等)
+├── design/
+│   ├── DesignDoc.md    # 全体像 (landscape)
+│   └── features/       # feature 単位の設計 (How)
+├── context/            # 技術規約 / codebase architecture / 運用契約
 ├── e2e/                # Playwright (root 管理)
 └── playwright.config.ts
 ```
@@ -109,7 +115,9 @@ Spec Driven Development (SDD) skill 群 (`.rulesync/skills/spec-*/SKILL.md`) が
 ### 正本ドキュメント (Single Source of Truth)
 
 - PRD: `PRD.md`
-- Design Doc: `design/DesignDoc.md`
+- Design Doc (landscape): `design/DesignDoc.md`
+- feature doc: `design/features/<feature>.md`
+- context library: `context/<topic>.md`
 - ADR: `adr/`
 - spec dir: `specs/<issue-id>-<slug>/`
 - spec body: `specs/<issue-id>-<slug>/index.md`
@@ -121,6 +129,7 @@ Spec Driven Development (SDD) skill 群 (`.rulesync/skills/spec-*/SKILL.md`) が
 
 - spec core: `templates/specs/template.md`
 - spec appendices: `templates/specs/appendices/<topic>.md`
+- feature doc: `templates/features/template.md`
 - requirements: `templates/requirements/template.md`
 - adr: `templates/adr/template.md`
 
@@ -138,7 +147,7 @@ Spec Driven Development (SDD) skill 群 (`.rulesync/skills/spec-*/SKILL.md`) が
 ### Phase Gate ルール
 
 - 各 phase 完了時に `spec-review` (fresh-context evaluator) を通す
-- PRD / Design Doc / ADR と矛盾を検出したら `spec-sync` を先に提案し、未解決のまま下流 phase に進まない
+- PRD / Design Doc / feature doc / context / ADR と矛盾を検出したら `spec-sync` を先に提案し、未解決のまま下流 phase に進まない
 - spec 内「設計フェーズ状況」表が状態 (`未着手 / 進行中 / 完了 / レビュー済 / 保留`) を管理する
 - 確定済みの判断 (解決済みの論点) を skill から上書きしない
 
@@ -151,17 +160,17 @@ Spec Driven Development (SDD) skill 群 (`.rulesync/skills/spec-*/SKILL.md`) が
 
 ### SDD Skill 一覧
 
-| Skill              | 役割                                                 | 対応 phase         |
-| ------------------ | ---------------------------------------------------- | ------------------ |
-| `spec-issue-read`  | Issue 取得 + 要約                                    | intake             |
-| `spec-requirement` | 要求の対話整理 → requirements doc / Issue 起票       | intake → specify   |
-| `spec-draft`       | spec dir + `index.md` を template から生成           | specify (scaffold) |
-| `spec-resolve`     | 論点を 1 件ずつ解決し spec 内全箇所を同期更新        | clarify            |
-| `spec-diagrams`    | spec の flow / sequence を Mermaid 図に落とす        | design             |
-| `spec-track`       | spec の「上位資料からの変更点」を更新                | design             |
-| `spec-sync`        | spec 決定を PRD / Design Doc / ADR へ back-propagate | upstream sync      |
-| `spec-prompts`     | spec から自己完結な実装 prompt を生成                | tasks → implement  |
-| `spec-review`      | fresh-context evaluator が PASS / NEEDS_WORK を返す  | review gate        |
-| `spec-lifecycle`   | 上記を phase 順に orchestration する半自律 runner    | orchestrator       |
+| Skill              | 役割                                                                         | 対応 phase         |
+| ------------------ | ---------------------------------------------------------------------------- | ------------------ |
+| `spec-issue-read`  | Issue 取得 + 要約                                                            | intake             |
+| `spec-requirement` | 要求の対話整理 → requirements doc / Issue 起票                               | intake → specify   |
+| `spec-draft`       | spec dir + `index.md` を template から生成                                   | specify (scaffold) |
+| `spec-resolve`     | 論点を 1 件ずつ解決し spec 内全箇所を同期更新                                | clarify            |
+| `spec-diagrams`    | spec の flow / sequence を Mermaid 図に落とす                                | design             |
+| `spec-track`       | spec の「上位資料からの変更点」を更新                                        | design             |
+| `spec-sync`        | spec 決定を PRD / Design Doc / feature doc / context / ADR へ back-propagate | upstream sync      |
+| `spec-prompts`     | spec から自己完結な実装 prompt を生成                                        | tasks → implement  |
+| `spec-review`      | fresh-context evaluator が PASS / NEEDS_WORK を返す                          | review gate        |
+| `spec-lifecycle`   | 上記を phase 順に orchestration する半自律 runner                            | orchestrator       |
 
 orthogonal な Git / GitHub 操作は `workflow-git` を使う。
