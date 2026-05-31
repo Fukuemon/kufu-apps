@@ -553,4 +553,4 @@ pnpm depcruise
 ## 備考
 
 - 初回 draft では、後続実装に必要な public contract と受け入れ条件の確定を優先する
-- `workflow-spec-lifecycle` に沿って、次回は上位文書突合、未確定事項の解消、interface / testing のレビューを進める
+- `spec-lifecycle` に沿って、次回は上位文書突合、未確定事項の解消、interface / testing のレビューを進める

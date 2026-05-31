@@ -38,9 +38,9 @@
 
 1. `PRD.md` で What / Why / Who / 成功条件を確認する。
 2. `design/DesignDoc.md` で app / package の責務、LP-first 方針、React 標準、CMS/API の扱いを確認する。
-3. `workflow-spec-draft` を使って 1 issue ごとに 1 spec を起こし、対象機能の論点を `index.md` に閉じ込める。
-4. `workflow-spec-lifecycle` を使って Performance / Routing / Content / UI reuse / React Compiler / Testing 観点を埋める。
-5. 実装可能になったら `workflow-spec-implementation-prompts` を使って `prompts/` 配下へ `lp-site` / `cms` / `ui` / `config` / `e2e` 単位で分割する。
+3. `spec-draft` を使って 1 issue ごとに 1 spec を起こし、対象機能の論点を `index.md` に閉じ込める。
+4. `spec-lifecycle` を使って Performance / Routing / Content / UI reuse / React Compiler / Testing 観点を埋める。
+5. 実装可能になったら `spec-prompts` を使って `prompts/` 配下へ `lp-site` / `cms` / `ui` / `config` / `e2e` 単位で分割する。
 
 ## Kufu Monorepo での spec 分割指針
 
@@ -60,6 +60,6 @@ Phase 1 では、次の粒度で spec を切るのを基本とする。
 
 ## 関連 Skills
 
-- `workflow-spec-draft`: spec の初回作成
-- `workflow-spec-lifecycle`: spec の phase 管理と review gate
-- `workflow-spec-implementation-prompts`: prompt 分割と自己完結化
+- `spec-draft`: spec の初回作成
+- `spec-lifecycle`: spec の phase 管理と review gate
+- `spec-prompts`: prompt 分割と自己完結化
