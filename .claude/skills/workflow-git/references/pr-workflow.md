@@ -18,7 +18,7 @@
 
 ## Kufu Monorepo の PR で意識すること
 
-- PRD / Design Doc / spec / ADR のどこを更新したかを明示する
+- PRD / Design Doc / feature doc / context / spec / ADR のどこを更新したかを明示する
 - app / package 側の実装前提が変わる場合は Notes で伝える
 
 ## 停止条件

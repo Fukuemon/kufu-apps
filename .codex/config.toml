@@ -3,12 +3,12 @@ model_reasoning_effort = "medium"
 personality = "pragmatic"
 sandbox_mode = "workspace-write"
 web_search = "live"
-project_doc_fallback_filenames = [ "CLAUDE.md" ]
+project_doc_fallback_filenames = ["CLAUDE.md"]
 default_permissions = "rulesync"
 
 [features]
 multi_agent = true
-codex_hooks = true
+hooks = true
 
 [sandbox_workspace_write]
 network_access = true
@@ -21,10 +21,9 @@ url = "https://mcp.context7.com/mcp"
 
 [mcp_servers.chrome-devtools]
 command = "npx"
-args = [ "chrome-devtools-mcp@latest" ]
+args = ["chrome-devtools-mcp@latest"]
 
 [mcp_servers.deepwiki]
 url = "https://mcp.deepwiki.com/mcp"
-
 
 [permissions.rulesync]

@@ -1,0 +1,27 @@
+{
+  "name": "@kufu/corporate-site",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev --host 127.0.0.1 --port 4321",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview --host 127.0.0.1 --port 4321",
+    "lint": "oxlint --type-aware --config .oxlintrc.json astro.config.mjs vitest.config.ts",
+    "test": "vitest run --config vitest.config.ts --passWithNoTests",
+    "typecheck": "ASTRO_TELEMETRY_DISABLED=1 astro check",
+    "e2e:serve": "pnpm build && pnpm preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@kufu/config": "workspace:*",
+    "@kufu/ui": "workspace:*",
+    "astro": "^6.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

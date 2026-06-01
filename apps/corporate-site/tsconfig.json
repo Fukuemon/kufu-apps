@@ -1,0 +1,5 @@
+{
+  "extends": "@kufu/config/tsconfig/astro",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
+}

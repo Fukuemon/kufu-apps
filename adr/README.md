@@ -12,7 +12,7 @@
 
 ## ADR にする判断
 
-- LP の技術選定や rendering 方針を固定した。
+- コーポレートサイトの技術選定や rendering 方針を固定した。
 - app / package の責務境界を固定した。
 - UI 共有方針や shadcn/ui の扱いを固定した。
 - React Compiler 対応方針を固定した。
