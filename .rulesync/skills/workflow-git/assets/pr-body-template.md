@@ -1,18 +1,18 @@
 ## Summary
 
-- 
+-
 
 ## Background
 
-- 
+-
 
 ## Changes
 
-- 
+-
 
 ## Testing
 
-- 
+-
 
 ## Related Issues
 

@@ -1,0 +1,30 @@
+{
+  "name": "kufu-apps",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "dev:corporate": "turbo run dev --filter=@kufu/corporate-site",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "oxfmt . --write",
+    "format:check": "oxfmt . --check",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "e2e": "playwright test",
+    "knip": "knip",
+    "depcruise": "dependency-cruiser ."
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.2",
+    "dependency-cruiser": "^17.3.1",
+    "knip": "^5.67.1",
+    "oxfmt": "^0.48.0",
+    "oxlint": "^1.63.0",
+    "oxlint-tsgolint": "^0.22.1",
+    "turbo": "^2.9.10",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.5"
+  },
+  "packageManager": "pnpm@10.27.0"
+}

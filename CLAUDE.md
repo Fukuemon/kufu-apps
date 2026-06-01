@@ -1,14 +1,23 @@
 # Kufu Platform Agent Operating Contract
 
+エージェントが Kufu Monorepo で作業するときの **最短の操作ガイド**。詳細はそれぞれの正本へリンクする。本 contract は `.rulesync/rules/CLAUDE.md` が正本で、`AGENTS.md` / `CLAUDE.md` / `.codex/` / `.claude/` / `.cursor/` は生成物 (編集は `rulesync-sync` skill 経由)。
+
+## Documents (正本)
+
+- プロダクト要求 (Why / What): [PRD.md](PRD.md)
+- 全体像 / モジュール責務 (How: landscape): [design/DesignDoc.md](design/DesignDoc.md)
+- feature 単位の設計 (How: feature): [design/features/](design/features/)
+- 技術規約 / codebase architecture / 運用契約 (How: 横断): [context/](context/)
+- 個別の意思決定: [adr/](adr/)
+- 機能単位の作業文書: [specs/](specs/)
+
+迷ったら **PRD → Design Doc → feature doc / context → ADR → spec** の順に読む。AGENTS.md と内容が衝突したら **Design Doc が正**。
+
 ## Repository Reference Rules
 
-- 本プロジェクトは `ghq` を利用してリポジトリを管理する
-- リポジトリの path を記載する場合は `$(ghq root)/<repository-path>/...` の形式を優先する
-- Kufu 関連のアプリケーション repo は `$(ghq root)/github.com/Fukuemon/kufu-apps` に配置する
-- Kufu 関連の infra repo は `$(ghq root)/github.com/Fukuemon/kufu-infra` に配置する
-- 兄弟リポジトリの path 定義は本ルールを正本とし、spec / ADR / skill では必要箇所のみ参照する
-
-## Repository Map
+- 本プロジェクトは `ghq` 管理。path 記載は `$(ghq root)/<repository-path>/...` を優先する
+- app repo: `$(ghq root)/github.com/Fukuemon/kufu-apps`
+- infra repo: `$(ghq root)/github.com/Fukuemon/kufu-infra` (Terraform は別 repo 管理。[ADR-0001](adr/0001-terraform-infra-repository-boundary.md))
 
 ```sh
 $(ghq root)/github.com/Fukuemon/
@@ -16,318 +25,152 @@ $(ghq root)/github.com/Fukuemon/
 └── kufu-infra/
 ```
 
-## Repository Overview
+## Repository Map (簡易)
 
-本リポジトリは、Kufuのプロダクト群（LP・業務効率化ツール）を管理する pnpm monorepo である。
-
-- LP（マーケティングサイト）
-- 業務ツール（Reactベース）
-- 共通UI・設定・テスト基盤
-
-を単一リポジトリで管理する。
-
-### Repository Structure
-
-```bash
+```text
 <repo-root>/
 ├── apps/
-│   ├── base/        # React + Vite 業務アプリ
-│   └── lp-site/     # Astro LP
+│   └── corporate-site/ # Astro corporate site (Phase 1 の主対象)
 ├── packages/
-│   ├── ui/          # 共通UI（shadcn/uiベース）
-│   └── config/      # 共通設定（lint / tsconfig 等）
-├── e2e/             # Playwright E2Eテスト
-├── package.json
-├── pnpm-workspace.yaml
+│   ├── ui/             # 共通 UI (shadcn/ui ベース、skeleton)
+│   └── config/         # 共通設定 (tsconfig / lint 等)
+├── design/
+│   ├── DesignDoc.md    # 全体像 (landscape)
+│   └── features/       # feature 単位の設計 (How)
+├── context/            # 技術規約 / codebase architecture / 運用契約
+├── e2e/                # Playwright (root 管理)
 └── playwright.config.ts
 ```
 
-### Module Responsibilities
+詳細責務 / Phase 2 以降の予定は [Design Doc](design/DesignDoc.md) のモジュール責務テーブル。
 
-| モジュール | 用途                             | 技術                      |
-| ---------- | -------------------------------- | ------------------------- |
-| base       | 業務効率化ツール（メインアプリ） | React + Vite + TypeScript |
-| lp-site    | LP・マーケティングサイト         | Astro                     |
-| ui         | 共通UIコンポーネント             | React + shadcn/ui         |
-| config     | 共通設定                         | TypeScript / lint config  |
-| e2e        | E2Eテスト                        | Playwright                |
+## Quick Commands
 
-## Architecture Policy
+| やりたいこと              | コマンド                                     |
+| ------------------------- | -------------------------------------------- |
+| 開発起動 (全 app)         | `pnpm dev`                                   |
+| コーポレートサイトのみ    | `pnpm dev:corporate`                         |
+| ビルド                    | `pnpm build`                                 |
+| Lint / typecheck          | `pnpm lint` / `pnpm typecheck`               |
+| Format (確認)             | `pnpm format:check`                          |
+| Unit test                 | `pnpm test`                                  |
+| E2E (既定 corporate-site) | `pnpm e2e`                                   |
+| 健全性検査                | `pnpm knip` / `pnpm depcruise`               |
+| 依存追加                  | `pnpm --filter @kufu/<module> add <package>` |
 
-- Monorepo は pnpm workspace で構成する
-- Package by Feature・colocation を基本とし、Feature 単位で責務を分離する
-- フロントエンド主導で設計し、Backend は必要になった時点で分離する
-- React Compiler を利用する
-- React Compiler に対応していないライブラリを利用する場合は必ず調査し、必要なら `'use no memo'` ディレクティブを追加する
-  - 参考: https://kakehashi-dev.hatenablog.com/entry/2026/03/24/090000
-- 型安全を重視し、TypeScript First で実装する
-- URL を状態管理の一部として扱い、Router 中心で設計する
-- AI フレンドリーな構造を保つため、ドキュメント、命名、責務分離、明文化、ガードレールを優先する
+スコープ判断・E2E env contract・selector の使い分けは `dev-commands` skill。
 
-## Frontend Architecture Rules
+## Skills (workflow 入口)
 
-### React（base）
+| Skill           | 用途                                                         |
+| --------------- | ------------------------------------------------------------ |
+| `dev-commands`  | コマンド / `--filter` / E2E env を解決                       |
+| `rulesync-sync` | AI 設定 (`.rulesync/` → 各 provider) の編集と生成            |
+| `workflow-git`  | branch / commit / issue / PR の Git 運用                     |
+| `spec-*`        | Spec Driven Development 一式 (下記 `Spec Workflow Contract`) |
 
-- UIライブラリは React を標準とする
-- UIは @kufu/ui を必ず経由する
-- 直接shadcn/uiを各アプリで重複定義しない
-- state管理は局所化（過度なグローバル状態を避ける）
-- ルーティングは TanStack Router を標準とする
-- データフェッチは TanStack Query を標準とする
-- axios 等は標準では利用しない
-- フォーム管理は React Hook Form を標準とする
-- client state が必要な場合は Zustand を局所的に使う
-- URLで表現できる状態は Router 側へ寄せる
-- React Compiler を利用する前提で実装する
-- React Compiler 非対応ライブラリや実装パターンを使う場合は一次情報を確認し、必要なら `'use no memo'` を追加する
-
-### Astro（lp-site）
-
-- LP フレームワークは Astro を標準とする
-- 原則 .astro コンポーネントを使用する
-- Reactコンポーネントは 必要な箇所のみ island として利用
-
-例：
-
-```astro
-<Button client:load />
-```
-
-- 不要なクライアントJSを増やさない
-
-## UI Design System Rules
-
-### 基本方針
-
-- shadcn/ui をベースにする
-- packages/ui に集約する
-- 各アプリでの直接利用は禁止
-
-### ディレクトリ構造
-
-```sh
-packages/ui/
-├── components/
-│   ├── button.tsx
-│   ├── dialog.tsx
-│   └── form.tsx
-├── lib/
-│   └── utils.ts
-```
-
-### 禁止事項
-
-- apps配下で shadcn/ui を直接 init すること
-- UIの重複実装
-- デザインの分岐（統一感を壊す変更）
-
-## Toolchain Rules
-
-### Package Manager
-
-- pnpm workspace を利用する
-- 依存追加は必ず --filter を使う
-
-例：
-
-```sh
-pnpm --filter @kufu/base add <package>
-```
-
-### Build Tools
-
-- React: Vite
-- LP: Astro
-- Bundler: Rolldown
-- Task runner: Turborepo
-
-### Lint / Format
-
-- lint: oxc（oxlint）
-- format: oxc（oxfmt）
-- typecheck: TypeScript
-
-```sh
-pnpm lint
-pnpm format
-```
-
-### Test
-
-- unit: Vitest
-- UI: Storybook
-- e2e: Playwright
-
-### Storybook
-
-- UIコンポーネントは Storybook で管理
-- packages/ui にのみ配置
-
-### Analysis / Maintenance
-
-- dead code detection: knip
-- dependency analysis: dependency-cruiser
-
-### Library Development
-
-- package build: tsdown
-
-### Development Workflow
-
-#### 起動
-
-```bash
-pnpm dev
-```
-
-##### 個別
-
-```bash
-pnpm dev:base
-pnpm dev:lp
-```
-
-#### ビルド
-
-```bash
-pnpm build
-```
-
-##### テスト
-
-```bash
-pnpm test
-pnpm e2e
-```
-
-## Infrastructure Rules
-
-- Phase 1 の公開基盤は Cloudflare を標準とする
-- `apps/lp-site` は Cloudflare Pages への deploy を第一候補とし、Astro の静的生成を前提に設計する
-- LP は build artifact 配信を前提とし、Node.js 常駐サーバを初期前提にしない
-- 将来 `apps/base` や追加 app を公開する場合も、まずは Cloudflare Pages または Cloudflare Workers で閉じる構成を優先する
-- API や BFF が必要になった場合だけ Cloudflare Workers を検討し、専用サーバや VM を安易に前提化しない
-- 画像、フォント、動画などの公開 asset は Cloudflare CDN 配信を前提に最適化する
-- DNS、TLS、キャッシュ、圧縮は Cloudflare の標準機能を優先し、app 側で重複実装しない
-
-### Environment Strategy
-
-- local では Cloudflare 依存を前提にせず、`pnpm dev` / `pnpm dev:lp` / `pnpm dev:base` で完結する構成を優先する
-- preview は Cloudflare Pages preview deployment を標準とし、PR / branch ごとの実ページ確認に使う
-- production は Cloudflare Pages production deployment を正本とする
-- preview URL を使った導線確認を、LP 変更時の標準レビュー手順に含める
-
-### Secrets / Runtime Boundary
-
-- secret、token、API key を client bundle に含めない
-- 環境変数は build-time に閉じるものと runtime で扱うものを区別して設計する
-- Cloudflare の secret 管理に置くべき値は repo に保存しない
-- フォーム送信や外部 API 連携で秘匿情報が絡む場合は、ブラウザから直接第三者 API を叩く構成を標準にしない
-- bot 対策や abuse 対策が必要な場合は Cloudflare Turnstile など edge 側サービスを候補に含める
-
-## AI Configuration Workflow
-
-- AI 関連の設定を更新する際は、必ず `.rulesync/` 配下を正本として更新する
-- `AGENTS.md`、`CLAUDE.md`、`.codex/`、`.claude/`、`.cursor/` を直接の正本として編集しない
-- `.rulesync/` 更新後は次のコマンドで各プロバイダー向け設定へ同期する
-
-```sh
-npx rulesync@latest generate
-```
-
-- 生成後は `git diff` で `.rulesync/` と生成先の差分が意図どおりであることを確認する
-- `npx rulesync@latest generate` が失敗した場合は、生成先を手作業で合わせず、失敗理由を解消して再実行する
-
-## Git Workflow Guardrails
-
-- main は保護ブランチ
-- 作業は必ず feature ブランチで行う
-
-```bash
-feature/<issue-number>
-```
-
-例：
-
-feature/1
-feature/2
+skill は `.rulesync/skills/<name>/SKILL.md` が正本。直接呼び出すか slash command で起動する。
 
 ## Naming Conventions
 
-### パッケージ名
+- パッケージ名: `@kufu/<module>` (例: `@kufu/corporate-site`, `@kufu/ui`)
+- コンポーネント: PascalCase (例: `Button.tsx`, `UserCard.tsx`)
+- ブランチ: `feature/<issue-number>` (例: `feature/3`)
 
-```bash
-@kufu/<module>
-```
+## Decision Priority
 
-例：
+迷ったら次の優先度で判断する:
 
-```bash
-- @kufu/base
-- @kufu/ui
-```
+1. **パフォーマンス** (特にコーポレートサイト — Astro 静的生成と最小 island を優先)
+2. **一貫性** (UI / 構造 / 命名 — app 配下で独自実装しない)
+3. **開発体験**
+4. **将来拡張性**
 
-### コンポーネント
-
-- PascalCase
-
-```bash
-Button.tsx
-UserCard.tsx
-```
-
-## Performance Rules
-
-- LPはパフォーマンス最優先
-- 不要なJSを読み込まない
-- AstroのSSR/静的生成を最大活用
-- Cloudflare CDN / Pages を前提に、静的配信で解決できるものを app server 問題に持ち込まない
+技術選定の根拠は [Design Doc](design/DesignDoc.md) と [ADR](adr/)。
 
 ## Forbidden Patterns
 
-- 各アプリでのUIの独自実装
-- stateのグローバル乱用
-- 不必要なReact化（Astroで解決できるものはAstroで）
-- 共通化されていないユーティリティ関数
-
-## Future Extension Strategy
-
-将来的に以下を追加可能：
-
-- apps/admin
-- apps/internal-tool
-- packages/api-client
-- packages/auth
-- Hono API
-- Inertia + React
-
-CMS / API 連携は初期スコープ外とし、必要になった時点で spec と ADR を作成して採否を決める。
+- 各 app での UI 独自実装 (shadcn/ui の直接 init 含む)
+- state のグローバル乱用 (URL で表現できる状態は Router へ寄せる)
+- 不必要な React 化 (Astro で解決できるものを React island にしない)
+- 共通化されていないユーティリティ関数の散在
+- 生成物 (`AGENTS.md` / `CLAUDE.md` 等) の直接編集 (`rulesync-sync` 経由で `.rulesync/` を編集する)
+- `main` / `develop` への直接コミット
 
 ## Output Format Rules
 
-コード調査結果は以下形式で記載：
+コード調査結果は次の形式:
 
-```sh
+```text
 - {説明}
   - `<path>:<line-range>`
 ```
 
-- リポジトリ path を文書に記載する場合は、可能な限り `$(ghq root)/<repository-path>/...` を使う
+repo path は可能な限り `$(ghq root)/<repository-path>/...` で記述する。
 
-## Philosophy
+## Spec Workflow Contract
 
-このリポジトリは以下を重視する：
+Spec Driven Development (SDD) skill 群 (`.rulesync/skills/spec-*/SKILL.md`) が参照する **唯一の contract**。skill 側に project 固有名 (path / CLI / framework) を直書きせず、本節の値を読む。
 
-- シンプルさ
-- 再利用性
-- パフォーマンス
-- 一貫性
+### 正本ドキュメント (Single Source of Truth)
 
-## Decision Priority
+- PRD: `PRD.md`
+- Design Doc (landscape): `design/DesignDoc.md`
+- feature doc: `design/features/<feature>.md`
+- context library: `context/<topic>.md`
+- ADR: `adr/`
+- spec dir: `specs/<issue-id>-<slug>/`
+- spec body: `specs/<issue-id>-<slug>/index.md`
+- spec prompts: `specs/<issue-id>-<slug>/prompts/`
+- spec requirements (optional): `specs/<issue-id>-<slug>/requirements.md`
+- spec review report (optional): `specs/<issue-id>-<slug>/review.md`
 
-迷った場合は以下の優先順位で判断：
+### Templates
 
-1. パフォーマンス（特にLP）
-2. 一貫性（UI / 構造）
-3. 開発体験
-4. 将来拡張性
+- spec core: `templates/specs/template.md`
+- spec appendices: `templates/specs/appendices/<topic>.md`
+- feature doc: `templates/features/template.md`
+- requirements: `templates/requirements/template.md`
+- adr: `templates/adr/template.md`
+
+### Issue Tracker
+
+- Tracker: GitHub
+- CLI: `gh`
+- Repo: `Fukuemon/kufu-apps`
+- Branch pattern: `feature/<issue-id>`
+
+### 対象ドメイン (spec 「実装対象」テーブル用)
+
+`corporate-site`, `cms`, `ui`, `config`, `e2e`, `future-api`
+
+### Phase Gate ルール
+
+- 各 phase 完了時に `spec-review` (fresh-context evaluator) を通す
+- PRD / Design Doc / feature doc / context / ADR と矛盾を検出したら `spec-sync` を先に提案し、未解決のまま下流 phase に進まない
+- spec 内「設計フェーズ状況」表が状態 (`未着手 / 進行中 / 完了 / レビュー済 / 保留`) を管理する
+- 確定済みの判断 (解決済みの論点) を skill から上書きしない
+
+### Skill 共通契約
+
+- skill 内に project 固有名を直書きしない (本 contract を読む)
+- skill 本体 (SKILL.md) は **200 行未満**、詳細は `references/<topic>.md` へ 1 階層深さで分離
+- description は third-person、「何をする + いつ起動」を含める
+- 必須セクション: `いつ使うか` / `先に読むもの` / `実行フロー` / `停止条件`
+
+### SDD Skill 一覧
+
+| Skill              | 役割                                                                         | 対応 phase         |
+| ------------------ | ---------------------------------------------------------------------------- | ------------------ |
+| `spec-issue-read`  | Issue 取得 + 要約                                                            | intake             |
+| `spec-requirement` | 要求の対話整理 → requirements doc / Issue 起票                               | intake → specify   |
+| `spec-draft`       | spec dir + `index.md` を template から生成                                   | specify (scaffold) |
+| `spec-resolve`     | 論点を 1 件ずつ解決し spec 内全箇所を同期更新                                | clarify            |
+| `spec-diagrams`    | spec の flow / sequence を Mermaid 図に落とす                                | design             |
+| `spec-track`       | spec の「上位資料からの変更点」を更新                                        | design             |
+| `spec-sync`        | spec 決定を PRD / Design Doc / feature doc / context / ADR へ back-propagate | upstream sync      |
+| `spec-prompts`     | spec から自己完結な実装 prompt を生成                                        | tasks → implement  |
+| `spec-review`      | fresh-context evaluator が PASS / NEEDS_WORK を返す                          | review gate        |
+| `spec-lifecycle`   | 上記を phase 順に orchestration する半自律 runner                            | orchestrator       |
+
+orthogonal な Git / GitHub 操作は `workflow-git` を使う。
