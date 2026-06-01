@@ -33,7 +33,7 @@ app 側から infra repo へ受け渡す contract:
 
 - Preview URL を使って、レイアウト崩れ、リンク、フォーム導線、SEO メタデータをレビューする。
 - 本番 deploy は `main` へのマージを起点に行う前提で設計する。
-- branch 単位で安全に確認できることを、LP 改修の標準 workflow に含める。
+- branch 単位で安全に確認できることを、コーポレートサイト改修の標準 workflow に含める。
 
 ```mermaid
 flowchart LR
@@ -68,7 +68,7 @@ flowchart LR
 ## Operations / Observability
 
 - deploy 成功だけでなく、preview での導線確認を公開判定に含める。
-- Cloudflare Analytics や Web Analytics を利用できる場合は、LP の performance と導線計測の一次観測点として使う。
+- Cloudflare Analytics や Web Analytics を利用できる場合は、コーポレートサイトの performance と導線計測の一次観測点として使う。
 - 監視、ログ、分析の詳細は、フォーム導線や API 連携の採用時に spec / ADR で追加定義する。
 - Cloudflare 固有設定が app 実装に漏れ出さないよう、framework 設定と deploy 設定の責務を分ける。
 - Terraform plan / apply の手順や state backend の詳細は infra repo 側で管理し、この monorepo に複製しない。
@@ -79,5 +79,5 @@ flowchart LR
 - Terraform variable や provider credential など infra 用の秘匿情報は app repo に持ち込まない。
 - フォーム保護や bot 対策が必要な場合は、Cloudflare Turnstile など edge 側サービスを候補に含める。
 - CMS/API を導入する場合は、認証、権限、公開フロー、プレビュー環境を設計する ([design/features/cms.md](../design/features/cms.md))。
-- LP の assets はライセンスと利用許諾を確認する。
+- コーポレートサイトの assets はライセンスと利用許諾を確認する。
 - 問い合わせフォームなどで個人情報を扱う場合の方針は feature / spec で明記する。

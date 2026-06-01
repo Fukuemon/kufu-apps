@@ -12,16 +12,16 @@
 
 - issue #3 の monorepo foundation では、当初 `apps/corporate-site` と `apps/base` の 2 app を Phase 1 で scaffold する案を前提にしていた。
 - しかし `apps/base` は名前と用途が曖昧で、React app の骨組み以上の意味を持たず、長期的な責務境界として弱かった。
-- 現時点で明確になっている将来要件は「LP サイトに掲載する投稿内容を管理する app が必要になりうる」という点であり、汎用的な `base` よりも `cms` のほうが検討対象に近い。
+- 現時点で明確になっている将来要件は「コーポレートサイトに掲載する投稿内容を管理する app が必要になりうる」という点であり、汎用的な `base` よりも `cms` のほうが検討対象に近い。
 - 一方で `apps/cms` も、公開フロー、権限、データモデル、運用者、Cloudflare 上での runtime 境界、Hono + Inertia + React の採否など未確定事項が多く、Phase 1 の scaffold 対象として固定するには早い。
-- Phase 1 の最優先事項は LP foundation を最小構成で成立させることであり、未確定な第 2 app の追加は論点を増やす。
+- Phase 1 の最優先事項はコーポレートサイト foundation を最小構成で成立させることであり、未確定な第 2 app の追加は論点を増やす。
 
 ## 決定
 
 - Phase 1 では `apps/corporate-site` のみを app 実装対象とする。
 - `apps/base` は作成しない。
 - 将来の投稿管理 app は `apps/cms` を候補名として文書にのみ記載し、実装は行わない。
-- `apps/cms` の責務は「LP 掲載投稿を管理する app 候補」として扱う。
+- `apps/cms` の責務は「コーポレートサイト掲載投稿を管理する app 候補」として扱う。
 - `apps/cms` の技術選定は別 spec / ADR で行う。初期候補として Hono + Inertia + React を比較対象に含めるが、この ADR では採用確定しない。
 - root script、E2E contract、shared config は `apps/corporate-site` を既定対象として成立させ、将来 `apps/cms` を追加できる拡張余地だけを残す。
 
@@ -39,7 +39,7 @@
 
 - `base` という名前では用途が曖昧で、長期的な責務境界として弱い。
 - 何の app なのかが文書から伝わりにくく、AI や開発者の判断を曖昧にする。
-- Phase 1 の主目的である LP foundation から論点が逸れる。
+- Phase 1 の主目的であるコーポレートサイト foundation から論点が逸れる。
 
 ### 2. `apps/cms` を Phase 1 で先に scaffold する
 
@@ -52,7 +52,7 @@
 
 - app shell を置く前に、責務、公開フロー、権限、データ設計を決める必要がある。
 - Hono + Inertia + React を含む技術選定が未確定で、scaffold の前提が揺れやすい。
-- Phase 1 の完了条件が LP foundation 以外に広がる。
+- Phase 1 の完了条件がコーポレートサイト foundation 以外に広がる。
 
 ### 3. app 候補を明記せず `future-app` 扱いにする
 
@@ -63,7 +63,7 @@
 
 #### Cons
 
-- 現時点で見えている「LP 投稿管理」の要件が文書に残らず、設計の入口が弱くなる。
+- 現時点で見えている「コーポレートサイト投稿管理」の要件が文書に残らず、設計の入口が弱くなる。
 - 後続 spec の対象が曖昧になりやすい。
 
 ## 影響

@@ -28,11 +28,11 @@ flowchart TD
     Dev["Developer / CI<br/>pnpm e2e"] --> Root["root<br/>playwright.config.ts"]
     Root -->|"E2E_TARGET<br/>(既定: corporate-site)"| Selector{対象 app}
     Root -->|"E2E_PORT / E2E_BASE_URL<br/>を解決"| Selector
-    Selector -->|corporate-site| LP["apps/corporate-site<br/>e2e:serve"]
+    Selector -->|corporate-site| Corporate["apps/corporate-site<br/>e2e:serve"]
     Selector -->|cms (将来)| CMS["apps/cms<br/>e2e:serve"]
-    LP --> LPBuild["build → preview<br/>:4321"]
+    Corporate --> CorporateBuild["build → preview<br/>:4321"]
     CMS --> CMSBuild["build → preview<br/>:4173"]
-    LPBuild --> Suite["e2e/&lt;target&gt;/<br/>Playwright suite"]
+    CorporateBuild --> Suite["e2e/&lt;target&gt;/<br/>Playwright suite"]
     CMSBuild --> Suite
     Suite --> Result["pass / fail"]
 ```

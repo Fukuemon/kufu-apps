@@ -50,17 +50,17 @@ $(ghq root)/github.com/Fukuemon/
 
 ## Quick Commands
 
-| やりたいこと       | コマンド                                     |
-| ------------------ | -------------------------------------------- |
-| 開発起動 (全 app)  | `pnpm dev`                                   |
-| LP のみ            | `pnpm dev:corporate`                                |
-| ビルド             | `pnpm build`                                 |
-| Lint / typecheck   | `pnpm lint` / `pnpm typecheck`               |
-| Format (確認)      | `pnpm format:check`                          |
-| Unit test          | `pnpm test`                                  |
-| E2E (既定 corporate-site) | `pnpm e2e`                          |
-| 健全性検査         | `pnpm knip` / `pnpm depcruise`               |
-| 依存追加           | `pnpm --filter @kufu/<module> add <package>` |
+| やりたいこと              | コマンド                                     |
+| ------------------------- | -------------------------------------------- |
+| 開発起動 (全 app)         | `pnpm dev`                                   |
+| コーポレートサイトのみ    | `pnpm dev:corporate`                         |
+| ビルド                    | `pnpm build`                                 |
+| Lint / typecheck          | `pnpm lint` / `pnpm typecheck`               |
+| Format (確認)             | `pnpm format:check`                          |
+| Unit test                 | `pnpm test`                                  |
+| E2E (既定 corporate-site) | `pnpm e2e`                                   |
+| 健全性検査                | `pnpm knip` / `pnpm depcruise`               |
+| 依存追加                  | `pnpm --filter @kufu/<module> add <package>` |
 
 スコープ判断・E2E env contract・selector の使い分けは `dev-commands` skill。
 
@@ -85,7 +85,7 @@ skill は `.rulesync/skills/<name>/SKILL.md` が正本。直接呼び出すか s
 
 迷ったら次の優先度で判断する:
 
-1. **パフォーマンス** (特に LP — Astro 静的生成と最小 island を優先)
+1. **パフォーマンス** (特にコーポレートサイト — Astro 静的生成と最小 island を優先)
 2. **一貫性** (UI / 構造 / 命名 — app 配下で独自実装しない)
 3. **開発体験**
 4. **将来拡張性**

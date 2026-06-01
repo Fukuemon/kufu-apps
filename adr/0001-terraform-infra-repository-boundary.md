@@ -10,7 +10,7 @@
 
 ## 背景
 
-- Phase 1 の LP と将来の app は Cloudflare 上への deploy を前提にしている。
+- Phase 1 のコーポレートサイトと将来の app は Cloudflare 上への deploy を前提にしている。
 - Cloudflare Pages、Workers、DNS、custom domain、secret、binding などの変更は本番影響が大きく、アプリコードとは異なる review 観点と権限管理が必要である。
 - Kufu Monorepo は frontend-first な app / package / docs の責務境界を中心に設計しており、日常的な UI 実装と infra apply 導線を同じ repo に混在させると判断コストが上がる。
 - Terraform による infra 管理を採用する場合、state backend、plan / apply、provider credential、review 権限をアプリ開発フローから分離したい。
@@ -78,7 +78,7 @@
 
 ## 関連ドキュメント
 
-- `PRD.md`: Phase 1 の LP と将来拡張の前提
+- `PRD.md`: Phase 1 のコーポレートサイトと将来拡張の前提
 - `design/DesignDoc.md`: Cloudflare 前提の infra / deployment 設計
 - `specs/...`: infra 変更が必要な個別機能 spec
 - infra repo: `$(ghq root)/github.com/Fukuemon/kufu-infra`

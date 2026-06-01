@@ -28,7 +28,7 @@ project 共通の SDD 流れと、Kufu 固有の論点を分けて記述する�
 
 スコープに応じて該当する論点だけを `spec-resolve` で確定する。
 
-- LP の performance budget と不要な client JS をどう抑えるか
+- コーポレートサイトの performance budget と不要な client JS をどう抑えるか
 - Astro で完結する範囲と React island にする範囲
 - Cloudflare Pages preview / production と local の確認境界をどう分けるか
 - Cloudflare Workers を使うべき処理と静的配信で閉じる処理の境界
@@ -48,4 +48,4 @@ project 共通の SDD 流れと、Kufu 固有の論点を分けて記述する�
 - spec 自体が app / package をまたいだ要求追跡に使えない
 - Cloudflare Pages / Workers 境界が不明 (静的配信 vs Workers 中継)
 - secret / runtime boundary が `context/infrastructure.md` / `context/architecture.md` と矛盾
-- LP performance に直接影響する判断 (例: 不要 React 化) を独断で進めようとしている
+- コーポレートサイト performance に直接影響する判断 (例: 不要 React 化) を独断で進めようとしている
