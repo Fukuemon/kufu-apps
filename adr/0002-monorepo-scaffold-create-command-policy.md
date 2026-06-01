@@ -10,15 +10,15 @@
 
 ## 背景
 
-- issue #3 では Kufu Monorepo の Phase 1 foundation として、`apps/lp-site`、`apps/base`、`packages/*`、root workspace 設定を整備する。
+- issue #3 では Kufu Monorepo の Phase 1 foundation として、`apps/corporate-site`、`apps/base`、`packages/*`、root workspace 設定を整備する。
 - 既存の設計では `pnpm workspace` と `Turborepo` を基盤にし、app / package ごとの task を root script から束ねる構成を採用している。
-- app scaffold の初期案では、`apps/lp-site` と `apps/base` を directory 作成後に `pnpm --filter ... add ...` で手動構成する案もあった。
+- app scaffold の初期案では、`apps/corporate-site` と `apps/base` を directory 作成後に `pnpm --filter ... add ...` で手動構成する案もあった。
 - 一方で `Astro` と `Vite` は公式の `create` command を持っており、初期構成を正規の scaffold から始めたほうが不要な差分や設定漏れを減らせる。
 - `Vite+` は monorepo / app / library を作成できる統合 toolchain だが、runtime、package manager、task 実行、build / check 導線まで含めて project 全体の契約を再設計する影響が大きい。
 
 ## 決定
 
-- `apps/lp-site` の初期 scaffold は `pnpm create astro@latest apps/lp-site` を正とする。
+- `apps/corporate-site` の初期 scaffold は `pnpm create astro@latest apps/corporate-site` を正とする。
 - `apps/base` の初期 scaffold は `pnpm create vite apps/base --template react-ts` を正とする。
 - 生成後に、package 名、root scripts、typecheck、E2E、shared config など monorepo の contract へ寄せる調整を行う。
 - issue #3 では `pnpm workspace` と `Turborepo` を継続採用し、`Vite+` は導入しない。
@@ -57,7 +57,7 @@
 
 ### 良い影響
 
-- `apps/lp-site` と `apps/base` を各 framework の標準 scaffold から開始できる。
+- `apps/corporate-site` と `apps/base` を各 framework の標準 scaffold から開始できる。
 - 手動構成より設定漏れや初期不整合を減らしやすい。
 - issue #3 の主目的である `pnpm workspace` + `Turborepo` foundation を保ったまま app skeleton を整備できる。
 
@@ -69,7 +69,7 @@
 
 ## 実装・運用への反映
 
-- 対象 app / package: `apps/lp-site`、`apps/base`、root workspace scripts、spec prompt
+- 対象 app / package: `apps/corporate-site`、`apps/base`、root workspace scripts、spec prompt
 - spec 更新要否: 要。app scaffold の install / setup 方針を `create` command ベースへ更新する
 - AI 向け設定更新要否: 不要。repo 全体の基盤方針は `pnpm workspace` + `Turborepo` のまま
 

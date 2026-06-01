@@ -72,7 +72,7 @@
 
 ## 実装・運用への反映
 
-- 対象 app / package: `apps/lp-site`、将来の Cloudflare deploy 対象 app、docs workflow
+- 対象 app / package: `apps/corporate-site`、将来の Cloudflare deploy 対象 app、docs workflow
 - spec 更新要否: 要。infra 変更が絡む spec では、infra repo 側の対応有無を明記する
 - AI 向け設定更新要否: 要。Cloudflare 前提と infra repo 分離方針を AI ルールへ反映する
 

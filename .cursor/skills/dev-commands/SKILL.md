@@ -36,7 +36,7 @@ Kufu Monorepo の **root script からタスクを正しく呼び出す** ため
    - 全体 → root script をそのまま実行
    - 単一 app / package → `pnpm --filter @kufu/<name> <task>`
 3. **E2E は env contract に従う** (`references/e2e-runtime.md`):
-   - 既定: `E2E_TARGET=lp-site`、`E2E_PORT=4321`
+   - 既定: `E2E_TARGET=corporate-site`、`E2E_PORT=4321`
    - 対象切替時は `E2E_TARGET` と必要なら `E2E_PORT` / `E2E_BASE_URL` を上書き
 4. **依存追加** は必ず `--filter` を使う:
    ```sh

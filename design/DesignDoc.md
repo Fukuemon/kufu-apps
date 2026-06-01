@@ -12,11 +12,11 @@
 
 ## Related ADRs
 
-| ADR                                                                | 決定                                                        | 関連ドキュメント                                                               |
-| ------------------------------------------------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md)     | Cloudflare の Terraform は別 repo (`kufu-infra`) で管理する | [context/infrastructure.md](../context/infrastructure.md)                      |
-| [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md) | app scaffold は公式 create command を優先する               | [context/toolchain.md](../context/toolchain.md)                                |
-| [ADR-0003](../adr/0003-phase1-lp-only-and-cms-deferred.md)         | Phase 1 は `apps/lp-site` のみ。`apps/cms` は後続           | [features/lp-site.md](features/lp-site.md), [features/cms.md](features/cms.md) |
+| ADR                                                                | 決定                                                        | 関連ドキュメント                                                                             |
+| ------------------------------------------------------------------ | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md)     | Cloudflare の Terraform は別 repo (`kufu-infra`) で管理する | [context/infrastructure.md](../context/infrastructure.md)                                    |
+| [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md) | app scaffold は公式 create command を優先する               | [context/toolchain.md](../context/toolchain.md)                                              |
+| [ADR-0003](../adr/0003-phase1-lp-only-and-cms-deferred.md)         | Phase 1 は `apps/corporate-site` のみ。`apps/cms` は後続    | [features/corporate-site.md](features/corporate-site.md), [features/cms.md](features/cms.md) |
 
 ## Repository References
 
@@ -53,7 +53,7 @@ Kufu Monorepo は、Phase 1 で LP サイトを作ることを主目的とする
 
 ### 設計上の前提
 
-- Phase 1 の主対象は `apps/lp-site` である。
+- Phase 1 の主対象は `apps/corporate-site` である。
 - `apps/cms` は LP 掲載投稿を管理する将来 app 候補として定義し、Phase 1 では実装せず設計だけを後続 issue / spec に送る。
 - UI の共通化は、Phase 1 で `packages/ui` skeleton を置き、本格運用は複数 consumer が出た時点で進める。
 - TypeScript、lint、format、test 設定は `packages/config` に寄せる。
@@ -67,7 +67,7 @@ Kufu Monorepo は、`apps`、`packages`、root 管理の `e2e`、`docs workflow`
 ```mermaid
 flowchart LR
     VISITOR["Visitor"]
-    LP["apps/lp-site (Astro)"]
+    LP["apps/corporate-site (Astro)"]
     CMS["apps/cms (future app)"]
     UI["packages/ui (shared UI skeleton)"]
     CONFIG["packages/config"]
@@ -88,24 +88,24 @@ flowchart LR
 
 ## モジュール責務
 
-| Module            | Responsibility                                                                                                |
-| ----------------- | ------------------------------------------------------------------------------------------------------------- |
-| `apps/lp-site`    | Astro による LP。静的生成、コンテンツ構成、必要最小限の island を担う。                                       |
-| `apps/cms`        | LP 掲載投稿を管理する将来 app。Phase 1 では実装せず、Phase 2 で app shell と責務を設計する。                  |
-| `packages/ui`     | 複数 app / feature で再利用が明確になった UI 基盤を置く。Phase 1 で skeleton を置き、共有需要に応じて育てる。 |
-| `packages/config` | TypeScript、oxlint、Vitest など共有価値の高い設定を集約する。                                                 |
-| `e2e`             | root 管理の Playwright による公開前検証と主要導線の回帰テストを担う。                                         |
-| `specs`           | issue / 機能単位の要求、論点、設計、テスト観点を整理する。                                                    |
-| `adr`             | 長期参照する技術選定や責務境界の意思決定を残す。                                                              |
+| Module                | Responsibility                                                                                                |
+| --------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `apps/corporate-site` | Astro による LP。静的生成、コンテンツ構成、必要最小限の island を担う。                                       |
+| `apps/cms`            | LP 掲載投稿を管理する将来 app。Phase 1 では実装せず、Phase 2 で app shell と責務を設計する。                  |
+| `packages/ui`         | 複数 app / feature で再利用が明確になった UI 基盤を置く。Phase 1 で skeleton を置き、共有需要に応じて育てる。 |
+| `packages/config`     | TypeScript、oxlint、Vitest など共有価値の高い設定を集約する。                                                 |
+| `e2e`                 | root 管理の Playwright による公開前検証と主要導線の回帰テストを担う。                                         |
+| `specs`               | issue / 機能単位の要求、論点、設計、テスト観点を整理する。                                                    |
+| `adr`                 | 長期参照する技術選定や責務境界の意思決定を残す。                                                              |
 
 ## Feature 設計
 
 feature 単位の設計 (データ構造・画面・フロー・主要ユースケース) は [design/features/](features/) を正本とする。
 
-| Feature            | 文書                                       | Phase   |
-| ------------------ | ------------------------------------------ | ------- |
-| LP サイト          | [features/lp-site.md](features/lp-site.md) | Phase 1 |
-| CMS / React アプリ | [features/cms.md](features/cms.md)         | Phase 2 |
+| Feature            | 文書                                                     | Phase   |
+| ------------------ | -------------------------------------------------------- | ------- |
+| LP サイト          | [features/corporate-site.md](features/corporate-site.md) | Phase 1 |
+| CMS / React アプリ | [features/cms.md](features/cms.md)                       | Phase 2 |
 
 ## Engineering Context
 

@@ -3,7 +3,7 @@
 ## 起票前に確認すること
 
 - 何を決めたい Issue か、何を実装したい Issue か
-- 対象が `lp-site` / `cms` / `ui` / `config` / `e2e` / `future-api` のどれか
+- 対象が `corporate-site` / `cms` / `ui` / `config` / `e2e` / `future-api` のどれか
 - 既存 Issue や spec と重複していないか
 
 ## 停止条件

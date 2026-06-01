@@ -1,13 +1,13 @@
 import { defineConfig } from "@playwright/test";
 
 const targetContracts = {
-  "lp-site": {
+  "corporate-site": {
     port: 4321,
-    workspace: "@kufu/lp-site",
+    workspace: "@kufu/corporate-site",
   },
 } as const;
 
-const target = process.env.E2E_TARGET ?? "lp-site";
+const target = process.env.E2E_TARGET ?? "corporate-site";
 const targetContract = targetContracts[target as keyof typeof targetContracts];
 
 if (!targetContract) {

@@ -13,10 +13,10 @@ root `package.json` の script 契約 (現行)。
 
 ## Development
 
-| Command       | 用途              | 備考                       |
-| ------------- | ----------------- | -------------------------- |
-| `pnpm dev`    | 全 app を並列起動 | `turbo run dev --parallel` |
-| `pnpm dev:lp` | LP のみ起動       | `--filter=@kufu/lp-site`   |
+| Command              | 用途              | 備考                            |
+| -------------------- | ----------------- | ------------------------------- |
+| `pnpm dev`           | 全 app を並列起動 | `turbo run dev --parallel`      |
+| `pnpm dev:corporate` | LP のみ起動       | `--filter=@kufu/corporate-site` |
 
 ## Build
 
@@ -27,7 +27,7 @@ root `package.json` の script 契約 (現行)。
 特定 app だけビルド:
 
 ```sh
-pnpm --filter @kufu/lp-site build
+pnpm --filter @kufu/corporate-site build
 ```
 
 ## Quality

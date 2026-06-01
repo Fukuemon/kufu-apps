@@ -70,7 +70,7 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 
 | 指標                            | 定義                                                     | 目的                     |
 | ------------------------------- | -------------------------------------------------------- | ------------------------ |
-| LP Build Success Rate           | `apps/lp-site` の build が成功する割合                   | 公開可能性を測る         |
+| LP Build Success Rate           | `apps/corporate-site` の build が成功する割合            | 公開可能性を測る         |
 | LP Performance Budget Pass Rate | Lighthouse / Playwright などで定めた性能予算を満たす割合 | LP の体験品質を守る      |
 | Shared UI Reuse Rate            | 複数 app で使う UI が `packages/ui` に集約されている割合 | UI 重複を抑える          |
 | Spec Completion Rate            | 実装前に必要な spec 節が埋まっている割合                 | AI 実装の入力品質を測る  |
@@ -96,7 +96,7 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 
 ### Phase 1 スコープイン
 
-- `apps/lp-site` を Astro LP として構築する。
+- `apps/corporate-site` を Astro コーポレートサイトとして構築する。
 - `packages/ui` に shared UI package の skeleton を置く。
 - `packages/config` に TypeScript、lint、format などの共有設定を置く。
 - root 管理の E2E 入口を整備し、LP の主要導線を公開前に検証できる状態にする。
@@ -112,7 +112,7 @@ Phase 1 では Astro による LP サイト構築を最優先にする。将来�
 
 ## Phase 1 完成条件
 
-- `apps/lp-site` の責務、技術選定、禁止事項が Design Docs と AI 設定に明記されている。
+- `apps/corporate-site` の責務、技術選定、禁止事項が Design Docs と AI 設定に明記されている。
 - `packages/ui` の skeleton が将来拡張の入口として配置され、Phase 2 の実装対象と区別されている。
 - `packages/config` の役割と export 対象が明確で、root / app / package の責務境界が文書化されている。
 - LP の主要ページと問い合わせ導線を検証する E2E 方針がある。

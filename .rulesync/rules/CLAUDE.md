@@ -38,7 +38,7 @@ $(ghq root)/github.com/Fukuemon/
 ```text
 <repo-root>/
 ├── apps/
-│   └── lp-site/        # Astro LP (Phase 1 の主対象)
+│   └── corporate-site/ # Astro corporate site (Phase 1 の主対象)
 ├── packages/
 │   ├── ui/             # 共通 UI (shadcn/ui ベース、skeleton)
 │   └── config/         # 共通設定 (tsconfig / lint 等)
@@ -54,17 +54,17 @@ $(ghq root)/github.com/Fukuemon/
 
 ## Quick Commands
 
-| やりたいこと       | コマンド                                     |
-| ------------------ | -------------------------------------------- |
-| 開発起動 (全 app)  | `pnpm dev`                                   |
-| LP のみ            | `pnpm dev:lp`                                |
-| ビルド             | `pnpm build`                                 |
-| Lint / typecheck   | `pnpm lint` / `pnpm typecheck`               |
-| Format (確認)      | `pnpm format:check`                          |
-| Unit test          | `pnpm test`                                  |
-| E2E (既定 lp-site) | `pnpm e2e`                                   |
-| 健全性検査         | `pnpm knip` / `pnpm depcruise`               |
-| 依存追加           | `pnpm --filter @kufu/<module> add <package>` |
+| やりたいこと              | コマンド                                     |
+| ------------------------- | -------------------------------------------- |
+| 開発起動 (全 app)         | `pnpm dev`                                   |
+| LP のみ                   | `pnpm dev:corporate`                         |
+| ビルド                    | `pnpm build`                                 |
+| Lint / typecheck          | `pnpm lint` / `pnpm typecheck`               |
+| Format (確認)             | `pnpm format:check`                          |
+| Unit test                 | `pnpm test`                                  |
+| E2E (既定 corporate-site) | `pnpm e2e`                                   |
+| 健全性検査                | `pnpm knip` / `pnpm depcruise`               |
+| 依存追加                  | `pnpm --filter @kufu/<module> add <package>` |
 
 スコープ判断・E2E env contract・selector の使い分けは `dev-commands` skill。
 
@@ -81,7 +81,7 @@ skill は `.rulesync/skills/<name>/SKILL.md` が正本。直接呼び出すか s
 
 ## Naming Conventions
 
-- パッケージ名: `@kufu/<module>` (例: `@kufu/lp-site`, `@kufu/ui`)
+- パッケージ名: `@kufu/<module>` (例: `@kufu/corporate-site`, `@kufu/ui`)
 - コンポーネント: PascalCase (例: `Button.tsx`, `UserCard.tsx`)
 - ブランチ: `feature/<issue-number>` (例: `feature/3`)
 
@@ -150,7 +150,7 @@ Spec Driven Development (SDD) skill 群 (`.rulesync/skills/spec-*/SKILL.md`) が
 
 ### 対象ドメイン (spec 「実装対象」テーブル用)
 
-`lp-site`, `cms`, `ui`, `config`, `e2e`, `future-api`
+`corporate-site`, `cms`, `ui`, `config`, `e2e`, `future-api`
 
 ### Phase Gate ルール
 

@@ -72,7 +72,7 @@
 - `@kufu/ui` は app 固有 UI ではなく、複数 feature / app をまたいで再利用が確定した UI 基盤の正規入口とする
 - shadcn/ui ベース部品、design token、font、theme の公開責務は `@kufu/ui` に集約できるが、feature / colocation を崩してまで共通化しない
 - shadcn registry 由来 component は React app 向け shared component として `@kufu/ui` に集約する
-- `apps/lp-site` のような Astro app は `@kufu/ui` の React component を標準では利用せず、shared stylesheet、design token、font、theme を参照する
+- `apps/corporate-site` のような Astro app は `@kufu/ui` の React component を標準では利用せず、shared stylesheet、design token、font、theme を参照する
 - 依存先は app ではなく共有 package と React 基盤に限る
 - `typecheck` は `tsc --noEmit`
 - React Compiler 前提を壊さない最小構成にする
@@ -134,7 +134,7 @@ npx shadcn@latest init --monorepo
 
 - React app 側に `components.json` を置き、`@kufu/ui` alias と shared stylesheet を参照できるようにする
 - app から shared component を import する時は `@kufu/ui/components/*` を経由する
-- `apps/lp-site` のような Astro app は `@kufu/ui/styles.css` や token export を参照し、shadcn registry component の追加先にはしない
+- `apps/corporate-site` のような Astro app は `@kufu/ui/styles.css` や token export を参照し、shadcn registry component の追加先にはしない
 - app / feature 内で閉じる component は app ローカルに置く
 
 ### 後続 issue での CLI 利用例

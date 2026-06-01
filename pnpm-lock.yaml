@@ -39,7 +39,7 @@ importers:
         specifier: ^4.1.5
         version: 4.1.5(@types/node@25.6.2)(msw@2.14.5(@types/node@25.6.2)(typescript@6.0.3))(vite@8.0.11(@types/node@25.6.2)(esbuild@0.27.7)(jiti@2.7.0)(yaml@2.8.4))
 
-  apps/lp-site:
+  apps/corporate-site:
     dependencies:
       '@kufu/config':
         specifier: workspace:*

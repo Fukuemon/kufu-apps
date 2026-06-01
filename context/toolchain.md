@@ -33,7 +33,7 @@ Kufu Monorepo で採用する標準 toolchain。採否の根拠は [adr/](../adr
 
 app の初期 scaffold は公式 `create` command を優先する ([ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md))。
 
-- `apps/lp-site`: `pnpm create astro@latest apps/lp-site`
+- `apps/corporate-site`: `pnpm create astro@latest apps/corporate-site`
 - React app: `pnpm create vite ... --template react-ts`
 - 生成後に package 名 / root scripts / typecheck / E2E / shared config など monorepo の contract へ寄せる。
 - `Vite+` は Phase 1 では導入せず、専用 issue / spec で再検討する。

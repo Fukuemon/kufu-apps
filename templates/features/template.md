@@ -6,14 +6,14 @@ Feature 単位の設計 doc。仕様 (What) をどう実現するか (How) を�
 
 ## メタ
 
-| 項目           | 値                                               |
-| -------------- | ------------------------------------------------ |
-| 関連 PRD 要求  | <PRD.md の該当節 / 要求>                         |
-| 関連 DesignDoc | <design/DesignDoc.md の該当節>                   |
-| 関連 context   | <context/\*.md の該当ファイル>                   |
-| 関連 ADR       | <adr/NNNN-\*.md>                                 |
-| 関連 spec      | <specs/<issue>-<slug>/>                          |
-| 対象モジュール | <lp-site / cms / ui / config / e2e / future-api> |
+| 項目           | 値                                                      |
+| -------------- | ------------------------------------------------------- |
+| 関連 PRD 要求  | <PRD.md の該当節 / 要求>                                |
+| 関連 DesignDoc | <design/DesignDoc.md の該当節>                          |
+| 関連 context   | <context/\*.md の該当ファイル>                          |
+| 関連 ADR       | <adr/NNNN-\*.md>                                        |
+| 関連 spec      | <specs/<issue>-<slug>/>                                 |
+| 対象モジュール | <corporate-site / cms / ui / config / e2e / future-api> |
 
 ## 背景・要件解釈
 

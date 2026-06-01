@@ -4,11 +4,11 @@
 
 ## 既定値
 
-| Env            | 既定                            | 用途                              |
-| -------------- | ------------------------------- | --------------------------------- |
-| `E2E_TARGET`   | `lp-site`                       | 対象 app の workspace 名 (短縮形) |
-| `E2E_PORT`     | `4321` (lp-site) / `4173` (cms) | preview server の port            |
-| `E2E_BASE_URL` | env から組み立て                | テストが叩く URL                  |
+| Env            | 既定                                   | 用途                              |
+| -------------- | -------------------------------------- | --------------------------------- |
+| `E2E_TARGET`   | `corporate-site`                       | 対象 app の workspace 名 (短縮形) |
+| `E2E_PORT`     | `4321` (corporate-site) / `4173` (cms) | preview server の port            |
+| `E2E_BASE_URL` | env から組み立て                       | テストが叩く URL                  |
 
 ## 実行例
 

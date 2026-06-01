@@ -35,7 +35,7 @@
 - ## spec から抜粋した前提:
 - root に monorepo として必要な workspace 設定、task runner 設定、主要 scripts を定義する
 - root scripts は workspace task を `turbo run` で束ね、root 管理ツールは直実行に分ける
-- root public scripts は `dev`、`dev:lp`、`build`、`lint`、`format`、`format:check`、`typecheck`、`test`、`e2e`、`knip`、`depcruise`
+- root public scripts は `dev`、`dev:corporate`、`build`、`lint`、`format`、`format:check`、`typecheck`、`test`、`e2e`、`knip`、`depcruise`
 - `format` は `oxfmt . --write`、`format:check` は `oxfmt . --check`
 - `pnpm typecheck` は root から `turbo run typecheck` で束ねる
 - `pnpm e2e` は root `playwright.config.ts` から実行する repository task とする
@@ -61,7 +61,7 @@
 
 ### 実装しない範囲
 
-- `apps/lp-site`、`packages/ui`、`packages/config` の中身の実装
+- `apps/corporate-site`、`packages/ui`、`packages/config` の中身の実装
 - E2E の詳細シナリオ
 - knip / dependency-cruiser の詳細設定
 - Cloudflare / Terraform / deploy 設定
@@ -73,7 +73,7 @@
 - root `package.json` には少なくとも `name`、`private`、`packageManager`、`scripts` を持たせる
 - root scripts の責務は「集約」であり、app / package 個別実装の詳細を持ち込みすぎない
 - `dev` は `turbo run dev --parallel`
-- `dev:lp` は `turbo run dev --filter=@kufu/lp-site`
+- `dev:corporate` は `turbo run dev --filter=@kufu/corporate-site`
 - `build`、`lint`、`typecheck`、`test` は `turbo run`
 - `format`、`format:check`、`e2e`、`knip`、`depcruise` は root 直実行
 - `playwright.config.ts` は `E2E_TARGET`、`E2E_PORT`、`E2E_BASE_URL` を将来扱える構造にするが、この prompt では接続先実装を固定しない

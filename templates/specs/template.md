@@ -79,16 +79,16 @@ EARS 風で記述する (`<who>` `<trigger>` 時、システムは `<expected be
 
 ## 実装対象
 
-正規 target は `lp-site / cms / ui / config / e2e / future-api`。
+正規 target は `corporate-site / cms / ui / config / e2e / future-api`。
 
-| Target            | 実装有無 | 備考 |
-| ----------------- | :------: | ---- |
-| `apps/lp-site`    |    -     |      |
-| `apps/cms`        |    -     |      |
-| `packages/ui`     |    -     |      |
-| `packages/config` |    -     |      |
-| `e2e`             |    -     |      |
-| その他            |    -     |      |
+| Target                | 実装有無 | 備考 |
+| --------------------- | :------: | ---- |
+| `apps/corporate-site` |    -     |      |
+| `apps/cms`            |    -     |      |
+| `packages/ui`         |    -     |      |
+| `packages/config`     |    -     |      |
+| `e2e`                 |    -     |      |
+| その他                |    -     |      |
 
 ## 機能仕様
 

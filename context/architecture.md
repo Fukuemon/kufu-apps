@@ -14,7 +14,7 @@ Kufu Monorepo の package / runtime boundary と依存方向。全体像 (system
 第一原則は feature / colocation。app や feature 内で閉じる UI・utility はローカルに置き、再利用が複数 app / feature にまたがって明確になった時点で `packages/*` の公開入口へ寄せる。
 
 ```text
-apps/lp-site ─┐
+apps/corporate-site ─┐
 apps/cms ─────┼─→ packages/ui ─→ packages/config
               └────────────────→ packages/config
 ```
@@ -26,7 +26,7 @@ apps/cms ─────┼─→ packages/ui ─→ packages/config
 
 ## Runtime Boundary
 
-- `apps/lp-site` は、Cloudflare 上でもできる限り静的配信で成立させる。
+- `apps/corporate-site` は、Cloudflare 上でもできる限り静的配信で成立させる。
 - React island は必要最小限とし、配信する JavaScript 量を抑える。
 - 環境変数は build-time に閉じるものと runtime で参照するものを分けて扱う。
 - 秘密情報を client bundle に含めない。Cloudflare の secret 管理に置くべき値は repo に保存しない ([infrastructure.md](infrastructure.md))。

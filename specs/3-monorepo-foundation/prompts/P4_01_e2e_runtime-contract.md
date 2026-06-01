@@ -21,7 +21,7 @@
 - 対象 path:
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/playwright.config.ts`
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/e2e/`
-  - `$(ghq root)/github.com/Fukuemon/kufu-apps/apps/lp-site/`
+  - `$(ghq root)/github.com/Fukuemon/kufu-apps/apps/corporate-site/`
 - 参照ファイル:
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/specs/3-monorepo-foundation/index.md`
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/package.json`
@@ -33,17 +33,17 @@
 - root Playwright 設定は `webServer` を使う前提
 - app 側 E2E 対象 workspace は `build`、`preview`、`e2e:serve` を持てる構成に揃える
 - root 側標準 env は `E2E_TARGET`、`E2E_BASE_URL`、`E2E_PORT`
-- 初期案の port は `lp-site=4321`、`cms=4173`
+- 初期案の port は `corporate-site=4321`、`cms=4173`
 - test 配置は `e2e/<target>/` を基本とする
 - issue #3 時点では test 本数よりも起動契約の成立を優先する
 - ## 実装前に満たしている依存条件:
 - P1 root workspace foundation が完了している
-- P2 `apps/lp-site` が `preview` を持っている
+- P2 `apps/corporate-site` が `preview` を持っている
 
 ## 不明点ハンドリング
 
 - test 本体が薄くてもよい。最低限の smoke か placeholder suite で contract 検証を優先する
-- `lp-site` を既定 target にする。`cms` は将来切替可能であれば十分
+- `corporate-site` を既定 target にする。`cms` は将来切替可能であれば十分
 - 矛盾や未確定事項を見つけたら停止して確認する
 
 ## タスク境界
@@ -51,9 +51,9 @@
 ### 実装する範囲
 
 - root `playwright.config.ts` の `webServer` / `baseURL` / env contract
-- `e2e/lp-site/` を中心とした最小 suite 構成
+- `e2e/corporate-site/` を中心とした最小 suite 構成
 - `pnpm e2e` で既定 target が起動できる wiring
-- `apps/lp-site` の `e2e:serve` を利用して起動できる接続確認
+- `apps/corporate-site` の `e2e:serve` を利用して起動できる接続確認
 
 ### 実装しない範囲
 
@@ -63,12 +63,12 @@
 
 ## 設計仕様
 
-- `E2E_TARGET` の既定値は `lp-site`
+- `E2E_TARGET` の既定値は `corporate-site`
 - `E2E_PORT` と `E2E_BASE_URL` は root で解決する
 - `webServer.command` は target app の `e2e:serve` を呼ぶ
 - `e2e/<target>/` 配下に app 別 suite を増設できる構造にする
 - Phase 1 は起動 contract が壊れていないことを優先し、シナリオ密度は求めない
-- `P2` で `apps/lp-site` の `e2e:serve` が定義されている前提で接続し、root 側で app 固有の preview コマンドを直書きしない
+- `P2` で `apps/corporate-site` の `e2e:serve` が定義されている前提で接続し、root 側で app 固有の preview コマンドを直書きしない
 
 ## インストールコマンド
 
@@ -86,12 +86,12 @@ pnpm add -D @playwright/test
 
 ```sh
 pnpm e2e
-E2E_TARGET=lp-site pnpm e2e
+E2E_TARGET=corporate-site pnpm e2e
 ```
 
 ## 完了条件
 
 - [ ] root Playwright 設定が env contract と `webServer` を使っている
-- [ ] `e2e/lp-site/` の最小 suite が存在する
-- [ ] 既定 target として `lp-site` を実行できる
+- [ ] `e2e/corporate-site/` の最小 suite が存在する
+- [ ] 既定 target として `corporate-site` を実行できる
 - [ ] app 追加時に `e2e/<target>/` と `e2e:serve` の追加で拡張できる
