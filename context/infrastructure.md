@@ -7,7 +7,7 @@
 ## Infrastructure / Deployment
 
 - 公開基盤: Cloudflare (Pages を第一候補、Workers は API / BFF 必要時のみ)。
-- `apps/lp-site` は Astro 静的生成 → Cloudflare Pages への build artifact 配信を前提に構成する。
+- `apps/corporate-site` は Astro 静的生成 → Cloudflare Pages への build artifact 配信を前提に構成する。
 - API / BFF を導入しない限り、Node.js 常駐サーバや専用 VM を前提にしない。
 - 静的 asset (画像 / 動画 / フォント) は Cloudflare CDN 配信を前提に最適化する。
 - DNS / TLS / キャッシュ / 圧縮は Cloudflare 標準機能に寄せ、app 側で重複実装しない。
@@ -38,7 +38,7 @@ app 側から infra repo へ受け渡す contract:
 ```mermaid
 flowchart LR
     subgraph Dev["Local"]
-        Local["pnpm dev / dev:lp<br/>(Cloudflare 依存なし)"]
+        Local["pnpm dev / dev:corporate<br/>(Cloudflare 依存なし)"]
     end
     subgraph GH["GitHub"]
         FB["feature/&lt;issue&gt; branch"]

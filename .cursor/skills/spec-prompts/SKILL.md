@@ -59,12 +59,12 @@ P{phase}_{seq}_{target}_{scope}.md
 
 - `phase`: 実装 phase (1 始まり)
 - `seq`: phase 内連番 (2 桁ゼロ埋め)
-- `target`: `Spec Workflow Contract` の target 一覧 (`lp-site` / `cms` / `ui` / `config` / `e2e` / `future-api`)
+- `target`: `Spec Workflow Contract` の target 一覧 (`corporate-site` / `cms` / `ui` / `config` / `e2e` / `future-api`)
 - `scope`: 1 prompt で扱う責務 (ケバブケース)
 
 例:
 
-- `P1_01_lp-site_page_shell.md`
+- `P1_01_corporate-site_page_shell.md`
 - `P1_02_ui_button_variants.md`
 - `P2_01_e2e_contact_flow.md`
 
@@ -82,10 +82,10 @@ P{phase}_{seq}_{target}_{scope}.md
 ## 生成後の報告
 
 ```md
-| ファイル         | phase | target  | 並列可 | 依存先 | 概要 |
-| ---------------- | ----- | ------- | ------ | ------ | ---- |
-| P1_01_lp-site... | 1     | lp-site | -      | なし   | ...  |
-| P2_01_ui...      | 2     | ui      | P2_02  | P1_01  | ...  |
+| ファイル                | phase | target         | 並列可 | 依存先 | 概要 |
+| ----------------------- | ----- | -------------- | ------ | ------ | ---- |
+| P1_01_corporate-site... | 1     | corporate-site | -      | なし   | ...  |
+| P2_01_ui...             | 2     | ui             | P2_02  | P1_01  | ...  |
 ```
 
 ## 停止条件

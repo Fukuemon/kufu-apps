@@ -56,7 +56,7 @@ project 固有のレビュー CLI / branch 運用は spec / `AGENTS.md` / `workf
 
 ## 前提条件
 
-- 完了しているべき phase / 依存 prompt: {例: P1_01_lp-site_page_shell.md}
+- 完了しているべき phase / 依存 prompt: {例: P1_01_corporate-site_page_shell.md}
 - 完了後に着手可能になる後続 prompt: {例: P2_01_e2e_contact_flow.md}
 - 必要な repo 状態: {例: base branch に migration 適用済み}
 

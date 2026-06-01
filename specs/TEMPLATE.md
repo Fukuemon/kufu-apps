@@ -83,14 +83,14 @@
 
 ## 実装対象
 
-| モジュール   | 実装有無 | 主な責務                                                             |
-| ------------ | :------: | -------------------------------------------------------------------- |
-| `lp-site`    |  ◯ / -   | Astro LP、ページ、section、assets                                    |
-| `cms`        |  ◯ / -   | LP 掲載投稿管理 app、routing、form、client state                     |
-| `ui`         |  ◯ / -   | React app 向け shadcn/ui 基盤、design token、font、shared stylesheet |
-| `config`     |  ◯ / -   | tsconfig、lint、format、test 設定                                    |
-| `e2e`        |  ◯ / -   | Playwright の主要導線検証                                            |
-| `future-api` |  ◯ / -   | 将来の Hono API / CMS 連携候補                                       |
+| モジュール       | 実装有無 | 主な責務                                                             |
+| ---------------- | :------: | -------------------------------------------------------------------- |
+| `corporate-site` |  ◯ / -   | Astro LP、ページ、section、assets                                    |
+| `cms`            |  ◯ / -   | LP 掲載投稿管理 app、routing、form、client state                     |
+| `ui`             |  ◯ / -   | React app 向け shadcn/ui 基盤、design token、font、shared stylesheet |
+| `config`         |  ◯ / -   | tsconfig、lint、format、test 設定                                    |
+| `e2e`            |  ◯ / -   | Playwright の主要導線検証                                            |
+| `future-api`     |  ◯ / -   | 将来の Hono API / CMS 連携候補                                       |
 
 ## 機能仕様
 
@@ -192,7 +192,7 @@
 
 ### prompts 生成方針
 
-- `lp-site` / `cms` / `ui` / `config` / `e2e` のどこで分けるか
+- `corporate-site` / `cms` / `ui` / `config` / `e2e` のどこで分けるか
 - 並列実装できる境界
 
 ## 既存資料からの変更点

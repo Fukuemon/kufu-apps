@@ -24,7 +24,7 @@
 
 ## 3. 実装対象明示 (Target Boundaries)
 
-- `## 実装対象` テーブルの target が `Spec Workflow Contract` の正規 target (`lp-site` / `cms` / `ui` / `config` / `e2e` / `future-api`) と一致しているか
+- `## 実装対象` テーブルの target が `Spec Workflow Contract` の正規 target (`corporate-site` / `cms` / `ui` / `config` / `e2e` / `future-api`) と一致しているか
 - 複数 target がある場合、責務境界 (どの target が何をするか) が読めるか
 - app 間 / package 間の直接依存が発生していないか
 

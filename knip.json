@@ -4,7 +4,7 @@
     ".": {
       "project": ["e2e/**/*.ts"]
     },
-    "apps/lp-site": {
+    "apps/corporate-site": {
       "entry": ["src/pages/**/*.astro"],
       "project": ["src/**/*.{astro,ts,css}", "public/**/*"],
       "ignoreDependencies": ["@kufu/ui"]

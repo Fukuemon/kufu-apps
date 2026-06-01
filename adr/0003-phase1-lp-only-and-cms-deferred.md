@@ -1,4 +1,4 @@
-# ADR-0003: Phase 1 は `apps/lp-site` のみを実装し `apps/cms` は設計を後続へ送る
+# ADR-0003: Phase 1 は `apps/corporate-site` のみを実装し `apps/cms` は設計を後続へ送る
 
 ## 状態
 
@@ -10,7 +10,7 @@
 
 ## 背景
 
-- issue #3 の monorepo foundation では、当初 `apps/lp-site` と `apps/base` の 2 app を Phase 1 で scaffold する案を前提にしていた。
+- issue #3 の monorepo foundation では、当初 `apps/corporate-site` と `apps/base` の 2 app を Phase 1 で scaffold する案を前提にしていた。
 - しかし `apps/base` は名前と用途が曖昧で、React app の骨組み以上の意味を持たず、長期的な責務境界として弱かった。
 - 現時点で明確になっている将来要件は「LP サイトに掲載する投稿内容を管理する app が必要になりうる」という点であり、汎用的な `base` よりも `cms` のほうが検討対象に近い。
 - 一方で `apps/cms` も、公開フロー、権限、データモデル、運用者、Cloudflare 上での runtime 境界、Hono + Inertia + React の採否など未確定事項が多く、Phase 1 の scaffold 対象として固定するには早い。
@@ -18,12 +18,12 @@
 
 ## 決定
 
-- Phase 1 では `apps/lp-site` のみを app 実装対象とする。
+- Phase 1 では `apps/corporate-site` のみを app 実装対象とする。
 - `apps/base` は作成しない。
 - 将来の投稿管理 app は `apps/cms` を候補名として文書にのみ記載し、実装は行わない。
 - `apps/cms` の責務は「LP 掲載投稿を管理する app 候補」として扱う。
 - `apps/cms` の技術選定は別 spec / ADR で行う。初期候補として Hono + Inertia + React を比較対象に含めるが、この ADR では採用確定しない。
-- root script、E2E contract、shared config は `apps/lp-site` を既定対象として成立させ、将来 `apps/cms` を追加できる拡張余地だけを残す。
+- root script、E2E contract、shared config は `apps/corporate-site` を既定対象として成立させ、将来 `apps/cms` を追加できる拡張余地だけを残す。
 
 ## 代替案
 
@@ -70,7 +70,7 @@
 
 ### 良い影響
 
-- Phase 1 の app 実装対象が `apps/lp-site` に絞られ、foundation の目的が明確になる。
+- Phase 1 の app 実装対象が `apps/corporate-site` に絞られ、foundation の目的が明確になる。
 - `apps/base` という曖昧な名前を残さずに済む。
 - 将来 app の議論を `apps/cms` という具体的な論点に寄せられる。
 - CMS app の技術選定と責務設計を、専用 spec / ADR で落ち着いて進められる。
@@ -83,7 +83,7 @@
 
 ## 実装・運用への反映
 
-- 対象 app / package: `apps/lp-site`、将来の `apps/cms`、`packages/ui`、`packages/config`、root `e2e`
+- 対象 app / package: `apps/corporate-site`、将来の `apps/cms`、`packages/ui`、`packages/config`、root `e2e`
 - spec 更新要否: 要。`apps/base` 前提の prompt / contract を外し、`apps/cms` を後続設計対象として記載する
 - AI 向け設定更新要否: 要。repo 概要、module responsibility、開発 workflow から `apps/base` / `dev:base` / `@kufu/base` を外す
 

@@ -18,17 +18,17 @@ E2E runtime contract と unit test の横断規約。feature 固有のテスト�
 
 - `pnpm e2e` は root `playwright.config.ts` を正本とし、`e2e/<target>/` 配下の suite を読む。
 - root 側の標準 env contract は `E2E_TARGET`、`E2E_PORT`、`E2E_BASE_URL` とする。
-- `E2E_TARGET` の既定値は `lp-site` とし、初期 port は `lp-site=4321`、`cms=4173` を割り当てる。
+- `E2E_TARGET` の既定値は `corporate-site` とし、初期 port は `corporate-site=4321`、`cms=4173` を割り当てる。
 - 対象 app は `build`、`preview`、`e2e:serve` を持ち、root Playwright は `e2e:serve` だけを呼び出す。
-- 初期実装の `apps/lp-site` は `e2e:serve` で `build` 後に `preview` を起動する。
+- 初期実装の `apps/corporate-site` は `e2e:serve` で `build` 後に `preview` を起動する。
 - app 固有の preview command は root に直書きせず、workspace script contract で接続する。
 
 ```mermaid
 flowchart TD
     Dev["Developer / CI<br/>pnpm e2e"] --> Root["root<br/>playwright.config.ts"]
-    Root -->|"E2E_TARGET<br/>(既定: lp-site)"| Selector{対象 app}
+    Root -->|"E2E_TARGET<br/>(既定: corporate-site)"| Selector{対象 app}
     Root -->|"E2E_PORT / E2E_BASE_URL<br/>を解決"| Selector
-    Selector -->|lp-site| LP["apps/lp-site<br/>e2e:serve"]
+    Selector -->|corporate-site| LP["apps/corporate-site<br/>e2e:serve"]
     Selector -->|cms (将来)| CMS["apps/cms<br/>e2e:serve"]
     LP --> LPBuild["build → preview<br/>:4321"]
     CMS --> CMSBuild["build → preview<br/>:4173"]

@@ -15,7 +15,7 @@ shared config / root task / repository quality gate の境界規約。toolchain 
 ## Root Task Boundary
 
 - workspace task は root script から `turbo run` で束ねる。
-- `dev`、`dev:lp`、`build`、`lint`、`typecheck`、`test` は `turbo run` を使う。
+- `dev`、`dev:corporate`、`build`、`lint`、`typecheck`、`test` は `turbo run` を使う。
 - `format`、`e2e`、`knip`、`depcruise` は root 管理ツールとして直実行する。
 - `e2e`、`knip`、`dependency-cruiser` は package task ではなく repository task として扱う。
 - `lefthook` の `pre-commit` で `pnpm depcruise` と `pnpm knip` を自動実行し、commit 前に repository quality gate を通す。

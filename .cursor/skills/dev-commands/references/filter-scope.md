@@ -9,18 +9,18 @@ pnpm / turbo の `--filter` を使い分けるための短いガイド。
 
 ## よく使う selector
 
-| 目的                    | 書き方                        |
-| ----------------------- | ----------------------------- |
-| 単一 package 名         | `--filter @kufu/lp-site`      |
-| 依存 graph (上流含む)   | `--filter ...@kufu/lp-site`   |
-| 依存される側 (下流含む) | `--filter @kufu/lp-site...`   |
-| 変更分のみ              | `--filter "[origin/develop]"` |
+| 目的                    | 書き方                             |
+| ----------------------- | ---------------------------------- |
+| 単一 package 名         | `--filter @kufu/corporate-site`    |
+| 依存 graph (上流含む)   | `--filter ...@kufu/corporate-site` |
+| 依存される側 (下流含む) | `--filter @kufu/corporate-site...` |
+| 変更分のみ              | `--filter "[origin/develop]"`      |
 
 詳細は pnpm 公式 docs を参照 (selector 構文は pnpm のバージョンによって挙動が異なる)。
 
 ## turbo との併用
 
-`turbo run <task> --filter=@kufu/<name>` も同等に使える。`pnpm dev:lp` がその例。
+`turbo run <task> --filter=@kufu/<name>` も同等に使える。`pnpm dev:corporate` がその例。
 
 ## アンチパターン
 

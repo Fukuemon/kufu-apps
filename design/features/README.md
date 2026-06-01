@@ -6,10 +6,10 @@
 
 ## 一覧
 
-| Feature            | 文書                     | Phase   | 状態              |
-| ------------------ | ------------------------ | ------- | ----------------- |
-| LP サイト          | [lp-site.md](lp-site.md) | Phase 1 | 設計済 (skeleton) |
-| CMS / React アプリ | [cms.md](cms.md)         | Phase 2 | 標準のみ (未着手) |
+| Feature            | 文書                                   | Phase   | 状態              |
+| ------------------ | -------------------------------------- | ------- | ----------------- |
+| コーポレートサイト | [corporate-site.md](corporate-site.md) | Phase 1 | 設計済 (skeleton) |
+| CMS / React アプリ | [cms.md](cms.md)                       | Phase 2 | 標準のみ (未着手) |
 
 ## 新規追加
 
