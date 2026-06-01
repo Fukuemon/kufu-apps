@@ -30,8 +30,8 @@
 ## 前提条件
 
 - ## spec から抜粋した前提:
-- `apps/corporate-site` は Astro LP、静的ページ、section、assets、最小 dev/build 導線を担う
-- LP は Astro の静的生成前提で構成し、Astro で解決できるものを React island にしない
+- `apps/corporate-site` は Astro コーポレートサイト、静的ページ、section、assets、最小 dev/build 導線を担う
+- コーポレートサイトは Astro の静的生成前提で構成し、Astro で解決できるものを React island にしない
 - `apps/corporate-site` の page / route は Astro 標準の file-based routing に従う
 - `typecheck` は `astro check` を標準とする
 - 将来 E2E 対象になった時は `build`、`preview`、`e2e:serve` を持てる構成にする
@@ -40,7 +40,7 @@
 
 ## 不明点ハンドリング
 
-- 初期ページ内容は最小の placeholder でよい。LP の本番コンテンツや詳細デザインは入れない
+- 初期ページ内容は最小の placeholder でよい。コーポレートサイトの本番コンテンツや詳細デザインは入れない
 - asset 構成や section 名が未確定でも、Astro app として自然な最小構成を優先する
 - 矛盾や未確定事項を見つけたら停止して確認する
 
@@ -55,7 +55,7 @@
 
 ### 実装しない範囲
 
-- LP の情報設計、詳細 UI、コンテンツ埋め込み
+- コーポレートサイトの情報設計、詳細 UI、コンテンツ埋め込み
 - React island の導入
 - Cloudflare deploy 設定
 - Playwright test の本体
@@ -67,7 +67,7 @@
 - `typecheck` は `astro check`
 - `preview` は build artifact をローカル配信できること
 - `e2e:serve` は `preview` の alias でもよいが、必ず定義する
-- LP 内で閉じる UI は `apps/corporate-site` 配下に置き、`packages/ui` への依存を前提にしない
+- コーポレートサイト内で閉じる UI は `apps/corporate-site` 配下に置き、`packages/ui` への依存を前提にしない
 - 初期生成は公式 scaffold を使い、生成後に monorepo の package 名と script 契約へ合わせる
 - 生成後は少なくとも package 名を `@kufu/corporate-site` に揃え、root `dev:corporate` / `build` / `typecheck` / `e2e` から呼べる script 構成へ寄せる
 

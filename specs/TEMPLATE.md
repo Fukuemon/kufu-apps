@@ -41,7 +41,7 @@
 
 - なぜこの spec が必要か
 - Phase 1 のどの完成条件に関わるか
-- LP / 業務アプリ / 共通 package のどれに影響するか
+- コーポレートサイト / 業務アプリ / 共通 package のどれに影響するか
 
 ## スコープ
 
@@ -85,8 +85,8 @@
 
 | モジュール       | 実装有無 | 主な責務                                                             |
 | ---------------- | :------: | -------------------------------------------------------------------- |
-| `corporate-site` |  ◯ / -   | Astro LP、ページ、section、assets                                    |
-| `cms`            |  ◯ / -   | LP 掲載投稿管理 app、routing、form、client state                     |
+| `corporate-site` |  ◯ / -   | Astro コーポレートサイト、ページ、section、assets                    |
+| `cms`            |  ◯ / -   | コーポレートサイト掲載投稿管理 app、routing、form、client state      |
 | `ui`             |  ◯ / -   | React app 向け shadcn/ui 基盤、design token、font、shared stylesheet |
 | `config`         |  ◯ / -   | tsconfig、lint、format、test 設定                                    |
 | `e2e`            |  ◯ / -   | Playwright の主要導線検証                                            |

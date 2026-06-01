@@ -2,7 +2,7 @@
 
 > 最終更新: YYYY-MM-DD / Status: 未着手 | 進行中 | 完了 | 保留
 
-Feature 単位の設計 doc。仕様 (What) をどう実現するか (How) を、データ構造・画面・フロー単位で記述する。全体像は [design/DesignDoc.md](../DesignDoc.md)、横断規約は [context/](../../context/) を参照する。
+Feature 単位の設計 doc。仕様 (What) をどう実現するか (How) を、データ構造・画面・フロー単位で記述する。責務・範囲・方針の層に留め、ファイル配置・directive・テスト手順などの実装レベルの手順は spec へ委譲する。全体像は [design/DesignDoc.md](../DesignDoc.md)、横断規約は [context/](../../context/) を参照する。
 
 ## メタ
 
@@ -47,9 +47,11 @@ flowchart TD
     A --> B
 ```
 
-## 主要ユースケース
+## 主要シナリオ / フロー
 
-1.
+アクター視点の使用シナリオ (誰が何を達成するか) を記述する。実装手順 (ファイル配置・directive・テスト手順など) は spec の User Flow / 実装分割へ委譲する。
+
+-
 
 ## テスト観点
 

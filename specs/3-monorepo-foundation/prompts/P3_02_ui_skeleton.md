@@ -76,7 +76,7 @@
 - 依存先は app ではなく共有 package と React 基盤に限る
 - `typecheck` は `tsc --noEmit`
 - React Compiler 前提を壊さない最小構成にする
-- LP 固有 UI や feature ローカル UI はここへ寄せず、共有 UI 基盤の入口だけを用意する
+- コーポレートサイト固有 UI や feature ローカル UI はここへ寄せず、共有 UI 基盤の入口だけを用意する
 
 ## インストールコマンド
 

@@ -11,23 +11,23 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態 | 最終更新   | 備考                                     |
-| --- | --------------------------- | ---- | ---------- | ---------------------------------------- |
-| 1   | 起票                        | 完了 | 2026-05-08 | issue #3 起票済み                        |
-| 2   | 下書き                      | 完了 | 2026-05-09 | monorepo scaffold の contract を確定     |
-| 3   | 上位文書突合                | 完了 | 2026-05-09 | PRD / Design Doc / AI rules を更新       |
-| 4   | 論点整理                    | 完了 | 2026-05-09 | app 範囲、E2E、analysis tool を確定      |
-| 5   | 論点解決                    | 完了 | 2026-05-09 | Phase 1 対象と後続論点を切り分けた       |
-| 6   | Interface / Routing 設計    | 完了 | 2026-05-09 | root script と E2E contract を定義       |
-| 7   | Content / Data 設計         | 完了 | 2026-05-09 | app / package / root の責務境界を定義    |
-| 8   | Performance / Security 設計 | 完了 | 2026-05-09 | LP 優先と secret 境界を明文化            |
-| 9   | Test / Metrics 設計         | 完了 | 2026-05-10 | lint / typecheck / e2e / analysis を確認 |
-| 10  | 実装分割                    | 完了 | 2026-05-09 | P1-P4 の prompt と実装分割を確定         |
-| 11  | レビュー済                  | 完了 | 2026-05-10 | 実装との差分を是正済み                   |
+| #   | フェーズ                    | 状態 | 最終更新   | 備考                                         |
+| --- | --------------------------- | ---- | ---------- | -------------------------------------------- |
+| 1   | 起票                        | 完了 | 2026-05-08 | issue #3 起票済み                            |
+| 2   | 下書き                      | 完了 | 2026-05-09 | monorepo scaffold の contract を確定         |
+| 3   | 上位文書突合                | 完了 | 2026-05-09 | PRD / Design Doc / AI rules を更新           |
+| 4   | 論点整理                    | 完了 | 2026-05-09 | app 範囲、E2E、analysis tool を確定          |
+| 5   | 論点解決                    | 完了 | 2026-05-09 | Phase 1 対象と後続論点を切り分けた           |
+| 6   | Interface / Routing 設計    | 完了 | 2026-05-09 | root script と E2E contract を定義           |
+| 7   | Content / Data 設計         | 完了 | 2026-05-09 | app / package / root の責務境界を定義        |
+| 8   | Performance / Security 設計 | 完了 | 2026-05-09 | コーポレートサイト優先と secret 境界を明文化 |
+| 9   | Test / Metrics 設計         | 完了 | 2026-05-10 | lint / typecheck / e2e / analysis を確認     |
+| 10  | 実装分割                    | 完了 | 2026-05-09 | P1-P4 の prompt と実装分割を確定             |
+| 11  | レビュー済                  | 完了 | 2026-05-10 | 実装との差分を是正済み                       |
 
 ## 上位ドキュメント確認
 
-- PRD 更新要否: 更新済み。Phase 1 を LP foundation に絞る前提へ修正
+- PRD 更新要否: 更新済み。Phase 1 をコーポレートサイト foundation に絞る前提へ修正
 - Design Docs 更新要否: 更新済み。`e2e` と `packages/config` の責務境界を修正
 - ADR 起票要否: 更新済み。`adr/0002` と `adr/0003` を追加
 
@@ -37,15 +37,15 @@
 - `design/DesignDoc.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/design/DesignDoc.md`
 - `adr/0001-terraform-infra-repository-boundary.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/adr/0001-terraform-infra-repository-boundary.md`
 - `adr/0002-monorepo-scaffold-create-command-policy.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/adr/0002-monorepo-scaffold-create-command-policy.md`
-- `adr/0003-phase1-lp-only-and-cms-deferred.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/adr/0003-phase1-lp-only-and-cms-deferred.md`
+- `adr/0003-phase1-corporate-site-only-and-cms-deferred.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/adr/0003-phase1-corporate-site-only-and-cms-deferred.md`
 - 関連 issue / ticket: `#3 🛠 task: Kufu Monorepo の基盤構成を作成する`
 
 ## 背景
 
 - 現状の repository は docs / rules / hooks が中心で、`apps/`、`packages/`、`e2e/`、workspace 設定など monorepo の実体がまだ存在しない
 - PRD、Design Docs、AI 向けルールは将来的な monorepo 構成を前提に整備済みであり、文書上の contract と実ファイル構成に差がある
-- issue #3 は、この差を埋めるために Kufu Monorepo の最小 scaffold を作成し、後続の LP 実装と CMS 設計判断の基盤を揃えるためのもの
-- Phase 1 の完成条件のうち、LP 用 app 境界、共通 package 境界、workspace task 導線、AI が迷わない構成整備に直接関わる
+- issue #3 は、この差を埋めるために Kufu Monorepo の最小 scaffold を作成し、後続のコーポレートサイト実装と CMS 設計判断の基盤を揃えるためのもの
+- Phase 1 の完成条件のうち、コーポレートサイト用 app 境界、共通 package 境界、workspace task 導線、AI が迷わない構成整備に直接関わる
 - 影響範囲は `apps/corporate-site`、`packages/ui`、`packages/config`、`e2e`、および root workspace 設定一式である
 
 ## スコープ
@@ -62,7 +62,7 @@
 ### やらないこと
 
 - CMS / API / 認証 / 管理画面 / 内部業務ツールの本実装
-- LP の本番コンテンツ、情報設計、デザイン詳細の作り込み
+- コーポレートサイトの本番コンテンツ、情報設計、デザイン詳細の作り込み
 - 過剰な UI 抽象化や未使用コンポーネントの先回り実装
 - Cloudflare / Terraform / infra repo 側の実装
 - 業務ドメイン model、API schema、CMS schema の定義
@@ -73,7 +73,7 @@
 
 - 開発者が monorepo の app / package 構成を迷わず理解し、最小セットアップ後すぐに各 app の実装を始められる
 - AI エージェントが repo 構成と責務境界を誤解せず、対象外の実装や過剰共通化を避けられる
-- 後続の LP 実装や共通 UI 整備を、既存文書と矛盾しない形で進められる
+- 後続のコーポレートサイト実装や共通 UI 整備を、既存文書と矛盾しない形で進められる
 
 ### 成功条件
 
@@ -89,23 +89,23 @@
 ### 対象ユーザー / 操作主体
 
 - 主操作主体は Kufu Monorepo の開発者と AI エージェント
-- 二次的な利用者は、後続の LP 実装、CMS 設計、共通 package 整備を行う実装担当者
+- 二次的な利用者は、後続のコーポレートサイト実装、CMS 設計、共通 package 整備を行う実装担当者
 
 ## 論点一覧
 
-| #   | 論点                                                | 決定候補                                                      | 決定                         |
-| --- | --------------------------------------------------- | ------------------------------------------------------------- | ---------------------------- |
-| 1   | issue #3 を 1 spec に閉じるか、app ごとに分割するか | 1 spec で Phase 1 foundation / root 基盤のみ / app 単位に分割 | 1 spec で Phase 1 foundation |
-| 2   | 初回 scaffold の完成度をどこに置くか                | 構造のみ / 起動可能最小 / Storybook・E2E まで厚く整備         | 起動可能最小                 |
-| 3   | 共通 UI の範囲をどこまで許容するか                  | LP 内ローカルのみ / `packages/ui` まで先行整備                | LP 内ローカルのみ            |
-| 4   | `e2e` を root 管理にするか package 化するか         | root 管理 / `@kufu/e2e` package 化                            | root 管理                    |
-| 5   | infra 前提をこの spec に含めるか                    | contract のみ / Terraform 実装まで含める                      | contract のみ                |
+| #   | 論点                                                | 決定候補                                                      | 決定                             |
+| --- | --------------------------------------------------- | ------------------------------------------------------------- | -------------------------------- |
+| 1   | issue #3 を 1 spec に閉じるか、app ごとに分割するか | 1 spec で Phase 1 foundation / root 基盤のみ / app 単位に分割 | 1 spec で Phase 1 foundation     |
+| 2   | 初回 scaffold の完成度をどこに置くか                | 構造のみ / 起動可能最小 / Storybook・E2E まで厚く整備         | 起動可能最小                     |
+| 3   | 共通 UI の範囲をどこまで許容するか                  | コーポレートサイト内ローカルのみ / `packages/ui` まで先行整備 | コーポレートサイト内ローカルのみ |
+| 4   | `e2e` を root 管理にするか package 化するか         | root 管理 / `@kufu/e2e` package 化                            | root 管理                        |
+| 5   | infra 前提をこの spec に含めるか                    | contract のみ / Terraform 実装まで含める                      | contract のみ                    |
 
 ## 解決済みの論点
 
 - issue #3 の対象は root 設定、`apps/corporate-site`、`packages/ui`、`packages/config`、root 管理の `e2e` を含む最小 foundation とする
 - 初回 scaffold は「起動可能最小」を目標にし、詳細な Storybook / E2E シナリオ整備は後続に回す
-- `apps/cms` は issue #3 では実装しない。LP 投稿管理向けの将来 app 候補として文書にだけ記載し、技術選定と設計は後続 issue / spec に送る
+- `apps/cms` は issue #3 では実装しない。コーポレートサイト投稿管理向けの将来 app 候補として文書にだけ記載し、技術選定と設計は後続 issue / spec に送る
 - Cloudflare / Terraform は contract だけを文書化し、実装スコープ外とする
 - `e2e` は root `playwright.config.ts` と `e2e/` 配下で管理し、workspace package にはしない
 - `packages/config` は少なくとも `tsconfig`、`oxlint`、`vitest` の shared config を公開する
@@ -129,32 +129,32 @@
 - preview URL を使ったレビュー手順を repo ルールとしてどの文書に固定するか
 - Cloudflare Turnstile や Analytics など edge サービスを採用する場合の責務境界
 - 上記は `$(ghq root)/github.com/Fukuemon/kufu-infra` 側で設計が必要になりうるため、foundation 完了後に infra repo 側の design issue 候補として洗い出す
-- LP 掲載投稿を管理する `apps/cms` の責務、公開フロー、権限、データモデル
+- コーポレートサイト掲載投稿を管理する `apps/cms` の責務、公開フロー、権限、データモデル
 - `apps/cms` を作る場合の技術選定。初期案として Hono + Inertia + React を候補に置くが、採否は別 spec で判断する
 
 ## 実装対象
 
-| モジュール       | 実装有無 | 主な責務                                                          |
-| ---------------- | :------: | ----------------------------------------------------------------- |
-| `corporate-site` |    ◯     | Astro LP、静的ページ、section、assets、最小 dev/build 導線        |
-| `ui`             |    ◯     | 共有 UI 基盤の骨組み、public entrypoint、将来の Storybook 入口    |
-| `config`         |    ◯     | TypeScript、lint、test などの共有設定                             |
-| `e2e`            |    ◯     | root 管理の Playwright 実行入口、LP の smoke / critical flow 検証 |
-| `cms`            |    -     | LP 掲載投稿の管理 app 候補。技術選定と設計のみ後続で扱う          |
-| `future-api`     |    -     | 初期スコープ外。将来の Hono API / CMS 連携候補                    |
+| モジュール       | 実装有無 | 主な責務                                                                         |
+| ---------------- | :------: | -------------------------------------------------------------------------------- |
+| `corporate-site` |    ◯     | Astro コーポレートサイト、静的ページ、section、assets、最小 dev/build 導線       |
+| `ui`             |    ◯     | 共有 UI 基盤の骨組み、public entrypoint、将来の Storybook 入口                   |
+| `config`         |    ◯     | TypeScript、lint、test などの共有設定                                            |
+| `e2e`            |    ◯     | root 管理の Playwright 実行入口、コーポレートサイトの smoke / critical flow 検証 |
+| `cms`            |    -     | コーポレートサイト掲載投稿の管理 app 候補。技術選定と設計のみ後続で扱う          |
+| `future-api`     |    -     | 初期スコープ外。将来の Hono API / CMS 連携候補                                   |
 
 ## 機能仕様
 
 ### User Flow
 
 1. 開発者が root で依存解決を行い、workspace 全体の package を認識できる
-2. 開発者が `dev` / `dev:corporate` や各種 check scripts を実行し、LP と monorepo foundation の最小導線を確認できる
+2. 開発者が `dev` / `dev:corporate` や各種 check scripts を実行し、コーポレートサイトと monorepo foundation の最小導線を確認できる
 3. 開発者が app と root / package 設定の責務境界を把握し、後続実装を適切な配置先で始められる
 
 ### Performance
 
 - Phase 1 では `apps/corporate-site` の performance を最優先する
-- LP は Astro の静的生成前提で構成し、Astro で解決できるものを React island にしない
+- コーポレートサイトは Astro の静的生成前提で構成し、Astro で解決できるものを React island にしない
 - 初回 scaffold の時点で不要な client directive やクライアント JavaScript を増やさない
 
 ### Routing / URL State
@@ -165,13 +165,13 @@
 
 ### Content / Assets
 
-- `apps/corporate-site` は静的 asset と LP 固有コンテンツの置き場を持つ
+- `apps/corporate-site` は静的 asset とコーポレートサイト固有コンテンツの置き場を持つ
 - `packages/config` は設定ファイルと共通 presets のみを扱い、業務データや app asset は持たない
 
 ### UI Reuse
 
 - 第一原則は feature / colocation とし、各 feature や app の文脈で閉じる UI はその feature 配下に置く
-- LP 内で閉じる UI は `apps/corporate-site` 配下に置く
+- コーポレートサイト内で閉じる UI は `apps/corporate-site` 配下に置く
 - 共通 UI package は `packages/ui` として骨組みを置き、複数 feature / app をまたいで再利用が明確になったものだけを集約する正規入口にする
 - `packages/ui` には React app 向け shadcn/ui ベース部品と、全 app が参照する design token、font、theme、shared stylesheet を置ける
 - `apps/corporate-site` は `@kufu/ui` の React component を標準では利用せず、design foundation のみを参照する
@@ -453,20 +453,20 @@ pnpm depcruise
 ### コンテンツ配置 / package / route
 
 - root: workspace 定義、task runner、共通 scripts、Playwright 設定
-- `apps/corporate-site`: Astro app 本体、静的 asset、LP 用 route / page の土台
+- `apps/corporate-site`: Astro app 本体、静的 asset、コーポレートサイト用 route / page の土台
 - `packages/ui`: 共通 UI 基盤の public entry と最小 build 入口
 - `packages/config`: tsconfig / oxlint / vitest の shared config
 - `e2e`: Playwright tests と共通 test utility の入口
-- `apps/cms`: LP 掲載投稿の管理 app 候補。issue #3 では実装せず、文書上の将来配置先としてのみ扱う
+- `apps/cms`: コーポレートサイト掲載投稿の管理 app 候補。issue #3 では実装せず、文書上の将来配置先としてのみ扱う
 - app ごとの E2E suite は `e2e/<target>/` へ増設する
 
 ## Performance / Security 設計
 
 ### Performance
 
-- LP の performance を repository 全体で最優先する
+- コーポレートサイトの performance を repository 全体で最優先する
 - Astro で解決できる構成は Astro に留め、初期段階で不要な React 化をしない
-- workspace scaffold は app の責務境界を明確にし、LP 向け asset と shared UI を混在させない
+- workspace scaffold は app の責務境界を明確にし、コーポレートサイト向け asset と shared UI を混在させない
 
 ### Security / Privacy
 
@@ -522,7 +522,7 @@ pnpm depcruise
 | Phase | 対象                              | 概要                                                                                                                                        | 依存       |
 | ----- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
 | P1    | root workspace / task runner      | `package.json`、`pnpm-workspace.yaml`、`turbo.json`、共通 scripts、TypeScript / oxlint / oxfmt / Vitest / Playwright の root 導線を整備する | なし       |
-| P2    | `apps/corporate-site`             | Astro LP skeleton を作り、root から `dev:corporate` / `build` を呼べる状態にする                                                            | P1         |
+| P2    | `apps/corporate-site`             | Astro コーポレートサイト skeleton を作り、root から `dev:corporate` / `build` を呼べる状態にする                                            | P1         |
 | P3    | `packages/ui` / `packages/config` | UI package skeleton と tsconfig / oxlint / vitest の shared config package を作り、root と app から参照できる状態にする                     | P1         |
 | P4    | `e2e` / analysis / docs alignment | root 管理の Playwright 実行入口、knip / dependency-cruiser の導入方針、Rolldown / React Compiler の骨組み設定、文書差分の最終調整を行う     | P1, P2, P3 |
 
@@ -534,13 +534,13 @@ pnpm depcruise
 
 ## 既存資料からの変更点
 
-| 対象                                                  | 変更内容 | 理由                                                                       |
-| ----------------------------------------------------- | -------- | -------------------------------------------------------------------------- |
-| `PRD.md`                                              | 更新あり | issue #3 を LP foundation に絞り、Phase 1 / Phase 2 の境界を明確にするため |
-| `design/DesignDoc.md`                                 | 更新あり | root 管理の `e2e` と `packages/config` の責務を明確にするため              |
-| `adr/0001-terraform-infra-repository-boundary.md`     | 変更なし | infra repo 分離方針は issue #3 の前提として流用できるため                  |
-| `adr/0002-monorepo-scaffold-create-command-policy.md` | 更新あり | app scaffold 方針を issue #3 の判断として残すため                          |
-| `adr/0003-phase1-lp-only-and-cms-deferred.md`         | 更新あり | app 対象範囲の判断を issue #3 の判断として残すため                         |
+| 対象                                                      | 変更内容 | 理由                                                                                      |
+| --------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------- |
+| `PRD.md`                                                  | 更新あり | issue #3 をコーポレートサイト foundation に絞り、Phase 1 / Phase 2 の境界を明確にするため |
+| `design/DesignDoc.md`                                     | 更新あり | root 管理の `e2e` と `packages/config` の責務を明確にするため                             |
+| `adr/0001-terraform-infra-repository-boundary.md`         | 変更なし | infra repo 分離方針は issue #3 の前提として流用できるため                                 |
+| `adr/0002-monorepo-scaffold-create-command-policy.md`     | 更新あり | app scaffold 方針を issue #3 の判断として残すため                                         |
+| `adr/0003-phase1-corporate-site-only-and-cms-deferred.md` | 更新あり | app 対象範囲の判断を issue #3 の判断として残すため                                        |
 
 ## 変更履歴
 

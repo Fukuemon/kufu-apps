@@ -50,7 +50,7 @@ PRD / Design Doc / feature doc / context / ADR と整合をとった上でスキ
    - ロール / 権限がある → `appendices/authorization.md`
    - 画面コンポーネントツリーがある → `appendices/screen-spec.md`
    - E2E 対象 UI がある → `appendices/testid.md`
-   - **ユーザーに確認してから挿入する** (Astro LP だけのスコープなら何も追加しない)
+   - **ユーザーに確認してから挿入する** (Astro コーポレートサイトだけのスコープなら何も追加しない)
 7. **初期論点の洗い出し**: issue / 上位文書から未確定事項を `論点一覧` に列挙
 8. 次アクションを提案: `spec-resolve` で論点解決へ
 

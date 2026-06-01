@@ -94,7 +94,7 @@ EARS 風で記述する (`<who>` `<trigger>` 時、システムは `<expected be
 
 ### Performance
 
-- LP の場合: 不要な client JS / Astro island の最小化、画像・フォントの最適化方針
+- コーポレートサイトの場合: 不要な client JS / Astro island の最小化、画像・フォントの最適化方針
 
 ### Routing / URL State
 

@@ -2,7 +2,7 @@
 
 > 最終更新: 2026-05-31 / Status: 標準のみ (Phase 2 以降, 未着手)
 
-LP 掲載投稿を管理する将来 app 候補。Phase 1 では実装せず、React app の標準と将来設計の前提だけを置く ([ADR-0003](../../adr/0003-phase1-lp-only-and-cms-deferred.md))。実装着手時は spec / ADR で採否と詳細を確定する。
+コーポレートサイト掲載投稿を管理する将来 app 候補。Phase 1 では実装せず、React app の標準と将来設計の前提だけを置く ([ADR-0003](../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md))。実装着手時は spec / ADR で採否と詳細を確定する。
 
 ## メタ
 
@@ -11,14 +11,14 @@ LP 掲載投稿を管理する将来 app 候補。Phase 1 では実装せず、R
 | 関連 PRD 要求  | [PRD.md](../../PRD.md) 「CMS / React アプリ要求」「フェーズ展望」                                                                                  |
 | 関連 DesignDoc | [DesignDoc.md](../DesignDoc.md) モジュール責務 (`apps/cms`)                                                                                        |
 | 関連 context   | [architecture.md](../../context/architecture.md), [toolchain.md](../../context/toolchain.md), [infrastructure.md](../../context/infrastructure.md) |
-| 関連 ADR       | [ADR-0003](../../adr/0003-phase1-lp-only-and-cms-deferred.md)                                                                                      |
+| 関連 ADR       | [ADR-0003](../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md)                                                                          |
 | 関連 spec      | (未起票)                                                                                                                                           |
 | 対象モジュール | `cms`                                                                                                                                              |
 
 ## 背景・要件解釈
 
-- 将来、LP 掲載投稿を管理する CMS アプリや業務アプリが必要になる可能性がある。
-- Phase 1 では実装せず、初期から React app 標準を固定して LP の性能・monorepo の一貫性と衝突しないようにする。
+- 将来、コーポレートサイト掲載投稿を管理する CMS アプリや業務アプリが必要になる可能性がある。
+- Phase 1 では実装せず、初期から React app 標準を固定してコーポレートサイトの性能・monorepo の一貫性と衝突しないようにする。
 
 ## スコープ
 
@@ -45,25 +45,14 @@ LP 掲載投稿を管理する将来 app 候補。Phase 1 では実装せず、R
 
 ### データ / コンテンツモデル
 
-- LP コンテンツの CMS 化タイミングと、コンテンツ更新の責務・レビュー観点は実装着手時の spec で定義する。
+- コーポレートサイトコンテンツの CMS 化タイミングと、コンテンツ更新の責務・レビュー観点は実装着手時の spec で定義する。
 - URL は状態管理の一部として扱い、route state に寄せる。
 
-## 主要ユースケース
+## 主要シナリオ / フロー
 
-### 1. CMS アプリを追加する
+アクター視点の使用シナリオを示す。Phase 2 以降・未着手のため抽象度は高く保ち、app shell やライブラリ適用、CMS/API 採否比較などの具体手順は実装着手時の spec / ADR へ委譲する。採否比較の前提は上記「React app 標準」と [ADR-0003](../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) を正本とする。
 
-1. `apps/cms` または新規 `apps/*` に app shell を作る。
-2. ルーティング、データフェッチ、フォーム、状態管理は上記標準ライブラリを使う。
-3. UI は `@kufu/ui` を経由する。
-4. React Compiler 互換性を確認する。
-5. E2E と unit test の責務を spec で定義する。
-
-### 2. CMS/API 連携を検討する
-
-1. CMS が必要な理由、更新頻度、運用者、公開フローを spec に書く。
-2. Hono API、Inertia、React の採否を ADR で比較する。
-3. API package や app 追加が必要な場合だけ monorepo 構成を拡張する。
-4. LP の性能と公開安全性を満たすことを採用条件にする。
+- 運用者は、コーポレートサイト掲載投稿を管理画面で作成・更新し、コーポレートサイトへ公開する (将来)。
 
 ## テスト観点
 
@@ -73,8 +62,8 @@ LP 掲載投稿を管理する将来 app 候補。Phase 1 では実装せず、R
 
 ## 上位資料からの変更点
 
-| 対象資料  | 変更種別 | 内容                                                      |
-| --------- | -------- | --------------------------------------------------------- |
-| PRD       | 継承     | 「CMS / React アプリ要求」を Phase 2 以降の標準として保持 |
-| DesignDoc | 継承     | モジュール責務 (`apps/cms` = 将来 app) を具体化           |
-| ADR       | 継承     | ADR-0003 「Phase 1 は LP のみ」を前提に標準のみ記載       |
+| 対象資料  | 変更種別 | 内容                                                              |
+| --------- | -------- | ----------------------------------------------------------------- |
+| PRD       | 継承     | 「CMS / React アプリ要求」を Phase 2 以降の標準として保持         |
+| DesignDoc | 継承     | モジュール責務 (`apps/cms` = 将来 app) を具体化                   |
+| ADR       | 継承     | ADR-0003 「Phase 1 はコーポレートサイトのみ」を前提に標準のみ記載 |

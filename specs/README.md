@@ -26,7 +26,7 @@
 - PRD 更新要否
 - Design Docs 更新要否
 - ADR 起票要否
-- LP performance への影響
+- コーポレートサイト performance への影響
 - UI 共通化要否
   - 第一原則は feature / colocation になっているか
   - app / feature 内で閉じる UI を無理に `packages/ui` へ寄せていないか
@@ -37,7 +37,7 @@
 ## 推奨フロー
 
 1. `PRD.md` で What / Why / Who / 成功条件を確認する。
-2. `design/DesignDoc.md` で app / package の責務、LP-first 方針、React 標準、CMS/API の扱いを確認する。
+2. `design/DesignDoc.md` で app / package の責務、コーポレートサイト優先方針、React 標準、CMS/API の扱いを確認する。
 3. `spec-draft` を使って 1 issue ごとに 1 spec を起こし、対象機能の論点を `index.md` に閉じ込める。
 4. `spec-lifecycle` を使って Performance / Routing / Content / UI reuse / React Compiler / Testing 観点を埋める。
 5. 実装可能になったら `spec-prompts` を使って `prompts/` 配下へ `corporate-site` / `cms` / `ui` / `config` / `e2e` 単位で分割する。
