@@ -26,7 +26,7 @@ Kufu Monorepo で採用する標準 toolchain。採否の根拠は [adr/](../adr
 ## 先行固定の方針
 
 - **Rolldown**: 採用候補として先に固定し、将来 `apps/cms` を実装する場合の build 構成で採否を確認する。
-- **React Compiler**: React app 導入時の標準として先に固定し、`packages/ui` と将来の `apps/cms` 実装時に適用する。React Compiler 非対応ライブラリ・実装の扱いは [design/features/cms.md](../design/features/cms.md)。
+- **React Compiler**: React app 導入時の標準として先に固定し、`packages/ui` と将来の `apps/cms` 実装時に適用する。React Compiler 非対応ライブラリ・実装の扱いは [DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md)。
 - **knip / dependency-cruiser**: issue #3 で実導入し、root script から実行できる状態まで整える。
 
 ## Scaffold Policy

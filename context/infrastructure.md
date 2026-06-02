@@ -78,6 +78,6 @@ flowchart LR
 - Cloudflare 上で扱う secret、token、API key は client 側へ露出させず、環境ごとの secret 管理に分離する。
 - Terraform variable や provider credential など infra 用の秘匿情報は app repo に持ち込まない。
 - フォーム保護や bot 対策が必要な場合は、Cloudflare Turnstile など edge 側サービスを候補に含める。
-- CMS/API を導入する場合は、認証、権限、公開フロー、プレビュー環境を設計する ([design/features/cms.md](../design/features/cms.md))。
+- CMS/API を導入する場合は、認証、権限、公開フロー、プレビュー環境を設計する ([DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md))。
 - コーポレートサイトの assets はライセンスと利用許諾を確認する。
 - 問い合わせフォームなどで個人情報を扱う場合の方針は feature / spec で明記する。

@@ -36,7 +36,7 @@ $(ghq root)/github.com/Fukuemon/
 │   └── config/         # 共通設定 (tsconfig / lint 等)
 ├── design/
 │   ├── DesignDoc.md    # 全体像 (landscape)
-│   └── features/       # feature 単位の設計 (How)
+│   └── features/       # feature 単位の設計 (How): <feature>/DesignDoc_<feature>.md + reference/
 ├── context/            # 技術規約 / codebase architecture / 運用契約
 ├── e2e/                # Playwright (root 管理)
 └── playwright.config.ts
@@ -116,7 +116,9 @@ Spec Driven Development (SDD) skill 群 (`.rulesync/skills/spec-*/SKILL.md`) が
 
 - PRD: `PRD.md`
 - Design Doc (landscape): `design/DesignDoc.md`
-- feature doc: `design/features/<feature>.md`
+- feature doc dir: `design/features/<feature>/`
+- feature doc: `design/features/<feature>/DesignDoc_<feature>.md`
+- feature reference (任意): `design/features/<feature>/reference/`
 - context library: `context/<topic>.md`
 - ADR: `adr/`
 - spec dir: `specs/<issue-id>-<slug>/`
