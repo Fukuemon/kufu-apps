@@ -52,6 +52,21 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 - 画像や動画などの assets はコーポレートサイトの性能予算を考慮して配置、圧縮、読み込み方式を決める。
 - 公開 asset は Cloudflare CDN 配信を前提に、キャッシュ戦略と更新単位を意識して配置する ([infrastructure.md](../../../context/infrastructure.md))。
 
+#### ページ構成 (IA サマリ)
+
+情報設計 (IA) の正本は [specs/11-corporate-site-ia/index.md](../../../specs/11-corporate-site-ia/index.md)。本 feature doc は責務・方針の層に留め、section 粒度や回遊フローの詳細は spec を正とする。
+
+- 主要 5 ページ + 全ページ共通レイアウトで構成する: トップ (`/`) / 事業内容 (`/services`) / 取扱製品 (`/products`) / 会社情報 (`/company`) / お問い合わせ (`/contact`)。ヘッダー・フッターから問い合わせ導線へ全ページ到達可能とする。
+- 会社概要の一次情報 (社名 / 所在地 / 代表 / 連絡先) は会社情報ページの単一 section を正本とし、フッター等は参照に留める。
+- アクセス / 地図・沿革・代表挨拶は会社情報ページ内 section とし、未確定分は placeholder で公開可能な状態を保つ。
+
+#### コンテンツ正本 (source of truth)
+
+- 掲載コンテンツの正本は committed の [reference/](reference/) に置く: [company-profile.md](reference/company-profile.md) (会社概要 / 業務内容 / 取扱製品カテゴリ 18 区分) と [manufacturers.md](reference/manufacturers.md) (取扱メーカー 延べ ~320 社)。
+- `.ai-out/` は AI 取り込み用の未追跡スクラッチであり正本にしない。
+- 取扱製品 (`/products`) は「カテゴリ (18 区分) → 当該カテゴリの取扱メーカー一覧」のモデルで提示する。同一メーカーの複数カテゴリ登場は取扱範囲として許容する。
+- 一次情報・カテゴリ・メーカーをコードから消費するデータ実体 (JSON / Astro content collection の schema) は本体実装 (#10) で確定する。本 doc では正本の所在とモデルのみを規定する。
+
 ## 主要シナリオ / フロー
 
 アクター視点の使用シナリオを示す。具体的な実装手順 (ページ配置・client directive 判断・`packages/ui` 昇格・E2E の書き方) は spec の User Flow / 実装分割へ委譲する。

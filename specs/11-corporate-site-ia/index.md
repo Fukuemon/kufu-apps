@@ -34,7 +34,7 @@
 ## 上位ドキュメント確認
 
 - PRD 更新要否: 不要 (継承。Open Questions に補足回答する範囲)
-- Design Docs 更新要否: 不要 (Open Questions「具体的なページ構成」に補足回答する範囲)
+- Design Docs 更新要否: 反映済 (`spec-sync`) — Open Questions「具体的なページ構成」に spec #11 で回答を追記
 - ADR 起票要否: 不要 (新規意思決定なし)
 
 > 上位文書整合 (継承 / 補足 / 変更提案):
@@ -43,8 +43,8 @@
 > | ----------- | ---------------------------------------------- | ------------------------- |
 > | PRD         | スコープ → Phase 1 / コーポレートサイト要求    | 継承                      |
 > | Design Doc  | モジュール責務 → `apps/corporate-site`         | 継承                      |
-> | Design Doc  | Open Questions「具体的なページ構成」           | 補足                      |
-> | feature doc | corporate-site → データ / コンテンツモデル     | 補足 (`spec-sync` で反映) |
+> | Design Doc  | Open Questions「具体的なページ構成」           | 補足 (反映済)             |
+> | feature doc | corporate-site → データ / コンテンツモデル     | 補足 (`spec-sync` 反映済) |
 > | context     | architecture → colocation / `packages/ui` 昇格 | 継承                      |
 > | context     | testing → E2E 主要導線                         | 継承                      |
 > | ADR-0003    | Phase 1 は corporate-site のみ                 | 継承                      |
@@ -382,12 +382,12 @@ sequenceDiagram
 
 ## 既存資料からの変更点
 
-| 対象                                                       | 変更内容                                                                                                                                                      | 理由                                                                               |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| design/features/corporate-site/DesignDoc_corporate-site.md | 「データ / コンテンツモデル」にサイトマップ + 配置マッピング + 取扱メーカーモデル + コンテンツ正本の所在 (design/features/corporate-site/reference/\*) を追記 | 現状は方針のみで具体構成が未記載 (`spec-sync` で反映)                              |
-| design/features/corporate-site/reference/ (新設)           | company-profile.md / manufacturers.md を committed 正本として追加                                                                                             | 企業情報の正本が gitignore 対象 (`.ai-out/`) にあり source-of-truth が未追跡だった |
-| design/DesignDoc.md                                        | Open Questions「具体的なページ構成」に本 spec で初期回答                                                                                                      | IA を確定したため (継承範囲内)                                                     |
-| issue #11                                                  | デザインシステムを #13、フォームを #14 へ切り出し、IA に再スコープ済                                                                                          | 1 issue:1 spec / 論点単一テーマ規約に整合                                          |
+| 対象                                                       | 変更内容                                                                                                                                               | 理由                                                                                           |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| design/features/corporate-site/DesignDoc_corporate-site.md | 「データ / コンテンツモデル」にページ構成 (IA サマリ) + 取扱メーカーモデル + コンテンツ正本の所在 (design/features/corporate-site/reference/\*) を追記 | **反映済** (`spec-sync`)。現状は方針のみで具体構成が未記載だった                               |
+| design/features/corporate-site/reference/ (新設)           | company-profile.md / manufacturers.md を committed 正本として追加                                                                                      | **反映済**。企業情報の正本が gitignore 対象 (`.ai-out/`) にあり source-of-truth が未追跡だった |
+| design/DesignDoc.md                                        | Open Questions「具体的なページ構成」に spec #11 で初期回答 + Feature 設計リンクを新パスへ                                                              | **反映済** (`spec-sync`)。IA を確定したため (継承範囲内)                                       |
+| issue #11                                                  | デザインシステムを #13、フォームを #14 へ切り出し、IA に再スコープ済                                                                                   | 1 issue:1 spec / 論点単一テーマ規約に整合                                                      |
 
 ## 変更履歴
 
