@@ -12,11 +12,11 @@
 
 ## Related ADRs
 
-| ADR                                                                    | 決定                                                        | 関連ドキュメント                                                                             |
-| ---------------------------------------------------------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md)         | Cloudflare の Terraform は別 repo (`kufu-infra`) で管理する | [context/infrastructure.md](../context/infrastructure.md)                                    |
-| [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md)     | app scaffold は公式 create command を優先する               | [context/toolchain.md](../context/toolchain.md)                                              |
-| [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) | Phase 1 は `apps/corporate-site` のみ。`apps/cms` は後続    | [features/corporate-site.md](features/corporate-site.md), [features/cms.md](features/cms.md) |
+| ADR                                                                    | 決定                                                        | 関連ドキュメント                                                                                                                                                           |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md)         | Cloudflare の Terraform は別 repo (`kufu-infra`) で管理する | [context/infrastructure.md](../context/infrastructure.md)                                                                                                                  |
+| [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md)     | app scaffold は公式 create command を優先する               | [context/toolchain.md](../context/toolchain.md)                                                                                                                            |
+| [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) | Phase 1 は `apps/corporate-site` のみ。`apps/cms` は後続    | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md), [features/cms/DesignDoc_cms.md](features/cms/DesignDoc_cms.md) |
 
 ## Repository References
 
@@ -102,10 +102,10 @@ flowchart LR
 
 feature 単位の設計 (データ構造・画面・主要シナリオ / フロー) は [design/features/](features/) を正本とする。実装レベルの手順は spec へ委譲する。
 
-| Feature            | 文書                                                     | Phase   |
-| ------------------ | -------------------------------------------------------- | ------- |
-| コーポレートサイト | [features/corporate-site.md](features/corporate-site.md) | Phase 1 |
-| CMS / React アプリ | [features/cms.md](features/cms.md)                       | Phase 2 |
+| Feature            | 文書                                                                                                       | Phase   |
+| ------------------ | ---------------------------------------------------------------------------------------------------------- | ------- |
+| コーポレートサイト | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md) | Phase 1 |
+| CMS / React アプリ | [features/cms/DesignDoc_cms.md](features/cms/DesignDoc_cms.md)                                             | Phase 2 |
 
 ## Engineering Context
 
@@ -151,7 +151,7 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 
 ## Open Questions
 
-- コーポレートサイトの具体的なページ構成とコンテンツ更新フローをどこまで初期 spec に含めるか。
+- コーポレートサイトの具体的なページ構成は [spec #11 (IA)](../specs/11-corporate-site-ia/index.md) で初期回答済 (主要 5 ページ + 共通レイアウト)。コンテンツ更新フロー (CMS 化を含む) の固定は未解決。
 - `packages/ui` skeleton から本格共有 package へ移行する判断条件をどの時点で固定するか。
 - CMS が必要になる判断基準をどの指標で固定するか。
 - infra repo と app repo の変更をどの workflow で相互参照し、review 漏れを防ぐか。
