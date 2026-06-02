@@ -8,7 +8,7 @@
 - spec の `## 上位文書整合` テーブルが埋まっているか
 - spec の決定が PRD (`PRD.md`) のスコープ / Non Goals / Persona / Outcome と矛盾していないか
 - spec の決定が Design Doc (`design/DesignDoc.md`) のモジュール責務 / Phase 方針 / 全体像と矛盾していないか
-- spec の決定が feature doc (`design/features/<feature>.md`) の設計方針 / データ構造 / 主要ユースケースと矛盾していないか
+- spec の決定が feature doc (`design/features/<feature>/DesignDoc_<feature>.md`) の設計方針 / データ構造 / 主要ユースケースと矛盾していないか
 - spec の決定が context (`context/<topic>.md`) の architecture / toolchain / engineering 規約 / testing / infrastructure と矛盾していないか
 - 関連 ADR の決定を覆していないか / 覆す場合に新規 ADR の提案があるか
 

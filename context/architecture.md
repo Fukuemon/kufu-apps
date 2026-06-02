@@ -36,4 +36,4 @@ apps/cms ─────┼─→ packages/ui ─→ packages/config
 
 - URL は状態管理の一部として扱い、React app では TanStack Router の route state に寄せる。
 - URL で表現できる状態を client state (Zustand など) でグローバルに持たない。
-- server state / client state / URL state を分けて扱う (詳細な標準は [design/features/cms.md](../design/features/cms.md))。
+- server state / client state / URL state を分けて扱う (詳細な標準は [DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md))。
