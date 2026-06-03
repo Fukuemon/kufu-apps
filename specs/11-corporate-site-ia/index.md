@@ -3,6 +3,7 @@
 > 対象: 有限会社フクウラ コーポレートサイト / コンテンツ正本: [`design/features/corporate-site/reference/company-profile.md`](../../design/features/corporate-site/reference/company-profile.md) + [`design/features/corporate-site/reference/manufacturers.md`](../../design/features/corporate-site/reference/manufacturers.md)
 > (`.ai-out/企業情報/` は AI 取り込み用の未追跡スクラッチ。gitignore 対象のため source-of-truth にしない)
 > スコープ: ページ / section / コンテンツ構成 (情報設計) に限定。デザイントークンは #13、問い合わせフォーム機能は #14。
+> IA 正本の所在: 確定済の IA (サイトマップ / section 構成 / 配置マッピング / 回遊フロー) は [`design/features/corporate-site/DesignDoc_corporate-site.md`](../../design/features/corporate-site/DesignDoc_corporate-site.md) を正本とする。本 spec は issue #11 の論点・決定経緯・受け入れ基準・実装分割を記録する (構成・図は決定時のスナップショット)。
 
 ## メタ情報
 
@@ -219,6 +220,8 @@ Figma / Pencil で画面イメージを作成し、その成果を既存ドキ�
 
 ## Content / Data 設計
 
+> 確定済のサイトマップ表・配置マッピング表は [feature doc](../../design/features/corporate-site/DesignDoc_corporate-site.md#ページ構成-ia) を正本とする。以下は決定時点のスナップショット。
+
 ### 保存・管理するデータ
 
 - 永続データ層は持たない。コンテンツは `apps/corporate-site` 内の静的コンテンツとして管理する (CMS 化は Phase 2)。
@@ -295,6 +298,8 @@ Figma / Pencil で画面イメージを作成し、その成果を既存ドキ�
 - E2E Critical Flow Coverage (主要導線 + 問い合わせ導線)。
 
 ## フロー / シーケンス
+
+> 確定済のフロー図 (サイトマップ / 回遊フロー / 静的配信) は [feature doc の 主要シナリオ / フロー](../../design/features/corporate-site/DesignDoc_corporate-site.md#主要シナリオ--フロー) を正本とする。以下は決定時点のスナップショット。
 
 ### Flowchart 1: サイトマップ (ナビゲーション構造)
 
@@ -398,10 +403,11 @@ sequenceDiagram
 
 ### feature doc への影響
 
-| 対象 doc / 節                                            | 変更内容                                                                                 | 理由                                                                                           |
-| -------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| DesignDoc_corporate-site.md「データ / コンテンツモデル」 | ページ構成 (IA サマリ) + 取扱メーカーモデル + コンテンツ正本の所在 (reference/\*) を追記 | **反映済** (`spec-sync`)。現状は方針のみで具体構成が未記載だった                               |
-| design/features/corporate-site/reference/ (新設)         | company-profile.md / manufacturers.md を committed 正本として追加                        | **反映済**。企業情報の正本が gitignore 対象 (`.ai-out/`) にあり source-of-truth が未追跡だった |
+| 対象 doc / 節                                                           | 変更内容                                                                                                                                                      | 理由                                                                                           |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| DesignDoc_corporate-site.md「データ / コンテンツモデル」                | ページ構成 (IA サマリ) + 取扱メーカーモデル + コンテンツ正本の所在 (reference/\*) を追記                                                                      | **反映済** (`spec-sync`)。現状は方針のみで具体構成が未記載だった                               |
+| design/features/corporate-site/reference/ (新設)                        | company-profile.md / manufacturers.md を committed 正本として追加                                                                                             | **反映済**。企業情報の正本が gitignore 対象 (`.ai-out/`) にあり source-of-truth が未追跡だった |
+| DesignDoc_corporate-site.md「ページ構成 (IA)」「主要シナリオ / フロー」 | IA (サイトマップ / section 構成 / 配置マッピング / 回遊フロー / 配信 sequence) の正本を spec から feature doc へ集約。spec は決定経緯のスナップショットに降格 | **反映済**。製本となる設計・フローは design 側に集約する方針 (spec は issue 単位)              |
 
 ### context への影響
 
@@ -420,6 +426,7 @@ sequenceDiagram
 | 日付       | 結果       | 指摘要点                       | 対応                                   |
 | ---------- | ---------- | ------------------------------ | -------------------------------------- |
 | 2026-06-03 | NEEDS_WORK | 詳細は review.md を参照 (5 件) | 全 5 件解消 (2/3 はテンプレ統一で解決) |
+| 2026-06-03 | PASS       | 全 6 観点 PASS / prompts N/A   | 指摘なし → spec-prompts へ進行可       |
 
 ## 変更履歴
 
