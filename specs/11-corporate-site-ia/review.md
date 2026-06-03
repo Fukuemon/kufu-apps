@@ -28,3 +28,22 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 - **指摘 2 (`## 上位資料からの変更点` 改名・反映先別分割)** / **指摘 3 (`## 設計時の論点` への改名)**: **解消済 (2026-06-03 テンプレ統一)**。当初は `templates/specs/template.md` (contract / rubric の正本) と `specs/TEMPLATE.md` (validation hook の参照先) が乖離しており保留としていたが、`templates/specs/template.md` を単一 canonical に統一し (rich 節を fold)、hook・specs/README をそちらへ寄せ、`specs/TEMPLATE.md` を削除した。本 spec も canonical 規約 (`## 上位文書整合` / `## 設計時の論点` / `## 上位資料からの変更点` 反映先別分割) へ移行済。#3 も同様に移行。
 - **指摘 4 (`企業情報.md` 参照不整合)**: 対応済 — L243 を `company-profile.md / manufacturers.md`、L288 を `company-profile.md` に修正。
 - **指摘 5 (`.ai-out/` 調達元参照)**: 対応済 — 備考を「素材は未追跡スクラッチ `.ai-out/` にあり正本ではない / 本文化時に committed reference へ取り込む」旨に書き換え。
+
+## Review 2026-06-03 23:06
+
+Verdict: PASS
+Reviewer: spec-review (fresh-context, subagent=Plan)
+
+### 観点別評価
+
+- 上位文書整合: PASS — `## 上位文書整合` テーブルは埋まっており、PRD (Phase 1 / コーポレートサイト要求)、Design Doc (モジュール責務 / Open Questions「具体的なページ構成」)、feature doc、context (architecture colocation→`packages/ui` 昇格 / testing E2E / infrastructure Cloudflare CDN)、ADR-0003 と矛盾なし。Design Doc / feature doc への back-propagation も現物で反映確認済。新規 ADR 不要の判断も妥当。
+- 未解決論点: PASS — Q1〜Q5 は決定付きで「解決済みの論点」へ移動済。D1〜D3 は決定欄あり (残課題管理)。`## 未確定事項` は「なし」。下流 (図 / 分割) は確定済構成のみに基づく。
+- 実装対象明示: PASS — target は正規一覧と一致。corporate-site ◯ / ui △ / e2e △ の責務境界が読め、app/package 間の直接依存なし。
+- template 必須節: PASS — minimal core 全必須節が存在。前回 NEEDS_WORK の指摘 1 (`## レビュー` 欠落) / 2 (節名・反映先別分割) / 3 (`## 設計時の論点` 改名) はいずれも反映済。
+- EARS acceptance: PASS — WHEN / WHERE / THE SYSTEM SHALL / IF 形式が 8 件、いずれも観測可能。曖昧動詞のみの acceptance なし。
+- prompts 自己完結性: N/A — `prompts/` 未生成。
+
+### 補足 (PASS / 非ブロッキング)
+
+- 前回指摘 4・5 (`.ai-out/` / `企業情報.md` 参照不整合) は index.md line 3 / 243 / 288 / 436 で committed reference (`company-profile.md` / `manufacturers.md`) 正本に統一済を確認。spec 内の内部不整合なし。
+- (参考) `requirements.md` は旧 `.ai-out/...` を「元データ」として残すが、レビュー対象の一次情報 index.md は正本宣言が一貫しており評価に影響なし。
