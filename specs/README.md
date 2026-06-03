@@ -56,7 +56,7 @@ Phase 1 では、次の粒度で spec を切るのを基本とする。
 
 1 spec で複数 package をまたぐ実装が発生してもよいが、論点は 1 つの機能テーマに閉じる。
 
-テンプレートは [TEMPLATE.md](TEMPLATE.md) を使う。
+テンプレートは [templates/specs/template.md](../templates/specs/template.md) を使う (`spec-draft` が自動でコピーする)。必須節は `hooks/spec/validate_document.sh` が、レビュー観点は `spec-review` が検査する。
 
 ## 関連 Skills
 
