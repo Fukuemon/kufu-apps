@@ -112,9 +112,11 @@ done
 # 正本境界 (Source-of-Truth Boundary): spec-sync 済なら design 正本リンクを促す。
 # spec 作成段階 (未 sync) は spec 自身が作業正本でよいため対象外。非ブロッキング警告。
 WARNINGS=()
+# 正本ハンドオフ先は feature doc / landscape DesignDoc / ADR / context のいずれでもよい (Contract「正本境界」)
+SOT_LINK_PATTERN='design/features/[^)]+/DesignDoc_[^)]+\.md|design/DesignDoc\.md|adr/[0-9]+-[^)]+\.md|context/[^)]+\.md'
 if extract_level2_section "## 上位資料からの変更点" | grep -q "反映済" 2>/dev/null; then
-  if ! grep -qE 'design/features/[^)]+/DesignDoc_[^)]+\.md' "$FILE_PATH" 2>/dev/null; then
-    WARNINGS+=("spec-sync 済 (「反映済」行あり) ですが design feature doc への正本リンクが見つかりません。durable な設計成果 (IA / フロー / データモデル等) は design 側を正本にし、spec の該当節は snapshot に降格して正本リンクを張ってください (正本境界)。")
+  if ! grep -qE "$SOT_LINK_PATTERN" "$FILE_PATH" 2>/dev/null; then
+    WARNINGS+=("spec-sync 済 (「反映済」行あり) ですが design 側 (feature doc / DesignDoc / ADR / context) への正本リンクが見つかりません。durable な設計成果 (IA / フロー / データモデル / 技術判断等) は design 側を正本にし、spec の該当節は snapshot に降格して正本リンクを張ってください (正本境界)。")
   fi
 fi
 
