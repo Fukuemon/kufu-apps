@@ -146,6 +146,16 @@ Spec Driven Development (SDD) skill 群 (`.rulesync/skills/spec-*/SKILL.md`) が
 
 `corporate-site`, `cms`, `ui`, `config`, `e2e`, `future-api`
 
+### 正本境界 (Source-of-Truth Boundary)
+
+spec は **issue 単位** の文書、design (PRD / Design Doc / feature doc / context / ADR) は **製本となる正本**。両者の正本関係はライフサイクルで遷移する:
+
+- **spec 作成〜clarify (`spec-draft` / `spec-resolve`)**: spec が自身の決定の作業正本でよい。design へはまだ反映しない。
+- **`spec-sync` 実行時 (正本ハンドオフ)**: durable な設計成果 (IA / サイトマップ / データモデル / フロー / アーキ判断) を design 側へ反映したら、以後 **design 側が正本**。同時に spec の該当節を「決定時スナップショット」に降格し、design への正本リンクを張る。
+- **ハンドオフ後**: spec は論点 / 受け入れ基準 / レビュー / 実装分割 / 決定経緯のみを保持し、durable 成果の正本を二重に持たない (drift 防止)。
+
+判定の目安: 「issue が閉じても残り続ける設計情報」は design 正本、「この issue の意思決定の記録」は spec。
+
 ### Phase Gate ルール
 
 - 各 phase 完了時に `spec-review` (fresh-context evaluator) を通す

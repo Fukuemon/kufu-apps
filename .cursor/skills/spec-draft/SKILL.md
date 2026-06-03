@@ -54,6 +54,8 @@ PRD / Design Doc / feature doc / context / ADR と整合をとった上でスキ
 7. **初期論点の洗い出し**: issue / 上位文書から未確定事項を `論点一覧` に列挙
 8. 次アクションを提案: `spec-resolve` で論点解決へ
 
+> 正本境界 (`Spec Workflow Contract`): 作成段階では spec が自身の決定の作業正本でよい。durable な設計成果 (IA / フロー / データモデル等) を design へ反映し正本を移すのは `spec-sync` の正本ハンドオフで行う。draft 段階で design 側を勝手に書き換えない。
+
 ## 停止条件
 
 - 上位文書 (PRD / Design Doc / feature doc / context / 既存 ADR) と矛盾しており、解決方針が決まらない

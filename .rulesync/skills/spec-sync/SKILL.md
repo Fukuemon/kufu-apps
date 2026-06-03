@@ -55,6 +55,16 @@ spec-resolve が決めた決定の中で、上位文書を書き換えるべき�
 - ADR を新規作成する場合は `templates/adr/template.md` をコピーし、`<adr dir>/<NNNN>-<slug>.md` で作る
 - ADR の番号は `<adr dir>` の最大連番 + 1 を採番する
 - 影響範囲を上位文書側に必ず明記する
+- **durable 成果 (IA / サイトマップ / データモデル / フロー / アーキ判断) を design 側へ反映する場合は、反映先 (feature doc 等) を以後の正本として明記する** (`Spec Workflow Contract` の `正本境界`)
+
+### 3.5 正本ハンドオフ (durable 成果のみ)
+
+durable な設計成果を design 側へ反映したときは、正本を design に移す。spec 側は記録に降格する:
+
+- design 側: 反映した節に「本 doc を正本とする」旨を明記する (該当する場合は spec への決定経緯リンクを併記)
+- spec 側: 反映した durable 節を「決定時スナップショット」と明示し、design への正本リンクを張る
+- 同一 durable 成果について spec と design が二重に「正本」を名乗らないようにする (drift 防止)
+- 論点 / 受け入れ基準 / レビュー / 実装分割 / 決定経緯は spec に残す (ハンドオフ対象外)
 
 ### 4. spec 側のトレース更新
 

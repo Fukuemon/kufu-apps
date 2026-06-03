@@ -72,6 +72,18 @@
 
 → いずれか違反があれば `NEEDS_WORK`。
 
+## 7. 正本境界 (Source-of-Truth Boundary) — sync 済 spec のみ
+
+`Spec Workflow Contract` の `正本境界` に従い、durable 成果の正本が spec から design へハンドオフ済かを確認する。判定は spec のライフサイクル段階で条件分岐する:
+
+- spec の `## 上位資料からの変更点` に design (feature doc 等) への **「反映済」行がない** (= 未 `spec-sync`) → 本観点は `N/A` (spec が作業正本でよい段階)。
+- 「反映済」行がある (= `spec-sync` 済) 場合:
+  - durable 成果 (IA / サイトマップ / データモデル / フロー / アーキ判断) の正本が design 側にあり、spec はそれを参照しているか
+  - spec の該当節が「決定時スナップショット」と明示され、design への正本リンクを持つか
+  - 同一 durable 成果について spec と design が二重に「正本」を名乗っていないか
+
+→ sync 済なのに spec が durable 成果の正本を抱えたまま design へリンクしていなければ `NEEDS_WORK`、対応として `spec-sync` の正本ハンドオフを提案する。
+
 ## 出力フォーマット
 
 ```text
@@ -85,6 +97,7 @@ Verdict: PASS | NEEDS_WORK
 - template 必須節: PASS / NEEDS_WORK — <短評>
 - EARS acceptance: PASS / NEEDS_WORK — <短評>
 - prompts 自己完結性: PASS / NEEDS_WORK / N/A — <短評>
+- 正本境界: PASS / NEEDS_WORK / N/A — <短評>
 
 ### 指摘 (NEEDS_WORK の場合のみ)
 - <file:line / section> — <内容>
