@@ -25,11 +25,21 @@
 | 10  | 実装分割                    | 完了 | 2026-05-09 | P1-P4 の prompt と実装分割を確定             |
 | 11  | レビュー済                  | 完了 | 2026-05-10 | 実装との差分を是正済み                       |
 
-## 上位ドキュメント確認
+## 上位文書整合
 
 - PRD 更新要否: 更新済み。Phase 1 をコーポレートサイト foundation に絞る前提へ修正
-- Design Docs 更新要否: 更新済み。`e2e` と `packages/config` の責務境界を修正
+- Design Doc 更新要否: 更新済み。`e2e` と `packages/config` の責務境界を修正
 - ADR 起票要否: 更新済み。`adr/0002` と `adr/0003` を追加
+
+| 上位文書    | 節 / 該当箇所                                    | 整合方針 (継承 / 補足 / 変更提案) |
+| ----------- | ------------------------------------------------ | --------------------------------- |
+| PRD         | Phase 1 スコープ → コーポレートサイト foundation | 変更提案 (反映済)                 |
+| Design Doc  | モジュール責務 → `e2e` / `packages/config` 境界  | 変更提案 (反映済)                 |
+| Design Doc  | Toolchain → 採用技術と導入順                     | 補足                              |
+| feature doc | -                                                | 影響なし (foundation のため)      |
+| context     | architecture / toolchain → 責務境界・採用方針    | 補足                              |
+| ADR-0002    | scaffold は公式 create command を優先            | 変更提案 (新規起票)               |
+| ADR-0003    | Phase 1 は corporate-site のみ / CMS は後続      | 変更提案 (新規起票)               |
 
 ## 関連資料
 
@@ -91,7 +101,7 @@
 - 主操作主体は Kufu Monorepo の開発者と AI エージェント
 - 二次的な利用者は、後続のコーポレートサイト実装、CMS 設計、共通 package 整備を行う実装担当者
 
-## 論点一覧
+## 設計時の論点
 
 | #   | 論点                                                | 決定候補                                                      | 決定                             |
 | --- | --------------------------------------------------- | ------------------------------------------------------------- | -------------------------------- |
@@ -515,6 +525,35 @@ pnpm depcruise
 - Analysis Pass: `knip` と `dependency-cruiser` の実行導線が通るか
 - Toolchain Coverage Pass: Design Doc Toolchain 節にある採用技術が spec の導入対象または後続判断対象として列挙されているか
 
+## フロー / シーケンス
+
+### Flowchart (開発者のセットアップ導線)
+
+```mermaid
+flowchart TD
+    Install["pnpm install (workspace 解決)"] --> Root["root scripts / turbo.json / playwright.config.ts"]
+    Root --> Corp["apps/corporate-site (Astro 最小 entry)"]
+    Root --> Pkg["packages/ui / packages/config (shared)"]
+    Corp --> Check["dev / build / lint / typecheck / test"]
+    Pkg --> Check
+    Check --> E2E["e2e (root Playwright + app e2e:serve)"]
+    Check --> Analysis["knip / depcruise (root analysis)"]
+```
+
+### Sequence (E2E wiring)
+
+```mermaid
+sequenceDiagram
+    actor Dev as 開発者
+    participant Root as root Playwright
+    participant App as 対象 app (e2e:serve)
+
+    Dev->>Root: pnpm e2e (E2E_TARGET 指定)
+    Root->>App: e2e:serve 起動 (build && preview)
+    App-->>Root: E2E_BASE_URL で待受
+    Root-->>Dev: critical flow を検証し結果を返す
+```
+
 ## 実装分割
 
 ### 実装タスク案
@@ -532,15 +571,49 @@ pnpm depcruise
 - root scripts と shared config package の contract を先に固定する
 - `apps/cms` は今回の prompt 分割に含めず、別 issue / spec で技術選定と設計から着手する
 
-## 既存資料からの変更点
+## 上位資料からの変更点
 
-| 対象                                                      | 変更内容 | 理由                                                                                      |
-| --------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------- |
-| `PRD.md`                                                  | 更新あり | issue #3 をコーポレートサイト foundation に絞り、Phase 1 / Phase 2 の境界を明確にするため |
-| `design/DesignDoc.md`                                     | 更新あり | root 管理の `e2e` と `packages/config` の責務を明確にするため                             |
-| `adr/0001-terraform-infra-repository-boundary.md`         | 変更なし | infra repo 分離方針は issue #3 の前提として流用できるため                                 |
-| `adr/0002-monorepo-scaffold-create-command-policy.md`     | 更新あり | app scaffold 方針を issue #3 の判断として残すため                                         |
-| `adr/0003-phase1-corporate-site-only-and-cms-deferred.md` | 更新あり | app 対象範囲の判断を issue #3 の判断として残すため                                        |
+本 spec で各上位資料から変更・追加した内容を反映先別に記録する。
+
+### PRD への影響
+
+| 対象節           | 変更内容                                                                        | 理由     |
+| ---------------- | ------------------------------------------------------------------------------- | -------- |
+| Phase 1 スコープ | issue #3 をコーポレートサイト foundation に絞り、Phase 1 / Phase 2 境界を明確化 | 更新あり |
+
+### Design Doc への影響
+
+| 対象節         | 変更内容                                              | 理由     |
+| -------------- | ----------------------------------------------------- | -------- |
+| モジュール責務 | root 管理の `e2e` と `packages/config` の責務を明確化 | 更新あり |
+
+### feature doc への影響
+
+| 対象 doc / 節 | 変更内容                                          | 理由 |
+| ------------- | ------------------------------------------------- | ---- |
+| -             | 影響なし (foundation のため feature doc は対象外) | -    |
+
+### context への影響
+
+| 対象 doc / 節            | 変更内容                         | 理由 |
+| ------------------------ | -------------------------------- | ---- |
+| architecture / toolchain | 責務境界・採用技術・導入順を補足 | 補足 |
+
+### ADR の新規 / 更新
+
+| ADR ID   | 変更内容 | 理由                                                        |
+| -------- | -------- | ----------------------------------------------------------- |
+| ADR-0001 | 変更なし | infra repo 分離方針は前提として流用                         |
+| ADR-0002 | 新規起票 | app scaffold は公式 create command を優先する判断を残すため |
+| ADR-0003 | 新規起票 | Phase 1 は corporate-site のみ / CMS は後続の判断を残すため |
+
+## レビュー
+
+`spec-review` の最新結果。完全な記録は `review.md` を参照。
+
+| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                            | 対応 |
+| ---------- | ------------------------ | --------------------------------------------------- | ---- |
+| 2026-05-10 | PASS                     | 実装との差分を是正し受け入れ条件を確認 (レビュー済) | 完了 |
 
 ## 変更履歴
 

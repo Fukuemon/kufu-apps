@@ -6,7 +6,7 @@
 
 - PRD path (`Spec Workflow Contract` 参照)
 - Design Doc path (同上)
-- feature doc dir (`design/features/<feature>.md`)
+- feature doc (`design/features/<feature>/DesignDoc_<feature>.md`)
 - context library (`context/<topic>.md`)
 - ADR dir (同上)
 - 対象 issue 要約 / draft 内容
@@ -20,7 +20,7 @@
 2. Design Doc (landscape) の以下を確認:
    - モジュール責務 (`apps/*`, `packages/*`, `e2e`)
    - Phase 方針 / 設計上の重要ポイント / Alternatives
-3. feature doc (`design/features/<feature>.md`) の以下を確認:
+3. feature doc (`design/features/<feature>/DesignDoc_<feature>.md`) の以下を確認:
    - 対象 feature の設計方針 / データ構造 / 主要ユースケース / テスト観点
 4. context (`context/<topic>.md`) の以下を確認:
    - architecture (package / runtime / state boundary)
