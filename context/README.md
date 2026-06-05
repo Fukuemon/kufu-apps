@@ -1,6 +1,6 @@
 # Engineering Context Library
 
-> 最終更新: 2026-05-31
+> 最終更新: 2026-06-06
 
 `context/` は **技術スタック別のコード規約・コードベースアーキテクチャ・運用契約** を集約する永続ナレッジ層である。Feature を問わず横断する "How" を置き、PRD / Design Doc / spec から参照する。
 
@@ -17,13 +17,14 @@
 
 ## ファイル一覧
 
-| ファイル                               | 内容                                                                |
-| -------------------------------------- | ------------------------------------------------------------------- |
-| [architecture.md](architecture.md)     | codebase architecture: package / runtime boundary, 依存方向         |
-| [toolchain.md](toolchain.md)           | toolchain 一覧, build 構成, scaffold policy                         |
-| [engineering.md](engineering.md)       | root task boundary, shared config boundary, repository quality gate |
-| [testing.md](testing.md)               | E2E runtime contract, unit test 規約                                |
-| [infrastructure.md](infrastructure.md) | infra / deployment / environment / operations / security 契約       |
+| ファイル                                 | 内容                                                                   |
+| ---------------------------------------- | ---------------------------------------------------------------------- |
+| [architecture.md](architecture.md)       | codebase architecture: package / runtime boundary, 依存方向            |
+| [toolchain.md](toolchain.md)             | toolchain 一覧, build 構成, scaffold policy                            |
+| [engineering.md](engineering.md)         | root task boundary, shared config boundary, repository quality gate    |
+| [testing.md](testing.md)                 | E2E runtime contract, unit test 規約                                   |
+| [infrastructure.md](infrastructure.md)   | infra / deployment / environment / operations / security 契約          |
+| [design-workflow.md](design-workflow.md) | デザイン制作の段階別ツール運用 (Claude Design → Pencil.dev → AI Agent) |
 
 ## Producer / Consumer 契約
 
