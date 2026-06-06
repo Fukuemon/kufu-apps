@@ -21,15 +21,19 @@
 
 ## 決定
 
-- デザイン制作ワークフローを次の3 phase に確定する。**デザインシステム正本は常に `packages/ui`（トークン + コンポーネント）とし、各ツールはこれを消費するだけで fork しない。**
+- デザイン制作ワークフローを次の **design-first** な単一フローに確定する。**デザインシステム正本は常に `packages/ui`（トークン + コンポーネント）とし、各ツールはこれを消費するだけで fork しない。**
 
-  | Phase               | ツール              | 目的                                                             | 成果の扱い                                                   |
-  | ------------------- | ------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------ |
-  | A 発散（方向性）    | Claude Design       | repo を入力に既存トークン/コンポを踏まえた方向性プロトを2〜3案   | 使い捨て HTML。方向性決定のみ採用し commit しない            |
-  | B 収束（UI 構造化） | Pencil.dev          | 採用方向を `packages/ui` コンポへマッピングし pixel レベルで確定 | `.pen`(JSON) を repo に commit（Git 管理）                   |
-  | C 実装              | Claude Code / Codex | Pencil MCP で canvas を読み Astro + `@kufu/ui` 実装を生成        | durable な設計判断は feature doc / トークンへ back-propagate |
+  | Phase       | ツール               | 目的                                      | 成果の扱い                                   |
+  | ----------- | -------------------- | ----------------------------------------- | -------------------------------------------- |
+  | A0 依頼設計 | 手動 / Claude Code   | Claude Design 依頼文を組む                | `.prompt.md` を commit（再現性）             |
+  | A 方向性    | Claude Design        | 方向性プロトを2〜3案出して比較・決定      | 使い捨て HTML。commit しない                 |
+  | import      | Claude Design→Pencil | 採用案の HTML を Pencil canvas へ取り込む | 中間成果（`.pen` の元）                      |
+  | B 収束      | Pencil + 内蔵 Agent  | canvas で pixel 精緻化し `.pen` を確定    | `.pen` + `images/` を commit（デザイン正本） |
+  | C 実装      | Claude Code / Codex  | `.pen`(JSON)+デザインを参照して実装       | `.astro` / React（静的生成・最小 island）    |
 
-- **Pencil.dev を中核ツールとして採用**する。理由: ① IDE 内で動く ② shadcn ネイティブで `packages/ui` と整合 ③ `.pen` が JSON で Git 管理可能、本リポの「正本は repo 内」方針に合致 ④ Claude Code と MCP 直結で実装ハンドオフが滑らか。
+- **デザイン → コードは一方向に確定**する。**Pencil へコードを round-trip しない**。理由: ① Pencil は `.astro` 非対応（React/Vue/Svelte/HTML のみ）で Astro 中心の本リポと噛み合わない ② Pencil の code↔design は AI 再生成で非可逆（複雑レイアウトで 4〜8px のズレ報告）。よって `.pen` をデザイン正本にし、コードは `.pen` から生成、デザイン変更は `.pen` を直してから該当コードを再生成する。
+- **Pencil.dev を中核デザインツールとして採用**する。理由: ① IDE 内で動く ② shadcn ネイティブで `packages/ui` と整合 ③ `.pen` が JSON で Git 管理可能、本リポの「正本は repo 内」方針に合致 ④ トークンを `globals.css` から取り込み消費できる。
+- **ディレクトリ規約を確定**する: Claude Design 仮置き = `design/.staging/`（gitignore）、デザイン正本 = `apps/<app>/design/<screen>.pen`（+ `images/`、commit）、実装 = `apps/<app>/src/`、トークン正本 = `packages/ui/src/styles/globals.css`。詳細は `context/design-workflow.md`。
 - **Claude Design は phase A（発散）の補助**として採用する。非デザイナー（オーナー / PM）が方向性を素早く探索する用途に限定し、確定成果物の正本にはしない。
 - **Figma + MCP は fallback** として位置づける。チームが既に Figma 主体である、または非エンジニアを含む共同デザインレビューが必要な場合に採用し、その際は Figma MCP で実装へハンドオフする。
 - ツール導入の妥当性は、corporate-site の1ページで phase A→C を実走するパイロットで検証してから本採用とする。
@@ -60,7 +64,7 @@
 - Pencil 単独では非デザイナーの発散・方向性探索の入口が弱く、白紙からの立ち上げが重い。
 - 発散と収束は要求される性質が異なり、1ツールに寄せると一方が犠牲になる。
 
-### 3. デザインツールを使わずコードファースト（AI Agent 直接実装）
+### 3. デザインツールを使わず AI Agent が直接実装する
 
 #### Pros
 
@@ -76,7 +80,7 @@
 ### 良い影響
 
 - 発散（Claude Design）と収束（Pencil）の役割が分離し、各フェーズの成果物の正本所在が一意になる。
-- `.pen`(JSON) を Git 管理することで、デザインも repo 内正本として差分レビューできる。
+- `.pen`(JSON) を Git 管理することで、デザインも repo 内正本としてバージョン管理できる（差分は描画/スクショで確認）。
 - shadcn ネイティブな Pencil と `packages/ui` が整合し、実装コードが `@kufu/ui` トークンを自然に参照する。
 - プラットフォーム共通フローのため、corporate-site 以降の app / feature でも再利用できる。
 
@@ -86,6 +90,9 @@
 - Pencil.dev は Figma 比で成熟度が低く、想定外の制約に当たる可能性がある（パイロットで検証）。
 - 3ツール運用のため学習・セットアップ（特に Pencil MCP）の初期コストが発生する。
 - トークン正本を `packages/ui` に一元化する制約をツール側に守らせる運用規律が必要。
+- `.pen` → コードは一方向のため、実装後にコードを直接変更すると `.pen` と drift する。`.pen` をデザイン正本として扱い、デザイン変更は `.pen` 起点で行う運用規律でカバーする。
+- `.pen` は幾何ツリーで意味論を持たず、レスポンシブ / 状態 / 動的データ / 実コンテンツも表現しにくい。実装時に `@kufu/ui` への写像と spec/feature doc での補完が必須（緩和策は context/design-workflow.md §8）。
+- `.pen`(JSON) の座標差分は PR で読みづらく、レビューはレンダリング/スクショ依存になる。`.pen` をトークン源泉にしない（一方向 `packages/ui` → Pencil）governance が必要。
 
 ### 影響範囲
 
