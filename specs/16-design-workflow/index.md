@@ -12,7 +12,7 @@
 - Issue: `#16`
 - ステータス: `In Progress`
 - 作成日: 2026-06-06
-- 更新日: 2026-06-06 (D1 / D2 / D4 解決 / #17 分離)
+- 更新日: 2026-06-06 (D1〜D4 すべて解決 / #17 分離)
 - Branch: `feature/16`
 - Owner: Fukuemon
 
@@ -25,8 +25,8 @@
 | 1   | 起票                        | 完了   | 2026-06-06 | requirements intake 済                        |
 | 2   | 下書き                      | 完了   | 2026-06-06 | spec-draft scaffold                           |
 | 3   | 上位文書突合                | 完了   | 2026-06-06 | 矛盾なし / ADR-0004・context へハンドオフ済み |
-| 4   | 論点整理                    | 進行中 | 2026-06-06 | 設計時論点 D1〜D3                             |
-| 5   | 論点解決                    | 進行中 | 2026-06-06 | D1 / D2 / D4 解決、残 D3                      |
+| 4   | 論点整理                    | 完了   | 2026-06-06 | 設計時論点 D1〜D4 を洗い出し                  |
+| 5   | 論点解決                    | 完了   | 2026-06-06 | D1〜D4 すべて解決                             |
 | 6   | Interface / Routing 設計    | 未着手 |            | process spec のため最小                       |
 | 7   | Content / Data 設計         | 未着手 |            | process spec のため該当なし見込み             |
 | 8   | Performance / Security 設計 | 未着手 |            | Astro 静的生成・最小 island 維持              |
@@ -116,9 +116,9 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 設計 / 実装フェーズへ持ち越す残課題を 1 件ずつ管理する。確定したものは「解決済みの論点」へ移す。
 
-| #   | 論点                                                                             | 決定候補                                                 | 決定 |
-| --- | -------------------------------------------------------------------------------- | -------------------------------------------------------- | ---- |
-| D3  | トークン正本ガード (`@kufu/ui` 参照 / fork 検出) を手動運用か自動化 (lint 等) か | 当面は手動レビュー / 将来 lint・depcruise ルール化を検討 | 未決 |
+| #   | 論点                                         | 決定候補 | 決定 |
+| --- | -------------------------------------------- | -------- | ---- |
+| —   | (すべて解決済み。下記「解決済みの論点」参照) | —        | —    |
 
 ## 解決済みの論点
 
@@ -128,13 +128,15 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 - **Pencil.dev の有償プラン要否**: **無償枠を既定**。有償化トリガーは ① 非エンジニア含む共同レビュー / 本格デザインオペが必要 → Figma + MCP、② Pencil の seat / 機能上限のみ → Pencil 有償。決定日 2026-06-06。
 - **D1 パイロット対象ページの選定**: 具体ページ選定は **パイロット起動時に #10 (本体実装) と協調して確定**する (ページ選定は IA 決定ではなくパイロット運用判断)。検討中に出た「多ページ構成そのものの是非」は #16 のスコープ外 (IA = #11 / feature doc が正本) のため [#17](https://github.com/Fukuemon/kufu-apps/issues/17) へ分離。本 spec は確定 IA を前提とする。決定日 2026-06-06。
 - **D2 `.pen` の分割粒度**: **分割する方針を採用**。共通要素 (header / footer / nav / CTA / card 等) は Pencil の **Design Library `*.lib.pen`** に集約し、各画面は `<screen>.pen` がそれを `imports` で取り込む構成とする。根拠: Pencil は `imports` (alias → 相対 `.pen` URI) と Design Library (`*.lib.pen`、編集が使用箇所へ伝播) を備え、複数ファイル + ファイル間再利用が標準パターン。単一ファイルは共通デザイン意図が画面ごとに重複し drift を招く ([§8 課題7](../../context/design-workflow.md))。**`*.lib.pen` はデザイン意図に限定**し、コードのコンポーネント正本は `packages/ui` + Storybook (#6)、実装時に `@kufu/ui` へ写像する。拡張子 / 命名 / `imports` 運用の実用性は**パイロットで確認**し、最終ルールを context §4 へ確定反映 (spec-sync)。決定日 2026-06-06。
+- **D3 トークン正本ガードの運用**: **段階的アプローチ**を採用。当面は **手動ガード**（[context §6](../../context/design-workflow.md) を正本とし、PR レビュー観点でチェック: ①実装コードが `@kufu/ui` トークンを参照しているか ②`.pen` が `packages/ui` を fork していないか）。**コード側 lint の自動化**（raw hex / arbitrary value `text-[#fff]` 禁止 → semantic token 強制を `pnpm lint` / pre-commit へ統合）は **corporate-site 本体実装 (#10) で実コードが出てから別途検討**する（早すぎる infra を避ける = Decision Priority）。`.pen` の fork 検出は幾何 JSON で自動判定が脆いため（[§8 課題6/7](../../context/design-workflow.md)）**レンダリング/レビューの手動を継続**。決定日 2026-06-06。
+  - **手動ガードの運用導線を先回り整備済み**: ① `.rulesync/rules/CLAUDE.md` Forbidden Patterns に「実装コードでのトークン直書き禁止（`@kufu/ui` / `globals.css` 参照）」を追加（generated 反映済）② `.github/PULL_REQUEST_TEMPLATE.md` と workflow-git PR 本文テンプレに **Design Guard チェックリスト**（§6: トークン参照 / `.pen` fork なし）を追加。実コードが出る #10 で即発火する。
 - **D4 `.pen` の配置ディレクトリ**: **`design/features/<feature>/` を維持**する (確定済み規約 [context §4](../../context/design-workflow.md) / [ADR-0004](../../adr/0004-design-production-workflow.md) を再確認)。理由: 依頼文 / `.pen` / `*.lib.pen` / `images/` を feature 設計 home (`DesignDoc_<feature>.md` + `reference/`) と同居させ **単一の design 正本ツリー**にする。`apps/<app>/` は実装コードのみ (ADR-0004)、`packages/ui` はトークン / コード正本に保ち `.pen` を混ぜない (§8 課題7 の二重正本回避)。`.pencil/` 隠しディレクトリは採らない (commit するデザイン正本の可視性を優先)。feature 内共通要素は `design/features/<feature>/<feature>.lib.pen`。**app 横断の platform 級共通 lib は `design/ui/` を予約** (YAGNI: 必要時に追加し context §4 へ反映)。決定日 2026-06-06。
 
 ## 未確定事項
 
 (決定できない項目を理由とともに残す。1 件でも残っていれば下流 phase は止める)
 
-- なし。残課題は設計時論点 D1〜D3 (パイロットで検証する性質) として管理する。
+- なし (D1〜D4 すべて解決済み)。実装フェーズへ持ち越す follow-up: ① パイロットでの `.pen` 拡張子/命名/`imports` 運用の最終確定 (D2) ② コード側トークン lint の自動化検討 (D3、#10 実装後)。いずれも本 spec の下流 phase を止めない。
 
 ## 実装対象
 
@@ -196,6 +198,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 ### Testing
 
 - パイロットで **`.pen` 参照の `.astro` 実装精度** を確認する (context §9)。許容差を決めて目視確認とし、`.pen`→コードは AI 再生成で非決定的である前提を持つ (context §8 課題5)。
+- **トークン正本ガード (D3) は当面手動**: PR レビュー観点で ①実装が `@kufu/ui` トークンを参照 ②`.pen` が `packages/ui` を fork していない、を確認する (context §6)。コード側 lint 自動化は #10 実装後に別途検討。
 
 ## Interface 設計
 
@@ -328,6 +331,8 @@ corporate-site の 1 ページパイロットを phase 順に分割する。
 | ADR-0004 | 新規作成 (デザイン制作ワークフロー、状態=提案、反映済) | ツール選定の意思決定を正本化 |
 
 > その他 (target 一覧外の成果物、反映済): `.rulesync/skills/design-prompt/` 新規 + 各 provider 生成物 (`.claude/` / `.codex/` / `.cursor/`)、`design/features/<feature>/` のデザイン成果物集約規約の確定、`.gitignore` に `design/.staging/` を追記。
+>
+> **D3 手動ガード導線 (反映済)**: `.rulesync/rules/CLAUDE.md` Forbidden Patterns にトークン直書き禁止を追記 (generated 再生成済)、`.github/PULL_REQUEST_TEMPLATE.md` 新規作成 + workflow-git PR 本文テンプレに Design Guard チェックリスト (§6) を追加。<!-- source: spec-resolve -->
 
 ## レビュー
 
