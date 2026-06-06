@@ -5,6 +5,7 @@
 *.swp
 *~
 .ai-out/*
+design/.staging/
 node_modules/
 .pnpm-store/
 dist/

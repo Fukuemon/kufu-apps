@@ -2,81 +2,151 @@
 
 > 最終更新: 2026-06-06
 
-デザイン制作（ワイヤー作成 → デザインシステム適用 → 実装）の **プラットフォーム共通ワークフロー** を定める横断契約。ツール選定の意思決定根拠は [ADR-0004](../adr/0004-design-production-workflow.md)、デザインシステムの _中身_（トークン）は [design system foundation (#13)](https://github.com/Fukuemon/kufu-apps/issues/13) が正本。本書は _どう作るか_ の運用正本。
+デザイン制作（方向性 → UI 確定 → 実装）の **プラットフォーム共通ワークフロー** を定める横断契約。
 
-## 大原則
+- ツール選定の意思決定根拠 → [ADR-0004](../adr/0004-design-production-workflow.md)
+- デザインシステムの _中身_（トークン）の正本 → [design system foundation (#13)](https://github.com/Fukuemon/kufu-apps/issues/13)
+- 本書は _どう作るか_（プロセス・ディレクトリ・拡張方針）の運用正本。
 
-- **デザインシステム正本は `packages/ui`**（トークン = [`globals.css`](../packages/ui/src/styles/globals.css) の CSS 変数 + コンポーネント）。各ツールはこれを **消費** するだけで fork しない。
-- 発散（方向性探索）と収束（UI 確定）は性質が異なるため、フェーズごとにツールを使い分ける。
-- durable な設計判断（IA / レイアウト / フロー / アーキ判断）は最終的に [design/features/](../design/features/) と `packages/ui` トークンへ back-propagate し、design 側を正本にする。
+## 1. 大原則
 
-## フェーズとツール
+1. **デザインシステム正本は `packages/ui`**（トークン = [`globals.css`](../packages/ui/src/styles/globals.css) の CSS 変数 + コンポーネント）。各ツールはこれを **消費** するだけで fork しない。トークンは **一方向 `packages/ui` → Pencil**（consume のみ）。Pencil から `globals.css` を書き戻さない。新トークンが要る場合は先に `packages/ui`（#13）へレビュー経由で昇格してから Pencil に取り込む。`.pen` は「トークンを使ったデザイン」であって「トークンを定義する場所」ではない。
+2. **デザイン正本は `.pen`**（repo 内・Git 管理）。**デザイン → コードは一方向**。Pencil へコードを round-trip しない（理由は §3「なぜコードを Pencil へ戻さないか」）。
+3. **drift 最小**。`.pen` を「デザイン正本」、コードを「実装正本」とし、レビューで対応づける。durable な設計判断は [design/features/](../design/features/) と `packages/ui` トークンへ back-propagate して design 側を正本にする。
 
-| Phase               | ツール                  | 目的                                                             | 入力                         | 成果物の扱い                                          |
-| ------------------- | ----------------------- | ---------------------------------------------------------------- | ---------------------------- | ----------------------------------------------------- |
-| A 発散（方向性）    | **Claude Design**       | 既存トークン/コンポを踏まえた方向性プロトを2〜3案                | repo / 画像 / 言語化した要件 | 使い捨て HTML。方向性決定のみ採用し **commit しない** |
-| B 収束（UI 構造化） | **Pencil.dev**          | 採用方向を `packages/ui` コンポへマッピングし pixel レベルで確定 | phase A の方向性 + IA (#11)  | `.pen`(JSON) を repo に **commit**（Git 管理）        |
-| C 実装              | **Claude Code / Codex** | Pencil MCP で canvas を読み Astro + `@kufu/ui` 実装を生成        | `.pen` + design feature doc  | 実装コード。設計判断は design 側へ back-propagate     |
+## 2. 全体フロー
 
-### Phase A — Claude Design（発散）
+確定した単一フロー（**design-first**）。`.pen` をデザイン正本にし、コードは `.pen` から一方向に生成する。
 
-- codebase を入力に与え、既存の `packages/ui` トークン/コンポを踏まえた方向性を出させる。
-- 非デザイナー（オーナー / PM）が方向性を素早く比較・決定する用途に限定する。
-- 出力（自己完結 HTML）は**正本にしない**。決定した方向性のみを phase B へ引き継ぐ。
+```mermaid
+flowchart LR
+  A0["A0. プロンプト設計<br/>.prompt.md (commit)"] --> A["A. 方向性探索<br/>Claude Design (HTML)"]
+  A -->|import| B["B. UI 収束<br/>Pencil + 内蔵 Agent"]
+  B --> PEN["design/&lt;screen&gt;.pen<br/>(デザイン正本・commit)"]
+  PEN -->|参照| C["C. 実装<br/>Claude Code → .astro / React"]
+  PUI["packages/ui (トークン正本)"] -.consume.-> A0 & B & C
+```
 
-### Phase B — Pencil.dev（収束）
+| Phase       | ツール               | 目的                                      | 成果物                                  |
+| ----------- | -------------------- | ----------------------------------------- | --------------------------------------- |
+| A0 依頼設計 | 手動 / Claude Code   | Claude Design 依頼文を組む                | `.prompt.md` を **commit**（再現性）    |
+| A 方向性    | Claude Design        | 方向性プロトを2〜3案出して比較・決定      | 使い捨て HTML（staging）。commit しない |
+| import      | Claude Design→Pencil | 採用案の HTML を Pencil canvas へ取り込む | （中間成果。`.pen` の元）               |
+| B 収束      | Pencil + 内蔵 Agent  | canvas で pixel/余白/階層を精緻化         | `.pen` + `images/` を **commit**        |
+| C 実装      | Claude Code / Codex  | `.pen`(JSON)+デザインを参照して実装       | 本実装（`.astro` / React）              |
 
-- IDE（VS Code / Cursor）内 canvas で、採用方向を `packages/ui`（shadcn ネイティブ）のコンポーネントへマッピングしながら pixel レベルで確定する。
-- `.pen` ファイルは純 JSON のため **repo に commit して Git 管理**する（差分レビュー可能）。外部 SaaS にデザイン正本を置かない方針に合致。
+## 3. フェーズ詳細
 
-### Phase C — AI Agent（実装）
+### Phase A0 — プロンプト設計（Claude Design 依頼文の作成）
 
-- Pencil MCP サーバ経由で Claude Code / Codex が canvas を読み、Astro + `@kufu/ui` の実装を生成する。
-- 生成コードは `@kufu/ui` のトークン/コンポーネントを参照すること（独自値を散在させない）。
-- 性能方針（Astro 静的生成・最小 island）は [architecture.md](architecture.md) / [toolchain.md](toolchain.md) に従う。
+Claude Design の出力品質は依頼文に強く依存する（ベストプラクティス: 密な単一段落で具体的だと初稿が約 2/3 で実用、曖昧だとほぼゼロ）。対象画面ごとに依頼文を組み、`apps/<app>/design/<screen>.prompt.md` に **commit** する（再現性 = §8 課題5 対策）。
 
-## Claude Design → Pencil の受け渡し（変換）
+#### 初回セットアップ（design system 連携）
 
-Claude Design の export は **.zip / standalone HTML（fonts・画像・ブランド資産を全てインライン化した単一 .html）/ Handoff to Claude Code（design intent・component 構造・styling を含む handoff bundle）** などがある。Pencil の「Code → Design」import は、**同一 workspace 上のコード/ファイルを AI チャット（Cmd/Ctrl+K）で `Recreate the X component from <path>` のように指示して canvas へ取り込む**方式。raw HTML を直接読む専用 import ではなく「workspace 内のファイルを AI が参照して再現する」点が肝。したがって最適解は2ルート:
+- Claude Design の Import で **codebase をリンク**し、`packages/ui` のトークン/コンポを design system として読ませる。
+- **モノレポは全体でなく `packages/ui`（+ 対象 app）に絞ってリンク**する（性能・ブラウザ不安定回避）。`.git` / `node_modules` は含めない。
 
-- **ルート1（コードファースト・推奨）**: Claude Design → **Handoff to Claude Code** → Claude Code がリポ内に実コンポーネント（Astro + `@kufu/ui` 参照）を生成 → Pencil で「Code → Design」import し canvas で精緻化 → コードへ反映。Claude Design 出力を早期に実装正本へ落とすため drift が最小。
-- **ルート2（アーティファクトファースト）**: Claude Design → **standalone HTML** を後述の仮置き場へ出力 → Pencil の AI に「この HTML を再現して」と指示し `.pen` 化 → 精緻化 → コード生成。方向性を視覚のまま持ち込みたい時に使う。
+#### 依頼文テンプレ（goal / layout / content / audience を1段落で）
 
-### 仮置き場（staging）
+- **goal**: 何の画面/セクションを何のために作るか
+- **layout**: 視覚構造（セクション順・グリッド・nav 形式）。IA は [#11](https://github.com/Fukuemon/kufu-apps/issues/11) / [design/features/](../design/features/)
+- **content**: ドメインと **実コンテンツ素材**（company-profile / manufacturers の実テキスト。ダミー回避）
+- **audience**: 誰向けか（例: 取引先・採用候補）
+- **制約**: `packages/ui` トークン踏襲、Astro 静的・最小 island・性能予算、レスポンシブ（desktop / mobile）
+- **出力**: standalone HTML、**2〜3案**、対象画面サイズ
+- **状態**: empty / error / loading / データ量違い も出させる（§8 課題3/4 の前倒し緩和）
 
-Claude Design 出力は phase A の使い捨て成果なので、**`.pen` や実装コードと混ざらない一時置き場**を用意する。`design/.staging/`（gitignore 推奨）か `specs/<issue>/mocks/` に置き、採用したものだけ phase B/C へ送る。**Claude Design の HTML 自体は正本にしない（commit しない）**。
+#### 書き方のコツ
 
-## ファイル構成
+- 否定形でなく **具体指定**（×「クリーム色を使わない」→ ○「淡いシルバーグレー〜ブルーグレー、角丸 4px、角張った sans-serif」）。
+- 汎用 AI 然とした既定（Inter/Roboto、紫グラデ等）を避け、ブランド固有の選択を明示。
+- **コンポーネント名を一貫させる**（名前が後段の import/実装まで伝わる）。
 
-- **`.pen` ファイル**: JSON ベース・version-control friendly。**1プロジェクト＝複数 `.pen` 可**で、`dashboard.pen` / `components.pen` のように目的別に分割してよい。コードと同じ workspace に置き Git 管理する。
-- **アセット**: 生成画像は `.pen` と同階層の `images/` に保存される（相対参照）。effect 等も `.pen` からの相対パス参照。
-- **変数（tokens）**: Pencil の変数は **CSS custom properties にマップ**できる。`Create Pencil variables from my globals.css` で [`packages/ui/src/styles/globals.css`](../packages/ui/src/styles/globals.css) のトークンを取り込み、視覚編集してコードへ同期可能。→ `packages/ui` を正本に保ったまま Pencil 側で消費できる。
+### Phase A — 方向性探索（Claude Design）
 
-推奨配置（例）: 対象 app/feature の近くに `*.pen` と `images/` を置く（例: `apps/corporate-site/design/home.pen`）。トークンの正本はあくまで `packages/ui`。
+- A0 の依頼文で 2〜3 案を出す。非デザイナー（オーナー / PM）が方向性を素早く比較・決定する用途に限定する。
+- **Claude が生成前に出す clarifying questions に必ず答える**（ここで品質が大きく上がる）。
+- 修正は道具を使い分ける: **chat=構造的な作り替え / inline comment=要素を直接指す局所修正（chat より正確）/ adjustment knobs=spacing・color のライブ調整**。
+- 大胆な別案は「今のを保存して全く別方向を試して」で分岐させる。
+- 採用案を standalone HTML で `design/.staging/`（gitignore 済み）へ出力する。**HTML 自体は正本にしない**。
+- 期待値: Claude Design は **80〜90% の完成度の高速プロトタイピング**向き。pixel 確定は phase B（Pencil）で行う。
 
-## shadcn/ui で表現できないデザインの場合
+### import — Claude Design → Pencil
 
-shadcn/ui は **コードを自分のリポに copy して所有する**モデルなので、「表現できない＝行き止まり」にはならない。優先順:
+- Pencil の AI（`Cmd/Ctrl+K`）で、staging の HTML を canvas へ取り込む（`Recreate this page from design/.staging/<file>.html`）。
+- これは方向性の持ち込みであり AI 再生成のため厳密ではない。**精緻化は phase B で行う前提**。
 
-1. **トークンで寄せる**: 配色・radius・spacing・typography は `packages/ui` の `globals.css` セマンティックトークン（`--primary` 等）の上書きで、コンポーネントを書き換えずに見た目を大きく変えられる。
+### Phase B — UI 収束（Pencil + 内蔵 Agent）
+
+- Pencil の canvas と内蔵 Agent で pixel/余白/階層を精緻化し、`.pen` を確定する。
+- トークンは `Create Pencil variables from globals.css` で [`globals.css`](../packages/ui/src/styles/globals.css) を参照（Pencil 変数 = CSS custom properties にマップ）。`packages/ui` を正本に保ったまま消費する。
+- `.pen` と `images/` を commit して Git 管理する。これが以降のデザイン正本（レビューは生 JSON 差分でなくレンダリング/スクショで行う。§8 課題6）。
+
+### Phase C — 実装（Claude Code / Codex）＝ 本実装
+
+- Claude Code が **`.pen`（構造化 JSON）+ デザイン** を参照し、layout / styling / 構造を抽出して実装する。
+- 出力は **Astro 中心**（`src/pages/*.astro` + `src/components/<feature>/`）。`@kufu/ui` のトークン/コンポを参照する。インタラクションが要る所だけ React island（`client:*`）にする。
+- 性能方針（静的生成・最小 island）は [architecture.md](architecture.md) / [toolchain.md](toolchain.md) に従い、E2E/テストを整える。
+- durable な設計判断（IA / レイアウト / フロー）は [design/features/](../design/features/) と `packages/ui` トークンへ back-propagate する。
+
+### なぜコードを Pencil へ戻さないか
+
+- Pencil の対応は **React / Vue / Svelte / HTML/CSS で、`.astro` は非対応**。corporate-site は Astro 中心のため `.astro` を Pencil に忠実インポートできない。
+- Pencil の code↔design は **ライブリンクではなく AI 再生成**で、複雑レイアウトで 4〜8px のズレが出る等 **非可逆(lossy)**。
+- よって **`.pen` をデザイン正本にし、コードは `.pen` から一方向に生成**する。デザイン変更は **`.pen` を直してから該当箇所のコードを再生成/修正**する（コードを Pencil に取り込み直さない）。
+
+## 4. ディレクトリ / ファイル規約（確定）
+
+| 用途                     | 置き場所                               | Git           | 備考                                       |
+| ------------------------ | -------------------------------------- | ------------- | ------------------------------------------ |
+| Claude Design 依頼文     | `apps/<app>/design/<screen>.prompt.md` | commit        | A0 の依頼文。再現性のため残す              |
+| Claude Design 仮置き     | `design/.staging/`                     | **gitignore** | phase A の使い捨て HTML。commit しない     |
+| 確定デザイン（`.pen`）   | `apps/<app>/design/<screen>.pen`       | commit        | デザイン正本。画面/feature 単位で複数可    |
+| `.pen` 付随アセット      | `apps/<app>/design/images/`            | commit        | `.pen` から相対参照。Pencil が自動生成     |
+| 実装コード               | `apps/<app>/src/(pages\|components)/`  | commit        | `.pen` を参照して実装。実装正本            |
+| デザイントークン（正本） | `packages/ui/src/styles/globals.css`   | commit        | 全フェーズが consume。ここでしか定義しない |
+
+- `.pen` は **1プロジェクト＝複数可**。`home.pen` / `components.pen` のように目的別に分割する。
+- 配置は本表で確定。パイロットで例外が出たら本表を更新してから運用する。
+
+## 5. shadcn/ui で表現できない場合の拡張ポリシー
+
+shadcn/ui は **コードを自分の repo に copy して所有する** モデルなので行き止まりにならない。次の優先順で対応する（上から試す）:
+
+1. **トークンで寄せる**: 配色・radius・spacing・typography は `globals.css` のセマンティックトークン（`--primary` 等）上書きで、コンポーネントを書き換えず見た目を変える。
 2. **既存コンポを直接編集**: 所有コードなので CVA の variant 追加・マークアップ変更で拡張する。
-3. **wrapper パターン**: 既存コンポにロジック/レイアウトを足す場合は、base を直接汚さず wrapper で包む。
-4. **独自コンポーネントを新設**: shadcn の流儀（CVA variants・セマンティックトークン・アクセシビリティは Radix primitives）に沿って `packages/ui` に新規追加する。これが「独自デザインシステムの定義」に相当するが、**別システムを並立させるのではなく `packages/ui` の中で拡張する**（[architecture.md](architecture.md) の colocation→昇格ルールに従う）。
+3. **wrapper パターン**: 既存コンポにロジック/レイアウトを足す場合は base を汚さず wrapper で包む。
+4. **独自コンポーネント新設**: shadcn の流儀（CVA variants・セマンティックトークン・a11y は Radix primitives）に沿って `packages/ui` に新規追加する。
 
-要するに **「shadcn/ui の拡張」と「独自デザインシステム」は対立せず、`packages/ui` を単一正本として token → primitive → 独自コンポと積み上げる**。Figma 由来トークンを使う場合も Tailwind theme / `globals.css` に 1:1 マッピングして drift を防ぐ。
+「shadcn/ui の拡張」と「独自デザインシステム」は **対立しない**。別システムを並立させず、`packages/ui` を単一正本として **token → primitive → 独自コンポ** と積み上げる（[architecture.md](architecture.md) の colocation→昇格ルールに従う）。Figma 由来トークンを使う場合も Tailwind theme / `globals.css` に 1:1 マッピングして drift を防ぐ。
 
-## トークン正本ガード（バリデーション）
+## 6. トークン正本ガード（バリデーション）
 
 - 実装コードが `@kufu/ui` トークンを参照しているか確認する。独自値を検出したら正本へ寄せる。
-- デザイン成果物が `packages/ui` を fork していないか確認する。fork を検出したら差し戻す。
+- `.pen` が `packages/ui` を fork していないか（独自トークンを抱えていないか）確認する。fork を検出したら差し戻す。
 
-## Figma fallback
+## 7. Figma fallback
 
-- チームが既に Figma 主体である、または非エンジニアを含む共同デザインレビューが必要な場合は **Figma + Figma MCP Server** を採用してよい。
-- その場合も**正本は `packages/ui`**。Figma frame リンクから MCP 経由で実装へハンドオフし、design 判断は design feature doc へ反映する。
+- チームが既に Figma 主体、または非エンジニアを含む共同デザインレビューが必要な場合のみ **Figma + Figma MCP Server** を採用してよい。
+- その場合も **正本は `packages/ui`**。Figma frame リンクから MCP 経由で実装へハンドオフし、design 判断は design feature doc へ反映する。
 
-## 運用上の注意
+## 8. 既知の課題と緩和策
 
-- Claude Design は research preview（利用枠 Pro/Max/Team/Enterprise、機能変動リスク）。枠が確保できない場合は phase A を Pencil/Figma で代替する。
-- 本ワークフローは corporate-site の1ページでパイロット実走して検証してから本採用する。パイロットでは Claude Design→Pencil の変換を上記2ルート両方で試し、どちらを既定にするか決める。
-- ツール選定を変える場合は [ADR-0004](../adr/0004-design-production-workflow.md) を更新してから本書を改訂する。
+`.pen` 起点で DS 作成・実装する際の落とし穴と運用ルール。
+
+| #   | 課題                                                                         | 緩和策                                                                                    |
+| --- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| 1   | 正本の向きの衝突（`.pen` がトークン源泉になり `packages/ui` と二重正本）     | トークンは一方向 `packages/ui` → Pencil。新トークンは先に #13 へ昇格（§1 大原則）         |
+| 2   | `.pen` は幾何ツリーで意味論なし → 素朴実装で div 配置・a11y 崩れ             | 実装時に `.pen` プリミティブ → `@kufu/ui` コンポ + セマンティック HTML へ**写像**を必須化 |
+| 3   | レスポンシブ / 状態(hover/focus/error) / 動的データ(リスト・i18n) が入らない | A0/A で Claude Design に状態も出させ、spec / feature doc で規定、phase C で必ず補完       |
+| 4   | ダミーテキスト前提でレイアウトが実データで破綻                               | phase C で実コンテンツ（company-profile / manufacturers）での検証を行う                   |
+| 5   | `.pen` → コードは AI 再生成で非決定的                                        | `.pen` は「意図の正本」。pixel 契約にせず許容差を決めて目視確認                           |
+| 6   | `.pen`(JSON) の座標差分は PR で読めない                                      | レビューはレンダリング / スクショで行い、生 JSON 差分に依存しない                         |
+| 7   | コンポーネント正本の二重化（`.pen` vs Storybook）                            | 生きたコンポ正本は `packages/ui` + Storybook(#6)。`.pen` はデザイン意図に限定             |
+
+## 9. 運用上の注意
+
+- **ライセンス（確定）**: Claude Design は **Pro 枠で利用可**（research preview）。使用上限に当たれば Max へアップグレード（別購入不要）。Pencil は **無償枠を既定**とする。
+- **有償化トリガー（確定）**: 単なるコストでは乗り換えない。① 非エンジニア含む共同レビュー / 本格デザインオペが必要 → **Figma + MCP**（§7 fallback）。② Pencil の seat / 機能上限のみでワークフローは満足 → **Pencil 有償**。
+- 本ワークフローは corporate-site の1ページでパイロット実走して検証してから本採用する。特に **`.pen` 参照での `.astro` 実装精度** を確認する。
+- ツール選定・確定フローを変える場合は [ADR-0004](../adr/0004-design-production-workflow.md) を更新してから本書を改訂する。
