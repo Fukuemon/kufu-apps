@@ -1,11 +1,11 @@
 ---
 name: design-prompt
-description: Drafts a Claude Design request prompt (.prompt.md) for a screen by linking the design system (packages/ui only) and filling the goal/layout/content/audience template. Use to start Phase A0 of the design workflow or when the user asks to create a Claude Design prompt.
+description: Drafts a Claude Design request prompt (.prompt.md) under design/features/<feature>/ by linking the design system (packages/ui only) and filling the goal/layout/content/audience template. Use to start Phase A0 of the design workflow or when the user asks to create a Claude Design prompt.
 ---
 
 # Design Prompt
 
-デザイン制作ワークフロー Phase A0。対象画面の Claude Design 依頼文を組み、`apps/<app>/design/<screen>.prompt.md` に保存する。出力品質は依頼文に強く依存するため、テンプレに沿って具体的に書く。
+デザイン制作ワークフロー Phase A0。対象画面の Claude Design 依頼文を組み、`design/features/<feature>/<screen>.prompt.md` に保存する。出力品質は依頼文に強く依存するため、テンプレに沿って具体的に書く。
 
 ## いつ使うか
 
@@ -31,7 +31,7 @@ description: Drafts a Claude Design request prompt (.prompt.md) for a screen by 
    - 否定形でなく **具体指定** (色・角丸・字形を名指し)。汎用 AI 然 (Inter/Roboto・紫グラデ等) を避ける
    - コンポーネント名を一貫させる (後段の import/実装まで伝わる)
 4. **保存**
-   - `apps/<app>/design/<screen>.prompt.md` に保存する (再現性のため commit 対象)
+   - `design/features/<feature>/<screen>.prompt.md` に保存する (再現性のため commit 対象)
    - 既存があれば上書きせず差分案を提示する
 5. **commit** は `workflow-git` に従う (この skill では行わない)
 

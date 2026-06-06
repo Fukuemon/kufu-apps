@@ -1,11 +1,11 @@
 # Prompt Scaffold (`.prompt.md`)
 
-`apps/<app>/design/<screen>.prompt.md` の穴埋めスケルトン。原則・背景は `context/design-workflow.md` §3 Phase A0 が正本なので、ここでは構造だけを示す (二重記載しない)。
+`design/features/<feature>/<screen>.prompt.md` の穴埋めスケルトン。原則・背景は `context/design-workflow.md` §3 Phase A0 が正本なので、ここでは構造だけを示す (二重記載しない)。
 
 ## スケルトン
 
 ```md
-# <app> / <screen> — Claude Design prompt
+# <feature> / <screen> — Claude Design prompt
 
 ## 依頼文 (Claude Design 投入用 / 密な1段落で書く)
 
