@@ -105,6 +105,7 @@ skill は `.rulesync/skills/<name>/SKILL.md` が正本。直接呼び出すか s
 - state のグローバル乱用 (URL で表現できる状態は Router へ寄せる)
 - 不必要な React 化 (Astro で解決できるものを React island にしない)
 - 共通化されていないユーティリティ関数の散在
+- 実装コードでのデザイントークン直書き (raw hex / arbitrary value 等)。`@kufu/ui` / `globals.css` のセマンティックトークンを参照する (トークン正本ガード: [context/design-workflow.md](context/design-workflow.md) §6)
 - 生成物 (`AGENTS.md` / `CLAUDE.md` 等) の直接編集 (`rulesync-sync` 経由で `.rulesync/` を編集する)
 - `main` / `develop` への直接コミット
 
