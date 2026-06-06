@@ -72,6 +72,8 @@ $(ghq root)/github.com/Fukuemon/
 
 skill は `.rulesync/skills/<name>/SKILL.md` が正本。直接呼び出すか slash command で起動する。
 
+デザイン制作 (ワイヤー → UI → 実装) を行うときは `context/design-workflow.md` に従う (Phase A0 は `design-prompt` skill、A/import/B は GUI 工程)。
+
 ## Naming Conventions
 
 - パッケージ名: `@kufu/<module>` (例: `@kufu/corporate-site`, `@kufu/ui`)

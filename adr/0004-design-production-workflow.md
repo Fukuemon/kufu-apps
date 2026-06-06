@@ -33,7 +33,7 @@
 
 - **デザイン → コードは一方向に確定**する。**Pencil へコードを round-trip しない**。理由: ① Pencil は `.astro` 非対応（React/Vue/Svelte/HTML のみ）で Astro 中心の本リポと噛み合わない ② Pencil の code↔design は AI 再生成で非可逆（複雑レイアウトで 4〜8px のズレ報告）。よって `.pen` をデザイン正本にし、コードは `.pen` から生成、デザイン変更は `.pen` を直してから該当コードを再生成する。
 - **Pencil.dev を中核デザインツールとして採用**する。理由: ① IDE 内で動く ② shadcn ネイティブで `packages/ui` と整合 ③ `.pen` が JSON で Git 管理可能、本リポの「正本は repo 内」方針に合致 ④ トークンを `globals.css` から取り込み消費できる。
-- **ディレクトリ規約を確定**する: Claude Design 仮置き = `design/.staging/`（gitignore）、デザイン正本 = `apps/<app>/design/<screen>.pen`（+ `images/`、commit）、実装 = `apps/<app>/src/`、トークン正本 = `packages/ui/src/styles/globals.css`。詳細は `context/design-workflow.md`。
+- **ディレクトリ規約を確定**する: デザイン成果物（依頼文 / `.pen` / `images/`）は `design/features/<feature>/` 以下に集約（commit）、Claude Design 仮置き = `design/.staging/`（gitignore）、実装 = `apps/<app>/src/`、トークン正本 = `packages/ui/src/styles/globals.css`。詳細は `context/design-workflow.md`。
 - **Claude Design は phase A（発散）の補助**として採用する。非デザイナー（オーナー / PM）が方向性を素早く探索する用途に限定し、確定成果物の正本にはしない。
 - **Figma + MCP は fallback** として位置づける。チームが既に Figma 主体である、または非エンジニアを含む共同デザインレビューが必要な場合に採用し、その際は Figma MCP で実装へハンドオフする。
 - ツール導入の妥当性は、corporate-site の1ページで phase A→C を実走するパイロットで検証してから本採用とする。

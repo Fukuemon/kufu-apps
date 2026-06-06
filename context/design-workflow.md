@@ -22,7 +22,7 @@
 flowchart LR
   A0["A0. プロンプト設計<br/>.prompt.md (commit)"] --> A["A. 方向性探索<br/>Claude Design (HTML)"]
   A -->|import| B["B. UI 収束<br/>Pencil + 内蔵 Agent"]
-  B --> PEN["design/&lt;screen&gt;.pen<br/>(デザイン正本・commit)"]
+  B --> PEN["design/features/&lt;feature&gt;/&lt;screen&gt;.pen<br/>(デザイン正本・commit)"]
   PEN -->|参照| C["C. 実装<br/>Claude Code → .astro / React"]
   PUI["packages/ui (トークン正本)"] -.consume.-> A0 & B & C
 ```
@@ -39,7 +39,7 @@ flowchart LR
 
 ### Phase A0 — プロンプト設計（Claude Design 依頼文の作成）
 
-Claude Design の出力品質は依頼文に強く依存する（ベストプラクティス: 密な単一段落で具体的だと初稿が約 2/3 で実用、曖昧だとほぼゼロ）。対象画面ごとに依頼文を組み、`apps/<app>/design/<screen>.prompt.md` に **commit** する（再現性 = §8 課題5 対策）。
+Claude Design の出力品質は依頼文に強く依存する（ベストプラクティス: 密な単一段落で具体的だと初稿が約 2/3 で実用、曖昧だとほぼゼロ）。対象画面ごとに依頼文を組み、`design/features/<feature>/<screen>.prompt.md` に **commit** する（再現性 = §8 課題5 対策）。
 
 #### 初回セットアップ（design system 連携）
 
@@ -97,16 +97,19 @@ Claude Design の出力品質は依頼文に強く依存する（ベストプラ
 
 ## 4. ディレクトリ / ファイル規約（確定）
 
-| 用途                     | 置き場所                               | Git           | 備考                                       |
-| ------------------------ | -------------------------------------- | ------------- | ------------------------------------------ |
-| Claude Design 依頼文     | `apps/<app>/design/<screen>.prompt.md` | commit        | A0 の依頼文。再現性のため残す              |
-| Claude Design 仮置き     | `design/.staging/`                     | **gitignore** | phase A の使い捨て HTML。commit しない     |
-| 確定デザイン（`.pen`）   | `apps/<app>/design/<screen>.pen`       | commit        | デザイン正本。画面/feature 単位で複数可    |
-| `.pen` 付随アセット      | `apps/<app>/design/images/`            | commit        | `.pen` から相対参照。Pencil が自動生成     |
-| 実装コード               | `apps/<app>/src/(pages\|components)/`  | commit        | `.pen` を参照して実装。実装正本            |
-| デザイントークン（正本） | `packages/ui/src/styles/globals.css`   | commit        | 全フェーズが consume。ここでしか定義しない |
+デザイン成果物（依頼文 / `.pen` / アセット）は **design 正本ツリー `design/features/<feature>/` 以下**に集約する。`apps/<app>/` は実装コードのみ。
 
-- `.pen` は **1プロジェクト＝複数可**。`home.pen` / `components.pen` のように目的別に分割する。
+| 用途                     | 置き場所                                       | Git           | 備考                                       |
+| ------------------------ | ---------------------------------------------- | ------------- | ------------------------------------------ |
+| Claude Design 依頼文     | `design/features/<feature>/<screen>.prompt.md` | commit        | A0 の依頼文。再現性のため残す              |
+| Claude Design 仮置き     | `design/.staging/`                             | **gitignore** | phase A の使い捨て HTML。commit しない     |
+| 確定デザイン（`.pen`）   | `design/features/<feature>/<screen>.pen`       | commit        | デザイン正本。画面単位で複数可             |
+| `.pen` 付随アセット      | `design/features/<feature>/images/`            | commit        | `.pen` から相対参照。Pencil が自動生成     |
+| 実装コード               | `apps/<app>/src/(pages\|components)/`          | commit        | `.pen` を参照して実装。実装正本            |
+| デザイントークン（正本） | `packages/ui/src/styles/globals.css`           | commit        | 全フェーズが consume。ここでしか定義しない |
+
+- 設計意図（依頼文 / `.pen`）は feature 設計 home（`DesignDoc_<feature>.md` / `reference/`）と同じ `design/features/<feature>/` に置き、design 正本として一元化する。
+- `.pen` は **画面単位で複数可**。`home.pen` / `components.pen` のように目的別に分割する。
 - 配置は本表で確定。パイロットで例外が出たら本表を更新してから運用する。
 
 ## 5. shadcn/ui で表現できない場合の拡張ポリシー
