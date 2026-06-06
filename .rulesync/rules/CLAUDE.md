@@ -70,12 +70,13 @@ $(ghq root)/github.com/Fukuemon/
 
 ## Skills (workflow 入口)
 
-| Skill           | 用途                                                         |
-| --------------- | ------------------------------------------------------------ |
-| `dev-commands`  | コマンド / `--filter` / E2E env を解決                       |
-| `rulesync-sync` | AI 設定 (`.rulesync/` → 各 provider) の編集と生成            |
-| `workflow-git`  | branch / commit / issue / PR の Git 運用                     |
-| `spec-*`        | Spec Driven Development 一式 (下記 `Spec Workflow Contract`) |
+| Skill           | 用途                                                           |
+| --------------- | -------------------------------------------------------------- |
+| `dev-commands`  | コマンド / `--filter` / E2E env を解決                         |
+| `rulesync-sync` | AI 設定 (`.rulesync/` → 各 provider) の編集と生成              |
+| `workflow-git`  | branch / commit / issue / PR の Git 運用                       |
+| `design-prompt` | Claude Design 依頼文 (`.prompt.md`) を組む (workflow Phase A0) |
+| `spec-*`        | Spec Driven Development 一式 (下記 `Spec Workflow Contract`)   |
 
 skill は `.rulesync/skills/<name>/SKILL.md` が正本。直接呼び出すか slash command で起動する。
 
