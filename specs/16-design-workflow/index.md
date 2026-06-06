@@ -12,7 +12,7 @@
 - Issue: `#16`
 - ステータス: `In Progress`
 - 作成日: 2026-06-06
-- 更新日: 2026-06-06
+- 更新日: 2026-06-06 (D1 / D2 / D4 解決 / #17 分離)
 - Branch: `feature/16`
 - Owner: Fukuemon
 
@@ -26,7 +26,7 @@
 | 2   | 下書き                      | 完了   | 2026-06-06 | spec-draft scaffold                           |
 | 3   | 上位文書突合                | 完了   | 2026-06-06 | 矛盾なし / ADR-0004・context へハンドオフ済み |
 | 4   | 論点整理                    | 進行中 | 2026-06-06 | 設計時論点 D1〜D3                             |
-| 5   | 論点解決                    | 未着手 |            | `spec-resolve` で D1〜D3                      |
+| 5   | 論点解決                    | 進行中 | 2026-06-06 | D1 / D2 / D4 解決、残 D3                      |
 | 6   | Interface / Routing 設計    | 未着手 |            | process spec のため最小                       |
 | 7   | Content / Data 設計         | 未着手 |            | process spec のため該当なし見込み             |
 | 8   | Performance / Security 設計 | 未着手 |            | Astro 静的生成・最小 island 維持              |
@@ -62,7 +62,7 @@
 - 運用ワークフロー 正本: [context/design-workflow.md](../../context/design-workflow.md)
 - Phase A0 skill (成果物): [.rulesync/skills/design-prompt/SKILL.md](../../.rulesync/skills/design-prompt/SKILL.md)
 - 要求定義: [requirements.md](requirements.md)
-- 関連 issue: [#11 IA/サイトマップ](https://github.com/Fukuemon/kufu-apps/issues/11) / [#13 デザイントークン](https://github.com/Fukuemon/kufu-apps/issues/13) / [#10 corporate-site 本体](https://github.com/Fukuemon/kufu-apps/issues/10) / [#6 Storybook](https://github.com/Fukuemon/kufu-apps/issues/6)
+- 関連 issue: [#11 IA/サイトマップ](https://github.com/Fukuemon/kufu-apps/issues/11) / [#13 デザイントークン](https://github.com/Fukuemon/kufu-apps/issues/13) / [#10 corporate-site 本体](https://github.com/Fukuemon/kufu-apps/issues/10) / [#6 Storybook](https://github.com/Fukuemon/kufu-apps/issues/6) / [#17 IA 多ページ構成の妥当性再検討 (D1 から分離)](https://github.com/Fukuemon/kufu-apps/issues/17)
 
 ## 背景
 
@@ -86,6 +86,7 @@ durable な設計成果 (ツール選定の根拠 / フェーズ規約 / ディ�
 - デザイントークンの中身定義 (= [#13](https://github.com/Fukuemon/kufu-apps/issues/13))
 - corporate-site 本体実装 (= [#10](https://github.com/Fukuemon/kufu-apps/issues/10))
 - Storybook 構築 (= [#6](https://github.com/Fukuemon/kufu-apps/issues/6))
+- コーポレートサイトの IA / 多ページ構成の妥当性再検討 (= [#17](https://github.com/Fukuemon/kufu-apps/issues/17))。本 spec は確定 IA (feature doc / #11) を前提とする。
 
 ## 要件の解釈
 
@@ -117,8 +118,6 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 | #   | 論点                                                                             | 決定候補                                                 | 決定 |
 | --- | -------------------------------------------------------------------------------- | -------------------------------------------------------- | ---- |
-| D1  | パイロット対象ページの選定 (corporate-site のどの 1 ページで phase A→C を実走)   | トップ / 会社概要 / 取扱メーカー のいずれか              | 未決 |
-| D2  | `.pen` の分割粒度 (画面単位 `home.pen` / `components.pen` の指針)                | パイロットで検証し context §4 へ確定反映                 | 未決 |
 | D3  | トークン正本ガード (`@kufu/ui` 参照 / fork 検出) を手動運用か自動化 (lint 等) か | 当面は手動レビュー / 将来 lint・depcruise ルール化を検討 | 未決 |
 
 ## 解決済みの論点
@@ -127,6 +126,9 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 - **Claude Design のライセンス枠**: **Pro 枠で利用**可 (research preview 対象)。使用上限到達時のみ Max へアップグレード (別購入不要)。決定日 2026-06-06。
 - **Pencil.dev の有償プラン要否**: **無償枠を既定**。有償化トリガーは ① 非エンジニア含む共同レビュー / 本格デザインオペが必要 → Figma + MCP、② Pencil の seat / 機能上限のみ → Pencil 有償。決定日 2026-06-06。
+- **D1 パイロット対象ページの選定**: 具体ページ選定は **パイロット起動時に #10 (本体実装) と協調して確定**する (ページ選定は IA 決定ではなくパイロット運用判断)。検討中に出た「多ページ構成そのものの是非」は #16 のスコープ外 (IA = #11 / feature doc が正本) のため [#17](https://github.com/Fukuemon/kufu-apps/issues/17) へ分離。本 spec は確定 IA を前提とする。決定日 2026-06-06。
+- **D2 `.pen` の分割粒度**: **分割する方針を採用**。共通要素 (header / footer / nav / CTA / card 等) は Pencil の **Design Library `*.lib.pen`** に集約し、各画面は `<screen>.pen` がそれを `imports` で取り込む構成とする。根拠: Pencil は `imports` (alias → 相対 `.pen` URI) と Design Library (`*.lib.pen`、編集が使用箇所へ伝播) を備え、複数ファイル + ファイル間再利用が標準パターン。単一ファイルは共通デザイン意図が画面ごとに重複し drift を招く ([§8 課題7](../../context/design-workflow.md))。**`*.lib.pen` はデザイン意図に限定**し、コードのコンポーネント正本は `packages/ui` + Storybook (#6)、実装時に `@kufu/ui` へ写像する。拡張子 / 命名 / `imports` 運用の実用性は**パイロットで確認**し、最終ルールを context §4 へ確定反映 (spec-sync)。決定日 2026-06-06。
+- **D4 `.pen` の配置ディレクトリ**: **`design/features/<feature>/` を維持**する (確定済み規約 [context §4](../../context/design-workflow.md) / [ADR-0004](../../adr/0004-design-production-workflow.md) を再確認)。理由: 依頼文 / `.pen` / `*.lib.pen` / `images/` を feature 設計 home (`DesignDoc_<feature>.md` + `reference/`) と同居させ **単一の design 正本ツリー**にする。`apps/<app>/` は実装コードのみ (ADR-0004)、`packages/ui` はトークン / コード正本に保ち `.pen` を混ぜない (§8 課題7 の二重正本回避)。`.pencil/` 隠しディレクトリは採らない (commit するデザイン正本の可視性を優先)。feature 内共通要素は `design/features/<feature>/<feature>.lib.pen`。**app 横断の platform 級共通 lib は `design/ui/` を予約** (YAGNI: 必要時に追加し context §4 へ反映)。決定日 2026-06-06。
 
 ## 未確定事項
 
@@ -180,6 +182,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 ### Content / Assets
 
 - 依頼文 / `.pen` / `images/` は `design/features/<feature>/` に集約 commit、Claude Design 仮置きは `design/.staging/` (gitignore)、実装は `apps/<app>/src/`、トークン正本は `packages/ui/src/styles/globals.css` (context §4)。
+- **`.pen` は分割する (D2 決定)**: 共通要素を Design Library `<feature>.lib.pen` (仮) に集約し、各画面 `<screen>.pen` が `imports` で取り込む。`*.lib.pen` はデザイン意図のみ持ち、コード正本は `packages/ui` + Storybook (#6)。拡張子 / 命名はパイロットで確定し context §4 へ反映。
 - A0/A では実コンテンツ素材 (company-profile / manufacturers の実テキスト) を使い、ダミー前提の破綻を回避する (context §8 課題4)。
 
 ### UI Reuse
@@ -209,6 +212,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 ### 保存・管理するデータ
 
 - 永続データ層なし。Git 管理する成果物: `.prompt.md` (A0)、`.pen` + `images/` (B、デザイン正本)、実装コード (C)。
+- `.pen` は **Design Library `*.lib.pen` (共通要素) + 画面単位 `<screen>.pen`** に分割する (D2)。`<screen>.pen` は `imports` で `*.lib.pen` を参照する。
 
 ### コンテンツ配置 / package / route
 
@@ -304,12 +308,18 @@ corporate-site の 1 ページパイロットを phase 順に分割する。
 | --------------------------------- | ----------------------------------------------------------------------------------------------- | -------------- |
 | `design/features/corporate-site/` | 実装後の durable 判断 (IA / レイアウト / フロー) の back-propagation 先 (変更は phase C 実装時) | 正本境界の維持 |
 
+> D1 解決に伴い、コーポレートサイトの**多ページ IA (ページ構成) の妥当性再検討を [#17](https://github.com/Fukuemon/kufu-apps/issues/17) へ分離**した。#16 は確定 IA を前提とし feature doc の IA 本体は改変しない (見直しは #17 / 実装フェーズで扱う)。<!-- source: spec-resolve -->
+
 ### context への影響
 
 | 対象 doc / 節                    | 変更内容                                | 理由                         |
 | -------------------------------- | --------------------------------------- | ---------------------------- |
 | `context/design-workflow.md`     | 新規作成 (運用ワークフロー正本、反映済) | 確定プロセスを横断正本に置く |
 | `context/README.md` ファイル一覧 | design-workflow.md の行を追記 (反映済)  | 索引整合                     |
+
+> **D2 (反映済: context §4)**: `.pen` 分割ルール — 共通要素を Design Library `<feature>.lib.pen` に集約し、各画面 `<screen>.pen` が `imports` で参照 — を [context/design-workflow.md §4](../../context/design-workflow.md) に反映済 (表 + 分割方針の本文 + ディレクトリ構成図)。**拡張子 `.lib.pen` / 命名 / `imports` 運用の細部はパイロットで確認後に §4 を更新**する。<!-- source: spec-resolve / spec-sync -->
+>
+> **D4 (反映済: context §4)**: `.pen` 配置は `design/features/<feature>/` 維持 (§4 / ADR-0004 を再確認)。**app 横断の platform 級共通 lib 置き場 `design/ui/`（予約・未作成）** を §4 の表とディレクトリ構成図に追記済。<!-- source: spec-resolve / spec-sync -->
 
 ### ADR の新規 / 更新
 
