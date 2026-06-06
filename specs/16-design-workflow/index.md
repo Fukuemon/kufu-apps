@@ -261,14 +261,56 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 ### Flowchart (ユーザー操作起点)
 
+新規画面デザインを起こす操作の起点から、トークン正本ガードの差し戻しループまでを描く (本 spec の主要操作。フェーズ詳細は context §2)。
+
 ```mermaid
 flowchart TD
+    Start([ユーザー: 新規画面のデザインを起こす]) --> A0[A0: design-prompt skill で .prompt.md 作成・commit]
+    A0 --> FB{"Figma 主体 / 非エンジニア共同レビューが必要か (context §7)"}
+    FB -->|"Yes (fallback)"| FIG[Figma + MCP でハンドオフ]
+    FB -->|No| A[A: Claude Design で方向性 2〜3 案を出す]
+    A --> ADec{方向性を決定できたか}
+    ADec -->|No| A
+    ADec -->|Yes| IMP[import: 採用案 HTML を Pencil canvas へ取り込む]
+    FIG --> IMP
+    IMP --> B[B: Pencil で .pen + images/ を精緻化し commit デザイン正本]
+    B --> C["C: AI Agent が .pen を参照し .astro / React を実装 (@kufu/ui を consume)"]
+    C --> Guard{"PR レビュー: トークン正本ガード (context §6) — @kufu/ui トークン参照かつ .pen が packages/ui を fork していないか"}
+    Guard -->|"NG (独自トークン値 / fork)"| Reject[差し戻し: 正本 packages/ui へ寄せる]
+    Reject --> C
+    Guard -->|OK| Merge([マージ: 実装正本確定])
 ```
 
 ### Sequence
 
+ツール / 正本間のやり取り (デザイン → コードの一方向、トークンは `packages/ui` から consume のみ) を描く。
+
 ```mermaid
 sequenceDiagram
+    actor User as PO / 実装担当
+    participant CD as Claude Design
+    participant PCL as Pencil
+    participant AG as AI Agent (Claude Code / Codex)
+    participant UI as packages/ui (トークン正本)
+    participant Git as Git (design 正本)
+
+    User->>CD: A0 依頼文 (.prompt.md) を渡す
+    CD-->>User: A 方向性プロト 2〜3 案 (使い捨て HTML)
+    User->>User: 案を比較・決定
+    User->>PCL: import 採用案 HTML を canvas へ
+    UI-->>PCL: globals.css トークンを consume (一方向)
+    PCL-->>Git: B .pen + images/ を commit (デザイン正本)
+    User->>AG: C .pen を参照して実装依頼
+    AG->>Git: .pen / *.lib.pen を読み込む
+    UI-->>AG: @kufu/ui トークン / コンポを参照 (一方向)
+    AG-->>User: .astro / React 実装を PR
+
+    alt トークン正本ガード NG (独自値 / fork)
+        User-->>AG: 差し戻し (packages/ui へ寄せる)
+        AG-->>User: 修正 PR を再提出
+    else ガード OK
+        User->>Git: マージ (実装正本確定)
+    end
 ```
 
 ## 実装分割
@@ -338,9 +380,9 @@ corporate-site の 1 ページパイロットを phase 順に分割する。
 
 `spec-review` (fresh-context evaluator) の最新結果。完全な記録は `review.md` を参照。
 
-| 日付 | 結果 (PASS / NEEDS_WORK) | 指摘要点 | 対応 |
-| ---- | ------------------------ | -------- | ---- |
-|      |                          |          |      |
+| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                      | 対応                                                                                                               |
+| ---------- | ------------------------ | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| 2026-06-06 | NEEDS_WORK               | フロー/シーケンス節の Mermaid フェンスが空 (index.md:262-272) | 対応済: `spec-diagrams` で flowchart (A0→C + 正本ガード差し戻し) + sequence を生成し mmdc 検証通過。再 review 待ち |
 
 ## 変更履歴
 
