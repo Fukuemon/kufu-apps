@@ -43,14 +43,15 @@
                     {
                       "type": "rectangle",
                       "id": "O8mexf",
+                      "name": "Brand Logo",
                       "fill": {
                         "type": "image",
                         "enabled": true,
                         "url": "../../.staging/ia-exploration-single-lp/assets/fukuura-mark.png",
                         "mode": "fill"
                       },
-                      "width": 37,
-                      "height": 35
+                      "width": 32,
+                      "height": 30
                     },
                     {
                       "type": "frame",
@@ -589,9 +590,7 @@
           "layout": "vertical",
           "gap": 32,
           "padding": [
-            64,
-            56,
-            72,
+            80,
             56
           ],
           "children": [
@@ -750,22 +749,14 @@
                               "type": "frame",
                               "id": "IP6lue",
                               "name": "Biz Item 機械工具",
+                              "fill": "$paper-soft",
                               "gap": 10,
+                              "padding": [
+                                7,
+                                13
+                              ],
+                              "alignItems": "center",
                               "children": [
-                                {
-                                  "type": "text",
-                                  "id": "iaOoxZ",
-                                  "name": "Biz Item Dash 機械工具",
-                                  "fill": "$accent",
-                                  "textGrowth": "fixed-width-height",
-                                  "width": 8,
-                                  "height": 19,
-                                  "content": "—",
-                                  "textAlignVertical": "middle",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
                                 {
                                   "type": "text",
                                   "id": "jidRwB",
@@ -782,18 +773,14 @@
                               "type": "frame",
                               "id": "sYVFE7",
                               "name": "Biz Item 省力化機器",
+                              "fill": "$paper-soft",
                               "gap": 10,
+                              "padding": [
+                                7,
+                                13
+                              ],
+                              "alignItems": "center",
                               "children": [
-                                {
-                                  "type": "text",
-                                  "id": "6W6RiM",
-                                  "name": "Biz Item Dash 省力化機器",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
                                 {
                                   "type": "text",
                                   "id": "NFkAaB",
@@ -810,18 +797,14 @@
                               "type": "frame",
                               "id": "sEIaIw",
                               "name": "Biz Item 伝動機器",
+                              "fill": "$paper-soft",
                               "gap": 10,
+                              "padding": [
+                                7,
+                                13
+                              ],
+                              "alignItems": "center",
                               "children": [
-                                {
-                                  "type": "text",
-                                  "id": "lLQrgZ",
-                                  "name": "Biz Item Dash 伝動機器",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
                                 {
                                   "type": "text",
                                   "id": "h6xJZN",
@@ -838,18 +821,14 @@
                               "type": "frame",
                               "id": "zZPToY",
                               "name": "Biz Item 物流・搬送機器",
+                              "fill": "$paper-soft",
                               "gap": 10,
+                              "padding": [
+                                7,
+                                13
+                              ],
+                              "alignItems": "center",
                               "children": [
-                                {
-                                  "type": "text",
-                                  "id": "6oOfVV",
-                                  "name": "Biz Item Dash 物流・搬送機器",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
                                 {
                                   "type": "text",
                                   "id": "KwEdu6",
@@ -866,18 +845,14 @@
                               "type": "frame",
                               "id": "XSyilH",
                               "name": "Biz Item 各種工場設備機器",
+                              "fill": "$paper-soft",
                               "gap": 10,
+                              "padding": [
+                                7,
+                                13
+                              ],
+                              "alignItems": "center",
                               "children": [
-                                {
-                                  "type": "text",
-                                  "id": "8wpnk8",
-                                  "name": "Biz Item Dash 各種工場設備機器",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
                                 {
                                   "type": "text",
                                   "id": "XuhLgY",
@@ -1013,18 +988,14 @@
                               "type": "frame",
                               "id": "ZXqLNO",
                               "name": "Biz Item 各種機械加工",
+                              "fill": "$paper-soft",
                               "gap": 10,
+                              "padding": [
+                                7,
+                                13
+                              ],
+                              "alignItems": "center",
                               "children": [
-                                {
-                                  "type": "text",
-                                  "id": "6Pyzt2",
-                                  "name": "Biz Item Dash 各種機械加工",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
                                 {
                                   "type": "text",
                                   "id": "c2Ao5B",
@@ -1041,18 +1012,14 @@
                               "type": "frame",
                               "id": "Tw5nFv",
                               "name": "Biz Item 樹脂成型加工",
+                              "fill": "$paper-soft",
                               "gap": 10,
+                              "padding": [
+                                7,
+                                13
+                              ],
+                              "alignItems": "center",
                               "children": [
-                                {
-                                  "type": "text",
-                                  "id": "tBmZ5H",
-                                  "name": "Biz Item Dash 樹脂成型加工",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
                                 {
                                   "type": "text",
                                   "id": "9Q5CfF",
@@ -1069,18 +1036,14 @@
                               "type": "frame",
                               "id": "cw5yV4",
                               "name": "Biz Item 板金・溶接加工",
+                              "fill": "$paper-soft",
                               "gap": 10,
+                              "padding": [
+                                7,
+                                13
+                              ],
+                              "alignItems": "center",
                               "children": [
-                                {
-                                  "type": "text",
-                                  "id": "ehqDaE",
-                                  "name": "Biz Item Dash 板金・溶接加工",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
                                 {
                                   "type": "text",
                                   "id": "tKIX6u",
@@ -1097,18 +1060,14 @@
                               "type": "frame",
                               "id": "jGuCpH",
                               "name": "Biz Item 各種ゴム製品加工",
+                              "fill": "$paper-soft",
                               "gap": 10,
+                              "padding": [
+                                7,
+                                13
+                              ],
+                              "alignItems": "center",
                               "children": [
-                                {
-                                  "type": "text",
-                                  "id": "2qqNVd",
-                                  "name": "Biz Item Dash 各種ゴム製品加工",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
                                 {
                                   "type": "text",
                                   "id": "viqEIO",
@@ -1135,21 +1094,22 @@
                               "id": "Ne78WW",
                               "name": "Proc Row ギヤー・プー",
                               "width": "fill_container",
+                              "layout": "vertical",
                               "gap": 12,
                               "padding": [
-                                11,
+                                0,
+                                0,
+                                12,
                                 0
                               ],
                               "children": [
                                 {
-                                  "type": "text",
-                                  "id": "VTYxIf",
-                                  "name": "Proc Dash ギヤー・プー",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "type": "rectangle",
+                                  "id": "pdvNe78WW",
+                                  "name": "Proc Divider",
+                                  "fill": "$paper-line",
+                                  "width": "fill_container",
+                                  "height": 1
                                 },
                                 {
                                   "type": "text",
@@ -1171,21 +1131,22 @@
                               "id": "b2KGSr",
                               "name": "Proc Row 別作ギヤー・",
                               "width": "fill_container",
+                              "layout": "vertical",
                               "gap": 12,
                               "padding": [
-                                11,
+                                0,
+                                0,
+                                12,
                                 0
                               ],
                               "children": [
                                 {
-                                  "type": "text",
-                                  "id": "yxZzKN",
-                                  "name": "Proc Dash 別作ギヤー・",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "type": "rectangle",
+                                  "id": "pdvb2KGSr",
+                                  "name": "Proc Divider",
+                                  "fill": "$paper-line",
+                                  "width": "fill_container",
+                                  "height": 1
                                 },
                                 {
                                   "type": "text",
@@ -1207,21 +1168,22 @@
                               "id": "KjOmK3",
                               "name": "Proc Row 別作ローラー",
                               "width": "fill_container",
+                              "layout": "vertical",
                               "gap": 12,
                               "padding": [
-                                11,
+                                0,
+                                0,
+                                12,
                                 0
                               ],
                               "children": [
                                 {
-                                  "type": "text",
-                                  "id": "eUsaQZ",
-                                  "name": "Proc Dash 別作ローラー",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "type": "rectangle",
+                                  "id": "pdvKjOmK3",
+                                  "name": "Proc Divider",
+                                  "fill": "$paper-line",
+                                  "width": "fill_container",
+                                  "height": 1
                                 },
                                 {
                                   "type": "text",
@@ -1243,21 +1205,22 @@
                               "id": "zcoRxF",
                               "name": "Proc Row 別作マシンキ",
                               "width": "fill_container",
+                              "layout": "vertical",
                               "gap": 12,
                               "padding": [
-                                11,
+                                0,
+                                0,
+                                12,
                                 0
                               ],
                               "children": [
                                 {
-                                  "type": "text",
-                                  "id": "IntvMy",
-                                  "name": "Proc Dash 別作マシンキ",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "type": "rectangle",
+                                  "id": "pdvzcoRxF",
+                                  "name": "Proc Divider",
+                                  "fill": "$paper-line",
+                                  "width": "fill_container",
+                                  "height": 1
                                 },
                                 {
                                   "type": "text",
@@ -1279,21 +1242,22 @@
                               "id": "yHpKHH",
                               "name": "Proc Row 別作ゴム・ウ",
                               "width": "fill_container",
+                              "layout": "vertical",
                               "gap": 12,
                               "padding": [
-                                11,
+                                0,
+                                0,
+                                12,
                                 0
                               ],
                               "children": [
                                 {
-                                  "type": "text",
-                                  "id": "24ADnP",
-                                  "name": "Proc Dash 別作ゴム・ウ",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "type": "rectangle",
+                                  "id": "pdvyHpKHH",
+                                  "name": "Proc Divider",
+                                  "fill": "$paper-line",
+                                  "width": "fill_container",
+                                  "height": 1
                                 },
                                 {
                                   "type": "text",
@@ -1315,21 +1279,22 @@
                               "id": "jXVC5l",
                               "name": "Proc Row 別作樹脂成型",
                               "width": "fill_container",
+                              "layout": "vertical",
                               "gap": 12,
                               "padding": [
-                                11,
+                                0,
+                                0,
+                                12,
                                 0
                               ],
                               "children": [
                                 {
-                                  "type": "text",
-                                  "id": "rgnzVV",
-                                  "name": "Proc Dash 別作樹脂成型",
-                                  "fill": "$accent",
-                                  "content": "—",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "type": "rectangle",
+                                  "id": "pdvjXVC5l",
+                                  "name": "Proc Divider",
+                                  "fill": "$paper-line",
+                                  "width": "fill_container",
+                                  "height": 1
                                 },
                                 {
                                   "type": "text",
@@ -1373,7 +1338,7 @@
           "layout": "vertical",
           "gap": 30,
           "padding": [
-            72,
+            80,
             56
           ],
           "children": [
@@ -1447,264 +1412,271 @@
               "id": "DtFBA7",
               "name": "Products Grid",
               "width": "fill_container",
-              "fill": "$paper-line",
+              "fill": "$paper-soft",
               "layout": "vertical",
-              "gap": 1,
               "children": [
                 {
                   "type": "frame",
-                  "id": "AD8NqQ",
-                  "name": "Product Row 1",
+                  "id": "pidx00",
+                  "name": "Product Row 01",
                   "width": "fill_container",
-                  "fill": "$paper-line",
-                  "gap": 1,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
                   "children": [
                     {
-                      "type": "frame",
-                      "id": "FPGyxO",
-                      "name": "Product Card 01",
+                      "type": "rectangle",
+                      "id": "pidx00d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pidx00b",
+                      "name": "Product Row Body",
+                      "width": "fill_container",
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "e4mKNg",
-                          "name": "Product No 01",
+                          "id": "pidx00n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "01",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx00c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx00nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "駆動・変減速機器",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx00mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 17社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "Xvh8Tm",
-                          "name": "Product Name 01",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "駆動・変減速機器",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "3v0yFf",
-                          "name": "Product Makers 01",
+                          "id": "pidx00mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "住友重機械工業 / 三菱電機 / オリエンタルモーター / ニッセイ / 三木プーリー / 安川電機",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "6BAgjD",
-                          "name": "Product Foot 01",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "kHDTvE",
-                              "name": "Product Meta 01",
-                              "fill": "$ink-soft",
-                              "content": "取扱 17 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "2XLsaL",
-                              "name": "Product Arrow 01",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx01",
+                  "name": "Product Row 02",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx01d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
                     },
                     {
                       "type": "frame",
-                      "id": "O8sg63",
-                      "name": "Product Card 02",
+                      "id": "pidx01b",
+                      "name": "Product Row Body",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "JdM2rp",
-                          "name": "Product No 02",
+                          "id": "pidx01n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "02",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx01c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx01nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "軸受・直動機器",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx01mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 19社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "wDZYvQ",
-                          "name": "Product Name 02",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "軸受・直動機器",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "m1IU8e",
-                          "name": "Product Makers 02",
+                          "id": "pidx01mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "NTN / THK / 日本精工 / 不二越 / オイレス工業 / ミネベア",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "qTUhtN",
-                          "name": "Product Foot 02",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "YCS34G",
-                              "name": "Product Meta 02",
-                              "fill": "$ink-soft",
-                              "content": "取扱 19 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "24Se8j",
-                              "name": "Product Arrow 02",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx02",
+                  "name": "Product Row 03",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx02d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
                     },
                     {
                       "type": "frame",
-                      "id": "eFaXYb",
-                      "name": "Product Card 03",
+                      "id": "pidx02b",
+                      "name": "Product Row Body",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "5XhqD3",
-                          "name": "Product No 03",
+                          "id": "pidx02n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "03",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx02c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx02nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "自動化・省力化機器",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx02mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 16社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "ABeG8W",
-                          "name": "Product Name 03",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "自動化・省力化機器",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "QJbjvd",
-                          "name": "Product Makers 03",
+                          "id": "pidx02mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "オムロン / 三菱電機 / ファナック / アイエイアイ / IDEC / アズビル",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "kOBRpi",
-                          "name": "Product Foot 03",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "Ti3DFB",
-                              "name": "Product Meta 03",
-                              "fill": "$ink-soft",
-                              "content": "取扱 16 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "zCWSar",
-                              "name": "Product Arrow 03",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
                     }
@@ -1712,258 +1684,266 @@
                 },
                 {
                   "type": "frame",
-                  "id": "3FBdRT",
-                  "name": "Product Row 2",
+                  "id": "pidx03",
+                  "name": "Product Row 04",
                   "width": "fill_container",
-                  "fill": "$paper-line",
-                  "gap": 1,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
                   "children": [
                     {
-                      "type": "frame",
-                      "id": "7QmGPq",
-                      "name": "Product Card 04",
+                      "type": "rectangle",
+                      "id": "pidx03d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pidx03b",
+                      "name": "Product Row Body",
+                      "width": "fill_container",
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "Pthfn0",
-                          "name": "Product No 04",
+                          "id": "pidx03n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "04",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx03c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx03nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "チェーン・ベルト及びスプロケット・歯車",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx03mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 16社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "dquMNk",
-                          "name": "Product Name 04",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "チェーン・ベルト及びスプロケット・歯車",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "y226W9",
-                          "name": "Product Makers 04",
+                          "id": "pidx03mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "椿本チエイン / 三ツ星ベルト / バンドー化学 / ニッタ / 小原歯車工業 / 鍋屋バイテック",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "jZnL36",
-                          "name": "Product Foot 04",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "l8lOlp",
-                              "name": "Product Meta 04",
-                              "fill": "$ink-soft",
-                              "content": "取扱 16 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "iKNNJe",
-                              "name": "Product Arrow 04",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx04",
+                  "name": "Product Row 05",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx04d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
                     },
                     {
                       "type": "frame",
-                      "id": "SWtCrx",
-                      "name": "Product Card 05",
+                      "id": "pidx04b",
+                      "name": "Product Row Body",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "5qr1al",
-                          "name": "Product No 05",
+                          "id": "pidx04n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "05",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx04c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx04nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "カップリング・ばね・防振部品",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx04mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 15社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "feO44q",
-                          "name": "Product Name 05",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "カップリング・ばね・防振部品",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "gnhxQJ",
-                          "name": "Product Makers 05",
+                          "id": "pidx04mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "鍋屋バイテック / イマオコーポレーション / 三木プーリー / 倉敷化工 / 三ツ星ベルト / アイセル",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "wpT5yH",
-                          "name": "Product Foot 05",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "3P5lNJ",
-                              "name": "Product Meta 05",
-                              "fill": "$ink-soft",
-                              "content": "取扱 15 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "qUbcbu",
-                              "name": "Product Arrow 05",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx05",
+                  "name": "Product Row 06",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx05d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
                     },
                     {
                       "type": "frame",
-                      "id": "eH9Cno",
-                      "name": "Product Card 06",
+                      "id": "pidx05b",
+                      "name": "Product Row Body",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "lFlsRH",
-                          "name": "Product No 06",
+                          "id": "pidx05n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "06",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx05c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx05nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "空圧・油圧機器",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx05mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 20社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "aZte6i",
-                          "name": "Product Name 06",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "空圧・油圧機器",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "HZHFA2",
-                          "name": "Product Makers 06",
+                          "id": "pidx05mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "SMC / CKD / コガネイ / 日本ピスコ / KYB / ダイキン工業",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "ac81NB",
-                          "name": "Product Foot 06",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "edSqIf",
-                              "name": "Product Meta 06",
-                              "fill": "$ink-soft",
-                              "content": "取扱 20 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "HNSA4Y",
-                              "name": "Product Arrow 06",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
                     }
@@ -1971,258 +1951,266 @@
                 },
                 {
                   "type": "frame",
-                  "id": "ZJQreO",
-                  "name": "Product Row 3",
+                  "id": "pidx06",
+                  "name": "Product Row 07",
                   "width": "fill_container",
-                  "fill": "$paper-line",
-                  "gap": 1,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
                   "children": [
                     {
-                      "type": "frame",
-                      "id": "mM5gzZ",
-                      "name": "Product Card 07",
+                      "type": "rectangle",
+                      "id": "pidx06d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pidx06b",
+                      "name": "Product Row Body",
+                      "width": "fill_container",
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "j0mUy4",
-                          "name": "Product No 07",
+                          "id": "pidx06n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "07",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx06c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx06nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "バルブ・ホース配管機器",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx06mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 25社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "0Ul28S",
-                          "name": "Product Name 07",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "バルブ・ホース配管機器",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "LYTZcU",
-                          "name": "Product Makers 07",
+                          "id": "pidx06mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "キッツ / フジキン / ヨシタケ / 旭有機材工業 / カクダイ / トヨックス",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "C658Mz",
-                          "name": "Product Foot 07",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "oL6sE2",
-                              "name": "Product Meta 07",
-                              "fill": "$ink-soft",
-                              "content": "取扱 25 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "45YRyP",
-                              "name": "Product Arrow 07",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx07",
+                  "name": "Product Row 08",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx07d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
                     },
                     {
                       "type": "frame",
-                      "id": "uUAZYf",
-                      "name": "Product Card 08",
+                      "id": "pidx07b",
+                      "name": "Product Row Body",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "ZjlYrk",
-                          "name": "Product No 08",
+                          "id": "pidx07n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "08",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx07c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx07nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "ポンプ関連機器",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx07mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 20社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "WRMAGQ",
-                          "name": "Product Name 08",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "ポンプ関連機器",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "V5lYtN",
-                          "name": "Product Makers 08",
+                          "id": "pidx07mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "荏原製作所 / 鶴見製作所 / テラル / グルンドフォスポンプ / イワキ / 工進",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "ooHcgW",
-                          "name": "Product Foot 08",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "w5eIKK",
-                              "name": "Product Meta 08",
-                              "fill": "$ink-soft",
-                              "content": "取扱 20 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "A4bHH9",
-                              "name": "Product Arrow 08",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx08",
+                  "name": "Product Row 09",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx08d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
                     },
                     {
                       "type": "frame",
-                      "id": "Kl4KVI",
-                      "name": "Product Card 09",
+                      "id": "pidx08b",
+                      "name": "Product Row Body",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "HdOTZD",
-                          "name": "Product No 09",
+                          "id": "pidx08n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "09",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx08c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx08nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "荷役・搬送機器",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx08mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 31社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "pMcrsl",
-                          "name": "Product Name 09",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "荷役・搬送機器",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "AZtH5R",
-                          "name": "Product Makers 09",
+                          "id": "pidx08mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "マキテック / オークラ輸送機 / 伊東電機 / キトー / 象印チェンブロック / ダイフク",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "CBpMn8",
-                          "name": "Product Foot 09",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "hfEJdG",
-                              "name": "Product Meta 09",
-                              "fill": "$ink-soft",
-                              "content": "取扱 31 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "NIhkXt",
-                              "name": "Product Arrow 09",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
                     }
@@ -2230,258 +2218,266 @@
                 },
                 {
                   "type": "frame",
-                  "id": "CPvRtH",
-                  "name": "Product Row 4",
+                  "id": "pidx09",
+                  "name": "Product Row 10",
                   "width": "fill_container",
-                  "fill": "$paper-line",
-                  "gap": 1,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
                   "children": [
                     {
-                      "type": "frame",
-                      "id": "6196od",
-                      "name": "Product Card 10",
+                      "type": "rectangle",
+                      "id": "pidx09d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pidx09b",
+                      "name": "Product Row Body",
+                      "width": "fill_container",
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "ceHk7m",
-                          "name": "Product No 10",
+                          "id": "pidx09n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "10",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx09c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx09nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "ファンブロア及び産業機器",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx09mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 12社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "t1yiav",
-                          "name": "Product Name 10",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "ファンブロア及び産業機器",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "xcD9sH",
-                          "name": "Product Makers 10",
+                          "id": "pidx09mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "フルタ電機 / 昭和電機 / スイデン / テラル / 三浦工業 / 有光工業",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "4N8fEA",
-                          "name": "Product Foot 10",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "3snKRW",
-                              "name": "Product Meta 10",
-                              "fill": "$ink-soft",
-                              "content": "取扱 12 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "no690t",
-                              "name": "Product Arrow 10",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx10",
+                  "name": "Product Row 11",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx10d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
                     },
                     {
                       "type": "frame",
-                      "id": "tBfJJp",
-                      "name": "Product Card 11",
+                      "id": "pidx10b",
+                      "name": "Product Row Body",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "ijYrhM",
-                          "name": "Product No 11",
+                          "id": "pidx10n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "11",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx10c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx10nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "工場設備関連",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx10mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 44社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "RuTSnj",
-                          "name": "Product Name 11",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "工場設備関連",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "YZXSa5",
-                          "name": "Product Makers 11",
+                          "id": "pidx10mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "ダイフク / トラスコ中山 / サカエ / スギヤス / アマノ / アネスト岩田",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "Ec3Jhj",
-                          "name": "Product Foot 11",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "DwyswN",
-                              "name": "Product Meta 11",
-                              "fill": "$ink-soft",
-                              "content": "取扱 44 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "Y2mGKG",
-                              "name": "Product Arrow 11",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx11",
+                  "name": "Product Row 12",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx11d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
                     },
                     {
                       "type": "frame",
-                      "id": "B74VaH",
-                      "name": "Product Card 12",
+                      "id": "pidx11b",
+                      "name": "Product Row Body",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "6M5dyd",
-                          "name": "Product No 12",
+                          "id": "pidx11n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "12",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx11c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx11nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "切削工具",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx11mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 14社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "OOBeCV",
-                          "name": "Product Name 12",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "切削工具",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "BIN52L",
-                          "name": "Product Makers 12",
+                          "id": "pidx11mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "三菱マテリアル / オーエスジー / 京セラ / 岡崎精工 / ミヤナガ / 大見工業",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "mQQ24j",
-                          "name": "Product Foot 12",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "IlK389",
-                              "name": "Product Meta 12",
-                              "fill": "$ink-soft",
-                              "content": "取扱 14 社・機械工具関連",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "oUSg7L",
-                              "name": "Product Arrow 12",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
                     }
@@ -2489,258 +2485,88 @@
                 },
                 {
                   "type": "frame",
-                  "id": "QG5jop",
-                  "name": "Product Row 5",
+                  "id": "pidx12",
+                  "name": "Product Row 13",
                   "width": "fill_container",
-                  "fill": "$paper-line",
-                  "gap": 1,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
                   "children": [
                     {
-                      "type": "frame",
-                      "id": "cQfXO6",
-                      "name": "Product Card 13",
+                      "type": "rectangle",
+                      "id": "pidx12d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pidx12b",
+                      "name": "Product Row Body",
+                      "width": "fill_container",
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "L5QdGm",
-                          "name": "Product No 13",
+                          "id": "pidx12n",
+                          "name": "Index No",
                           "fill": "$accent",
                           "content": "13",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx12c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx12nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "測定・計測機器",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx12mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 12社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
-                          "id": "NIirVi",
-                          "name": "Product Name 13",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "測定・計測機器",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "uauZ1y",
-                          "name": "Product Makers 13",
+                          "id": "pidx12mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "ミツトヨ / シンワ測定 / 新潟精機 / 長野計器 / 大和製衡 / 日置電機",
-                          "lineHeight": 1.7,
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "evtvYT",
-                          "name": "Product Foot 13",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "79qRGP",
-                              "name": "Product Meta 13",
-                              "fill": "$ink-soft",
-                              "content": "取扱 12 社・機械工具関連",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "sm94rY",
-                              "name": "Product Arrow 13",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "GIGd6R",
-                      "name": "Product Card 14",
-                      "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "8aZw4N",
-                          "name": "Product No 14",
-                          "fill": "$accent",
-                          "content": "14",
-                          "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
-                        },
-                        {
-                          "type": "text",
-                          "id": "oOeZCk",
-                          "name": "Product Name 14",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "電動・油空圧工具",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "Q6VUKt",
-                          "name": "Product Makers 14",
-                          "fill": "$ink-soft",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "マキタ / 日立工機 / ボッシュ / パナソニック / ベッセル / 日東工器",
-                          "lineHeight": 1.7,
-                          "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "MJmqHo",
-                          "name": "Product Foot 14",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "hKaxGc",
-                              "name": "Product Meta 14",
-                              "fill": "$ink-soft",
-                              "content": "取扱 14 社・機械工具関連",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "FzjRvE",
-                              "name": "Product Arrow 14",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "b67Sue",
-                      "name": "Product Card 15",
-                      "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "dUlkWC",
-                          "name": "Product No 15",
-                          "fill": "$accent",
-                          "content": "15",
-                          "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
-                        },
-                        {
-                          "type": "text",
-                          "id": "RWCIJT",
-                          "name": "Product Name 15",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "ツーリング・治具",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "bJJEDi",
-                          "name": "Product Makers 15",
-                          "fill": "$ink-soft",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "トラスコ中山 / 北川鉄工所 / 大昭和精機 / ユキワ精工 / カネテック / スーパーツール",
-                          "lineHeight": 1.7,
-                          "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "bO8t1X",
-                          "name": "Product Foot 15",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "ePN6r8",
-                              "name": "Product Meta 15",
-                              "fill": "$ink-soft",
-                              "content": "取扱 13 社・機械工具関連",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "yC7xx1",
-                              "name": "Product Arrow 15",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
                     }
@@ -2748,262 +2574,456 @@
                 },
                 {
                   "type": "frame",
-                  "id": "uUfUhE",
-                  "name": "Product Row 6",
+                  "id": "pidx13",
+                  "name": "Product Row 14",
                   "width": "fill_container",
-                  "fill": "$paper-line",
-                  "gap": 1,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
                   "children": [
                     {
-                      "type": "frame",
-                      "id": "knYfcL",
-                      "name": "Product Card 16",
+                      "type": "rectangle",
+                      "id": "pidx13d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "HgDFDL",
-                          "name": "Product No 16",
-                          "fill": "$accent",
-                          "content": "16",
-                          "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
-                        },
-                        {
-                          "type": "text",
-                          "id": "FFJ3dq",
-                          "name": "Product Name 16",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "研削・研磨用品",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "h7X6EI",
-                          "name": "Product Makers 16",
-                          "fill": "$ink-soft",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "日本レジボン / ニューレジストン / イチグチ / 住友スリーエム / 三共理化学 / トラスコ中山",
-                          "lineHeight": 1.7,
-                          "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "PVE4lv",
-                          "name": "Product Foot 16",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "b4D06n",
-                              "name": "Product Meta 16",
-                              "fill": "$ink-soft",
-                              "content": "取扱 10 社・機械工具関連",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "6QBASl",
-                              "name": "Product Arrow 16",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        }
-                      ]
+                      "height": 1
                     },
                     {
                       "type": "frame",
-                      "id": "MgfMZY",
-                      "name": "Product Card 17",
+                      "id": "pidx13b",
+                      "name": "Product Row Body",
                       "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
+                      "gap": 28,
+                      "alignItems": "start",
                       "children": [
                         {
                           "type": "text",
-                          "id": "jWOysk",
-                          "name": "Product No 17",
+                          "id": "pidx13n",
+                          "name": "Index No",
                           "fill": "$accent",
-                          "content": "17",
+                          "content": "14",
                           "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
-                        },
-                        {
-                          "type": "text",
-                          "id": "KGWar0",
-                          "name": "Product Name 17",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "作業工具",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "gF2ICq",
-                          "name": "Product Makers 17",
-                          "fill": "$ink-soft",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "京都機械工具 / 前田金属工業 / ベッセル / ロブテックス / フジ矢 / ホーザン",
-                          "lineHeight": 1.7,
-                          "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
-                          "fontWeight": "normal"
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
                         },
                         {
                           "type": "frame",
-                          "id": "DH3I6p",
-                          "name": "Product Foot 17",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
+                          "id": "pidx13c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
                           "children": [
                             {
                               "type": "text",
-                              "id": "BTNHQ7",
-                              "name": "Product Meta 17",
-                              "fill": "$ink-soft",
-                              "content": "取扱 13 社・機械工具関連",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
+                              "id": "pidx13nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "電動・油空圧工具",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
                             },
                             {
                               "type": "text",
-                              "id": "2Yl4qe",
-                              "name": "Product Arrow 17",
+                              "id": "pidx13mt",
+                              "name": "Index Meta",
                               "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
+                              "content": "取扱メーカー 14社",
+                              "fontFamily": "$font-sans",
                               "fontSize": 12,
-                              "fontWeight": "normal"
+                              "fontWeight": "500"
                             }
                           ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "ITqHxA",
-                      "name": "Product Card 18",
-                      "width": "fill_container",
-                      "fill": "$paper",
-                      "layout": "vertical",
-                      "gap": 16,
-                      "padding": [
-                        22,
-                        22,
-                        18,
-                        22
-                      ],
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "luZZAw",
-                          "name": "Product No 18",
-                          "fill": "$accent",
-                          "content": "18",
-                          "fontFamily": "Geist Mono",
-                          "fontSize": 12,
-                          "fontWeight": "normal",
-                          "letterSpacing": 2
                         },
                         {
                           "type": "text",
-                          "id": "tnmfwH",
-                          "name": "Product Name 18",
-                          "fill": "$ink",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "材料・ボルト関連",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 22,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "PlklVW",
-                          "name": "Product Makers 18",
+                          "id": "pidx13mk",
+                          "name": "Index Makers",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "大和螺子 / コノエ / スリーエッチ / 双葉電子工業 / 虹技 / 富士精密",
-                          "lineHeight": 1.7,
+                          "content": "マキタ / 日立工機 / ボッシュ / パナソニック / ベッセル / 日東工器",
+                          "lineHeight": 1.9,
                           "fontFamily": "$font-sans",
-                          "fontSize": 12.5,
+                          "fontSize": 13,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "14PnEH",
-                          "name": "Product Foot 18",
-                          "width": "fill_container",
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "9QEyS1",
-                              "name": "Product Meta 18",
-                              "fill": "$ink-soft",
-                              "content": "取扱 13 社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "E8WJh0",
-                              "name": "Product Arrow 18",
-                              "fill": "$accent",
-                              "content": "→",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
                         }
                       ]
                     }
                   ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx14",
+                  "name": "Product Row 15",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx14d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pidx14b",
+                      "name": "Product Row Body",
+                      "width": "fill_container",
+                      "gap": 28,
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "pidx14n",
+                          "name": "Index No",
+                          "fill": "$accent",
+                          "content": "15",
+                          "fontFamily": "Geist Mono",
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx14c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx14nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "ツーリング・治具",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx14mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 13社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "pidx14mk",
+                          "name": "Index Makers",
+                          "fill": "$ink-soft",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "トラスコ中山 / 北川鉄工所 / 大昭和精機 / ユキワ精工 / カネテック / スーパーツール",
+                          "lineHeight": 1.9,
+                          "fontFamily": "$font-sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx15",
+                  "name": "Product Row 16",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx15d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pidx15b",
+                      "name": "Product Row Body",
+                      "width": "fill_container",
+                      "gap": 28,
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "pidx15n",
+                          "name": "Index No",
+                          "fill": "$accent",
+                          "content": "16",
+                          "fontFamily": "Geist Mono",
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx15c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx15nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "研削・研磨用品",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx15mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 10社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "pidx15mk",
+                          "name": "Index Makers",
+                          "fill": "$ink-soft",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "日本レジボン / ニューレジストン / イチグチ / 住友スリーエム / 三共理化学 / トラスコ中山",
+                          "lineHeight": 1.9,
+                          "fontFamily": "$font-sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx16",
+                  "name": "Product Row 17",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx16d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pidx16b",
+                      "name": "Product Row Body",
+                      "width": "fill_container",
+                      "gap": 28,
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "pidx16n",
+                          "name": "Index No",
+                          "fill": "$accent",
+                          "content": "17",
+                          "fontFamily": "Geist Mono",
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx16c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx16nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "作業工具",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx16mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 13社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "pidx16mk",
+                          "name": "Index Makers",
+                          "fill": "$ink-soft",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "京都機械工具 / 前田金属工業 / ベッセル / ロブテックス / フジ矢 / ホーザン",
+                          "lineHeight": 1.9,
+                          "fontFamily": "$font-sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pidx17",
+                  "name": "Product Row 18",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": [
+                    22,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "pidx17d",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pidx17b",
+                      "name": "Product Row Body",
+                      "width": "fill_container",
+                      "gap": 28,
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "pidx17n",
+                          "name": "Index No",
+                          "fill": "$accent",
+                          "content": "18",
+                          "fontFamily": "Geist Mono",
+                          "fontSize": 13,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pidx17c",
+                          "name": "Index Category",
+                          "width": 280,
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pidx17nm",
+                              "name": "Index Name",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": 280,
+                              "content": "材料・ボルト関連",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$font-serif",
+                              "fontSize": 19,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pidx17mt",
+                              "name": "Index Meta",
+                              "fill": "$accent",
+                              "content": "取扱メーカー 13社",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "pidx17mk",
+                          "name": "Index Makers",
+                          "fill": "$ink-soft",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "大和螺子 / コノエ / スリーエッチ / 双葉電子工業 / 虹技 / 富士精密",
+                          "lineHeight": 1.9,
+                          "fontFamily": "$font-sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "pidxEnd",
+                  "name": "Divider",
+                  "fill": "$paper-line",
+                  "width": "fill_container",
+                  "height": 1
                 }
               ]
             }
@@ -3082,14 +3102,19 @@
               "fill": "$paper",
               "layout": "vertical",
               "gap": 16,
-              "padding": 28,
+              "padding": [
+                0,
+                0,
+                4,
+                0
+              ],
               "children": [
                 {
                   "type": "text",
                   "id": "4oEsIx",
                   "name": "Philosophy Label",
                   "fill": "$accent",
-                  "content": "経営理念",
+                  "content": "PHILOSOPHY / 経営理念",
                   "fontFamily": "Geist Mono",
                   "fontSize": 11,
                   "fontWeight": "normal",
@@ -3166,65 +3191,97 @@
               "id": "N71KAi",
               "name": "Company Grid",
               "width": "fill_container",
-              "gap": 24,
+              "gap": 56,
               "children": [
                 {
                   "type": "frame",
                   "id": "6EZ14a",
                   "name": "Profile Card",
-                  "width": 520,
-                  "fill": "$paper-line",
+                  "width": 480,
+                  "fill": "$paper",
                   "layout": "vertical",
-                  "gap": 1,
-                  "padding": 24,
+                  "gap": 18,
+                  "padding": 0,
                   "children": [
                     {
                       "type": "frame",
-                      "id": "x7gCl4",
-                      "name": "Profile Row 会社名",
-                      "width": "fill_container",
-                      "fill": "$paper-line",
-                      "gap": 1,
+                      "id": "prof2hd2",
+                      "name": "Card Head",
+                      "layout": "vertical",
+                      "gap": 10,
                       "children": [
                         {
+                          "type": "text",
+                          "id": "prof2ey2",
+                          "name": "Card Eyebrow",
+                          "fill": "$accent",
+                          "content": "PROFILE / 基本情報",
+                          "fontFamily": "Geist Mono",
+                          "fontSize": 11,
+                          "fontWeight": "500",
+                          "letterSpacing": 2.2
+                        },
+                        {
+                          "type": "text",
+                          "id": "prof2ti2",
+                          "name": "Card Title",
+                          "fill": "$ink",
+                          "content": "基本情報",
+                          "fontFamily": "$font-serif",
+                          "fontSize": 20,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "dl00",
+                      "name": "Info Row 会社名",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": [
+                        14,
+                        0
+                      ],
+                      "children": [
+                        {
+                          "type": "rectangle",
+                          "id": "dl00d",
+                          "name": "Divider",
+                          "fill": "$paper-line",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
                           "type": "frame",
-                          "id": "illRnm",
-                          "name": "Profile Key 会社名",
-                          "width": 132,
-                          "fill": "$paper-soft",
-                          "padding": [
-                            16,
-                            14
-                          ],
+                          "id": "dl00b",
+                          "name": "Info Body",
+                          "width": "fill_container",
+                          "gap": 20,
+                          "alignItems": "start",
                           "children": [
                             {
                               "type": "text",
-                              "id": "kV0NGO",
-                              "name": "Profile Key Text 会社名",
+                              "id": "dl00k",
+                              "name": "Info Label",
                               "fill": "$ink-soft",
+                              "textGrowth": "fixed-width",
+                              "width": 104,
                               "content": "会社名",
                               "fontFamily": "Geist Mono",
                               "fontSize": 11,
                               "fontWeight": "normal",
-                              "letterSpacing": 1.4
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "d1R9Gy",
-                          "name": "Profile Value 会社名",
-                          "width": "fill_container",
-                          "fill": "$paper",
-                          "padding": 16,
-                          "children": [
+                              "letterSpacing": 1.2,
+                              "lineHeight": 1.7
+                            },
                             {
                               "type": "text",
-                              "id": "DrabSh",
-                              "name": "Profile Value Text 会社名",
+                              "id": "dl00v",
+                              "name": "Info Value",
                               "fill": "$ink",
                               "textGrowth": "fixed-width",
-                              "width": 340,
+                              "width": "fill_container",
                               "content": "有限会社フクウラ",
                               "lineHeight": 1.7,
                               "fontFamily": "$font-sans",
@@ -3237,51 +3294,53 @@
                     },
                     {
                       "type": "frame",
-                      "id": "C2r38j",
-                      "name": "Profile Row 代表者",
+                      "id": "dl01",
+                      "name": "Info Row 代表者",
                       "width": "fill_container",
-                      "fill": "$paper-line",
-                      "gap": 1,
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": [
+                        14,
+                        0
+                      ],
                       "children": [
                         {
+                          "type": "rectangle",
+                          "id": "dl01d",
+                          "name": "Divider",
+                          "fill": "$paper-line",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
                           "type": "frame",
-                          "id": "32GQKf",
-                          "name": "Profile Key 代表者",
-                          "width": 132,
-                          "fill": "$paper-soft",
-                          "padding": [
-                            16,
-                            14
-                          ],
+                          "id": "dl01b",
+                          "name": "Info Body",
+                          "width": "fill_container",
+                          "gap": 20,
+                          "alignItems": "start",
                           "children": [
                             {
                               "type": "text",
-                              "id": "5oinux",
-                              "name": "Profile Key Text 代表者",
+                              "id": "dl01k",
+                              "name": "Info Label",
                               "fill": "$ink-soft",
+                              "textGrowth": "fixed-width",
+                              "width": 104,
                               "content": "代表者",
                               "fontFamily": "Geist Mono",
                               "fontSize": 11,
                               "fontWeight": "normal",
-                              "letterSpacing": 1.4
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "BdP8fL",
-                          "name": "Profile Value 代表者",
-                          "width": "fill_container",
-                          "fill": "$paper",
-                          "padding": 16,
-                          "children": [
+                              "letterSpacing": 1.2,
+                              "lineHeight": 1.7
+                            },
                             {
                               "type": "text",
-                              "id": "UCE3cc",
-                              "name": "Profile Value Text 代表者",
+                              "id": "dl01v",
+                              "name": "Info Value",
                               "fill": "$ink",
                               "textGrowth": "fixed-width",
-                              "width": 340,
+                              "width": "fill_container",
                               "content": "代表取締役 福浦 崇志",
                               "lineHeight": 1.7,
                               "fontFamily": "$font-sans",
@@ -3294,51 +3353,53 @@
                     },
                     {
                       "type": "frame",
-                      "id": "3gPqnP",
-                      "name": "Profile Row 資本金",
+                      "id": "dl02",
+                      "name": "Info Row 資本金",
                       "width": "fill_container",
-                      "fill": "$paper-line",
-                      "gap": 1,
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": [
+                        14,
+                        0
+                      ],
                       "children": [
                         {
+                          "type": "rectangle",
+                          "id": "dl02d",
+                          "name": "Divider",
+                          "fill": "$paper-line",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
                           "type": "frame",
-                          "id": "SoDd8S",
-                          "name": "Profile Key 資本金",
-                          "width": 132,
-                          "fill": "$paper-soft",
-                          "padding": [
-                            16,
-                            14
-                          ],
+                          "id": "dl02b",
+                          "name": "Info Body",
+                          "width": "fill_container",
+                          "gap": 20,
+                          "alignItems": "start",
                           "children": [
                             {
                               "type": "text",
-                              "id": "1RfG1W",
-                              "name": "Profile Key Text 資本金",
+                              "id": "dl02k",
+                              "name": "Info Label",
                               "fill": "$ink-soft",
+                              "textGrowth": "fixed-width",
+                              "width": 104,
                               "content": "資本金",
                               "fontFamily": "Geist Mono",
                               "fontSize": 11,
                               "fontWeight": "normal",
-                              "letterSpacing": 1.4
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "DWIcj5",
-                          "name": "Profile Value 資本金",
-                          "width": "fill_container",
-                          "fill": "$paper",
-                          "padding": 16,
-                          "children": [
+                              "letterSpacing": 1.2,
+                              "lineHeight": 1.7
+                            },
                             {
                               "type": "text",
-                              "id": "trTUWv",
-                              "name": "Profile Value Text 資本金",
+                              "id": "dl02v",
+                              "name": "Info Value",
                               "fill": "$ink",
                               "textGrowth": "fixed-width",
-                              "width": 340,
+                              "width": "fill_container",
                               "content": "300万円",
                               "lineHeight": 1.7,
                               "fontFamily": "$font-sans",
@@ -3351,51 +3412,53 @@
                     },
                     {
                       "type": "frame",
-                      "id": "eS1zbA",
-                      "name": "Profile Row 事業内容",
+                      "id": "dl03",
+                      "name": "Info Row 事業内容",
                       "width": "fill_container",
-                      "fill": "$paper-line",
-                      "gap": 1,
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": [
+                        14,
+                        0
+                      ],
                       "children": [
                         {
+                          "type": "rectangle",
+                          "id": "dl03d",
+                          "name": "Divider",
+                          "fill": "$paper-line",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
                           "type": "frame",
-                          "id": "e8UA1j",
-                          "name": "Profile Key 事業内容",
-                          "width": 132,
-                          "fill": "$paper-soft",
-                          "padding": [
-                            16,
-                            14
-                          ],
+                          "id": "dl03b",
+                          "name": "Info Body",
+                          "width": "fill_container",
+                          "gap": 20,
+                          "alignItems": "start",
                           "children": [
                             {
                               "type": "text",
-                              "id": "UbxElL",
-                              "name": "Profile Key Text 事業内容",
+                              "id": "dl03k",
+                              "name": "Info Label",
                               "fill": "$ink-soft",
+                              "textGrowth": "fixed-width",
+                              "width": 104,
                               "content": "事業内容",
                               "fontFamily": "Geist Mono",
                               "fontSize": 11,
                               "fontWeight": "normal",
-                              "letterSpacing": 1.4
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "YXezHX",
-                          "name": "Profile Value 事業内容",
-                          "width": "fill_container",
-                          "fill": "$paper",
-                          "padding": 16,
-                          "children": [
+                              "letterSpacing": 1.2,
+                              "lineHeight": 1.7
+                            },
                             {
                               "type": "text",
-                              "id": "TKDSR0",
-                              "name": "Profile Value Text 事業内容",
+                              "id": "dl03v",
+                              "name": "Info Value",
                               "fill": "$ink",
                               "textGrowth": "fixed-width",
-                              "width": 340,
+                              "width": "fill_container",
                               "content": "機械工具・関連機器の販売／各種機械加工・樹脂成型・板金溶接・ゴム製品加工",
                               "lineHeight": 1.7,
                               "fontFamily": "$font-sans",
@@ -3408,51 +3471,53 @@
                     },
                     {
                       "type": "frame",
-                      "id": "oa5h2j",
-                      "name": "Profile Row 創立",
+                      "id": "dl04",
+                      "name": "Info Row 創立",
                       "width": "fill_container",
-                      "fill": "$paper-line",
-                      "gap": 1,
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": [
+                        14,
+                        0
+                      ],
                       "children": [
                         {
+                          "type": "rectangle",
+                          "id": "dl04d",
+                          "name": "Divider",
+                          "fill": "$paper-line",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
                           "type": "frame",
-                          "id": "gFMfwU",
-                          "name": "Profile Key 創立",
-                          "width": 132,
-                          "fill": "$paper-soft",
-                          "padding": [
-                            16,
-                            14
-                          ],
+                          "id": "dl04b",
+                          "name": "Info Body",
+                          "width": "fill_container",
+                          "gap": 20,
+                          "alignItems": "start",
                           "children": [
                             {
                               "type": "text",
-                              "id": "RCmHH6",
-                              "name": "Profile Key Text 創立",
+                              "id": "dl04k",
+                              "name": "Info Label",
                               "fill": "$ink-soft",
+                              "textGrowth": "fixed-width",
+                              "width": 104,
                               "content": "創立",
                               "fontFamily": "Geist Mono",
                               "fontSize": 11,
                               "fontWeight": "normal",
-                              "letterSpacing": 1.4
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "Wjx04D",
-                          "name": "Profile Value 創立",
-                          "width": "fill_container",
-                          "fill": "$paper",
-                          "padding": 16,
-                          "children": [
+                              "letterSpacing": 1.2,
+                              "lineHeight": 1.7
+                            },
                             {
                               "type": "text",
-                              "id": "w4BB6B",
-                              "name": "Profile Value Text 創立",
+                              "id": "dl04v",
+                              "name": "Info Value",
                               "fill": "$ink",
                               "textGrowth": "fixed-width",
-                              "width": 340,
+                              "width": "fill_container",
                               "content": "1996年（平成8年）6月",
                               "lineHeight": 1.7,
                               "fontFamily": "$font-sans",
@@ -3465,51 +3530,53 @@
                     },
                     {
                       "type": "frame",
-                      "id": "OHAqMU",
-                      "name": "Profile Row 所在地",
+                      "id": "dl05",
+                      "name": "Info Row 所在地",
                       "width": "fill_container",
-                      "fill": "$paper-line",
-                      "gap": 1,
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": [
+                        14,
+                        0
+                      ],
                       "children": [
                         {
+                          "type": "rectangle",
+                          "id": "dl05d",
+                          "name": "Divider",
+                          "fill": "$paper-line",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
                           "type": "frame",
-                          "id": "EbjljT",
-                          "name": "Profile Key 所在地",
-                          "width": 132,
-                          "fill": "$paper-soft",
-                          "padding": [
-                            16,
-                            14
-                          ],
+                          "id": "dl05b",
+                          "name": "Info Body",
+                          "width": "fill_container",
+                          "gap": 20,
+                          "alignItems": "start",
                           "children": [
                             {
                               "type": "text",
-                              "id": "k6F0BI",
-                              "name": "Profile Key Text 所在地",
+                              "id": "dl05k",
+                              "name": "Info Label",
                               "fill": "$ink-soft",
+                              "textGrowth": "fixed-width",
+                              "width": 104,
                               "content": "所在地",
                               "fontFamily": "Geist Mono",
                               "fontSize": 11,
                               "fontWeight": "normal",
-                              "letterSpacing": 1.4
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "rvBK94",
-                          "name": "Profile Value 所在地",
-                          "width": "fill_container",
-                          "fill": "$paper",
-                          "padding": 16,
-                          "children": [
+                              "letterSpacing": 1.2,
+                              "lineHeight": 1.7
+                            },
                             {
                               "type": "text",
-                              "id": "FQLMMZ",
-                              "name": "Profile Value Text 所在地",
+                              "id": "dl05v",
+                              "name": "Info Value",
                               "fill": "$ink",
                               "textGrowth": "fixed-width",
-                              "width": 340,
+                              "width": "fill_container",
                               "content": "〒675-1114 兵庫県加古郡稲美町国安973番地の10",
                               "lineHeight": 1.7,
                               "fontFamily": "$font-sans",
@@ -3522,51 +3589,53 @@
                     },
                     {
                       "type": "frame",
-                      "id": "hpzFXu",
-                      "name": "Profile Row 電話 / FAX",
+                      "id": "dl06",
+                      "name": "Info Row 電話 / FAX",
                       "width": "fill_container",
-                      "fill": "$paper-line",
-                      "gap": 1,
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": [
+                        14,
+                        0
+                      ],
                       "children": [
                         {
+                          "type": "rectangle",
+                          "id": "dl06d",
+                          "name": "Divider",
+                          "fill": "$paper-line",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
                           "type": "frame",
-                          "id": "V2AiUY",
-                          "name": "Profile Key 電話 / FAX",
-                          "width": 132,
-                          "fill": "$paper-soft",
-                          "padding": [
-                            16,
-                            14
-                          ],
+                          "id": "dl06b",
+                          "name": "Info Body",
+                          "width": "fill_container",
+                          "gap": 20,
+                          "alignItems": "start",
                           "children": [
                             {
                               "type": "text",
-                              "id": "cJiAQ8",
-                              "name": "Profile Key Text 電話 / FAX",
+                              "id": "dl06k",
+                              "name": "Info Label",
                               "fill": "$ink-soft",
+                              "textGrowth": "fixed-width",
+                              "width": 104,
                               "content": "電話 / FAX",
                               "fontFamily": "Geist Mono",
                               "fontSize": 11,
                               "fontWeight": "normal",
-                              "letterSpacing": 1.4
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "T52pN8",
-                          "name": "Profile Value 電話 / FAX",
-                          "width": "fill_container",
-                          "fill": "$paper",
-                          "padding": 16,
-                          "children": [
+                              "letterSpacing": 1.2,
+                              "lineHeight": 1.7
+                            },
                             {
                               "type": "text",
-                              "id": "YVuIPD",
-                              "name": "Profile Value Text 電話 / FAX",
+                              "id": "dl06v",
+                              "name": "Info Value",
                               "fill": "$ink",
                               "textGrowth": "fixed-width",
-                              "width": 340,
+                              "width": "fill_container",
                               "content": "TEL 079-492-6465 ／ FAX 079-492-6429",
                               "lineHeight": 1.7,
                               "fontFamily": "$font-sans",
@@ -3579,51 +3648,53 @@
                     },
                     {
                       "type": "frame",
-                      "id": "PvSpbb",
-                      "name": "Profile Row E-mail",
+                      "id": "dl07",
+                      "name": "Info Row E-mail",
                       "width": "fill_container",
-                      "fill": "$paper-line",
-                      "gap": 1,
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": [
+                        14,
+                        0
+                      ],
                       "children": [
                         {
+                          "type": "rectangle",
+                          "id": "dl07d",
+                          "name": "Divider",
+                          "fill": "$paper-line",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
                           "type": "frame",
-                          "id": "azDzBP",
-                          "name": "Profile Key E-mail",
-                          "width": 132,
-                          "fill": "$paper-soft",
-                          "padding": [
-                            16,
-                            14
-                          ],
+                          "id": "dl07b",
+                          "name": "Info Body",
+                          "width": "fill_container",
+                          "gap": 20,
+                          "alignItems": "start",
                           "children": [
                             {
                               "type": "text",
-                              "id": "aA5WFP",
-                              "name": "Profile Key Text E-mail",
+                              "id": "dl07k",
+                              "name": "Info Label",
                               "fill": "$ink-soft",
+                              "textGrowth": "fixed-width",
+                              "width": 104,
                               "content": "E-mail",
                               "fontFamily": "Geist Mono",
                               "fontSize": 11,
                               "fontWeight": "normal",
-                              "letterSpacing": 1.4
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "pUyIRQ",
-                          "name": "Profile Value E-mail",
-                          "width": "fill_container",
-                          "fill": "$paper",
-                          "padding": 16,
-                          "children": [
+                              "letterSpacing": 1.2,
+                              "lineHeight": 1.7
+                            },
                             {
                               "type": "text",
-                              "id": "znl939",
-                              "name": "Profile Value Text E-mail",
+                              "id": "dl07v",
+                              "name": "Info Value",
                               "fill": "$ink",
                               "textGrowth": "fixed-width",
-                              "width": 340,
+                              "width": "fill_container",
                               "content": "fukuura@mist.ocn.ne.jp",
                               "lineHeight": 1.7,
                               "fontFamily": "$font-sans",
@@ -3633,6 +3704,14 @@
                           ]
                         }
                       ]
+                    },
+                    {
+                      "type": "rectangle",
+                      "id": "dlEnd",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
                     }
                   ]
                 },
@@ -3642,7 +3721,7 @@
                   "name": "Company Right Column",
                   "width": "fill_container",
                   "layout": "vertical",
-                  "gap": 24,
+                  "gap": 36,
                   "children": [
                     {
                       "type": "frame",
@@ -3651,29 +3730,38 @@
                       "width": "fill_container",
                       "fill": "$paper",
                       "layout": "vertical",
-                      "gap": 16,
-                      "padding": 24,
+                      "gap": 18,
+                      "padding": 0,
                       "children": [
                         {
-                          "type": "text",
-                          "id": "iTt9aL",
-                          "name": "Greeting Title",
-                          "fill": "$ink",
-                          "content": "代表挨拶",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 26,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "BH4lQy",
-                          "name": "Greeting Status",
-                          "fill": "$accent",
-                          "content": "記入例",
-                          "fontFamily": "Geist Mono",
-                          "fontSize": 11,
-                          "fontWeight": "normal",
-                          "letterSpacing": 1.6
+                          "type": "frame",
+                          "id": "greet2hd2",
+                          "name": "Card Head",
+                          "layout": "vertical",
+                          "gap": 10,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "greet2ey2",
+                              "name": "Card Eyebrow",
+                              "fill": "$accent",
+                              "content": "MESSAGE / 代表挨拶",
+                              "fontFamily": "Geist Mono",
+                              "fontSize": 11,
+                              "fontWeight": "500",
+                              "letterSpacing": 2.2
+                            },
+                            {
+                              "type": "text",
+                              "id": "greet2ti2",
+                              "name": "Card Title",
+                              "fill": "$ink",
+                              "content": "代表挨拶",
+                              "fontFamily": "$font-serif",
+                              "fontSize": 20,
+                              "fontWeight": "600"
+                            }
+                          ]
                         },
                         {
                           "type": "text",
@@ -3757,24 +3845,52 @@
                       ]
                     },
                     {
+                      "type": "rectangle",
+                      "id": "rcdiv1",
+                      "name": "Divider",
+                      "fill": "$paper-line",
+                      "width": "fill_container",
+                      "height": 1
+                    },
+                    {
                       "type": "frame",
                       "id": "uibInq",
                       "name": "Access Card",
                       "width": "fill_container",
                       "fill": "$paper",
                       "layout": "vertical",
-                      "gap": 16,
-                      "padding": 24,
+                      "gap": 18,
+                      "padding": 0,
                       "children": [
                         {
-                          "type": "text",
-                          "id": "kYo6nS",
-                          "name": "Access Title",
-                          "fill": "$ink",
-                          "content": "アクセス",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 26,
-                          "fontWeight": "600"
+                          "type": "frame",
+                          "id": "access2hd2",
+                          "name": "Card Head",
+                          "layout": "vertical",
+                          "gap": 10,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "access2ey2",
+                              "name": "Card Eyebrow",
+                              "fill": "$accent",
+                              "content": "ACCESS / アクセス",
+                              "fontFamily": "Geist Mono",
+                              "fontSize": 11,
+                              "fontWeight": "500",
+                              "letterSpacing": 2.2
+                            },
+                            {
+                              "type": "text",
+                              "id": "access2ti2",
+                              "name": "Card Title",
+                              "fill": "$ink",
+                              "content": "アクセス",
+                              "fontFamily": "$font-serif",
+                              "fontSize": 20,
+                              "fontWeight": "600"
+                            }
+                          ]
                         },
                         {
                           "type": "frame",
