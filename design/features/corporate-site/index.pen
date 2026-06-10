@@ -321,8 +321,8 @@
                   "name": "Hero Lead",
                   "fill": "$ink-soft",
                   "textGrowth": "fixed-width",
-                  "width": 620,
-                  "content": "兵庫・稲美町から、製造現場に必要な製品供給と別作加工を支えます。見積もりから調達、図面・現物一個からの加工相談まで、現場の困りごとに応えます。",
+                  "width": 667,
+                  "content": "兵庫・稲美町から、製造現場に必要な製品供給と別作加工を支えます。\n見積もりから調達、図面・現物一個からの加工相談まで、現場の困りごとに応えます。",
                   "lineHeight": 1.85,
                   "fontFamily": "$font-sans",
                   "fontSize": 17,
@@ -669,7 +669,7 @@
                   "fill": "$ink-soft",
                   "textGrowth": "fixed-width",
                   "width": 620,
-                  "content": "必要な「もの」を確かなメーカー網で届ける販売と、図面・現物一個から請け負う加工。仕入れから特注対応まで一社で完結します。",
+                  "content": "必要な「もの」を確かなメーカー網で届ける販売と、図面・現物一個から請け負う加工。\n仕入れから特注対応まで一社で完結します。",
                   "lineHeight": 1.75,
                   "fontFamily": "$font-sans",
                   "fontSize": 15,
@@ -683,231 +683,46 @@
               "name": "Business Rows",
               "width": "fill_container",
               "layout": "vertical",
+              "gap": 28,
               "children": [
                 {
                   "type": "frame",
-                  "id": "YjKVq8",
-                  "name": "Business Row 01",
+                  "id": "BgIqe",
+                  "name": "Business Pillars",
                   "width": "fill_container",
-                  "gap": 44,
-                  "padding": [
-                    28,
-                    0
-                  ],
+                  "gap": 28,
                   "children": [
                     {
                       "type": "frame",
-                      "id": "bF6rf2",
-                      "name": "Business Left 01",
-                      "width": 380,
-                      "layout": "vertical",
-                      "gap": 16,
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "z4FzGG",
-                          "name": "Business Left Top 01",
-                          "gap": 16,
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "0R2kvl",
-                              "name": "Business Item No 01",
-                              "fill": "$accent",
-                              "content": "BUSINESS 01",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal",
-                              "letterSpacing": 2
-                            }
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "id": "H3qvRI",
-                          "name": "Business Item Title 01",
-                          "fill": "$ink",
-                          "content": "見積もり・販売",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 28,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "HLx3ap",
-                          "name": "Business Item Lead 01",
-                          "fill": "$ink-soft",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "機械工具から省力化機器まで、延べ約320社の取扱メーカーから現場に必要な製品を調達し供給する。",
-                          "lineHeight": 1.75,
-                          "fontFamily": "$font-sans",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "f9fCRz",
-                      "name": "Business Right 01",
+                      "id": "l0LPQo",
+                      "name": "Pillar 01",
+                      "clip": true,
                       "width": "fill_container",
+                      "fill": "$card",
+                      "stroke": "$paper-line",
+                      "strokeWidth": 1,
                       "layout": "vertical",
-                      "gap": 20,
                       "children": [
                         {
                           "type": "frame",
-                          "id": "E3dswd",
-                          "name": "Biz Items 01",
+                          "id": "J3QdDA",
+                          "name": "Pillar Media 01",
                           "width": "fill_container",
-                          "gap": 16,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "IP6lue",
-                              "name": "Biz Item 機械工具",
-                              "fill": "$paper-soft",
-                              "gap": 10,
-                              "padding": [
-                                7,
-                                13
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "jidRwB",
-                                  "name": "Biz Item Text 機械工具",
-                                  "fill": "$ink",
-                                  "content": "機械工具",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "sYVFE7",
-                              "name": "Biz Item 省力化機器",
-                              "fill": "$paper-soft",
-                              "gap": 10,
-                              "padding": [
-                                7,
-                                13
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "NFkAaB",
-                                  "name": "Biz Item Text 省力化機器",
-                                  "fill": "$ink",
-                                  "content": "省力化機器",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "sEIaIw",
-                              "name": "Biz Item 伝動機器",
-                              "fill": "$paper-soft",
-                              "gap": 10,
-                              "padding": [
-                                7,
-                                13
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "h6xJZN",
-                                  "name": "Biz Item Text 伝動機器",
-                                  "fill": "$ink",
-                                  "content": "伝動機器",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "zZPToY",
-                              "name": "Biz Item 物流・搬送機器",
-                              "fill": "$paper-soft",
-                              "gap": 10,
-                              "padding": [
-                                7,
-                                13
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "KwEdu6",
-                                  "name": "Biz Item Text 物流・搬送機器",
-                                  "fill": "$ink",
-                                  "content": "物流・搬送機器",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "XSyilH",
-                              "name": "Biz Item 各種工場設備機器",
-                              "fill": "$paper-soft",
-                              "gap": 10,
-                              "padding": [
-                                7,
-                                13
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "XuhLgY",
-                                  "name": "Biz Item Text 各種工場設備機器",
-                                  "fill": "$ink",
-                                  "content": "各種工場設備機器",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "JU4wTF",
-                          "name": "Business Media 01",
-                          "width": "fill_container",
-                          "height": 200,
+                          "height": 320,
                           "fill": {
                             "type": "image",
                             "enabled": true,
                             "url": "assets/corporate-products-supply.png",
                             "mode": "fill"
                           },
-                          "stroke": "$paper-line",
-                          "strokeWidth": 1,
                           "layout": "vertical",
                           "padding": 18,
                           "justifyContent": "end",
-                          "alignItems": "center",
                           "children": [
                             {
                               "type": "text",
-                              "id": "bizMediaLabel01V2",
-                              "name": "Business Media Label 01",
+                              "id": "pVu1J",
+                              "name": "Media Label 01",
                               "fill": "#FFFFFF",
                               "content": "取扱製品イメージ",
                               "fontFamily": "Geist Mono",
@@ -916,113 +731,250 @@
                               "letterSpacing": 1.6
                             }
                           ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "rectangle",
-                  "id": "h2LY34",
-                  "name": "Business Divider 01",
-                  "fill": "$paper-line",
-                  "width": "fill_container",
-                  "height": 1
-                },
-                {
-                  "type": "frame",
-                  "id": "pVlY7K",
-                  "name": "Business Row 02",
-                  "width": "fill_container",
-                  "gap": 44,
-                  "padding": [
-                    28,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "FD3kcM",
-                      "name": "Business Left 02",
-                      "width": 380,
-                      "layout": "vertical",
-                      "gap": 16,
-                      "children": [
+                        },
                         {
                           "type": "frame",
-                          "id": "Ziu6lA",
-                          "name": "Business Left Top 02",
-                          "gap": 16,
-                          "alignItems": "center",
+                          "id": "hMGMl",
+                          "name": "Pillar Body 01",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 14,
+                          "padding": [
+                            26,
+                            30,
+                            30,
+                            30
+                          ],
                           "children": [
                             {
+                              "type": "frame",
+                              "id": "isvP7",
+                              "name": "Pillar Head 01",
+                              "gap": 14,
+                              "alignItems": "end",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "QRVrR",
+                                  "name": "Pillar No 01",
+                                  "fill": "$ink",
+                                  "content": "01",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 40,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "BHSFC",
+                                  "name": "Pillar Eyebrow Pad 01",
+                                  "padding": [
+                                    0,
+                                    0,
+                                    9,
+                                    0
+                                  ],
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "T5ob3t",
+                                      "name": "Pillar Eyebrow 01",
+                                      "fill": "$accent",
+                                      "content": "SALES & SUPPLY",
+                                      "fontFamily": "Geist Mono",
+                                      "fontSize": 11,
+                                      "fontWeight": "500",
+                                      "letterSpacing": 2.2
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
                               "type": "text",
-                              "id": "6HVsO2",
-                              "name": "Business Item No 02",
-                              "fill": "$accent",
-                              "content": "BUSINESS 02",
-                              "fontFamily": "Geist Mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal",
-                              "letterSpacing": 2
+                              "id": "ZaDju",
+                              "name": "Pillar Title 01",
+                              "fill": "$ink",
+                              "content": "見積もり・販売",
+                              "fontFamily": "$font-serif",
+                              "fontSize": 28,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "nHaDq",
+                              "name": "Pillar Lead 01",
+                              "fill": "$ink-soft",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "機械工具から省力化機器まで、\n延べ約320社の取扱メーカーから現場に必要な製品を調達し供給する。",
+                              "lineHeight": 1.75,
+                              "fontFamily": "$font-sans",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "pjPRw",
+                              "name": "Pillar Tags 01",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "padding": [
+                                6,
+                                0,
+                                0,
+                                0
+                              ],
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "CpbUd",
+                                  "name": "Tag 機械工具",
+                                  "fill": "$paper-soft",
+                                  "padding": [
+                                    6,
+                                    12
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "fOTJm",
+                                      "name": "Tag Text 機械工具",
+                                      "fill": "$ink",
+                                      "content": "機械工具",
+                                      "fontFamily": "$font-sans",
+                                      "fontSize": 12.5,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "Jgrri",
+                                  "name": "Tag 省力化機器",
+                                  "fill": "$paper-soft",
+                                  "padding": [
+                                    6,
+                                    12
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "sdbYJ",
+                                      "name": "Tag Text 省力化機器",
+                                      "fill": "$ink",
+                                      "content": "省力化機器",
+                                      "fontFamily": "$font-sans",
+                                      "fontSize": 12.5,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "copMe",
+                                  "name": "Tag 伝動機器",
+                                  "fill": "$paper-soft",
+                                  "padding": [
+                                    6,
+                                    12
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "UmJEZ",
+                                      "name": "Tag Text 伝動機器",
+                                      "fill": "$ink",
+                                      "content": "伝動機器",
+                                      "fontFamily": "$font-sans",
+                                      "fontSize": 12.5,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "pN8ac",
+                                  "name": "Tag 物流・搬送機器",
+                                  "fill": "$paper-soft",
+                                  "padding": [
+                                    6,
+                                    12
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "Vk3XI",
+                                      "name": "Tag Text 物流・搬送機器",
+                                      "fill": "$ink",
+                                      "content": "物流・搬送機器",
+                                      "fontFamily": "$font-sans",
+                                      "fontSize": 12.5,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "AXhRi",
+                                  "name": "Tag 各種工場設備機器",
+                                  "fill": "$paper-soft",
+                                  "padding": [
+                                    6,
+                                    12
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "BZap1",
+                                      "name": "Tag Text 各種工場設備機器",
+                                      "fill": "$ink",
+                                      "content": "各種工場設備機器",
+                                      "fontFamily": "$font-sans",
+                                      "fontSize": 12.5,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           ]
-                        },
-                        {
-                          "type": "text",
-                          "id": "xfUq7o",
-                          "name": "Business Item Title 02",
-                          "fill": "$ink",
-                          "content": "加工",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 28,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "io5yX3",
-                          "name": "Business Item Lead 02",
-                          "fill": "$ink-soft",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "図面一枚、現物一個から。別作・特注の加工を一括して請け負う。",
-                          "lineHeight": 1.75,
-                          "fontFamily": "$font-sans",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
                         }
                       ]
                     },
                     {
                       "type": "frame",
-                      "id": "yQkYH3",
-                      "name": "Business Right 02",
+                      "id": "Hq6t1",
+                      "name": "Pillar 02",
+                      "clip": true,
                       "width": "fill_container",
+                      "fill": "$ink-panel",
                       "layout": "vertical",
-                      "gap": 20,
                       "children": [
                         {
                           "type": "frame",
-                          "id": "businessMedia02V2",
-                          "name": "Business Media 02",
+                          "id": "a03KP",
+                          "name": "Pillar Media 02",
                           "width": "fill_container",
-                          "height": 200,
+                          "height": 320,
                           "fill": {
                             "type": "image",
                             "enabled": true,
                             "url": "assets/corporate-machining-service.png",
                             "mode": "fill"
                           },
-                          "stroke": "$paper-line",
-                          "strokeWidth": 1,
                           "layout": "vertical",
                           "padding": 18,
                           "justifyContent": "end",
                           "children": [
                             {
                               "type": "text",
-                              "id": "bizMediaLabel02V2",
-                              "name": "Business Media Label 02",
+                              "id": "Xfzk8",
+                              "name": "Media Label 02",
                               "fill": "#FFFFFF",
                               "content": "加工イメージ",
                               "fontFamily": "Geist Mono",
@@ -1034,335 +986,188 @@
                         },
                         {
                           "type": "frame",
-                          "id": "WRd9bA",
-                          "name": "Biz Items 02",
-                          "width": "fill_container",
-                          "gap": 16,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "ZXqLNO",
-                              "name": "Biz Item 各種機械加工",
-                              "fill": "$paper-soft",
-                              "gap": 10,
-                              "padding": [
-                                7,
-                                13
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "c2Ao5B",
-                                  "name": "Biz Item Text 各種機械加工",
-                                  "fill": "$ink",
-                                  "content": "各種機械加工",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "Tw5nFv",
-                              "name": "Biz Item 樹脂成型加工",
-                              "fill": "$paper-soft",
-                              "gap": 10,
-                              "padding": [
-                                7,
-                                13
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "9Q5CfF",
-                                  "name": "Biz Item Text 樹脂成型加工",
-                                  "fill": "$ink",
-                                  "content": "樹脂成型加工",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "cw5yV4",
-                              "name": "Biz Item 板金・溶接加工",
-                              "fill": "$paper-soft",
-                              "gap": 10,
-                              "padding": [
-                                7,
-                                13
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "tKIX6u",
-                                  "name": "Biz Item Text 板金・溶接加工",
-                                  "fill": "$ink",
-                                  "content": "板金・溶接加工",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "jGuCpH",
-                              "name": "Biz Item 各種ゴム製品加工",
-                              "fill": "$paper-soft",
-                              "gap": 10,
-                              "padding": [
-                                7,
-                                13
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "viqEIO",
-                                  "name": "Biz Item Text 各種ゴム製品加工",
-                                  "fill": "$ink",
-                                  "content": "各種ゴム製品加工",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "6TOFTQ",
-                          "name": "Proc Menu",
+                          "id": "TAzbO",
+                          "name": "Pillar Body 02",
                           "width": "fill_container",
                           "layout": "vertical",
+                          "gap": 14,
+                          "padding": [
+                            26,
+                            30,
+                            30,
+                            30
+                          ],
                           "children": [
                             {
                               "type": "frame",
-                              "id": "Ne78WW",
-                              "name": "Proc Row ギヤー・プー",
-                              "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 12,
-                              "padding": [
-                                0,
-                                0,
-                                12,
-                                0
-                              ],
+                              "id": "EblaZ",
+                              "name": "Pillar Head 02",
+                              "gap": 14,
+                              "alignItems": "end",
                               "children": [
                                 {
-                                  "type": "rectangle",
-                                  "id": "pdvNe78WW",
-                                  "name": "Proc Divider",
-                                  "fill": "$paper-line",
-                                  "width": "fill_container",
-                                  "height": 1
+                                  "type": "text",
+                                  "id": "n9hrw",
+                                  "name": "Pillar No 02",
+                                  "fill": "#FFFFFF",
+                                  "content": "02",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 40,
+                                  "fontWeight": "500"
                                 },
                                 {
-                                  "type": "text",
-                                  "id": "fjQ1Cb",
-                                  "name": "Proc Text ギヤー・プー",
-                                  "fill": "$ink",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "ギヤー・プーリー・スプロケット他 軸穴キー加工",
-                                  "lineHeight": 1.6,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13.5,
-                                  "fontWeight": "normal"
+                                  "type": "frame",
+                                  "id": "A0Yc2J",
+                                  "name": "Pillar Eyebrow Pad 02",
+                                  "padding": [
+                                    0,
+                                    0,
+                                    9,
+                                    0
+                                  ],
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "L0pq5",
+                                      "name": "Pillar Eyebrow 02",
+                                      "fill": "#8FC0C0",
+                                      "content": "MACHINING & CUSTOM",
+                                      "fontFamily": "Geist Mono",
+                                      "fontSize": 11,
+                                      "fontWeight": "500",
+                                      "letterSpacing": 2.2
+                                    }
+                                  ]
                                 }
                               ]
                             },
                             {
-                              "type": "frame",
-                              "id": "b2KGSr",
-                              "name": "Proc Row 別作ギヤー・",
+                              "type": "text",
+                              "id": "npMY3",
+                              "name": "Pillar Title 02",
+                              "fill": "#FFFFFF",
+                              "content": "加工",
+                              "fontFamily": "$font-serif",
+                              "fontSize": 28,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "awMhx",
+                              "name": "Pillar Lead 02",
+                              "fill": "#C9D1D8",
+                              "textGrowth": "fixed-width",
                               "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 12,
-                              "padding": [
-                                0,
-                                0,
-                                12,
-                                0
-                              ],
-                              "children": [
-                                {
-                                  "type": "rectangle",
-                                  "id": "pdvb2KGSr",
-                                  "name": "Proc Divider",
-                                  "fill": "$paper-line",
-                                  "width": "fill_container",
-                                  "height": 1
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "ytbuua",
-                                  "name": "Proc Text 別作ギヤー・",
-                                  "fill": "$ink",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "別作ギヤー・プーリー・スプロケット製作",
-                                  "lineHeight": 1.6,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13.5,
-                                  "fontWeight": "normal"
-                                }
-                              ]
+                              "content": "図面一枚、現物一個から。\n別作・特注の加工を一括して請け負う。",
+                              "lineHeight": 1.75,
+                              "fontFamily": "$font-sans",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
                             },
                             {
                               "type": "frame",
-                              "id": "KjOmK3",
-                              "name": "Proc Row 別作ローラー",
+                              "id": "C4pusD",
+                              "name": "Pillar Tags 02",
                               "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 12,
+                              "gap": 8,
                               "padding": [
+                                6,
                                 0,
                                 0,
-                                12,
                                 0
                               ],
                               "children": [
                                 {
-                                  "type": "rectangle",
-                                  "id": "pdvKjOmK3",
-                                  "name": "Proc Divider",
-                                  "fill": "$paper-line",
-                                  "width": "fill_container",
-                                  "height": 1
+                                  "type": "frame",
+                                  "id": "f8URr",
+                                  "name": "Tag 各種機械加工",
+                                  "fill": "#FFFFFF14",
+                                  "padding": [
+                                    6,
+                                    12
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "ku1z8",
+                                      "name": "Tag Text 各種機械加工",
+                                      "fill": "#E8ECEF",
+                                      "content": "各種機械加工",
+                                      "fontFamily": "$font-sans",
+                                      "fontSize": 12.5,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "type": "text",
-                                  "id": "6O8Gq4",
-                                  "name": "Proc Text 別作ローラー",
-                                  "fill": "$ink",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "別作ローラー製作",
-                                  "lineHeight": 1.6,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13.5,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "zcoRxF",
-                              "name": "Proc Row 別作マシンキ",
-                              "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 12,
-                              "padding": [
-                                0,
-                                0,
-                                12,
-                                0
-                              ],
-                              "children": [
-                                {
-                                  "type": "rectangle",
-                                  "id": "pdvzcoRxF",
-                                  "name": "Proc Divider",
-                                  "fill": "$paper-line",
-                                  "width": "fill_container",
-                                  "height": 1
+                                  "type": "frame",
+                                  "id": "MUmKC",
+                                  "name": "Tag 樹脂成型加工",
+                                  "fill": "#FFFFFF14",
+                                  "padding": [
+                                    6,
+                                    12
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "ejkF0",
+                                      "name": "Tag Text 樹脂成型加工",
+                                      "fill": "#E8ECEF",
+                                      "content": "樹脂成型加工",
+                                      "fontFamily": "$font-sans",
+                                      "fontSize": 12.5,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "type": "text",
-                                  "id": "lnvEti",
-                                  "name": "Proc Text 別作マシンキ",
-                                  "fill": "$ink",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "別作マシンキー・バネ製作",
-                                  "lineHeight": 1.6,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13.5,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "yHpKHH",
-                              "name": "Proc Row 別作ゴム・ウ",
-                              "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 12,
-                              "padding": [
-                                0,
-                                0,
-                                12,
-                                0
-                              ],
-                              "children": [
-                                {
-                                  "type": "rectangle",
-                                  "id": "pdvyHpKHH",
-                                  "name": "Proc Divider",
-                                  "fill": "$paper-line",
-                                  "width": "fill_container",
-                                  "height": 1
+                                  "type": "frame",
+                                  "id": "IMQae",
+                                  "name": "Tag 板金・溶接加工",
+                                  "fill": "#FFFFFF14",
+                                  "padding": [
+                                    6,
+                                    12
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "zzWPr",
+                                      "name": "Tag Text 板金・溶接加工",
+                                      "fill": "#E8ECEF",
+                                      "content": "板金・溶接加工",
+                                      "fontFamily": "$font-sans",
+                                      "fontSize": 12.5,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "type": "text",
-                                  "id": "iWGROF",
-                                  "name": "Proc Text 別作ゴム・ウ",
-                                  "fill": "$ink",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "別作ゴム・ウレタンゴム・ライニング成型加工",
-                                  "lineHeight": 1.6,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13.5,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "jXVC5l",
-                              "name": "Proc Row 別作樹脂成型",
-                              "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 12,
-                              "padding": [
-                                0,
-                                0,
-                                12,
-                                0
-                              ],
-                              "children": [
-                                {
-                                  "type": "rectangle",
-                                  "id": "pdvjXVC5l",
-                                  "name": "Proc Divider",
-                                  "fill": "$paper-line",
-                                  "width": "fill_container",
-                                  "height": 1
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "xgxaNF",
-                                  "name": "Proc Text 別作樹脂成型",
-                                  "fill": "$ink",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "別作樹脂成型加工",
-                                  "lineHeight": 1.6,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13.5,
-                                  "fontWeight": "normal"
+                                  "type": "frame",
+                                  "id": "mzCwp",
+                                  "name": "Tag 各種ゴム製品加工",
+                                  "fill": "#FFFFFF14",
+                                  "padding": [
+                                    6,
+                                    12
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "QewRZ",
+                                      "name": "Tag Text 各種ゴム製品加工",
+                                      "fill": "#E8ECEF",
+                                      "content": "各種ゴム製品加工",
+                                      "fontFamily": "$font-sans",
+                                      "fontSize": 12.5,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
                                 }
                               ]
                             }
@@ -1373,12 +1178,266 @@
                   ]
                 },
                 {
-                  "type": "rectangle",
-                  "id": "k5o55a",
-                  "name": "Business Divider 02",
-                  "fill": "$paper-line",
+                  "type": "frame",
+                  "id": "HgF5w",
+                  "name": "Custom Order Strip",
                   "width": "fill_container",
-                  "height": 1
+                  "fill": "$card",
+                  "stroke": "$paper-line",
+                  "strokeWidth": 1,
+                  "gap": 36,
+                  "padding": [
+                    24,
+                    30
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "T4N0Q",
+                      "name": "Custom Label",
+                      "width": 210,
+                      "layout": "vertical",
+                      "gap": 6,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "eyFZ3",
+                          "name": "Custom Eyebrow",
+                          "fill": "$accent",
+                          "content": "CUSTOM ORDER",
+                          "fontFamily": "Geist Mono",
+                          "fontSize": 11,
+                          "fontWeight": "500",
+                          "letterSpacing": 2.2
+                        },
+                        {
+                          "type": "text",
+                          "id": "gWIYF",
+                          "name": "Custom Title",
+                          "fill": "$ink",
+                          "content": "別作・特注対応",
+                          "fontFamily": "$font-serif",
+                          "fontSize": 20,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "wf9xo",
+                      "name": "Custom Items",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "idyBP",
+                          "name": "Custom Row",
+                          "width": "fill_container",
+                          "gap": 28,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "n2mT7h",
+                              "name": "Custom Item ギヤー・プー",
+                              "width": "fill_container",
+                              "gap": 10,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "rectangle",
+                                  "id": "x2DqM",
+                                  "name": "Item Dash",
+                                  "fill": "$accent",
+                                  "width": 14,
+                                  "height": 2
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "TuQwg",
+                                  "name": "Item Text ギヤー・プー",
+                                  "fill": "$ink",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "ギヤー・プーリー・スプロケット他 軸穴キー加工",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "Izz26",
+                              "name": "Custom Item 別作ギヤー・",
+                              "width": "fill_container",
+                              "gap": 10,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "rectangle",
+                                  "id": "Fl2Md",
+                                  "name": "Item Dash",
+                                  "fill": "$accent",
+                                  "width": 14,
+                                  "height": 2
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "EtBax",
+                                  "name": "Item Text 別作ギヤー・",
+                                  "fill": "$ink",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "別作ギヤー・プーリー・スプロケット製作",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "rouRj",
+                              "name": "Custom Item 別作ローラー",
+                              "width": "fill_container",
+                              "gap": 10,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "rectangle",
+                                  "id": "Ua4ZC",
+                                  "name": "Item Dash",
+                                  "fill": "$accent",
+                                  "width": 14,
+                                  "height": 2
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "nHvQs",
+                                  "name": "Item Text 別作ローラー",
+                                  "fill": "$ink",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "別作ローラー製作",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Shyji",
+                          "name": "Custom Row",
+                          "width": "fill_container",
+                          "gap": 28,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "E80sQv",
+                              "name": "Custom Item 別作マシンキ",
+                              "width": "fill_container",
+                              "gap": 10,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "rectangle",
+                                  "id": "O6T8Ei",
+                                  "name": "Item Dash",
+                                  "fill": "$accent",
+                                  "width": 14,
+                                  "height": 2
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "MgD68",
+                                  "name": "Item Text 別作マシンキ",
+                                  "fill": "$ink",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "別作マシンキー・バネ製作",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "aJeEn",
+                              "name": "Custom Item 別作ゴム・ウ",
+                              "width": "fill_container",
+                              "gap": 10,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "rectangle",
+                                  "id": "JLFo5",
+                                  "name": "Item Dash",
+                                  "fill": "$accent",
+                                  "width": 14,
+                                  "height": 2
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "KowrF",
+                                  "name": "Item Text 別作ゴム・ウ",
+                                  "fill": "$ink",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "別作ゴム・ウレタンゴム・ライニング成型加工",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "lEFVG",
+                              "name": "Custom Item 別作樹脂成型",
+                              "width": "fill_container",
+                              "gap": 10,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "rectangle",
+                                  "id": "fteEv",
+                                  "name": "Item Dash",
+                                  "fill": "$accent",
+                                  "width": 14,
+                                  "height": 2
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "w1plt",
+                                  "name": "Item Text 別作樹脂成型",
+                                  "fill": "$ink",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "別作樹脂成型加工",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
@@ -1454,11 +1513,286 @@
                   "fill": "$ink-soft",
                   "textGrowth": "fixed-width",
                   "width": 720,
-                  "content": "減速機や軸受などの駆動・伝動部品から、空圧・油圧、工具、測定機器、工場設備まで。調達のご相談に応える領域を18のカテゴリに整理しています。",
+                  "content": "減速機や軸受などの駆動・伝動部品から、空圧・油圧、工具、測定機器、工場設備まで。\n調達のご相談に応える領域を18のカテゴリに整理しています。",
                   "lineHeight": 1.75,
                   "fontFamily": "$font-sans",
                   "fontSize": 15,
                   "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "BGlvg",
+              "name": "Products Stats",
+              "width": "fill_container",
+              "gap": 64,
+              "padding": [
+                6,
+                0,
+                2,
+                0
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "JqLI2",
+                  "name": "Stat 取扱メーカー(延べ)",
+                  "gap": 18,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "ks3Ng",
+                      "name": "Stat Bar",
+                      "fill": "$accent",
+                      "width": 3,
+                      "height": 46
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hDfbT",
+                      "name": "Stat Inner",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "xOR4u",
+                          "name": "Stat Label",
+                          "fill": "$ink-soft",
+                          "content": "取扱メーカー(延べ)",
+                          "fontFamily": "$font-sans",
+                          "fontSize": 11.5,
+                          "fontWeight": "normal",
+                          "letterSpacing": 0.5
+                        },
+                        {
+                          "type": "frame",
+                          "id": "XYh89",
+                          "name": "Stat Value Row",
+                          "gap": 4,
+                          "alignItems": "end",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "S8rhf",
+                              "name": "Stat Prefix Pad",
+                              "padding": [
+                                0,
+                                0,
+                                7,
+                                0
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "V6f2z7",
+                                  "name": "Stat Prefix",
+                                  "fill": "$ink",
+                                  "content": "約",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 13,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "L4Mpj",
+                              "name": "Stat Number",
+                              "fill": "$ink",
+                              "content": "320",
+                              "fontFamily": "Geist Mono",
+                              "fontSize": 36,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "VKRXW",
+                              "name": "Stat Unit Pad",
+                              "padding": [
+                                0,
+                                0,
+                                7,
+                                0
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "OFflE",
+                                  "name": "Stat Unit",
+                                  "fill": "$ink",
+                                  "content": "社",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 13,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "J71nf1",
+                  "name": "Stat 取扱製品カテゴリ",
+                  "gap": 18,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "jnFYH",
+                      "name": "Stat Bar",
+                      "fill": "$accent",
+                      "width": 3,
+                      "height": 46
+                    },
+                    {
+                      "type": "frame",
+                      "id": "wUduI",
+                      "name": "Stat Inner",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "OUPiV",
+                          "name": "Stat Label",
+                          "fill": "$ink-soft",
+                          "content": "取扱製品カテゴリ",
+                          "fontFamily": "$font-sans",
+                          "fontSize": 11.5,
+                          "fontWeight": "normal",
+                          "letterSpacing": 0.5
+                        },
+                        {
+                          "type": "frame",
+                          "id": "uQwDd",
+                          "name": "Stat Value Row",
+                          "gap": 4,
+                          "alignItems": "end",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "l0qdi6",
+                              "name": "Stat Number",
+                              "fill": "$ink",
+                              "content": "18",
+                              "fontFamily": "Geist Mono",
+                              "fontSize": 36,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "F9Ms9G",
+                              "name": "Stat Unit Pad",
+                              "padding": [
+                                0,
+                                0,
+                                7,
+                                0
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "V89Sje",
+                                  "name": "Stat Unit",
+                                  "fill": "$ink",
+                                  "content": "分野",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 13,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "XJMfu",
+                  "name": "Stat 別作・特注対応",
+                  "gap": 18,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "id": "QvcVQ",
+                      "name": "Stat Bar",
+                      "fill": "$accent",
+                      "width": 3,
+                      "height": 46
+                    },
+                    {
+                      "type": "frame",
+                      "id": "S0yVP0",
+                      "name": "Stat Inner",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "L22Ig9",
+                          "name": "Stat Label",
+                          "fill": "$ink-soft",
+                          "content": "別作・特注対応",
+                          "fontFamily": "$font-sans",
+                          "fontSize": 11.5,
+                          "fontWeight": "normal",
+                          "letterSpacing": 0.5
+                        },
+                        {
+                          "type": "frame",
+                          "id": "b4l3Y",
+                          "name": "Stat Value Row",
+                          "gap": 4,
+                          "alignItems": "end",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "zvUc0",
+                              "name": "Stat Number",
+                              "fill": "$ink",
+                              "content": "1",
+                              "fontFamily": "Geist Mono",
+                              "fontSize": 36,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "CvQax",
+                              "name": "Stat Unit Pad",
+                              "padding": [
+                                0,
+                                0,
+                                7,
+                                0
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "D4H2g",
+                                  "name": "Stat Unit",
+                                  "fill": "$ink",
+                                  "content": "個から",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 13,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             },
@@ -1469,55 +1803,73 @@
               "width": "fill_container",
               "fill": "$paper-soft",
               "layout": "vertical",
-              "gap": 40,
+              "gap": 32,
               "children": [
                 {
                   "type": "frame",
-                  "id": "lpIdxGrid",
-                  "name": "Category Index Grid",
+                  "id": "k6Eijf",
+                  "name": "Featured Categories",
                   "width": "fill_container",
-                  "gap": 48,
+                  "gap": 20,
                   "children": [
                     {
                       "type": "frame",
-                      "id": "lpIdxCol1",
-                      "name": "Index Column 1",
+                      "id": "hgZOB",
+                      "name": "Featured 駆動・変減速機器",
+                      "clip": true,
                       "width": "fill_container",
+                      "fill": "$card",
+                      "stroke": "$paper-line",
+                      "strokeWidth": 1,
                       "layout": "vertical",
                       "children": [
                         {
                           "type": "frame",
-                          "id": "lpIdx01",
-                          "name": "Category Index 01",
+                          "id": "IRKmj",
+                          "name": "Featured Media 01",
+                          "metadata": {
+                            "type": "unsplash",
+                            "username": "phkrief",
+                            "link": "https://unsplash.com/@phkrief",
+                            "author": "Philippe Krief"
+                          },
+                          "width": "fill_container",
+                          "height": 150,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "https://images.unsplash.com/photo-1723022323088-ca3d68fae5db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3ODExMzEyNzR8&ixlib=rb-4.1.0&q=80&w=1080",
+                            "mode": "fill"
+                          }
+                        },
+                        {
+                          "type": "frame",
+                          "id": "F4FbZq",
+                          "name": "Featured Body 01",
                           "width": "fill_container",
                           "layout": "vertical",
+                          "gap": 8,
+                          "padding": [
+                            14,
+                            16,
+                            16,
+                            16
+                          ],
                           "children": [
                             {
-                              "type": "rectangle",
-                              "id": "lpIdx01d",
-                              "name": "Divider",
-                              "fill": "$paper-line",
-                              "width": "fill_container",
-                              "height": 1
-                            },
-                            {
                               "type": "frame",
-                              "id": "lpIdx01b",
-                              "name": "Index Cell Body",
+                              "id": "N2oROF",
+                              "name": "Featured Meta 01",
                               "width": "fill_container",
-                              "gap": 14,
-                              "padding": [
-                                13,
-                                2
-                              ],
+                              "justifyContent": "space_between",
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx01n",
-                                  "name": "Index No",
+                                  "id": "ML5tB",
+                                  "name": "Featured No 01",
                                   "fill": "$accent",
-                                  "content": "01",
+                                  "content": "CATEGORY 01",
                                   "fontFamily": "Geist Mono",
                                   "fontSize": 11,
                                   "fontWeight": "500",
@@ -1525,21 +1877,8 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx01t",
-                                  "name": "Index Name",
-                                  "fill": "$ink",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "駆動・変減速機器",
-                                  "lineHeight": 1.5,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "500"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "lpIdx01c",
-                                  "name": "Index Count",
+                                  "id": "sx4jM",
+                                  "name": "Featured Count 01",
                                   "fill": "$ink-soft",
                                   "content": "17社",
                                   "fontFamily": "$font-sans",
@@ -1547,19 +1886,326 @@
                                   "fontWeight": "normal"
                                 }
                               ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "zJKVp",
+                              "name": "Featured Name 01",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "駆動・変減速機器",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$font-sans",
+                              "fontSize": 15,
+                              "fontWeight": "600"
                             }
                           ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "w0Tphc",
+                      "name": "Featured 空圧・油圧機器",
+                      "clip": true,
+                      "width": "fill_container",
+                      "fill": "$card",
+                      "stroke": "$paper-line",
+                      "strokeWidth": 1,
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "JiLmW",
+                          "name": "Featured Media 06",
+                          "metadata": {
+                            "type": "unsplash",
+                            "username": "thisisengineering",
+                            "link": "https://unsplash.com/@thisisengineering",
+                            "author": "ThisisEngineering"
+                          },
+                          "width": "fill_container",
+                          "height": 150,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "https://images.unsplash.com/photo-1581092335331-5e00ac65e934?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3ODExMzEyNzV8&ixlib=rb-4.1.0&q=80&w=1080",
+                            "mode": "fill"
+                          }
                         },
                         {
                           "type": "frame",
-                          "id": "lpIdx02",
+                          "id": "vLni7",
+                          "name": "Featured Body 06",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "padding": [
+                            14,
+                            16,
+                            16,
+                            16
+                          ],
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "fHvB8",
+                              "name": "Featured Meta 06",
+                              "width": "fill_container",
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "wRPAe",
+                                  "name": "Featured No 06",
+                                  "fill": "$accent",
+                                  "content": "CATEGORY 06",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 11,
+                                  "fontWeight": "500",
+                                  "letterSpacing": 1
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "x0wey",
+                                  "name": "Featured Count 06",
+                                  "fill": "$ink-soft",
+                                  "content": "20社",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 11.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "Ftt4T",
+                              "name": "Featured Name 06",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "空圧・油圧機器",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$font-sans",
+                              "fontSize": 15,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "PCgJX",
+                      "name": "Featured 切削工具",
+                      "clip": true,
+                      "width": "fill_container",
+                      "fill": "$card",
+                      "stroke": "$paper-line",
+                      "strokeWidth": 1,
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "FRBgl",
+                          "name": "Featured Media 14",
+                          "metadata": {
+                            "type": "unsplash",
+                            "username": "picture_this_photography",
+                            "link": "https://unsplash.com/@picture_this_photography",
+                            "author": "Tarien Kapp"
+                          },
+                          "width": "fill_container",
+                          "height": 150,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "https://images.unsplash.com/photo-1707304472925-c9f0fda4d7a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3ODExMzEyNzZ8&ixlib=rb-4.1.0&q=80&w=1080",
+                            "mode": "fill"
+                          }
+                        },
+                        {
+                          "type": "frame",
+                          "id": "wifBa",
+                          "name": "Featured Body 14",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "padding": [
+                            14,
+                            16,
+                            16,
+                            16
+                          ],
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "C3HtB",
+                              "name": "Featured Meta 14",
+                              "width": "fill_container",
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "YOTXM",
+                                  "name": "Featured No 14",
+                                  "fill": "$accent",
+                                  "content": "CATEGORY 14",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 11,
+                                  "fontWeight": "500",
+                                  "letterSpacing": 1
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "UbSrg",
+                                  "name": "Featured Count 14",
+                                  "fill": "$ink-soft",
+                                  "content": "14社",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 11.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "C0HbE",
+                              "name": "Featured Name 14",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "切削工具",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$font-sans",
+                              "fontSize": 15,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tZMFh",
+                      "name": "Featured 工場設備関連",
+                      "clip": true,
+                      "width": "fill_container",
+                      "fill": "$card",
+                      "stroke": "$paper-line",
+                      "strokeWidth": 1,
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "nvy77",
+                          "name": "Featured Media 10",
+                          "metadata": {
+                            "type": "unsplash",
+                            "username": "dauletrb",
+                            "link": "https://unsplash.com/@dauletrb",
+                            "author": "Daulet Turubayev"
+                          },
+                          "width": "fill_container",
+                          "height": 150,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "https://images.unsplash.com/photo-1695603414659-4d573962b517?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3ODExMzEyNzd8&ixlib=rb-4.1.0&q=80&w=1080",
+                            "mode": "fill"
+                          }
+                        },
+                        {
+                          "type": "frame",
+                          "id": "zAFxM",
+                          "name": "Featured Body 10",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "padding": [
+                            14,
+                            16,
+                            16,
+                            16
+                          ],
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "yLZHE",
+                              "name": "Featured Meta 10",
+                              "width": "fill_container",
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "rwWvx",
+                                  "name": "Featured No 10",
+                                  "fill": "$accent",
+                                  "content": "CATEGORY 10",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 11,
+                                  "fontWeight": "500",
+                                  "letterSpacing": 1
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "K98YK",
+                                  "name": "Featured Count 10",
+                                  "fill": "$ink-soft",
+                                  "content": "29社",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 11.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "pPIgL",
+                              "name": "Featured Name 10",
+                              "fill": "$ink",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "工場設備関連",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$font-sans",
+                              "fontSize": 15,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "S931uc",
+                  "name": "Category Index Grid",
+                  "width": "fill_container",
+                  "gap": 48,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "F5s3Km",
+                      "name": "Index Column",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "igyIP",
                           "name": "Category Index 02",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx02d",
+                              "id": "N7DiF",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -1567,19 +2213,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx02b",
+                              "id": "oiqO3",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx02n",
+                                  "id": "BIUoS",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "02",
@@ -1590,7 +2236,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx02t",
+                                  "id": "f2kiYl",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -1603,7 +2249,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx02c",
+                                  "id": "bJqOZ",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "19社",
@@ -1617,14 +2263,14 @@
                         },
                         {
                           "type": "frame",
-                          "id": "lpIdx03",
+                          "id": "K1m0jm",
                           "name": "Category Index 03",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx03d",
+                              "id": "TPLYI",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -1632,19 +2278,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx03b",
+                              "id": "RKmWb",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx03n",
+                                  "id": "JTCib",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "03",
@@ -1655,7 +2301,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx03t",
+                                  "id": "ijxo1",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -1668,7 +2314,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx03c",
+                                  "id": "ofX2T",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "16社",
@@ -1682,14 +2328,14 @@
                         },
                         {
                           "type": "frame",
-                          "id": "lpIdx04",
+                          "id": "VreLh",
                           "name": "Category Index 04",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx04d",
+                              "id": "F4LCLM",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -1697,19 +2343,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx04b",
+                              "id": "YWnCQ",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx04n",
+                                  "id": "iY0Eb",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "04",
@@ -1720,7 +2366,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx04t",
+                                  "id": "V4nBbO",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -1733,7 +2379,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx04c",
+                                  "id": "M89cU",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "16社",
@@ -1747,14 +2393,14 @@
                         },
                         {
                           "type": "frame",
-                          "id": "lpIdx05",
+                          "id": "PABfN",
                           "name": "Category Index 05",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx05d",
+                              "id": "V1TJSw",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -1762,19 +2408,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx05b",
+                              "id": "jJboN",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx05n",
+                                  "id": "S3vFG",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "05",
@@ -1785,7 +2431,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx05t",
+                                  "id": "kMHQO",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -1798,7 +2444,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx05c",
+                                  "id": "ax4oz",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "15社",
@@ -1812,96 +2458,14 @@
                         },
                         {
                           "type": "frame",
-                          "id": "lpIdx06",
-                          "name": "Category Index 06",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "children": [
-                            {
-                              "type": "rectangle",
-                              "id": "lpIdx06d",
-                              "name": "Divider",
-                              "fill": "$paper-line",
-                              "width": "fill_container",
-                              "height": 1
-                            },
-                            {
-                              "type": "frame",
-                              "id": "lpIdx06b",
-                              "name": "Index Cell Body",
-                              "width": "fill_container",
-                              "gap": 14,
-                              "padding": [
-                                13,
-                                2
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "lpIdx06n",
-                                  "name": "Index No",
-                                  "fill": "$accent",
-                                  "content": "06",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 11,
-                                  "fontWeight": "500",
-                                  "letterSpacing": 1
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "lpIdx06t",
-                                  "name": "Index Name",
-                                  "fill": "$ink",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "空圧・油圧機器",
-                                  "lineHeight": 1.5,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "500"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "lpIdx06c",
-                                  "name": "Index Count",
-                                  "fill": "$ink-soft",
-                                  "content": "20社",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 11.5,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "rectangle",
-                          "id": "lpIdxCol1End",
-                          "name": "Column End Divider",
-                          "fill": "$paper-line",
-                          "width": "fill_container",
-                          "height": 1
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "lpIdxCol2",
-                      "name": "Index Column 2",
-                      "width": "fill_container",
-                      "layout": "vertical",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "lpIdx07",
+                          "id": "v3H7h2",
                           "name": "Category Index 07",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx07d",
+                              "id": "GZ70e",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -1909,19 +2473,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx07b",
+                              "id": "XoyTG",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx07n",
+                                  "id": "EV3To",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "07",
@@ -1932,7 +2496,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx07t",
+                                  "id": "Lmfy4",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -1945,7 +2509,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx07c",
+                                  "id": "m7eB5t",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "25社",
@@ -1958,15 +2522,32 @@
                           ]
                         },
                         {
+                          "type": "rectangle",
+                          "id": "fLa0A",
+                          "name": "Column End Divider",
+                          "fill": "$paper-line",
+                          "width": "fill_container",
+                          "height": 1
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "jBoZ5",
+                      "name": "Index Column",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
                           "type": "frame",
-                          "id": "lpIdx08",
+                          "id": "J4OTL6",
                           "name": "Category Index 08",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx08d",
+                              "id": "TyPoe",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -1974,19 +2555,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx08b",
+                              "id": "eINok",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx08n",
+                                  "id": "JPHeZ",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "08",
@@ -1997,7 +2578,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx08t",
+                                  "id": "rAQYS",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -2010,7 +2591,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx08c",
+                                  "id": "YlJwM",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "27社",
@@ -2024,14 +2605,14 @@
                         },
                         {
                           "type": "frame",
-                          "id": "lpIdx09",
+                          "id": "fkkNG",
                           "name": "Category Index 09",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx09d",
+                              "id": "wkosk",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -2039,19 +2620,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx09b",
+                              "id": "KNOkJ",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx09n",
+                                  "id": "axRTV",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "09",
@@ -2062,7 +2643,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx09t",
+                                  "id": "H8AYPr",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -2075,7 +2656,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx09c",
+                                  "id": "uWiHQ",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "31社",
@@ -2089,79 +2670,14 @@
                         },
                         {
                           "type": "frame",
-                          "id": "lpIdx10",
-                          "name": "Category Index 10",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "children": [
-                            {
-                              "type": "rectangle",
-                              "id": "lpIdx10d",
-                              "name": "Divider",
-                              "fill": "$paper-line",
-                              "width": "fill_container",
-                              "height": 1
-                            },
-                            {
-                              "type": "frame",
-                              "id": "lpIdx10b",
-                              "name": "Index Cell Body",
-                              "width": "fill_container",
-                              "gap": 14,
-                              "padding": [
-                                13,
-                                2
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "lpIdx10n",
-                                  "name": "Index No",
-                                  "fill": "$accent",
-                                  "content": "10",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 11,
-                                  "fontWeight": "500",
-                                  "letterSpacing": 1
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "lpIdx10t",
-                                  "name": "Index Name",
-                                  "fill": "$ink",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "工場設備関連",
-                                  "lineHeight": 1.5,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "500"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "lpIdx10c",
-                                  "name": "Index Count",
-                                  "fill": "$ink-soft",
-                                  "content": "29社",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 11.5,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "lpIdx11",
+                          "id": "tjFYH",
                           "name": "Category Index 11",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx11d",
+                              "id": "sET2n",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -2169,19 +2685,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx11b",
+                              "id": "o7os17",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx11n",
+                                  "id": "L7iBg1",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "11",
@@ -2192,7 +2708,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx11t",
+                                  "id": "J0zc3l",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -2205,7 +2721,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx11c",
+                                  "id": "RJ5Uq",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "19社",
@@ -2219,14 +2735,14 @@
                         },
                         {
                           "type": "frame",
-                          "id": "lpIdx12",
+                          "id": "u7bU4",
                           "name": "Category Index 12",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx12d",
+                              "id": "URxRd",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -2234,19 +2750,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx12b",
+                              "id": "XQkax",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx12n",
+                                  "id": "R5Zg9",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "12",
@@ -2257,7 +2773,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx12t",
+                                  "id": "dy1Pd",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -2270,7 +2786,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx12c",
+                                  "id": "G5lte",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "12社",
@@ -2283,32 +2799,15 @@
                           ]
                         },
                         {
-                          "type": "rectangle",
-                          "id": "lpIdxCol2End",
-                          "name": "Column End Divider",
-                          "fill": "$paper-line",
-                          "width": "fill_container",
-                          "height": 1
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "lpIdxCol3",
-                      "name": "Index Column 3",
-                      "width": "fill_container",
-                      "layout": "vertical",
-                      "children": [
-                        {
                           "type": "frame",
-                          "id": "lpIdx13",
+                          "id": "RXRhY",
                           "name": "Category Index 13",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx13d",
+                              "id": "VilSg",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -2316,19 +2815,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx13b",
+                              "id": "A75ME3",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx13n",
+                                  "id": "y9DeO",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "13",
@@ -2339,7 +2838,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx13t",
+                                  "id": "ExzmP",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -2352,7 +2851,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx13c",
+                                  "id": "dfaLX",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "14社",
@@ -2365,80 +2864,32 @@
                           ]
                         },
                         {
-                          "type": "frame",
-                          "id": "lpIdx14",
-                          "name": "Category Index 14",
+                          "type": "rectangle",
+                          "id": "GioIo",
+                          "name": "Column End Divider",
+                          "fill": "$paper-line",
                           "width": "fill_container",
-                          "layout": "vertical",
-                          "children": [
-                            {
-                              "type": "rectangle",
-                              "id": "lpIdx14d",
-                              "name": "Divider",
-                              "fill": "$paper-line",
-                              "width": "fill_container",
-                              "height": 1
-                            },
-                            {
-                              "type": "frame",
-                              "id": "lpIdx14b",
-                              "name": "Index Cell Body",
-                              "width": "fill_container",
-                              "gap": 14,
-                              "padding": [
-                                13,
-                                2
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "lpIdx14n",
-                                  "name": "Index No",
-                                  "fill": "$accent",
-                                  "content": "14",
-                                  "fontFamily": "Geist Mono",
-                                  "fontSize": 11,
-                                  "fontWeight": "500",
-                                  "letterSpacing": 1
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "lpIdx14t",
-                                  "name": "Index Name",
-                                  "fill": "$ink",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "切削工具",
-                                  "lineHeight": 1.5,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 14,
-                                  "fontWeight": "500"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "lpIdx14c",
-                                  "name": "Index Count",
-                                  "fill": "$ink-soft",
-                                  "content": "14社",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 11.5,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        },
+                          "height": 1
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "D5K689",
+                      "name": "Index Column",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
                         {
                           "type": "frame",
-                          "id": "lpIdx15",
+                          "id": "z3nVbu",
                           "name": "Category Index 15",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx15d",
+                              "id": "hTRjv",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -2446,19 +2897,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx15b",
+                              "id": "EADyM",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx15n",
+                                  "id": "B0jl7L",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "15",
@@ -2469,7 +2920,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx15t",
+                                  "id": "MBqvf",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -2482,7 +2933,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx15c",
+                                  "id": "X9Whk",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "13社",
@@ -2496,14 +2947,14 @@
                         },
                         {
                           "type": "frame",
-                          "id": "lpIdx16",
+                          "id": "p4aFL9",
                           "name": "Category Index 16",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx16d",
+                              "id": "tx4wI",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -2511,19 +2962,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx16b",
+                              "id": "puoh2",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx16n",
+                                  "id": "C04NqW",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "16",
@@ -2534,7 +2985,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx16t",
+                                  "id": "a0PCnq",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -2547,7 +2998,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx16c",
+                                  "id": "coJvA",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "10社",
@@ -2561,14 +3012,14 @@
                         },
                         {
                           "type": "frame",
-                          "id": "lpIdx17",
+                          "id": "j0n82l",
                           "name": "Category Index 17",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx17d",
+                              "id": "I8cFeK",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -2576,19 +3027,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx17b",
+                              "id": "DCwCX",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx17n",
+                                  "id": "SQgHQ",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "17",
@@ -2599,7 +3050,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx17t",
+                                  "id": "ZcCJE",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -2612,7 +3063,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx17c",
+                                  "id": "fbvio",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "13社",
@@ -2626,14 +3077,14 @@
                         },
                         {
                           "type": "frame",
-                          "id": "lpIdx18",
+                          "id": "s9ACN",
                           "name": "Category Index 18",
                           "width": "fill_container",
                           "layout": "vertical",
                           "children": [
                             {
                               "type": "rectangle",
-                              "id": "lpIdx18d",
+                              "id": "hU4gb",
                               "name": "Divider",
                               "fill": "$paper-line",
                               "width": "fill_container",
@@ -2641,19 +3092,19 @@
                             },
                             {
                               "type": "frame",
-                              "id": "lpIdx18b",
+                              "id": "uMHf1",
                               "name": "Index Cell Body",
                               "width": "fill_container",
                               "gap": 14,
                               "padding": [
-                                13,
+                                11,
                                 2
                               ],
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "lpIdx18n",
+                                  "id": "f1LpZw",
                                   "name": "Index No",
                                   "fill": "$accent",
                                   "content": "18",
@@ -2664,7 +3115,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx18t",
+                                  "id": "BrRDy",
                                   "name": "Index Name",
                                   "fill": "$ink",
                                   "textGrowth": "fixed-width",
@@ -2677,7 +3128,7 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "lpIdx18c",
+                                  "id": "k1or5",
                                   "name": "Index Count",
                                   "fill": "$ink-soft",
                                   "content": "13社",
@@ -2691,7 +3142,7 @@
                         },
                         {
                           "type": "rectangle",
-                          "id": "lpIdxCol3End",
+                          "id": "tc4ZG",
                           "name": "Column End Divider",
                           "fill": "$paper-line",
                           "width": "fill_container",
@@ -2890,7 +3341,7 @@
                   "fill": "$ink-soft",
                   "textGrowth": "fixed-width",
                   "width": 620,
-                  "content": "創意工夫と誠実な対応で、お客様の信頼に応える。創業以来変わらない、私たちの仕事の指針です。",
+                  "content": "創意工夫と誠実な対応で、お客様の信頼に応える。\n創業以来変わらない、私たちの仕事の指針です。",
                   "lineHeight": 1.75,
                   "fontFamily": "$font-sans",
                   "fontSize": 15,
@@ -3471,8 +3922,8 @@
                           "name": "Greeting Lead",
                           "fill": "$ink-soft",
                           "textGrowth": "fixed-width",
-                          "width": 520,
-                          "content": "当社は機械工具と関連機器の販売、そして別作・特注の加工を通じて、製造業のお客様のものづくりを支えてまいりました。「創意」と「誠意」で真心奉仕。この理念のもと、確かな製品供給と柔軟な加工対応で、現場一つひとつの課題に向き合います。",
+                          "width": 647,
+                          "content": "当社は機械工具と関連機器の販売、そして別作・特注の加工を通じて、\n製造業のお客様のものづくりを支えてまいりました。\n「創意」と「誠意」で真心奉仕。\nこの理念のもと、確かな製品供給と柔軟な加工対応で、現場一つひとつの課題に向き合います。",
                           "lineHeight": 1.75,
                           "fontFamily": "$font-sans",
                           "fontSize": 15,
@@ -10570,6 +11021,589 @@
                   "fontWeight": "700"
                 }
               ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "hn0dm",
+      "x": 0,
+      "y": 4771,
+      "name": "Business Section Zigzag 案プレビュー",
+      "clip": true,
+      "width": 1440,
+      "fill": "$paper",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": [
+        80,
+        56
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "mGyWr",
+          "name": "Zig Heading",
+          "width": 760,
+          "layout": "vertical",
+          "gap": 18,
+          "children": [
+            {
+              "type": "frame",
+              "id": "v6qMh",
+              "name": "Zig Heading Top",
+              "gap": 18,
+              "alignItems": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "NwQ1F",
+                  "name": "Zig Number",
+                  "fill": "$ink",
+                  "content": "01",
+                  "fontFamily": "Geist Mono",
+                  "fontSize": 34,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "Aj26p",
+                  "name": "Zig Eyebrow",
+                  "fill": "$accent",
+                  "content": "BUSINESS / 事業内容",
+                  "fontFamily": "Geist Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500",
+                  "letterSpacing": 2.2
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "ZVJg6",
+              "name": "Zig Title",
+              "fill": "$ink",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "販売と加工、二つの柱",
+              "fontFamily": "$font-serif",
+              "fontSize": 42,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "COWiR",
+              "name": "Zig Lead",
+              "fill": "$ink-soft",
+              "textGrowth": "fixed-width",
+              "width": 620,
+              "content": "必要な「もの」を確かなメーカー網で届ける販売と、図面・現物一個から請け負う加工。\n仕入れから特注対応まで一社で完結します。",
+              "lineHeight": 1.75,
+              "fontFamily": "$font-sans",
+              "fontSize": 15,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "pxVia",
+          "name": "Zig Rows",
+          "width": "fill_container",
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "S46Gw",
+              "name": "Zig Row 01",
+              "width": "fill_container",
+              "gap": 56,
+              "padding": [
+                44,
+                0
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "PcjVf",
+                  "name": "Zig Text 01",
+                  "width": 480,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "RxnWw",
+                      "layoutPosition": "absolute",
+                      "x": -10,
+                      "y": -34,
+                      "name": "Zig Ghost 01",
+                      "fill": "#1F29330D",
+                      "content": "01",
+                      "fontFamily": "Geist Mono",
+                      "fontSize": 140,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "f8Maq",
+                      "name": "Zig Row Eyebrow 01",
+                      "fill": "$accent",
+                      "content": "BUSINESS 01 — SALES & SUPPLY",
+                      "fontFamily": "Geist Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "hpRGW",
+                      "name": "Zig Row Title 01",
+                      "fill": "$ink",
+                      "content": "見積もり・販売",
+                      "fontFamily": "$font-serif",
+                      "fontSize": 30,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "i31ZUa",
+                      "name": "Zig Row Lead 01",
+                      "fill": "$ink-soft",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "機械工具から省力化機器まで、延べ約320社の取扱メーカーから現場に必要な製品を調達し供給する。",
+                      "lineHeight": 1.75,
+                      "fontFamily": "$font-sans",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "p0qkxs",
+                      "name": "Zig Tags 01",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "padding": [
+                        6,
+                        0,
+                        0,
+                        0
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Y8gda",
+                          "name": "Zig Tag Row",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "x9SJE",
+                              "name": "Zig Tag 機械工具",
+                              "fill": "$paper-soft",
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "CWavS",
+                                  "name": "Zig Tag Text 機械工具",
+                                  "fill": "$ink",
+                                  "content": "機械工具",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 12.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "ze7uc",
+                              "name": "Zig Tag 省力化機器",
+                              "fill": "$paper-soft",
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "q3ITJO",
+                                  "name": "Zig Tag Text 省力化機器",
+                                  "fill": "$ink",
+                                  "content": "省力化機器",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 12.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "b7kub",
+                              "name": "Zig Tag 伝動機器",
+                              "fill": "$paper-soft",
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Rr130",
+                                  "name": "Zig Tag Text 伝動機器",
+                                  "fill": "$ink",
+                                  "content": "伝動機器",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 12.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "ZorC3",
+                          "name": "Zig Tag Row",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "HH10m",
+                              "name": "Zig Tag 物流・搬送機器",
+                              "fill": "$paper-soft",
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "s3X8El",
+                                  "name": "Zig Tag Text 物流・搬送機器",
+                                  "fill": "$ink",
+                                  "content": "物流・搬送機器",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 12.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "XOqhg",
+                              "name": "Zig Tag 各種工場設備機器",
+                              "fill": "$paper-soft",
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "H395sX",
+                                  "name": "Zig Tag Text 各種工場設備機器",
+                                  "fill": "$ink",
+                                  "content": "各種工場設備機器",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 12.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ZmWBj",
+                  "name": "Zig Media 01",
+                  "width": "fill_container",
+                  "height": 380,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/corporate-products-supply.png",
+                    "mode": "fill"
+                  },
+                  "stroke": "$paper-line",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "padding": 20,
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "u8qoy",
+                      "name": "Zig Media Label 01",
+                      "fill": "#FFFFFF",
+                      "content": "取扱製品イメージ",
+                      "fontFamily": "Geist Mono",
+                      "fontSize": 12,
+                      "fontWeight": "500",
+                      "letterSpacing": 1.6
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "uojF7",
+              "name": "Zig Divider 01",
+              "fill": "$paper-line",
+              "width": "fill_container",
+              "height": 1
+            },
+            {
+              "type": "frame",
+              "id": "K0GPlu",
+              "name": "Zig Row 02",
+              "width": "fill_container",
+              "gap": 56,
+              "padding": [
+                44,
+                0
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "v1oLw7",
+                  "name": "Zig Media 02",
+                  "width": "fill_container",
+                  "height": 380,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/corporate-machining-service.png",
+                    "mode": "fill"
+                  },
+                  "stroke": "$paper-line",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "padding": 20,
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "X4VirT",
+                      "name": "Zig Media Label 02",
+                      "fill": "#FFFFFF",
+                      "content": "加工イメージ",
+                      "fontFamily": "Geist Mono",
+                      "fontSize": 12,
+                      "fontWeight": "500",
+                      "letterSpacing": 1.6
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "UIFgK",
+                  "name": "Zig Text 02",
+                  "width": 480,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "lyOHI",
+                      "layoutPosition": "absolute",
+                      "x": -10,
+                      "y": -34,
+                      "name": "Zig Ghost 02",
+                      "fill": "#1F29330D",
+                      "content": "02",
+                      "fontFamily": "Geist Mono",
+                      "fontSize": 140,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "hmRUM",
+                      "name": "Zig Row Eyebrow 02",
+                      "fill": "$accent",
+                      "content": "BUSINESS 02 — MACHINING & CUSTOM",
+                      "fontFamily": "Geist Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "JoITD",
+                      "name": "Zig Row Title 02",
+                      "fill": "$ink",
+                      "content": "加工",
+                      "fontFamily": "$font-serif",
+                      "fontSize": 30,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "U8dH0I",
+                      "name": "Zig Row Lead 02",
+                      "fill": "$ink-soft",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "図面一枚、現物一個から。別作・特注の加工を一括して請け負う。",
+                      "lineHeight": 1.75,
+                      "fontFamily": "$font-sans",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ZU65S",
+                      "name": "Zig Tags 02",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "padding": [
+                        6,
+                        0,
+                        0,
+                        0
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "DhBUw",
+                          "name": "Zig Tag Row",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "K8gu70",
+                              "name": "Zig Tag 各種機械加工",
+                              "fill": "$paper-soft",
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "paCDR",
+                                  "name": "Zig Tag Text 各種機械加工",
+                                  "fill": "$ink",
+                                  "content": "各種機械加工",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 12.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "eM8W3",
+                              "name": "Zig Tag 樹脂成型加工",
+                              "fill": "$paper-soft",
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "gtGcM",
+                                  "name": "Zig Tag Text 樹脂成型加工",
+                                  "fill": "$ink",
+                                  "content": "樹脂成型加工",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 12.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "g8uPn",
+                          "name": "Zig Tag Row",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "z4K2f",
+                              "name": "Zig Tag 板金・溶接加工",
+                              "fill": "$paper-soft",
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "lLeNL",
+                                  "name": "Zig Tag Text 板金・溶接加工",
+                                  "fill": "$ink",
+                                  "content": "板金・溶接加工",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 12.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "qjJaG",
+                              "name": "Zig Tag 各種ゴム製品加工",
+                              "fill": "$paper-soft",
+                              "padding": [
+                                6,
+                                12
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "asknb",
+                                  "name": "Zig Tag Text 各種ゴム製品加工",
+                                  "fill": "$ink",
+                                  "content": "各種ゴム製品加工",
+                                  "fontFamily": "$font-sans",
+                                  "fontSize": 12.5,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "Nd89w",
+              "name": "Zig Divider 02",
+              "fill": "$paper-line",
+              "width": "fill_container",
+              "height": 1
             }
           ]
         }
