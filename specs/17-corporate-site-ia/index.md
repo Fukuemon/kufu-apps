@@ -8,7 +8,7 @@
 - Issue: `#17`
 - ステータス: `In Progress`
 - 作成日: 2026-06-07
-- 更新日: 2026-06-11
+- 更新日: 2026-06-12
 - Branch: `feature/17`
 - Owner: Fukuemon
 
@@ -139,7 +139,7 @@ EARS 風で振る舞いを記述する。
 (決定できない項目を理由とともに残す。1 件でも残っていれば下流 phase は止める)
 
 - 論点 D1〜D8 はすべて解決済み (2026-06-11)。
-- 残作業 (決定済み・未実施): ① B 再収束 (D6: 下層 1440/56 統一 + D7: 3 画面のモバイル variant 作成)、② D5 の #13 への引き継ぎ。`spec-sync` (D4) は 2026-06-11 実行済 (ADR-0006 起票 + feature doc 反映 + #11 コメント)。
+- 残作業: D5 の #13 への引き継ぎのみ。`spec-sync` (D4) は 2026-06-11 実行済 (ADR-0006 起票 + feature doc 反映 + #11 コメント)。B 再収束 (D6 + D7) は 2026-06-12 実行済 (V17)。
 
 ## 実装対象
 
@@ -336,16 +336,17 @@ sequenceDiagram
 
 ## 変更履歴
 
-| 日付       | 変更者   | 変更内容                                                                                                                                                                           |
-| ---------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-06-07 | Fukuemon | 初版 (spec-draft scaffold)                                                                                                                                                         |
-| 2026-06-07 | Fukuemon | Screen Spec に単一 LP `.pen` デザイン方針 (V1〜V7) を追記 (B 収束)                                                                                                                 |
-| 2026-06-10 | Fukuemon | デザイン方針 V8〜V10 を追記 (stat カード全廃 / 18 カテゴリ索引 UI / メーカー一覧一本化)。`index.pen` へ反映                                                                        |
-| 2026-06-11 | Claude   | `.pen` レビューを受け論点 D5〜D8 を起票。#13・feature doc への変更提案を「上位資料からの変更点」に追加                                                                             |
-| 2026-06-11 | Claude   | デザイン方針 V11〜V16 を追記 (ジグザグ事業紹介 / フィーチャードカード / ダーク面一本化 / トークン整理 / コンポーネント化 / 下層フッター)。`index.pen` へ反映済み                   |
-| 2026-06-11 | Claude   | `spec-resolve`: D1 を c) 3 route 統合案で解決、D2/D3 を実走済みとしてクローズ。User Flow / Routing / Screen Spec / 上位資料からの変更点を同期更新                                  |
-| 2026-06-11 | Claude   | `spec-resolve`: D4 (ADR + feature doc + #11 コメント) / D5 (#13 へ移管) / D6 (全ページ 1440px/56 統一) / D7 (モバイル variant 作成) / D8 (単一データソース) を解決。全論点クローズ |
-| 2026-06-11 | Claude   | `spec-sync`: ADR-0006 起票、feature doc へ 3 route IA / 幅統一 / モバイル方針 / 単一データソースを反映、#11 へ決定リンクをコメント。IA 正本ハンドオフ完了                          |
+| 日付       | 変更者   | 変更内容                                                                                                                                                                                                |
+| ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-07 | Fukuemon | 初版 (spec-draft scaffold)                                                                                                                                                                              |
+| 2026-06-07 | Fukuemon | Screen Spec に単一 LP `.pen` デザイン方針 (V1〜V7) を追記 (B 収束)                                                                                                                                      |
+| 2026-06-10 | Fukuemon | デザイン方針 V8〜V10 を追記 (stat カード全廃 / 18 カテゴリ索引 UI / メーカー一覧一本化)。`index.pen` へ反映                                                                                             |
+| 2026-06-11 | Claude   | `.pen` レビューを受け論点 D5〜D8 を起票。#13・feature doc への変更提案を「上位資料からの変更点」に追加                                                                                                  |
+| 2026-06-11 | Claude   | デザイン方針 V11〜V16 を追記 (ジグザグ事業紹介 / フィーチャードカード / ダーク面一本化 / トークン整理 / コンポーネント化 / 下層フッター)。`index.pen` へ反映済み                                        |
+| 2026-06-11 | Claude   | `spec-resolve`: D1 を c) 3 route 統合案で解決、D2/D3 を実走済みとしてクローズ。User Flow / Routing / Screen Spec / 上位資料からの変更点を同期更新                                                       |
+| 2026-06-11 | Claude   | `spec-resolve`: D4 (ADR + feature doc + #11 コメント) / D5 (#13 へ移管) / D6 (全ページ 1440px/56 統一) / D7 (モバイル variant 作成) / D8 (単一データソース) を解決。全論点クローズ                      |
+| 2026-06-11 | Claude   | `spec-sync`: ADR-0006 起票、feature doc へ 3 route IA / 幅統一 / モバイル方針 / 単一データソースを反映、#11 へ決定リンクをコメント。IA 正本ハンドオフ完了                                               |
+| 2026-06-12 | Claude   | デザイン方針 V17 を追記し B 再収束を実施 (D6: 下層 + コンパクトフッターを 1440px/横56 へ統一、D7: モバイル variant 3 画面 + モバイル用 Header/Footer コンポーネント 2 種を追加)。`index.pen` へ反映済み |
 
 ## 備考
 
@@ -359,10 +360,7 @@ spec が画面 / 主要 UI を追加・変更する場合のみ取り込む。
 >
 > 確定 IA の正本は feature doc「ページ構成 (IA)」へハンドオフ済 (2026-06-11、[ADR-0006](../../adr/0006-corporate-site-three-route-ia.md))。本節は決定時スナップショット。
 >
-> B 再収束 TODO (D6 / D7 確定 2026-06-11、`.pen` 未反映):
->
-> - D6: Products / Contact を LP と同じ 1440px・横 padding 56 へ統一 (Contact の padding 48 を 56 に補正)
-> - D7: 3 画面のモバイル variant を追加 (hover / focus / form error 等の状態系は対象外 — 実装規約で判断)
+> B 再収束 (D6 / D7) は 2026-06-12 に `.pen` へ反映済み (V17)。desktop 3 画面 + mobile 3 画面 (390px) + 再利用コンポーネント 8 種が `.pen` 正本。
 
 ### 画面一覧
 
@@ -411,3 +409,4 @@ spec が画面 / 主要 UI を追加・変更する場合のみ取り込む。
 - **V14 トークン整理 (2026-06-11)**: `$font-mono` とダーク面トークン (`$ink-inverse` / `$ink-inverse-soft` / `$ink-inverse-muted` / `$accent-soft` / `$line-inverse` / `$ink-ghost` / `$card-overlay`) を追加し、raw hex / フォント直書きを全廃。冗長な `$paper-inverse`・誤名の `$paper-warm` を削除。旧配色残骸の暖色 (`#837D71` / `#3A362D`) は寒色グレーへ補正。正本昇格は D5 (#13) で扱う。
 - **V15 コンポーネント化 (2026-06-11)**: `.pen` 内に再利用コンポーネント 6 種 (Site Header / Site Footer Compact / Section Heading / Category Index Row / Tag Chip / Button Primary) を定義し、3 ページ全てへ instance 適用。Astro 実装時のコンポーネント分割と 1:1 対応させる。索引行の文字サイズはコンポーネント統一に伴い 14px / 11px に揃う。
 - **V16 下層ページフッター (2026-06-11)**: Contact / 取扱製品ページは **コンパクトフッター** (ブランド + 連絡先のみ、`$ink-deep`) を共通使用し、フルフッター (サイトマップ付き) は LP 専用とする。取扱製品ページのフッター欠落を解消。ヘッダーロゴの参照は gitignore 対象の `.staging` から `assets/fukuura-mark.png` (committed) へ移行。
+- **V17 B 再収束 — 幅統一 + モバイル variant (2026-06-12)**: D6 / D7 の決定を `.pen` へ反映。**幅統一 (D6)**: Products / Contact / Site Footer Compact を LP と同じ 1440px・横 padding 56 へ統一 (Contact のみだった padding 48 を 56 に補正)。**モバイル variant (D7)**: 3 画面のモバイル版 (390px・横 padding 20) を新規追加 — Fukuura LP Mobile / Products Page Mobile / Contact Page Mobile。モバイル用共通コンポーネント **Site Header Mobile** (ブランド + ハンバーガー) と **Site Footer Compact Mobile** (縦積み) を新設し、再利用コンポーネントは計 8 種に。モバイル構成: Hero は縦積み (画像 200〜300px)、事業紹介はジグザグを廃し「写真 → テキスト」の縦積み (ゴースト番号は省略)、LP 取扱製品はフィーチャード 2×2 + 14 行索引の単一列、Products ページの 18 カテゴリはメーカー 3 列を単一列に組み替え、Contact フォームは 1 カラム。hover / focus / form error 等の状態系は D7 決定通り対象外 (実装時に `@kufu/ui` 規約で判断)。
