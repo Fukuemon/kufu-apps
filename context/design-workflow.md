@@ -99,22 +99,23 @@ Claude Design の出力品質は依頼文に強く依存する（ベストプラ
 
 デザイン成果物（依頼文 / `.pen` / アセット）は **design 正本ツリー `design/features/<feature>/` 以下**に集約する。`apps/<app>/` は実装コードのみ。
 
-| 用途                       | 置き場所                                       | Git           | 備考                                            |
-| -------------------------- | ---------------------------------------------- | ------------- | ----------------------------------------------- |
-| Claude Design 依頼文       | `design/features/<feature>/<screen>.prompt.md` | commit        | A0 の依頼文。再現性のため残す                   |
-| Claude Design 仮置き       | `design/.staging/`                             | **gitignore** | phase A の使い捨て HTML。commit しない          |
-| 確定デザイン（`.pen`）     | `design/features/<feature>/<screen>.pen`       | commit        | デザイン正本。**画面単位**に分割                |
-| 共通要素（Design Library） | `design/features/<feature>/<feature>.lib.pen`  | commit        | 共通デザイン意図。`<screen>.pen` が参照（下記） |
-| `.pen` 付随アセット        | `design/features/<feature>/images/`            | commit        | `.pen` から相対参照。Pencil が自動生成          |
-| app 横断共通 lib（予約）   | `design/ui/`（未作成）                         | commit        | platform 級共通 lib の置き場（下記）            |
-| 実装コード                 | `apps/<app>/src/(pages\|components)/`          | commit        | `.pen` を参照して実装。実装正本                 |
-| デザイントークン（正本）   | `packages/ui/src/styles/globals.css`           | commit        | 全フェーズが consume。ここでしか定義しない      |
+| 用途                       | 置き場所                                                                     | Git           | 備考                                                                                       |
+| -------------------------- | ---------------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------ |
+| Claude Design 依頼文       | `design/features/<feature>/<screen>.prompt.md`                               | commit        | A0 の依頼文。再現性のため残す                                                              |
+| Claude Design 仮置き       | `design/.staging/`                                                           | **gitignore** | phase A の使い捨て HTML。commit しない                                                     |
+| 確定デザイン（`.pen`）     | `design/features/<feature>/<feature 名 or screen>.pen`                       | commit        | デザイン正本。**feature 単位の単一ファイルを既定**とする（下記。#17 パイロット知見で更新） |
+| 共通要素（Design Library） | 単一 `.pen` 内の Components フレーム（既定）/ 分割時のみ `<feature>.lib.pen` | commit        | 共通デザイン意図。reusable component として画面が instance 参照                            |
+| `.pen` 付随アセット        | `design/features/<feature>/images/`                                          | commit        | `.pen` から相対参照。Pencil が自動生成                                                     |
+| app 横断共通 lib（予約）   | `design/ui/`（未作成）                                                       | commit        | platform 級共通 lib の置き場（下記）                                                       |
+| 実装コード                 | `apps/<app>/src/(pages\|components)/`                                        | commit        | `.pen` を参照して実装。実装正本                                                            |
+| デザイントークン（正本）   | `packages/ui/src/styles/globals.css`                                         | commit        | 全フェーズが consume。ここでしか定義しない                                                 |
 
 - 設計意図（依頼文 / `.pen`）は feature 設計 home（`DesignDoc_<feature>.md` / `reference/`）と同じ `design/features/<feature>/` に置き、design 正本として一元化する。
-- `.pen` は **分割する**。画面ごとに `<screen>.pen`（例 `home.pen`）、共通要素（header / footer / nav / CTA / card 等）は **Design Library `<feature>.lib.pen`** に集約し、`<screen>.pen` が Pencil の `imports`（alias → 相対 `.pen` URI）で参照する。Pencil は `imports` と Design Library（lib 編集が使用箇所へ伝播）を備え、複数ファイル + ファイル間再利用が標準パターン。単一ファイルは共通デザイン意図が画面ごとに重複し drift を招く（§8 課題7）。
-- **`*.lib.pen` はデザイン意図に限定**する。生きたコンポーネント正本は `packages/ui` + Storybook（#6）であり、実装時に `@kufu/ui` へ写像する（§8 課題7 の二重正本回避）。
+- `.pen` は **feature 単位の単一ファイルを既定**とする（#17 A→B パイロット知見で更新、2026-06-12）。共通要素（header / footer / nav / CTA / card 等）は同一ファイル内の **Components フレームに reusable component** として集約し、各画面フレームが instance（`ref`）参照する。component 編集は全 instance へ伝播するため、単一ファイルでも共通デザイン意図の drift は起きない。
+  - 旧方針（画面ごと `<screen>.pen` + `<feature>.lib.pen` を `imports` 参照）を既定から外した理由: AI 編集工程（Pencil MCP）が**ファイルを跨いだ component の instance 参照に対応しておらず**、分割すると共通 component を各ファイルへ複製する二重管理が発生する。corporate-site パイロット（6 画面 + 共通 component 8 種を単一 `index.pen` で運用）で単一ファイルの実用性を確認済み。
+  - 画面数や対象（app 級の大規模 feature）が増えて単一ファイルが破綻する場合のみ分割し、その際は共通要素を `<feature>.lib.pen` に置き GUI の `imports` で参照する（分割は例外運用。採用時に本節へ追記する）。
+- **`.pen` 内 Components はデザイン意図に限定**する。生きたコンポーネント正本は `packages/ui` + Storybook（#6）であり、実装時に `@kufu/ui` へ写像する（§8 課題7 の二重正本回避）。
 - **app 横断の platform 級共通 lib** が必要になったら `design/ui/` に置く（現状は未作成・予約のみ）。feature 内で閉じる共通要素は feature dir 内に留める。
-- `.lib.pen` の拡張子・命名・`imports` 運用の実用性は **パイロットで確認**してから最終確定する（本節は確定方針、細部はパイロット結果で更新）。
 - 配置は本表で確定。パイロットで例外が出たら本表を更新してから運用する。
 
 ディレクトリ構成（確定形）:
@@ -126,8 +127,7 @@ design/
 │       ├── DesignDoc_<feature>.md      # feature 設計 home（IA 正本）
 │       ├── reference/                  # コンテンツ正本
 │       ├── <screen>.prompt.md          # A0 依頼文（commit）
-│       ├── <screen>.pen                # 画面デザイン正本（commit）
-│       ├── <feature>.lib.pen           # 共通要素 Design Library（commit / imports 参照）
+│       ├── <feature or screen>.pen     # デザイン正本（commit / feature 単位の単一ファイルが既定。例: index.pen）
 │       └── images/                     # .pen 付随アセット（commit）
 ├── ui/                                 # app 横断 platform 級共通 lib（予約・未作成）
 └── .staging/                           # Claude Design 使い捨て HTML（gitignore）
