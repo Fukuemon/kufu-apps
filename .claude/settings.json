@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(ghq root)/github.com/Fukuemon/kufu-apps/hooks/protected-branch/pre_tool_use.py\""
+            "command": "python3 hooks/protected-branch/pre_tool_use.py"
           }
         ]
       },
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(ghq root)/github.com/Fukuemon/kufu-apps/hooks/protected-branch/pre_tool_use.py\""
+            "command": "python3 hooks/protected-branch/pre_tool_use.py"
           }
         ]
       }
@@ -27,15 +27,15 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$(ghq root)/github.com/Fukuemon/kufu-apps/hooks/markdown/format_markdown.sh\""
+            "command": "bash hooks/markdown/format_markdown.sh"
           },
           {
             "type": "command",
-            "command": "bash \"$(ghq root)/github.com/Fukuemon/kufu-apps/hooks/spec/validate_document.sh\""
+            "command": "bash hooks/spec/validate_document.sh"
           },
           {
             "type": "command",
-            "command": "bash \"$(ghq root)/github.com/Fukuemon/kufu-apps/hooks/spec/validate_prompts.sh\""
+            "command": "bash hooks/spec/validate_prompts.sh"
           }
         ]
       }
