@@ -151,7 +151,7 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 
 ## Open Questions
 
-- コーポレートサイトの具体的なページ構成は確定済。正本は [feature doc](features/corporate-site/DesignDoc_corporate-site.md#ページ構成-ia) (主要 5 ページ + 共通レイアウト)。決定経緯は [spec #11 (IA)](../specs/11-corporate-site-ia/index.md)。コンテンツ更新フロー (CMS 化を含む) の固定は未解決。
+- コーポレートサイトの具体的なページ構成は確定済。正本は [feature doc](features/corporate-site/DesignDoc_corporate-site.md#ページ構成-ia) (3 route 統合構成: `/` + `/products` + `/contact` + 共通レイアウト)。決定経緯は [spec #11 (旧 5p IA)](../specs/11-corporate-site-ia/index.md) → [spec #17 (3 route 再確定)](../specs/17-corporate-site-ia/index.md)、決定根拠は [ADR-0006](../adr/0006-corporate-site-three-route-ia.md)。コンテンツ更新フロー (CMS 化を含む) の固定は未解決。
 - `packages/ui` skeleton から本格共有 package へ移行する判断条件をどの時点で固定するか。
 - CMS が必要になる判断基準をどの指標で固定するか。
 - infra repo と app repo の変更をどの workflow で相互参照し、review 漏れを防ぐか。
