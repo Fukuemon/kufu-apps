@@ -8392,14 +8392,6 @@
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "rectangle",
-                          "id": "MtKEx",
-                          "name": "Item Dash",
-                          "fill": "$accent",
-                          "width": 14,
-                          "height": 2
-                        },
-                        {
                           "type": "text",
                           "id": "EPb9C",
                           "name": "Item Text",
@@ -8422,14 +8414,6 @@
                       "gap": 10,
                       "alignItems": "center",
                       "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "KYHaB",
-                          "name": "Item Dash",
-                          "fill": "$accent",
-                          "width": 14,
-                          "height": 2
-                        },
                         {
                           "type": "text",
                           "id": "Lrd96",
@@ -8454,14 +8438,6 @@
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "rectangle",
-                          "id": "kWdh0",
-                          "name": "Item Dash",
-                          "fill": "$accent",
-                          "width": 14,
-                          "height": 2
-                        },
-                        {
                           "type": "text",
                           "id": "sWyY4",
                           "name": "Item Text",
@@ -8484,14 +8460,6 @@
                       "gap": 10,
                       "alignItems": "center",
                       "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "JwM6T",
-                          "name": "Item Dash",
-                          "fill": "$accent",
-                          "width": 14,
-                          "height": 2
-                        },
                         {
                           "type": "text",
                           "id": "qmlcL",
@@ -8516,14 +8484,6 @@
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "rectangle",
-                          "id": "e4xgSu",
-                          "name": "Item Dash",
-                          "fill": "$accent",
-                          "width": 14,
-                          "height": 2
-                        },
-                        {
                           "type": "text",
                           "id": "F5MUSU",
                           "name": "Item Text",
@@ -8546,14 +8506,6 @@
                       "gap": 10,
                       "alignItems": "center",
                       "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "mMq2M",
-                          "name": "Item Dash",
-                          "fill": "$accent",
-                          "width": 14,
-                          "height": 2
-                        },
                         {
                           "type": "text",
                           "id": "haNXM",
