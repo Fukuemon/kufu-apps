@@ -7600,6 +7600,433 @@
               ]
             }
           ]
+        },
+        {
+          "type": "frame",
+          "id": "r1z9b",
+          "name": "Product Category Row",
+          "reusable": true,
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 14,
+          "padding": [
+            22,
+            0
+          ],
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "i6r5N",
+              "name": "Category Divider",
+              "fill": "$border",
+              "width": "fill_container",
+              "height": 1
+            },
+            {
+              "type": "frame",
+              "id": "X1F7f",
+              "name": "Products Category 01 Body",
+              "width": "fill_container",
+              "gap": 26,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "YAWng",
+                  "name": "Category No",
+                  "fill": "$primary",
+                  "content": "01",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 13,
+                  "fontWeight": "500",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "grmay",
+                  "name": "Category Title 01",
+                  "width": 310,
+                  "layout": "vertical",
+                  "gap": 7,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "v7ibc",
+                      "name": "Category Title",
+                      "fill": "$foreground",
+                      "textGrowth": "fixed-width",
+                      "width": 310,
+                      "content": "駆動・変減速機器",
+                      "lineHeight": 1.35,
+                      "fontFamily": "$font-serif",
+                      "fontSize": 20,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "f5pYz5",
+                      "name": "Category Count",
+                      "fill": "$primary",
+                      "content": "取扱メーカー 17社",
+                      "fontFamily": "$font-sans",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "s5Y4sg",
+                  "name": "Category Makers 01",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Y5LseV",
+                      "name": "Maker Columns 01",
+                      "width": "fill_container",
+                      "gap": 28,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "xjtyU",
+                          "name": "Maker Col 1",
+                          "fill": "$muted-foreground",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "住友重機械工業（株）\n（株）日立産機システム\n三菱電機（株）\n（株）ツバキエマソン\n（株）ニッセイ\nオリエンタルモーター（株）",
+                          "lineHeight": 1.95,
+                          "fontFamily": "$font-sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "SgGpS",
+                          "name": "Maker Col 2",
+                          "fill": "$muted-foreground",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "パナソニック（株）\n日本電産シンポ（株）\n三木プーリー（株）\n（株）マキシンコー\n（株）酒井製作所\n（株）長谷川鉄工所",
+                          "lineHeight": 1.95,
+                          "fontFamily": "$font-sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "dwJlK",
+                          "name": "Maker Col 3",
+                          "fill": "$muted-foreground",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "青木精密工業（株）\nSEW オイドライブジャパン（株）\n東芝産業機器システム（株）\n富士電機（株）\n（株）安川電機",
+                          "lineHeight": 1.95,
+                          "fontFamily": "$font-sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "M7io9",
+          "name": "Featured Category Card",
+          "reusable": true,
+          "clip": true,
+          "width": 260,
+          "fill": "$card",
+          "stroke": "$border",
+          "strokeWidth": 1,
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "Bm88v",
+              "name": "Featured Media 01",
+              "metadata": {
+                "type": "unsplash",
+                "username": "phkrief",
+                "link": "https://unsplash.com/@phkrief",
+                "author": "Philippe Krief"
+              },
+              "width": "fill_container",
+              "height": 150,
+              "fill": [
+                {
+                  "type": "image",
+                  "enabled": true,
+                  "url": "https://images.unsplash.com/photo-1723022323088-ca3d68fae5db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3ODExMzEyNzR8&ixlib=rb-4.1.0&q=80&w=1080",
+                  "mode": "fill"
+                },
+                {
+                  "type": "color",
+                  "color": "$muted-foreground",
+                  "enabled": true,
+                  "blendMode": "saturation"
+                },
+                {
+                  "type": "color",
+                  "color": "$photo-overlay",
+                  "enabled": true,
+                  "blendMode": "multiply"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "iWoMB",
+              "name": "Featured Body 01",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                14,
+                16,
+                16,
+                16
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Ntx1X",
+                  "name": "Featured Meta 01",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Q6uAn4",
+                      "name": "Featured No 01",
+                      "fill": "$primary",
+                      "content": "CATEGORY 01",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 11,
+                      "fontWeight": "500",
+                      "letterSpacing": 1
+                    },
+                    {
+                      "type": "text",
+                      "id": "lPN6c",
+                      "name": "Featured Count 01",
+                      "fill": "$muted-foreground",
+                      "content": "17社",
+                      "fontFamily": "$font-sans",
+                      "fontSize": 11.5,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "fYzAf",
+                  "name": "Featured Name 01",
+                  "fill": "$foreground",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "駆動・変減速機器",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-sans",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "rqp0b",
+          "name": "Company Info Row",
+          "reusable": true,
+          "width": 480,
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            14,
+            0
+          ],
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "gp4Xl",
+              "name": "Divider",
+              "fill": "$border",
+              "width": "fill_container",
+              "height": 1
+            },
+            {
+              "type": "frame",
+              "id": "g2L71",
+              "name": "Info Body",
+              "width": "fill_container",
+              "gap": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "JFQEu",
+                  "name": "Info Label",
+                  "fill": "$muted-foreground",
+                  "textGrowth": "fixed-width",
+                  "width": 104,
+                  "content": "会社名",
+                  "lineHeight": 1.7,
+                  "fontFamily": "$font-mono",
+                  "fontSize": 11,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1.2
+                },
+                {
+                  "type": "text",
+                  "id": "ier1H",
+                  "name": "Info Value",
+                  "fill": "$foreground",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "有限会社フクウラ",
+                  "lineHeight": 1.7,
+                  "fontFamily": "$font-sans",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "BCc6P",
+          "name": "Custom Item",
+          "reusable": true,
+          "width": 260,
+          "gap": 10,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "EoZuK",
+              "name": "Item Dash",
+              "fill": "$primary",
+              "width": 14,
+              "height": 2
+            },
+            {
+              "type": "text",
+              "id": "RwYwZ",
+              "name": "Item Text ギヤー・プー",
+              "fill": "$foreground",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "ギヤー・プーリー・スプロケット他 軸穴キー加工",
+              "lineHeight": 1.5,
+              "fontFamily": "$font-sans",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "qoUFl",
+          "name": "Footer Link Column",
+          "reusable": true,
+          "layout": "vertical",
+          "gap": 18,
+          "children": [
+            {
+              "type": "text",
+              "id": "y1sdXc",
+              "name": "Footer Sitemap Head",
+              "fill": "$kufu-gray-500",
+              "content": "SITEMAP",
+              "fontFamily": "$font-mono",
+              "fontSize": 10,
+              "fontWeight": "normal",
+              "letterSpacing": 1.8
+            },
+            {
+              "type": "frame",
+              "id": "bjGIt",
+              "name": "Footer Sitemap Links",
+              "layout": "vertical",
+              "gap": 11,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ImBv4",
+                  "name": "Footer Link 事業内容",
+                  "fill": "$kufu-gray-200",
+                  "content": "事業内容",
+                  "fontFamily": "$font-sans",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "f6zx3",
+                  "name": "Footer Link 取扱製品",
+                  "fill": "$kufu-gray-200",
+                  "content": "取扱製品",
+                  "fontFamily": "$font-sans",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "p75YX",
+                  "name": "Footer Link 会社概要",
+                  "fill": "$kufu-gray-200",
+                  "content": "会社概要",
+                  "fontFamily": "$font-sans",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "mJ1dG",
+                  "name": "Footer Link お問い合わせ・お見積り",
+                  "fill": "$kufu-gray-200",
+                  "content": "お問い合わせ・お見積り",
+                  "fontFamily": "$font-sans",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "W02jT",
+          "name": "Footer Line",
+          "reusable": true,
+          "fill": "$kufu-gray-200",
+          "content": "〒675-1114",
+          "fontFamily": "$font-sans",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "kSK71",
+          "name": "Maker Text",
+          "reusable": true,
+          "fill": "$muted-foreground",
+          "textGrowth": "fixed-width",
+          "width": 280,
+          "content": "住友重機械工業（株）\n（株）日立産機システム\n三菱電機（株）\n（株）ツバキエマソン\n（株）ニッセイ\nオリエンタルモーター（株）",
+          "lineHeight": 1.95,
+          "fontFamily": "$font-sans",
+          "fontSize": 13,
+          "fontWeight": "normal"
         }
       ]
     },
@@ -14499,6 +14926,98 @@
     "secondary-foreground": {
       "type": "color",
       "value": "$kufu-gray-900"
+    },
+    "company-info-body-gap-desktop": {
+      "type": "number",
+      "value": 20
+    },
+    "company-info-body-gap-mobile": {
+      "type": "number",
+      "value": 14
+    },
+    "company-info-label-width-desktop": {
+      "type": "number",
+      "value": 104
+    },
+    "company-info-label-width-mobile": {
+      "type": "number",
+      "value": 80
+    },
+    "company-info-row-padding-y-desktop": {
+      "type": "number",
+      "value": 14
+    },
+    "company-info-row-padding-y-mobile": {
+      "type": "number",
+      "value": 12
+    },
+    "custom-item-dash-height": {
+      "type": "number",
+      "value": 2
+    },
+    "custom-item-dash-width": {
+      "type": "number",
+      "value": 14
+    },
+    "featured-card-gap-desktop": {
+      "type": "number",
+      "value": 8
+    },
+    "featured-card-gap-mobile": {
+      "type": "number",
+      "value": 6
+    },
+    "featured-media-height-desktop": {
+      "type": "number",
+      "value": 150
+    },
+    "featured-media-height-mobile": {
+      "type": "number",
+      "value": 96
+    },
+    "footer-line-gap": {
+      "type": "number",
+      "value": 11
+    },
+    "footer-link-column-gap-desktop": {
+      "type": "number",
+      "value": 18
+    },
+    "footer-link-column-gap-mobile": {
+      "type": "number",
+      "value": 14
+    },
+    "maker-column-gap-desktop": {
+      "type": "number",
+      "value": 28
+    },
+    "maker-column-gap-mobile": {
+      "type": "number",
+      "value": 14
+    },
+    "product-category-body-gap-desktop": {
+      "type": "number",
+      "value": 26
+    },
+    "product-category-body-gap-mobile": {
+      "type": "number",
+      "value": 10
+    },
+    "product-category-row-gap": {
+      "type": "number",
+      "value": 14
+    },
+    "product-category-row-padding-y": {
+      "type": "number",
+      "value": 22
+    },
+    "product-category-title-width-desktop": {
+      "type": "number",
+      "value": 310
+    },
+    "product-category-title-width-mobile": {
+      "type": "number",
+      "value": 80
     }
   }
 }
