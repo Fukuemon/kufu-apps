@@ -1,6 +1,6 @@
 # `.rulesync/` Layout
 
-`.rulesync/` は Kufu Monorepo の AI 設定の **単一情報源 (Single Source of Truth)**。`npx rulesync generate` により各 provider 向けファイルへ展開される。
+`.rulesync/` は本リポジトリの AI 設定の **単一情報源 (Single Source of Truth)**。`npx rulesync generate` により各 provider 向けファイルへ展開される。
 
 ## 構造
 
@@ -37,7 +37,8 @@
 
 - `AGENTS.md`
 - `CLAUDE.md`
-- `.codex/`
+- `.agents/` (Codex repo skills)
+- `.codex/` (Codex config / hooks)
 - `.claude/` (※ `.claude/skills/` も含む — skill の正本は `.rulesync/skills/`)
 - `.cursor/`
 
@@ -45,7 +46,7 @@
 
 - `name` は kebab-case、`anthropic` / `claude` を含めない (Anthropic 規約)
 - `description` は third-person、「何をする + いつ起動」両方を含める (1024字以内)
-- `targets: ["*"]` を frontmatter に置く (Kufu 既存 skill 規約)
+- `targets: ["*"]` を frontmatter に置く (本リポジトリの skill 規約)
 - SKILL.md 本体は **200 行未満**、詳細は `references/<topic>.md` へ1階層深さで分離
 - 必須セクション: `いつ使うか` / `先に読むもの` / `実行フロー` / `停止条件`
 - project 固有名 (CLI / path / framework) を直書きせず、`AGENTS.md` の `Spec Workflow Contract` の値を参照する

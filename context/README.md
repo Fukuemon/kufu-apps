@@ -19,6 +19,7 @@
 
 | ファイル                                 | 内容                                                                   |
 | ---------------------------------------- | ---------------------------------------------------------------------- |
+| [project.md](project.md)                 | repository 固有値: path, command, naming, tracker, source-of-truth     |
 | [architecture.md](architecture.md)       | codebase architecture: package / runtime boundary, 依存方向            |
 | [toolchain.md](toolchain.md)             | toolchain 一覧, build 構成, scaffold policy                            |
 | [engineering.md](engineering.md)         | root task boundary, shared config boundary, repository quality gate    |

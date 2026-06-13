@@ -18,6 +18,8 @@ YYYY-MM-DD
 
 ## 代替案
 
+<!-- 却下した案と、却下理由 (トレードオフ) を併記する。 -->
+
 -
 
 ## 影響
@@ -32,10 +34,16 @@ YYYY-MM-DD
 
 ### 影響範囲
 
-- apps/backend への影響:
-- apps/frontend への影響:
-- デザインシステム(Nucleus)への影響:
+<!-- 対象モジュールは context/project.md の対象ドメインから選ぶ。固有名を直書きしない。 -->
 
-## 関連チケット / PR
+- 対象モジュール / package:
 
--
+## 実装・運用への反映
+
+- spec 更新要否:
+- context / AI 向け設定更新要否:
+
+## 関連ドキュメント / チケット
+
+- [design/DesignDoc.md](../../design/DesignDoc.md):
+- spec / PR:

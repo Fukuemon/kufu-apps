@@ -1,7 +1,7 @@
 # Phase Guide
 
-`spec-lifecycle` の各 phase の完了条件と、Kufu Monorepo で毎回確認する論点。
-project 共通の SDD 流れと、Kufu 固有の論点を分けて記述する。
+`spec-lifecycle` の各 phase の完了条件と、本プロジェクトで毎回確認する論点。
+project 共通の SDD 流れと、プロジェクト固有の論点を分けて記述する。プロジェクト固有の論点は `context/` を正本に列挙する。
 
 ## Phase 一覧 (project 共通)
 
@@ -24,28 +24,23 @@ project 共通の SDD 流れと、Kufu 固有の論点を分けて記述する�
 - Phase 7 完了後: prompts が自己完結かつ実装可能か
 - Phase 8: 最終 review (`PASS` で終端)
 
-## Kufu Monorepo で毎回確認する論点
+## プロジェクトで毎回確認する論点
 
-スコープに応じて該当する論点だけを `spec-resolve` で確定する。
+スコープに応じて該当する論点だけを `spec-resolve` で確定する。各論点の正本は `context/`。
 
-- コーポレートサイトの performance budget と不要な client JS をどう抑えるか
-- Astro で完結する範囲と React island にする範囲
-- Cloudflare Pages preview / production と local の確認境界をどう分けるか
-- Cloudflare Workers を使うべき処理と静的配信で閉じる処理の境界
-- secret を client / build-time / runtime のどこに置くべきか
-- URL state / routing をどこで表現するか (TanStack Router の責務境界)
-- `packages/ui` へ昇格する UI と app / feature 固有 UI の境界
-- Feature / colocation を崩してまで先回りした共通化をしていないか
-- React Compiler 互換性と `'use no memo'` の要否
-- CMS / 将来 API を初期スコープに含めるか、将来 ADR に送るか
-- Playwright / Vitest / Storybook の検証境界
-- `dependency-cruiser` / `knip` のルール違反を生まないか (app 間直接依存禁止)
+- performance / runtime budget をどう抑えるか ([context/architecture.md](../../../../context/architecture.md))
+- 共有コードへ昇格する範囲と module / feature 固有に閉じる範囲の境界 ([context/architecture.md](../../../../context/architecture.md))
+- 先回りした共通化をしていないか (colocation を崩していないか)
+- secret を client / build-time / runtime のどこに置くか ([context/infrastructure.md](../../../../context/infrastructure.md))
+- state / routing をどこで表現するか
+- テストの検証境界 (unit / e2e の責務) ([context/testing.md](../../../../context/testing.md))
+- 依存境界 / dead code のルール違反を生まないか ([context/engineering.md](../../../../context/engineering.md))
+- 将来拡張を初期スコープに含めるか、ADR に送るか
 
-## Phase を止めるべき条件 (Kufu 固有)
+## Phase を止めるべき条件
 
-- 実装対象 app / package が特定できない (target 一覧から外れる)
+- 実装対象 module が特定できない (`context/project.md` の対象ドメインから外れる)
 - 変更が `PRD.md` (Why/What) か `design/DesignDoc.md` / feature doc / context (How) のどちらで扱うべきか逆転している
-- spec 自体が app / package をまたいだ要求追跡に使えない
-- Cloudflare Pages / Workers 境界が不明 (静的配信 vs Workers 中継)
+- spec 自体が module をまたいだ要求追跡に使えない
 - secret / runtime boundary が `context/infrastructure.md` / `context/architecture.md` と矛盾
-- コーポレートサイト performance に直接影響する判断 (例: 不要 React 化) を独断で進めようとしている
+- performance / 一貫性に直接影響する判断を独断で進めようとしている
