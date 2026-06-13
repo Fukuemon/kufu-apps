@@ -6,14 +6,14 @@ Feature 単位の設計 doc。仕様 (What) をどう実現するか (How) を�
 
 ## メタ
 
-| 項目           | 値                                                      |
-| -------------- | ------------------------------------------------------- |
-| 関連 PRD 要求  | <PRD.md の該当節 / 要求>                                |
-| 関連 DesignDoc | <design/DesignDoc.md の該当節>                          |
-| 関連 context   | <context/\*.md の該当ファイル>                          |
-| 関連 ADR       | <adr/NNNN-\*.md>                                        |
-| 関連 spec      | <specs/<issue>-<slug>/>                                 |
-| 対象モジュール | <corporate-site / cms / ui / config / e2e / future-api> |
+| 項目           | 値                                          |
+| -------------- | ------------------------------------------- |
+| 関連 PRD 要求  | <PRD.md の該当節 / 要求>                    |
+| 関連 DesignDoc | <design/DesignDoc.md の該当節>              |
+| 関連 context   | <context/\*.md の該当ファイル>              |
+| 関連 ADR       | <adr/NNNN-\*.md>                            |
+| 関連 spec      | <specs/<issue>-<slug>/>                     |
+| 対象モジュール | <context/project.md の対象ドメインから選ぶ> |
 
 ## 背景・要件解釈
 
@@ -40,11 +40,20 @@ Feature 単位の設計 doc。仕様 (What) をどう実現するか (How) を�
 
 -
 
+### コンポーネント構成 (C4 L3)
+
+feature を構成する主要コンポーネントと依存を示す。全体像 (L1/L2) は [DesignDoc](../../DesignDoc.md)、内部シーケンスは spec へ委譲する。
+
+```mermaid
+flowchart TD
+    A["component A"] --> B["component B"]
+```
+
 ### フロー / シーケンス
 
 ```mermaid
 flowchart TD
-    A --> B
+    A["開始: ユーザー操作"] --> B["処理"]
 ```
 
 ## 主要シナリオ / フロー

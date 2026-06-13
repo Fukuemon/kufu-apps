@@ -56,8 +56,8 @@ project 固有のレビュー CLI / branch 運用は spec / `AGENTS.md` / `workf
 
 ## 前提条件
 
-- 完了しているべき phase / 依存 prompt: {例: P1_01_corporate-site_page_shell.md}
-- 完了後に着手可能になる後続 prompt: {例: P2_01_e2e_contact_flow.md}
+- 完了しているべき phase / 依存 prompt: {例: `P1_01_<target>_page_shell.md`}
+- 完了後に着手可能になる後続 prompt: {例: `P2_01_<target>_flow.md`}
 - 必要な repo 状態: {例: base branch に migration 適用済み}
 
 ## 不明点ハンドリング
@@ -86,9 +86,9 @@ spec から該当箇所を必要最小限だけ抜粋して埋める (リンク�
 
 ## 検証コマンド
 
-repo の標準 task を直接書く。
+`context/project.md` の Quick Commands にある標準 task を直接書く。
 
-- 例 (Kufu Monorepo): `pnpm lint`, `pnpm test`, `pnpm e2e`, `pnpm depcruise`, `pnpm knip`
+- 例: lint / typecheck / unit test / e2e / 健全性検査 のうち該当するもの
 
 ## 完了条件
 

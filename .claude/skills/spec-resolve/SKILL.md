@@ -52,7 +52,7 @@ spec 単独で上位文書を書き換えてはならない。
 決定内容を以下の **すべての関連箇所** に同期する:
 
 1. `## 設計時の論点` テーブルの「決定」列を更新
-2. 該当する機能仕様サブセクション (Performance / Routing-URL State / Content-Assets / UI Reuse / React Compiler / Testing) を更新
+2. 該当する機能仕様サブセクション (Performance / Routing-URL State / Content-Assets / UI Reuse / Testing) を更新
 3. 取り込み済 appendix (API / Database / Authorization / Screen / testid) のうち関連箇所を更新
 4. 既に生成済の Mermaid 図があれば、矛盾しないよう更新フラグを残す (再生成は `spec-diagrams` に任せる)
 5. 解決済みなら `## 解決済みの論点` に移動

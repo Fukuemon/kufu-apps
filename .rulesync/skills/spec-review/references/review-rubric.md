@@ -1,7 +1,13 @@
 # Spec Review Rubric
 
 `spec-review` の fresh-context subagent が spec / prompts を評価するときに使う観点表。
-**全観点について評価できなかった場合は `PASS` を出さない**。
+
+**判定は Default-FAIL (根拠ベース)**:
+
+- 全観点はデフォルト `NEEDS_WORK`。評価者が **対象 spec の `file:line` / セクションを引用して合格根拠を示せた観点のみ** `PASS` に上げる。
+- 「読めば分かるはず」「たぶん満たしている」での `PASS` は禁止。根拠を開けずに `PASS` を出さない。
+- 1 観点でも根拠を引用できなければ全体 `NEEDS_WORK`。
+- 評価者は Write / Edit を持たず、build を見ていないコンテキストで採点する (自己採点禁止)。
 
 ## 1. 上位文書整合 (Upstream Reconciliation)
 
@@ -24,32 +30,26 @@
 
 ## 3. 実装対象明示 (Target Boundaries)
 
-- `## 実装対象` テーブルの target が `Spec Workflow Contract` の正規 target (`corporate-site` / `cms` / `ui` / `config` / `e2e` / `future-api`) と一致しているか
+- `## 実装対象` テーブルの target が `context/project.md` の対象ドメイン一覧と一致しているか
 - 複数 target がある場合、責務境界 (どの target が何をするか) が読めるか
-- app 間 / package 間の直接依存が発生していないか
+- module 間の直接依存が発生していないか (`context/architecture.md` の境界規約)
 
 → target が曖昧 / 越境していれば `NEEDS_WORK`。
 
 ## 4. template 必須節 (Structure Compliance)
 
-`templates/specs/template.md` の minimal core の必須節がすべて存在するか:
+`templates/specs/template.md` の必須節がすべて存在するか (`hooks/spec/validate_document.sh` の必須セクションと一致):
 
-- メタ情報
-- 設計フェーズ状況
-- 上位文書整合
-- 関連資料
-- 背景
-- スコープ (やること / やらないこと)
-- 要件の解釈
+- メタ情報 / 設計フェーズ状況 / 上位文書整合 / 関連資料 / 背景
+- スコープ (やること / やらないこと) / 要件の解釈
 - 設計時の論点 / 解決済みの論点 / 未確定事項
-- 実装対象
-- 機能仕様 (Performance / Routing / Content / UI Reuse / React Compiler / Testing)
-- フロー / シーケンス
+- 実装対象 / 機能仕様
+- Interface 設計 / Content / Data 設計 / Performance / Security 設計 / Error / Fallback 設計
+- テスト / 評価方針 / フロー / シーケンス / 実装分割
 - 上位資料からの変更点 (PRD / Design Doc / feature doc / context / ADR)
-- レビュー
-- 備考
+- レビュー / 変更履歴 / 備考
 
-→ 欠落があれば `NEEDS_WORK`。
+→ 欠落があれば `NEEDS_WORK`。節名の正本は `templates/specs/template.md` と `hooks/spec/validate_document.sh`。
 
 ## 5. EARS acceptance (受け入れ基準)
 
@@ -66,6 +66,7 @@
 - 各 prompt に必須セクション 10 項目 (絶対ルール / 作業ステップ / 実装コンテキスト / 前提条件 / 不明点ハンドリング / タスク境界 / 設計仕様 / テスト観点 / 検証コマンド / 完了条件) があるか
 - 探索誘発表現 (「既存コードを参照」「既存実装を確認」) が含まれていないか
 - 別 app / package の追加探索を要求していないか
+- `## 絶対ルール` に `spec-prompts/references/antipatterns.md` の実装制約ブロック (スコープ厳守 / 観測可能契約の保持 / 推測排除 / fallback 最小化 / dead code 禁止 / 判断記録) が注入されているか
 - 命名規則 `P{phase}_{seq}_{target}_{scope}.md` を満たしているか
 - target が `Spec Workflow Contract` の target 一覧に含まれているか
 - phase 依存表 (並列可 / 依存先) が報告されているか
@@ -90,14 +91,14 @@
 ## Review YYYY-MM-DD HH:MM
 Verdict: PASS | NEEDS_WORK
 
-### 観点別評価
-- 上位文書整合: PASS / NEEDS_WORK — <短評>
-- 未解決論点: PASS / NEEDS_WORK — <短評>
-- 実装対象明示: PASS / NEEDS_WORK — <短評>
-- template 必須節: PASS / NEEDS_WORK — <短評>
-- EARS acceptance: PASS / NEEDS_WORK — <短評>
-- prompts 自己完結性: PASS / NEEDS_WORK / N/A — <短評>
-- 正本境界: PASS / NEEDS_WORK / N/A — <短評>
+### 観点別評価 (PASS は必ず根拠 file:line / section を引用する)
+- 上位文書整合: PASS / NEEDS_WORK — <根拠 file:line / 短評>
+- 未解決論点: PASS / NEEDS_WORK — <根拠 file:line / 短評>
+- 実装対象明示: PASS / NEEDS_WORK — <根拠 file:line / 短評>
+- template 必須節: PASS / NEEDS_WORK — <根拠 file:line / 短評>
+- EARS acceptance: PASS / NEEDS_WORK — <根拠 file:line / 短評>
+- prompts 自己完結性: PASS / NEEDS_WORK / N/A — <根拠 file:line / 短評>
+- 正本境界: PASS / NEEDS_WORK / N/A — <根拠 file:line / 短評>
 
 ### 指摘 (NEEDS_WORK の場合のみ)
 - <file:line / section> — <内容>

@@ -1,6 +1,6 @@
 # {{title}}
 
-> Kufu Monorepo の spec 本体テンプレート。
+> spec 本体テンプレート。
 > 機能固有の追加節 (API endpoint / ER 図 / 認可マトリクス / data-testid 等) は `templates/specs/appendices/<topic>.md` から該当 appendix を取り込む。
 > 必須節・必須サブ節は `hooks/spec/validate_document.sh` が検査し、レビュー観点は `.rulesync/skills/spec-review/references/review-rubric.md` が評価する。
 
@@ -114,16 +114,12 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 ## 実装対象
 
-正規 target は `corporate-site / cms / ui / config / e2e / future-api`。
+正規 target は `context/project.md` の対象ドメイン一覧を正本とする。
 
-| モジュール       | 実装有無 | 主な責務                                                             |
-| ---------------- | :------: | -------------------------------------------------------------------- |
-| `corporate-site` |  ◯ / -   | Astro コーポレートサイト、ページ、section、assets                    |
-| `cms`            |  ◯ / -   | コーポレートサイト掲載投稿管理 app、routing、form、client state      |
-| `ui`             |  ◯ / -   | React app 向け shadcn/ui 基盤、design token、font、shared stylesheet |
-| `config`         |  ◯ / -   | tsconfig、lint、format、test 設定                                    |
-| `e2e`            |  ◯ / -   | Playwright の主要導線検証                                            |
-| `future-api`     |  ◯ / -   | 将来の Hono API / CMS 連携候補                                       |
+| モジュール   | 実装有無 | 主な責務 |
+| ------------ | :------: | -------- |
+| `<target-a>` |  ◯ / -   |          |
+| `<target-b>` |  ◯ / -   |          |
 
 ## 機能仕様
 
@@ -141,27 +137,23 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 ### Performance
 
-- コーポレートサイトの場合: 不要な client JS / Astro island の最小化、画像・フォントの最適化方針
+- performance / runtime budget の方針 ([context/architecture.md](../../context/architecture.md))
 
 ### Routing / URL State
 
-- URL に寄せる state / Router の責務境界
+- URL に寄せる state / routing の責務境界
 
 ### Content / Assets
 
-- コンテンツ更新フロー / 静的 asset 配置 / Cloudflare CDN 前提
+- コンテンツ更新フロー / 静的 asset 配置 / 配信前提 ([context/infrastructure.md](../../context/infrastructure.md))
 
 ### UI Reuse
 
-- `@kufu/ui` 経由か、feature / colocation 内で閉じるか
-
-### React Compiler
-
-- 利用ライブラリの React Compiler 互換性 / `'use no memo'` の要否
+- 共有 UI 経由か、feature / colocation 内で閉じるか ([context/architecture.md](../../context/architecture.md))
 
 ### Testing
 
-- Vitest / Storybook / Playwright のどこで何を担保するか
+- unit / e2e のどこで何を担保するか ([context/testing.md](../../context/testing.md))
 
 ## Interface 設計
 
@@ -241,7 +233,7 @@ sequenceDiagram
 
 ### prompts 生成方針
 
-- `corporate-site` / `cms` / `ui` / `config` / `e2e` のどこで分けるか
+- `context/project.md` の対象ドメインのどこで分けるか
 - 並列実装できる境界
 
 ## 上位資料からの変更点
