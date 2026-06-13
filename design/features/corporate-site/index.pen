@@ -7496,31 +7496,36 @@
                       "id": "MwSbG",
                       "type": "ref",
                       "ref": "W02jT",
-                      "name": "Footer Line"
+                      "name": "Footer Line",
+                      "content": "〒675-1114"
                     },
                     {
                       "id": "JEe5z",
                       "type": "ref",
                       "ref": "W02jT",
-                      "name": "Footer Line"
+                      "name": "Footer Line",
+                      "content": "兵庫県加古郡稲美町国安973番地の10"
                     },
                     {
                       "id": "JQ82u",
                       "type": "ref",
                       "ref": "W02jT",
-                      "name": "Footer Line"
+                      "name": "Footer Line",
+                      "content": "TEL 079-492-6465"
                     },
                     {
                       "id": "D3jsDu",
                       "type": "ref",
                       "ref": "W02jT",
-                      "name": "Footer Line"
+                      "name": "Footer Line",
+                      "content": "FAX 079-492-6429"
                     },
                     {
                       "id": "kg6co",
                       "type": "ref",
                       "ref": "W02jT",
-                      "name": "Footer Line"
+                      "name": "Footer Line",
+                      "content": "fukuura@mist.ocn.ne.jp"
                     }
                   ]
                 }
@@ -9737,11 +9742,11 @@
   "variables": {
     "font-sans": {
       "type": "string",
-      "value": "Noto Sans JP Variable"
+      "value": "Noto Sans JP"
     },
     "font-serif": {
       "type": "string",
-      "value": "Noto Serif JP Variable"
+      "value": "Noto Serif JP"
     },
     "space-12": {
       "type": "number",
@@ -9781,7 +9786,7 @@
     },
     "font-mono": {
       "type": "string",
-      "value": "Geist Mono Variable"
+      "value": "Geist Mono"
     },
     "kufu-teal-600": {
       "type": "color",
