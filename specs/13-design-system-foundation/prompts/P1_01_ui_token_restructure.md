@@ -153,6 +153,9 @@ spec `specs/13-design-system-foundation/index.md` から該当箇所を抜粋す
 | `--radius`                                   | `0rem`                                                      | (`.pen` 実測で全面直角) |
 
 - `accent-deep` (`#0A3D4A`) は canvas 直接使用なし。primitive `--kufu-teal-900` として保持し、semantic 名は与えない (`--photo-overlay` の基底)。
+- **shadcn 変数の扱い (ADR-0007)**: 変数名は shadcn の契約 (`bg-primary` 等が `var(--primary)` を参照)。**名前は改名・削除せず値だけ primitive へ向け替える**。未使用変数 (`--chart-*` / `--sidebar-*` / `--destructive` / `--accent` 系) はデフォルト値のまま温存する (削除しない)。
+- **`-foreground` ペアの整合**: shadcn は面 (`--primary` 等) とその上の文字 (`--primary-foreground` 等) をペアで使う。コントラストが崩れないよう必ずペアで割り当てる (上表のペアを維持)。
+- **追加した独自 semantic の `@theme` 登録**: `--primary-soft` / `--photo-overlay` / `--card-overlay` / `--ghost-foreground` を `bg-*` 等のユーティリティで使えるようにするには `@theme inline` への追加マッピングが必要だが、ユーティリティ提供は #10 の実需に応じて行う。本タスクでは `tokens.css` の変数定義までを範囲とし、これら追加トークンの `@theme` 登録は **行わない** (生 CSS の `var()` 参照は変数定義だけで機能する)。
 - `--font-sans` / `--font-serif` / `--font-mono` は fonts.css 側で family を、tokens.css 側でフォールバック付きスタックを定義する:
   - `--font-sans: "Noto Sans JP Variable", system-ui, sans-serif;`
   - `--font-serif: "Noto Serif JP Variable", "Hiragino Mincho ProN", serif;`
