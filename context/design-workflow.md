@@ -1,16 +1,16 @@
 # Design Production Workflow
 
-> 最終更新: 2026-06-06
+> 最終更新: 2026-06-13
 
 デザイン制作（方向性 → UI 確定 → 実装）の **プラットフォーム共通ワークフロー** を定める横断契約。
 
 - ツール選定の意思決定根拠 → [ADR-0004](../adr/0004-design-production-workflow.md)
-- デザインシステムの _中身_（トークン）の正本 → [design system foundation (#13)](https://github.com/Fukuemon/kufu-apps/issues/13)
+- デザインシステムの _中身_（トークン）の正本 → `packages/ui/src/styles/tokens.css`（体系は [ADR-0007](../adr/0007-design-token-architecture.md)、参照ハブと doc 管理ガイドは [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md)。決定経緯: [#13](https://github.com/Fukuemon/kufu-apps/issues/13)）
 - 本書は _どう作るか_（プロセス・ディレクトリ・拡張方針）の運用正本。
 
 ## 1. 大原則
 
-1. **デザインシステム正本は `packages/ui`**（トークン = [`globals.css`](../packages/ui/src/styles/globals.css) の CSS 変数 + コンポーネント）。各ツールはこれを **消費** するだけで fork しない。トークンは **一方向 `packages/ui` → Pencil**（consume のみ）。Pencil から `globals.css` を書き戻さない。新トークンが要る場合は先に `packages/ui`（#13）へレビュー経由で昇格してから Pencil に取り込む。`.pen` は「トークンを使ったデザイン」であって「トークンを定義する場所」ではない。
+1. **デザインシステム正本は `packages/ui`**（トークン = [`tokens.css`](../packages/ui/src/styles/tokens.css) の CSS 変数 + コンポーネント。[ADR-0007](../adr/0007-design-token-architecture.md) で 2 層構造 + 3 entry 配信に確定）。各ツールはこれを **消費** するだけで fork しない。トークンは **一方向 `packages/ui` → Pencil**（consume のみ）。Pencil から `tokens.css` を書き戻さない。新トークンが要る場合は先に `packages/ui`（#13）へレビュー経由で昇格してから Pencil に取り込む。`.pen` は「トークンを使ったデザイン」であって「トークンを定義する場所」ではない。
 2. **デザイン正本は `.pen`**（repo 内・Git 管理）。**デザイン → コードは一方向**。Pencil へコードを round-trip しない（理由は §3「なぜコードを Pencil へ戻さないか」）。
 3. **drift 最小**。`.pen` を「デザイン正本」、コードを「実装正本」とし、レビューで対応づける。durable な設計判断は [design/features/](../design/features/) と `packages/ui` トークンへ back-propagate して design 側を正本にする。
 
@@ -79,7 +79,7 @@ Claude Design の出力品質は依頼文に強く依存する（ベストプラ
 ### Phase B — UI 収束（Pencil + 内蔵 Agent）
 
 - Pencil の canvas と内蔵 Agent で pixel/余白/階層を精緻化し、`.pen` を確定する。
-- トークンは `Create Pencil variables from globals.css` で [`globals.css`](../packages/ui/src/styles/globals.css) を参照（Pencil 変数 = CSS custom properties にマップ）。`packages/ui` を正本に保ったまま消費する。
+- トークンは Pencil の取り込み機能（`Create Pencil variables from tokens.css`）で [`tokens.css`](../packages/ui/src/styles/tokens.css) を参照（Pencil 変数 = CSS custom properties にマップ）。`packages/ui` を正本に保ったまま消費する。
 - `.pen` と `images/` を commit して Git 管理する。これが以降のデザイン正本（レビューは生 JSON 差分でなくレンダリング/スクショで行う。§8 課題6）。
 
 ### Phase C — 実装（Claude Code / Codex）＝ 本実装
@@ -99,16 +99,16 @@ Claude Design の出力品質は依頼文に強く依存する（ベストプラ
 
 デザイン成果物（依頼文 / `.pen` / アセット）は **design 正本ツリー `design/features/<feature>/` 以下**に集約する。`apps/<app>/` は実装コードのみ。
 
-| 用途                       | 置き場所                                                                     | Git           | 備考                                                                                       |
-| -------------------------- | ---------------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------ |
-| Claude Design 依頼文       | `design/features/<feature>/<screen>.prompt.md`                               | commit        | A0 の依頼文。再現性のため残す                                                              |
-| Claude Design 仮置き       | `design/.staging/`                                                           | **gitignore** | phase A の使い捨て HTML。commit しない                                                     |
-| 確定デザイン（`.pen`）     | `design/features/<feature>/<feature 名 or screen>.pen`                       | commit        | デザイン正本。**feature 単位の単一ファイルを既定**とする（下記。#17 パイロット知見で更新） |
-| 共通要素（Design Library） | 単一 `.pen` 内の Components フレーム（既定）/ 分割時のみ `<feature>.lib.pen` | commit        | 共通デザイン意図。reusable component として画面が instance 参照                            |
-| `.pen` 付随アセット        | `design/features/<feature>/images/`                                          | commit        | `.pen` から相対参照。Pencil が自動生成                                                     |
-| app 横断共通 lib（予約）   | `design/ui/`（未作成）                                                       | commit        | platform 級共通 lib の置き場（下記）                                                       |
-| 実装コード                 | `apps/<app>/src/(pages\|components)/`                                        | commit        | `.pen` を参照して実装。実装正本                                                            |
-| デザイントークン（正本）   | `packages/ui/src/styles/globals.css`                                         | commit        | 全フェーズが consume。ここでしか定義しない                                                 |
+| 用途                       | 置き場所                                                                     | Git           | 備考                                                                                                                                                                           |
+| -------------------------- | ---------------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Claude Design 依頼文       | `design/features/<feature>/<screen>.prompt.md`                               | commit        | A0 の依頼文。再現性のため残す                                                                                                                                                  |
+| Claude Design 仮置き       | `design/.staging/`                                                           | **gitignore** | phase A の使い捨て HTML。commit しない                                                                                                                                         |
+| 確定デザイン（`.pen`）     | `design/features/<feature>/<feature 名 or screen>.pen`                       | commit        | デザイン正本。**feature 単位の単一ファイルを既定**とする（下記。#17 パイロット知見で更新）                                                                                     |
+| 共通要素（Design Library） | 単一 `.pen` 内の Components フレーム（既定）/ 分割時のみ `<feature>.lib.pen` | commit        | 共通デザイン意図。reusable component として画面が instance 参照                                                                                                                |
+| `.pen` 付随アセット        | `design/features/<feature>/images/`                                          | commit        | `.pen` から相対参照。Pencil が自動生成                                                                                                                                         |
+| app 横断共通 lib（予約）   | `design/ui/`（未作成）                                                       | commit        | platform 級共通 lib の置き場（下記）                                                                                                                                           |
+| 実装コード                 | `apps/<app>/src/(pages\|components)/`                                        | commit        | `.pen` を参照して実装。実装正本                                                                                                                                                |
+| デザイントークン（正本）   | `packages/ui/src/styles/tokens.css`                                          | commit        | CSS 変数の定義はここのみ。font-face は `fonts.css`、全量エントリは `styles.css` (= `globals.css`)。全フェーズが consume ([ADR-0007](../adr/0007-design-token-architecture.md)) |
 
 - 設計意図（依頼文 / `.pen`）は feature 設計 home（`DesignDoc_<feature>.md` / `reference/`）と同じ `design/features/<feature>/` に置き、design 正本として一元化する。
 - `.pen` は **feature 単位の単一ファイルを既定**とする（#17 A→B パイロット知見で更新、2026-06-12）。共通要素（header / footer / nav / CTA / card 等）は同一ファイル内の **Components フレームに reusable component** として集約し、各画面フレームが instance（`ref`）参照する。component 編集は全 instance へ伝播するため、単一ファイルでも共通デザイン意図の drift は起きない。
@@ -133,24 +133,27 @@ design/
 └── .staging/                           # Claude Design 使い捨て HTML（gitignore）
 
 apps/<app>/src/(pages|components)/      # 実装コードのみ（.pen を参照）
-packages/ui/src/styles/globals.css      # デザイントークン正本（全フェーズが consume）
+packages/ui/src/styles/tokens.css       # デザイントークン正本（CSS 変数。全フェーズが consume）
+packages/ui/src/styles/fonts.css        # font-face 登録（fontsource）
+packages/ui/src/styles/globals.css      # 全量エントリ（= @kufu/ui/styles.css。tokens + fonts + Tailwind theme を内包）
 ```
 
 ## 5. shadcn/ui で表現できない場合の拡張ポリシー
 
 shadcn/ui は **コードを自分の repo に copy して所有する** モデルなので行き止まりにならない。次の優先順で対応する（上から試す）:
 
-1. **トークンで寄せる**: 配色・radius・spacing・typography は `globals.css` のセマンティックトークン（`--primary` 等）上書きで、コンポーネントを書き換えず見た目を変える。
+1. **トークンで寄せる**: 配色・radius・spacing・typography は `tokens.css` のセマンティックトークン（`--primary` 等）上書きで、コンポーネントを書き換えず見た目を変える。
 2. **既存コンポを直接編集**: 所有コードなので CVA の variant 追加・マークアップ変更で拡張する。
 3. **wrapper パターン**: 既存コンポにロジック/レイアウトを足す場合は base を汚さず wrapper で包む。
 4. **独自コンポーネント新設**: shadcn の流儀（CVA variants・セマンティックトークン・a11y は Radix primitives）に沿って `packages/ui` に新規追加する。
 
-「shadcn/ui の拡張」と「独自デザインシステム」は **対立しない**。別システムを並立させず、`packages/ui` を単一正本として **token → primitive → 独自コンポ** と積み上げる（[architecture.md](architecture.md) の colocation→昇格ルールに従う）。Figma 由来トークンを使う場合も Tailwind theme / `globals.css` に 1:1 マッピングして drift を防ぐ。
+「shadcn/ui の拡張」と「独自デザインシステム」は **対立しない**。別システムを並立させず、`packages/ui` を単一正本として **token → primitive → 独自コンポ** と積み上げる（[architecture.md](architecture.md) の colocation→昇格ルールに従う）。Figma 由来トークンを使う場合も Tailwind theme / `tokens.css` に 1:1 マッピングして drift を防ぐ。
 
 ## 6. トークン正本ガード（バリデーション）
 
 - 実装コードが `@kufu/ui` トークンを参照しているか確認する。独自値を検出したら正本へ寄せる。
-- `.pen` が `packages/ui` を fork していないか（独自トークンを抱えていないか）確認する。fork を検出したら差し戻す。
+- `.pen` が `packages/ui` を fork していないか（`tokens.css` に無い独自トークンを抱えていないか）確認する。fork を検出したら差し戻す。
+- **spacing 例外**: `.pen` の `space-*` 変数は CSS トークンを持たず、Tailwind 標準スケールへの写像（4px グリッド、対応は feature doc のデザイントークン節のガイド）として扱う。fork 判定の対象外（[ADR-0007](../adr/0007-design-token-architecture.md) / spec #13 D4）。
 
 ## 7. Figma fallback
 

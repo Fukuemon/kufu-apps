@@ -46,9 +46,10 @@
 | context     | [architecture.md](../../context/architecture.md) Package Boundary (colocation → 昇格ルール)                           | 変更提案 (デザインシステム観点の昇格境界を具体化して追記。issue 完了条件)                                                                 |
 | ADR-0004    | [design-production-workflow](../../adr/0004-design-production-workflow.md)                                            | 継承 (design-first フロー / `packages/ui` 正本の決定に従う)                                                                               |
 | ADR-0006    | [corporate-site-three-route-ia](../../adr/0006-corporate-site-three-route-ia.md)                                      | 継承 (3 route IA / `index.pen` デザイン正本を前提とする)                                                                                  |
+| ADR-0007    | [design-token-architecture](../../adr/0007-design-token-architecture.md) (本 spec から起票)                           | 反映済 (D1 / D2 / D5 の決定を ADR 化。2026-06-13 起票)                                                                                    |
 
 > 矛盾を検出した場合は `spec-sync` で PRD / Design Doc / feature doc / context / ADR への back-propagation を提案する。
-> 本 spec の「変更提案」2 件 (feature doc 対応表 / architecture.md 昇格境界) は issue #13 の成果物そのものであり、論点解決後に `spec-sync` の正本ハンドオフで反映する。draft 段階で design 側は書き換えない。
+> 正本ハンドオフは 2026-06-13 の `spec-sync` で完了。durable 成果の正本は feature doc (対応表 / ブランド指針)・architecture.md (昇格境界)・design-workflow.md (正本 path / ガード)・ADR-0007 (体系の決定) に移り、本 spec の該当節は決定時スナップショットである。
 
 ## 関連資料
 
@@ -166,7 +167,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - Astro (corporate-site) は `tokens.css` + `fonts.css` のみ import し、React app 向けの層を配信に含めない (Decision Priority 1: パフォーマンス)
   - corporate-site の Tailwind 統合可否・`@theme` 連携の実装詳細は #10 で扱う (その際も変数正本は `tokens.css`)
 - **D6 昇格境界 (2026-06-12 決定): b) デザインシステム資産の昇格判断テーブルを新設**
-  - `context/architecture.md` Package Boundary 節に、資産種別 × 正本 × 昇格条件の最小テーブル (4 行) を追記する (`spec-sync` で反映)。決定時スナップショット:
+  - `context/architecture.md` Package Boundary 節に、資産種別 × 正本 × 昇格条件の最小テーブル (4 行) を追記 (**反映済 2026-06-13。以後 [architecture.md](../../context/architecture.md) が正本**)。決定時スナップショット:
 
   | 資産種別                     | 正本                              | 昇格条件                                      |
   | ---------------------------- | --------------------------------- | --------------------------------------------- |
@@ -270,7 +271,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - primitive 層: `--kufu-<hue>-<scale>` (色相 + 明度スケール)。値 (hex / oklch) を持つ唯一の層
   - semantic 層: shadcn 語彙の役割名 (`--background` / `--foreground` / `--primary` 等) + 不足分の追加役割名。primitive への参照のみ持つ
   - ダーク面 section: inverse スコープ (ラッパー class) による semantic 変数の上書き
-- `.pen` 27 変数 → 新トークンのマッピング案 (D2 決定時スナップショット。正本は `spec-sync` で feature doc 新節へ反映):
+- `.pen` 27 変数 → 新トークンのマッピング (D2 決定時スナップショット。**旧名 → 新名の移行対応の記録として本 spec に残す**)。値の正本は実装後の `tokens.css`、[feature doc「デザイントークン」節](../../design/features/corporate-site/DesignDoc_corporate-site.md#デザイントークン) は値を複製しない参照ハブとする (二重管理回避 — ユーザー判断 2026-06-13)。P2 の Pencil rename 完了後は変数名が 1:1 となり対応表は履歴になる:
 
   **カラー (ライト面既定)**
 
@@ -413,24 +414,24 @@ sequenceDiagram
 
 ### feature doc への影響
 
-| 対象 doc / 節                                                        | 変更内容                                                                                                          | 理由                                                                     |
-| -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `DesignDoc_corporate-site.md` 新節「デザイントークン対応表」         | 変更提案: `.pen` 変数 ↔ `globals.css` CSS 変数の 1:1 対応表を追加 (spec #17 からの引き継ぎ。D1 / D2 解決後に確定) | 実装 (Astro) が参照するトークン正本を一意にし、§6 ガード違反の再発を防ぐ |
-| `DesignDoc_corporate-site.md` 新節「トーン & マナー / ブランド指針」 | 変更提案: ブランド表現指針 + 見出し階層 / type scale 対応ガイドを新節として文書化 (D7 決定。source: spec-resolve) | issue #13 完了条件。#10 / #6 の前提を揃える                              |
+| 対象 doc / 節                                                        | 変更内容                                                                                                                                                                                                                                                                             | 理由                                                                     |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `DesignDoc_corporate-site.md` 新節「デザイントークン」               | **反映済 (2026-06-13)**: 当初案の「値を持つ 1:1 対応表」から「正本 (`tokens.css` / ADR-0007 / spec スナップショット) への参照ハブ + spacing / radius / type scale ガイド」へ変更して反映 (値の二重管理を回避 — ユーザー判断)。移行対応表は本 spec の Content / Data 設計が記録を保持 | 実装 (Astro) が参照するトークン正本を一意にし、§6 ガード違反の再発を防ぐ |
+| `DesignDoc_corporate-site.md` 新節「トーン & マナー / ブランド指針」 | **反映済 (2026-06-13)**: 変更提案: ブランド表現指針 + 見出し階層 / type scale 対応ガイドを新節として文書化 (D7 決定。source: spec-resolve)                                                                                                                                           | issue #13 完了条件。#10 / #6 の前提を揃える                              |
 
 ### context への影響
 
-| 対象 doc / 節                                                                                                   | 変更内容                                                                                                                                                                                                                                                                          | 理由                                                          |
-| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `architecture.md` Package Boundary                                                                              | 変更提案: colocation ↔ `packages/ui` 昇格境界をデザインシステム観点 (トークン / フォント / stylesheet は常に正本) で具体化 (D6)                                                                                                                                                   | issue #13 完了条件                                            |
-| `design-workflow.md` の `globals.css` 参照箇所全数 (§1 大原則 / §3 Phase B / §4 正本 path・ディレクトリ図 / §5) | 変更提案: 正本 path を `tokens.css` (CSS 変数) + `fonts.css` (font-face) + `styles.css` (全量エントリ) へ更新し、§3 Phase B の取り込み記述 (`Create Pencil variables from globals.css`) も追随。部分更新でなく全数更新とし二重正本記述の再発を防ぐ (D5。source: spec-review 対応) | D5 の 3 entry 分離で変数定義の物理ファイルが移るため          |
-| `design-workflow.md` §6 トークンガード                                                                          | 変更提案: fork 判定に spacing 例外 (`.pen` の `space-*` は Tailwind 標準スケールへの写像として許容) を追記 (D4。source: spec-review 対応)。検査手順の仕組み化は実装側で検討                                                                                                       | D4 で spacing の CSS トークンを作らない決定と §6 ガードの整合 |
+| 対象 doc / 節                                                                                                   | 変更内容                                                                                                                                                                                                                                                                                                   | 理由                                                          |
+| --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `architecture.md` Package Boundary                                                                              | **反映済 (2026-06-13)**: 変更提案: colocation ↔ `packages/ui` 昇格境界をデザインシステム観点 (トークン / フォント / stylesheet は常に正本) で具体化 (D6)                                                                                                                                                   | issue #13 完了条件                                            |
+| `design-workflow.md` の `globals.css` 参照箇所全数 (§1 大原則 / §3 Phase B / §4 正本 path・ディレクトリ図 / §5) | **反映済 (2026-06-13)**: 変更提案: 正本 path を `tokens.css` (CSS 変数) + `fonts.css` (font-face) + `styles.css` (全量エントリ) へ更新し、§3 Phase B の取り込み記述 (`Create Pencil variables from globals.css`) も追随。部分更新でなく全数更新とし二重正本記述の再発を防ぐ (D5。source: spec-review 対応) | D5 の 3 entry 分離で変数定義の物理ファイルが移るため          |
+| `design-workflow.md` §6 トークンガード                                                                          | **反映済 (2026-06-13)**: 変更提案: fork 判定に spacing 例外 (`.pen` の `space-*` は Tailwind 標準スケールへの写像として許容) を追記 (D4。source: spec-review 対応)。検査手順の仕組み化は実装側で検討                                                                                                       | D4 で spacing の CSS トークンを作らない決定と §6 ガードの整合 |
 
 ### ADR の新規 / 更新
 
-| ADR ID          | 変更内容                                                                                                                                                                                                                                                                 | 理由                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
-| ADR-0007 (新規) | `0007-design-token-architecture.md` を起票: 2 層構造 (primitive `--kufu-<hue>-<scale>` + semantic shadcn 語彙) / shadcn semantic の kufu パレット上書き / ダーク面 inverse スコープ / 3 entry 配信 (tokens.css / fonts.css / styles.css) (D7 決定。source: spec-resolve) | 長期参照される技術選定のため。#10 / #6 / 将来の cms が従う決定 |
+| ADR ID          | 変更内容                                                                                                                                                                                                                                                                                    | 理由                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| ADR-0007 (新規) | **起票済 (2026-06-13)**: `0007-design-token-architecture.md` — 2 層構造 (primitive `--kufu-<hue>-<scale>` + semantic shadcn 語彙) / shadcn semantic の kufu パレット上書き / ダーク面 inverse スコープ / 3 entry 配信 (tokens.css / fonts.css / styles.css) (D7 決定。source: spec-resolve) | 長期参照される技術選定のため。#10 / #6 / 将来の cms が従う決定 |
 
 ## レビュー
 
@@ -445,22 +446,24 @@ sequenceDiagram
 
 ## 変更履歴
 
-| 日付       | 変更者 | 変更内容                                                                                                                                                                                                       |
-| ---------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-06-12 | Claude | `spec-draft` で scaffold。issue #13 + spec #17 D5 引き継ぎ + ユーザー要望 (命名再設計) を反映                                                                                                                  |
-| 2026-06-12 | Claude | `spec-resolve`: D1 (トークン命名体系) を「a) 2 層構造 (primitive + semantic/shadcn 語彙、ダーク面は inverse スコープ)」で解決。Pencil 現物 27 変数を確認済み                                                   |
-| 2026-06-12 | Claude | `spec-resolve`: D2 (昇格マッピング) を「a) shadcn semantic を kufu パレットで上書き」で解決。27 変数の 1:1 マッピング案を Content / Data 設計に記録。`ink-panel` / `line-inverse` の統合を提案                 |
-| 2026-06-12 | Claude | `spec-resolve`: D3 (タイポグラフィ) を「a) 登録方式の方針まで確定 (fontsource-variable + 日本語サブセット + swap) + type scale は Tailwind 標準」で解決                                                        |
-| 2026-06-12 | Claude | `spec-resolve`: D4 (spacing / radius / shadow / breakpoint) を「b) 実績ベースの最小定義 (spacing はガイド文書化のみ、radius は `--radius` 一本化、shadow / breakpoint は Tailwind 標準)」で解決                |
-| 2026-06-12 | Claude | `spec-resolve`: D5 (参照経路) を「b) トークン分離 (tokens.css / fonts.css / styles.css の 3 entry)」で解決。Interface 設計に export 表を記録                                                                   |
-| 2026-06-12 | Claude | `spec-resolve`: D6 (昇格境界) を「b) 資産種別の昇格判断テーブル新設 (architecture.md へ spec-sync で反映)」で解決                                                                                              |
-| 2026-06-12 | Claude | `spec-resolve`: D7 (ブランド指針の置き場と ADR) を「a) feature doc 新節 + ADR-0007 起票」で解決。全論点クローズ                                                                                                |
-| 2026-06-12 | Claude | `.pen` 実測で暫定 3 件を確定: `ink-ghost` → `--ghost-foreground` (ウォーターマーク) / `accent-deep` は semantic なし (canvas 未使用) / radius 基準値 `0rem` (全面直角)。未確定事項を全クローズ                 |
-| 2026-06-13 | Claude | `spec-review` (1 回目) NEEDS_WORK。指摘 5 件 (blocking 3 + 軽微 2) を受領                                                                                                                                      |
-| 2026-06-13 | Claude | review 指摘対応: トークン定義先を `tokens.css` に一意化 / design-workflow §2・§4・§6 の変更提案を追加 / 成功条件を spacing 写像方式に限定修正 / 旧 TS export 廃止方針を明記                                    |
-| 2026-06-13 | Claude | `spec-review` (2 回目) NEEDS_WORK 対応: フォント import 先を `fonts.css` に統一 / design-workflow 変更提案を `globals.css` 参照の全数更新へ拡大 / 実装タスク案を P1〜P3 案で更新 (dangling 参照の順序制約含む) |
-| 2026-06-13 | Claude | `spec-review` (3 回目) NEEDS_WORK 対応: 実装対象の corporate-site を ◯ (dangling 参照置換のみ) に更新 / P2・P3 並列の誤記修正 / Phase B 節番号を §3 に訂正 / 更新日を更新                                      |
-| 2026-06-13 | Claude | `spec-review` (4 回目) PASS。clarify フェーズのレビューゲート通過を記録                                                                                                                                        |
+| 日付       | 変更者 | 変更内容                                                                                                                                                                                                                             |
+| ---------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2026-06-12 | Claude | `spec-draft` で scaffold。issue #13 + spec #17 D5 引き継ぎ + ユーザー要望 (命名再設計) を反映                                                                                                                                        |
+| 2026-06-12 | Claude | `spec-resolve`: D1 (トークン命名体系) を「a) 2 層構造 (primitive + semantic/shadcn 語彙、ダーク面は inverse スコープ)」で解決。Pencil 現物 27 変数を確認済み                                                                         |
+| 2026-06-12 | Claude | `spec-resolve`: D2 (昇格マッピング) を「a) shadcn semantic を kufu パレットで上書き」で解決。27 変数の 1:1 マッピング案を Content / Data 設計に記録。`ink-panel` / `line-inverse` の統合を提案                                       |
+| 2026-06-12 | Claude | `spec-resolve`: D3 (タイポグラフィ) を「a) 登録方式の方針まで確定 (fontsource-variable + 日本語サブセット + swap) + type scale は Tailwind 標準」で解決                                                                              |
+| 2026-06-12 | Claude | `spec-resolve`: D4 (spacing / radius / shadow / breakpoint) を「b) 実績ベースの最小定義 (spacing はガイド文書化のみ、radius は `--radius` 一本化、shadow / breakpoint は Tailwind 標準)」で解決                                      |
+| 2026-06-12 | Claude | `spec-resolve`: D5 (参照経路) を「b) トークン分離 (tokens.css / fonts.css / styles.css の 3 entry)」で解決。Interface 設計に export 表を記録                                                                                         |
+| 2026-06-12 | Claude | `spec-resolve`: D6 (昇格境界) を「b) 資産種別の昇格判断テーブル新設 (architecture.md へ spec-sync で反映)」で解決                                                                                                                    |
+| 2026-06-12 | Claude | `spec-resolve`: D7 (ブランド指針の置き場と ADR) を「a) feature doc 新節 + ADR-0007 起票」で解決。全論点クローズ                                                                                                                      |
+| 2026-06-12 | Claude | `.pen` 実測で暫定 3 件を確定: `ink-ghost` → `--ghost-foreground` (ウォーターマーク) / `accent-deep` は semantic なし (canvas 未使用) / radius 基準値 `0rem` (全面直角)。未確定事項を全クローズ                                       |
+| 2026-06-13 | Claude | `spec-review` (1 回目) NEEDS_WORK。指摘 5 件 (blocking 3 + 軽微 2) を受領                                                                                                                                                            |
+| 2026-06-13 | Claude | review 指摘対応: トークン定義先を `tokens.css` に一意化 / design-workflow §2・§4・§6 の変更提案を追加 / 成功条件を spacing 写像方式に限定修正 / 旧 TS export 廃止方針を明記                                                          |
+| 2026-06-13 | Claude | `spec-review` (2 回目) NEEDS_WORK 対応: フォント import 先を `fonts.css` に統一 / design-workflow 変更提案を `globals.css` 参照の全数更新へ拡大 / 実装タスク案を P1〜P3 案で更新 (dangling 参照の順序制約含む)                       |
+| 2026-06-13 | Claude | `spec-review` (3 回目) NEEDS_WORK 対応: 実装対象の corporate-site を ◯ (dangling 参照置換のみ) に更新 / P2・P3 並列の誤記修正 / Phase B 節番号を §3 に訂正 / 更新日を更新                                                            |
+| 2026-06-13 | Claude | `spec-review` (4 回目) PASS。clarify フェーズのレビューゲート通過を記録                                                                                                                                                              |
+| 2026-06-13 | Claude | `spec-sync` 実行: feature doc 新節 2 件 (対応表 / ブランド指針)・architecture.md 昇格テーブル・design-workflow 正本 path 全数更新 + §6 spacing 例外・ADR-0007 起票。durable 成果の正本をハンドオフし spec 側をスナップショットに降格 |
+| 2026-06-13 | Claude | ユーザー指摘で feature doc を「値の対応表」から「参照ハブ」へ変更 (値の正本は tokens.css に一意化、doc には複製しない)。spacing / radius / type scale の doc 管理ガイドのみ feature doc に残す                                       |
 
 ## 備考
 
