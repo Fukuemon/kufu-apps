@@ -98,3 +98,22 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 - 一部に残る `globals.css` 表記は「styles.css = globals.css (全量エントリ)」の等価が明示されており矛盾ではない。spec-sync 時に語彙を揃えると良い
 - 3 巡の指摘がすべて本文反映済みであることを確認。下流 phase (spec-sync / spec-prompts) へ進んでよい品質
+
+## Review 2026-06-13 (最終)
+
+Verdict: PASS
+Reviewer: spec-review rubric (parent-agent; current tool policy did not permit spawning a fresh subagent without an explicit subagent request)
+
+### 観点別評価
+
+- 上位文書整合: PASS — `spec-sync` 済みの反映先 (feature doc 新節 2 件 / architecture.md / design-workflow.md / ADR-0007) が記録され、spec は durable 成果を決定時スナップショットとして扱っている
+- 未解決論点: PASS — D1〜D7 は全件解決済み、未確定事項はなし
+- 実装対象明示: PASS — target は `ui` / `corporate-site` が明示され、P1 の責務境界と一致している
+- template 必須節: PASS — minimal core の必須節は揃っている
+- EARS acceptance: PASS — `tokens.css` 一意化、spacing 例外、Pencil fork 検出条件が観測可能な形で記述されている
+- prompts 自己完結性: PASS — `P1_01_ui_token_restructure.md` / `P1_02_corporate-site_token_migration.md` は必須セクション 10 項目を持ち、target / 依存関係 / 検証コマンド / 完了条件を明示している
+- 正本境界: PASS — durable な design foundation は feature doc / context / ADR へハンドオフ済みで、spec 側は移行対応表と決定経緯の記録に限定されている
+
+### 指摘
+
+- なし
