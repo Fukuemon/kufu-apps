@@ -4250,9 +4250,10 @@
     {
       "type": "frame",
       "id": "IZutZ",
-      "x": -2505,
-      "y": -2030,
+      "x": -4534,
+      "y": 0,
       "name": "Components",
+      "fill": "#ffffffff",
       "layout": "vertical",
       "gap": 40,
       "padding": 24,
