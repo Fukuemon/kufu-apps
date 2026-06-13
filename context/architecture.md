@@ -1,6 +1,6 @@
 # Codebase Architecture
 
-> 最終更新: 2026-05-31
+> 最終更新: 2026-06-13
 
 Kufu Monorepo の package / runtime boundary と依存方向。全体像 (system landscape, モジュール責務) は [design/DesignDoc.md](../design/DesignDoc.md) を正本とし、本書はコードベースの境界規約を扱う。
 
@@ -23,6 +23,19 @@ apps/cms ─────┼─→ packages/ui ─→ packages/config
 - `apps/* → apps/*` (app 間直接依存) は禁止。
 - `packages/ui` → `packages/config` は許可。
 - 循環依存・未宣言依存・devDependency 流入は禁止 ([engineering.md](engineering.md) の repository quality gate で検査)。
+
+### デザインシステム資産の正本と昇格境界
+
+colocation 第一原則の適用を資産種別ごとに定める (本テーブルを正本とする。決定経緯: [spec #13](../specs/13-design-system-foundation/index.md) D6 / [ADR-0007](../adr/0007-design-token-architecture.md))。
+
+| 資産種別                     | 正本                              | 昇格条件                                      |
+| ---------------------------- | --------------------------------- | --------------------------------------------- |
+| デザイントークン             | 常に `packages/ui` (`tokens.css`) | 昇格不要 (最初から正本。app 配下で定義しない) |
+| フォント / shared stylesheet | 常に `packages/ui`                | 同上                                          |
+| UI コンポーネント            | app 内 colocation                 | 複数 app / feature で再利用が明確になった時   |
+| utility                      | app 内 colocation                 | 必要性が明確な場合のみ package 化             |
+
+デザインシステム資産 (トークン / フォント / stylesheet) は colocation 原則の例外であり、最初から `packages/ui` を正本とする。UI コンポーネント / utility は従来の複数 consumer ルールに従う。
 
 ## Runtime Boundary
 
