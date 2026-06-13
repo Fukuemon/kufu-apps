@@ -1,0 +1,93 @@
+/*
+ * Kufu design tokens — CSS 変数の正本 (ADR-0007)
+ *
+ * 2 層構造:
+ *   - primitive 層 (--kufu-<hue>-<scale>): 値を持つ唯一の層
+ *   - semantic 層 (shadcn 語彙 + kufu 追加役割): primitive を参照するのみ
+ *
+ * shadcn 変数の名前は契約 (bg-primary 等が var(--primary) を参照)。
+ * 名前は改名・削除せず、値だけ primitive へ向け替える。未使用変数も温存する。
+ * ダーク面は .dark テーマでなく .surface-inverse スコープで表現する。
+ */
+
+:root {
+  /* primitive: color scale (値を持つ唯一の層) */
+  --kufu-white: #ffffff;
+  --kufu-gray-50: #f7f8fa;
+  --kufu-gray-100: #eceff3;
+  --kufu-gray-200: #d7dee6;
+  --kufu-gray-300: #cbd2da;
+  --kufu-gray-500: #7c8694;
+  --kufu-gray-600: #5b6472;
+  --kufu-gray-800: #26323a;
+  --kufu-gray-900: #1f2933;
+  --kufu-gray-950: #111827;
+  --kufu-teal-300: #7cc6b6;
+  --kufu-teal-600: #006b6b;
+  --kufu-teal-900: #0a3d4a;
+
+  /* font family tokens (実体は fonts.css で登録。フォールバック付きスタック) */
+  --font-sans: "Noto Sans JP Variable", system-ui, sans-serif;
+  --font-serif: "Noto Serif JP Variable", "Hiragino Mincho ProN", serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  /* semantic: shadcn 語彙 (primitive 参照) — ライト面既定 */
+  --background: var(--kufu-gray-50);
+  --foreground: var(--kufu-gray-900);
+  --card: var(--kufu-white);
+  --card-foreground: var(--kufu-gray-900);
+  --popover: var(--kufu-white);
+  --popover-foreground: var(--kufu-gray-900);
+  --primary: var(--kufu-teal-600);
+  --primary-foreground: var(--kufu-white);
+  --secondary: var(--kufu-gray-100);
+  --secondary-foreground: var(--kufu-gray-900);
+  --muted: var(--kufu-gray-100);
+  --muted-foreground: var(--kufu-gray-600);
+  --border: var(--kufu-gray-300);
+  --input: var(--kufu-gray-300);
+  --ring: var(--kufu-teal-600);
+
+  /* semantic: kufu 追加役割 (shadcn 語彙に無い用途) */
+  --primary-soft: var(--kufu-teal-300);
+  --card-overlay: color-mix(in srgb, var(--kufu-white) 90%, transparent);
+  --photo-overlay: color-mix(in srgb, var(--kufu-teal-900) 12%, transparent);
+  --ghost-foreground: color-mix(in srgb, var(--kufu-gray-900) 5%, transparent);
+
+  /* radius: .pen 実測で全面直角 (shadcn --radius 派生スケールの基準値) */
+  --radius: 0rem;
+
+  /*
+   * shadcn 未使用変数: 名前は契約のため温存 (改名・削除しない)。
+   * #10 で該当コンポーネント (アラート / チャート / sidebar 等) 導入時に
+   * kufu パレットへ再設計する。それまでは shadcn デフォルト値のまま。
+   */
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+/*
+ * ダーク面 section: semantic 変数を上書きするラッパー class。
+ * スコープ内の shadcn コンポーネントもカスケードで自動再テーマされる (ADR-0007)。
+ */
+.surface-inverse {
+  --background: var(--kufu-gray-950);
+  --foreground: var(--kufu-white);
+  --secondary-foreground: var(--kufu-gray-200);
+  --muted-foreground: var(--kufu-gray-500);
+  --border: var(--kufu-gray-800);
+}
