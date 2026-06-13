@@ -1,6 +1,6 @@
 # Codebase Architecture
 
-> 最終更新: 2026-05-31
+> 最終更新: 2026-06-13
 
 Kufu Monorepo の package / runtime boundary と依存方向。全体像 (system landscape, モジュール責務) は [design/DesignDoc.md](../design/DesignDoc.md) を正本とし、本書はコードベースの境界規約を扱う。
 
@@ -24,11 +24,35 @@ apps/cms ─────┼─→ packages/ui ─→ packages/config
 - `packages/ui` → `packages/config` は許可。
 - 循環依存・未宣言依存・devDependency 流入は禁止 ([engineering.md](engineering.md) の repository quality gate で検査)。
 
+### デザインシステム資産の正本と昇格境界
+
+colocation 第一原則の適用を資産種別ごとに定める (本テーブルを正本とする。決定経緯: [spec #13](../specs/13-design-system-foundation/index.md) D6 / [ADR-0007](../adr/0007-design-token-architecture.md))。
+
+| 資産種別                     | 正本                              | 昇格条件                                      |
+| ---------------------------- | --------------------------------- | --------------------------------------------- |
+| デザイントークン             | 常に `packages/ui` (`tokens.css`) | 昇格不要 (最初から正本。app 配下で定義しない) |
+| フォント / shared stylesheet | 常に `packages/ui`                | 同上                                          |
+| UI コンポーネント            | app 内 colocation                 | 複数 app / feature で再利用が明確になった時   |
+| utility                      | app 内 colocation                 | 必要性が明確な場合のみ package 化             |
+
+デザインシステム資産 (トークン / フォント / stylesheet) は colocation 原則の例外であり、最初から `packages/ui` を正本とする。UI コンポーネント / utility は従来の複数 consumer ルールに従う。
+
 ## Runtime Boundary
 
 - `apps/corporate-site` は、Cloudflare 上でもできる限り静的配信で成立させる。
 - React island は必要最小限とし、配信する JavaScript 量を抑える。
 - 環境変数は build-time に閉じるものと runtime で参照するものを分けて扱う。
+
+### shadcn 消費と React island の境界 (corporate-site)
+
+Astro は React/shadcn コンポーネントもビルド時に静的 HTML へ描画し、`client:*` を付けない限りクライアント JS を出荷しない。コストが発生するのは island 化 (`client:*`) した時だけである。詳細と代替案は [ADR-0008](../adr/0008-astro-react-island-policy.md)。
+
+- **表示専用 UI** (Button-as-link / Card / Badge / Tag / section 等) は `@kufu/ui` の shadcn コンポーネントを `.astro` 内で **`client:*` なし**で使う (JS ゼロ)。`.astro` で再実装せず `@kufu/ui` を単一正本に保つ。
+- **`@astrojs/react` は導入してよい** (island が無ければランタイムは出荷されない)。
+- **`client:*` island はインタラクションに限定**: モバイルナビ開閉、フォーム (#14)、Radix インタラクティブ primitive (Dialog / Dropdown / Popover / Tooltip / Accordion / Tabs / Select 等)。
+- island の既定ディレクティブは `client:visible` / `client:idle`。`client:load` は above-the-fold で即時操作が要る時のみ。
+- **ハードルール**: インタラクティブ Radix primitive を `client:*` なしで静的描画しない (見た目だけ出て動かないため必ず island 化)。
+- `client:*` 総数は PRD ガードレール「Unnecessary Client JS Count」で監視する。
 - 秘密情報を client bundle に含めない。Cloudflare の secret 管理に置くべき値は repo に保存しない ([infrastructure.md](infrastructure.md))。
 - 問い合わせフォームや外部 API 連携を追加する場合は、ブラウザから直接第三者 API を叩く構成を標準にせず、必要に応じて Workers を中継点にする。
 
