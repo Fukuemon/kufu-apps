@@ -12,7 +12,9 @@
     "packages/ui": {
       "project": ["src/**/*.{ts,tsx,css}", "components.json"],
       "ignoreDependencies": [
-        "@fontsource-variable/geist",
+        "@fontsource-variable/geist-mono",
+        "@fontsource-variable/noto-sans-jp",
+        "@fontsource-variable/noto-serif-jp",
         "@kufu/config",
         "lucide-react",
         "shadcn",

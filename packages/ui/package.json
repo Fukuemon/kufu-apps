@@ -15,16 +15,15 @@
   "exports": {
     ".": "./src/index.ts",
     "./styles.css": "./src/styles/globals.css",
+    "./tokens.css": "./src/styles/tokens.css",
+    "./fonts.css": "./src/styles/fonts.css",
     "./components": "./src/components/index.ts",
     "./components/*": "./src/components/*.tsx",
     "./hooks": "./src/hooks/index.ts",
     "./hooks/*": "./src/hooks/*.ts",
     "./lib": "./src/lib/index.ts",
     "./lib/utils": "./src/lib/utils.ts",
-    "./lib/*": "./src/lib/*.ts",
-    "./tokens": "./src/tokens/index.ts",
-    "./theme": "./src/theme/index.ts",
-    "./fonts": "./src/fonts/index.ts"
+    "./lib/*": "./src/lib/*.ts"
   },
   "scripts": {
     "lint": "oxlint --type-aware --config ../config/oxlint/base.json src",
@@ -32,7 +31,9 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@fontsource-variable/geist": "^5.2.8",
+    "@fontsource-variable/geist-mono": "^5.2.8",
+    "@fontsource-variable/noto-sans-jp": "^5.2.10",
+    "@fontsource-variable/noto-serif-jp": "^5.2.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.14.0",
