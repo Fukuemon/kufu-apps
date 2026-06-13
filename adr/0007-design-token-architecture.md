@@ -17,8 +17,12 @@
 ## 決定
 
 1. **2 層構造**: トークンを primitive 層 (`--kufu-<hue>-<scale>`、例: `--kufu-teal-600` / `--kufu-gray-50`。値を持つ唯一の層) と semantic 層 (shadcn 語彙 `--background` / `--foreground` / `--primary` 等の役割名。primitive への参照のみ) に分離する。`.pen` の比喩名は廃止し、Pencil variables は semantic 名へ rename する。
-2. **shadcn semantic の上書き**: 既存 shadcn semantic 変数の値を kufu primitive への参照に置換し、トークンセットを 1 系統に収束させる。shadcn 語彙に無い用途は役割ベースの追加 semantic 名 (`--photo-overlay` / `--card-overlay` / `--ghost-foreground` / `--primary-soft`) を新設する。
-3. **ダーク面は inverse スコープ**: `.dark` テーマでなく、semantic 変数を上書きするラッパー class (案: `.surface-inverse`) で section 単位のダーク面を表現する。
+2. **shadcn semantic の上書き**: 既存 shadcn semantic 変数の値を kufu primitive への参照に置換し、トークンセットを 1 系統に収束させる。shadcn 語彙に無い用途は役割ベースの追加 semantic 名 (`--photo-overlay` / `--card-overlay` / `--ghost-foreground` / `--primary-soft`) を新設する。これが安全な理由と制約:
+   - **変数名は shadcn の契約**である。コンポーネントは `bg-primary` 等のクラスで `var(--primary)` を参照しており、見ているのは「名前」だけで値の中身は関知しない。よって**値の差し替え (primitive への向け替え) は shadcn 公式のテーマ機構そのもので安全**だが、**名前の改名・削除は契約破りでコンポーネントが壊れる**。
+   - **未使用の shadcn 変数も名前を消さない**: `--chart-*` / `--sidebar-*` / `--destructive` / `--accent` 系は現状 corporate-site で未使用だが、#10 で該当コンポーネント (アラート / チャート / ドロップダウン等) を入れた時に名前が無いと壊れる。デフォルト値のまま温存し、kufu パレット化は #10 で行う。
+   - **`-foreground` ペアの整合を保つ**: shadcn は面 (`--primary`) とその上の文字 (`--primary-foreground`) をペアで使う。面だけ変えてコントラストが崩れないよう、必ずペアで割り当てる。
+   - **追加した独自 semantic (`--primary-soft` 等) を `bg-*` 等のユーティリティで使うには `@theme inline` への追加マッピングが必要** (生 CSS の `var()` 直書きなら不要)。ユーティリティ提供は #10 の実需に応じて行う。
+3. **ダーク面は inverse スコープ**: `.dark` テーマでなく、semantic 変数を上書きするラッパー class (案: `.surface-inverse`) で section 単位のダーク面を表現する。class 内で `--background` / `--foreground` 等を上書きすると、**そのスコープ内の shadcn コンポーネントもカスケードで自動的にダーク面の見た目へ再テーマされる** (`.dark` と同じ機構)。名前を保って値だけ差し替える設計の利点。
 4. **3 entry 配信**: `@kufu/ui/tokens.css` (CSS 変数のみ) / `@kufu/ui/fonts.css` (fontsource font-face) / `@kufu/ui/styles.css` (全量エントリ = `globals.css`。tokens + fonts + Tailwind theme + shadcn 層) に分離する。Astro (corporate-site) は `tokens.css` + `fonts.css` のみ、React app (将来の cms) は `styles.css` を import する。
 5. **実績ベースの最小定義**: type scale / spacing / shadow / breakpoint は独自トークンを作らず Tailwind 標準を使う (spacing は 4px グリッド + 推奨リズム 12/16/24/32/48/80 をガイド文書化)。radius は shadcn `--radius` に一本化し、`.pen` 実測 (全面直角) に基づき基準値 `0rem` とする。
 
