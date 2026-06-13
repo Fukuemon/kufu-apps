@@ -840,97 +840,40 @@
                           "gap": 28,
                           "children": [
                             {
-                              "type": "frame",
-                              "id": "n2mT7h",
-                              "name": "Custom Item ギヤー・プー",
+                              "id": "qVBKn",
+                              "type": "ref",
+                              "ref": "BCc6P",
+                              "name": "Custom Item",
                               "width": "fill_container",
-                              "gap": 10,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "rectangle",
-                                  "id": "x2DqM",
-                                  "name": "Item Dash",
-                                  "fill": "$primary",
-                                  "width": 14,
-                                  "height": 2
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "TuQwg",
-                                  "name": "Item Text ギヤー・プー",
-                                  "fill": "$foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "ギヤー・プーリー・スプロケット他 軸穴キー加工",
-                                  "lineHeight": 1.5,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
+                              "descendants": {
+                                "RwYwZ": {
+                                  "content": "ギヤー・プーリー・スプロケット他 軸穴キー加工"
                                 }
-                              ]
+                              }
                             },
                             {
-                              "type": "frame",
-                              "id": "Izz26",
-                              "name": "Custom Item 別作ギヤー・",
+                              "id": "hweEQ",
+                              "type": "ref",
+                              "ref": "BCc6P",
+                              "name": "Custom Item",
                               "width": "fill_container",
-                              "gap": 10,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "rectangle",
-                                  "id": "Fl2Md",
-                                  "name": "Item Dash",
-                                  "fill": "$primary",
-                                  "width": 14,
-                                  "height": 2
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "EtBax",
-                                  "name": "Item Text 別作ギヤー・",
-                                  "fill": "$foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "別作ギヤー・プーリー・スプロケット製作",
-                                  "lineHeight": 1.5,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
+                              "descendants": {
+                                "RwYwZ": {
+                                  "content": "別作ギヤー・プーリー・スプロケット製作"
                                 }
-                              ]
+                              }
                             },
                             {
-                              "type": "frame",
-                              "id": "rouRj",
-                              "name": "Custom Item 別作ローラー",
+                              "id": "DzOjw",
+                              "type": "ref",
+                              "ref": "BCc6P",
+                              "name": "Custom Item",
                               "width": "fill_container",
-                              "gap": 10,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "rectangle",
-                                  "id": "Ua4ZC",
-                                  "name": "Item Dash",
-                                  "fill": "$primary",
-                                  "width": 14,
-                                  "height": 2
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "nHvQs",
-                                  "name": "Item Text 別作ローラー",
-                                  "fill": "$foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "別作ローラー製作",
-                                  "lineHeight": 1.5,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
+                              "descendants": {
+                                "RwYwZ": {
+                                  "content": "別作ローラー製作"
                                 }
-                              ]
+                              }
                             }
                           ]
                         },
@@ -942,97 +885,40 @@
                           "gap": 28,
                           "children": [
                             {
-                              "type": "frame",
-                              "id": "E80sQv",
-                              "name": "Custom Item 別作マシンキ",
+                              "id": "oxfzM",
+                              "type": "ref",
+                              "ref": "BCc6P",
+                              "name": "Custom Item",
                               "width": "fill_container",
-                              "gap": 10,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "rectangle",
-                                  "id": "O6T8Ei",
-                                  "name": "Item Dash",
-                                  "fill": "$primary",
-                                  "width": 14,
-                                  "height": 2
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "MgD68",
-                                  "name": "Item Text 別作マシンキ",
-                                  "fill": "$foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "別作マシンキー・バネ製作",
-                                  "lineHeight": 1.5,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
+                              "descendants": {
+                                "RwYwZ": {
+                                  "content": "別作マシンキー・バネ製作"
                                 }
-                              ]
+                              }
                             },
                             {
-                              "type": "frame",
-                              "id": "aJeEn",
-                              "name": "Custom Item 別作ゴム・ウ",
+                              "id": "YYDA8",
+                              "type": "ref",
+                              "ref": "BCc6P",
+                              "name": "Custom Item",
                               "width": "fill_container",
-                              "gap": 10,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "rectangle",
-                                  "id": "JLFo5",
-                                  "name": "Item Dash",
-                                  "fill": "$primary",
-                                  "width": 14,
-                                  "height": 2
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "KowrF",
-                                  "name": "Item Text 別作ゴム・ウ",
-                                  "fill": "$foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "別作ゴム・ウレタンゴム・ライニング成型加工",
-                                  "lineHeight": 1.5,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
+                              "descendants": {
+                                "RwYwZ": {
+                                  "content": "別作ゴム・ウレタンゴム・ライニング成型加工"
                                 }
-                              ]
+                              }
                             },
                             {
-                              "type": "frame",
-                              "id": "lEFVG",
-                              "name": "Custom Item 別作樹脂成型",
+                              "id": "EpUdG",
+                              "type": "ref",
+                              "ref": "BCc6P",
+                              "name": "Custom Item",
                               "width": "fill_container",
-                              "gap": 10,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "rectangle",
-                                  "id": "fteEv",
-                                  "name": "Item Dash",
-                                  "fill": "$primary",
-                                  "width": 14,
-                                  "height": 2
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "w1plt",
-                                  "name": "Item Text 別作樹脂成型",
-                                  "fill": "$foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "別作樹脂成型加工",
-                                  "lineHeight": 1.5,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
+                              "descendants": {
+                                "RwYwZ": {
+                                  "content": "別作樹脂成型加工"
                                 }
-                              ]
+                              }
                             }
                           ]
                         }
@@ -1096,28 +982,13 @@
                   "gap": 20,
                   "children": [
                     {
-                      "type": "frame",
-                      "id": "hgZOB",
+                      "id": "b2qfU",
+                      "type": "ref",
+                      "ref": "M7io9",
                       "name": "Featured 駆動・変減速機器",
-                      "clip": true,
                       "width": "fill_container",
-                      "fill": "$card",
-                      "stroke": "$border",
-                      "strokeWidth": 1,
-                      "layout": "vertical",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "IRKmj",
-                          "name": "Featured Media 01",
-                          "metadata": {
-                            "type": "unsplash",
-                            "username": "phkrief",
-                            "link": "https://unsplash.com/@phkrief",
-                            "author": "Philippe Krief"
-                          },
-                          "width": "fill_container",
-                          "height": 150,
+                      "descendants": {
+                        "Bm88v": {
                           "fill": [
                             {
                               "type": "image",
@@ -1139,91 +1010,25 @@
                             }
                           ]
                         },
-                        {
-                          "type": "frame",
-                          "id": "F4FbZq",
-                          "name": "Featured Body 01",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "padding": [
-                            14,
-                            16,
-                            16,
-                            16
-                          ],
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "N2oROF",
-                              "name": "Featured Meta 01",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "ML5tB",
-                                  "name": "Featured No 01",
-                                  "fill": "$primary",
-                                  "content": "CATEGORY 01",
-                                  "fontFamily": "$font-mono",
-                                  "fontSize": 11,
-                                  "fontWeight": "500",
-                                  "letterSpacing": 1
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "sx4jM",
-                                  "name": "Featured Count 01",
-                                  "fill": "$muted-foreground",
-                                  "content": "17社",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 11.5,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "text",
-                              "id": "zJKVp",
-                              "name": "Featured Name 01",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "駆動・変減速機器",
-                              "lineHeight": 1.5,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 15,
-                              "fontWeight": "600"
-                            }
-                          ]
+                        "Q6uAn4": {
+                          "content": "CATEGORY 01"
+                        },
+                        "lPN6c": {
+                          "content": "17社"
+                        },
+                        "fYzAf": {
+                          "content": "Featured 駆動・変減速機器"
                         }
-                      ]
+                      }
                     },
                     {
-                      "type": "frame",
-                      "id": "w0Tphc",
+                      "id": "bvPJq",
+                      "type": "ref",
+                      "ref": "M7io9",
                       "name": "Featured 空圧・油圧機器",
-                      "clip": true,
                       "width": "fill_container",
-                      "fill": "$card",
-                      "stroke": "$border",
-                      "strokeWidth": 1,
-                      "layout": "vertical",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "JiLmW",
-                          "name": "Featured Media 06",
-                          "metadata": {
-                            "type": "unsplash",
-                            "username": "thisisengineering",
-                            "link": "https://unsplash.com/@thisisengineering",
-                            "author": "ThisisEngineering"
-                          },
-                          "width": "fill_container",
-                          "height": 150,
+                      "descendants": {
+                        "Bm88v": {
                           "fill": [
                             {
                               "type": "image",
@@ -1245,91 +1050,25 @@
                             }
                           ]
                         },
-                        {
-                          "type": "frame",
-                          "id": "vLni7",
-                          "name": "Featured Body 06",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "padding": [
-                            14,
-                            16,
-                            16,
-                            16
-                          ],
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "fHvB8",
-                              "name": "Featured Meta 06",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "wRPAe",
-                                  "name": "Featured No 06",
-                                  "fill": "$primary",
-                                  "content": "CATEGORY 06",
-                                  "fontFamily": "$font-mono",
-                                  "fontSize": 11,
-                                  "fontWeight": "500",
-                                  "letterSpacing": 1
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "x0wey",
-                                  "name": "Featured Count 06",
-                                  "fill": "$muted-foreground",
-                                  "content": "20社",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 11.5,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "text",
-                              "id": "Ftt4T",
-                              "name": "Featured Name 06",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "空圧・油圧機器",
-                              "lineHeight": 1.5,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 15,
-                              "fontWeight": "600"
-                            }
-                          ]
+                        "Q6uAn4": {
+                          "content": "CATEGORY 06"
+                        },
+                        "lPN6c": {
+                          "content": "20社"
+                        },
+                        "fYzAf": {
+                          "content": "Featured 空圧・油圧機器"
                         }
-                      ]
+                      }
                     },
                     {
-                      "type": "frame",
-                      "id": "PCgJX",
+                      "id": "bNf8v",
+                      "type": "ref",
+                      "ref": "M7io9",
                       "name": "Featured 切削工具",
-                      "clip": true,
                       "width": "fill_container",
-                      "fill": "$card",
-                      "stroke": "$border",
-                      "strokeWidth": 1,
-                      "layout": "vertical",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "FRBgl",
-                          "name": "Featured Media 14",
-                          "metadata": {
-                            "type": "unsplash",
-                            "username": "picture_this_photography",
-                            "link": "https://unsplash.com/@picture_this_photography",
-                            "author": "Tarien Kapp"
-                          },
-                          "width": "fill_container",
-                          "height": 150,
+                      "descendants": {
+                        "Bm88v": {
                           "fill": [
                             {
                               "type": "image",
@@ -1351,91 +1090,25 @@
                             }
                           ]
                         },
-                        {
-                          "type": "frame",
-                          "id": "wifBa",
-                          "name": "Featured Body 14",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "padding": [
-                            14,
-                            16,
-                            16,
-                            16
-                          ],
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "C3HtB",
-                              "name": "Featured Meta 14",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "YOTXM",
-                                  "name": "Featured No 14",
-                                  "fill": "$primary",
-                                  "content": "CATEGORY 14",
-                                  "fontFamily": "$font-mono",
-                                  "fontSize": 11,
-                                  "fontWeight": "500",
-                                  "letterSpacing": 1
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "UbSrg",
-                                  "name": "Featured Count 14",
-                                  "fill": "$muted-foreground",
-                                  "content": "14社",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 11.5,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "text",
-                              "id": "C0HbE",
-                              "name": "Featured Name 14",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "切削工具",
-                              "lineHeight": 1.5,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 15,
-                              "fontWeight": "600"
-                            }
-                          ]
+                        "Q6uAn4": {
+                          "content": "CATEGORY 14"
+                        },
+                        "lPN6c": {
+                          "content": "14社"
+                        },
+                        "fYzAf": {
+                          "content": "Featured 切削工具"
                         }
-                      ]
+                      }
                     },
                     {
-                      "type": "frame",
-                      "id": "tZMFh",
+                      "id": "zatW1",
+                      "type": "ref",
+                      "ref": "M7io9",
                       "name": "Featured 工場設備関連",
-                      "clip": true,
                       "width": "fill_container",
-                      "fill": "$card",
-                      "stroke": "$border",
-                      "strokeWidth": 1,
-                      "layout": "vertical",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "nvy77",
-                          "name": "Featured Media 10",
-                          "metadata": {
-                            "type": "unsplash",
-                            "username": "dauletrb",
-                            "link": "https://unsplash.com/@dauletrb",
-                            "author": "Daulet Turubayev"
-                          },
-                          "width": "fill_container",
-                          "height": 150,
+                      "descendants": {
+                        "Bm88v": {
                           "fill": [
                             {
                               "type": "image",
@@ -1457,67 +1130,16 @@
                             }
                           ]
                         },
-                        {
-                          "type": "frame",
-                          "id": "zAFxM",
-                          "name": "Featured Body 10",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "padding": [
-                            14,
-                            16,
-                            16,
-                            16
-                          ],
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "yLZHE",
-                              "name": "Featured Meta 10",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "rwWvx",
-                                  "name": "Featured No 10",
-                                  "fill": "$primary",
-                                  "content": "CATEGORY 10",
-                                  "fontFamily": "$font-mono",
-                                  "fontSize": 11,
-                                  "fontWeight": "500",
-                                  "letterSpacing": 1
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "K98YK",
-                                  "name": "Featured Count 10",
-                                  "fill": "$muted-foreground",
-                                  "content": "29社",
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 11.5,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "text",
-                              "id": "pPIgL",
-                              "name": "Featured Name 10",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "工場設備関連",
-                              "lineHeight": 1.5,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 15,
-                              "fontWeight": "600"
-                            }
-                          ]
+                        "Q6uAn4": {
+                          "content": "CATEGORY 10"
+                        },
+                        "lPN6c": {
+                          "content": "29社"
+                        },
+                        "fYzAf": {
+                          "content": "Featured 工場設備関連"
                         }
-                      ]
+                      }
                     }
                   ]
                 },
@@ -2062,468 +1684,124 @@
                       ]
                     },
                     {
-                      "type": "frame",
-                      "id": "dl00",
+                      "id": "C9gzo",
+                      "type": "ref",
+                      "ref": "rqp0b",
                       "name": "Info Row 会社名",
                       "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 12,
-                      "padding": [
-                        14,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "dl00d",
-                          "name": "Divider",
-                          "fill": "$border",
-                          "width": "fill_container",
-                          "height": 1
+                      "descendants": {
+                        "JFQEu": {
+                          "content": "会社名"
                         },
-                        {
-                          "type": "frame",
-                          "id": "dl00b",
-                          "name": "Info Body",
-                          "width": "fill_container",
-                          "gap": 20,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "dl00k",
-                              "name": "Info Label",
-                              "fill": "$muted-foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 104,
-                              "content": "会社名",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-mono",
-                              "fontSize": 11,
-                              "fontWeight": "normal",
-                              "letterSpacing": 1.2
-                            },
-                            {
-                              "type": "text",
-                              "id": "dl00v",
-                              "name": "Info Value",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "有限会社フクウラ",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 14,
-                              "fontWeight": "normal"
-                            }
-                          ]
+                        "ier1H": {
+                          "content": "有限会社フクウラ"
                         }
-                      ]
+                      }
                     },
                     {
-                      "type": "frame",
-                      "id": "dl01",
+                      "id": "NGc6w",
+                      "type": "ref",
+                      "ref": "rqp0b",
                       "name": "Info Row 代表者",
                       "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 12,
-                      "padding": [
-                        14,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "dl01d",
-                          "name": "Divider",
-                          "fill": "$border",
-                          "width": "fill_container",
-                          "height": 1
+                      "descendants": {
+                        "JFQEu": {
+                          "content": "代表者"
                         },
-                        {
-                          "type": "frame",
-                          "id": "dl01b",
-                          "name": "Info Body",
-                          "width": "fill_container",
-                          "gap": 20,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "dl01k",
-                              "name": "Info Label",
-                              "fill": "$muted-foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 104,
-                              "content": "代表者",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-mono",
-                              "fontSize": 11,
-                              "fontWeight": "normal",
-                              "letterSpacing": 1.2
-                            },
-                            {
-                              "type": "text",
-                              "id": "dl01v",
-                              "name": "Info Value",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "代表取締役 福浦 崇志",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 14,
-                              "fontWeight": "normal"
-                            }
-                          ]
+                        "ier1H": {
+                          "content": "代表取締役 福浦 崇志"
                         }
-                      ]
+                      }
                     },
                     {
-                      "type": "frame",
-                      "id": "dl02",
+                      "id": "ZgUwa",
+                      "type": "ref",
+                      "ref": "rqp0b",
                       "name": "Info Row 資本金",
                       "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 12,
-                      "padding": [
-                        14,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "dl02d",
-                          "name": "Divider",
-                          "fill": "$border",
-                          "width": "fill_container",
-                          "height": 1
+                      "descendants": {
+                        "JFQEu": {
+                          "content": "資本金"
                         },
-                        {
-                          "type": "frame",
-                          "id": "dl02b",
-                          "name": "Info Body",
-                          "width": "fill_container",
-                          "gap": 20,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "dl02k",
-                              "name": "Info Label",
-                              "fill": "$muted-foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 104,
-                              "content": "資本金",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-mono",
-                              "fontSize": 11,
-                              "fontWeight": "normal",
-                              "letterSpacing": 1.2
-                            },
-                            {
-                              "type": "text",
-                              "id": "dl02v",
-                              "name": "Info Value",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "300万円",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 14,
-                              "fontWeight": "normal"
-                            }
-                          ]
+                        "ier1H": {
+                          "content": "300万円"
                         }
-                      ]
+                      }
                     },
                     {
-                      "type": "frame",
-                      "id": "dl03",
+                      "id": "qLL46",
+                      "type": "ref",
+                      "ref": "rqp0b",
                       "name": "Info Row 事業内容",
                       "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 12,
-                      "padding": [
-                        14,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "dl03d",
-                          "name": "Divider",
-                          "fill": "$border",
-                          "width": "fill_container",
-                          "height": 1
+                      "descendants": {
+                        "JFQEu": {
+                          "content": "事業内容"
                         },
-                        {
-                          "type": "frame",
-                          "id": "dl03b",
-                          "name": "Info Body",
-                          "width": "fill_container",
-                          "gap": 20,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "dl03k",
-                              "name": "Info Label",
-                              "fill": "$muted-foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 104,
-                              "content": "事業内容",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-mono",
-                              "fontSize": 11,
-                              "fontWeight": "normal",
-                              "letterSpacing": 1.2
-                            },
-                            {
-                              "type": "text",
-                              "id": "dl03v",
-                              "name": "Info Value",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "機械工具・関連機器の販売／各種機械加工・樹脂成型・板金溶接・ゴム製品加工",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 14,
-                              "fontWeight": "normal"
-                            }
-                          ]
+                        "ier1H": {
+                          "content": "機械工具・関連機器の販売／各種機械加工・樹脂成型・板金溶接・ゴム製品加工"
                         }
-                      ]
+                      }
                     },
                     {
-                      "type": "frame",
-                      "id": "dl04",
+                      "id": "ZE7rc",
+                      "type": "ref",
+                      "ref": "rqp0b",
                       "name": "Info Row 創立",
                       "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 12,
-                      "padding": [
-                        14,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "dl04d",
-                          "name": "Divider",
-                          "fill": "$border",
-                          "width": "fill_container",
-                          "height": 1
+                      "descendants": {
+                        "JFQEu": {
+                          "content": "創立"
                         },
-                        {
-                          "type": "frame",
-                          "id": "dl04b",
-                          "name": "Info Body",
-                          "width": "fill_container",
-                          "gap": 20,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "dl04k",
-                              "name": "Info Label",
-                              "fill": "$muted-foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 104,
-                              "content": "創立",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-mono",
-                              "fontSize": 11,
-                              "fontWeight": "normal",
-                              "letterSpacing": 1.2
-                            },
-                            {
-                              "type": "text",
-                              "id": "dl04v",
-                              "name": "Info Value",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "1996年（平成8年）6月",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 14,
-                              "fontWeight": "normal"
-                            }
-                          ]
+                        "ier1H": {
+                          "content": "1996年（平成8年）6月"
                         }
-                      ]
+                      }
                     },
                     {
-                      "type": "frame",
-                      "id": "dl05",
+                      "id": "XvmA7",
+                      "type": "ref",
+                      "ref": "rqp0b",
                       "name": "Info Row 所在地",
                       "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 12,
-                      "padding": [
-                        14,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "dl05d",
-                          "name": "Divider",
-                          "fill": "$border",
-                          "width": "fill_container",
-                          "height": 1
+                      "descendants": {
+                        "JFQEu": {
+                          "content": "所在地"
                         },
-                        {
-                          "type": "frame",
-                          "id": "dl05b",
-                          "name": "Info Body",
-                          "width": "fill_container",
-                          "gap": 20,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "dl05k",
-                              "name": "Info Label",
-                              "fill": "$muted-foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 104,
-                              "content": "所在地",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-mono",
-                              "fontSize": 11,
-                              "fontWeight": "normal",
-                              "letterSpacing": 1.2
-                            },
-                            {
-                              "type": "text",
-                              "id": "dl05v",
-                              "name": "Info Value",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "〒675-1114 兵庫県加古郡稲美町国安973番地の10",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 14,
-                              "fontWeight": "normal"
-                            }
-                          ]
+                        "ier1H": {
+                          "content": "〒675-1114 兵庫県加古郡稲美町国安973番地の10"
                         }
-                      ]
+                      }
                     },
                     {
-                      "type": "frame",
-                      "id": "dl06",
+                      "id": "n7q3jk",
+                      "type": "ref",
+                      "ref": "rqp0b",
                       "name": "Info Row 電話 / FAX",
                       "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 12,
-                      "padding": [
-                        14,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "dl06d",
-                          "name": "Divider",
-                          "fill": "$border",
-                          "width": "fill_container",
-                          "height": 1
+                      "descendants": {
+                        "JFQEu": {
+                          "content": "電話 / FAX"
                         },
-                        {
-                          "type": "frame",
-                          "id": "dl06b",
-                          "name": "Info Body",
-                          "width": "fill_container",
-                          "gap": 20,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "dl06k",
-                              "name": "Info Label",
-                              "fill": "$muted-foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 104,
-                              "content": "電話 / FAX",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-mono",
-                              "fontSize": 11,
-                              "fontWeight": "normal",
-                              "letterSpacing": 1.2
-                            },
-                            {
-                              "type": "text",
-                              "id": "dl06v",
-                              "name": "Info Value",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "TEL 079-492-6465 ／ FAX 079-492-6429",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 14,
-                              "fontWeight": "normal"
-                            }
-                          ]
+                        "ier1H": {
+                          "content": "TEL 079-492-6465 ／ FAX 079-492-6429"
                         }
-                      ]
+                      }
                     },
                     {
-                      "type": "frame",
-                      "id": "dl07",
+                      "id": "o2j0h1",
+                      "type": "ref",
+                      "ref": "rqp0b",
                       "name": "Info Row E-mail",
                       "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 12,
-                      "padding": [
-                        14,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "dl07d",
-                          "name": "Divider",
-                          "fill": "$border",
-                          "width": "fill_container",
-                          "height": 1
+                      "descendants": {
+                        "JFQEu": {
+                          "content": "E-mail"
                         },
-                        {
-                          "type": "frame",
-                          "id": "dl07b",
-                          "name": "Info Body",
-                          "width": "fill_container",
-                          "gap": 20,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "dl07k",
-                              "name": "Info Label",
-                              "fill": "$muted-foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 104,
-                              "content": "E-mail",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-mono",
-                              "fontSize": 11,
-                              "fontWeight": "normal",
-                              "letterSpacing": 1.2
-                            },
-                            {
-                              "type": "text",
-                              "id": "dl07v",
-                              "name": "Info Value",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "fukuura@mist.ocn.ne.jp",
-                              "lineHeight": 1.7,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 14,
-                              "fontWeight": "normal"
-                            }
-                          ]
+                        "ier1H": {
+                          "content": "fukuura@mist.ocn.ne.jp"
                         }
-                      ]
+                      }
                     },
                     {
                       "type": "rectangle",
@@ -2834,73 +2112,10 @@
                   ]
                 },
                 {
-                  "type": "frame",
-                  "id": "AVNrYO",
-                  "name": "Footer Sitemap",
-                  "layout": "vertical",
-                  "gap": 18,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "wyF3R9",
-                      "name": "Footer Sitemap Head",
-                      "fill": "$kufu-gray-500",
-                      "content": "SITEMAP",
-                      "fontFamily": "$font-mono",
-                      "fontSize": 10,
-                      "fontWeight": "normal",
-                      "letterSpacing": 1.8
-                    },
-                    {
-                      "type": "frame",
-                      "id": "mcLQ0Z",
-                      "name": "Footer Sitemap Links",
-                      "layout": "vertical",
-                      "gap": 11,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "PrYoBO",
-                          "name": "Footer Link 事業内容",
-                          "fill": "$kufu-gray-200",
-                          "content": "事業内容",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "ad6EM8",
-                          "name": "Footer Link 取扱製品",
-                          "fill": "$kufu-gray-200",
-                          "content": "取扱製品",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "i2C4qX",
-                          "name": "Footer Link 会社概要",
-                          "fill": "$kufu-gray-200",
-                          "content": "会社概要",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "lR5K2f",
-                          "name": "Footer Link お問い合わせ・お見積り",
-                          "fill": "$kufu-gray-200",
-                          "content": "お問い合わせ・お見積り",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
-                        }
-                      ]
-                    }
-                  ]
+                  "id": "wv2QN",
+                  "type": "ref",
+                  "ref": "qoUFl",
+                  "name": "Footer Sitemap"
                 },
                 {
                   "type": "frame",
@@ -2928,54 +2143,34 @@
                       "gap": 11,
                       "children": [
                         {
-                          "type": "text",
-                          "id": "8Im9uy",
-                          "name": "Footer Link 〒675-1114",
-                          "fill": "$kufu-gray-200",
-                          "content": "〒675-1114",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "id": "dkykq",
+                          "type": "ref",
+                          "ref": "W02jT",
+                          "name": "Footer Line"
                         },
                         {
-                          "type": "text",
-                          "id": "9BOHoT",
-                          "name": "Footer Link 兵庫県加古郡稲美町国安973番地の10",
-                          "fill": "$kufu-gray-200",
-                          "content": "兵庫県加古郡稲美町国安973番地の10",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "id": "sMjrG",
+                          "type": "ref",
+                          "ref": "W02jT",
+                          "name": "Footer Line"
                         },
                         {
-                          "type": "text",
-                          "id": "WriyEe",
-                          "name": "Footer Link TEL 079-492-6465",
-                          "fill": "$kufu-gray-200",
-                          "content": "TEL 079-492-6465",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "id": "sbFO4",
+                          "type": "ref",
+                          "ref": "W02jT",
+                          "name": "Footer Line"
                         },
                         {
-                          "type": "text",
-                          "id": "ToL1aU",
-                          "name": "Footer Link FAX 079-492-6429",
-                          "fill": "$kufu-gray-200",
-                          "content": "FAX 079-492-6429",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "id": "aY0Ht",
+                          "type": "ref",
+                          "ref": "W02jT",
+                          "name": "Footer Line"
                         },
                         {
-                          "type": "text",
-                          "id": "g1SigI",
-                          "name": "Footer Link fukuura@mist.ocn.ne.jp",
-                          "fill": "$kufu-gray-200",
-                          "content": "fukuura@mist.ocn.ne.jp",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "id": "zqMhV",
+                          "type": "ref",
+                          "ref": "W02jT",
+                          "name": "Footer Line"
                         }
                       ]
                     }
@@ -4354,669 +3549,139 @@
                   ]
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat01",
+                  "id": "I1jAAT",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 01",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat01Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "01"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat01Body",
-                      "name": "Products Category 01 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat01No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "01",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat01TitleBlock",
-                          "name": "Category Title 01",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat01Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "駆動・変減速機器",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat01Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 17社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat01MakersBlock",
-                          "name": "Category Makers 01",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "tfdeC",
-                              "name": "Maker Columns 01",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "GALYU",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "住友重機械工業（株）\n（株）日立産機システム\n三菱電機（株）\n（株）ツバキエマソン\n（株）ニッセイ\nオリエンタルモーター（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "PmQcG",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "パナソニック（株）\n日本電産シンポ（株）\n三木プーリー（株）\n（株）マキシンコー\n（株）酒井製作所\n（株）長谷川鉄工所",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "H654m",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "青木精密工業（株）\nSEW オイドライブジャパン（株）\n東芝産業機器システム（株）\n富士電機（株）\n（株）安川電機",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "駆動・変減速機器"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 17社"
+                    },
+                    "xjtyU": {
+                      "content": "住友重機械工業（株）\n（株）日立産機システム\n三菱電機（株）\n（株）ツバキエマソン\n（株）ニッセイ\nオリエンタルモーター（株）"
+                    },
+                    "SgGpS": {
+                      "content": "パナソニック（株）\n日本電産シンポ（株）\n三木プーリー（株）\n（株）マキシンコー\n（株）酒井製作所\n（株）長谷川鉄工所"
+                    },
+                    "dwJlK": {
+                      "content": "青木精密工業（株）\nSEW オイドライブジャパン（株）\n東芝産業機器システム（株）\n富士電機（株）\n（株）安川電機"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat02",
+                  "id": "oJjT9",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 02",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat02Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "02"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat02Body",
-                      "name": "Products Category 02 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat02No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "02",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat02TitleBlock",
-                          "name": "Category Title 02",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat02Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "軸受・直動機器",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat02Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 19社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat02MakersBlock",
-                          "name": "Category Makers 02",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "M1dFXb",
-                              "name": "Maker Columns 02 v2",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "nNpeJ",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "NTN（株）\nTHK（株）\n日本精工（株）\n（株）不二越\n日本トムソン（株）\n旭精工（株）\n日本ベアリング（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "QRxjD",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）ツバキナカシマ\nオザック精工（株）\nイグス（株）\nオイレス工業（株）\n東洋シャフト（株）\n森本精密シャフト（株）\n大同メタル工業（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "uIjMb",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "ミネベア（株）\nNOK（株）\n新日本オイルシール（株）\n（株）東洋オイルシール製作所\n（株）富士精密",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "軸受・直動機器"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 19社"
+                    },
+                    "xjtyU": {
+                      "content": "NTN（株）\nTHK（株）\n日本精工（株）\n（株）不二越\n日本トムソン（株）\n旭精工（株）\n日本ベアリング（株）"
+                    },
+                    "SgGpS": {
+                      "content": "（株）ツバキナカシマ\nオザック精工（株）\nイグス（株）\nオイレス工業（株）\n東洋シャフト（株）\n森本精密シャフト（株）\n大同メタル工業（株）"
+                    },
+                    "dwJlK": {
+                      "content": "ミネベア（株）\nNOK（株）\n新日本オイルシール（株）\n（株）東洋オイルシール製作所\n（株）富士精密"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat03",
+                  "id": "r916c",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 03",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat03Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "03"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat03Body",
-                      "name": "Products Category 03 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat03No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "03",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat03TitleBlock",
-                          "name": "Category Title 03",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat03Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "自動化・省力化機器",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat03Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 16社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat03MakersBlock",
-                          "name": "Category Makers 03",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "ZZHkq",
-                              "name": "Maker Columns 03",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "U6XQff",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）アイエイアイ\n（株）デジタル\nオムロン（株）\n松下制御機器（株）\nミネベア（株）\n三菱電機（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "h61W7Y",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "アズビル（株）\n三洋電機（株）\n日東工業（株）\n富士電機機器制御（株）\n（株）エー・アンド・デイ\n（株）不二越",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "ktN6u",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "ファナック（株）\n東芝産業機器システム（株）\n（株）ハーモニック・ドライブ・システムズ\nIDEC（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "自動化・省力化機器"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 16社"
+                    },
+                    "xjtyU": {
+                      "content": "（株）アイエイアイ\n（株）デジタル\nオムロン（株）\n松下制御機器（株）\nミネベア（株）\n三菱電機（株）"
+                    },
+                    "SgGpS": {
+                      "content": "アズビル（株）\n三洋電機（株）\n日東工業（株）\n富士電機機器制御（株）\n（株）エー・アンド・デイ\n（株）不二越"
+                    },
+                    "dwJlK": {
+                      "content": "ファナック（株）\n東芝産業機器システム（株）\n（株）ハーモニック・ドライブ・システムズ\nIDEC（株）"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat04",
+                  "id": "nE91c",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 04",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat04Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "04"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat04Body",
-                      "name": "Products Category 04 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat04No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "04",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat04TitleBlock",
-                          "name": "Category Title 04",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat04Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "チェーン・ベルト及びスプロケット・歯車",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat04Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 16社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat04MakersBlock",
-                          "name": "Category Makers 04",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "vbvSR",
-                              "name": "Maker Columns 04",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "h3hl9p",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）椿本チェイン\n日立機材（株）\n片山チェイン（株）\n日本チェイン（株）\n鳥羽チェイン（株）\n三ツ星ベルト（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "NR8JY",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "バンドー化学（株）\nニッタ（株）\n日本ジークリング（株）\n小原歯車工業（株）\n協育歯車工業（株）\n関西金網（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "I3no38",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）デイコム\n鍋屋バイテック（株）\n（株）大三商会\nツバキ山久チェイン（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "チェーン・ベルト及びスプロケット・歯車"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 16社"
+                    },
+                    "xjtyU": {
+                      "content": "（株）椿本チェイン\n日立機材（株）\n片山チェイン（株）\n日本チェイン（株）\n鳥羽チェイン（株）\n三ツ星ベルト（株）"
+                    },
+                    "SgGpS": {
+                      "content": "バンドー化学（株）\nニッタ（株）\n日本ジークリング（株）\n小原歯車工業（株）\n協育歯車工業（株）\n関西金網（株）"
+                    },
+                    "dwJlK": {
+                      "content": "（株）デイコム\n鍋屋バイテック（株）\n（株）大三商会\nツバキ山久チェイン（株）"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat05",
+                  "id": "IFnnz",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 05",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat05Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "05"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat05Body",
-                      "name": "Products Category 05 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat05No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "05",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat05TitleBlock",
-                          "name": "Category Title 05",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat05Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "伝動機器・用品",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat05Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 15社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat05MakersBlock",
-                          "name": "Category Makers 05",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "ub2eu",
-                              "name": "Maker Columns 05",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "w3QM2",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "鍋屋バイテック（株）\n（株）イマオコーポレーション\n（株）岩田製作所\n（株）セイサ\n（株）三好キカイ",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "LHuEl",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "倉敷化工（株）\n神鋼電機（株）\n日本ギヤー工業（株）\n（株）昌和発条製作所\n阪神発條（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "QFJ2N",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "三ツ星ベルト（株）\n三木プーリー（株）\n東洋ゴム工業（株）\nアイセル（株）\n太陽工機（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "伝動機器・用品"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 15社"
+                    },
+                    "xjtyU": {
+                      "content": "鍋屋バイテック（株）\n（株）イマオコーポレーション\n（株）岩田製作所\n（株）セイサ\n（株）三好キカイ"
+                    },
+                    "SgGpS": {
+                      "content": "倉敷化工（株）\n神鋼電機（株）\n日本ギヤー工業（株）\n（株）昌和発条製作所\n阪神発條（株）"
+                    },
+                    "dwJlK": {
+                      "content": "三ツ星ベルト（株）\n三木プーリー（株）\n東洋ゴム工業（株）\nアイセル（株）\n太陽工機（株）"
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "frame",
@@ -5056,403 +3721,85 @@
                   ]
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat06",
+                  "id": "f62VU",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 06",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat06Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "06"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat06Body",
-                      "name": "Products Category 06 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat06No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "06",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat06TitleBlock",
-                          "name": "Category Title 06",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat06Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "空圧・油圧機器",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat06Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 20社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat06MakersBlock",
-                          "name": "Category Makers 06",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "exOt2",
-                              "name": "Maker Columns 06",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "n4HqI",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "SMC（株）\nCKD（株）\n（株）コガネイ\n（株）TAIYO\nクロダニューマテイクス（株）\n（株）日本ピスコ\n（株）ニューエラー",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "HrXrY",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）妙徳\nKYB（株）\n理研機器（株）\n油研工業（株）\n（株）不二越\nダイキン工業（株）\nアプライトパワージャパン（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "SvORq",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）堀内機械\n神威産業（株）\n日本オイルポンプ（株）\n（株）ブリヂストン\n大生工業（株）\n日本精器（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "空圧・油圧機器"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 20社"
+                    },
+                    "xjtyU": {
+                      "content": "SMC（株）\nCKD（株）\n（株）コガネイ\n（株）TAIYO\nクロダニューマテイクス（株）\n（株）日本ピスコ\n（株）ニューエラー"
+                    },
+                    "SgGpS": {
+                      "content": "（株）妙徳\nKYB（株）\n理研機器（株）\n油研工業（株）\n（株）不二越\nダイキン工業（株）\nアプライトパワージャパン（株）"
+                    },
+                    "dwJlK": {
+                      "content": "（株）堀内機械\n神威産業（株）\n日本オイルポンプ（株）\n（株）ブリヂストン\n大生工業（株）\n日本精器（株）"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat07",
+                  "id": "KZti2",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 07",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat07Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "07"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat07Body",
-                      "name": "Products Category 07 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat07No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "07",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat07TitleBlock",
-                          "name": "Category Title 07",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat07Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "バルブ・ホース配管機器",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat07Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 25社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat07MakersBlock",
-                          "name": "Category Makers 07",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "MA9wM",
-                              "name": "Maker Columns 07",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "LJkS3",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）キッツ\n日立バルブ（株）\n（株）ヨシタケ\n（株）フジキン\n（株）フジトク\n大阪サニタリィー金属工業協同組合\n日立金属（株）\nシーケー金属（株）\nイノック（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "xJh6n",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "古林工業（株）\n旭有機材工業（株）\n積水化学工業（株）\n（株）いけうち\nスプレイングシステムジャパン（株）\n（株）カクダイ\n昌栄産業（株）\nトーフレ（株）\nシヨーボンドカップリング（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "YWv6W",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）昭和技研工業\nイハラサイエンス（株）\nフローバル（株）\n東拓工業（株）\nカナフレックスコーポレーション（株）\n（株）トヨックス\n十川産業（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "バルブ・ホース配管機器"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 25社"
+                    },
+                    "xjtyU": {
+                      "content": "（株）キッツ\n日立バルブ（株）\n（株）ヨシタケ\n（株）フジキン\n（株）フジトク\n大阪サニタリィー金属工業協同組合\n日立金属（株）\nシーケー金属（株）\nイノック（株）"
+                    },
+                    "SgGpS": {
+                      "content": "古林工業（株）\n旭有機材工業（株）\n積水化学工業（株）\n（株）いけうち\nスプレイングシステムジャパン（株）\n（株）カクダイ\n昌栄産業（株）\nトーフレ（株）\nシヨーボンドカップリング（株）"
+                    },
+                    "dwJlK": {
+                      "content": "（株）昭和技研工業\nイハラサイエンス（株）\nフローバル（株）\n東拓工業（株）\nカナフレックスコーポレーション（株）\n（株）トヨックス\n十川産業（株）"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat08",
+                  "id": "AulQO",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 08",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat08Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "08"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat08Body",
-                      "name": "Products Category 08 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat08No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "08",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat08TitleBlock",
-                          "name": "Category Title 08",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat08Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "ポンプ関連機器",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat08Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 27社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat08MakersBlock",
-                          "name": "Category Makers 08",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "kaT1j",
-                              "name": "Maker Columns 08",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "ygy7M",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "日本ブッシュ（株）\n（株）荏原製作所\n（株）鶴見製作所\nテラル（株）\n（株）酉島製作所\n（株）丸八ポンプ\n久喜ポンプ工業（株）\nグルンドフォスポンプ（株）\nギャーエス工業（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "v12IpG",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）日立産機システム\n（株）寺田ポンプ製作所\nセイコー化工機（株）\n（株）タクミナ\n（株）工進\n（株）イワキ\nエレポン化工機（株）\n（株）アンレット\nオリオン機械（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "g2mXMn",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）大阪空気機械製作所\n神港精機（株）\n有光工業（株）\n（株）キョーワ\nマルヤマエクセル（株）\n三浦工業（株）\n兵神装備（株）\n（株）花塚製作所\n（株）ヤマダコーポレーション",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "ポンプ関連機器"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 27社"
+                    },
+                    "xjtyU": {
+                      "content": "日本ブッシュ（株）\n（株）荏原製作所\n（株）鶴見製作所\nテラル（株）\n（株）酉島製作所\n（株）丸八ポンプ\n久喜ポンプ工業（株）\nグルンドフォスポンプ（株）\nギャーエス工業（株）"
+                    },
+                    "SgGpS": {
+                      "content": "（株）日立産機システム\n（株）寺田ポンプ製作所\nセイコー化工機（株）\n（株）タクミナ\n（株）工進\n（株）イワキ\nエレポン化工機（株）\n（株）アンレット\nオリオン機械（株）"
+                    },
+                    "dwJlK": {
+                      "content": "（株）大阪空気機械製作所\n神港精機（株）\n有光工業（株）\n（株）キョーワ\nマルヤマエクセル（株）\n三浦工業（株）\n兵神装備（株）\n（株）花塚製作所\n（株）ヤマダコーポレーション"
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "frame",
@@ -5492,403 +3839,85 @@
                   ]
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat09",
+                  "id": "tACue",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 09",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat09Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "09"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat09Body",
-                      "name": "Products Category 09 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat09No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "09",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat09TitleBlock",
-                          "name": "Category Title 09",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat09Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "荷役・搬送機器",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat09Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 31社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat09MakersBlock",
-                          "name": "Category Makers 09",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "jHv9B",
-                              "name": "Maker Columns 09",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "iyKz3",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）マキテック\nオークラ輸送機（株）\nマルヤス機械（株）\n三機工業（株）\nセントラルコンベア（株）\n（株）メイキコウ\n三和コンベア（株）\n（株）日工\n三洋機械産業（株）\n伊東電機（株）\n（株）協和製作所",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "w6UkNt",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "ニッタ（株）\n宇部樹脂加工（株）\n（株）椿本バルクシステム\n（株）フリーベアコーポレイション\n（株）井口機構製作所\n（株）富士製作所\n（株）大日ハンソー\nエクセン（株）\n（株）スリーエッチ\n（株）キトー\n象印チェンブロック（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "lfuM1",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）ニッチ\n（株）日立産機システム\n（株）ダイフク\nハンマーキャスター（株）\n（株）ナンシン\n（株）内村製作所\n（株）ヨドノ\n（株）岡本工機\n（株）永瀬工場",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "荷役・搬送機器"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 31社"
+                    },
+                    "xjtyU": {
+                      "content": "（株）マキテック\nオークラ輸送機（株）\nマルヤス機械（株）\n三機工業（株）\nセントラルコンベア（株）\n（株）メイキコウ\n三和コンベア（株）\n（株）日工\n三洋機械産業（株）\n伊東電機（株）\n（株）協和製作所"
+                    },
+                    "SgGpS": {
+                      "content": "ニッタ（株）\n宇部樹脂加工（株）\n（株）椿本バルクシステム\n（株）フリーベアコーポレイション\n（株）井口機構製作所\n（株）富士製作所\n（株）大日ハンソー\nエクセン（株）\n（株）スリーエッチ\n（株）キトー\n象印チェンブロック（株）"
+                    },
+                    "dwJlK": {
+                      "content": "（株）ニッチ\n（株）日立産機システム\n（株）ダイフク\nハンマーキャスター（株）\n（株）ナンシン\n（株）内村製作所\n（株）ヨドノ\n（株）岡本工機\n（株）永瀬工場"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat10",
+                  "id": "S9H82C",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 10",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat10Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "10"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat10Body",
-                      "name": "Products Category 10 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat10No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "10",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat10TitleBlock",
-                          "name": "Category Title 10",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat10Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "工場設備関連",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat10Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 29社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat10MakersBlock",
-                          "name": "Category Makers 10",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "cT8LC",
-                              "name": "Maker Columns 10",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "AP9AE",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）ダイフク\nトラスコ中山（株）\n（株）サカエ\n（株）河原\n（株）スギヤス\n鈴木製機（株）\n（株）をくだ屋技研\nワタベ産業（株）\n（株）淀川製鋼所\n（株）大阪タイユー",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "o32bQ",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "ストラパック（株）\n文化シャッター（株）\n三甲（株）\nアイリスオオヤマ（株）\nリス（株）\n（株）テイモー\nサンキン（株）\nスイコー（株）\nコクヨ（株）\n（株）ナイキ",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "kfcEn",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "アズワン（株）\nコマニー（株）\n生興（株）\n（株）協和製作所\n三進金属工業（株）\n日成ビルド工業（株）\nオリオン機械（株）\nダイキン工業（株）\n（株）コロナ",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "工場設備関連"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 29社"
+                    },
+                    "xjtyU": {
+                      "content": "（株）ダイフク\nトラスコ中山（株）\n（株）サカエ\n（株）河原\n（株）スギヤス\n鈴木製機（株）\n（株）をくだ屋技研\nワタベ産業（株）\n（株）淀川製鋼所\n（株）大阪タイユー"
+                    },
+                    "SgGpS": {
+                      "content": "ストラパック（株）\n文化シャッター（株）\n三甲（株）\nアイリスオオヤマ（株）\nリス（株）\n（株）テイモー\nサンキン（株）\nスイコー（株）\nコクヨ（株）\n（株）ナイキ"
+                    },
+                    "dwJlK": {
+                      "content": "アズワン（株）\nコマニー（株）\n生興（株）\n（株）協和製作所\n三進金属工業（株）\n日成ビルド工業（株）\nオリオン機械（株）\nダイキン工業（株）\n（株）コロナ"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat11",
+                  "id": "MdVhc",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 11",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat11Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "11"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat11Body",
-                      "name": "Products Category 11 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat11No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "11",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat11TitleBlock",
-                          "name": "Category Title 11",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat11Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "ファンブロア及び産業機器",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat11Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 19社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat11MakersBlock",
-                          "name": "Category Makers 11",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "G4PUl",
-                              "name": "Maker Columns 11",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "jTby6",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "フルタ電機（株）\n昭和電機（株）\n（株）スイデン\n新東工業（株）\nアマノ（株）\nリョウセイ（株）\n三立機器（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "STQbA",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "淀川電機製作所\n（株）高木鉄工所\nコベルココンプレッサー（株）\n（株）日立産機システム\nアネスト岩田（株）\n三井精機工業（株）\n（株）明治機器製作所",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "xiEoH",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "虹技（株）\n（株）竹綱製作所\n（株）八光電機\n新日電熱工業（株）\n厚地鉄工所（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "ファンブロア及び産業機器"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 19社"
+                    },
+                    "xjtyU": {
+                      "content": "フルタ電機（株）\n昭和電機（株）\n（株）スイデン\n新東工業（株）\nアマノ（株）\nリョウセイ（株）\n三立機器（株）"
+                    },
+                    "SgGpS": {
+                      "content": "淀川電機製作所\n（株）高木鉄工所\nコベルココンプレッサー（株）\n（株）日立産機システム\nアネスト岩田（株）\n三井精機工業（株）\n（株）明治機器製作所"
+                    },
+                    "dwJlK": {
+                      "content": "虹技（株）\n（株）竹綱製作所\n（株）八光電機\n新日電熱工業（株）\n厚地鉄工所（株）"
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "frame",
@@ -5928,935 +3957,193 @@
                   ]
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat12",
+                  "id": "foM10",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 12",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat12Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "12"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat12Body",
-                      "name": "Products Category 12 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat12No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "12",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat12TitleBlock",
-                          "name": "Category Title 12",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat12Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "測定・計測機器",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat12Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 12社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat12MakersBlock",
-                          "name": "Category Makers 12",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "FsPCx",
-                              "name": "Maker Columns 12",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "pdZ43",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）ミツトヨ\nシンワ測定（株）\n（株）TJM デザイン\n大西測定（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "uXA9q",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "新潟精機（株）\n（株）エー・アンド・デイ\n（株）中村製作所\n（株）第一計器製作所",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "soHcm",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "長野計器（株）\n（株）佐藤計量器製作所\n大和製衡（株）\n日置電機（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "測定・計測機器"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 12社"
+                    },
+                    "xjtyU": {
+                      "content": "（株）ミツトヨ\nシンワ測定（株）\n（株）TJM デザイン\n大西測定（株）"
+                    },
+                    "SgGpS": {
+                      "content": "新潟精機（株）\n（株）エー・アンド・デイ\n（株）中村製作所\n（株）第一計器製作所"
+                    },
+                    "dwJlK": {
+                      "content": "長野計器（株）\n（株）佐藤計量器製作所\n大和製衡（株）\n日置電機（株）"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat13",
+                  "id": "V0FD57",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 13",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat13Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "13"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat13Body",
-                      "name": "Products Category 13 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat13No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "13",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat13TitleBlock",
-                          "name": "Category Title 13",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat13Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "電動・油空圧工具",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat13Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 14社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat13MakersBlock",
-                          "name": "Category Makers 13",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "hHz2r",
-                              "name": "Maker Columns 13",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "vdYWs",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "日立工機（株）\n日本ヒルティー（株）\n日東工器（株）\n（株）マキタ\nパナソニック（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "FSdNm",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）やまびこ\nボッシュ（株）\nレッキス工業（株）\n（株）ロブテックス\n（株）ベッセル",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "oFhJ1",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "不二空機（株）\n瓜生製作（株）\n（株）空研\n日本ニューマチック工業（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "電動・油空圧工具"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 14社"
+                    },
+                    "xjtyU": {
+                      "content": "日立工機（株）\n日本ヒルティー（株）\n日東工器（株）\n（株）マキタ\nパナソニック（株）"
+                    },
+                    "SgGpS": {
+                      "content": "（株）やまびこ\nボッシュ（株）\nレッキス工業（株）\n（株）ロブテックス\n（株）ベッセル"
+                    },
+                    "dwJlK": {
+                      "content": "不二空機（株）\n瓜生製作（株）\n（株）空研\n日本ニューマチック工業（株）"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat14",
+                  "id": "Qthss",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 14",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat14Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "14"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat14Body",
-                      "name": "Products Category 14 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat14No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "14",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat14TitleBlock",
-                          "name": "Category Title 14",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat14Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "切削工具",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat14Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 14社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat14MakersBlock",
-                          "name": "Category Makers 14",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "ujjrR",
-                              "name": "Maker Columns 14",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "ms77V",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "三菱マテリアルツールズ（株）\n日立ツールズ（株）\nオーエスジー（株）\n岡崎精工（株）\n京セラ（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "ATzhW",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）ニコテック\n谷口工業（株）\n（株）ミヤナガ\n（株）弥満和製作所\nノガ・ジャパン",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "pfImY",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "富士元工業（株）\n大見工業（株）\nエムアールテイ（株）\n（株）ラキ",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "切削工具"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 14社"
+                    },
+                    "xjtyU": {
+                      "content": "三菱マテリアルツールズ（株）\n日立ツールズ（株）\nオーエスジー（株）\n岡崎精工（株）\n京セラ（株）"
+                    },
+                    "SgGpS": {
+                      "content": "（株）ニコテック\n谷口工業（株）\n（株）ミヤナガ\n（株）弥満和製作所\nノガ・ジャパン"
+                    },
+                    "dwJlK": {
+                      "content": "富士元工業（株）\n大見工業（株）\nエムアールテイ（株）\n（株）ラキ"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat15",
+                  "id": "il1a9",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 15",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat15Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "15"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat15Body",
-                      "name": "Products Category 15 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat15No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "15",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat15TitleBlock",
-                          "name": "Category Title 15",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat15Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "ツーリング・治具",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat15Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 13社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat15MakersBlock",
-                          "name": "Category Makers 15",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "A3McNQ",
-                              "name": "Maker Columns 15",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "mweDn",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "トラスコ中山（株）\n（株）北川鉄工所\n大昭和精機（株）\n（株）ニューストロング\nユキワ精工（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "enrJu",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "カトウ工機（株）\nエヌテイツール（株）\n（株）日研工作所\n津田駒工業（株）\nカネテック（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "wHmDV",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）テクノプラン\n扶桑精機（株）\n（株）スーパーツール",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "ツーリング・治具"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 13社"
+                    },
+                    "xjtyU": {
+                      "content": "トラスコ中山（株）\n（株）北川鉄工所\n大昭和精機（株）\n（株）ニューストロング\nユキワ精工（株）"
+                    },
+                    "SgGpS": {
+                      "content": "カトウ工機（株）\nエヌテイツール（株）\n（株）日研工作所\n津田駒工業（株）\nカネテック（株）"
+                    },
+                    "dwJlK": {
+                      "content": "（株）テクノプラン\n扶桑精機（株）\n（株）スーパーツール"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat16",
+                  "id": "Ja6S4",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 16",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat16Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "16"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat16Body",
-                      "name": "Products Category 16 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat16No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "16",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat16TitleBlock",
-                          "name": "Category Title 16",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat16Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "研削・研磨用品",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat16Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 10社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat16MakersBlock",
-                          "name": "Category Makers 16",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "U08TI8",
-                              "name": "Maker Columns 16",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "T6X8t",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "日本レジボン（株）\nニューレジストン（株）\n（株）イチグチ\n住友スリーエム（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "VqTNl",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "柳瀬（株）\n（株）オフィスマイン\n三共理化学（株）\n（株）大陽商会",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "apDyY",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）ムラキ\nトラスコ中山（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "研削・研磨用品"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 10社"
+                    },
+                    "xjtyU": {
+                      "content": "日本レジボン（株）\nニューレジストン（株）\n（株）イチグチ\n住友スリーエム（株）"
+                    },
+                    "SgGpS": {
+                      "content": "柳瀬（株）\n（株）オフィスマイン\n三共理化学（株）\n（株）大陽商会"
+                    },
+                    "dwJlK": {
+                      "content": "（株）ムラキ\nトラスコ中山（株）"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat17",
+                  "id": "d9kAEI",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 17",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat17Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "17"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat17Body",
-                      "name": "Products Category 17 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat17No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "17",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat17TitleBlock",
-                          "name": "Category Title 17",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat17Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "作業工具",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat17Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 13社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat17MakersBlock",
-                          "name": "Category Makers 17",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "O7xI0",
-                              "name": "Maker Columns 17",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "Y97Kob",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "前田金属工業（株）\n京都機械工具（株）\n角田興業（株）\n大同興業（株）\n（株）ベッセル",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "B2rSi",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）スーパーツール\nホーザン（株）\n室本鉄工（株）\n（株）ロブテックス\nオーエッチ工業（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "B0FA17",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "花園工具（株）\nフジ矢（株）\n浦谷商亊（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "作業工具"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 13社"
+                    },
+                    "xjtyU": {
+                      "content": "前田金属工業（株）\n京都機械工具（株）\n角田興業（株）\n大同興業（株）\n（株）ベッセル"
+                    },
+                    "SgGpS": {
+                      "content": "（株）スーパーツール\nホーザン（株）\n室本鉄工（株）\n（株）ロブテックス\nオーエッチ工業（株）"
+                    },
+                    "dwJlK": {
+                      "content": "花園工具（株）\nフジ矢（株）\n浦谷商亊（株）"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "productsCat18",
+                  "id": "fldD9",
+                  "type": "ref",
+                  "ref": "r1z9b",
                   "name": "Products Category 18",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    22,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "productsCat18Div",
-                      "name": "Category Divider",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "YAWng": {
+                      "content": "18"
                     },
-                    {
-                      "type": "frame",
-                      "id": "productsCat18Body",
-                      "name": "Products Category 18 Body",
-                      "width": "fill_container",
-                      "gap": 26,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "productsCat18No",
-                          "name": "Category No",
-                          "fill": "$primary",
-                          "content": "18",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 13,
-                          "fontWeight": "500",
-                          "letterSpacing": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat18TitleBlock",
-                          "name": "Category Title 18",
-                          "width": 310,
-                          "layout": "vertical",
-                          "gap": 7,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "productsCat18Title",
-                              "name": "Category Title",
-                              "fill": "$foreground",
-                              "textGrowth": "fixed-width",
-                              "width": 310,
-                              "content": "材料・ボルト関連",
-                              "lineHeight": 1.35,
-                              "fontFamily": "$font-serif",
-                              "fontSize": 20,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "productsCat18Count",
-                              "name": "Category Count",
-                              "fill": "$primary",
-                              "content": "取扱メーカー 13社",
-                              "fontFamily": "$font-sans",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "productsCat18MakersBlock",
-                          "name": "Category Makers 18",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "ruLxy",
-                              "name": "Maker Columns 18",
-                              "width": "fill_container",
-                              "gap": 28,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "XksFg",
-                                  "name": "Maker Col 1",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "エヌアイシー・オートテック（株）\nクオドラントポリペンコジャパン（株）\n双葉電子工業（株）\n大同アシスター（株）\n虹技（株）",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "q9bHx",
-                                  "name": "Maker Col 2",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "伊東鋳工（株）\n作新工業（株）\n三ツ星ベルト（株）\n（株）大和螺子\n（株）コノエ",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "WOVCC",
-                                  "name": "Maker Col 3",
-                                  "fill": "$muted-foreground",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "（株）スリーエッチ\n東北ネジ製造（株）\n（株）富士精密",
-                                  "lineHeight": 1.95,
-                                  "fontFamily": "$font-sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                    "v7ibc": {
+                      "content": "材料・ボルト関連"
+                    },
+                    "f5pYz5": {
+                      "content": "取扱メーカー 13社"
+                    },
+                    "xjtyU": {
+                      "content": "エヌアイシー・オートテック（株）\nクオドラントポリペンコジャパン（株）\n双葉電子工業（株）\n大同アシスター（株）\n虹技（株）"
+                    },
+                    "SgGpS": {
+                      "content": "伊東鋳工（株）\n作新工業（株）\n三ツ星ベルト（株）\n（株）大和螺子\n（株）コノエ"
+                    },
+                    "dwJlK": {
+                      "content": "（株）スリーエッチ\n東北ネジ製造（株）\n（株）富士精密"
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "rectangle",
