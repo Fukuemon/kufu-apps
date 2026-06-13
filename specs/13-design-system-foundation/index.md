@@ -5,7 +5,7 @@
 ## メタ情報
 
 - Issue: `#13`
-- ステータス: `Draft`
+- ステータス: `Completed`
 - 作成日: 2026-06-12
 - 更新日: 2026-06-13
 - Branch: `feature/13`
@@ -15,19 +15,19 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態   | 最終更新   | 備考                                                               |
-| --- | --------------------------- | ------ | ---------- | ------------------------------------------------------------------ |
-| 1   | 起票                        | 完了   | 2026-06-01 | issue #13 (2026-06-11 に #17 D5 引き継ぎコメント追加)              |
-| 2   | 下書き                      | 完了   | 2026-06-13 | spec-draft で scaffold、レビュー 3 巡の指摘反映で確定              |
-| 3   | 上位文書突合                | 完了   | 2026-06-12 | PRD / Design Doc / feature doc / context / ADR と突合済み          |
-| 4   | 論点整理                    | 完了   | 2026-06-12 | D1〜D7 を seed                                                     |
-| 5   | 論点解決                    | 完了   | 2026-06-12 | D1〜D7 全件解決。暫定割当 / radius は `.pen` 実測で確定            |
-| 6   | Interface / Routing 設計    | 完了   | 2026-06-12 | D5 決定 (3 entry 配信) を Interface 設計に反映済み                 |
-| 7   | Content / Data 設計         | 完了   | 2026-06-12 | D1 / D2 決定 (2 層構造 + 27 変数マッピング表) を反映済み           |
-| 8   | Performance / Security 設計 | 完了   | 2026-06-12 | D3 決定 (フォント読み込み戦略) を反映済み                          |
-| 9   | Test / Metrics 設計         | 完了   | 2026-06-12 | テスト観点 / 計測指標を定義済み (検査の仕組み化は実装側)           |
-| 10  | 実装分割                    | 完了   | 2026-06-13 | P1 を 2 prompt 化 (ui / corporate-site)。P2=Pencil MCP、P3=sync 済 |
-| 11  | レビュー済                  | 進行中 | 2026-06-13 | clarify フェーズ PASS (4 回目)。最終レビューは prompts 後          |
+| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                               |
+| --- | --------------------------- | ---------- | ---------- | ------------------------------------------------------------------ |
+| 1   | 起票                        | 完了       | 2026-06-01 | issue #13 (2026-06-11 に #17 D5 引き継ぎコメント追加)              |
+| 2   | 下書き                      | 完了       | 2026-06-13 | spec-draft で scaffold、レビュー 3 巡の指摘反映で確定              |
+| 3   | 上位文書突合                | 完了       | 2026-06-12 | PRD / Design Doc / feature doc / context / ADR と突合済み          |
+| 4   | 論点整理                    | 完了       | 2026-06-12 | D1〜D7 を seed                                                     |
+| 5   | 論点解決                    | 完了       | 2026-06-12 | D1〜D7 全件解決。暫定割当 / radius は `.pen` 実測で確定            |
+| 6   | Interface / Routing 設計    | 完了       | 2026-06-12 | D5 決定 (3 entry 配信) を Interface 設計に反映済み                 |
+| 7   | Content / Data 設計         | 完了       | 2026-06-12 | D1 / D2 決定 (2 層構造 + 27 変数マッピング表) を反映済み           |
+| 8   | Performance / Security 設計 | 完了       | 2026-06-12 | D3 決定 (フォント読み込み戦略) を反映済み                          |
+| 9   | Test / Metrics 設計         | 完了       | 2026-06-12 | テスト観点 / 計測指標を定義済み (検査の仕組み化は実装側)           |
+| 10  | 実装分割                    | 完了       | 2026-06-13 | P1 を 2 prompt 化 (ui / corporate-site)。P2=Pencil MCP、P3=sync 済 |
+| 11  | レビュー済                  | レビュー済 | 2026-06-13 | prompts 生成後の最終レビュー PASS                                  |
 
 ## 上位文書整合
 
@@ -450,6 +450,7 @@ sequenceDiagram
 | 2026-06-13 | NEEDS_WORK (2 回目)      | フォント import 先の掃き残し (`globals.css` → `fonts.css`) / design-workflow 変更提案の対象節不足 (§1・§5) / `--kufu-font-body` dangling 参照の順序制約 / 実装タスク案の placeholder 齟齬 | 同日対応済み (詳細は review.md) |
 | 2026-06-13 | NEEDS_WORK (3 回目)      | 実装対象テーブル (corporate-site「-」) と P1 案 (corporate-site 含む) の矛盾 / prompts 生成方針の誤記 / Phase B の節番号 (§2→§3) / 更新日未更新                                           | 同日対応済み (詳細は review.md) |
 | 2026-06-13 | PASS (4 回目)            | 全観点 PASS (prompts / 正本境界は N/A)。3 巡の指摘反映を確認し、下流 phase (spec-sync / spec-prompts) へ進んでよい品質と判定                                                              | —                               |
+| 2026-06-13 | PASS (最終)              | prompts 自己完結性と sync 済み正本境界を含めて PASS。P1 prompt 2 件は必須セクションを満たし、P2/P3 の扱いも明記済み                                                                       | —                               |
 
 ## 変更履歴
 
@@ -472,6 +473,7 @@ sequenceDiagram
 | 2026-06-13 | Claude | `spec-sync` 実行: feature doc 新節 2 件 (対応表 / ブランド指針)・architecture.md 昇格テーブル・design-workflow 正本 path 全数更新 + §6 spacing 例外・ADR-0007 起票。durable 成果の正本をハンドオフし spec 側をスナップショットに降格 |
 | 2026-06-13 | Claude | ユーザー指摘で feature doc を「値の対応表」から「参照ハブ」へ変更 (値の正本は tokens.css に一意化、doc には複製しない)。spacing / radius / type scale の doc 管理ガイドのみ feature doc に残す                                       |
 | 2026-06-13 | Claude | `spec-prompts` 実行: P1 実装プロンプト 2 件 (P1_01_ui / P1_02_corporate-site) を生成。P2 は Pencil MCP 作業、P3 は sync 済のため対象外                                                                                               |
+| 2026-06-13 | Codex  | prompts 生成後の最終レビューを実施し PASS を記録。spec ステータスを `Completed`、レビュー済フェーズを `レビュー済` に更新                                                                                                            |
 
 ## 備考
 
