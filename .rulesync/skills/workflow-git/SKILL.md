@@ -1,13 +1,13 @@
 ---
 name: workflow-git
-description: Kufu Monorepo の Git / GitHub 運用 workflow。ブランチ作成、コミット、Issue、PR の順序と停止条件を扱う。
+description: 本リポジトリの Git / GitHub 運用 workflow。ブランチ作成、コミット、Issue (ラベル含む)、PR の順序と停止条件を扱う。固有値は context/project.md を読む。
 targets:
   - "*"
 ---
 
 # Workflow Git
 
-Kufu Monorepo の Git / GitHub 操作を進めるときの入口スキル。
+本リポジトリの Git / GitHub 操作を進めるときの入口スキル。プロジェクト固有値 (Repo / 対象ドメイン / Label Policy) は [context/project.md](../../../context/project.md) を読む。
 
 ## いつ使うか
 
@@ -18,7 +18,7 @@ Kufu Monorepo の Git / GitHub 操作を進めるときの入口スキル。
 
 ## 先に読むもの
 
-- `AGENTS.md` の `Repository Reference Rules` 節 — `$(ghq root)/...` パス規約と兄弟 repo 定義
+- [context/project.md](../../../context/project.md) — repository map / Branch pattern / Issue Tracker / Label Policy
 - `references/operation-order.md` — 標準順序と保護ブランチガード
 - issue 追跡 (`#<issue>` 記法、関連 link) は `references/commit-format.md` / `references/pr-format.md` / `references/issue-format.md` に内包
 

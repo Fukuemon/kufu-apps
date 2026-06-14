@@ -151,7 +151,6 @@
 | `config`         |    ◯     | TypeScript、lint、test などの共有設定                                            |
 | `e2e`            |    ◯     | root 管理の Playwright 実行入口、コーポレートサイトの smoke / critical flow 検証 |
 | `cms`            |    -     | コーポレートサイト掲載投稿の管理 app 候補。技術選定と設計のみ後続で扱う          |
-| `future-api`     |    -     | 初期スコープ外。将来の Hono API / CMS 連携候補                                   |
 
 ## 機能仕様
 

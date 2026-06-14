@@ -12,18 +12,18 @@ description: Generates self-contained implementation prompts under specs/<...>/p
 生成した **すべての prompt** に以下のセクションが揃っていること。
 1 つでも欠けていたらその prompt は未完成。書き直す。
 
-| #   | 必須セクション          | 省略不可の理由                                             |
-| --- | ----------------------- | ---------------------------------------------------------- |
-| 1   | `## 絶対ルール`         | 探索禁止 / 不明点ハンドリング / 別 prompt 領域への侵入禁止 |
-| 2   | `## 作業ステップ`       | 各ステップに検証手順を含む                                 |
-| 3   | `## 実装コンテキスト`   | spec / 関連 path / 必要な前提を列挙                        |
-| 4   | `## 前提条件`           | 依存先 prompt / 必要な repo 状態                           |
-| 5   | `## 不明点ハンドリング` | 矛盾 / 欠落時に停止して確認する指示                        |
-| 6   | `## タスク境界`         | 実装する範囲 / しない範囲                                  |
-| 7   | `## 設計仕様`           | spec 該当節を必要最小限で抜粋                              |
-| 8   | `## テスト観点`         | 該当 spec のテスト観点を抜粋                               |
-| 9   | `## 検証コマンド`       | repo の標準 task (build / lint / typecheck / test / e2e)   |
-| 10  | `## 完了条件`           | チェックリスト形式。実行者は最初にこれをタスク化する       |
+| #   | 必須セクション          | 省略不可の理由                                                                                           |
+| --- | ----------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1   | `## 絶対ルール`         | 探索禁止 / 不明点ハンドリング / 別 prompt 領域への侵入禁止 / `references/antipatterns.md` の制約ブロック |
+| 2   | `## 作業ステップ`       | 各ステップに検証手順を含む                                                                               |
+| 3   | `## 実装コンテキスト`   | spec / 関連 path / 必要な前提を列挙                                                                      |
+| 4   | `## 前提条件`           | 依存先 prompt / 必要な repo 状態                                                                         |
+| 5   | `## 不明点ハンドリング` | 矛盾 / 欠落時に停止して確認する指示                                                                      |
+| 6   | `## タスク境界`         | 実装する範囲 / しない範囲                                                                                |
+| 7   | `## 設計仕様`           | spec 該当節を必要最小限で抜粋                                                                            |
+| 8   | `## テスト観点`         | 該当 spec のテスト観点を抜粋                                                                             |
+| 9   | `## 検証コマンド`       | repo の標準 task (build / lint / typecheck / test / e2e)                                                 |
+| 10  | `## 完了条件`           | チェックリスト形式。実行者は最初にこれをタスク化する                                                     |
 
 ## いつ使うか
 
@@ -35,6 +35,7 @@ description: Generates self-contained implementation prompts under specs/<...>/p
 - `AGENTS.md` の `Spec Workflow Contract`
 - `references/prompt-rules.md` — 分割 / 命名 / 自己完結性のルール
 - `references/prompt-template.md` — prompt 本体テンプレート
+- `references/antipatterns.md` — 生成 prompt の `## 絶対ルール` に注入する実装制約
 - 対象 spec の `index.md` 全体
 
 ## 入力
@@ -59,16 +60,16 @@ P{phase}_{seq}_{target}_{scope}.md
 
 - `phase`: 実装 phase (1 始まり)
 - `seq`: phase 内連番 (2 桁ゼロ埋め)
-- `target`: `Spec Workflow Contract` の target 一覧 (`corporate-site` / `cms` / `ui` / `config` / `e2e` / `future-api`)
+- `target`: `context/project.md` の対象ドメイン一覧から選ぶ
 - `scope`: 1 prompt で扱う責務 (ケバブケース)
 
-例:
+例 (target はプロジェクトの対象ドメインに置き換える):
 
-- `P1_01_corporate-site_page_shell.md`
-- `P1_02_ui_button_variants.md`
-- `P2_01_e2e_contact_flow.md`
+- `P1_01_<target>_page_shell.md`
+- `P1_02_<target>_component_variants.md`
+- `P2_01_<target>_flow.md`
 
-## 生成手順
+## 実行フロー
 
 1. spec の `未確定事項` がゼロであることを確認 (1 件でも残れば停止)
 2. spec の review 結果が PASS であることを確認 (なければ `spec-review` を先に呼ぶ)
@@ -82,10 +83,10 @@ P{phase}_{seq}_{target}_{scope}.md
 ## 生成後の報告
 
 ```md
-| ファイル                | phase | target         | 並列可 | 依存先 | 概要 |
-| ----------------------- | ----- | -------------- | ------ | ------ | ---- |
-| P1_01_corporate-site... | 1     | corporate-site | -      | なし   | ...  |
-| P2_01_ui...             | 2     | ui             | P2_02  | P1_01  | ...  |
+| ファイル            | phase | target     | 並列可 | 依存先 | 概要 |
+| ------------------- | ----- | ---------- | ------ | ------ | ---- |
+| `P1_01_<target>...` | 1     | <target-a> | -      | なし   | ...  |
+| `P2_01_<target>...` | 2     | <target-b> | P2_02  | P1_01  | ...  |
 ```
 
 ## 停止条件

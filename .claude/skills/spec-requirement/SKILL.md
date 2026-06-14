@@ -21,13 +21,9 @@ description: >-
 - `templates/requirements/template.md`
 - `references/intake-checklist.md`
 
-## ワークフロー
-
-```text
-要求のヒアリング → 構造化 → ドラフト提示 → ユーザー承認 → (任意) Issue 起票
-```
-
 ## 実行フロー
+
+> 流れ: 要求のヒアリング → 構造化 → ドラフト提示 → ユーザー承認 → (任意) Issue 起票
 
 ### 1. 要求のヒアリング
 
