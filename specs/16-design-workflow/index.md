@@ -140,7 +140,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 ## 実装対象
 
-正規 target は `corporate-site / cms / ui / config / e2e / future-api`。
+正規 target は `corporate-site / cms / ui / config / e2e / core`。
 
 | モジュール       | 実装有無 | 主な責務                                                                |
 | ---------------- | :------: | ----------------------------------------------------------------------- |
@@ -149,7 +149,6 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 | `ui`             |    ◯     | デザインシステム正本。全フェーズが consume するトークン (`globals.css`) |
 | `config`         |    -     | 対象外                                                                  |
 | `e2e`            |    -     | 対象外 (パイロットの導線検証は #10 実装時)                              |
-| `future-api`     |    -     | 対象外                                                                  |
 
 > docs / skill (ADR-0004 / context/design-workflow.md / `design-prompt` skill / `design/features/` ディレクトリ規約) は target 一覧外。成果物として「上位資料からの変更点」に記録する。
 

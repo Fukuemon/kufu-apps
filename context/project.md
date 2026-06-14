@@ -55,7 +55,7 @@ $(ghq root)/github.com/Fukuemon/
 
 ## 対象ドメイン (spec「実装対象」テーブル用)
 
-`corporate-site`, `cms`, `ui`, `config`, `e2e`, `future-api`, `core`
+`corporate-site`, `cms`, `ui`, `config`, `e2e`, `core`
 
 ## Label Policy
 
@@ -63,12 +63,12 @@ Issue / PR のラベル体系の **唯一の正本**。`workflow-git` skill は�
 
 ### 軸とラベル
 
-| 軸         | ラベル                                                                                                                      | 付与ルール                                                     | 色        |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | --------- |
-| `type:*`   | `type:feature` / `type:bug` / `type:research` / `type:task` / `type:chore`                                                  | **必須・1 件**。issue の種類 (issue-format と一致)             | `#1d76db` |
-| `phase:*`  | `phase:design` / `phase:implementation`                                                                                     | SDD ライフサイクル。設計 issue は `phase:design`               | `#5319e7` |
-| `domain:*` | `domain:corporate-site` / `domain:cms` / `domain:ui` / `domain:config` / `domain:e2e` / `domain:future-api` / `domain:core` | **1 件以上**。上記「対象ドメイン」に対応。横断は `domain:core` | `#0e8a16` |
-| (flag)     | `epic`                                                                                                                      | 複数 phase / spec にまたがる大きい要件 (親)                    | `#fbca04` |
+| 軸         | ラベル                                                                                                | 付与ルール                                                     | 色        |
+| ---------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | --------- |
+| `type:*`   | `type:feature` / `type:bug` / `type:research` / `type:task` / `type:chore`                            | **必須・1 件**。issue の種類 (issue-format と一致)             | `#1d76db` |
+| `phase:*`  | `phase:design` / `phase:implementation`                                                               | SDD ライフサイクル。設計 issue は `phase:design`               | `#5319e7` |
+| `domain:*` | `domain:corporate-site` / `domain:cms` / `domain:ui` / `domain:config` / `domain:e2e` / `domain:core` | **1 件以上**。上記「対象ドメイン」に対応。横断は `domain:core` | `#0e8a16` |
+| (flag)     | `epic`                                                                                                | 複数 phase / spec にまたがる大きい要件 (親)                    | `#fbca04` |
 
 ### 付与の最低ライン
 

@@ -190,7 +190,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 ## 実装対象
 
-正規 target は `corporate-site / cms / ui / config / e2e / future-api`。
+正規 target は `corporate-site / cms / ui / config / e2e / core`。
 
 | モジュール       | 実装有無 | 主な責務                                                                                                                                                                 |
 | ---------------- | :------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -199,7 +199,6 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 | `ui`             |    ◯     | トークン正本の再設計 (命名 / 昇格 / 層構造 / `tokens.css` 分離)、フォント登録、stylesheet export、旧 `--kufu-*` 系 TS export (`./tokens` / `./theme` / `./fonts`) の廃止 |
 | `config`         |    -     |                                                                                                                                                                          |
 | `e2e`            |    -     |                                                                                                                                                                          |
-| `future-api`     |    -     |                                                                                                                                                                          |
 
 このほか design 正本側の成果物として、`design/features/corporate-site/index.pen` の Pencil variables rename (D1 決定後) と feature doc / context への文書反映 (`spec-sync`) がある。
 
