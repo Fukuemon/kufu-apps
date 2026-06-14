@@ -1,10 +1,15 @@
 # Kufu Monorepo Design Docs
 
+> 最終更新: 2026-06-14
+
+**Document Status:** Approved
+**Development Status:** In Progress
+
 本 Design Doc は Kufu Monorepo の **全体像 (system landscape)** を扱う。Goal / モジュール責務 / 横断方針を示し、詳細は feature doc と context library へ委譲する。
 
-## Latest Updated At
+## 概要 (Summary)
 
-- 2026-05-31
+Kufu Monorepo は、Phase 1 で Astro コーポレートサイトを公開し、将来の CMS / 管理画面 / 業務アプリ追加に耐える app / package / docs workflow の境界を整える。主な利用者はコーポレートサイト訪問者と内容更新者であり、開発者 / AI エージェントはその価値を安全に実装するためのステークホルダーである。詳細な feature 設計は [design/features/](features/)、技術規約は [context/](../context/)、プロジェクト固有値は [context/project.md](../context/project.md) を正本とする。
 
 ## Related PRD
 
@@ -18,15 +23,21 @@
 | [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md)     | app scaffold は公式 create command を優先する               | [context/toolchain.md](../context/toolchain.md)                                                                                                                            |
 | [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) | Phase 1 は `apps/corporate-site` のみ。`apps/cms` は後続    | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md), [features/cms/DesignDoc_cms.md](features/cms/DesignDoc_cms.md) |
 
-## Repository References
+## Project Profile
 
-- app repo: `$(ghq root)/github.com/Fukuemon/kufu-apps`
-- infra repo: `$(ghq root)/github.com/Fukuemon/kufu-infra`
+- repository path、commands、branch pattern、対象ドメイン、Issue Tracker は [context/project.md](../context/project.md) を正本とする。
+- infra repo 境界は [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md) を正本とする。
 
 ## Goal
 
 Kufu のコーポレートサイトを Astro で高いパフォーマンスと保守性を保って構築する。
 将来的に CMS アプリ、管理画面、業務効率化系のツールなどを構築することを視野に入れ、共通の設定やデザインの基盤を整えておく。
+
+## Lower-Priority Goals
+
+- `apps/cms` の app shell、公開フロー、データモデルを Phase 2 以降に設計する。
+- コーポレートサイトの内容更新頻度や運用者数が増えた場合に、CMS/API 連携や認証を ADR / spec で判断する。
+- `packages/ui` は複数 consumer が出た時点で本格共有 package として育てる。
 
 ## Non Goals
 
@@ -60,30 +71,50 @@ Kufu Monorepo は、Phase 1 でコーポレートサイトを作ることを主�
 - pnpm workspace と Turborepo を使い、app / package 単位でタスクを実行する。
 - CMS/API は初期スコープ外で、必要時に ADR と spec を作成して採否を決める。
 
-## Overview
+## アーキテクチャ概観 (Overview)
+
+本 Design Doc は C4 L1 / L2 の粒度で全体像を示す。feature 内部の component 図や詳細フローは [design/features/](features/) と spec へ委譲する。
+
+### System Context (C4 L1) — 誰が・何のために使うか
+
+```mermaid
+C4Context
+    Person(visitor, "訪問者", "工業製品・機械工具の調達 / 保全 / 購買担当者、既存取引先、見込み顧客")
+    Person(operator, "内容更新者", "会社情報・取扱製品・メーカー情報を更新する Kufu 側担当者")
+    Person(developer, "開発者 / AI エージェント", "spec / ADR / context を参照して実装・検証する")
+    System(kufu, "Kufu Monorepo", "Astro コーポレートサイトと将来 app のための monorepo")
+    System_Ext(cloudflare, "Cloudflare Pages / CDN", "静的サイト配信と preview / production deployment")
+    System_Ext(github, "GitHub", "Issue / PR / review / repository hosting")
+
+    Rel(visitor, kufu, "事業内容・取扱製品・問い合わせ先を閲覧")
+    Rel(operator, kufu, "掲載内容の更新を依頼・確認")
+    Rel(developer, kufu, "実装・検証・docs workflow を運用")
+    Rel(kufu, cloudflare, "静的アセットを build / deploy")
+    Rel(developer, github, "Issue / PR / review を管理")
+```
+
+### Container (C4 L2) — 主要な実行単位とデータの流れ
 
 Kufu Monorepo は、`apps`、`packages`、root 管理の `e2e`、`docs workflow` の 4 つの領域で構成する。
 
 ```mermaid
-flowchart LR
-    VISITOR["Visitor"]
-    Corporate["apps/corporate-site (Astro)"]
-    CMS["apps/cms (future app)"]
-    UI["packages/ui (shared UI skeleton)"]
-    CONFIG["packages/config"]
-    E2E["e2e/ + playwright.config.ts"]
-    DOCS["PRD / Design Docs / specs / ADR"]
+flowchart TD
+    Visitor["訪問者"] --> Corporate["apps/corporate-site\nAstro static site"]
+    Operator["内容更新者"] --> Docs["PRD / Design Docs / specs / ADR\n正本ドキュメント"]
+    Developer["開発者 / AI エージェント"] --> Docs
+    Developer --> E2E["e2e/ + playwright.config.ts\n公開前検証"]
 
-    VISITOR --> Corporate
-    CMS --> UI
-    Corporate --> CONFIG
-    CMS --> CONFIG
-    UI --> CONFIG
+    Corporate --> Cloudflare["Cloudflare Pages / CDN"]
+    Corporate --> Config["packages/config\nshared TS / lint / test config"]
+    Corporate -. "必要時のみ静的描画で利用" .-> UI["packages/ui\nshared UI skeleton"]
     E2E --> Corporate
-    DOCS --> Corporate
-    DOCS --> CMS
-    DOCS --> UI
-    DOCS --> CONFIG
+
+    CMS["apps/cms\nfuture React app"] -. "Phase 2 以降" .-> UI
+    CMS -. "Phase 2 以降" .-> Config
+    Docs --> Corporate
+    Docs --> CMS
+    Docs --> UI
+    Docs --> Config
 ```
 
 ## モジュール責務
@@ -98,7 +129,11 @@ flowchart LR
 | `specs`               | issue / 機能単位の要求、論点、設計、テスト観点を整理する。                                                    |
 | `adr`                 | 長期参照する技術選定や責務境界の意思決定を残す。                                                              |
 
-## Feature 設計
+## 詳細の所在 (委譲先)
+
+landscape より下の詳細は以下を正本とする。本 doc には重複させず、抜けと意図的委譲を区別するためリンクのみ置く。
+
+### Feature 設計 (How: feature)
 
 feature 単位の設計 (データ構造・画面・主要シナリオ / フロー) は [design/features/](features/) を正本とする。実装レベルの手順は spec へ委譲する。
 
@@ -107,17 +142,22 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 | コーポレートサイト | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md) | Phase 1 |
 | CMS / React アプリ | [features/cms/DesignDoc_cms.md](features/cms/DesignDoc_cms.md)                                             | Phase 2 |
 
-## Engineering Context
+### Engineering Context (How: 横断規約)
 
-技術スタック規約・codebase architecture・運用契約は [context/](../context/) ライブラリを正本とする。
+技術スタック規約・codebase architecture・運用契約は [context/](../context/) ライブラリを正本とする。プロジェクト固有値は [context/project.md](../context/project.md) を正本とする。
 
 | トピック                                    | 文書                                                      |
 | ------------------------------------------- | --------------------------------------------------------- |
+| repository 固有値 / commands / tracker      | [context/project.md](../context/project.md)               |
 | package / runtime / state boundary          | [context/architecture.md](../context/architecture.md)     |
 | toolchain・build・scaffold policy           | [context/toolchain.md](../context/toolchain.md)           |
 | root task / shared config / quality gate    | [context/engineering.md](../context/engineering.md)       |
 | E2E runtime contract / unit test            | [context/testing.md](../context/testing.md)               |
 | infra / deployment / environment / security | [context/infrastructure.md](../context/infrastructure.md) |
+
+### Related ADRs / 代替案 (Why: 判断)
+
+確定した技術判断・却下した代替案は [adr/](../adr/) を正本とする。本 doc では landscape に影響する代表的な判断のみ示す。
 
 ## Alternatives Considered
 
@@ -149,10 +189,20 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 - AI workflow は spec / ADR / package boundary を参照して、対象外の実装を避ける。
 - CMS/API は「将来の選択肢」であり、初期の前提として実装しない。
 
-## Open Questions
+## Open Questions / Future Work
 
-- コーポレートサイトの具体的なページ構成は確定済。正本は [feature doc](features/corporate-site/DesignDoc_corporate-site.md#ページ構成-ia) (3 route 統合構成: `/` + `/products` + `/contact` + 共通レイアウト)。決定経緯は [spec #11 (旧 5p IA)](../specs/11-corporate-site-ia/index.md) → [spec #17 (3 route 再確定)](../specs/17-corporate-site-ia/index.md)、決定根拠は [ADR-0006](../adr/0006-corporate-site-three-route-ia.md)。コンテンツ更新フロー (CMS 化を含む) の固定は未解決。
-- `packages/ui` skeleton から本格共有 package へ移行する判断条件をどの時点で固定するか。
-- CMS が必要になる判断基準をどの指標で固定するか。
-- infra repo と app repo の変更をどの workflow で相互参照し、review 漏れを防ぐか。
-- Cloudflare Pages の preview / production に紐づく domain, branch, secret の運用ルールをどの粒度で repo に明文化するか。
+### 確定済みで正本を委譲した事項
+
+| 項目                  | 正本                                                                                                                                                                               | 備考                                                                                                                 |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| コーポレートサイト IA | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md#ページ構成-ia)                                                           | 3 route 統合構成 (`/`, `/products`, `/contact`)。決定根拠は [ADR-0006](../adr/0006-corporate-site-three-route-ia.md) |
+| デザイントークン体系  | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md#デザイントークン) / [ADR-0007](../adr/0007-design-token-architecture.md) | CSS 変数の値は `packages/ui` stylesheet が正本                                                                       |
+
+### 未決事項
+
+| #   | 論点                                                           | 決定者               | 期限                          | 状態 | メモ                                                                           |
+| --- | -------------------------------------------------------------- | -------------------- | ----------------------------- | ---- | ------------------------------------------------------------------------------ |
+| 1   | `packages/ui` skeleton から本格共有 package へ移行する判断条件 | 開発者 + Kufu owner  | 2 つ目の UI consumer が出る前 | 未決 | 現時点は corporate-site 内 colocation を優先                                   |
+| 2   | CMS が必要になる判断基準                                       | Kufu owner           | Phase 2 着手前                | 未決 | 投稿数、更新頻度、運用者人数、外部編集者有無で判断                             |
+| 3   | infra repo と app repo の変更を相互参照する review workflow    | 開発者 + infra owner | 本番公開前                    | 未決 | Cloudflare Pages / Terraform 変更の cross-reference 方針                       |
+| 4   | Cloudflare Pages の domain / branch / secret 運用粒度          | 開発者 + infra owner | 本番公開前                    | 未決 | 詳細は [context/infrastructure.md](../context/infrastructure.md) と ADR で確定 |
