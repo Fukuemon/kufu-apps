@@ -1,6 +1,6 @@
 # Command Matrix
 
-root `package.json` の script 契約 (現行)。
+コマンドの **分類と用途**。具体的なコマンド文字列は [context/project.md](../../../../context/project.md) の Quick Commands を正本とし、ここでは「どの分類をいつ使うか」を解説する。
 
 ## Contents
 
@@ -13,55 +13,24 @@ root `package.json` の script 契約 (現行)。
 
 ## Development
 
-| Command              | 用途                       | 備考                            |
-| -------------------- | -------------------------- | ------------------------------- |
-| `pnpm dev`           | 全 app を並列起動          | `turbo run dev --parallel`      |
-| `pnpm dev:corporate` | コーポレートサイトのみ起動 | `--filter=@kufu/corporate-site` |
+- 開発サーバの起動。全体起動と特定 module 起動を使い分ける (monorepo の場合)。
 
 ## Build
 
-| Command      | 用途                                          |
-| ------------ | --------------------------------------------- |
-| `pnpm build` | 全 app / package をビルド (`turbo run build`) |
-
-特定 app だけビルド:
-
-```sh
-pnpm --filter @kufu/corporate-site build
-```
+- 公開物の生成。全体ビルドと特定 module ビルドを使い分ける。
 
 ## Quality
 
-| Command             | 用途                                                |
-| ------------------- | --------------------------------------------------- |
-| `pnpm lint`         | oxlint (turbo run lint)                             |
-| `pnpm typecheck`    | TypeScript 型検査 (turbo run typecheck)             |
-| `pnpm format`       | oxfmt で `--write` (破壊的)                         |
-| `pnpm format:check` | oxfmt で `--check` (非破壊) — CI / レビュー前に使う |
+- lint / typecheck / format。format は破壊的な書き込み系と非破壊の確認系を区別し、レビュー前は確認系を使う。
 
 ## Test
 
-| Command     | 用途                                     |
-| ----------- | ---------------------------------------- |
-| `pnpm test` | Vitest (turbo run test)                  |
-| `pnpm e2e`  | Playwright (root `playwright.config.ts`) |
-
-E2E の env は `references/e2e-runtime.md` を参照。
+- unit test と e2e。e2e の env は `e2e-runtime.md` を参照。
 
 ## Analysis
 
-| Command          | 用途                                                         |
-| ---------------- | ------------------------------------------------------------ |
-| `pnpm knip`      | dead code / 未使用 export 検出                               |
-| `pnpm depcruise` | 依存関係境界検査 (循環、未宣言、devDep 流入、app 間直接依存) |
-
-`lefthook` の `pre-commit` で自動実行される。
+- dead code 検出・依存境界検査など、プロジェクトが持つ健全性検査。pre-commit hook で自動実行される場合がある。
 
 ## Dependency management
 
-```sh
-pnpm --filter @kufu/<module> add <package>
-pnpm --filter @kufu/<module> add -D <package>
-```
-
-root に直接追加してはいけない (toolchain / repo-wide devDep を除く)。
+- 依存追加は対象 module のスコープを明示する (`filter-scope.md`)。repo-wide な toolchain / devDependency を除き、ルートへ無差別に追加しない。

@@ -25,7 +25,7 @@ Issue tracker から指定 issue を取得し、要約と推奨次アクショ�
 
 ## 実行フロー
 
-1. `Spec Workflow Contract` から CLI (例: `gh`) と Repo (例: `Fukuemon/kufu-apps`) を読む
+1. `context/project.md` の Issue Tracker から CLI (例: `gh`) と Repo を読む
 2. Issue 詳細を取得する
 
    ```sh

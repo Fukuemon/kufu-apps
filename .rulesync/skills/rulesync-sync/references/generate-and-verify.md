@@ -10,7 +10,7 @@ npx rulesync@latest generate
 
 - 引数なしで全 provider に展開する
 - `@latest` を明示するのは旧キャッシュ版を踏まないため
-- 生成先は `AGENTS.md` / `CLAUDE.md` / `.codex/` / `.claude/` / `.cursor/`
+- 生成先は `AGENTS.md` / `CLAUDE.md` / `.agents/` / `.codex/` / `.claude/` / `.cursor/`
 
 ## 2. 差分確認チェックリスト
 
@@ -18,8 +18,8 @@ npx rulesync@latest generate
 - [ ] git status で生成先のみが変更されているか
 - [ ] .rulesync/ 編集分と生成先の差分が論理的に一致するか
 - [ ] AGENTS.md と CLAUDE.md の差分が同じ意図になっているか
-- [ ] skill 追加時、.claude/skills/<name>/ が生成されているか
-- [ ] skill 削除時、.claude/skills/<name>/ も消えているか
+- [ ] skill 追加時、`.agents/skills/<name>/` と provider 別 skill が生成されているか
+- [ ] skill 削除時、`.agents/skills/<name>/` と provider 別 skill も消えているか
 ```
 
 確認コマンド:
@@ -27,7 +27,7 @@ npx rulesync@latest generate
 ```sh
 git status
 git diff -- AGENTS.md CLAUDE.md
-git diff -- .claude/ .codex/ .cursor/
+git diff -- .agents/ .claude/ .codex/ .cursor/
 ```
 
 ## 3. 失敗時の切り分け

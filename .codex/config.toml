@@ -9,7 +9,6 @@ default_permissions = "rulesync"
 [features]
 multi_agent = true
 hooks = true
-codex_hooks = true
 
 [sandbox_workspace_write]
 network_access = true

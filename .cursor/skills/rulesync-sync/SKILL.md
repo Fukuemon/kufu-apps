@@ -1,11 +1,11 @@
 ---
 name: rulesync-sync
-description: Edits AI configuration in `.rulesync/` (the single source of truth) and regenerates AGENTS.md, CLAUDE.md, .codex/, .claude/, .cursor/ for every provider. Use when the user asks to change any AI rule, agent instruction, skill, or to update AGENTS.md / CLAUDE.md content.
+description: Edits AI configuration in `.rulesync/` (the single source of truth) and regenerates AGENTS.md, CLAUDE.md, .agents/, .codex/, .claude/, .cursor/ for every provider. Use when the user asks to change any AI rule, agent instruction, skill, or to update AGENTS.md / CLAUDE.md content.
 ---
 
 # Rulesync Sync
 
-Kufu Monorepo の AI 設定 (`AGENTS.md` / `CLAUDE.md` / `.codex/` / `.claude/` / `.cursor/` 等) は `.rulesync/` から生成される。本 skill は **編集対象を `.rulesync/` に正しく寄せ、生成結果を検証する** ための workflow。
+本リポジトリの AI 設定 (`AGENTS.md` / `CLAUDE.md` / `.agents/` / `.codex/` / `.claude/` / `.cursor/` 等) は `.rulesync/` から生成される。本 skill は **編集対象を `.rulesync/` に正しく寄せ、生成結果を検証する** ための workflow。
 
 ## いつ使うか
 
@@ -31,14 +31,14 @@ Kufu Monorepo の AI 設定 (`AGENTS.md` / `CLAUDE.md` / `.codex/` / `.claude/` 
    - リポジトリ横断のルール → `.rulesync/rules/CLAUDE.md` (root rule)
    - 新規 skill → `.rulesync/skills/<skill-name>/SKILL.md` + `references/`
    - 既存 skill の修正 → 該当 `.rulesync/skills/<skill-name>/` 配下
-   - ❌ `AGENTS.md` / `CLAUDE.md` / `.claude/` / `.codex/` / `.cursor/` を直接編集してはいけない
+   - ❌ `AGENTS.md` / `CLAUDE.md` / `.agents/` / `.claude/` / `.codex/` / `.cursor/` を直接編集してはいけない
 2. **編集**: `.rulesync/` 配下の対象ファイルだけを編集する
 3. **生成**: 次を実行する
    ```sh
    npx rulesync@latest generate
    ```
 4. **差分確認** (`references/generate-and-verify.md`):
-   - `git status` で生成先 (`AGENTS.md`, `CLAUDE.md`, `.codex/`, `.claude/`, `.cursor/`) に意図どおりの差分が出ているか
+   - `git status` で生成先 (`AGENTS.md`, `CLAUDE.md`, `.agents/`, `.codex/`, `.claude/`, `.cursor/`) に意図どおりの差分が出ているか
    - `git diff -- AGENTS.md CLAUDE.md` で内容を確認する
    - `.rulesync/` 側の編集と生成先の差分が一致していなければ、`.rulesync/` を修正して再実行する
 5. **生成失敗時**: 生成先を手作業で合わせず、`.rulesync/` 側の失敗理由を解消して再実行する

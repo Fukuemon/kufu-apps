@@ -143,7 +143,7 @@ EARS 風で振る舞いを記述する。
 
 ## 実装対象
 
-正規 target は `corporate-site / cms / ui / config / e2e / future-api`。
+正規 target は `corporate-site / cms / ui / config / e2e / core`。
 
 | モジュール       | 実装有無 | 主な責務                                                                           |
 | ---------------- | :------: | ---------------------------------------------------------------------------------- |
@@ -152,7 +152,6 @@ EARS 風で振る舞いを記述する。
 | `ui`             |    -     | `packages/ui` / `globals.css` のセマンティックトークンを consume するのみ          |
 | `config`         |    -     | 対象外                                                                             |
 | `e2e`            |    -     | 対象外 (実装 phase C / #10 で検討)                                                 |
-| `future-api`     |    -     | 対象外                                                                             |
 
 ## 機能仕様
 

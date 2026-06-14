@@ -21,7 +21,7 @@ spec を 1 phase ずつ進める **半自律 orchestrator**。
 ## 先に読むもの
 
 - `AGENTS.md` の `Spec Workflow Contract`
-- `references/phase-guide.md` (Kufu Monorepo で毎回確認する論点)
+- `references/phase-guide.md` (本プロジェクトで毎回確認する論点)
 - 対象 spec の `index.md` (再開時)
 
 ## 入力
@@ -63,7 +63,20 @@ spec を 1 phase ずつ進める **半自律 orchestrator**。
 このまま進めますか？選択肢を教えてください。
 ```
 
-## 実行手順
+## 実行フロー
+
+進捗をこのチェックリストで追う (各 phase 完了時に更新):
+
+```text
+- [ ] Phase 1: intake (issue-read / requirement)
+- [ ] Phase 2: scaffold (spec-draft) → review
+- [ ] Phase 3: clarify (spec-resolve 全件) → review
+- [ ] Phase 4: diagram (spec-diagrams) → review
+- [ ] Phase 5: track (spec-track) → review
+- [ ] Phase 6: sync (spec-sync, 該当時) → review
+- [ ] Phase 7: tasks (spec-prompts) → review
+- [ ] 各 phase 完了時: PhaseStatus 更新 + WIP commit
+```
 
 ### 1. 事前確認
 
@@ -116,6 +129,9 @@ phase 完了 (レビュー指摘対応含む) ごとに spec の `## 設計フ�
 - レビュー指摘対応完了: `レビュー済`
 - ユーザー判断待ち: `保留` + 備考に理由
 
+各 phase 完了時、PhaseStatus 更新とあわせて WIP commit を残す (`workflow-git` の運用に従う)。
+長時間 run でも phase 単位で handoff が保全され、git log が進捗の第二記録になる。protected branch へは直接コミットしない。
+
 ### 5. spec-resolve と spec-track の二重追記防止
 
 `spec-resolve` は決定内容を `## 上位資料からの変更点` に追記する責務を持つ。
@@ -135,7 +151,7 @@ phase 5 `spec-track` では **spec-resolve で未追記の変更のみ** 反映�
 
 phase 1 はレビュー対象外のため、レビュー行は省略する。
 
-## 終了条件
+## 停止条件
 
 - phase 7 `レビュー済`
 - 最終レビューで `PASS`
