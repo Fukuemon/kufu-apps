@@ -23,6 +23,15 @@ app 側から infra repo へ受け渡す contract:
 - Workers 依存の有無
 - app 変更で infra 差分が必要な場合の参照リンク (spec / ADR → infra repo PR)
 
+### corporate-site 問い合わせフォーム (Workers 依存: 有)
+
+問い合わせフォームの送信は Cloudflare Pages Functions (Workers) を中継する ([ADR-0009](../adr/0009-corporate-site-contact-form-backend.md) / [spec #14](../specs/14-contact-form/index.md))。静的生成 (`output: "static"`) を維持しつつ送信エンドポイントのみ Functions を併用する。
+
+- Workers 依存: 有 (送信エンドポイント `/api/contact`)
+- 必要な secret 名 (実値は repo に保存しない): Resend API key / メール宛先 / Cloudflare Turnstile secret key
+- client に置く公開値: Turnstile site key
+- DNS 前提: 送信ドメインの SPF / DKIM 検証 (メール到達性のため)
+
 ## Environment Strategy
 
 | Environment | Purpose                | Cloudflare Role                                             |
@@ -77,7 +86,7 @@ flowchart LR
 
 - Cloudflare 上で扱う secret、token、API key は client 側へ露出させず、環境ごとの secret 管理に分離する。
 - Terraform variable や provider credential など infra 用の秘匿情報は app repo に持ち込まない。
-- フォーム保護や bot 対策が必要な場合は、Cloudflare Turnstile など edge 側サービスを候補に含める。
+- フォーム保護や bot 対策が必要な場合は、Cloudflare Turnstile など edge 側サービスを候補に含める。corporate-site の問い合わせフォームは **Cloudflare Turnstile + honeypot を Workers 側で多層検証**する ([ADR-0009](../adr/0009-corporate-site-contact-form-backend.md))。Turnstile token の `siteverify` と honeypot 判定、入力の server 側再検証はすべて `/api/contact` (Pages Functions) で行い、client を信頼しない。
 - CMS/API を導入する場合は、認証、権限、公開フロー、プレビュー環境を設計する ([DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md))。
 - コーポレートサイトの assets はライセンスと利用許諾を確認する。
-- 問い合わせフォームなどで個人情報を扱う場合の方針は feature / spec で明記する。
+- 問い合わせフォームなどで個人情報を扱う場合の方針は feature / spec で明記する。corporate-site の問い合わせフォームは **受信内容を永続化せず (DB / ログに残さず) メール通知のみ**とし、フォーム近傍に利用目的を明示する ([ADR-0009](../adr/0009-corporate-site-contact-form-backend.md) / [spec #14](../specs/14-contact-form/index.md))。

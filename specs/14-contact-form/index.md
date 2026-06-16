@@ -37,17 +37,18 @@
 
 - PRD 更新要否: 不要 (継承。Phase 1「問い合わせ導線」完成条件の範囲)
 - Design Doc 更新要否: 不要 (継承。feature doc 側で扱う)
-- ADR 起票要否: **要 (確定, D7)**。新規 **ADR-0009** を起票し、corporate-site の問い合わせ送信を Cloudflare Pages Functions (Workers) 中継にする決定 (`output: "static"` + Functions 併用) を記録する。起票自体は `spec-sync` で行う。
+- ADR 起票要否: **要 → 反映済 (D7)**。新規 [ADR-0009](../../adr/0009-corporate-site-contact-form-backend.md) を `spec-sync` で起票済み。corporate-site の問い合わせ送信を Cloudflare Pages Functions (Workers) 中継にする決定 (`output: "static"` + Functions 併用) を記録した。
 
-| 上位文書    | 節 / 該当箇所                                              | 整合方針 (継承 / 補足 / 変更提案)      |
-| ----------- | ---------------------------------------------------------- | -------------------------------------- |
-| PRD         | プロダクト原則「コーポレートサイトの性能を最優先する」     | 継承                                   |
-| Design Doc  | モジュール責務 → `apps/corporate-site`                     | 継承                                   |
-| feature doc | ページ構成 IA → P6 `/contact` 連絡先 + フォーム (機能 #14) | 補足 (本 spec が機能仕様を埋める)      |
-| context     | architecture → Runtime Boundary / shadcn island 境界       | 継承 (フォームは island)               |
-| context     | infrastructure → Cloudflare Pages / Turnstile / Workers    | 補足 (送信経路を D1 で具体化)          |
-| context     | testing → E2E 主要導線 (問い合わせ導線)                    | 継承                                   |
-| ADR-0008    | corporate-site の React island policy                      | 継承 (フォームは「最初の主要 island」) |
+| 上位文書    | 節 / 該当箇所                                              | 整合方針 (継承 / 補足 / 変更提案)                                          |
+| ----------- | ---------------------------------------------------------- | -------------------------------------------------------------------------- |
+| PRD         | プロダクト原則「コーポレートサイトの性能を最優先する」     | 継承                                                                       |
+| Design Doc  | モジュール責務 → `apps/corporate-site`                     | 継承                                                                       |
+| feature doc | ページ構成 IA → P6 `/contact` 連絡先 + フォーム (機能 #14) | 補足 (本 spec が機能仕様を埋める)                                          |
+| context     | architecture → Runtime Boundary / shadcn island 境界       | 継承 (フォームは island)                                                   |
+| context     | infrastructure → Cloudflare Pages / Turnstile / Workers    | 補足 (送信経路を D1 で具体化)                                              |
+| context     | testing → E2E 主要導線 (問い合わせ導線)                    | 継承                                                                       |
+| ADR-0008    | corporate-site の React island policy                      | 継承 (フォームは「最初の主要 island」)                                     |
+| ADR-0009    | 問い合わせ送信を Workers 中継にする決定 (本 spec で起票)   | **正本** (spec-sync で起票。アーキ決定は ADR-0009 / infra contract が正本) |
 
 > 送信バックエンド方式 (D1) を確定したら、infrastructure.md の Infrastructure Contract / Security と feature doc へ `spec-sync` で反映する。新規アーキ判断なら ADR を起票する。
 
@@ -145,7 +146,7 @@ EARS 風で振る舞いを記述する。
 
 (決定できない項目を理由とともに残す。1 件でも残っていれば下流 phase は止める)
 
-- なし。D1〜D7 をすべて解決済み。残るは `spec-sync` での ADR-0009 起票 + infrastructure.md 反映 (durable 成果のハンドオフ)。
+- なし。D1〜D7 をすべて解決済み。ADR-0009 起票 + infrastructure.md 反映も完了 (spec-sync で durable 成果をハンドオフ済み)。
 
 ## 実装対象
 
@@ -340,18 +341,18 @@ sequenceDiagram
 
 ### context への影響
 
-| 対象 doc / 節                               | 変更内容                                                                                                                                                                                      | 理由                                                                                    |
-| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| infrastructure.md / Infrastructure Contract | Workers 依存「有」を追加し、送信経路 `/api/contact` (Pages Functions) と必要 secret 名 (Resend API key / 宛先 / Turnstile site key + secret key) + 送信ドメインの SPF/DKIM 検証を contract 化 | D1=A で Workers 中継 / D3=A で Resend / D2=C で Turnstile を採用 (source: spec-resolve) |
-| infrastructure.md / Security・Operations    | フォーム送信経路の bot 対策 (Turnstile + honeypot)・監視を Workers 前提で具体化                                                                                                               | D2=C を採用 (source: spec-resolve)                                                      |
+| 対象 doc / 節                               | 変更内容                                                                                                                                                    | 理由                                                                            |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| infrastructure.md / Infrastructure Contract | **反映済** (spec-sync, ADR-0009)。Workers 依存「有」+ 送信経路 `/api/contact` + secret 名 (Resend / 宛先 / Turnstile site+secret) + SPF/DKIM を contract 化 | D1=A / D3=A / D2=C を採用 (source: spec-resolve)。以後 infrastructure.md が正本 |
+| infrastructure.md / Security・Operations    | **反映済** (spec-sync, ADR-0009)。bot 対策 (Turnstile + honeypot) を Workers 側多層検証で記載 + 個人情報は永続化なし・利用目的明示を記載                    | D2=C / D6 を採用 (source: spec-resolve)。以後 infrastructure.md が正本          |
 
 > 上記は `spec-sync` での back-propagation 候補。確定反映は D2〜D7 解決後にまとめて行う。
 
 ### ADR の新規 / 更新
 
-| ADR ID              | 変更内容                                                                                                                    | 理由                                                                                             |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| ADR-0009 (新規予定) | corporate-site の問い合わせ送信を Cloudflare Pages Functions (Workers) 中継にする決定 (`output: "static"` + Functions 併用) | D1=A は静的のみ前提を超える新規アーキ判断 / D7=要で確定。起票は spec-sync (source: spec-resolve) |
+| ADR ID   | 変更内容                                                                                                                                                   | 理由                                                                                                             |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| ADR-0009 | **反映済** (spec-sync)。corporate-site の問い合わせ送信を Cloudflare Pages Functions (Workers) 中継にする決定 (`output: "static"` + Functions 併用) を起票 | D1=A は静的のみ前提を超える新規アーキ判断 / D7=要で確定 (source: spec-resolve)。以後 ADR-0009 がアーキ決定の正本 |
 
 ## レビュー
 
@@ -363,16 +364,17 @@ sequenceDiagram
 
 ## 変更履歴
 
-| 日付       | 変更者   | 変更内容                                                                                        |
-| ---------- | -------- | ----------------------------------------------------------------------------------------------- |
-| 2026-06-16 | Fukuemon | spec-draft で index.md 初版生成                                                                 |
-| 2026-06-17 | Fukuemon | spec-resolve: D1 (送信バックエンド方式) を A (Pages Functions / Workers 中継) で確定            |
-| 2026-06-17 | Fukuemon | spec-resolve: D7 (ADR 起票要否) を要・新規 ADR-0009 起票で確定                                  |
-| 2026-06-17 | Fukuemon | spec-resolve: D3 (通知手段) を A (Resend HTTP API) で確定                                       |
-| 2026-06-17 | Fukuemon | spec-resolve: D2 (スパム対策) を C (Turnstile + honeypot 併用) で確定                           |
-| 2026-06-17 | Fukuemon | spec-resolve: D4 (入力項目とバリデーション) を確定 (6 項目 + honeypot + Turnstile, 二重検証)    |
-| 2026-06-17 | Fukuemon | spec-resolve: D6 (個人情報) を保存しない + 利用目的明記 + 送信＝同意注記 (B) で確定             |
-| 2026-06-17 | Fukuemon | spec-resolve: D5 (island 化) をフォーム全体を単一 island + `client:visible` で確定 (全論点解決) |
+| 日付       | 変更者   | 変更内容                                                                                                                                   |
+| ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2026-06-16 | Fukuemon | spec-draft で index.md 初版生成                                                                                                            |
+| 2026-06-17 | Fukuemon | spec-resolve: D1 (送信バックエンド方式) を A (Pages Functions / Workers 中継) で確定                                                       |
+| 2026-06-17 | Fukuemon | spec-resolve: D7 (ADR 起票要否) を要・新規 ADR-0009 起票で確定                                                                             |
+| 2026-06-17 | Fukuemon | spec-resolve: D3 (通知手段) を A (Resend HTTP API) で確定                                                                                  |
+| 2026-06-17 | Fukuemon | spec-resolve: D2 (スパム対策) を C (Turnstile + honeypot 併用) で確定                                                                      |
+| 2026-06-17 | Fukuemon | spec-resolve: D4 (入力項目とバリデーション) を確定 (6 項目 + honeypot + Turnstile, 二重検証)                                               |
+| 2026-06-17 | Fukuemon | spec-resolve: D6 (個人情報) を保存しない + 利用目的明記 + 送信＝同意注記 (B) で確定                                                        |
+| 2026-06-17 | Fukuemon | spec-resolve: D5 (island 化) をフォーム全体を単一 island + `client:visible` で確定 (全論点解決)                                            |
+| 2026-06-17 | Fukuemon | spec-sync: ADR-0009 起票 + infrastructure.md (Infrastructure Contract / Security) に反映。アーキ決定の正本を ADR-0009 / infra へハンドオフ |
 
 ## 備考
 
