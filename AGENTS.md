@@ -30,16 +30,18 @@
 
 ## Skills (workflow 入口)
 
-| Skill                  | 用途                                                             |
-| ---------------------- | ---------------------------------------------------------------- |
-| `design-doc`           | PRD / Design Doc を作る (Why/What/How、PRD 要否判定)             |
-| `context-bootstrap`    | `context/project.md` と context library を初期生成               |
-| `styleguide-documents` | 文書の品質基準・分割粒度 (doc を書く skill が参照)               |
-| `dev-commands`         | コマンド / スコープ / E2E env を解決 (`context/project.md` 基準) |
-| `rulesync-sync`        | AI 設定 (`.rulesync/` → 各 provider) の編集と生成                |
-| `workflow-git`         | branch / commit / issue / PR の Git 運用                         |
-| `design-prompt`        | Kufu デザイン制作 Phase A0 の Claude Design 依頼文を作る         |
-| `spec-*`               | Spec Driven Development 一式 (下記 `Spec Workflow Contract`)     |
+| Skill                  | 用途                                                                   |
+| ---------------------- | ---------------------------------------------------------------------- |
+| `design-doc`           | PRD / Design Doc を作る (Why/What/How、PRD 要否判定)                   |
+| `context-bootstrap`    | `context/project.md` と context library を初期生成                     |
+| `styleguide-documents` | 文書の品質基準・分割粒度 (doc を書く skill が参照)                     |
+| `dev-commands`         | コマンド / スコープ / E2E env を解決 (`context/project.md` 基準)       |
+| `rulesync-sync`        | AI 設定 (`.rulesync/` → 各 provider) の編集と生成                      |
+| `workflow-git`         | branch / commit / issue / PR の Git 運用                               |
+| `design-prompt`        | Kufu デザイン制作 Phase A0 の Claude Design 依頼文を作る               |
+| `agent-orchestrate`    | 複数 CLI エージェントを非対話・並列に呼ぶ基盤 (`context/ai-agents.md`) |
+| `multi-agent-review`   | diff / PR / spec を複数エージェントで並列 Rv し指摘を統合              |
+| `spec-*`               | Spec Driven Development 一式 (下記 `Spec Workflow Contract`)           |
 
 skill は `.rulesync/skills/<name>/SKILL.md` が正本。直接呼び出すか slash command で起動する。
 
@@ -117,4 +119,4 @@ spec は **issue 単位** の文書、design (PRD / Design Doc / feature doc / c
 | `spec-review`      | fresh-context evaluator が PASS / NEEDS_WORK を返す                          | review gate        |
 | `spec-lifecycle`   | 上記を phase 順に orchestration する半自律 runner                            | orchestrator       |
 
-orthogonal な Git / GitHub 操作は `workflow-git` を使う。
+orthogonal な Git / GitHub 操作は `workflow-git`、複数 CLI エージェントを使う cross-check / review は `agent-orchestrate` / `multi-agent-review` を使う。
