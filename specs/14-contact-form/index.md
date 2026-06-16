@@ -17,19 +17,19 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態   | 最終更新   | 備考                                   |
-| --- | --------------------------- | ------ | ---------- | -------------------------------------- |
-| 1   | 起票                        | 完了   | 2026-06-16 | issue #14 (Refs #11 / Part of #10)     |
-| 2   | 下書き                      | 完了   | 2026-06-16 | spec-draft で index.md 初版生成        |
-| 3   | 上位文書突合                | 完了   | 2026-06-16 | 矛盾なし。送信バックエンド方式を論点化 |
-| 4   | 論点整理                    | 完了   | 2026-06-16 | D1〜D7 を抽出                          |
-| 5   | 論点解決                    | 完了   | 2026-06-17 | D1〜D7 全件確定                        |
-| 6   | Interface / Routing 設計    | 未着手 |            |                                        |
-| 7   | Content / Data 設計         | 未着手 |            |                                        |
-| 8   | Performance / Security 設計 | 未着手 |            | island コスト / Turnstile / 個人情報   |
-| 9   | Test / Metrics 設計         | 未着手 |            | 問い合わせ導線 E2E                     |
-| 10  | 実装分割                    | 未着手 |            | `spec-prompts` で生成                  |
-| 11  | レビュー済                  | 未着手 |            | `spec-review` 待ち                     |
+| #   | フェーズ                    | 状態   | 最終更新   | 備考                                       |
+| --- | --------------------------- | ------ | ---------- | ------------------------------------------ |
+| 1   | 起票                        | 完了   | 2026-06-16 | issue #14 (Refs #11 / Part of #10)         |
+| 2   | 下書き                      | 完了   | 2026-06-16 | spec-draft で index.md 初版生成            |
+| 3   | 上位文書突合                | 完了   | 2026-06-16 | 矛盾なし。送信バックエンド方式を論点化     |
+| 4   | 論点整理                    | 完了   | 2026-06-16 | D1〜D7 を抽出                              |
+| 5   | 論点解決                    | 完了   | 2026-06-17 | D1〜D7 全件確定                            |
+| 6   | Interface / Routing 設計    | 完了   | 2026-06-17 | API appendix (`/api/contact`) + 図化済     |
+| 7   | Content / Data 設計         | 完了   | 2026-06-17 | 永続化なし / Resend 通知                   |
+| 8   | Performance / Security 設計 | 完了   | 2026-06-17 | 単一island / Turnstile+honeypot / 個人情報 |
+| 9   | Test / Metrics 設計         | 完了   | 2026-06-17 | testid appendix + 問い合わせ導線 E2E       |
+| 10  | 実装分割                    | 未着手 |            | `spec-prompts` で生成                      |
+| 11  | レビュー済                  | 未着手 |            | `spec-review` 待ち                         |
 
 ## 上位文書整合
 
@@ -294,13 +294,126 @@ EARS 風で振る舞いを記述する。
 
 ```mermaid
 flowchart TD
+    Start(["訪問者が /contact のフォームに到達"]) --> Fill["項目を入力 (担当者名/メール/種別/本文 ほか)"]
+    Fill --> Turnstile["Turnstile widget が token 発行 (D2)"]
+    Turnstile --> Submit["送信 (送信=同意の注記, D6)"]
+    Submit --> ClientValid{"client バリデーション OK? (D4)"}
+    ClientValid -->|"NG"| FieldErr["該当項目にインラインエラー表示<br/>(入力値は保持)"]
+    FieldErr --> Fill
+    ClientValid -->|"OK"| Post["POST /api/contact (同一オリジン Workers, D1)"]
+
+    Post --> Honeypot{"honeypot 空? (D2)"}
+    Honeypot -->|"値あり = bot"| SilentDrop["成功を装い黙って破棄"]
+    Honeypot -->|"空"| Verify{"Turnstile siteverify OK? (D2)"}
+    Verify -->|"NG"| SpamErr["スパム判定エラー表示"]
+    Verify -->|"OK"| ServerValid{"Workers 再検証 OK? (D4)"}
+    ServerValid -->|"NG (400)"| FieldErr
+    ServerValid -->|"OK"| Send{"Resend で通知 (D3)"}
+
+    Send -->|"成功 (200)"| Done(["完了メッセージ表示"])
+    Send -->|"失敗 (5xx)"| SendErr["エラー表示 + 再送可能<br/>(連絡先 TEL/FAX/メールへ誘導)"]
+    SendErr --> Fill
+    SilentDrop --> Done
+
+    Note["送信内容は永続化せず通知のみ (D6)"]
 ```
 
 ### Sequence
 
 ```mermaid
 sequenceDiagram
+    actor User as 訪問者
+    participant Island as フォーム island (client:visible, D5)
+    participant TS as Cloudflare Turnstile
+    participant Fn as Pages Functions /api/contact (Workers, D1)
+    participant Resend as Resend API (D3)
+    participant Mail as fukuura@mist.ocn.ne.jp
+
+    User->>Island: 項目入力 + 送信
+    Island->>TS: token 取得 (D2)
+    TS-->>Island: Turnstile token
+    Island->>Island: client バリデーション (D4)
+    Island->>Fn: POST /api/contact (payload + token + honeypot)
+    Fn->>Fn: honeypot 判定 (D2)
+    Fn->>TS: siteverify (secret key)
+    TS-->>Fn: 検証結果
+    Fn->>Fn: server 側再検証 (D4)
+    alt 検証 NG
+        Fn-->>Island: 400 / スパム破棄
+        Island-->>User: エラー表示 (入力値保持)
+    else 検証 OK
+        Fn->>Resend: メール送信要求 (API key は secret)
+        Resend->>Mail: 問い合わせ通知メール
+        Resend-->>Fn: 送信結果
+        Fn-->>Island: 200 / 5xx
+        Island-->>User: 完了 or 再送可能なエラー
+    end
+    Note over Fn: 受信内容は永続化しない (D6)
 ```
+
+## API
+
+問い合わせ送信エンドポイント (D1: Cloudflare Pages Functions = Workers, 同一オリジン)。
+
+### エンドポイント一覧
+
+| #   | メソッド | パス           | 操作                                      | 備考                             |
+| --- | -------- | -------------- | ----------------------------------------- | -------------------------------- |
+| 1   | POST     | `/api/contact` | 問い合わせ送信 (検証 → スパム判定 → 通知) | Pages Functions。永続化なし (D6) |
+
+### リクエスト / レスポンス
+
+```jsonc
+// POST /api/contact
+// Request (application/json)
+{
+  "company": "株式会社サンプル",        // 任意, 最大100
+  "name": "山田太郎",                  // 必須, 1〜50
+  "email": "taro@example.com",        // 必須, メール形式
+  "phone": "079-000-0000",            // 任意, 数字・ハイフン, 最大20
+  "category": "quote",                // 必須, enum: quote(見積もり・販売) | machining(加工) | other(その他)
+  "message": "○○について...",          // 必須, 10〜2,000
+  "company_url": "",                  // honeypot: 常に空であること (D2)
+  "cf-turnstile-response": "<token>"  // Turnstile token (D2)
+}
+
+// Response 200 (送信成功)
+{ "ok": true }
+
+// Response 400 (バリデーションエラー)
+{ "ok": false, "errors": { "email": "メール形式が不正です", "message": "10文字以上で入力してください" } }
+```
+
+> honeypot 命中時はスパムとして成功 (200) を装い黙って破棄する (bot に学習させない, D2)。
+
+### エラーコード一覧
+
+| エラーコード       | HTTPステータス | 発生条件                                | クライアント挙動                          |
+| ------------------ | -------------- | --------------------------------------- | ----------------------------------------- |
+| `validation_error` | 400            | server 側再検証で必須/形式/文字数が不正 | フィールド別インラインエラー (入力値保持) |
+| `turnstile_failed` | 400            | Turnstile `siteverify` が失敗           | スパム判定エラー表示                      |
+| `send_failed`      | 502 / 5xx      | Resend 送信失敗 (外部障害等)            | エラー表示 + 再送可能、連絡先へ誘導       |
+| (honeypot 命中)    | 200            | honeypot フィールドに値あり (bot)       | 完了表示 (実際は破棄)                     |
+
+## data-testid 一覧
+
+E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前}` (画面 = `contact`)。
+
+| data-testid                | 要素                     | 用途                                 |
+| -------------------------- | ------------------------ | ------------------------------------ |
+| `contact-form`             | フォーム要素 (`<form>`)  | フォーム到達 / 送信トリガ            |
+| `contact-input-company`    | 会社名 input             | 任意項目入力                         |
+| `contact-input-name`       | 担当者名 input           | 必須項目入力 / バリデーション検証    |
+| `contact-input-email`      | メール input             | 必須・形式バリデーション検証         |
+| `contact-input-phone`      | 電話番号 input           | 任意・形式バリデーション検証         |
+| `contact-select-category`  | 問い合わせ種別 select    | 必須選択検証                         |
+| `contact-textarea-message` | 問い合わせ内容 textarea  | 必須・文字数バリデーション検証       |
+| `contact-button-submit`    | 送信ボタン               | 送信操作                             |
+| `contact-message-success`  | 完了メッセージ           | 送信成功の検証                       |
+| `contact-message-error`    | 送信失敗メッセージ       | 送信失敗 / 再送導線の検証            |
+| `contact-error-{field}`    | 各項目のインラインエラー | フィールド別バリデーションエラー検証 |
+
+> honeypot フィールドは E2E 検証対象外 (人間/正常系では空のまま)。Turnstile は E2E では test mode / モックを利用する (実装で決定)。
 
 ## 実装分割
 
@@ -335,9 +448,9 @@ sequenceDiagram
 
 ### feature doc への影響
 
-| 対象 doc / 節         | 変更内容 | 理由 |
-| --------------------- | -------- | ---- |
-| (D1〜D6 確定後に記録) |          |      |
+| 対象 doc / 節                                              | 変更内容                                                                                                                  | 理由                                                                     |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| DesignDoc_corporate-site.md / 設計方針・ページ構成 (IA) P6 | **反映済** (spec-sync)。問い合わせフォームの送信を Workers 中継 (ADR-0009) とし、機能仕様の正本が spec #14 である旨を補足 | フォーム backend / island 方針のトレーサビリティ確保 (source: spec-sync) |
 
 ### context への影響
 
@@ -375,12 +488,11 @@ sequenceDiagram
 | 2026-06-17 | Fukuemon | spec-resolve: D6 (個人情報) を保存しない + 利用目的明記 + 送信＝同意注記 (B) で確定                                                        |
 | 2026-06-17 | Fukuemon | spec-resolve: D5 (island 化) をフォーム全体を単一 island + `client:visible` で確定 (全論点解決)                                            |
 | 2026-06-17 | Fukuemon | spec-sync: ADR-0009 起票 + infrastructure.md (Infrastructure Contract / Security) に反映。アーキ決定の正本を ADR-0009 / infra へハンドオフ |
+| 2026-06-17 | Fukuemon | spec-sync: feature doc (DesignDoc_corporate-site) の設計方針・P6 に ADR-0009 / spec #14 参照を補足                                         |
+| 2026-06-17 | Fukuemon | spec-diagrams: 送信〜検証〜通知の Flowchart / Sequence を生成                                                                              |
+| 2026-06-17 | Fukuemon | appendix 取り込み: API (`/api/contact`) + data-testid 一覧を追加                                                                           |
 
 ## 備考
 
-<!--
-追加 appendix が必要な spec は、templates/specs/appendices/ から該当 topic を取り込むこと:
-
-- API endpoint / request / response → appendices/api.md (送信エンドポイントを Workers 中継にする場合 D1 確定後に検討)
-- data-testid 一覧 → appendices/testid.md (問い合わせ導線 E2E のため検討)
--->
+- 取り込み済 appendix: `## API` (`/api/contact`, appendices/api.md 由来) / `## data-testid 一覧` (appendices/testid.md 由来)。DB / 認可 / 画面ツリーの appendix は本スコープでは不要 (永続化なし・権限なし・単一フォーム)。
+- 実装は #10 (corporate-site 本体) と協調。デザイントークンは #13、IA は feature doc が正本。
