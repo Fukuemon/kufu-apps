@@ -9,7 +9,7 @@
 - Issue: `#14`
 - ステータス: `Draft`
 - 作成日: 2026-06-16
-- 更新日: 2026-06-16
+- 更新日: 2026-06-17
 - Branch: `feature/14`
 - Owner: Fukuemon
 
@@ -23,7 +23,7 @@
 | 2   | 下書き                      | 進行中 | 2026-06-16 | spec-draft で index.md 初版生成        |
 | 3   | 上位文書突合                | 完了   | 2026-06-16 | 矛盾なし。送信バックエンド方式を論点化 |
 | 4   | 論点整理                    | 進行中 | 2026-06-16 | D1〜D7 を抽出                          |
-| 5   | 論点解決                    | 未着手 |            | `spec-resolve` で確定                  |
+| 5   | 論点解決                    | 進行中 | 2026-06-17 | D1 確定 (A: Workers 中継)。D2〜D7 残   |
 | 6   | Interface / Routing 設計    | 未着手 |            |                                        |
 | 7   | Content / Data 設計         | 未着手 |            |                                        |
 | 8   | Performance / Security 設計 | 未着手 |            | island コスト / Turnstile / 個人情報   |
@@ -37,7 +37,7 @@
 
 - PRD 更新要否: 不要 (継承。Phase 1「問い合わせ導線」完成条件の範囲)
 - Design Doc 更新要否: 不要 (継承。feature doc 側で扱う)
-- ADR 起票要否: **保留** (送信バックエンド方式 D1 / スパム対策 D2 の確定内容次第。新規アーキ判断なら起票)
+- ADR 起票要否: **要の見込み** (D1=A 確定により corporate-site が `output: "static"` から Pages Functions/Workers 併用へ移行する新規アーキ判断が発生。最終判断は D7)
 
 | 上位文書    | 節 / 該当箇所                                              | 整合方針 (継承 / 補足 / 変更提案)      |
 | ----------- | ---------------------------------------------------------- | -------------------------------------- |
@@ -119,27 +119,27 @@ EARS 風で振る舞いを記述する。
 
 設計 / 実装フェーズへ持ち越す残課題を 1 件ずつ管理する。確定したものは「解決済みの論点」へ移す。
 
-| #   | 論点                                     | 決定候補                                                                                 | 決定 |
-| --- | ---------------------------------------- | ---------------------------------------------------------------------------------------- | ---- |
-| D1  | 送信バックエンド方式                     | Cloudflare Workers 中継 / 第三者フォームサービス / mailto リンク代替                     | 未決 |
-| D2  | スパム対策の手段                         | Cloudflare Turnstile / honeypot + rate limit / 併用                                      | 未決 |
-| D3  | 送信先への通知手段                       | メール送信サービス (Resend / MailChannels 等) / Workers から SMTP / フォームサービス内蔵 | 未決 |
-| D4  | フォーム入力項目とバリデーション         | 会社名 / 担当者名 / メール / 電話 / 問い合わせ種別 / 本文 の必須・任意・形式             | 未決 |
-| D5  | React island 化の範囲と client directive | フォーム全体を island / `client:visible` か `client:idle` か `client:load`               | 未決 |
-| D6  | 個人情報の取り扱い・プライバシー表記     | 保存しない (通知のみ) / プライバシーポリシー / 同意チェックの要否                        | 未決 |
-| D7  | ADR 起票要否                             | D1 / D2 が新規アーキ判断なら ADR、既存 context 範囲内なら不要                            | 未決 |
+| #   | 論点                                     | 決定候補                                                                                 | 決定                                                                                 |
+| --- | ---------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| D1  | 送信バックエンド方式                     | Cloudflare Workers 中継 / 第三者フォームサービス / mailto リンク代替                     | **確定: A. Cloudflare Pages Functions / Workers 中継 (同一オリジン `/api/contact`)** |
+| D2  | スパム対策の手段                         | Cloudflare Turnstile / honeypot + rate limit / 併用                                      | 未決                                                                                 |
+| D3  | 送信先への通知手段                       | メール送信サービス (Resend / MailChannels 等) / Workers から SMTP / フォームサービス内蔵 | 未決                                                                                 |
+| D4  | フォーム入力項目とバリデーション         | 会社名 / 担当者名 / メール / 電話 / 問い合わせ種別 / 本文 の必須・任意・形式             | 未決                                                                                 |
+| D5  | React island 化の範囲と client directive | フォーム全体を island / `client:visible` か `client:idle` か `client:load`               | 未決                                                                                 |
+| D6  | 個人情報の取り扱い・プライバシー表記     | 保存しない (通知のみ) / プライバシーポリシー / 同意チェックの要否                        | 未決                                                                                 |
+| D7  | ADR 起票要否                             | D1 / D2 が新規アーキ判断なら ADR、既存 context 範囲内なら不要                            | 未決                                                                                 |
 
 ## 解決済みの論点
 
 (`spec-resolve` で確定したものをここに移動する)
 
--
+- **D1 送信バックエンド方式** → **A. Cloudflare Pages Functions / Workers 中継**。フォーム island から同一オリジンの `/api/contact` (Pages Functions = Workers) へ POST し、Workers が送信先へ届ける。第三者 API のブラウザ直叩きを避け (architecture.md)、secret を server 側に隠し、Turnstile の server 検証 (D2) も同所で完結させる。Decision Priority「一貫性」(Cloudflare 完結) に合致。波及: D3 (通知手段は Workers 経由前提) / D2 (Turnstile server 検証を Workers が担う) / D7 (Workers 依存追加は新規アーキ判断のため ADR 起票が要の見込み)。
 
 ## 未確定事項
 
 (決定できない項目を理由とともに残す。1 件でも残っていれば下流 phase は止める)
 
-- D1〜D7 は未解決。送信バックエンド (D1) はインフラ contract と ADR 起票 (D7) に波及するため、最優先で `spec-resolve` する。
+- D2〜D7 は未解決。次は D7 (ADR 起票要否) または D3 (通知手段) を D1 の確定を受けて解決する。
 
 ## 実装対象
 
@@ -177,11 +177,14 @@ EARS 風で振る舞いを記述する。
 
 ### Routing / URL State
 
-- `/contact` は静的ルート。フォーム状態は island 内のローカル state に閉じ、URL へは寄せない (送信完了をクエリで表すかは D5 で判断)。
+- `/contact` は静的ルート。送信先は同一オリジンの `/api/contact` (Cloudflare Pages Functions = Workers, D1)。
+- フォーム状態は island 内のローカル state に閉じ、URL へは寄せない (送信完了をクエリで表すかは D5 で判断)。
 
 ### Content / Assets
 
-- 送信先は連絡先正本 (company-profile.md) の `fukuura@mist.ocn.ne.jp`。実値 (API key / 宛先 secret) は repo に保存せず Cloudflare secret 管理に置く (infrastructure.md)。
+- 送信は island → 同一オリジン `/api/contact` (Workers) 経由 (D1)。Workers がメール送信 (D3) で連絡先正本 (company-profile.md) の `fukuura@mist.ocn.ne.jp` へ届ける。
+- 実値 (メール送信 API key / 宛先 secret / Turnstile secret) は repo に保存せず Cloudflare secret 管理に置き、client bundle に含めない (infrastructure.md / architecture.md)。
+- ブラウザから第三者 API を直接叩かず、Workers を中継点にする (architecture.md Runtime Boundary)。
 - 問い合わせ内容は永続化しない方針を既定とする (D6 で確定)。
 
 ### UI Reuse
@@ -196,18 +199,19 @@ EARS 風で振る舞いを記述する。
 ### Testing
 
 - Playwright で問い合わせ導線 (入力 → 送信 → 完了) と検証エラー / 送信失敗時の振る舞いを検証する (testing.md)。
-- 送信バックエンド (D1) は E2E でモック / スタブ化する境界を決める。
+- 送信先は同一オリジン `/api/contact` (Workers, D1)。E2E では実メール送信を避けるため、この Workers エンドポイントをモック / スタブ化する境界とする (実装で route intercept か preview 環境のテスト用挙動を選ぶ)。
 
 ## Interface 設計
 
 ### UI / API / Event Interface
 
 - (D4 で項目確定後に記述) フォーム UI: 入力項目 + 送信ボタン + スパム対策 widget + 結果表示。
-- (D1 で確定後に記述) 送信 IF: フォーム island → 送信エンドポイント (Workers / 第三者サービス) への request。
+- 送信 IF: フォーム island → 同一オリジン `/api/contact` (Cloudflare Pages Functions = Workers, D1) への HTTP POST。Workers が検証・スパム判定 (D2) を行いメール送信 (D3) する。
 
 ### Props / Request / Response
 
-- (D1 / D4 確定後) request: 入力項目の payload + スパム対策 token。response: 成功 / バリデーションエラー / サーバエラー。
+- request: 入力項目の payload (D4 で確定) + スパム対策 token (D2)。`POST /api/contact`。
+- response: 成功 (200) / バリデーションエラー (400) / スパム判定失敗 / サーバエラー (5xx)。詳細スキーマは D4 / D2 確定後に確定 (api appendix 取り込み時に記述)。
 
 ## Content / Data 設計
 
@@ -217,7 +221,8 @@ EARS 風で振る舞いを記述する。
 
 ### コンテンツ配置 / package / route
 
-- フォーム実装は `apps/corporate-site` の `/contact` ページ配下に colocation。
+- フォーム UI (island) は `apps/corporate-site` の `/contact` ページ配下に colocation。
+- 送信エンドポイント `/api/contact` は Cloudflare Pages Functions (Workers) として `apps/corporate-site` 側に配置 (D1)。`output: "static"` から Pages Functions 併用へ移行する点は infra contract / ADR (D7) に反映する。
 
 ## Performance / Security 設計
 
@@ -227,9 +232,10 @@ EARS 風で振る舞いを記述する。
 
 ### Security / Privacy
 
-- スパム / bot 対策を必須とする (D2)。secret は client bundle に含めず Cloudflare secret 管理 (architecture.md / infrastructure.md)。
+- 送信は同一オリジン `/api/contact` (Workers) を中継点とし、ブラウザから第三者 API を直接叩かない (D1 / architecture.md Runtime Boundary)。
+- スパム / bot 対策を必須とする (D2)。Turnstile を採用する場合の server 側トークン検証は Workers が担う。
+- secret (メール送信 API key / 宛先 / Turnstile secret) は client bundle に含めず Cloudflare secret 管理 (architecture.md / infrastructure.md)。
 - 個人情報 (氏名 / メール / 電話) を扱うため、保存有無・プライバシー表記・同意取得を D6 で決定する。
-- ブラウザから直接第三者 API を叩く構成を標準にせず、必要に応じて Workers を中継点にする (architecture.md)。
 
 ## Error / Fallback 設計
 
@@ -314,15 +320,18 @@ sequenceDiagram
 
 ### context への影響
 
-| 対象 doc / 節                                                                     | 変更内容 | 理由 |
-| --------------------------------------------------------------------------------- | -------- | ---- |
-| (D1 確定後、infrastructure.md の Infrastructure Contract / Security へ反映を検討) |          |      |
+| 対象 doc / 節                               | 変更内容                                                                                                                       | 理由                                              |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
+| infrastructure.md / Infrastructure Contract | Workers 依存「有」を追加し、送信経路 `/api/contact` (Pages Functions) と必要 secret 名 (メール送信 / Turnstile) を contract 化 | D1=A で Workers 中継を採用 (source: spec-resolve) |
+| infrastructure.md / Security・Operations    | フォーム送信経路の bot 対策・監視を Workers 前提で具体化                                                                       | 同上 (source: spec-resolve)                       |
+
+> 上記は `spec-sync` での back-propagation 候補。確定反映は D2〜D7 解決後にまとめて行う。
 
 ### ADR の新規 / 更新
 
-| ADR ID                | 変更内容 | 理由 |
-| --------------------- | -------- | ---- |
-| (D7 で起票要否を判断) |          |      |
+| ADR ID            | 変更内容                                                                                                                    | 理由                                                             |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| (新規, D7 で確定) | corporate-site の問い合わせ送信を Cloudflare Pages Functions (Workers) 中継にする決定 (`output: "static"` + Functions 併用) | D1=A は静的のみ前提を超える新規アーキ判断 (source: spec-resolve) |
 
 ## レビュー
 
@@ -334,9 +343,10 @@ sequenceDiagram
 
 ## 変更履歴
 
-| 日付       | 変更者   | 変更内容                        |
-| ---------- | -------- | ------------------------------- |
-| 2026-06-16 | Fukuemon | spec-draft で index.md 初版生成 |
+| 日付       | 変更者   | 変更内容                                                                             |
+| ---------- | -------- | ------------------------------------------------------------------------------------ |
+| 2026-06-16 | Fukuemon | spec-draft で index.md 初版生成                                                      |
+| 2026-06-17 | Fukuemon | spec-resolve: D1 (送信バックエンド方式) を A (Pages Functions / Workers 中継) で確定 |
 
 ## 備考
 
