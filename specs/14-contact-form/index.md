@@ -17,19 +17,19 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態   | 最終更新   | 備考                                       |
-| --- | --------------------------- | ------ | ---------- | ------------------------------------------ |
-| 1   | 起票                        | 完了   | 2026-06-16 | issue #14 (Refs #11 / Part of #10)         |
-| 2   | 下書き                      | 完了   | 2026-06-16 | spec-draft で index.md 初版生成            |
-| 3   | 上位文書突合                | 完了   | 2026-06-16 | 矛盾なし。送信バックエンド方式を論点化     |
-| 4   | 論点整理                    | 完了   | 2026-06-16 | D1〜D7 を抽出                              |
-| 5   | 論点解決                    | 完了   | 2026-06-17 | D1〜D7 全件確定                            |
-| 6   | Interface / Routing 設計    | 完了   | 2026-06-17 | API appendix (`/api/contact`) + 図化済     |
-| 7   | Content / Data 設計         | 完了   | 2026-06-17 | 永続化なし / Resend 通知                   |
-| 8   | Performance / Security 設計 | 完了   | 2026-06-17 | 単一island / Turnstile+honeypot / 個人情報 |
-| 9   | Test / Metrics 設計         | 完了   | 2026-06-17 | testid appendix + 問い合わせ導線 E2E       |
-| 10  | 実装分割                    | 未着手 |            | `spec-prompts` で生成                      |
-| 11  | レビュー済                  | 未着手 |            | `spec-review` 待ち                         |
+| #   | フェーズ                    | 状態   | 最終更新   | 備考                                                         |
+| --- | --------------------------- | ------ | ---------- | ------------------------------------------------------------ |
+| 1   | 起票                        | 完了   | 2026-06-16 | issue #14 (Refs #11 / Part of #10)                           |
+| 2   | 下書き                      | 完了   | 2026-06-16 | spec-draft で index.md 初版生成                              |
+| 3   | 上位文書突合                | 完了   | 2026-06-16 | 矛盾なし。送信バックエンド方式を論点化                       |
+| 4   | 論点整理                    | 完了   | 2026-06-16 | D1〜D7 を抽出                                                |
+| 5   | 論点解決                    | 完了   | 2026-06-17 | D1〜D7 全件確定                                              |
+| 6   | Interface / Routing 設計    | 完了   | 2026-06-17 | API appendix (`/api/contact`) + 図化済                       |
+| 7   | Content / Data 設計         | 完了   | 2026-06-17 | 永続化なし / Resend 通知                                     |
+| 8   | Performance / Security 設計 | 完了   | 2026-06-17 | 単一island / Turnstile+honeypot / 個人情報                   |
+| 9   | Test / Metrics 設計         | 完了   | 2026-06-17 | testid appendix + 問い合わせ導線 E2E                         |
+| 10  | 実装分割                    | 未着手 |            | `spec-prompts` で生成                                        |
+| 11  | レビュー済                  | 進行中 | 2026-06-17 | spec-review PASS + 多エージェント Rv 実施。指摘対応中 (D8〜) |
 
 ## 上位文書整合
 
@@ -50,7 +50,7 @@
 | ADR-0008    | corporate-site の React island policy                      | 継承 (フォームは「最初の主要 island」)                                     |
 | ADR-0009    | 問い合わせ送信を Workers 中継にする決定 (本 spec で起票)   | **正本** (spec-sync で起票。アーキ決定は ADR-0009 / infra contract が正本) |
 
-> 送信バックエンド方式 (D1) を確定したら、infrastructure.md の Infrastructure Contract / Security と feature doc へ `spec-sync` で反映する。新規アーキ判断なら ADR を起票する。
+> 送信バックエンド方式 (D1) は確定済。infrastructure.md の Infrastructure Contract / Security と feature doc / ADR-0009 へ `spec-sync` で反映済 (2026-06-17)。
 
 ## 関連資料
 
@@ -120,15 +120,21 @@ EARS 風で振る舞いを記述する。
 
 設計 / 実装フェーズへ持ち越す残課題を 1 件ずつ管理する。確定したものは「解決済みの論点」へ移す。
 
-| #   | 論点                                     | 決定候補                                                                                 | 決定                                                                                    |
-| --- | ---------------------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| D1  | 送信バックエンド方式                     | Cloudflare Workers 中継 / 第三者フォームサービス / mailto リンク代替                     | **確定: A. Cloudflare Pages Functions / Workers 中継 (同一オリジン `/api/contact`)**    |
-| D2  | スパム対策の手段                         | Cloudflare Turnstile / honeypot + rate limit / 併用                                      | **確定: C. Turnstile + honeypot 併用 (Workers で多層検証)**                             |
-| D3  | 送信先への通知手段                       | メール送信サービス (Resend / MailChannels 等) / Workers から SMTP / フォームサービス内蔵 | **確定: A. Resend (Workers から HTTP API で送信)**                                      |
-| D4  | フォーム入力項目とバリデーション         | 会社名 / 担当者名 / メール / 電話 / 問い合わせ種別 / 本文 の必須・任意・形式             | **確定: 下記項目セット (client + Workers の二重検証)。詳細は解決済み / Interface 参照** |
-| D5  | React island 化の範囲と client directive | フォーム全体を island / `client:visible` か `client:idle` か `client:load`               | **確定: フォーム全体を単一 island + `client:visible` (ADR-0008 既定)**                  |
-| D6  | 個人情報の取り扱い・プライバシー表記     | 保存しない (通知のみ) / プライバシーポリシー / 同意チェックの要否                        | **確定: 保存しない (通知のみ) + 利用目的明記 + 送信＝同意の注記 (checkbox なし, B)**    |
-| D7  | ADR 起票要否                             | D1 / D2 が新規アーキ判断なら ADR、既存 context 範囲内なら不要                            | **確定: 要・新規 ADR-0009 を起票 (Workers 中継の送信バックエンド)**                     |
+| #   | 論点                                                     | 決定候補                                                                                                                | 決定                                                                                    |
+| --- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| D1  | 送信バックエンド方式                                     | Cloudflare Workers 中継 / 第三者フォームサービス / mailto リンク代替                                                    | **確定: A. Cloudflare Pages Functions / Workers 中継 (同一オリジン `/api/contact`)**    |
+| D2  | スパム対策の手段                                         | Cloudflare Turnstile / honeypot + rate limit / 併用                                                                     | **確定: C. Turnstile + honeypot 併用 (Workers で多層検証)**                             |
+| D3  | 送信先への通知手段                                       | メール送信サービス (Resend / MailChannels 等) / Workers から SMTP / フォームサービス内蔵                                | **確定: A. Resend (Workers から HTTP API で送信)**                                      |
+| D4  | フォーム入力項目とバリデーション                         | 会社名 / 担当者名 / メール / 電話 / 問い合わせ種別 / 本文 の必須・任意・形式                                            | **確定: 下記項目セット (client + Workers の二重検証)。詳細は解決済み / Interface 参照** |
+| D5  | React island 化の範囲と client directive                 | フォーム全体を island / `client:visible` か `client:idle` か `client:load`                                              | **確定: フォーム全体を単一 island + `client:visible` (ADR-0008 既定)**                  |
+| D6  | 個人情報の取り扱い・プライバシー表記                     | 保存しない (通知のみ) / プライバシーポリシー / 同意チェックの要否                                                       | **確定: 保存しない (通知のみ) + 利用目的明記 + 送信＝同意の注記 (checkbox なし, B)**    |
+| D7  | ADR 起票要否                                             | D1 / D2 が新規アーキ判断なら ADR、既存 context 範囲内なら不要                                                           | **確定: 要・新規 ADR-0009 を起票 (Workers 中継の送信バックエンド)**                     |
+| D8  | rate limit / 濫用制御の方針 (Rv ②)                       | Workers 側 rate limit / quota を採用 / Phase 1 は非採用 (理由明記) / Turnstile のみで足りる                             | _未確定_                                                                                |
+| D9  | API エラー response body スキーマ (Rv ③)                 | 全コード共通 `{ ok, code, message?, errors? }` / コード別個別 body / 現状 (例のみ) 維持                                 | _未確定_                                                                                |
+| D10 | スパム対策・Workers ロジックの検証境界 (Rv ④)            | E2E は route intercept 必須 + 実 Functions は CF preview 手動 / Workers 検証を Vitest unit / Turnstile test mode の扱い | _未確定_                                                                                |
+| D11 | メール生成時のインジェクション対策 (Rv security)         | 宛先・件名はサーバ固定 + 本文 plain text エスケープ / ヘッダ無害化のみ / 対策不要と判断                                 | _未確定_                                                                                |
+| D12 | Turnstile token リプレイ防止 + Origin 検証 (Rv security) | token 単回検証 + Origin/Referer チェック / siteverify のみで十分と判断                                                  | _未確定_                                                                                |
+| D13 | 「永続化なし」の射程明確化 (Rv codex)                    | 「アプリ側で DB 永続化しない」に限定し通知経路 (Resend / 受信箱) の保持範囲・利用目的を明記 / 現状表現維持              | _未確定_                                                                                |
 
 ## 解決済みの論点
 
@@ -146,7 +152,8 @@ EARS 風で振る舞いを記述する。
 
 (決定できない項目を理由とともに残す。1 件でも残っていれば下流 phase は止める)
 
-- なし。D1〜D7 をすべて解決済み。ADR-0009 起票 + infrastructure.md 反映も完了 (spec-sync で durable 成果をハンドオフ済み)。
+- D1〜D7 は解決済み (ADR-0009 起票 + infrastructure.md 反映済)。
+- **D8〜D13 が未確定** (2026-06-17 の多エージェント Rv で抽出)。`spec-resolve` で 1 件ずつ確定する。決定者: Fukuemon / 期限: 実装分割 (`spec-prompts`) 着手前。確定するまで下流 phase (prompts 生成) は止める。
 
 ## 実装対象
 
@@ -227,11 +234,11 @@ EARS 風で振る舞いを記述する。
 | 電話番号       | `phone`                 |   任意    | tel      | 入力時のみ: 数字・ハイフン, 最大 20 文字         |
 | 問い合わせ種別 | `category`              |   必須    | select   | 選択肢から 1 つ (見積もり・販売 / 加工 / その他) |
 | 問い合わせ内容 | `message`               |   必須    | textarea | 10〜2,000 文字                                   |
-| (honeypot)     | (実装で命名)            |  hidden   | input    | 空であること (値があれば bot, D2)                |
+| (honeypot)     | `company_url`           |  hidden   | input    | 空であること (値があれば bot, D2)                |
 | (Turnstile)    | `cf-turnstile-response` |     —     | widget   | Workers が `siteverify` で検証 (D2)              |
 
 - request: 上記 payload + Turnstile token + honeypot。`POST /api/contact`。
-- response: 成功 (200) / バリデーションエラー (400, フィールド別エラー) / スパム判定失敗 / サーバエラー (5xx)。
+- response: 成功 (200) / バリデーションエラー (400, フィールド別エラー) / スパム判定失敗 (400, `turnstile_failed`) / 送信失敗 (502, `send_failed`)。honeypot 命中時は 200 を装い黙って破棄する (D2)。
 - バリデーションは client (即時) と Workers (同一スキーマで再検証) の二重。実装は zod 等の共有スキーマを検討 (#10)。
 
 ## Content / Data 設計
@@ -311,7 +318,7 @@ flowchart TD
     ServerValid -->|"OK"| Send{"Resend で通知 (D3)"}
 
     Send -->|"成功 (200)"| Done(["完了メッセージ表示"])
-    Send -->|"失敗 (5xx)"| SendErr["エラー表示 + 再送可能<br/>(連絡先 TEL/FAX/メールへ誘導)"]
+    Send -->|"失敗 (502)"| SendErr["エラー表示 + 再送可能<br/>(連絡先 TEL/FAX/メールへ誘導)"]
     SendErr --> Fill
     SilentDrop --> Done
 
@@ -335,18 +342,23 @@ sequenceDiagram
     Island->>Island: client バリデーション (D4)
     Island->>Fn: POST /api/contact (payload + token + honeypot)
     Fn->>Fn: honeypot 判定 (D2)
-    Fn->>TS: siteverify (secret key)
-    TS-->>Fn: 検証結果
-    Fn->>Fn: server 側再検証 (D4)
-    alt 検証 NG
-        Fn-->>Island: 400 / スパム破棄
-        Island-->>User: エラー表示 (入力値保持)
-    else 検証 OK
-        Fn->>Resend: メール送信要求 (API key は secret)
-        Resend->>Mail: 問い合わせ通知メール
-        Resend-->>Fn: 送信結果
-        Fn-->>Island: 200 / 5xx
-        Island-->>User: 完了 or 再送可能なエラー
+    alt honeypot 命中 (bot)
+        Fn-->>Island: 200 (成功を装い黙って破棄)
+        Island-->>User: 完了メッセージ表示
+    else honeypot 空
+        Fn->>TS: siteverify (secret key)
+        TS-->>Fn: 検証結果
+        Fn->>Fn: server 側再検証 (D4)
+        alt 検証 NG (turnstile_failed / validation_error)
+            Fn-->>Island: 400
+            Island-->>User: エラー表示 (入力値保持)
+        else 検証 OK
+            Fn->>Resend: メール送信要求 (API key は secret)
+            Resend->>Mail: 問い合わせ通知メール
+            Resend-->>Fn: 送信結果
+            Fn-->>Island: 200 (成功) / 502 (send_failed)
+            Island-->>User: 完了 or 再送可能なエラー
+        end
     end
     Note over Fn: 受信内容は永続化しない (D6)
 ```
@@ -392,7 +404,7 @@ sequenceDiagram
 | ------------------ | -------------- | --------------------------------------- | ----------------------------------------- |
 | `validation_error` | 400            | server 側再検証で必須/形式/文字数が不正 | フィールド別インラインエラー (入力値保持) |
 | `turnstile_failed` | 400            | Turnstile `siteverify` が失敗           | スパム判定エラー表示                      |
-| `send_failed`      | 502 / 5xx      | Resend 送信失敗 (外部障害等)            | エラー表示 + 再送可能、連絡先へ誘導       |
+| `send_failed`      | 502            | Resend 送信失敗 (外部障害等)            | エラー表示 + 再送可能、連絡先へ誘導       |
 | (honeypot 命中)    | 200            | honeypot フィールドに値あり (bot)       | 完了表示 (実際は破棄)                     |
 
 ## data-testid 一覧
@@ -459,7 +471,7 @@ E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前
 | infrastructure.md / Infrastructure Contract | **反映済** (spec-sync, ADR-0009)。Workers 依存「有」+ 送信経路 `/api/contact` + secret 名 (Resend / 宛先 / Turnstile site+secret) + SPF/DKIM を contract 化 | D1=A / D3=A / D2=C を採用 (source: spec-resolve)。以後 infrastructure.md が正本 |
 | infrastructure.md / Security・Operations    | **反映済** (spec-sync, ADR-0009)。bot 対策 (Turnstile + honeypot) を Workers 側多層検証で記載 + 個人情報は永続化なし・利用目的明示を記載                    | D2=C / D6 を採用 (source: spec-resolve)。以後 infrastructure.md が正本          |
 
-> 上記は `spec-sync` での back-propagation 候補。確定反映は D2〜D7 解決後にまとめて行う。
+> 上記は `spec-sync` で back-propagation 済 (2026-06-17)。以後 infrastructure.md / ADR-0009 が durable 成果の正本。
 
 ### ADR の新規 / 更新
 
@@ -471,26 +483,29 @@ E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前
 
 `spec-review` (fresh-context evaluator) の最新結果。完全な記録は `review.md` を参照。
 
-| 日付 | 結果 (PASS / NEEDS_WORK) | 指摘要点 | 対応 |
-| ---- | ------------------------ | -------- | ---- |
-|      |                          |          |      |
+| 日付       | 結果 (PASS / NEEDS_WORK)                    | 指摘要点                                                                                                                                                                                                                                                                                                                  | 対応                                                          |
+| ---------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| 2026-06-17 | PASS                                        | rubric 7 観点すべて合格根拠を引用。俯瞰指摘 5 件はいずれも実装裁量・申し送りレベルでブロッカーなし (E2E と多層防御の検証境界 / honeypot 200 と success 表示の整合 / send_failed のステータス揺れ / rate limit 採否 / client:idle 切替の判断記録)                                                                          | 次 phase (実装分割・spec-prompts) で 5 件を prompt に申し送り |
+| 2026-06-17 | 多エージェント Rv (claude/codex/cursor 3/3) | ブロッカーなし。合意指摘: send_failed ステータス揺れ(×3) / rate limit 濫用制御(×3) / API エラー body 未定義(×2) / スパム検証境界(×2) / spec-sync 注記 drift(×2) / フェーズ状態の文書内矛盾(×3)。単独 medium: メールインジェクション対策・honeypot key 未確定・E2E runtime と Functions 整合・「永続化なし」の通知経路射程 | spec-prompts 前に spec 内で詰める (詳細 `review.md`)          |
 
 ## 変更履歴
 
-| 日付       | 変更者   | 変更内容                                                                                                                                   |
-| ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| 2026-06-16 | Fukuemon | spec-draft で index.md 初版生成                                                                                                            |
-| 2026-06-17 | Fukuemon | spec-resolve: D1 (送信バックエンド方式) を A (Pages Functions / Workers 中継) で確定                                                       |
-| 2026-06-17 | Fukuemon | spec-resolve: D7 (ADR 起票要否) を要・新規 ADR-0009 起票で確定                                                                             |
-| 2026-06-17 | Fukuemon | spec-resolve: D3 (通知手段) を A (Resend HTTP API) で確定                                                                                  |
-| 2026-06-17 | Fukuemon | spec-resolve: D2 (スパム対策) を C (Turnstile + honeypot 併用) で確定                                                                      |
-| 2026-06-17 | Fukuemon | spec-resolve: D4 (入力項目とバリデーション) を確定 (6 項目 + honeypot + Turnstile, 二重検証)                                               |
-| 2026-06-17 | Fukuemon | spec-resolve: D6 (個人情報) を保存しない + 利用目的明記 + 送信＝同意注記 (B) で確定                                                        |
-| 2026-06-17 | Fukuemon | spec-resolve: D5 (island 化) をフォーム全体を単一 island + `client:visible` で確定 (全論点解決)                                            |
-| 2026-06-17 | Fukuemon | spec-sync: ADR-0009 起票 + infrastructure.md (Infrastructure Contract / Security) に反映。アーキ決定の正本を ADR-0009 / infra へハンドオフ |
-| 2026-06-17 | Fukuemon | spec-sync: feature doc (DesignDoc_corporate-site) の設計方針・P6 に ADR-0009 / spec #14 参照を補足                                         |
-| 2026-06-17 | Fukuemon | spec-diagrams: 送信〜検証〜通知の Flowchart / Sequence を生成                                                                              |
-| 2026-06-17 | Fukuemon | appendix 取り込み: API (`/api/contact`) + data-testid 一覧を追加                                                                           |
+| 日付       | 変更者   | 変更内容                                                                                                                                                                                                      |
+| ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-16 | Fukuemon | spec-draft で index.md 初版生成                                                                                                                                                                               |
+| 2026-06-17 | Fukuemon | spec-resolve: D1 (送信バックエンド方式) を A (Pages Functions / Workers 中継) で確定                                                                                                                          |
+| 2026-06-17 | Fukuemon | spec-resolve: D7 (ADR 起票要否) を要・新規 ADR-0009 起票で確定                                                                                                                                                |
+| 2026-06-17 | Fukuemon | spec-resolve: D3 (通知手段) を A (Resend HTTP API) で確定                                                                                                                                                     |
+| 2026-06-17 | Fukuemon | spec-resolve: D2 (スパム対策) を C (Turnstile + honeypot 併用) で確定                                                                                                                                         |
+| 2026-06-17 | Fukuemon | spec-resolve: D4 (入力項目とバリデーション) を確定 (6 項目 + honeypot + Turnstile, 二重検証)                                                                                                                  |
+| 2026-06-17 | Fukuemon | spec-resolve: D6 (個人情報) を保存しない + 利用目的明記 + 送信＝同意注記 (B) で確定                                                                                                                           |
+| 2026-06-17 | Fukuemon | spec-resolve: D5 (island 化) をフォーム全体を単一 island + `client:visible` で確定 (全論点解決)                                                                                                               |
+| 2026-06-17 | Fukuemon | spec-sync: ADR-0009 起票 + infrastructure.md (Infrastructure Contract / Security) に反映。アーキ決定の正本を ADR-0009 / infra へハンドオフ                                                                    |
+| 2026-06-17 | Fukuemon | spec-sync: feature doc (DesignDoc_corporate-site) の設計方針・P6 に ADR-0009 / spec #14 参照を補足                                                                                                            |
+| 2026-06-17 | Fukuemon | spec-diagrams: 送信〜検証〜通知の Flowchart / Sequence を生成                                                                                                                                                 |
+| 2026-06-17 | Fukuemon | appendix 取り込み: API (`/api/contact`) + data-testid 一覧を追加                                                                                                                                              |
+| 2026-06-17 | Fukuemon | Rv 対応 A (直接修正): send_failed=502 一意化 / honeypot 200 を Sequence・Props で独立化 + turnstile_failed=400 一本化 / honeypot key=`company_url` 確定 / spec-sync 注記を反映済へ更新 / フェーズ#11 状態整合 |
+| 2026-06-17 | Fukuemon | Rv 対応 B (起票): 未決設計判断を論点 D8〜D13 として起票 (rate limit / API エラー body / 検証境界 / メールインジェクション / Turnstile リプレイ・Origin / 永続化なし射程)                                      |
 
 ## 備考
 
