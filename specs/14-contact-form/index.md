@@ -7,7 +7,7 @@
 ## メタ情報
 
 - Issue: `#14`
-- ステータス: `Draft`
+- ステータス: `Review`
 - 作成日: 2026-06-16
 - 更新日: 2026-06-17
 - Branch: `feature/14`
@@ -541,6 +541,7 @@ E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前
 | 2026-06-17 | Fukuemon | spec-resolve: D12 (リプレイ/CSRF) を A (token 単回利用 + Origin/Referer 検証) で確定。Security 節・infra への spec-sync 候補を反映                                                                            |
 | 2026-06-17 | Fukuemon | spec-resolve: D13 (永続化なし射程) を A (アプリ側 DB/ストレージ/ログに限定 + 通知経路の保持を明記) で確定。Content/Data・Security/Privacy を同期。D8〜D13 全件解決                                            |
 | 2026-06-17 | Fukuemon | spec-sync: D8 (rate limit) / D11 (メールインジェクション) / D12 (リプレイ・CSRF) + D9/D10/D13 を infrastructure.md (Contract / Security) と ADR-0009 (決定・トレードオフ) へ back-propagation                 |
+| 2026-06-17 | Codex    | Rv 指摘対応: メタ情報のステータスを再 spec-review PASS 済みの実態に合わせて `Review` へ更新                                                                                                                   |
 
 ## 備考
 
