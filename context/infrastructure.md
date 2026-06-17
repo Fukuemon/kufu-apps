@@ -1,6 +1,6 @@
 # Infrastructure & Operations
 
-> 最終更新: 2026-05-31
+> 最終更新: 2026-06-17
 
 公開基盤・環境戦略・運用・セキュリティの契約。Terraform 実体は別 repo (`kufu-infra`) で管理する ([ADR-0001](../adr/0001-terraform-infra-repository-boundary.md))。本書は **app 側が依存する contract** を定義する。
 
@@ -22,6 +22,16 @@ app 側から infra repo へ受け渡す contract:
 - 必要な secret 名 (実値は repo に保存しない)
 - Workers 依存の有無
 - app 変更で infra 差分が必要な場合の参照リンク (spec / ADR → infra repo PR)
+
+### corporate-site 問い合わせフォーム (Workers 依存: 有)
+
+問い合わせフォームの送信は Cloudflare Pages Functions (Workers) を中継する ([ADR-0009](../adr/0009-corporate-site-contact-form-backend.md) / [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様))。静的生成 (`output: "static"`) を維持しつつ送信エンドポイントのみ Functions を併用する。
+
+- Workers 依存: 有 (送信エンドポイント `/api/contact`)
+- 必要な secret 名 (実値は repo に保存しない): Resend API key / メール宛先 / Cloudflare Turnstile secret key
+- client に置く公開値: Turnstile site key
+- DNS 前提: 送信ドメインの SPF / DKIM 検証 (メール到達性のため)
+- Rate Limiting: `/api/contact` に Cloudflare Rate Limiting ルールを設定する (叩き台: 同一 IP 5 req/min、超過時 429)。Resend 無料枠の枯渇による送信不能を防ぐ濫用制御。しきい値は運用観測で調整する。
 
 ## Environment Strategy
 
@@ -69,7 +79,7 @@ flowchart LR
 
 - deploy 成功だけでなく、preview での導線確認を公開判定に含める。
 - Cloudflare Analytics や Web Analytics を利用できる場合は、コーポレートサイトの performance と導線計測の一次観測点として使う。
-- 監視、ログ、分析の詳細は、フォーム導線や API 連携の採用時に spec / ADR で追加定義する。
+- 監視、ログ、分析の詳細は、フォーム導線や API 連携の採用時に feature doc / ADR で追加定義する。
 - Cloudflare 固有設定が app 実装に漏れ出さないよう、framework 設定と deploy 設定の責務を分ける。
 - Terraform plan / apply の手順や state backend の詳細は infra repo 側で管理し、この monorepo に複製しない。
 
@@ -77,7 +87,10 @@ flowchart LR
 
 - Cloudflare 上で扱う secret、token、API key は client 側へ露出させず、環境ごとの secret 管理に分離する。
 - Terraform variable や provider credential など infra 用の秘匿情報は app repo に持ち込まない。
-- フォーム保護や bot 対策が必要な場合は、Cloudflare Turnstile など edge 側サービスを候補に含める。
+- フォーム保護や bot 対策が必要な場合は、Cloudflare Turnstile など edge 側サービスを候補に含める。corporate-site の問い合わせフォームは **Cloudflare Turnstile + honeypot を Workers 側で多層検証**する ([ADR-0009](../adr/0009-corporate-site-contact-form-backend.md))。Turnstile token の `siteverify` と honeypot 判定、入力の server 側再検証はすべて `/api/contact` (Pages Functions) で行い、client を信頼しない。
+- リプレイ / CSRF 対策: Turnstile token は単回利用 (`siteverify` の二度目拒否に依拠) とし、Workers で `/api/contact` のリクエスト元 Origin / Referer を自サイトに限定する ([feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様))。
+- 濫用 / 連投対策: `/api/contact` に Cloudflare Rate Limiting (叩き台 5 req/min/IP、超過 429) を設定し、Resend 無料枠枯渇による送信不能 (可用性) を防ぐ (Infrastructure Contract / feature doc)。
+- メール生成時のインジェクション対策: Resend へ渡す宛先・件名はサーバ固定値とし、ユーザー入力は本文に plain text としてのみ埋め込み、改行・制御文字 (CRLF) を無害化する。email を Reply-To に使う場合も CRLF 除去・単一値に制限する ([feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様))。
 - CMS/API を導入する場合は、認証、権限、公開フロー、プレビュー環境を設計する ([DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md))。
 - コーポレートサイトの assets はライセンスと利用許諾を確認する。
-- 問い合わせフォームなどで個人情報を扱う場合の方針は feature / spec で明記する。
+- 問い合わせフォームなどで個人情報を扱う場合の方針は feature doc で明記する。corporate-site の問い合わせフォームは **アプリ側 (Workers) で永続化せず (DB / ストレージ / ログに残さず) メール通知のみ**とし、フォーム近傍に利用目的を明示する ([ADR-0009](../adr/0009-corporate-site-contact-form-backend.md) / [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様))。「永続化なし」の射程はアプリ側に限り、通知経路 (Resend 経由のメール送信 → 受信箱・Resend 側の一時保持) には通知という利用目的の範囲でデータが残る。
