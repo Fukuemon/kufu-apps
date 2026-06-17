@@ -17,19 +17,19 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態   | 最終更新   | 備考                                                         |
-| --- | --------------------------- | ------ | ---------- | ------------------------------------------------------------ |
-| 1   | 起票                        | 完了   | 2026-06-16 | issue #14 (Refs #11 / Part of #10)                           |
-| 2   | 下書き                      | 完了   | 2026-06-16 | spec-draft で index.md 初版生成                              |
-| 3   | 上位文書突合                | 完了   | 2026-06-16 | 矛盾なし。送信バックエンド方式を論点化                       |
-| 4   | 論点整理                    | 完了   | 2026-06-16 | D1〜D7 を抽出                                                |
-| 5   | 論点解決                    | 完了   | 2026-06-17 | D1〜D13 全件確定 (D8〜D13 は Rv 由来)                        |
-| 6   | Interface / Routing 設計    | 完了   | 2026-06-17 | API appendix (`/api/contact`) + 図化済                       |
-| 7   | Content / Data 設計         | 完了   | 2026-06-17 | 永続化なし / Resend 通知                                     |
-| 8   | Performance / Security 設計 | 完了   | 2026-06-17 | 単一island / Turnstile+honeypot / 個人情報                   |
-| 9   | Test / Metrics 設計         | 完了   | 2026-06-17 | testid appendix + 問い合わせ導線 E2E                         |
-| 10  | 実装分割                    | 未着手 |            | `spec-prompts` で生成                                        |
-| 11  | レビュー済                  | 進行中 | 2026-06-17 | spec-review PASS + 多エージェント Rv 実施。指摘対応中 (D8〜) |
+| #   | フェーズ                    | 状態   | 最終更新   | 備考                                                                                        |
+| --- | --------------------------- | ------ | ---------- | ------------------------------------------------------------------------------------------- |
+| 1   | 起票                        | 完了   | 2026-06-16 | issue #14 (Refs #11 / Part of #10)                                                          |
+| 2   | 下書き                      | 完了   | 2026-06-16 | spec-draft で index.md 初版生成                                                             |
+| 3   | 上位文書突合                | 完了   | 2026-06-16 | 矛盾なし。送信バックエンド方式を論点化                                                      |
+| 4   | 論点整理                    | 完了   | 2026-06-16 | D1〜D7 を抽出                                                                               |
+| 5   | 論点解決                    | 完了   | 2026-06-17 | D1〜D13 全件確定 (D8〜D13 は Rv 由来)                                                       |
+| 6   | Interface / Routing 設計    | 完了   | 2026-06-17 | API appendix (`/api/contact`) + 図化済                                                      |
+| 7   | Content / Data 設計         | 完了   | 2026-06-17 | 永続化なし / Resend 通知                                                                    |
+| 8   | Performance / Security 設計 | 完了   | 2026-06-17 | 単一island / Turnstile+honeypot / 個人情報                                                  |
+| 9   | Test / Metrics 設計         | 完了   | 2026-06-17 | testid appendix + 問い合わせ導線 E2E                                                        |
+| 10  | 実装分割                    | 未着手 |            | `spec-prompts` で生成                                                                       |
+| 11  | レビュー済                  | 進行中 | 2026-06-17 | spec-review PASS + 多エージェント Rv。指摘 D8〜D13 対応 + spec-sync 済。再 spec-review 待ち |
 
 ## 上位文書整合
 
@@ -158,7 +158,7 @@ EARS 風で振る舞いを記述する。
 
 (決定できない項目を理由とともに残す。1 件でも残っていれば下流 phase は止める)
 
-- なし。D1〜D13 をすべて解決済み。D8 (rate limit) / D11 (メールインジェクション) / D12 (リプレイ・CSRF) の durable なセキュリティ判断は infrastructure.md / ADR-0009 へ `spec-sync` で反映予定 (本 spec 内の「上位資料からの変更点」に候補を記録)。
+- なし。D1〜D13 をすべて解決済み。D8 (rate limit) / D11 (メールインジェクション) / D12 (リプレイ・CSRF) の durable なセキュリティ判断は infrastructure.md / ADR-0009 へ `spec-sync` で反映済 (2026-06-17)。以後 infrastructure.md / ADR-0009 が durable 成果の正本。
 
 ## 実装対象
 
@@ -490,15 +490,15 @@ E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前
 
 ### context への影響
 
-| 対象 doc / 節                                                     | 変更内容                                                                                                                                                    | 理由                                                                                      |
-| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| infrastructure.md / Infrastructure Contract                       | **反映済** (spec-sync, ADR-0009)。Workers 依存「有」+ 送信経路 `/api/contact` + secret 名 (Resend / 宛先 / Turnstile site+secret) + SPF/DKIM を contract 化 | D1=A / D3=A / D2=C を採用 (source: spec-resolve)。以後 infrastructure.md が正本           |
-| infrastructure.md / Security・Operations                          | **反映済** (spec-sync, ADR-0009)。bot 対策 (Turnstile + honeypot) を Workers 側多層検証で記載 + 個人情報は永続化なし・利用目的明示を記載                    | D2=C / D6 を採用 (source: spec-resolve)。以後 infrastructure.md が正本                    |
-| infrastructure.md / Security・Operations (rate limit)             | **反映予定** (spec-sync)。`/api/contact` に Cloudflare Rate Limiting (叩き台 5 req/min/IP, 超過 429) を Infrastructure Contract / Security に追加           | D8=A を採用 (source: spec-resolve)。durable な濫用制御判断を design 正本へハンドオフ      |
-| infrastructure.md / Security・Operations (メールインジェクション) | **反映予定** (spec-sync)。Resend へのメール生成時の入力無害化 (宛先・件名固定 / 本文 plain text / ヘッダ CRLF 除去) を Security に追加                      | D11=A を採用 (source: spec-resolve)。durable なセキュリティ判断を design 正本へハンドオフ |
-| infrastructure.md / Security・Operations (リプレイ/CSRF)          | **反映予定** (spec-sync)。Turnstile token 単回利用 + `/api/contact` の Origin/Referer 検証を Security に追加                                                | D12=A を採用 (source: spec-resolve)。durable なセキュリティ判断を design 正本へハンドオフ |
+| 対象 doc / 節                                                     | 変更内容                                                                                                                                                    | 理由                                                                            |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| infrastructure.md / Infrastructure Contract                       | **反映済** (spec-sync, ADR-0009)。Workers 依存「有」+ 送信経路 `/api/contact` + secret 名 (Resend / 宛先 / Turnstile site+secret) + SPF/DKIM を contract 化 | D1=A / D3=A / D2=C を採用 (source: spec-resolve)。以後 infrastructure.md が正本 |
+| infrastructure.md / Security・Operations                          | **反映済** (spec-sync, ADR-0009)。bot 対策 (Turnstile + honeypot) を Workers 側多層検証で記載 + 個人情報は永続化なし・利用目的明示を記載                    | D2=C / D6 を採用 (source: spec-resolve)。以後 infrastructure.md が正本          |
+| infrastructure.md / Security・Operations (rate limit)             | **反映済** (spec-sync)。`/api/contact` に Cloudflare Rate Limiting (叩き台 5 req/min/IP, 超過 429) を Infrastructure Contract / Security + ADR-0009 に追加  | D8=A を採用 (source: spec-resolve)。以後 infrastructure.md / ADR-0009 が正本    |
+| infrastructure.md / Security・Operations (メールインジェクション) | **反映済** (spec-sync)。Resend へのメール生成時の入力無害化 (宛先・件名固定 / 本文 plain text / ヘッダ CRLF 除去) を Security + ADR-0009 に追加             | D11=A を採用 (source: spec-resolve)。以後 infrastructure.md / ADR-0009 が正本   |
+| infrastructure.md / Security・Operations (リプレイ/CSRF)          | **反映済** (spec-sync)。Turnstile token 単回利用 + `/api/contact` の Origin/Referer 検証を Security + ADR-0009 に追加                                       | D12=A を採用 (source: spec-resolve)。以後 infrastructure.md / ADR-0009 が正本   |
 
-> rate limit (D8) / メールインジェクション (D11) / リプレイ・CSRF (D12) 行は `spec-sync` で back-propagation 予定。その他は反映済 (2026-06-17)。以後 infrastructure.md / ADR-0009 が durable 成果の正本。
+> rate limit (D8) / メールインジェクション (D11) / リプレイ・CSRF (D12) を含め全行 `spec-sync` で back-propagation 済 (2026-06-17)。以後 infrastructure.md / ADR-0009 が durable 成果の正本。
 
 ### ADR の新規 / 更新
 
@@ -539,6 +539,7 @@ E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前
 | 2026-06-17 | Fukuemon | spec-resolve: D11 (メールインジェクション) を A (宛先・件名固定 / 本文 plain text 無害化 / ヘッダ CRLF 除去) で確定。Security 節・infra への spec-sync 候補を反映                                             |
 | 2026-06-17 | Fukuemon | spec-resolve: D12 (リプレイ/CSRF) を A (token 単回利用 + Origin/Referer 検証) で確定。Security 節・infra への spec-sync 候補を反映                                                                            |
 | 2026-06-17 | Fukuemon | spec-resolve: D13 (永続化なし射程) を A (アプリ側 DB/ストレージ/ログに限定 + 通知経路の保持を明記) で確定。Content/Data・Security/Privacy を同期。D8〜D13 全件解決                                            |
+| 2026-06-17 | Fukuemon | spec-sync: D8 (rate limit) / D11 (メールインジェクション) / D12 (リプレイ・CSRF) + D9/D10/D13 を infrastructure.md (Contract / Security) と ADR-0009 (決定・トレードオフ) へ back-propagation                 |
 
 ## 備考
 
