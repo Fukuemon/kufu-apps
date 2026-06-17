@@ -23,7 +23,7 @@
 | 2   | 下書き                      | 完了   | 2026-06-16 | spec-draft で index.md 初版生成                              |
 | 3   | 上位文書突合                | 完了   | 2026-06-16 | 矛盾なし。送信バックエンド方式を論点化                       |
 | 4   | 論点整理                    | 完了   | 2026-06-16 | D1〜D7 を抽出                                                |
-| 5   | 論点解決                    | 完了   | 2026-06-17 | D1〜D7 全件確定                                              |
+| 5   | 論点解決                    | 完了   | 2026-06-17 | D1〜D13 全件確定 (D8〜D13 は Rv 由来)                        |
 | 6   | Interface / Routing 設計    | 完了   | 2026-06-17 | API appendix (`/api/contact`) + 図化済                       |
 | 7   | Content / Data 設計         | 完了   | 2026-06-17 | 永続化なし / Resend 通知                                     |
 | 8   | Performance / Security 設計 | 完了   | 2026-06-17 | 単一island / Turnstile+honeypot / 個人情報                   |
@@ -120,21 +120,21 @@ EARS 風で振る舞いを記述する。
 
 設計 / 実装フェーズへ持ち越す残課題を 1 件ずつ管理する。確定したものは「解決済みの論点」へ移す。
 
-| #   | 論点                                                     | 決定候補                                                                                                                | 決定                                                                                    |
-| --- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| D1  | 送信バックエンド方式                                     | Cloudflare Workers 中継 / 第三者フォームサービス / mailto リンク代替                                                    | **確定: A. Cloudflare Pages Functions / Workers 中継 (同一オリジン `/api/contact`)**    |
-| D2  | スパム対策の手段                                         | Cloudflare Turnstile / honeypot + rate limit / 併用                                                                     | **確定: C. Turnstile + honeypot 併用 (Workers で多層検証)**                             |
-| D3  | 送信先への通知手段                                       | メール送信サービス (Resend / MailChannels 等) / Workers から SMTP / フォームサービス内蔵                                | **確定: A. Resend (Workers から HTTP API で送信)**                                      |
-| D4  | フォーム入力項目とバリデーション                         | 会社名 / 担当者名 / メール / 電話 / 問い合わせ種別 / 本文 の必須・任意・形式                                            | **確定: 下記項目セット (client + Workers の二重検証)。詳細は解決済み / Interface 参照** |
-| D5  | React island 化の範囲と client directive                 | フォーム全体を island / `client:visible` か `client:idle` か `client:load`                                              | **確定: フォーム全体を単一 island + `client:visible` (ADR-0008 既定)**                  |
-| D6  | 個人情報の取り扱い・プライバシー表記                     | 保存しない (通知のみ) / プライバシーポリシー / 同意チェックの要否                                                       | **確定: 保存しない (通知のみ) + 利用目的明記 + 送信＝同意の注記 (checkbox なし, B)**    |
-| D7  | ADR 起票要否                                             | D1 / D2 が新規アーキ判断なら ADR、既存 context 範囲内なら不要                                                           | **確定: 要・新規 ADR-0009 を起票 (Workers 中継の送信バックエンド)**                     |
-| D8  | rate limit / 濫用制御の方針 (Rv ②)                       | Workers 側 rate limit / quota を採用 / Phase 1 は非採用 (理由明記) / Turnstile のみで足りる                             | _未確定_                                                                                |
-| D9  | API エラー response body スキーマ (Rv ③)                 | 全コード共通 `{ ok, code, message?, errors? }` / コード別個別 body / 現状 (例のみ) 維持                                 | _未確定_                                                                                |
-| D10 | スパム対策・Workers ロジックの検証境界 (Rv ④)            | E2E は route intercept 必須 + 実 Functions は CF preview 手動 / Workers 検証を Vitest unit / Turnstile test mode の扱い | _未確定_                                                                                |
-| D11 | メール生成時のインジェクション対策 (Rv security)         | 宛先・件名はサーバ固定 + 本文 plain text エスケープ / ヘッダ無害化のみ / 対策不要と判断                                 | _未確定_                                                                                |
-| D12 | Turnstile token リプレイ防止 + Origin 検証 (Rv security) | token 単回検証 + Origin/Referer チェック / siteverify のみで十分と判断                                                  | _未確定_                                                                                |
-| D13 | 「永続化なし」の射程明確化 (Rv codex)                    | 「アプリ側で DB 永続化しない」に限定し通知経路 (Resend / 受信箱) の保持範囲・利用目的を明記 / 現状表現維持              | _未確定_                                                                                |
+| #   | 論点                                                     | 決定候補                                                                                                                | 決定                                                                                          |
+| --- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| D1  | 送信バックエンド方式                                     | Cloudflare Workers 中継 / 第三者フォームサービス / mailto リンク代替                                                    | **確定: A. Cloudflare Pages Functions / Workers 中継 (同一オリジン `/api/contact`)**          |
+| D2  | スパム対策の手段                                         | Cloudflare Turnstile / honeypot + rate limit / 併用                                                                     | **確定: C. Turnstile + honeypot 併用 (Workers で多層検証)**                                   |
+| D3  | 送信先への通知手段                                       | メール送信サービス (Resend / MailChannels 等) / Workers から SMTP / フォームサービス内蔵                                | **確定: A. Resend (Workers から HTTP API で送信)**                                            |
+| D4  | フォーム入力項目とバリデーション                         | 会社名 / 担当者名 / メール / 電話 / 問い合わせ種別 / 本文 の必須・任意・形式                                            | **確定: 下記項目セット (client + Workers の二重検証)。詳細は解決済み / Interface 参照**       |
+| D5  | React island 化の範囲と client directive                 | フォーム全体を island / `client:visible` か `client:idle` か `client:load`                                              | **確定: フォーム全体を単一 island + `client:visible` (ADR-0008 既定)**                        |
+| D6  | 個人情報の取り扱い・プライバシー表記                     | 保存しない (通知のみ) / プライバシーポリシー / 同意チェックの要否                                                       | **確定: 保存しない (通知のみ) + 利用目的明記 + 送信＝同意の注記 (checkbox なし, B)**          |
+| D7  | ADR 起票要否                                             | D1 / D2 が新規アーキ判断なら ADR、既存 context 範囲内なら不要                                                           | **確定: 要・新規 ADR-0009 を起票 (Workers 中継の送信バックエンド)**                           |
+| D8  | rate limit / 濫用制御の方針 (Rv ②)                       | Workers 側 rate limit / quota を採用 / Phase 1 は非採用 (理由明記) / Turnstile のみで足りる                             | **確定: A. 採用。`/api/contact` に Cloudflare Rate Limiting (5 req/min/IP) を設定**           |
+| D9  | API エラー response body スキーマ (Rv ③)                 | 全コード共通 `{ ok, code, message?, errors? }` / コード別個別 body / 現状 (例のみ) 維持                                 | **確定: A. 全エラー共通 `{ ok:false, code, message?, errors? }`**                             |
+| D10 | スパム対策・Workers ロジックの検証境界 (Rv ④)            | E2E は route intercept 必須 + 実 Functions は CF preview 手動 / Workers 検証を Vitest unit / Turnstile test mode の扱い | **確定: A. E2E=route intercept 必須 + Workers ロジック=Vitest unit + 実結線=CF preview 手動** |
+| D11 | メール生成時のインジェクション対策 (Rv security)         | 宛先・件名はサーバ固定 + 本文 plain text エスケープ / ヘッダ無害化のみ / 対策不要と判断                                 | **確定: A. 宛先・件名サーバ固定 + 本文 plain text 無害化 + ヘッダ CRLF 除去**                 |
+| D12 | Turnstile token リプレイ防止 + Origin 検証 (Rv security) | token 単回検証 + Origin/Referer チェック / siteverify のみで十分と判断                                                  | **確定: A. token 単回検証 (siteverify 依拠) + Workers で Origin/Referer チェック**            |
+| D13 | 「永続化なし」の射程明確化 (Rv codex)                    | 「アプリ側で DB 永続化しない」に限定し通知経路 (Resend / 受信箱) の保持範囲・利用目的を明記 / 現状表現維持              | **確定: A. 「アプリ側で DB/ストレージ/ログに永続化しない」に限定 + 通知経路の保持を明記**     |
 
 ## 解決済みの論点
 
@@ -147,13 +147,18 @@ EARS 風で振る舞いを記述する。
 - **D6 個人情報の取り扱い・プライバシー表記** → **保存しない (通知のみ) + 利用目的明記 + 送信＝同意の注記 (B)**。(1) Workers は受信内容を Resend 経由でメール通知するだけで DB / ログに本文を残さない (調査用の最小ログも個人情報を含めない)。(2) フォーム近傍に利用目的テキスト (例:「ご入力情報はお問い合わせ対応のみに利用します」) を表示し、個人情報保護法の利用目的明示に対応。(3) 同意は checkbox を設けず「送信をもって同意とみなす」旨を注記する (B2B 問い合わせの一般運用)。プライバシーポリシーページ新設 (IA #11 スコープ) には依存せず #14 内で完結する。
 - **D4 フォーム入力項目とバリデーション** → 下記項目セットで確定。会社名 (任意/最大100) / 担当者名 (必須/1〜50) / メールアドレス (必須/メール形式) / 電話番号 (任意/数字・ハイフン・最大20) / 問い合わせ種別 (必須/select: 見積もり・販売について・加工について・その他) / 問い合わせ内容 (必須/10〜2,000) + honeypot 隠しフィールド (D2) + Turnstile token (D2)。バリデーションは **client (即時) と Workers (再検証) の二重**で行い、Workers は client を信頼せず同一スキーマで検証して不正は 400 を返す。実装は `@kufu/ui` のフォーム部品 + React Hook Form + zod 等を検討 (#10 / D5)。問い合わせ種別は事業の二本柱 (BR1) に対応。プライバシー同意 checkbox を追加するかは D6 で決定。
 - **D2 スパム対策の手段** → **C. Cloudflare Turnstile + honeypot 併用**。client に Turnstile widget (site key) を置き、Workers が token を Turnstile `siteverify` (secret key) で検証する。加えて隠し honeypot フィールドを設け、値が入っていれば bot とみなし成功を装って黙って破棄する。Turnstile で巧妙な bot、honeypot でほぼゼロコストに単純 bot を弾く多層防御。Turnstile は Cloudflare ネイティブで一貫性が高く infrastructure.md の候補に合致。honeypot は client JS 追加なし。波及: D4 (隠し honeypot フィールドを項目に含める) / D5 (Turnstile の client script を island/directive 選定で考慮) / infra (Turnstile site key / secret key を contract に追加)。
+- **D8 rate limit / 濫用制御の方針** → **A. 採用。`/api/contact` に Cloudflare Rate Limiting を設定 (叩き台: 同一 IP 5 req/min)**。Turnstile (巧妙 bot) + honeypot (単純 bot) + rate limit (Turnstile 通過後の連投・大量送信) の多層の最終段。Resend 無料枠 (100通/日, D3) の枯渇による送信不能 (可用性) を防ぐのが主目的。Cloudflare ネイティブの設定 (config レベル) で完結しコード追加は最小、Decision Priority「一貫性」(Cloudflare 完結) にも合致。しきい値は運用観測で調整可とし実装/運用へ申し送る。波及: infra (Rate Limiting ルールを Infrastructure Contract / Security に追加 → `spec-sync`) / D9 (rate limit 超過時の応答 429 `rate_limited` を共通エラー body に含める)。
+- **D9 API エラー response body スキーマ** → **A. 全エラー共通 `{ ok: false, code, message?, errors? }`**。成功は `{ ok: true }`。`code` は `validation_error` (400) / `turnstile_failed` (400) / `rate_limited` (429, D8) / `send_failed` (502) の 4 種。`errors` はフィールド別エラー (`validation_error` 時のみ)、`message` は任意の表示用文言。honeypot 命中時は 200 `{ ok: true }` を装う (D2, 変更なし)。client はこの `code` で分岐し、`rate_limited` は「時間をおいて再送」、`send_failed` は「再送 + 連絡先誘導」を表示する。これで client 分岐と E2E 期待値が一意になる。波及: API 節 (レスポンス例・エラーコード一覧)・エラーケース表に反映。
+- **D13 「永続化なし」の射程明確化** → **A. 「アプリ側で DB/ストレージ/ログに永続化しない」に限定し、通知経路の保持を明記**。「永続化なし」はアプリ (Workers) が DB / ストレージ / ログに本文を残さないことを指す。一方で Resend 経由のメール送信 → 受信箱 (`fukuura@mist.ocn.ne.jp`) および Resend 側の一時保持にはデータが残る旨を明記し、誤読を防ぐ。利用目的 (問い合わせ対応のみ) は D6 でカバー済で整合。spec 内 (Content/Data 設計・Security/Privacy) で完結。
+- **D12 Turnstile token リプレイ防止 + Origin 検証** → **A. token 単回検証 + Workers で Origin/Referer チェック**。(1) Turnstile `siteverify` は同一 token の二度目の検証を拒否する仕様に依拠し token を単回利用とする (Workers 側に追加のストアは不要)。(2) Workers で `/api/contact` のリクエスト元 Origin/Referer を自サイトに限定し、外部オリジンからの直接 POST を弾く (CSRF/リプレイ耐性の一段上げ)。低コストで防御を強化。波及: Security 節に反映 + durable なセキュリティ判断として infrastructure.md / ADR-0009 へ `spec-sync`。
+- **D11 メール生成時のインジェクション対策** → **A. 宛先・件名サーバ固定 + 本文 plain text 無害化 + ヘッダ CRLF 除去**。(1) Resend へ渡す宛先・件名はサーバ固定値とし、ユーザー入力を件名/宛先に展開しない。(2) ユーザー入力 (name / email / phone / company / message / category) は本文に **plain text としてのみ** 埋め込み、改行・制御文字 (`\r` `\n` 等) を無害化してメールヘッダインジェクションを防ぐ。(3) email を Reply-To に使う場合も CRLF 除去・単一値に制限してヘッダ無害化する。(4) 使用する値は zod でサーバ再検証済 (D4) のものだけ。波及: Security 節に反映 + durable なセキュリティ判断として infrastructure.md / ADR-0009 へ `spec-sync`。
+- **D10 スパム対策・Workers ロジックの検証境界** → **A. 3 層の役割分担を固定** (`context/testing.md` の「ロジック=Vitest / 導線=Playwright」に整合)。(1) **E2E (Playwright)**: `/api/contact` を **route intercept してモック必須**とし、成功 (200) / `validation_error` (400) / `turnstile_failed` (400) / `rate_limited` (429) / `send_failed` (502) を fixture 化して導線・エラー表示・入力値保持を検証する。Turnstile は Cloudflare の **test mode キー** (常時 pass/fail) を使用、honeypot は正常系で空のまま (E2E 対象外)。`astro preview` (E2E runtime) では Pages Functions が動かないため実 Functions には依存させない。(2) **Workers ユニット (Vitest)**: 二重バリデーション (zod スキーマ) / honeypot 判定 / Turnstile `siteverify` 分岐 / エラー code マッピングを単体検証する。(3) **実 Functions 結線**: Cloudflare Pages preview で手動スモーク確認 (CI 対象外)。これで D2 の多層防御と D9 のエラー契約が回帰検証可能になる。波及: Testing 節・テスト/評価方針・data-testid 注記に反映。
 
 ## 未確定事項
 
 (決定できない項目を理由とともに残す。1 件でも残っていれば下流 phase は止める)
 
-- D1〜D7 は解決済み (ADR-0009 起票 + infrastructure.md 反映済)。
-- **D8〜D13 が未確定** (2026-06-17 の多エージェント Rv で抽出)。`spec-resolve` で 1 件ずつ確定する。決定者: Fukuemon / 期限: 実装分割 (`spec-prompts`) 着手前。確定するまで下流 phase (prompts 生成) は止める。
+- なし。D1〜D13 をすべて解決済み。D8 (rate limit) / D11 (メールインジェクション) / D12 (リプレイ・CSRF) の durable なセキュリティ判断は infrastructure.md / ADR-0009 へ `spec-sync` で反映予定 (本 spec 内の「上位資料からの変更点」に候補を記録)。
 
 ## 実装対象
 
@@ -212,8 +217,10 @@ EARS 風で振る舞いを記述する。
 
 ### Testing
 
-- Playwright で問い合わせ導線 (入力 → 送信 → 完了) と検証エラー / 送信失敗時の振る舞いを検証する (testing.md)。
-- 送信先は同一オリジン `/api/contact` (Workers, D1)。E2E では実メール送信を避けるため、この Workers エンドポイントをモック / スタブ化する境界とする (実装で route intercept か preview 環境のテスト用挙動を選ぶ)。
+- 検証境界は 3 層で固定する (D10, testing.md の「ロジック=Vitest / 導線=Playwright」に整合):
+  - **E2E (Playwright)**: 問い合わせ導線 (入力 → 送信 → 完了) と各エラー時の振る舞いを検証する。`/api/contact` は **route intercept してモック必須** (実メール送信を避ける)。成功 (200) / `validation_error` (400) / `turnstile_failed` (400) / `rate_limited` (429) / `send_failed` (502) を fixture 化する。Turnstile は test mode キー、honeypot は正常系で空のまま (E2E 対象外)。`astro preview` では Pages Functions が動かないため実 Functions には依存させない。
+  - **Workers ユニット (Vitest)**: 二重バリデーション (zod) / honeypot 判定 / Turnstile `siteverify` 分岐 / エラー code マッピングを単体検証する。
+  - **実 Functions 結線**: Cloudflare Pages preview で手動スモーク確認 (CI 対象外)。
 
 ## Interface 設計
 
@@ -238,14 +245,15 @@ EARS 風で振る舞いを記述する。
 | (Turnstile)    | `cf-turnstile-response` |     —     | widget   | Workers が `siteverify` で検証 (D2)              |
 
 - request: 上記 payload + Turnstile token + honeypot。`POST /api/contact`。
-- response: 成功 (200) / バリデーションエラー (400, フィールド別エラー) / スパム判定失敗 (400, `turnstile_failed`) / 送信失敗 (502, `send_failed`)。honeypot 命中時は 200 を装い黙って破棄する (D2)。
+- response: 成功 (200 `{ ok:true }`) / エラーは共通スキーマ `{ ok:false, code, message?, errors? }` (D9)。code = `validation_error` (400) / `turnstile_failed` (400) / `rate_limited` (429, D8) / `send_failed` (502)。honeypot 命中時は 200 を装い黙って破棄する (D2)。詳細は `## API` 参照。
 - バリデーションは client (即時) と Workers (同一スキーマで再検証) の二重。実装は zod 等の共有スキーマを検討 (#10)。
 
 ## Content / Data 設計
 
 ### 保存・管理するデータ
 
-- **永続化なし (通知のみ) で確定 (D6)**。Workers は受信内容を Resend のメール通知に渡すのみで、DB / ストレージ / ログに本文を保存しない。エラー調査用の最小ログも個人情報を含めない。
+- **アプリ側で永続化なし (通知のみ) で確定 (D6 / 射程は D13)**。「永続化なし」は **アプリ (Workers) が DB / ストレージ / ログに本文を残さない** ことを指す。Workers は受信内容を Resend のメール通知に渡すのみ。エラー調査用の最小ログも個人情報を含めない。
+- ただし通知経路にはデータが残る (D13): Resend 経由のメール送信 → 受信箱 (`fukuura@mist.ocn.ne.jp`) および Resend 側の一時保持。これは通知という利用目的 (D6, 問い合わせ対応のみ) の範囲内。
 
 ### コンテンツ配置 / package / route
 
@@ -262,18 +270,22 @@ EARS 風で振る舞いを記述する。
 
 - 送信は同一オリジン `/api/contact` (Workers) を中継点とし、ブラウザから第三者 API を直接叩かない (D1 / architecture.md Runtime Boundary)。
 - スパム / bot 対策は Turnstile + honeypot の併用 (D2)。Turnstile token の server 検証 (`siteverify`) と honeypot フィールド判定を Workers が担う。honeypot 命中時は成功を装い黙って破棄する。
+- リプレイ / CSRF 対策 (D12): Turnstile token は単回利用 (`siteverify` の二度目拒否に依拠) とし、Workers で `/api/contact` のリクエスト元 Origin/Referer を自サイトに限定する。
+- 濫用 / 連投対策として `/api/contact` に Cloudflare Rate Limiting (叩き台: 同一 IP 5 req/min) を設定する (D8)。Turnstile 通過後の連投・大量送信による Resend 無料枠 (D3) の枯渇 = 送信不能 (可用性) を防ぐ多層の最終段。超過時は 429 を返す。しきい値は運用観測で調整する。
 - secret (Resend API key / 宛先 / Turnstile secret) は client bundle に含めず Cloudflare secret 管理 (architecture.md / infrastructure.md)。送信ドメインの SPF/DKIM 検証を前提とする。
-- 個人情報 (担当者名 / メール / 電話 / 会社名 / 本文) を扱うが **保存しない (通知のみ, D6)**。フォーム近傍に利用目的テキストを表示し、同意は checkbox を設けず「送信をもって同意とみなす」旨を注記する (D6=B, 個人情報保護法の利用目的明示に対応)。
+- メール生成時のインジェクション対策 (D11): Resend へ渡す宛先・件名はサーバ固定値とし、ユーザー入力は本文に plain text としてのみ埋め込み、改行・制御文字 (`\r` `\n`) を無害化する。email を Reply-To に使う場合も CRLF 除去・単一値に制限する。使用値は zod でサーバ再検証済 (D4) のもののみ。
+- 個人情報 (担当者名 / メール / 電話 / 会社名 / 本文) を扱うが **アプリ側では保存しない (通知のみ, D6)**。「永続化なし」の射程はアプリ (Workers) の DB/ストレージ/ログに限り、通知経路 (Resend / 受信箱) には残る (D13)。フォーム近傍に利用目的テキストを表示し、同意は checkbox を設けず「送信をもって同意とみなす」旨を注記する (D6=B, 個人情報保護法の利用目的明示に対応)。
 
 ## Error / Fallback 設計
 
 ### エラーケース
 
-| #   | ケース                        | ユーザーへの見せ方             | リカバリ                          |
-| --- | ----------------------------- | ------------------------------ | --------------------------------- |
-| 1   | 必須項目未入力 / 形式不正     | 該当項目にインラインエラー表示 | 修正して再送 (入力値は保持)       |
-| 2   | スパム対策チェック未通過      | 送信を抑止しエラー表示 (D2)    | 再チャレンジ                      |
-| 3   | 送信処理失敗 (ネットワーク等) | エラーメッセージ + 再送可能    | 入力値を失わず再送 / 連絡先へ誘導 |
+| #   | ケース                                                | ユーザーへの見せ方             | リカバリ                          |
+| --- | ----------------------------------------------------- | ------------------------------ | --------------------------------- |
+| 1   | 必須項目未入力 / 形式不正 (`validation_error` 400)    | 該当項目にインラインエラー表示 | 修正して再送 (入力値は保持)       |
+| 2   | スパム対策チェック未通過 (`turnstile_failed` 400, D2) | 送信を抑止しエラー表示         | 再チャレンジ                      |
+| 3   | 連投で rate limit 超過 (`rate_limited` 429, D8)       | 「時間をおいて再送」を表示     | 入力値を保持し時間をおいて再送    |
+| 4   | 送信処理失敗 (`send_failed` 502 / ネットワーク等)     | エラーメッセージ + 再送可能    | 入力値を失わず再送 / 連絡先へ誘導 |
 
 ### Fallback
 
@@ -283,9 +295,12 @@ EARS 風で振る舞いを記述する。
 
 ### テスト観点
 
-- 必須項目バリデーションが機能すること (エラーケース #1)。
-- 送信成功時に完了表示されること。
-- 送信失敗時に入力値を保持し再送できること (エラーケース #3)。
+- 必須項目バリデーションが機能すること (エラーケース #1 / E2E + Workers unit, D10)。
+- 送信成功時に完了表示されること (E2E, モック 200)。
+- スパム判定失敗時にエラー表示されること (`turnstile_failed` 400 / E2E モック + Workers unit, D2/D10)。
+- 連投時に rate limit エラー表示されること (`rate_limited` 429 / E2E モック, D8)。
+- 送信失敗時に入力値を保持し再送できること (エラーケース #4, `send_failed` 502 / E2E モック)。
+- Workers ロジック (二重バリデーション / honeypot 判定 / Turnstile 分岐 / エラー code マッピング) が Vitest unit で検証されること (D10)。
 - フォーム以外の表示専用 UI に不要な island が増えていないこと (ADR-0008)。
 
 ### 計測指標
@@ -389,14 +404,22 @@ sequenceDiagram
   "cf-turnstile-response": "<token>"  // Turnstile token (D2)
 }
 
-// Response 200 (送信成功)
+// Response 200 (送信成功 / honeypot 命中時も成功を装う)
 { "ok": true }
 
-// Response 400 (バリデーションエラー)
-{ "ok": false, "errors": { "email": "メール形式が不正です", "message": "10文字以上で入力してください" } }
+// Response (エラー共通スキーマ, D9): { ok:false, code, message?, errors? }
+// 400 validation_error
+{ "ok": false, "code": "validation_error", "errors": { "email": "メール形式が不正です", "message": "10文字以上で入力してください" } }
+// 400 turnstile_failed
+{ "ok": false, "code": "turnstile_failed", "message": "送信を確認できませんでした。再度お試しください。" }
+// 429 rate_limited (D8)
+{ "ok": false, "code": "rate_limited", "message": "短時間に送信が集中しています。時間をおいて再度お試しください。" }
+// 502 send_failed
+{ "ok": false, "code": "send_failed", "message": "送信に失敗しました。お手数ですがお電話・メールでもご連絡いただけます。" }
 ```
 
-> honeypot 命中時はスパムとして成功 (200) を装い黙って破棄する (bot に学習させない, D2)。
+> エラーは全コード共通スキーマ `{ ok:false, code, message?, errors? }` で返す (D9)。`errors` は `validation_error` 時のみ。
+> honeypot 命中時はスパムとして成功 (200 `{ ok:true }`) を装い黙って破棄する (bot に学習させない, D2)。
 
 ### エラーコード一覧
 
@@ -404,6 +427,7 @@ sequenceDiagram
 | ------------------ | -------------- | --------------------------------------- | ----------------------------------------- |
 | `validation_error` | 400            | server 側再検証で必須/形式/文字数が不正 | フィールド別インラインエラー (入力値保持) |
 | `turnstile_failed` | 400            | Turnstile `siteverify` が失敗           | スパム判定エラー表示                      |
+| `rate_limited`     | 429            | Rate Limiting 超過 (連投, D8)           | 「時間をおいて再送」を表示 (入力値保持)   |
 | `send_failed`      | 502            | Resend 送信失敗 (外部障害等)            | エラー表示 + 再送可能、連絡先へ誘導       |
 | (honeypot 命中)    | 200            | honeypot フィールドに値あり (bot)       | 完了表示 (実際は破棄)                     |
 
@@ -425,7 +449,7 @@ E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前
 | `contact-message-error`    | 送信失敗メッセージ       | 送信失敗 / 再送導線の検証            |
 | `contact-error-{field}`    | 各項目のインラインエラー | フィールド別バリデーションエラー検証 |
 
-> honeypot フィールドは E2E 検証対象外 (人間/正常系では空のまま)。Turnstile は E2E では test mode / モックを利用する (実装で決定)。
+> honeypot フィールドは E2E 検証対象外 (人間/正常系では空のまま)。Turnstile は E2E では test mode キーを使用し、`/api/contact` は route intercept でモックする (D10)。
 
 ## 実装分割
 
@@ -466,12 +490,15 @@ E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前
 
 ### context への影響
 
-| 対象 doc / 節                               | 変更内容                                                                                                                                                    | 理由                                                                            |
-| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| infrastructure.md / Infrastructure Contract | **反映済** (spec-sync, ADR-0009)。Workers 依存「有」+ 送信経路 `/api/contact` + secret 名 (Resend / 宛先 / Turnstile site+secret) + SPF/DKIM を contract 化 | D1=A / D3=A / D2=C を採用 (source: spec-resolve)。以後 infrastructure.md が正本 |
-| infrastructure.md / Security・Operations    | **反映済** (spec-sync, ADR-0009)。bot 対策 (Turnstile + honeypot) を Workers 側多層検証で記載 + 個人情報は永続化なし・利用目的明示を記載                    | D2=C / D6 を採用 (source: spec-resolve)。以後 infrastructure.md が正本          |
+| 対象 doc / 節                                                     | 変更内容                                                                                                                                                    | 理由                                                                                      |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| infrastructure.md / Infrastructure Contract                       | **反映済** (spec-sync, ADR-0009)。Workers 依存「有」+ 送信経路 `/api/contact` + secret 名 (Resend / 宛先 / Turnstile site+secret) + SPF/DKIM を contract 化 | D1=A / D3=A / D2=C を採用 (source: spec-resolve)。以後 infrastructure.md が正本           |
+| infrastructure.md / Security・Operations                          | **反映済** (spec-sync, ADR-0009)。bot 対策 (Turnstile + honeypot) を Workers 側多層検証で記載 + 個人情報は永続化なし・利用目的明示を記載                    | D2=C / D6 を採用 (source: spec-resolve)。以後 infrastructure.md が正本                    |
+| infrastructure.md / Security・Operations (rate limit)             | **反映予定** (spec-sync)。`/api/contact` に Cloudflare Rate Limiting (叩き台 5 req/min/IP, 超過 429) を Infrastructure Contract / Security に追加           | D8=A を採用 (source: spec-resolve)。durable な濫用制御判断を design 正本へハンドオフ      |
+| infrastructure.md / Security・Operations (メールインジェクション) | **反映予定** (spec-sync)。Resend へのメール生成時の入力無害化 (宛先・件名固定 / 本文 plain text / ヘッダ CRLF 除去) を Security に追加                      | D11=A を採用 (source: spec-resolve)。durable なセキュリティ判断を design 正本へハンドオフ |
+| infrastructure.md / Security・Operations (リプレイ/CSRF)          | **反映予定** (spec-sync)。Turnstile token 単回利用 + `/api/contact` の Origin/Referer 検証を Security に追加                                                | D12=A を採用 (source: spec-resolve)。durable なセキュリティ判断を design 正本へハンドオフ |
 
-> 上記は `spec-sync` で back-propagation 済 (2026-06-17)。以後 infrastructure.md / ADR-0009 が durable 成果の正本。
+> rate limit (D8) / メールインジェクション (D11) / リプレイ・CSRF (D12) 行は `spec-sync` で back-propagation 予定。その他は反映済 (2026-06-17)。以後 infrastructure.md / ADR-0009 が durable 成果の正本。
 
 ### ADR の新規 / 更新
 
@@ -506,6 +533,12 @@ E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前
 | 2026-06-17 | Fukuemon | appendix 取り込み: API (`/api/contact`) + data-testid 一覧を追加                                                                                                                                              |
 | 2026-06-17 | Fukuemon | Rv 対応 A (直接修正): send_failed=502 一意化 / honeypot 200 を Sequence・Props で独立化 + turnstile_failed=400 一本化 / honeypot key=`company_url` 確定 / spec-sync 注記を反映済へ更新 / フェーズ#11 状態整合 |
 | 2026-06-17 | Fukuemon | Rv 対応 B (起票): 未決設計判断を論点 D8〜D13 として起票 (rate limit / API エラー body / 検証境界 / メールインジェクション / Turnstile リプレイ・Origin / 永続化なし射程)                                      |
+| 2026-06-17 | Fukuemon | spec-resolve: D8 (rate limit / 濫用制御) を A (Cloudflare Rate Limiting 5 req/min/IP, 超過 429) で確定。Security 節・infra への spec-sync 候補を反映                                                          |
+| 2026-06-17 | Fukuemon | spec-resolve: D9 (API エラー body) を A (共通 `{ ok:false, code, message?, errors? }`) で確定。API レスポンス例・エラーコード一覧・エラーケース表 (rate_limited 429 追加) を同期                              |
+| 2026-06-17 | Fukuemon | spec-resolve: D10 (検証境界) を A (E2E=route intercept 必須 / Workers=Vitest unit / 実結線=CF preview 手動) で確定。Testing 節・テスト観点・data-testid 注記を同期                                            |
+| 2026-06-17 | Fukuemon | spec-resolve: D11 (メールインジェクション) を A (宛先・件名固定 / 本文 plain text 無害化 / ヘッダ CRLF 除去) で確定。Security 節・infra への spec-sync 候補を反映                                             |
+| 2026-06-17 | Fukuemon | spec-resolve: D12 (リプレイ/CSRF) を A (token 単回利用 + Origin/Referer 検証) で確定。Security 節・infra への spec-sync 候補を反映                                                                            |
+| 2026-06-17 | Fukuemon | spec-resolve: D13 (永続化なし射程) を A (アプリ側 DB/ストレージ/ログに限定 + 通知経路の保持を明記) で確定。Content/Data・Security/Privacy を同期。D8〜D13 全件解決                                            |
 
 ## 備考
 
