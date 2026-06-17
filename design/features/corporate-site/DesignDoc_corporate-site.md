@@ -1,19 +1,19 @@
 # Feature 設計: コーポレートサイト (apps/corporate-site)
 
-> 最終更新: 2026-06-13 / Status: 設計済 (Phase 1 skeleton) / IA 確定済 (#11 を集約、#17 で 3 route 統合構成へ再確定 — [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)) / デザイントークン体系確定 (#13 — [ADR-0007](../../../adr/0007-design-token-architecture.md))
+> 最終更新: 2026-06-17 / Status: 設計済 (Phase 1 skeleton) / IA 確定済 (#11 を集約、#17 で 3 route 統合構成へ再確定 — [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)) / デザイントークン体系確定 (#13 — [ADR-0007](../../../adr/0007-design-token-architecture.md)) / 問い合わせフォーム仕様確定 (#14 — [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md))
 
 Phase 1 の主対象。Astro によるコーポレートサイトを高いパフォーマンスと保守性で公開する。全体像は [design/DesignDoc.md](../../DesignDoc.md)、横断規約は [context/](../../../context/) を参照する。
 
 ## メタ
 
-| 項目           | 値                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 関連 PRD 要求  | [PRD.md](../../../PRD.md) 「コーポレートサイト要求」「Phase 1 スコープ」                                                                                                                                                                                                                                                                                                                                                |
-| 関連 DesignDoc | [DesignDoc.md](../../DesignDoc.md) Goal / モジュール責務                                                                                                                                                                                                                                                                                                                                                                |
-| 関連 context   | [architecture.md](../../../context/architecture.md), [testing.md](../../../context/testing.md), [infrastructure.md](../../../context/infrastructure.md)                                                                                                                                                                                                                                                                 |
-| 関連 ADR       | [ADR-0002](../../../adr/0002-monorepo-scaffold-create-command-policy.md), [ADR-0003](../../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md), [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md) (3 route IA), [ADR-0007](../../../adr/0007-design-token-architecture.md) (デザイントークン体系), [ADR-0008](../../../adr/0008-astro-react-island-policy.md) (React island / shadcn 消費ポリシー) |
-| 関連 spec      | [specs/3-monorepo-foundation/](../../../specs/3-monorepo-foundation/), [specs/11-corporate-site-ia/](../../../specs/11-corporate-site-ia/) (旧 5p IA 決定経緯), [specs/17-corporate-site-ia/](../../../specs/17-corporate-site-ia/) (3 route IA 決定経緯), [specs/13-design-system-foundation/](../../../specs/13-design-system-foundation/) (デザイントークン決定経緯)                                                 |
-| 対象モジュール | `corporate-site`                                                                                                                                                                                                                                                                                                                                                                                                        |
+| 項目           | 値                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 関連 PRD 要求  | [PRD.md](../../../PRD.md) 「コーポレートサイト要求」「Phase 1 スコープ」                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 関連 DesignDoc | [DesignDoc.md](../../DesignDoc.md) Goal / モジュール責務                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 関連 context   | [architecture.md](../../../context/architecture.md), [testing.md](../../../context/testing.md), [infrastructure.md](../../../context/infrastructure.md)                                                                                                                                                                                                                                                                                                                                                                |
+| 関連 ADR       | [ADR-0002](../../../adr/0002-monorepo-scaffold-create-command-policy.md), [ADR-0003](../../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md), [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md) (3 route IA), [ADR-0007](../../../adr/0007-design-token-architecture.md) (デザイントークン体系), [ADR-0008](../../../adr/0008-astro-react-island-policy.md) (React island / shadcn 消費ポリシー), [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md) (問い合わせ送信 backend) |
+| 関連 spec      | [specs/3-monorepo-foundation/](../../../specs/3-monorepo-foundation/), [specs/11-corporate-site-ia/](../../../specs/11-corporate-site-ia/) (旧 5p IA 決定経緯), [specs/17-corporate-site-ia/](../../../specs/17-corporate-site-ia/) (3 route IA 決定経緯), [specs/13-design-system-foundation/](../../../specs/13-design-system-foundation/) (デザイントークン決定経緯), [specs/14-contact-form/](../../../specs/14-contact-form/) (問い合わせフォーム決定経緯)                                                        |
+| 対象モジュール | `corporate-site`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 ## 背景・要件解釈
 
@@ -39,7 +39,7 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 
 - コーポレートサイトは Astro の `.astro` コンポーネントを基本にする。
 - React island はフォーム、動的 UI、外部 widget など必要な箇所に限定する。表示専用 UI は `@kufu/ui` の shadcn を静的描画 (`client:*` なし、JS ゼロ) で使い、island 化の境界は [ADR-0008](../../../adr/0008-astro-react-island-policy.md) に従う。
-- 問い合わせフォームは最初の主要 React island。送信は静的配信を維持しつつ Cloudflare Pages Functions (Workers) を中継する ([ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md))。機能仕様 (入力項目 / バリデーション / スパム対策 / 通知) の正本は [spec #14](../../../specs/14-contact-form/index.md)。
+- 問い合わせフォームは最初の主要 React island。送信は静的配信を維持しつつ Cloudflare Pages Functions (Workers) を中継する ([ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md))。機能仕様 (入力項目 / バリデーション / スパム対策 / 通知 / API 契約) の正本は本 doc とし、[spec #14](../../../specs/14-contact-form/index.md) は決定経緯を保持する。
 - コーポレートサイトの画像、フォント、スクリプトは性能予算を意識して管理する。
 - 第一原則は feature / colocation とし、app や feature 内で閉じる UI はローカルに置く。
 - 共通 UI は利用箇所が複数 app / feature にまたがる時点で `packages/ui` へ移す ([architecture.md](../../../context/architecture.md))。
@@ -63,7 +63,7 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 | --- | ------------ | ----------- | ---------------------------------------------------------------------------------------------- | ---- | ------------------------------------- |
 | P1  | トップ (LP)  | `/`         | hero(理念/事業要約) / 事業紹介(販売×加工・ジグザグ構成) / 取扱製品索引(18 カテゴリ) / 会社情報 | 高   | 訴求 + 信頼性 (入口〜中核)            |
 | P3  | 取扱製品     | `/products` | 18 カテゴリ詳細 (INDEX パネル + カテゴリ→全メーカー一覧)                                       | 中   | 訴求 (網羅性) + 信頼性 (取扱メーカー) |
-| P6  | お問い合わせ | `/contact`  | 連絡先(TEL/FAX/メール) / 問い合わせフォーム (機能は #14 / 送信は Workers 中継 ADR-0009)        | 中   | 接点確保 (BR2)                        |
+| P6  | お問い合わせ | `/contact`  | 連絡先(TEL/FAX/メール) / 問い合わせフォーム (仕様は本 doc / 送信は Workers 中継 ADR-0009)      | 中   | 接点確保 (BR2)                        |
 | G   | 全ページ共通 | -           | ヘッダー(ナビ+CTA)。フッターは LP=フル(サイトマップ付き) / 下層=コンパクト(ブランド+連絡先)    | 高   | BR2 / BR3                             |
 
 - 旧 P2 (事業内容 `/services`) / 旧 P4 (会社情報 `/company`) は LP 内 section に統合し、単独 route は設けない。直接導線は LP 内アンカーで提供する。
@@ -86,6 +86,113 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 - 会社概要の一次情報 (社名 / 所在地 / 代表 / 連絡先) は LP 会社情報 section を正本とし、フッター等は参照に留める (BR3)。
 - アクセス / 地図・沿革・代表挨拶は LP 会社情報 section 内とし、未確定分は placeholder で公開可能な状態を保つ (E1 / E2)。
 - グローバルナビ (LP 内 section アンカー + 取扱製品 / お問い合わせ) と全ページ共通の問い合わせ CTA で、全ページから問い合わせ導線 (P6) に到達可能にする (BR2)。ナビ項目の詳細はデザイン正本 ([index.pen](index.pen) Site Header) に従う。
+
+#### 問い合わせフォーム仕様
+
+本節を P6 `/contact` の問い合わせフォーム機能仕様の**正本**とする。決定経緯・受け入れ基準・レビュー記録は [spec #14](../../../specs/14-contact-form/index.md)、送信 backend のアーキ決定は [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md)、runtime / security contract は [architecture.md](../../../context/architecture.md) と [infrastructure.md](../../../context/infrastructure.md) を参照する。
+
+フォームは `/contact` の連絡先 (TEL / FAX / Email) と並ぶ補助導線であり、フォーム送信が失敗しても電話・FAX・メールで接点を確保できる構成にする。
+
+| 項目            | key                     | 必須 | 型       | 検証ルール                                          |
+| --------------- | ----------------------- | ---- | -------- | --------------------------------------------------- |
+| 会社名          | `company`               | 任意 | input    | 最大 100 文字                                       |
+| 担当者名        | `name`                  | 必須 | input    | 1〜50 文字                                          |
+| メールアドレス  | `email`                 | 必須 | input    | メール形式                                          |
+| 電話番号        | `phone`                 | 任意 | input    | 数字・ハイフン、最大 20 文字                        |
+| 問い合わせ種別  | `category`              | 必須 | select   | `quote` / `machining` / `other`                     |
+| 問い合わせ内容  | `message`               | 必須 | textarea | 10〜2,000 文字                                      |
+| honeypot        | `company_url`           | -    | hidden   | 人間の正常送信では常に空。値ありは成功を装って破棄  |
+| Turnstile token | `cf-turnstile-response` | 必須 | hidden   | Workers が Cloudflare Turnstile `siteverify` で検証 |
+
+- バリデーションは client と Workers の二重で行う。Workers は client の結果を信頼せず同一スキーマで再検証する。
+- フォーム全体を単一 React island とし、既定 directive は `client:visible`。`/contact` の `client:*` は 1 個に収める。
+- フォーム近傍に「入力情報は問い合わせ対応のみに利用する」旨と「送信をもって同意とみなす」旨を表示する。同意 checkbox は設けない。
+- 問い合わせ内容はアプリ側 (Workers) で DB / ストレージ / ログに保存せず、Resend 経由のメール通知のみとする。通知経路 (Resend / 受信箱) には利用目的の範囲でデータが残る。
+
+問い合わせ送信フロー:
+
+```mermaid
+flowchart TD
+    Start(["訪問者が /contact のフォームに到達"]) --> Fill["項目を入力"]
+    Fill --> ClientValid{"client validation OK?"}
+    ClientValid -->|"NG"| ClientError["フィールド別エラーを表示<br/>入力値を保持"]
+    ClientValid -->|"OK"| Token["Turnstile token を取得"]
+    Token --> Post["POST /api/contact<br/>同一オリジン Pages Functions"]
+    Post --> ServerValid{"Workers validation / security OK?"}
+    ServerValid -->|"validation_error"| FieldError["400 + フィールド別エラー"]
+    ServerValid -->|"turnstile_failed"| SpamError["400 + スパム判定エラー"]
+    ServerValid -->|"rate_limited"| RateError["429 + 再送待機メッセージ"]
+    ServerValid -->|"honeypot hit"| FakeSuccess["200 + 成功表示<br/>実際は通知しない"]
+    ServerValid -->|"OK"| Notify["Resend HTTP API でメール通知"]
+    Notify --> NotifyResult{"通知成功?"}
+    NotifyResult -->|"OK"| Success["200 + 完了メッセージ"]
+    NotifyResult -->|"NG"| SendFailed["502 + 代替連絡先へ誘導"]
+```
+
+送信 sequence:
+
+```mermaid
+sequenceDiagram
+    actor User as 訪問者
+    participant Island as フォーム island
+    participant TS as Cloudflare Turnstile
+    participant Fn as Pages Functions /api/contact
+    participant Resend as Resend API
+    participant Mail as 受信箱
+
+    User->>Island: 必須項目を入力して送信
+    Island->>Island: client validation
+    Island->>TS: token 取得
+    TS-->>Island: token
+    Island->>Fn: POST payload + token + honeypot
+    Fn->>Fn: server validation / Origin・Referer 検証
+    Fn->>TS: siteverify
+    TS-->>Fn: verification result
+    alt honeypot hit
+        Fn-->>Island: 200 { ok: true }
+        Island-->>User: 完了表示
+    else validation / Turnstile / rate limit NG
+        Fn-->>Island: 400/429 { ok:false, code, message?, errors? }
+        Island-->>User: エラー表示 (入力値保持)
+    else valid
+        Fn->>Resend: plain text メール送信
+        Resend->>Mail: 問い合わせ通知メール
+        alt send success
+            Fn-->>Island: 200 { ok: true }
+            Island-->>User: 完了表示
+        else send failed
+            Fn-->>Island: 502 { ok:false, code:"send_failed", message }
+            Island-->>User: 失敗表示 + 電話/メール導線
+        end
+    end
+```
+
+API 契約:
+
+| 項目     | 内容                                                                     |
+| -------- | ------------------------------------------------------------------------ |
+| endpoint | `POST /api/contact`                                                      |
+| runtime  | Cloudflare Pages Functions (Workers)                                     |
+| request  | 上記フォーム項目 + `company_url` + `cf-turnstile-response`               |
+| success  | `200 { "ok": true }`                                                     |
+| error    | `{ "ok": false, "code": string, "message"?: string, "errors"?: object }` |
+| secret   | Resend API key / メール宛先 / Turnstile secret は Cloudflare secret 管理 |
+
+| code               | HTTP | 発生条件                                    | client の扱い                         |
+| ------------------ | ---- | ------------------------------------------- | ------------------------------------- |
+| `validation_error` | 400  | server 側再検証で必須 / 形式 / 文字数が不正 | フィールド別 inline error、入力値保持 |
+| `turnstile_failed` | 400  | Turnstile `siteverify` が失敗               | スパム判定エラーを表示、再試行可能    |
+| `rate_limited`     | 429  | Cloudflare Rate Limiting 超過               | 時間を置く案内を表示、入力値保持      |
+| `send_failed`      | 502  | Resend 送信失敗など通知経路の障害           | 失敗表示 + 電話 / メールへの代替導線  |
+| honeypot hit       | 200  | `company_url` に値がある                    | 完了表示。server は通知せず破棄       |
+
+テスト境界:
+
+- Playwright E2E は `/api/contact` を route intercept して fixture 化し、実メール送信と Cloudflare runtime へ依存しない。
+- E2E fixture は成功 (200) / `validation_error` (400) / `turnstile_failed` (400) / `rate_limited` (429) / `send_failed` (502) を用意し、導線・エラー表示・入力値保持を確認する。
+- Turnstile は test mode key を使う。honeypot は正常系で空のままとし、honeypot 命中時の破棄ロジックは Workers unit test で検証する。
+- Workers の validation / honeypot / Turnstile 分岐 / error code mapping は Vitest unit test で検証する。
+- Cloudflare Pages Functions と Resend / secret の実結線は Cloudflare Pages preview で手動スモーク確認する。
 
 #### コンテンツ正本 (source of truth)
 
@@ -133,7 +240,7 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 
 ## 主要シナリオ / フロー
 
-アクター視点の使用シナリオを示す。確定済の回遊フロー / サイトマップ構造は本 doc を正本とする。具体的な実装手順 (ページ配置・client directive 判断・`packages/ui` 昇格・E2E の書き方) は spec の 実装分割へ委譲する。
+アクター視点の使用シナリオを示す。確定済の回遊フロー / サイトマップ構造は本 doc を正本とする。具体的な作業分割や実装順序は後続の実装 issue で扱う。
 
 - 訪問者は、コーポレートサイトで事業内容・サービスを把握し、問い合わせ導線へ進む。
 - 運用者は、コーポレートサイトのセクションや文言を更新し、公開前に主要導線を検証して公開する。
@@ -201,7 +308,7 @@ sequenceDiagram
     Browser->>CDN: 静的ページ要求 (HTML / CSS / 画像)
     CDN-->>Browser: 事前生成済みの静的アセットを返却
     Browser-->>User: ページ表示 (island は必要箇所のみ)
-    Note over User,CDN: 認証・動的サーバ処理なし。フォーム送信処理は #14 で扱う
+    Note over User,CDN: 表示は静的配信。フォーム送信は Pages Functions /api/contact が担う
 ```
 
 ## テスト観点
@@ -209,6 +316,8 @@ sequenceDiagram
 - `apps/corporate-site` が build できること。
 - Cloudflare Pages preview deployment で主要ページが表示できること。
 - コーポレートサイトの主要ページと問い合わせ導線が Playwright で確認できること。
+- 問い合わせ導線の E2E は `/api/contact` を route intercept し、成功・validation error・Turnstile error・rate limit・send failed の主要分岐を確認できること。
+- 問い合わせ送信の Workers ロジックが Vitest で確認できること。
 - Astro ページに不要な React island や client directive が増えていないこと。
 
 ## 上位資料からの変更点
@@ -220,3 +329,4 @@ sequenceDiagram
 | spec #11  | 集約     | IA (サイトマップ / section 構成 / 配置マッピング / 回遊フロー) の正本を spec から本 doc へ移管。spec は論点・決定経緯・受け入れ・実装分割を保持                                                                                                                                        |
 | spec #13  | 追加     | デザイントークン節 (正本への参照ハブ + spacing / radius / type scale ガイド) とトーン & マナー / ブランド指針を新設。トークンの値の正本は `tokens.css`、体系は [ADR-0007](../../../adr/0007-design-token-architecture.md)、移行対応は spec #13 スナップショット (値の二重管理はしない) |
 | spec #17  | 変更     | IA を 5 ページ構成から 3 route 統合構成へ変更 ([ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md))。幅統一 (1440px/56)・モバイル variant 方針・18 カテゴリ単一データソースを追記。本 doc を以後の正本とし、spec #17 は決定経緯のスナップショットを保持                     |
+| spec #14  | 集約     | 問い合わせフォーム仕様 (入力項目 / validation / flowchart / sequence / API 契約 / error code / test 境界) の正本を本 doc へ移管。spec #14 は決定経緯のスナップショットを保持                                                                                                           |
