@@ -24,7 +24,11 @@ corporate-site の問い合わせ送信を **Cloudflare Pages Functions (Workers
 3. **検証**: Workers が入力を server 側で再検証 (client を信頼しない) し、スパム対策として Cloudflare Turnstile token の `siteverify` 検証 + honeypot 判定を行う。
 4. **通知**: 検証通過後、Workers が Resend の HTTP API でメール通知する (送信先は連絡先正本の `fukuura@mist.ocn.ne.jp`)。
 5. **secret**: Resend API key / Turnstile secret key / 宛先などの秘匿値は Cloudflare の secret 管理に置き、client bundle・repo に含めない。送信ドメインの SPF/DKIM 検証を前提とする。
-6. **永続化なし**: 問い合わせ内容は DB / ストレージ / ログに保存せず、メール通知のみとする (個人情報の最小取り扱い)。
+6. **永続化なし (射程)**: 問い合わせ内容は **アプリ側 (Workers) で DB / ストレージ / ログに保存せず**、メール通知のみとする (個人情報の最小取り扱い)。「永続化なし」の射程はアプリ側に限り、通知経路 (Resend 経由のメール送信 → 受信箱・Resend 側の一時保持) には通知という利用目的の範囲でデータが残る (spec #14 D13)。
+7. **濫用 / 連投対策**: `/api/contact` に Cloudflare Rate Limiting (叩き台: 同一 IP 5 req/min、超過 429) を設定し、Turnstile 通過後の連投による Resend 無料枠枯渇 = 送信不能 (可用性) を防ぐ (spec #14 D8)。
+8. **リプレイ / CSRF 対策**: Turnstile token は単回利用 (`siteverify` の二度目拒否に依拠) とし、Workers で `/api/contact` のリクエスト元 Origin / Referer を自サイトに限定する (spec #14 D12)。
+9. **メール生成時のインジェクション対策**: Resend へ渡す宛先・件名はサーバ固定値とし、ユーザー入力は本文に plain text としてのみ埋め込み、改行・制御文字 (CRLF) を無害化する。email を Reply-To に使う場合も CRLF 除去・単一値に制限する (spec #14 D11)。
+10. **API エラー契約**: エラーは全コード共通スキーマ `{ ok:false, code, message?, errors? }` で返す。`code` は `validation_error` (400) / `turnstile_failed` (400) / `rate_limited` (429) / `send_failed` (502) (spec #14 D9)。
 
 ## 代替案
 
@@ -46,7 +50,7 @@ corporate-site の問い合わせ送信を **Cloudflare Pages Functions (Workers
 
 - 純静的 (`output: "static"`) のみの前提から Pages Functions 併用へ一歩踏み出し、infra 側に Workers 依存が増える。
 - Resend (外部メール送信サービス) への依存と、送信ドメインの SPF/DKIM 設定が必要になる。
-- E2E では実メール送信を避けるため `/api/contact` のモック / スタブ境界を設計する必要がある。
+- E2E では実メール送信を避けるため `/api/contact` を route intercept でモックする (Playwright)。Workers のロジック (二重バリデーション / honeypot / Turnstile 分岐 / エラー code マッピング) は Vitest unit、実 Functions 結線は Cloudflare Pages preview で手動確認する (spec #14 D10)。
 
 ### 影響範囲
 
