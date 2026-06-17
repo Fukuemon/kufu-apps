@@ -74,3 +74,33 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 - skipped なし。3/3 エージェントの結果に基づく完全な結果。
 - 総評 (各エージェント共通): 上位文書 (PRD / feature doc / ADR-0008・0009 / infrastructure.md) との大筋整合・D1〜D7 解決・#11 からのスコープ委譲は妥当。**ブロッカー級の矛盾はなし**。残る指摘は API エラー契約の粒度・スパム/エラー体験の内部不整合・E2E 検証境界・濫用制御で、`spec-prompts` 前に spec 内で詰めると受け入れ基準の検証可能性が上がる。
+
+---
+
+## Review 2026-06-17 (再レビュー: Rv 指摘 D8〜D13 反映後)
+
+Verdict: PASS
+Reviewer: spec-review (fresh-context, subagent=Plan)
+
+多エージェント Rv の全指摘を A=直接修正 / B=論点 D8〜D13 確定 + spec-sync で対応した後の再レビュー。rubric 7 観点すべてで合格根拠を引用。
+
+### 観点別評価
+
+- 上位文書整合: PASS — PRD (性能原則 / Phase1 完成条件) / architecture (Runtime Boundary / secret) / feature doc (P6 双方向) / ADR-0009 と整合。
+- 未解決論点: PASS — D1〜D13 全件「確定」、未確定事項なし。下流 (図 / API / testid) は確定決定に基づく。
+- 実装対象明示: PASS — target が project.md と一致、越境なし。
+- template 必須節: PASS — 欠落なし。
+- EARS acceptance: PASS — EARS 6 件が testid / E2E fixture で観測可能。
+- prompts 自己完結性: N/A — prompts 未生成。
+- 正本境界: PASS — durable 成果は ADR-0009 / infrastructure.md にハンドオフ済、二重正本なし。
+
+### 解消確認 (前回 Rv 指摘)
+
+- send_failed=502 / honeypot=200 / rate_limited=429 / turnstile_failed・validation_error=400 が全箇所で一意 (ステータス揺れ解消)。
+- D9 共通エラースキーマ / D11 メールインジェクション / D12 リプレイ・CSRF / D13 永続化なし射程 / D10 検証境界 が spec・infrastructure.md・ADR-0009 で一致 (drift なし)。
+- 設計フェーズ状況・「反映済」注記が infrastructure.md (最終更新 2026-06-17) / ADR-0009 (決定日 2026-06-17) の実体と整合 (spec-sync drift 解消)。
+
+### 軽微な申し送り (ブロッカーではない)
+
+- spec の「ロジック=Vitest / 導線=Playwright」(index.md) は testing.md の責務分担表の趣旨であり逐語引用ではない点に留意。
+- honeypot key `company_url` / rate limit しきい値 5 req/min は「叩き台・実装時調整可」と明記済 (未確定ではない)。
