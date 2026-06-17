@@ -22,7 +22,7 @@
         {
           "type": "frame",
           "id": "CUodMq",
-          "name": "Hero",
+          "name": "LpHeroSection",
           "width": "fill_container",
           "fill": "$background",
           "gap": 48,
@@ -105,136 +105,40 @@
                   "layout": "vertical",
                   "children": [
                     {
-                      "type": "frame",
-                      "id": "ad9npZ",
-                      "name": "Pillar 見積もり・販売",
+                      "id": "ref_ad9npZ",
+                      "type": "ref",
+                      "ref": "ad9npZ",
+                      "name": "ServicePillar Sales",
                       "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 8,
-                      "padding": [
-                        16,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "rUysvJ",
-                          "name": "Pillar Rule 01",
-                          "fill": "$border",
-                          "width": "fill_container",
-                          "height": 1
+                      "descendants": {
+                        "kQXocX": {
+                          "content": "01"
                         },
-                        {
-                          "type": "frame",
-                          "id": "0xlTMa",
-                          "name": "Pillar Top 見積もり・販売",
-                          "width": "fill_container",
-                          "gap": 16,
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "kQXocX",
-                              "name": "Pillar No 見積もり・販売",
-                              "fill": "$primary",
-                              "content": "01",
-                              "fontFamily": "$font-mono",
-                              "fontSize": 10,
-                              "fontWeight": "500",
-                              "letterSpacing": 2
-                            },
-                            {
-                              "type": "text",
-                              "id": "XGe0GF",
-                              "name": "Pillar Title 見積もり・販売",
-                              "fill": "$foreground",
-                              "content": "見積もり・販売",
-                              "fontFamily": "$font-serif",
-                              "fontSize": 16,
-                              "fontWeight": "600"
-                            }
-                          ]
+                        "XGe0GF": {
+                          "content": "見積もり・販売"
                         },
-                        {
-                          "type": "text",
-                          "id": "2pSQ5z",
-                          "name": "Pillar Lead 見積もり・販売",
-                          "fill": "$muted-foreground",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "機械工具・駆動部品・省力化機器まで、必要な製品の見積もり・調達に対応。",
-                          "lineHeight": 1.7,
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13.5,
-                          "fontWeight": "normal"
+                        "2pSQ5z": {
+                          "content": "機械工具・駆動部品・省力化機器まで、必要な製品の見積もり・調達に対応。"
                         }
-                      ]
+                      }
                     },
                     {
-                      "type": "frame",
-                      "id": "aDfDVe",
-                      "name": "Pillar 加工",
+                      "id": "ref_aDfDVe",
+                      "type": "ref",
+                      "ref": "ad9npZ",
+                      "name": "ServicePillar Machining",
                       "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 8,
-                      "padding": [
-                        16,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "rectangle",
-                          "id": "oFN02j",
-                          "name": "Pillar Rule 02",
-                          "fill": "$border",
-                          "width": "fill_container",
-                          "height": 1
+                      "descendants": {
+                        "kQXocX": {
+                          "content": "02"
                         },
-                        {
-                          "type": "frame",
-                          "id": "lLAPmB",
-                          "name": "Pillar Top 加工",
-                          "width": "fill_container",
-                          "gap": 16,
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "Rghf3m",
-                              "name": "Pillar No 加工",
-                              "fill": "$primary",
-                              "content": "02",
-                              "fontFamily": "$font-mono",
-                              "fontSize": 10,
-                              "fontWeight": "500",
-                              "letterSpacing": 2
-                            },
-                            {
-                              "type": "text",
-                              "id": "UsODKH",
-                              "name": "Pillar Title 加工",
-                              "fill": "$foreground",
-                              "content": "加工",
-                              "fontFamily": "$font-serif",
-                              "fontSize": 16,
-                              "fontWeight": "600"
-                            }
-                          ]
+                        "XGe0GF": {
+                          "content": "加工"
                         },
-                        {
-                          "type": "text",
-                          "id": "606gtX",
-                          "name": "Pillar Lead 加工",
-                          "fill": "$muted-foreground",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "機械加工・樹脂成型・板金溶接・ゴム加工。別作・特注品に対応。",
-                          "lineHeight": 1.7,
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13.5,
-                          "fontWeight": "normal"
+                        "2pSQ5z": {
+                          "content": "機械加工・樹脂成型・板金溶接・ゴム加工。別作・特注品に対応。"
                         }
-                      ]
+                      }
                     }
                   ]
                 },
@@ -354,7 +258,7 @@
         {
           "type": "frame",
           "id": "EdDbas",
-          "name": "Business Section",
+          "name": "BusinessSection",
           "width": "fill_container",
           "fill": "$background",
           "layout": "vertical",
@@ -402,193 +306,11 @@
                   "layout": "vertical",
                   "children": [
                     {
-                      "type": "frame",
-                      "id": "ObyYQ",
-                      "name": "Zig Row 01",
-                      "width": "fill_container",
-                      "gap": 56,
-                      "padding": [
-                        44,
-                        0
-                      ],
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "WZDNK",
-                          "name": "Zig Text 01",
-                          "width": 480,
-                          "layout": "vertical",
-                          "gap": 16,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "WFF0a",
-                              "layoutPosition": "absolute",
-                              "x": -10,
-                              "y": -34,
-                              "name": "Zig Ghost 01",
-                              "fill": "$ghost-foreground",
-                              "content": "01",
-                              "fontFamily": "$font-mono",
-                              "fontSize": 140,
-                              "fontWeight": "500"
-                            },
-                            {
-                              "type": "text",
-                              "id": "ckS86",
-                              "name": "Zig Row Eyebrow 01",
-                              "fill": "$primary",
-                              "content": "BUSINESS 01 / SALES & SUPPLY",
-                              "fontFamily": "$font-mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal",
-                              "letterSpacing": 2
-                            },
-                            {
-                              "type": "text",
-                              "id": "ab8gX",
-                              "name": "Zig Row Title 01",
-                              "fill": "$foreground",
-                              "content": "見積もり・販売",
-                              "fontFamily": "$font-serif",
-                              "fontSize": 30,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "aYtXc",
-                              "name": "Zig Row Lead 01",
-                              "fill": "$muted-foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "機械工具から省力化機器まで、延べ約320社の取扱メーカーから現場に必要な製品を調達し供給する。",
-                              "lineHeight": 1.75,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 15,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "frame",
-                              "id": "w8OgZ",
-                              "name": "Zig Tags 01",
-                              "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 8,
-                              "padding": [
-                                6,
-                                0,
-                                0,
-                                0
-                              ],
-                              "children": [
-                                {
-                                  "type": "frame",
-                                  "id": "xZ6ON",
-                                  "name": "Zig Tag Row",
-                                  "gap": 8,
-                                  "children": [
-                                    {
-                                      "id": "u4k2Cj",
-                                      "type": "ref",
-                                      "ref": "L6JbhU",
-                                      "name": "Tag 機械工具",
-                                      "descendants": {
-                                        "LAFDf": {
-                                          "content": "機械工具"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "id": "qTNDX",
-                                      "type": "ref",
-                                      "ref": "L6JbhU",
-                                      "name": "Tag 省力化機器",
-                                      "descendants": {
-                                        "LAFDf": {
-                                          "content": "省力化機器"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "id": "jEZMj",
-                                      "type": "ref",
-                                      "ref": "L6JbhU",
-                                      "name": "Tag 伝動機器",
-                                      "descendants": {
-                                        "LAFDf": {
-                                          "content": "伝動機器"
-                                        }
-                                      }
-                                    }
-                                  ]
-                                },
-                                {
-                                  "type": "frame",
-                                  "id": "CLTbv",
-                                  "name": "Zig Tag Row",
-                                  "gap": 8,
-                                  "children": [
-                                    {
-                                      "id": "zwkkK",
-                                      "type": "ref",
-                                      "ref": "L6JbhU",
-                                      "name": "Tag 物流・搬送機器",
-                                      "descendants": {
-                                        "LAFDf": {
-                                          "content": "物流・搬送機器"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "id": "S6pHI",
-                                      "type": "ref",
-                                      "ref": "L6JbhU",
-                                      "name": "Tag 各種工場設備機器",
-                                      "descendants": {
-                                        "LAFDf": {
-                                          "content": "各種工場設備機器"
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "oh7oW",
-                          "name": "Zig Media 01",
-                          "width": "fill_container",
-                          "height": 380,
-                          "fill": {
-                            "type": "image",
-                            "enabled": true,
-                            "url": "assets/corporate-products-supply.png",
-                            "mode": "fill"
-                          },
-                          "stroke": "$border",
-                          "strokeWidth": 1,
-                          "layout": "vertical",
-                          "padding": 20,
-                          "justifyContent": "end",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "OnIRu",
-                              "name": "Zig Media Label 01",
-                              "fill": "$kufu-white",
-                              "content": "取扱製品イメージ",
-                              "fontFamily": "$font-mono",
-                              "fontSize": 12,
-                              "fontWeight": "500",
-                              "letterSpacing": 1.6
-                            }
-                          ]
-                        }
-                      ]
+                      "id": "ref_ObyYQ",
+                      "type": "ref",
+                      "ref": "ObyYQ",
+                      "name": "BusinessFeatureRowMediaRight Sales",
+                      "width": "fill_container"
                     },
                     {
                       "type": "rectangle",
@@ -599,182 +321,11 @@
                       "height": 1
                     },
                     {
-                      "type": "frame",
-                      "id": "E0BMzD",
-                      "name": "Zig Row 02",
-                      "width": "fill_container",
-                      "gap": 56,
-                      "padding": [
-                        44,
-                        0
-                      ],
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "YZ5o3",
-                          "name": "Zig Media 02",
-                          "width": "fill_container",
-                          "height": 380,
-                          "fill": {
-                            "type": "image",
-                            "enabled": true,
-                            "url": "assets/corporate-machining-service.png",
-                            "mode": "fill"
-                          },
-                          "stroke": "$border",
-                          "strokeWidth": 1,
-                          "layout": "vertical",
-                          "padding": 20,
-                          "justifyContent": "end",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "FYCcL",
-                              "name": "Zig Media Label 02",
-                              "fill": "$kufu-white",
-                              "content": "加工イメージ",
-                              "fontFamily": "$font-mono",
-                              "fontSize": 12,
-                              "fontWeight": "500",
-                              "letterSpacing": 1.6
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "ijRKY",
-                          "name": "Zig Text 02",
-                          "width": 480,
-                          "layout": "vertical",
-                          "gap": 16,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "VH6rS",
-                              "layoutPosition": "absolute",
-                              "x": -10,
-                              "y": -34,
-                              "name": "Zig Ghost 02",
-                              "fill": "$ghost-foreground",
-                              "content": "02",
-                              "fontFamily": "$font-mono",
-                              "fontSize": 140,
-                              "fontWeight": "500"
-                            },
-                            {
-                              "type": "text",
-                              "id": "B4QgV",
-                              "name": "Zig Row Eyebrow 02",
-                              "fill": "$primary",
-                              "content": "BUSINESS 02 / MACHINING & CUSTOM",
-                              "fontFamily": "$font-mono",
-                              "fontSize": 12,
-                              "fontWeight": "normal",
-                              "letterSpacing": 2
-                            },
-                            {
-                              "type": "text",
-                              "id": "hX7sl",
-                              "name": "Zig Row Title 02",
-                              "fill": "$foreground",
-                              "content": "加工",
-                              "fontFamily": "$font-serif",
-                              "fontSize": 30,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "kfT2y",
-                              "name": "Zig Row Lead 02",
-                              "fill": "$muted-foreground",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "図面一枚、現物一個から。別作・特注の加工を一括して請け負う。",
-                              "lineHeight": 1.75,
-                              "fontFamily": "$font-sans",
-                              "fontSize": 15,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "frame",
-                              "id": "f06X6P",
-                              "name": "Zig Tags 02",
-                              "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 8,
-                              "padding": [
-                                6,
-                                0,
-                                0,
-                                0
-                              ],
-                              "children": [
-                                {
-                                  "type": "frame",
-                                  "id": "ECFNt",
-                                  "name": "Zig Tag Row",
-                                  "gap": 8,
-                                  "children": [
-                                    {
-                                      "id": "DLM8B",
-                                      "type": "ref",
-                                      "ref": "L6JbhU",
-                                      "name": "Tag 各種機械加工",
-                                      "descendants": {
-                                        "LAFDf": {
-                                          "content": "各種機械加工"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "id": "t0jlE",
-                                      "type": "ref",
-                                      "ref": "L6JbhU",
-                                      "name": "Tag 樹脂成型加工",
-                                      "descendants": {
-                                        "LAFDf": {
-                                          "content": "樹脂成型加工"
-                                        }
-                                      }
-                                    }
-                                  ]
-                                },
-                                {
-                                  "type": "frame",
-                                  "id": "ft6an",
-                                  "name": "Zig Tag Row",
-                                  "gap": 8,
-                                  "children": [
-                                    {
-                                      "id": "DvY3C",
-                                      "type": "ref",
-                                      "ref": "L6JbhU",
-                                      "name": "Tag 板金・溶接加工",
-                                      "descendants": {
-                                        "LAFDf": {
-                                          "content": "板金・溶接加工"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "id": "MmCjw",
-                                      "type": "ref",
-                                      "ref": "L6JbhU",
-                                      "name": "Tag 各種ゴム製品加工",
-                                      "descendants": {
-                                        "LAFDf": {
-                                          "content": "各種ゴム製品加工"
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
+                      "id": "ref_E0BMzD",
+                      "type": "ref",
+                      "ref": "E0BMzD",
+                      "name": "BusinessFeatureRowMediaLeft Machining",
+                      "width": "fill_container"
                     }
                   ]
                 },
@@ -933,7 +484,7 @@
         {
           "type": "frame",
           "id": "1VIXRF",
-          "name": "Products Section",
+          "name": "ProductIndexSection",
           "width": "fill_container",
           "fill": "$muted",
           "layout": "vertical",
@@ -1514,7 +1065,7 @@
         {
           "type": "frame",
           "id": "PUXgYY",
-          "name": "Company Section",
+          "name": "CompanySection",
           "width": "fill_container",
           "fill": "$background",
           "layout": "vertical",
@@ -2046,7 +1597,7 @@
         {
           "type": "frame",
           "id": "1w3G5s",
-          "name": "Footer",
+          "name": "SiteFooterFull",
           "width": "fill_container",
           "fill": "$kufu-gray-950",
           "layout": "vertical",
@@ -2242,7 +1793,7 @@
         {
           "type": "frame",
           "id": "aIXT6",
-          "name": "Contact Page Hero",
+          "name": "ContactPageHero",
           "width": "fill_container",
           "fill": "$background",
           "layout": "vertical",
@@ -2335,7 +1886,7 @@
         {
           "type": "frame",
           "id": "l8PQcr",
-          "name": "Contact Body",
+          "name": "ContactSection",
           "width": "fill_container",
           "fill": "$background",
           "gap": 28,
@@ -2357,140 +1908,64 @@
               "padding": 24,
               "children": [
                 {
-                  "type": "frame",
-                  "id": "T0y2b",
-                  "name": "Info Row Tel",
+                  "id": "ref_T0y2b",
+                  "type": "ref",
+                  "ref": "T0y2b",
+                  "name": "ContactInfoRow Tel",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 6,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "LJC1w",
-                      "name": "Info Key Tel",
-                      "fill": "$primary",
-                      "content": "Tel",
-                      "fontFamily": "$font-mono",
-                      "fontSize": 11,
-                      "fontWeight": "normal",
-                      "letterSpacing": 1.6
+                  "descendants": {
+                    "LJC1w": {
+                      "content": "Tel"
                     },
-                    {
-                      "type": "text",
-                      "id": "nYWJk",
-                      "name": "Info Value Tel",
-                      "fill": "$foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "079-492-6465",
-                      "lineHeight": 1.7,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 15,
-                      "fontWeight": "normal"
+                    "nYWJk": {
+                      "content": "079-492-6465"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "iG9Zj",
-                  "name": "Info Row Fax",
+                  "id": "ref_iG9Zj",
+                  "type": "ref",
+                  "ref": "T0y2b",
+                  "name": "ContactInfoRow Fax",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 6,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "GVWfX",
-                      "name": "Info Key Fax",
-                      "fill": "$primary",
-                      "content": "Fax",
-                      "fontFamily": "$font-mono",
-                      "fontSize": 11,
-                      "fontWeight": "normal",
-                      "letterSpacing": 1.6
+                  "descendants": {
+                    "LJC1w": {
+                      "content": "Fax"
                     },
-                    {
-                      "type": "text",
-                      "id": "MORWl",
-                      "name": "Info Value Fax",
-                      "fill": "$foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "079-492-6429",
-                      "lineHeight": 1.7,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 15,
-                      "fontWeight": "normal"
+                    "nYWJk": {
+                      "content": "079-492-6429"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "i1tJq",
-                  "name": "Info Row E-mail",
+                  "id": "ref_i1tJq",
+                  "type": "ref",
+                  "ref": "T0y2b",
+                  "name": "ContactInfoRow E-mail",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 6,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "WmzSU",
-                      "name": "Info Key E-mail",
-                      "fill": "$primary",
-                      "content": "E-mail",
-                      "fontFamily": "$font-mono",
-                      "fontSize": 11,
-                      "fontWeight": "normal",
-                      "letterSpacing": 1.6
+                  "descendants": {
+                    "LJC1w": {
+                      "content": "E-mail"
                     },
-                    {
-                      "type": "text",
-                      "id": "wF8Eb",
-                      "name": "Info Value E-mail",
-                      "fill": "$foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "fukuura@mist.ocn.ne.jp",
-                      "lineHeight": 1.7,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 15,
-                      "fontWeight": "normal"
+                    "nYWJk": {
+                      "content": "fukuura@mist.ocn.ne.jp"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "o9dSR",
-                  "name": "Info Row 所在地",
+                  "id": "ref_o9dSR",
+                  "type": "ref",
+                  "ref": "T0y2b",
+                  "name": "ContactInfoRow 所在地",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 6,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "h7VafG",
-                      "name": "Info Key 所在地",
-                      "fill": "$primary",
-                      "content": "所在地",
-                      "fontFamily": "$font-mono",
-                      "fontSize": 11,
-                      "fontWeight": "normal",
-                      "letterSpacing": 1.6
+                  "descendants": {
+                    "LJC1w": {
+                      "content": "所在地"
                     },
-                    {
-                      "type": "text",
-                      "id": "bB48t",
-                      "name": "Info Value 所在地",
-                      "fill": "$foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "〒675-1114\n兵庫県加古郡稲美町国安973番地の10",
-                      "lineHeight": 1.7,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 15,
-                      "fontWeight": "normal"
+                    "nYWJk": {
+                      "content": "〒675-1114\n兵庫県加古郡稲美町国安973番地の10"
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "text",
@@ -2857,7 +2332,7 @@
         {
           "type": "frame",
           "id": "productsHero",
-          "name": "Products Page Hero",
+          "name": "ProductsPageHero",
           "width": "fill_container",
           "fill": "$background",
           "gap": 42,
@@ -3053,7 +2528,7 @@
         {
           "type": "frame",
           "id": "productsCategorySection",
-          "name": "Products Category Section",
+          "name": "ProductsCategorySection",
           "width": "fill_container",
           "fill": "$muted",
           "layout": "vertical",
@@ -4160,7 +3635,7 @@
         {
           "type": "frame",
           "id": "productsMakerNote",
-          "name": "Products Maker Note",
+          "name": "ProductsMakerNote",
           "width": "fill_container",
           "fill": "$kufu-gray-950",
           "gap": 40,
@@ -4255,847 +3730,901 @@
       "name": "Components",
       "fill": "#ffffffff",
       "layout": "vertical",
-      "gap": 40,
+      "gap": 48,
       "padding": 24,
       "children": [
         {
           "type": "frame",
-          "id": "ZHnIa",
-          "name": "Button Primary",
-          "reusable": true,
-          "fill": "$primary",
-          "gap": 10,
-          "padding": [
-            14,
-            22
-          ],
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "text",
-              "id": "qhp4y",
-              "name": "Button Label",
-              "fill": "$kufu-white",
-              "content": "ボタンラベル",
-              "fontFamily": "$font-sans",
-              "fontSize": 14,
-              "fontWeight": "600"
-            },
-            {
-              "type": "text",
-              "id": "uTeOs",
-              "name": "Button Arrow",
-              "fill": "$kufu-white",
-              "content": "→",
-              "fontFamily": "$font-mono",
-              "fontSize": 12,
-              "fontWeight": "normal"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "L6JbhU",
-          "name": "Tag Chip",
-          "reusable": true,
-          "fill": "$muted",
-          "padding": [
-            6,
-            12
-          ],
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "text",
-              "id": "LAFDf",
-              "name": "Chip Text",
-              "fill": "$foreground",
-              "content": "タグ",
-              "fontFamily": "$font-sans",
-              "fontSize": 12.5,
-              "fontWeight": "normal"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "ZswCB",
-          "name": "Category Index Row",
-          "reusable": true,
-          "width": 380,
-          "layout": "vertical",
-          "children": [
-            {
-              "type": "rectangle",
-              "id": "ZnhW9",
-              "name": "Index Divider",
-              "fill": "$border",
-              "width": "fill_container",
-              "height": 1
-            },
-            {
-              "type": "frame",
-              "id": "DS8h6",
-              "name": "Index Cell Body",
-              "width": "fill_container",
-              "gap": 14,
-              "padding": [
-                11,
-                2
-              ],
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "la7HJ",
-                  "name": "Index No",
-                  "fill": "$primary",
-                  "content": "00",
-                  "fontFamily": "$font-mono",
-                  "fontSize": 11,
-                  "fontWeight": "500",
-                  "letterSpacing": 1
-                },
-                {
-                  "type": "text",
-                  "id": "Bb2kk",
-                  "name": "Index Name",
-                  "fill": "$foreground",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "content": "カテゴリ名",
-                  "lineHeight": 1.5,
-                  "fontFamily": "$font-sans",
-                  "fontSize": 14,
-                  "fontWeight": "500"
-                },
-                {
-                  "type": "text",
-                  "id": "fu3Mx",
-                  "name": "Index Count",
-                  "fill": "$muted-foreground",
-                  "content": "0社",
-                  "fontFamily": "$font-sans",
-                  "fontSize": 11.5,
-                  "fontWeight": "normal"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "I4TM90",
-          "name": "Section Heading",
-          "reusable": true,
-          "width": 760,
-          "layout": "vertical",
-          "gap": 18,
-          "children": [
-            {
-              "type": "frame",
-              "id": "j8SDs",
-              "name": "Heading Top",
-              "gap": 18,
-              "alignItems": "end",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "ar5wY",
-                  "name": "Heading Number",
-                  "fill": "$foreground",
-                  "content": "00",
-                  "fontFamily": "$font-mono",
-                  "fontSize": 34,
-                  "fontWeight": "500"
-                },
-                {
-                  "type": "text",
-                  "id": "w7MGe",
-                  "name": "Heading Eyebrow",
-                  "fill": "$primary",
-                  "content": "SECTION / セクション",
-                  "fontFamily": "$font-mono",
-                  "fontSize": 11,
-                  "fontWeight": "500",
-                  "letterSpacing": 2.2
-                }
-              ]
-            },
-            {
-              "type": "text",
-              "id": "qwXZN",
-              "name": "Heading Title",
-              "fill": "$foreground",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "セクションタイトル",
-              "fontFamily": "$font-serif",
-              "fontSize": 42,
-              "fontWeight": "600"
-            },
-            {
-              "type": "text",
-              "id": "kDe8R",
-              "name": "Heading Lead",
-              "fill": "$muted-foreground",
-              "textGrowth": "fixed-width",
-              "width": 620,
-              "content": "セクションのリード文。",
-              "lineHeight": 1.75,
-              "fontFamily": "$font-sans",
-              "fontSize": 15,
-              "fontWeight": "normal"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "hY7uS",
-          "name": "Site Header",
-          "reusable": true,
-          "width": 1440,
-          "fill": "$background",
-          "layout": "vertical",
-          "gap": 18,
-          "padding": [
-            18,
-            56
-          ],
-          "children": [
-            {
-              "type": "frame",
-              "id": "zLPRJ",
-              "name": "Header Bar",
-              "width": "fill_container",
-              "justifyContent": "space_between",
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "X9Isi",
-                  "name": "Brand",
-                  "gap": 13,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "qo2py",
-                      "name": "Brand Logo",
-                      "fill": {
-                        "type": "image",
-                        "enabled": true,
-                        "url": "assets/fukuura-mark.png",
-                        "mode": "fill"
-                      },
-                      "width": 32,
-                      "height": 30
-                    },
-                    {
-                      "type": "text",
-                      "id": "A0wctl",
-                      "name": "Brand Name",
-                      "fill": "$foreground",
-                      "content": "有限会社フクウラ",
-                      "fontFamily": "$font-serif",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "letterSpacing": 1
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "N1hCT",
-                  "name": "Navigation",
-                  "gap": 24,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "rn6xG",
-                      "name": "Nav トップ",
-                      "layout": "vertical",
-                      "gap": 2,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "V3nAiV",
-                          "name": "Nav JP トップ",
-                          "fill": "$foreground",
-                          "content": "トップ",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "500"
-                        },
-                        {
-                          "type": "text",
-                          "id": "Y4B1AO",
-                          "name": "Nav EN トップ",
-                          "fill": "$muted-foreground",
-                          "content": "TOP",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 8.5,
-                          "fontWeight": "normal",
-                          "letterSpacing": 1.4
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "KzKAE",
-                      "name": "Nav 事業内容",
-                      "layout": "vertical",
-                      "gap": 2,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "HV1QF",
-                          "name": "Nav JP 事業内容",
-                          "fill": "$foreground",
-                          "content": "事業内容",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "500"
-                        },
-                        {
-                          "type": "text",
-                          "id": "X1pCn",
-                          "name": "Nav EN 事業内容",
-                          "fill": "$muted-foreground",
-                          "content": "BUSINESS",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 8.5,
-                          "fontWeight": "normal",
-                          "letterSpacing": 1.4
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "cyDaB",
-                      "name": "Nav 取扱製品",
-                      "layout": "vertical",
-                      "gap": 2,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "pE47c",
-                          "name": "Nav JP 取扱製品",
-                          "fill": "$foreground",
-                          "content": "取扱製品",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "500"
-                        },
-                        {
-                          "type": "text",
-                          "id": "bElBa",
-                          "name": "Nav EN 取扱製品",
-                          "fill": "$muted-foreground",
-                          "content": "PRODUCTS",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 8.5,
-                          "fontWeight": "normal",
-                          "letterSpacing": 1.4
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "F9dlo",
-                      "name": "Nav 会社情報",
-                      "layout": "vertical",
-                      "gap": 2,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "A1HBg",
-                          "name": "Nav JP 会社情報",
-                          "fill": "$foreground",
-                          "content": "会社情報",
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "500"
-                        },
-                        {
-                          "type": "text",
-                          "id": "Ivthy",
-                          "name": "Nav EN 会社情報",
-                          "fill": "$muted-foreground",
-                          "content": "COMPANY",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 8.5,
-                          "fontWeight": "normal",
-                          "letterSpacing": 1.4
-                        }
-                      ]
-                    },
-                    {
-                      "id": "C29gMU",
-                      "type": "ref",
-                      "ref": "ZHnIa",
-                      "name": "Header CTA",
-                      "padding": [
-                        11,
-                        20
-                      ],
-                      "descendants": {
-                        "qhp4y": {
-                          "content": "お問い合わせ",
-                          "fontSize": 13
-                        }
-                      }
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "rectangle",
-              "id": "f99Fc",
-              "name": "Header Rule",
-              "fill": "$border",
-              "width": "fill_container",
-              "height": 1
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "MPG9H",
-          "name": "Site Footer Compact",
-          "reusable": true,
-          "width": 1440,
-          "fill": "$kufu-gray-950",
-          "padding": [
-            28,
-            56
-          ],
-          "justifyContent": "space_between",
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "frame",
-              "id": "F8Cx3",
-              "name": "Footer Brand",
-              "layout": "vertical",
-              "gap": 6,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "TOC3c",
-                  "name": "Footer Brand Name",
-                  "fill": "$kufu-white",
-                  "content": "有限会社フクウラ",
-                  "fontFamily": "$font-serif",
-                  "fontSize": 22,
-                  "fontWeight": "600"
-                },
-                {
-                  "type": "text",
-                  "id": "u0JvU",
-                  "name": "Footer Brand Meta",
-                  "fill": "$kufu-gray-200",
-                  "content": "機械工具と関連機器 / 販売・加工",
-                  "fontFamily": "$font-sans",
-                  "fontSize": 13,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "qAKi5",
-              "name": "Footer Info",
-              "layout": "vertical",
-              "gap": 6,
-              "alignItems": "end",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "e6jcvt",
-                  "name": "Footer Tel",
-                  "fill": "$kufu-gray-200",
-                  "content": "TEL 079-492-6465",
-                  "fontFamily": "$font-mono",
-                  "fontSize": 12,
-                  "fontWeight": "normal",
-                  "letterSpacing": 1.4
-                },
-                {
-                  "type": "text",
-                  "id": "H55EJd",
-                  "name": "Footer Address",
-                  "fill": "$kufu-gray-200",
-                  "content": "兵庫県加古郡稲美町国安973番地の10",
-                  "fontFamily": "$font-sans",
-                  "fontSize": 13,
-                  "fontWeight": "normal"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "mYG4F",
-          "name": "Site Header Mobile",
-          "reusable": true,
-          "width": 390,
-          "fill": "$background",
-          "layout": "vertical",
-          "gap": 12,
-          "padding": [
-            14,
-            20
-          ],
-          "children": [
-            {
-              "type": "frame",
-              "id": "yufVo",
-              "name": "Header Bar Mobile",
-              "width": "fill_container",
-              "justifyContent": "space_between",
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "b2KzR",
-                  "name": "Brand",
-                  "gap": 10,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "PLQgT",
-                      "name": "Brand Logo",
-                      "fill": {
-                        "type": "image",
-                        "enabled": true,
-                        "url": "assets/fukuura-mark.png",
-                        "mode": "fill"
-                      },
-                      "width": 28,
-                      "height": 26
-                    },
-                    {
-                      "type": "text",
-                      "id": "E5kSS",
-                      "name": "Brand Name",
-                      "fill": "$foreground",
-                      "content": "有限会社フクウラ",
-                      "fontFamily": "$font-serif",
-                      "fontSize": 16,
-                      "fontWeight": "600",
-                      "letterSpacing": 1
-                    }
-                  ]
-                },
-                {
-                  "type": "icon",
-                  "id": "wVG4Q",
-                  "name": "Menu Icon",
-                  "width": 24,
-                  "height": 24,
-                  "icon": "menu",
-                  "library": "lucide",
-                  "fill": "$foreground"
-                }
-              ]
-            },
-            {
-              "type": "rectangle",
-              "id": "VD5Ec",
-              "name": "Header Rule",
-              "fill": "$border",
-              "width": "fill_container",
-              "height": 1
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "iR4un",
-          "name": "Site Footer Compact Mobile",
-          "reusable": true,
-          "width": 390,
-          "fill": "$kufu-gray-950",
-          "layout": "vertical",
-          "gap": 18,
-          "padding": [
-            28,
-            20
-          ],
-          "children": [
-            {
-              "type": "frame",
-              "id": "ca8IP",
-              "name": "Footer Brand",
-              "layout": "vertical",
-              "gap": 6,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "VEymb",
-                  "name": "Footer Brand Name",
-                  "fill": "$kufu-white",
-                  "content": "有限会社フクウラ",
-                  "fontFamily": "$font-serif",
-                  "fontSize": 18,
-                  "fontWeight": "600"
-                },
-                {
-                  "type": "text",
-                  "id": "fwsLT",
-                  "name": "Footer Brand Meta",
-                  "fill": "$kufu-gray-200",
-                  "content": "機械工具と関連機器 / 販売・加工",
-                  "fontFamily": "$font-sans",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "VgYpf",
-              "name": "Footer Info",
-              "layout": "vertical",
-              "gap": 6,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "dq9P9",
-                  "name": "Footer Tel",
-                  "fill": "$kufu-gray-200",
-                  "content": "TEL 079-492-6465",
-                  "fontFamily": "$font-mono",
-                  "fontSize": 12,
-                  "fontWeight": "normal",
-                  "letterSpacing": 1.4
-                },
-                {
-                  "type": "text",
-                  "id": "Wik2Q",
-                  "name": "Footer Address",
-                  "fill": "$kufu-gray-200",
-                  "content": "兵庫県加古郡稲美町国安973番地の10",
-                  "fontFamily": "$font-sans",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "r1z9b",
-          "name": "Product Category Row",
-          "reusable": true,
+          "id": "cmpGenericComponents",
+          "name": "GenericComponents",
           "width": "fill_container",
-          "layout": "vertical",
-          "gap": 14,
-          "padding": [
-            22,
-            0
-          ],
-          "children": [
-            {
-              "type": "rectangle",
-              "id": "i6r5N",
-              "name": "Category Divider",
-              "fill": "$border",
-              "width": "fill_container",
-              "height": 1
-            },
-            {
-              "type": "frame",
-              "id": "X1F7f",
-              "name": "Products Category 01 Body",
-              "width": "fill_container",
-              "gap": 26,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "YAWng",
-                  "name": "Category No",
-                  "fill": "$primary",
-                  "content": "01",
-                  "fontFamily": "$font-mono",
-                  "fontSize": 13,
-                  "fontWeight": "500",
-                  "letterSpacing": 1
-                },
-                {
-                  "type": "frame",
-                  "id": "grmay",
-                  "name": "Category Title 01",
-                  "width": 310,
-                  "layout": "vertical",
-                  "gap": 7,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "v7ibc",
-                      "name": "Category Title",
-                      "fill": "$foreground",
-                      "textGrowth": "fixed-width",
-                      "width": 310,
-                      "content": "駆動・変減速機器",
-                      "lineHeight": 1.35,
-                      "fontFamily": "$font-serif",
-                      "fontSize": 20,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "f5pYz5",
-                      "name": "Category Count",
-                      "fill": "$primary",
-                      "content": "取扱メーカー 17社",
-                      "fontFamily": "$font-sans",
-                      "fontSize": 12,
-                      "fontWeight": "500"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "s5Y4sg",
-                  "name": "Category Makers 01",
-                  "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 8,
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "Y5LseV",
-                      "name": "Maker Columns 01",
-                      "width": "fill_container",
-                      "gap": 28,
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "xjtyU",
-                          "name": "Maker Col 1",
-                          "fill": "$muted-foreground",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "住友重機械工業（株）\n（株）日立産機システム\n三菱電機（株）\n（株）ツバキエマソン\n（株）ニッセイ\nオリエンタルモーター（株）",
-                          "lineHeight": 1.95,
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "SgGpS",
-                          "name": "Maker Col 2",
-                          "fill": "$muted-foreground",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "パナソニック（株）\n日本電産シンポ（株）\n三木プーリー（株）\n（株）マキシンコー\n（株）酒井製作所\n（株）長谷川鉄工所",
-                          "lineHeight": 1.95,
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "dwJlK",
-                          "name": "Maker Col 3",
-                          "fill": "$muted-foreground",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "青木精密工業（株）\nSEW オイドライブジャパン（株）\n東芝産業機器システム（株）\n富士電機（株）\n（株）安川電機",
-                          "lineHeight": 1.95,
-                          "fontFamily": "$font-sans",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "M7io9",
-          "name": "Featured Category Card",
-          "reusable": true,
-          "clip": true,
-          "width": 260,
-          "fill": "$card",
+          "fill": "$background",
           "stroke": "$border",
           "strokeWidth": 1,
           "layout": "vertical",
+          "gap": 24,
+          "padding": 24,
           "children": [
             {
               "type": "frame",
-              "id": "Bm88v",
-              "name": "Featured Media 01",
-              "metadata": {
-                "type": "unsplash",
-                "username": "phkrief",
-                "link": "https://unsplash.com/@phkrief",
-                "author": "Philippe Krief"
-              },
-              "width": "fill_container",
-              "height": 150,
-              "fill": [
+              "id": "ZHnIa",
+              "name": "Button",
+              "reusable": true,
+              "fill": "$primary",
+              "gap": 10,
+              "padding": [
+                14,
+                22
+              ],
+              "alignItems": "center",
+              "children": [
                 {
-                  "type": "image",
-                  "enabled": true,
-                  "url": "https://images.unsplash.com/photo-1723022323088-ca3d68fae5db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3ODExMzEyNzR8&ixlib=rb-4.1.0&q=80&w=1080",
-                  "mode": "fill"
+                  "type": "text",
+                  "id": "qhp4y",
+                  "name": "Button Label",
+                  "fill": "$kufu-white",
+                  "content": "ボタンラベル",
+                  "fontFamily": "$font-sans",
+                  "fontSize": 14,
+                  "fontWeight": "600"
                 },
                 {
-                  "type": "color",
-                  "color": "$muted-foreground",
-                  "enabled": true,
-                  "blendMode": "saturation"
-                },
-                {
-                  "type": "color",
-                  "color": "$photo-overlay",
-                  "enabled": true,
-                  "blendMode": "multiply"
+                  "type": "text",
+                  "id": "uTeOs",
+                  "name": "Button Arrow",
+                  "fill": "$kufu-white",
+                  "content": "→",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
             {
               "type": "frame",
-              "id": "iWoMB",
-              "name": "Featured Body 01",
+              "id": "cmpLinkButton",
+              "name": "LinkButton",
+              "width": 128,
+              "layout": "vertical",
+              "gap": 6,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cmpLinkButtonLabel",
+                  "name": "LinkButtonLabel",
+                  "fill": "$foreground",
+                  "content": "リンクボタン",
+                  "fontFamily": "$font-sans",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "cmpLinkButtonUnderline",
+                  "name": "LinkButtonUnderline",
+                  "fill": "$foreground",
+                  "width": "fill_container",
+                  "height": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "L6JbhU",
+              "name": "Tag",
+              "reusable": true,
+              "fill": "$muted",
+              "padding": [
+                6,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "LAFDf",
+                  "name": "Chip Text",
+                  "fill": "$foreground",
+                  "content": "タグ",
+                  "fontFamily": "$font-sans",
+                  "fontSize": 12.5,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "I4TM90",
+              "name": "SectionHeading",
+              "reusable": true,
+              "width": 760,
+              "layout": "vertical",
+              "gap": 18,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "j8SDs",
+                  "name": "Heading Top",
+                  "gap": 18,
+                  "alignItems": "end",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ar5wY",
+                      "name": "Heading Number",
+                      "fill": "$foreground",
+                      "content": "00",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 34,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "w7MGe",
+                      "name": "Heading Eyebrow",
+                      "fill": "$primary",
+                      "content": "SECTION / セクション",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 11,
+                      "fontWeight": "500",
+                      "letterSpacing": 2.2
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "qwXZN",
+                  "name": "Heading Title",
+                  "fill": "$foreground",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "セクションタイトル",
+                  "fontFamily": "$font-serif",
+                  "fontSize": 42,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "kDe8R",
+                  "name": "Heading Lead",
+                  "fill": "$muted-foreground",
+                  "textGrowth": "fixed-width",
+                  "width": 620,
+                  "content": "セクションのリード文。",
+                  "lineHeight": 1.75,
+                  "fontFamily": "$font-sans",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cmpCard",
+              "name": "Card",
+              "width": 320,
+              "fill": "$card",
+              "stroke": "$border",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cmpCardTitle",
+                  "name": "CardTitle",
+                  "fill": "$foreground",
+                  "content": "カード見出し",
+                  "fontFamily": "$font-serif",
+                  "fontSize": 20,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "cmpCardDescription",
+                  "name": "CardDescription",
+                  "fill": "$muted-foreground",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "カード本文が入ります。",
+                  "lineHeight": 1.7,
+                  "fontFamily": "$font-sans",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "cmpSeparator",
+              "name": "Separator",
+              "fill": "$border",
               "width": "fill_container",
+              "height": 1
+            },
+            {
+              "type": "frame",
+              "id": "cmpFormField",
+              "name": "FormField",
+              "width": 320,
               "layout": "vertical",
               "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cmpFormFieldLabel",
+                  "name": "FormFieldLabel",
+                  "fill": "$foreground",
+                  "content": "項目名",
+                  "fontFamily": "$font-sans",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "cmpFormFieldControl",
+                  "name": "FormFieldControl",
+                  "width": "fill_container",
+                  "fill": "$background",
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "padding": 14,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "zO7R6",
+                      "name": "InputPlaceholder",
+                      "fill": "$muted-foreground",
+                      "content": "入力してください",
+                      "fontFamily": "$font-sans",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "cmpFormFieldMessage",
+                  "name": "FormFieldMessage",
+                  "fill": "$muted-foreground",
+                  "content": "補足またはエラー文",
+                  "fontFamily": "$font-sans",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cmpInput",
+              "name": "Input",
+              "width": 320,
+              "fill": "$background",
+              "stroke": "$border",
+              "strokeWidth": 1,
+              "padding": 14,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cmpInputPlaceholder",
+                  "name": "InputPlaceholder",
+                  "fill": "$muted-foreground",
+                  "content": "入力してください",
+                  "fontFamily": "$font-sans",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cmpSelect",
+              "name": "Select",
+              "width": 320,
+              "fill": "$background",
+              "stroke": "$border",
+              "strokeWidth": 1,
+              "gap": 12,
+              "padding": 14,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cmpSelectPlaceholder",
+                  "name": "SelectPlaceholder",
+                  "fill": "$muted-foreground",
+                  "content": "選択してください",
+                  "fontFamily": "$font-sans",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "cmpSelectIcon",
+                  "name": "SelectIcon",
+                  "fill": "$muted-foreground",
+                  "content": "⌄",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cmpTextarea",
+              "name": "Textarea",
+              "width": 320,
+              "height": 144,
+              "fill": "$background",
+              "stroke": "$border",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "padding": 14,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cmpTextareaPlaceholder",
+                  "name": "TextareaPlaceholder",
+                  "fill": "$muted-foreground",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "内容を入力してください。",
+                  "lineHeight": 1.75,
+                  "fontFamily": "$font-sans",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rqp0b",
+              "name": "DefinitionRow",
+              "reusable": true,
+              "width": 480,
+              "layout": "vertical",
+              "gap": 12,
               "padding": [
                 14,
-                16,
-                16,
-                16
+                0
+              ],
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "gp4Xl",
+                  "name": "Divider",
+                  "fill": "$border",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "g2L71",
+                  "name": "Info Body",
+                  "width": "fill_container",
+                  "gap": 20,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "JFQEu",
+                      "name": "Info Label",
+                      "fill": "$muted-foreground",
+                      "textGrowth": "fixed-width",
+                      "width": 104,
+                      "content": "会社名",
+                      "lineHeight": 1.7,
+                      "fontFamily": "$font-mono",
+                      "fontSize": 11,
+                      "fontWeight": "normal",
+                      "letterSpacing": 1.2
+                    },
+                    {
+                      "type": "text",
+                      "id": "ier1H",
+                      "name": "Info Value",
+                      "fill": "$foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "有限会社フクウラ",
+                      "lineHeight": 1.7,
+                      "fontFamily": "$font-sans",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "cmpCorporateSiteComponents",
+          "name": "CorporateSiteComponents",
+          "width": 1499,
+          "fill": "$muted",
+          "stroke": "$border",
+          "strokeWidth": 1,
+          "layout": "vertical",
+          "gap": 24,
+          "padding": 24,
+          "children": [
+            {
+              "type": "frame",
+              "id": "hY7uS",
+              "name": "SiteHeaderDesktop",
+              "reusable": true,
+              "width": 1440,
+              "fill": "$background",
+              "layout": "vertical",
+              "gap": 18,
+              "padding": [
+                18,
+                56
               ],
               "children": [
                 {
                   "type": "frame",
-                  "id": "Ntx1X",
-                  "name": "Featured Meta 01",
+                  "id": "zLPRJ",
+                  "name": "Header Bar",
                   "width": "fill_container",
                   "justifyContent": "space_between",
                   "alignItems": "center",
                   "children": [
                     {
+                      "type": "frame",
+                      "id": "X9Isi",
+                      "name": "Brand",
+                      "gap": 13,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "rectangle",
+                          "id": "qo2py",
+                          "name": "Brand Logo",
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/fukuura-mark.png",
+                            "mode": "fill"
+                          },
+                          "width": 32,
+                          "height": 30
+                        },
+                        {
+                          "type": "text",
+                          "id": "A0wctl",
+                          "name": "Brand Name",
+                          "fill": "$foreground",
+                          "content": "有限会社フクウラ",
+                          "fontFamily": "$font-serif",
+                          "fontSize": 18,
+                          "fontWeight": "600",
+                          "letterSpacing": 1
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "N1hCT",
+                      "name": "Navigation",
+                      "gap": 24,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "rn6xG",
+                          "name": "Nav トップ",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "V3nAiV",
+                              "name": "Nav JP トップ",
+                              "fill": "$foreground",
+                              "content": "トップ",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 13,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "Y4B1AO",
+                              "name": "Nav EN トップ",
+                              "fill": "$muted-foreground",
+                              "content": "TOP",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 8.5,
+                              "fontWeight": "normal",
+                              "letterSpacing": 1.4
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "KzKAE",
+                          "name": "Nav 事業内容",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "HV1QF",
+                              "name": "Nav JP 事業内容",
+                              "fill": "$foreground",
+                              "content": "事業内容",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 13,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "X1pCn",
+                              "name": "Nav EN 事業内容",
+                              "fill": "$muted-foreground",
+                              "content": "BUSINESS",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 8.5,
+                              "fontWeight": "normal",
+                              "letterSpacing": 1.4
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "cyDaB",
+                          "name": "Nav 取扱製品",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pE47c",
+                              "name": "Nav JP 取扱製品",
+                              "fill": "$foreground",
+                              "content": "取扱製品",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 13,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "bElBa",
+                              "name": "Nav EN 取扱製品",
+                              "fill": "$muted-foreground",
+                              "content": "PRODUCTS",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 8.5,
+                              "fontWeight": "normal",
+                              "letterSpacing": 1.4
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "F9dlo",
+                          "name": "Nav 会社情報",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "A1HBg",
+                              "name": "Nav JP 会社情報",
+                              "fill": "$foreground",
+                              "content": "会社情報",
+                              "fontFamily": "$font-sans",
+                              "fontSize": 13,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "Ivthy",
+                              "name": "Nav EN 会社情報",
+                              "fill": "$muted-foreground",
+                              "content": "COMPANY",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 8.5,
+                              "fontWeight": "normal",
+                              "letterSpacing": 1.4
+                            }
+                          ]
+                        },
+                        {
+                          "id": "C29gMU",
+                          "type": "ref",
+                          "ref": "ZHnIa",
+                          "name": "Header CTA",
+                          "padding": [
+                            11,
+                            20
+                          ],
+                          "descendants": {
+                            "qhp4y": {
+                              "content": "お問い合わせ",
+                              "fontSize": 13
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "f99Fc",
+                  "name": "Header Rule",
+                  "fill": "$border",
+                  "width": "fill_container",
+                  "height": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "mYG4F",
+              "name": "SiteHeaderMobile",
+              "reusable": true,
+              "width": 390,
+              "fill": "$background",
+              "layout": "vertical",
+              "gap": 12,
+              "padding": [
+                14,
+                20
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "yufVo",
+                  "name": "Header Bar Mobile",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "b2KzR",
+                      "name": "Brand",
+                      "gap": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "rectangle",
+                          "id": "PLQgT",
+                          "name": "Brand Logo",
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/fukuura-mark.png",
+                            "mode": "fill"
+                          },
+                          "width": 28,
+                          "height": 26
+                        },
+                        {
+                          "type": "text",
+                          "id": "E5kSS",
+                          "name": "Brand Name",
+                          "fill": "$foreground",
+                          "content": "有限会社フクウラ",
+                          "fontFamily": "$font-serif",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "letterSpacing": 1
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon",
+                      "id": "wVG4Q",
+                      "name": "Menu Icon",
+                      "width": 24,
+                      "height": 24,
+                      "icon": "menu",
+                      "library": "lucide",
+                      "fill": "$foreground"
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "VD5Ec",
+                  "name": "Header Rule",
+                  "fill": "$border",
+                  "width": "fill_container",
+                  "height": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "MPG9H",
+              "name": "SiteFooterCompactDesktop",
+              "reusable": true,
+              "width": 1440,
+              "fill": "$kufu-gray-950",
+              "padding": [
+                28,
+                56
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "F8Cx3",
+                  "name": "Footer Brand",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
                       "type": "text",
-                      "id": "Q6uAn4",
-                      "name": "Featured No 01",
+                      "id": "TOC3c",
+                      "name": "Footer Brand Name",
+                      "fill": "$kufu-white",
+                      "content": "有限会社フクウラ",
+                      "fontFamily": "$font-serif",
+                      "fontSize": 22,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "u0JvU",
+                      "name": "Footer Brand Meta",
+                      "fill": "$kufu-gray-200",
+                      "content": "機械工具と関連機器 / 販売・加工",
+                      "fontFamily": "$font-sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "qAKi5",
+                  "name": "Footer Info",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "alignItems": "end",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "e6jcvt",
+                      "name": "Footer Tel",
+                      "fill": "$kufu-gray-200",
+                      "content": "TEL 079-492-6465",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal",
+                      "letterSpacing": 1.4
+                    },
+                    {
+                      "type": "text",
+                      "id": "H55EJd",
+                      "name": "Footer Address",
+                      "fill": "$kufu-gray-200",
+                      "content": "兵庫県加古郡稲美町国安973番地の10",
+                      "fontFamily": "$font-sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "iR4un",
+              "name": "SiteFooterCompactMobile",
+              "reusable": true,
+              "width": 390,
+              "fill": "$kufu-gray-950",
+              "layout": "vertical",
+              "gap": 18,
+              "padding": [
+                28,
+                20
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ca8IP",
+                  "name": "Footer Brand",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "VEymb",
+                      "name": "Footer Brand Name",
+                      "fill": "$kufu-white",
+                      "content": "有限会社フクウラ",
+                      "fontFamily": "$font-serif",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "fwsLT",
+                      "name": "Footer Brand Meta",
+                      "fill": "$kufu-gray-200",
+                      "content": "機械工具と関連機器 / 販売・加工",
+                      "fontFamily": "$font-sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "VgYpf",
+                  "name": "Footer Info",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "dq9P9",
+                      "name": "Footer Tel",
+                      "fill": "$kufu-gray-200",
+                      "content": "TEL 079-492-6465",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal",
+                      "letterSpacing": 1.4
+                    },
+                    {
+                      "type": "text",
+                      "id": "Wik2Q",
+                      "name": "Footer Address",
+                      "fill": "$kufu-gray-200",
+                      "content": "兵庫県加古郡稲美町国安973番地の10",
+                      "fontFamily": "$font-sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ZswCB",
+              "name": "CategoryIndexRow",
+              "reusable": true,
+              "width": 380,
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "ZnhW9",
+                  "name": "Index Divider",
+                  "fill": "$border",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "DS8h6",
+                  "name": "Index Cell Body",
+                  "width": "fill_container",
+                  "gap": 14,
+                  "padding": [
+                    11,
+                    2
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "la7HJ",
+                      "name": "Index No",
                       "fill": "$primary",
-                      "content": "CATEGORY 01",
+                      "content": "00",
                       "fontFamily": "$font-mono",
                       "fontSize": 11,
                       "fontWeight": "500",
@@ -5103,218 +4632,867 @@
                     },
                     {
                       "type": "text",
-                      "id": "lPN6c",
-                      "name": "Featured Count 01",
+                      "id": "Bb2kk",
+                      "name": "Index Name",
+                      "fill": "$foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "カテゴリ名",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-sans",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "fu3Mx",
+                      "name": "Index Count",
                       "fill": "$muted-foreground",
-                      "content": "17社",
+                      "content": "0社",
                       "fontFamily": "$font-sans",
                       "fontSize": 11.5,
                       "fontWeight": "normal"
                     }
                   ]
-                },
-                {
-                  "type": "text",
-                  "id": "fYzAf",
-                  "name": "Featured Name 01",
-                  "fill": "$foreground",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "content": "駆動・変減速機器",
-                  "lineHeight": 1.5,
-                  "fontFamily": "$font-sans",
-                  "fontSize": 15,
-                  "fontWeight": "600"
                 }
               ]
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "rqp0b",
-          "name": "Company Info Row",
-          "reusable": true,
-          "width": 480,
-          "layout": "vertical",
-          "gap": 12,
-          "padding": [
-            14,
-            0
-          ],
-          "children": [
-            {
-              "type": "rectangle",
-              "id": "gp4Xl",
-              "name": "Divider",
-              "fill": "$border",
-              "width": "fill_container",
-              "height": 1
             },
             {
               "type": "frame",
-              "id": "g2L71",
-              "name": "Info Body",
+              "id": "r1z9b",
+              "name": "ProductCategoryRow",
+              "reusable": true,
               "width": "fill_container",
-              "gap": 20,
+              "layout": "vertical",
+              "gap": 14,
+              "padding": [
+                22,
+                0
+              ],
               "children": [
                 {
-                  "type": "text",
-                  "id": "JFQEu",
-                  "name": "Info Label",
-                  "fill": "$muted-foreground",
-                  "textGrowth": "fixed-width",
-                  "width": 104,
-                  "content": "会社名",
-                  "lineHeight": 1.7,
-                  "fontFamily": "$font-mono",
-                  "fontSize": 11,
-                  "fontWeight": "normal",
-                  "letterSpacing": 1.2
+                  "type": "rectangle",
+                  "id": "i6r5N",
+                  "name": "Category Divider",
+                  "fill": "$border",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "X1F7f",
+                  "name": "Products Category 01 Body",
+                  "width": "fill_container",
+                  "gap": 26,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "YAWng",
+                      "name": "Category No",
+                      "fill": "$primary",
+                      "content": "01",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 13,
+                      "fontWeight": "500",
+                      "letterSpacing": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "grmay",
+                      "name": "Category Title 01",
+                      "width": 310,
+                      "layout": "vertical",
+                      "gap": 7,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "v7ibc",
+                          "name": "Category Title",
+                          "fill": "$foreground",
+                          "textGrowth": "fixed-width",
+                          "width": 310,
+                          "content": "駆動・変減速機器",
+                          "lineHeight": 1.35,
+                          "fontFamily": "$font-serif",
+                          "fontSize": 20,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "f5pYz5",
+                          "name": "Category Count",
+                          "fill": "$primary",
+                          "content": "取扱メーカー 17社",
+                          "fontFamily": "$font-sans",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "s5Y4sg",
+                      "name": "Category Makers 01",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Y5LseV",
+                          "name": "Maker Columns 01",
+                          "width": "fill_container",
+                          "gap": 28,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "xjtyU",
+                              "name": "Maker Col 1",
+                              "fill": "$muted-foreground",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "住友重機械工業（株）\n（株）日立産機システム\n三菱電機（株）\n（株）ツバキエマソン\n（株）ニッセイ\nオリエンタルモーター（株）",
+                              "lineHeight": 1.95,
+                              "fontFamily": "$font-sans",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "SgGpS",
+                              "name": "Maker Col 2",
+                              "fill": "$muted-foreground",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "パナソニック（株）\n日本電産シンポ（株）\n三木プーリー（株）\n（株）マキシンコー\n（株）酒井製作所\n（株）長谷川鉄工所",
+                              "lineHeight": 1.95,
+                              "fontFamily": "$font-sans",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dwJlK",
+                              "name": "Maker Col 3",
+                              "fill": "$muted-foreground",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "青木精密工業（株）\nSEW オイドライブジャパン（株）\n東芝産業機器システム（株）\n富士電機（株）\n（株）安川電機",
+                              "lineHeight": 1.95,
+                              "fontFamily": "$font-sans",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "M7io9",
+              "name": "FeaturedCategoryCard",
+              "reusable": true,
+              "clip": true,
+              "width": 260,
+              "fill": "$card",
+              "stroke": "$border",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Bm88v",
+                  "name": "Featured Media 01",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "phkrief",
+                    "link": "https://unsplash.com/@phkrief",
+                    "author": "Philippe Krief"
+                  },
+                  "width": "fill_container",
+                  "height": 150,
+                  "fill": [
+                    {
+                      "type": "image",
+                      "enabled": true,
+                      "url": "https://images.unsplash.com/photo-1723022323088-ca3d68fae5db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3ODExMzEyNzR8&ixlib=rb-4.1.0&q=80&w=1080",
+                      "mode": "fill"
+                    },
+                    {
+                      "type": "color",
+                      "color": "$muted-foreground",
+                      "enabled": true,
+                      "blendMode": "saturation"
+                    },
+                    {
+                      "type": "color",
+                      "color": "$photo-overlay",
+                      "enabled": true,
+                      "blendMode": "multiply"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "iWoMB",
+                  "name": "Featured Body 01",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "padding": [
+                    14,
+                    16,
+                    16,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Ntx1X",
+                      "name": "Featured Meta 01",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Q6uAn4",
+                          "name": "Featured No 01",
+                          "fill": "$primary",
+                          "content": "CATEGORY 01",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 11,
+                          "fontWeight": "500",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "text",
+                          "id": "lPN6c",
+                          "name": "Featured Count 01",
+                          "fill": "$muted-foreground",
+                          "content": "17社",
+                          "fontFamily": "$font-sans",
+                          "fontSize": 11.5,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "fYzAf",
+                      "name": "Featured Name 01",
+                      "fill": "$foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "駆動・変減速機器",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$font-sans",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "BCc6P",
+              "name": "CustomOrderItem",
+              "reusable": true,
+              "width": 260,
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "EoZuK",
+                  "name": "Item Dash",
+                  "fill": "$primary",
+                  "width": 14,
+                  "height": 2
                 },
                 {
                   "type": "text",
-                  "id": "ier1H",
-                  "name": "Info Value",
+                  "id": "RwYwZ",
+                  "name": "Item Text ギヤー・プー",
                   "fill": "$foreground",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "content": "有限会社フクウラ",
-                  "lineHeight": 1.7,
+                  "content": "ギヤー・プーリー・スプロケット他 軸穴キー加工",
+                  "lineHeight": 1.5,
                   "fontFamily": "$font-sans",
-                  "fontSize": 14,
+                  "fontSize": 13,
                   "fontWeight": "normal"
                 }
               ]
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "BCc6P",
-          "name": "Custom Item",
-          "reusable": true,
-          "width": 260,
-          "gap": 10,
-          "alignItems": "center",
-          "children": [
+            },
             {
-              "type": "rectangle",
-              "id": "EoZuK",
-              "name": "Item Dash",
-              "fill": "$primary",
-              "width": 14,
-              "height": 2
+              "type": "frame",
+              "id": "qoUFl",
+              "name": "FooterLinkColumn",
+              "reusable": true,
+              "layout": "vertical",
+              "gap": 18,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "y1sdXc",
+                  "name": "Footer Sitemap Head",
+                  "fill": "$kufu-gray-500",
+                  "content": "SITEMAP",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 10,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1.8
+                },
+                {
+                  "type": "frame",
+                  "id": "bjGIt",
+                  "name": "Footer Sitemap Links",
+                  "layout": "vertical",
+                  "gap": 11,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ImBv4",
+                      "name": "Footer Link 事業内容",
+                      "fill": "$kufu-gray-200",
+                      "content": "事業内容",
+                      "fontFamily": "$font-sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "f6zx3",
+                      "name": "Footer Link 取扱製品",
+                      "fill": "$kufu-gray-200",
+                      "content": "取扱製品",
+                      "fontFamily": "$font-sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "p75YX",
+                      "name": "Footer Link 会社概要",
+                      "fill": "$kufu-gray-200",
+                      "content": "会社概要",
+                      "fontFamily": "$font-sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mJ1dG",
+                      "name": "Footer Link お問い合わせ・お見積り",
+                      "fill": "$kufu-gray-200",
+                      "content": "お問い合わせ・お見積り",
+                      "fontFamily": "$font-sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
             },
             {
               "type": "text",
-              "id": "RwYwZ",
-              "name": "Item Text ギヤー・プー",
-              "fill": "$foreground",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "ギヤー・プーリー・スプロケット他 軸穴キー加工",
-              "lineHeight": 1.5,
+              "id": "W02jT",
+              "name": "FooterContactLine",
+              "reusable": true,
+              "fill": "$kufu-gray-200",
+              "content": "〒675-1114",
               "fontFamily": "$font-sans",
               "fontSize": 13,
               "fontWeight": "normal"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "qoUFl",
-          "name": "Footer Link Column",
-          "reusable": true,
-          "layout": "vertical",
-          "gap": 18,
-          "children": [
+            },
             {
               "type": "text",
-              "id": "y1sdXc",
-              "name": "Footer Sitemap Head",
-              "fill": "$kufu-gray-500",
-              "content": "SITEMAP",
-              "fontFamily": "$font-mono",
-              "fontSize": 10,
-              "fontWeight": "normal",
-              "letterSpacing": 1.8
+              "id": "kSK71",
+              "name": "MakerColumnText",
+              "reusable": true,
+              "fill": "$muted-foreground",
+              "textGrowth": "fixed-width",
+              "width": 280,
+              "content": "住友重機械工業（株）\n（株）日立産機システム\n三菱電機（株）\n（株）ツバキエマソン\n（株）ニッセイ\nオリエンタルモーター（株）",
+              "lineHeight": 1.95,
+              "fontFamily": "$font-sans",
+              "fontSize": 13,
+              "fontWeight": "normal"
             },
             {
               "type": "frame",
-              "id": "bjGIt",
-              "name": "Footer Sitemap Links",
+              "id": "ad9npZ",
+              "name": "ServicePillar",
+              "width": "fill_container",
               "layout": "vertical",
-              "gap": 11,
+              "gap": 8,
+              "padding": [
+                16,
+                0
+              ],
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "rUysvJ",
+                  "name": "ServicePillarSeparator",
+                  "fill": "$border",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "0xlTMa",
+                  "name": "ServicePillarHeader",
+                  "width": "fill_container",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kQXocX",
+                      "name": "ServicePillarNumber",
+                      "fill": "$primary",
+                      "content": "01",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 10,
+                      "fontWeight": "500",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "XGe0GF",
+                      "name": "ServicePillarTitle",
+                      "fill": "$foreground",
+                      "content": "見積もり・販売",
+                      "fontFamily": "$font-serif",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "2pSQ5z",
+                  "name": "ServicePillarLead",
+                  "fill": "$muted-foreground",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "機械工具・駆動部品・省力化機器まで、必要な製品の見積もり・調達に対応。",
+                  "lineHeight": 1.7,
+                  "fontFamily": "$font-sans",
+                  "fontSize": 13.5,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ObyYQ",
+              "name": "BusinessFeatureRowMediaRight",
+              "width": "fill_container",
+              "gap": 56,
+              "padding": [
+                44,
+                0
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "WZDNK",
+                  "name": "Zig Text 01",
+                  "width": 480,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "WFF0a",
+                      "layoutPosition": "absolute",
+                      "x": -10,
+                      "y": -34,
+                      "name": "Zig Ghost 01",
+                      "fill": "$ghost-foreground",
+                      "content": "01",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 140,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ckS86",
+                      "name": "Zig Row Eyebrow 01",
+                      "fill": "$primary",
+                      "content": "BUSINESS 01 / SALES & SUPPLY",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "ab8gX",
+                      "name": "Zig Row Title 01",
+                      "fill": "$foreground",
+                      "content": "見積もり・販売",
+                      "fontFamily": "$font-serif",
+                      "fontSize": 30,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "aYtXc",
+                      "name": "Zig Row Lead 01",
+                      "fill": "$muted-foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "機械工具から省力化機器まで、延べ約320社の取扱メーカーから現場に必要な製品を調達し供給する。",
+                      "lineHeight": 1.75,
+                      "fontFamily": "$font-sans",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "w8OgZ",
+                      "name": "Zig Tags 01",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "padding": [
+                        6,
+                        0,
+                        0,
+                        0
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "xZ6ON",
+                          "name": "Zig Tag Row",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "id": "u4k2Cj",
+                              "type": "ref",
+                              "ref": "L6JbhU",
+                              "name": "Tag 機械工具",
+                              "descendants": {
+                                "LAFDf": {
+                                  "content": "機械工具"
+                                }
+                              }
+                            },
+                            {
+                              "id": "qTNDX",
+                              "type": "ref",
+                              "ref": "L6JbhU",
+                              "name": "Tag 省力化機器",
+                              "descendants": {
+                                "LAFDf": {
+                                  "content": "省力化機器"
+                                }
+                              }
+                            },
+                            {
+                              "id": "jEZMj",
+                              "type": "ref",
+                              "ref": "L6JbhU",
+                              "name": "Tag 伝動機器",
+                              "descendants": {
+                                "LAFDf": {
+                                  "content": "伝動機器"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "CLTbv",
+                          "name": "Zig Tag Row",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "id": "zwkkK",
+                              "type": "ref",
+                              "ref": "L6JbhU",
+                              "name": "Tag 物流・搬送機器",
+                              "descendants": {
+                                "LAFDf": {
+                                  "content": "物流・搬送機器"
+                                }
+                              }
+                            },
+                            {
+                              "id": "S6pHI",
+                              "type": "ref",
+                              "ref": "L6JbhU",
+                              "name": "Tag 各種工場設備機器",
+                              "descendants": {
+                                "LAFDf": {
+                                  "content": "各種工場設備機器"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "oh7oW",
+                  "name": "Zig Media 01",
+                  "width": "fill_container",
+                  "height": 380,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/corporate-products-supply.png",
+                    "mode": "fill"
+                  },
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "padding": 20,
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "OnIRu",
+                      "name": "Zig Media Label 01",
+                      "fill": "$kufu-white",
+                      "content": "取扱製品イメージ",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "500",
+                      "letterSpacing": 1.6
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "E0BMzD",
+              "name": "BusinessFeatureRowMediaLeft",
+              "width": "fill_container",
+              "gap": 56,
+              "padding": [
+                44,
+                0
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "YZ5o3",
+                  "name": "Zig Media 02",
+                  "width": "fill_container",
+                  "height": 380,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/corporate-machining-service.png",
+                    "mode": "fill"
+                  },
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "padding": 20,
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "FYCcL",
+                      "name": "Zig Media Label 02",
+                      "fill": "$kufu-white",
+                      "content": "加工イメージ",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "500",
+                      "letterSpacing": 1.6
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ijRKY",
+                  "name": "Zig Text 02",
+                  "width": 480,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "VH6rS",
+                      "layoutPosition": "absolute",
+                      "x": -10,
+                      "y": -34,
+                      "name": "Zig Ghost 02",
+                      "fill": "$ghost-foreground",
+                      "content": "02",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 140,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "B4QgV",
+                      "name": "Zig Row Eyebrow 02",
+                      "fill": "$primary",
+                      "content": "BUSINESS 02 / MACHINING & CUSTOM",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "hX7sl",
+                      "name": "Zig Row Title 02",
+                      "fill": "$foreground",
+                      "content": "加工",
+                      "fontFamily": "$font-serif",
+                      "fontSize": 30,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "kfT2y",
+                      "name": "Zig Row Lead 02",
+                      "fill": "$muted-foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "図面一枚、現物一個から。別作・特注の加工を一括して請け負う。",
+                      "lineHeight": 1.75,
+                      "fontFamily": "$font-sans",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "f06X6P",
+                      "name": "Zig Tags 02",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 8,
+                      "padding": [
+                        6,
+                        0,
+                        0,
+                        0
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "ECFNt",
+                          "name": "Zig Tag Row",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "id": "DLM8B",
+                              "type": "ref",
+                              "ref": "L6JbhU",
+                              "name": "Tag 各種機械加工",
+                              "descendants": {
+                                "LAFDf": {
+                                  "content": "各種機械加工"
+                                }
+                              }
+                            },
+                            {
+                              "id": "t0jlE",
+                              "type": "ref",
+                              "ref": "L6JbhU",
+                              "name": "Tag 樹脂成型加工",
+                              "descendants": {
+                                "LAFDf": {
+                                  "content": "樹脂成型加工"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "ft6an",
+                          "name": "Zig Tag Row",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "id": "DvY3C",
+                              "type": "ref",
+                              "ref": "L6JbhU",
+                              "name": "Tag 板金・溶接加工",
+                              "descendants": {
+                                "LAFDf": {
+                                  "content": "板金・溶接加工"
+                                }
+                              }
+                            },
+                            {
+                              "id": "MmCjw",
+                              "type": "ref",
+                              "ref": "L6JbhU",
+                              "name": "Tag 各種ゴム製品加工",
+                              "descendants": {
+                                "LAFDf": {
+                                  "content": "各種ゴム製品加工"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "T0y2b",
+              "name": "ContactInfoRow",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
               "children": [
                 {
                   "type": "text",
-                  "id": "ImBv4",
-                  "name": "Footer Link 事業内容",
-                  "fill": "$kufu-gray-200",
-                  "content": "事業内容",
-                  "fontFamily": "$font-sans",
-                  "fontSize": 13,
-                  "fontWeight": "normal"
+                  "id": "LJC1w",
+                  "name": "ContactInfoKey",
+                  "fill": "$primary",
+                  "content": "Tel",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 11,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1.6
                 },
                 {
                   "type": "text",
-                  "id": "f6zx3",
-                  "name": "Footer Link 取扱製品",
-                  "fill": "$kufu-gray-200",
-                  "content": "取扱製品",
+                  "id": "nYWJk",
+                  "name": "ContactInfoValue",
+                  "fill": "$foreground",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "079-492-6465",
+                  "lineHeight": 1.7,
                   "fontFamily": "$font-sans",
-                  "fontSize": 13,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "p75YX",
-                  "name": "Footer Link 会社概要",
-                  "fill": "$kufu-gray-200",
-                  "content": "会社概要",
-                  "fontFamily": "$font-sans",
-                  "fontSize": 13,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "mJ1dG",
-                  "name": "Footer Link お問い合わせ・お見積り",
-                  "fill": "$kufu-gray-200",
-                  "content": "お問い合わせ・お見積り",
-                  "fontFamily": "$font-sans",
-                  "fontSize": 13,
+                  "fontSize": 15,
                   "fontWeight": "normal"
                 }
               ]
             }
           ]
-        },
-        {
-          "type": "text",
-          "id": "W02jT",
-          "name": "Footer Line",
-          "reusable": true,
-          "fill": "$kufu-gray-200",
-          "content": "〒675-1114",
-          "fontFamily": "$font-sans",
-          "fontSize": 13,
-          "fontWeight": "normal"
-        },
-        {
-          "type": "text",
-          "id": "kSK71",
-          "name": "Maker Text",
-          "reusable": true,
-          "fill": "$muted-foreground",
-          "textGrowth": "fixed-width",
-          "width": 280,
-          "content": "住友重機械工業（株）\n（株）日立産機システム\n三菱電機（株）\n（株）ツバキエマソン\n（株）ニッセイ\nオリエンタルモーター（株）",
-          "lineHeight": 1.95,
-          "fontFamily": "$font-sans",
-          "fontSize": 13,
-          "fontWeight": "normal"
         }
       ]
     },
@@ -5339,7 +5517,7 @@
         {
           "type": "frame",
           "id": "MtzGG",
-          "name": "Hero Mobile",
+          "name": "LpHeroSectionMobile",
           "width": "fill_container",
           "fill": "$background",
           "layout": "vertical",
@@ -5469,136 +5647,40 @@
               "layout": "vertical",
               "children": [
                 {
-                  "type": "frame",
-                  "id": "TXIbi",
-                  "name": "Pillar 見積もり・販売",
+                  "id": "ref_TXIbi",
+                  "type": "ref",
+                  "ref": "ad9npZ",
+                  "name": "ServicePillar Sales Mobile",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 8,
-                  "padding": [
-                    14,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "I88F46",
-                      "name": "Pillar Rule 01",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "kQXocX": {
+                      "content": "01"
                     },
-                    {
-                      "type": "frame",
-                      "id": "XnoTe",
-                      "name": "Pillar Top 見積もり・販売",
-                      "width": "fill_container",
-                      "gap": 14,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "BnlwY",
-                          "name": "Pillar No 見積もり・販売",
-                          "fill": "$primary",
-                          "content": "01",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 10,
-                          "fontWeight": "500",
-                          "letterSpacing": 2
-                        },
-                        {
-                          "type": "text",
-                          "id": "zQqMC",
-                          "name": "Pillar Title 見積もり・販売",
-                          "fill": "$foreground",
-                          "content": "見積もり・販売",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 16,
-                          "fontWeight": "600"
-                        }
-                      ]
+                    "XGe0GF": {
+                      "content": "見積もり・販売"
                     },
-                    {
-                      "type": "text",
-                      "id": "oNtBf",
-                      "name": "Pillar Lead 見積もり・販売",
-                      "fill": "$muted-foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "機械工具・駆動部品・省力化機器まで、必要な製品の見積もり・調達に対応。",
-                      "lineHeight": 1.7,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 13,
-                      "fontWeight": "normal"
+                    "2pSQ5z": {
+                      "content": "機械工具・駆動部品・省力化機器まで、必要な製品の見積もり・調達に対応。"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "oSPhE",
-                  "name": "Pillar 加工",
+                  "id": "ref_oSPhE",
+                  "type": "ref",
+                  "ref": "ad9npZ",
+                  "name": "ServicePillar Machining Mobile",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 8,
-                  "padding": [
-                    14,
-                    0
-                  ],
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "id": "njZAa",
-                      "name": "Pillar Rule 02",
-                      "fill": "$border",
-                      "width": "fill_container",
-                      "height": 1
+                  "descendants": {
+                    "kQXocX": {
+                      "content": "02"
                     },
-                    {
-                      "type": "frame",
-                      "id": "inyGi",
-                      "name": "Pillar Top 加工",
-                      "width": "fill_container",
-                      "gap": 14,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "AQc0j",
-                          "name": "Pillar No 加工",
-                          "fill": "$primary",
-                          "content": "02",
-                          "fontFamily": "$font-mono",
-                          "fontSize": 10,
-                          "fontWeight": "500",
-                          "letterSpacing": 2
-                        },
-                        {
-                          "type": "text",
-                          "id": "y7sWyi",
-                          "name": "Pillar Title 加工",
-                          "fill": "$foreground",
-                          "content": "加工",
-                          "fontFamily": "$font-serif",
-                          "fontSize": 16,
-                          "fontWeight": "600"
-                        }
-                      ]
+                    "XGe0GF": {
+                      "content": "加工"
                     },
-                    {
-                      "type": "text",
-                      "id": "OBfGb",
-                      "name": "Pillar Lead 加工",
-                      "fill": "$muted-foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "機械加工・樹脂成型・板金溶接・ゴム加工。別作・特注品に対応。",
-                      "lineHeight": 1.7,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 13,
-                      "fontWeight": "normal"
+                    "2pSQ5z": {
+                      "content": "機械加工・樹脂成型・板金溶接・ゴム加工。別作・特注品に対応。"
                     }
-                  ]
+                  }
                 }
               ]
             },
@@ -5661,7 +5743,7 @@
         {
           "type": "frame",
           "id": "PNFVR",
-          "name": "Business Section Mobile",
+          "name": "BusinessSectionMobile",
           "width": "fill_container",
           "fill": "$background",
           "layout": "vertical",
@@ -6197,7 +6279,7 @@
         {
           "type": "frame",
           "id": "X3Mna",
-          "name": "Products Section Mobile",
+          "name": "ProductIndexSectionMobile",
           "width": "fill_container",
           "fill": "$muted",
           "layout": "vertical",
@@ -6809,7 +6891,7 @@
         {
           "type": "frame",
           "id": "ci6Qv",
-          "name": "Company Section Mobile",
+          "name": "CompanySectionMobile",
           "width": "fill_container",
           "fill": "$background",
           "layout": "vertical",
@@ -7401,7 +7483,7 @@
         {
           "type": "frame",
           "id": "yVxQ9",
-          "name": "Footer Mobile",
+          "name": "SiteFooterFullMobile",
           "width": "fill_container",
           "fill": "$kufu-gray-950",
           "layout": "vertical",
@@ -7595,7 +7677,7 @@
         {
           "type": "frame",
           "id": "FG7Lg",
-          "name": "Products Hero Mobile",
+          "name": "ProductsPageHeroMobile",
           "width": "fill_container",
           "fill": "$background",
           "layout": "vertical",
@@ -7742,7 +7824,7 @@
         {
           "type": "frame",
           "id": "H5iJz6",
-          "name": "Products Category Section Mobile",
+          "name": "ProductsCategorySectionMobile",
           "width": "fill_container",
           "fill": "$muted",
           "layout": "vertical",
@@ -9047,7 +9129,7 @@
         {
           "type": "frame",
           "id": "zR7tY",
-          "name": "Products Maker Note Mobile",
+          "name": "ProductsMakerNoteMobile",
           "width": "fill_container",
           "fill": "$kufu-gray-950",
           "layout": "vertical",
@@ -9158,7 +9240,7 @@
         {
           "type": "frame",
           "id": "oW6Vx",
-          "name": "Contact Hero Mobile",
+          "name": "ContactPageHeroMobile",
           "width": "fill_container",
           "fill": "$background",
           "layout": "vertical",
@@ -9254,7 +9336,7 @@
         {
           "type": "frame",
           "id": "ZtSP0",
-          "name": "Contact Body Mobile",
+          "name": "ContactSectionMobile",
           "width": "fill_container",
           "fill": "$background",
           "layout": "vertical",
@@ -9277,140 +9359,64 @@
               "padding": 20,
               "children": [
                 {
-                  "type": "frame",
-                  "id": "o1Inl",
-                  "name": "Info Row Tel",
+                  "id": "ref_o1Inl",
+                  "type": "ref",
+                  "ref": "T0y2b",
+                  "name": "ContactInfoRow Tel",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 5,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "n3lAWv",
-                      "name": "Info Key Tel",
-                      "fill": "$primary",
-                      "content": "Tel",
-                      "fontFamily": "$font-mono",
-                      "fontSize": 10.5,
-                      "fontWeight": "normal",
-                      "letterSpacing": 1.6
+                  "descendants": {
+                    "LJC1w": {
+                      "content": "Tel"
                     },
-                    {
-                      "type": "text",
-                      "id": "oF2bm",
-                      "name": "Info Value Tel",
-                      "fill": "$foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "079-492-6465",
-                      "lineHeight": 1.7,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 14.5,
-                      "fontWeight": "normal"
+                    "nYWJk": {
+                      "content": "079-492-6465"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "pUG5f",
-                  "name": "Info Row Fax",
+                  "id": "ref_pUG5f",
+                  "type": "ref",
+                  "ref": "T0y2b",
+                  "name": "ContactInfoRow Fax",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 5,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "FemqO",
-                      "name": "Info Key Fax",
-                      "fill": "$primary",
-                      "content": "Fax",
-                      "fontFamily": "$font-mono",
-                      "fontSize": 10.5,
-                      "fontWeight": "normal",
-                      "letterSpacing": 1.6
+                  "descendants": {
+                    "LJC1w": {
+                      "content": "Fax"
                     },
-                    {
-                      "type": "text",
-                      "id": "UJBuT",
-                      "name": "Info Value Fax",
-                      "fill": "$foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "079-492-6429",
-                      "lineHeight": 1.7,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 14.5,
-                      "fontWeight": "normal"
+                    "nYWJk": {
+                      "content": "079-492-6429"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "jMLYB",
-                  "name": "Info Row E-mail",
+                  "id": "ref_jMLYB",
+                  "type": "ref",
+                  "ref": "T0y2b",
+                  "name": "ContactInfoRow E-mail",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 5,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "y5udv",
-                      "name": "Info Key E-mail",
-                      "fill": "$primary",
-                      "content": "E-mail",
-                      "fontFamily": "$font-mono",
-                      "fontSize": 10.5,
-                      "fontWeight": "normal",
-                      "letterSpacing": 1.6
+                  "descendants": {
+                    "LJC1w": {
+                      "content": "E-mail"
                     },
-                    {
-                      "type": "text",
-                      "id": "DzI17",
-                      "name": "Info Value E-mail",
-                      "fill": "$foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "fukuura@mist.ocn.ne.jp",
-                      "lineHeight": 1.7,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 14.5,
-                      "fontWeight": "normal"
+                    "nYWJk": {
+                      "content": "fukuura@mist.ocn.ne.jp"
                     }
-                  ]
+                  }
                 },
                 {
-                  "type": "frame",
-                  "id": "N3eoI8",
-                  "name": "Info Row 所在地",
+                  "id": "ref_N3eoI8",
+                  "type": "ref",
+                  "ref": "T0y2b",
+                  "name": "ContactInfoRow 所在地",
                   "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 5,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "Iobbi",
-                      "name": "Info Key 所在地",
-                      "fill": "$primary",
-                      "content": "所在地",
-                      "fontFamily": "$font-mono",
-                      "fontSize": 10.5,
-                      "fontWeight": "normal",
-                      "letterSpacing": 1.6
+                  "descendants": {
+                    "LJC1w": {
+                      "content": "所在地"
                     },
-                    {
-                      "type": "text",
-                      "id": "Q1aQn",
-                      "name": "Info Value 所在地",
-                      "fill": "$foreground",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "〒675-1114\n兵庫県加古郡稲美町国安973番地の10",
-                      "lineHeight": 1.7,
-                      "fontFamily": "$font-sans",
-                      "fontSize": 14.5,
-                      "fontWeight": "normal"
+                    "nYWJk": {
+                      "content": "〒675-1114\n兵庫県加古郡稲美町国安973番地の10"
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "text",
