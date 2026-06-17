@@ -1,8 +1,8 @@
 # コーポレートサイト 問い合わせフォーム
 
-> 対象: 有限会社フクウラ コーポレートサイト お問い合わせページ (P6 `/contact`) の問い合わせフォーム機能仕様。
+> 対象: 有限会社フクウラ コーポレートサイト お問い合わせページ (P6 `/contact`) の問い合わせフォーム機能仕様の決定経緯。
 > スコープ: フォーム入力項目 / バリデーション / 送信処理 / スパム対策 / React island 化判断。IA (ページ・section 構成) は [#11](../11-corporate-site-ia/index.md)、デザイントークンは [#13](../13-design-system-foundation/index.md) を正本とする。
-> 正本境界: 本 spec は issue #14 の論点・決定経緯・受け入れ基準・実装分割を記録する。durable な設計成果 (送信バックエンド方式 / island ポリシー適用) を確定したら `spec-sync` で feature doc / context / ADR へハンドオフする。
+> 正本境界: 本 spec は issue #14 の論点・決定経緯・受け入れ基準・実装分割を記録する。durable な設計成果は `spec-sync` で [feature doc](../../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様) / [context](../../context/) / [ADR-0009](../../adr/0009-corporate-site-contact-form-backend.md) へハンドオフ済みであり、本 spec 内の仕様詳細は決定時スナップショットとする。
 
 ## メタ情報
 
@@ -39,27 +39,29 @@
 - Design Doc 更新要否: 不要 (継承。feature doc 側で扱う)
 - ADR 起票要否: **要 → 反映済 (D7)**。新規 [ADR-0009](../../adr/0009-corporate-site-contact-form-backend.md) を `spec-sync` で起票済み。corporate-site の問い合わせ送信を Cloudflare Pages Functions (Workers) 中継にする決定 (`output: "static"` + Functions 併用) を記録した。
 
-| 上位文書    | 節 / 該当箇所                                              | 整合方針 (継承 / 補足 / 変更提案)                                          |
-| ----------- | ---------------------------------------------------------- | -------------------------------------------------------------------------- |
-| PRD         | プロダクト原則「コーポレートサイトの性能を最優先する」     | 継承                                                                       |
-| Design Doc  | モジュール責務 → `apps/corporate-site`                     | 継承                                                                       |
-| feature doc | ページ構成 IA → P6 `/contact` 連絡先 + フォーム (機能 #14) | 補足 (本 spec が機能仕様を埋める)                                          |
-| context     | architecture → Runtime Boundary / shadcn island 境界       | 継承 (フォームは island)                                                   |
-| context     | infrastructure → Cloudflare Pages / Turnstile / Workers    | 補足 (送信経路を D1 で具体化)                                              |
-| context     | testing → E2E 主要導線 (問い合わせ導線)                    | 継承                                                                       |
-| ADR-0008    | corporate-site の React island policy                      | 継承 (フォームは「最初の主要 island」)                                     |
-| ADR-0009    | 問い合わせ送信を Workers 中継にする決定 (本 spec で起票)   | **正本** (spec-sync で起票。アーキ決定は ADR-0009 / infra contract が正本) |
+| 上位文書    | 節 / 該当箇所                                               | 整合方針 (継承 / 補足 / 変更提案)                                           |
+| ----------- | ----------------------------------------------------------- | --------------------------------------------------------------------------- |
+| PRD         | プロダクト原則「コーポレートサイトの性能を最優先する」      | 継承                                                                        |
+| Design Doc  | モジュール責務 → `apps/corporate-site`                      | 継承                                                                        |
+| feature doc | 問い合わせフォーム仕様 / P6 `/contact`                      | **正本** (spec-sync で反映済。機能仕様・フロー・API 契約は feature doc)     |
+| context     | architecture → Runtime Boundary / Edge API / Error Contract | **正本** (API / error envelope の横断方針を spec-sync で反映済)             |
+| context     | infrastructure → Cloudflare Pages / Turnstile / Workers     | **正本** (送信経路・secret・security / rate limit を spec-sync で反映済)    |
+| context     | testing → E2E Runtime Contract / API・Functions の検証境界  | **正本** (route intercept / Vitest / preview 手動確認を spec-sync で反映済) |
+| ADR-0008    | corporate-site の React island policy                       | 継承 (フォームは「最初の主要 island」)                                      |
+| ADR-0009    | 問い合わせ送信を Workers 中継にする決定 (本 spec で起票)    | **正本** (spec-sync で起票。アーキ決定は ADR-0009 / infra contract が正本)  |
 
-> 送信バックエンド方式 (D1) は確定済。infrastructure.md の Infrastructure Contract / Security と feature doc / ADR-0009 へ `spec-sync` で反映済 (2026-06-17)。
+> 送信バックエンド方式 (D1) / フォーム仕様 (D4〜D6) / API・error 契約 (D9) / 検証境界 (D10) / security 方針 (D8 / D11 / D12 / D13) は確定済。feature doc / context / ADR-0009 へ `spec-sync` で反映済 (2026-06-17)。
 
 ## 関連資料
 
 - `PRD.md`: コーポレートサイト性能原則 / Phase 1「問い合わせ導線」完成条件
 - `design/DesignDoc.md`: モジュール責務 (`apps/corporate-site`)
-- [feature doc](../../design/features/corporate-site/DesignDoc_corporate-site.md): P6 `/contact` の IA / island 境界
+- [feature doc](../../design/features/corporate-site/DesignDoc_corporate-site.md): P6 `/contact` の IA / island 境界 / 問い合わせフォーム仕様の正本
 - [spec #11 (IA)](../11-corporate-site-ia/index.md): Q4 でフォーム設置を決定 (機能仕様は本 spec へ委譲)
 - [ADR-0008](../../adr/0008-astro-react-island-policy.md): フォームは最初の主要 island
+- [context/architecture.md](../../context/architecture.md): Edge API / Error Contract
 - [context/infrastructure.md](../../context/infrastructure.md): Cloudflare Pages / Turnstile / Workers
+- [context/testing.md](../../context/testing.md): API / Functions の検証境界
 - [company-profile.md](../../design/features/corporate-site/reference/company-profile.md): 連絡先正本 (TEL 079-492-6465 / FAX 079-492-6429 / Email fukuura@mist.ocn.ne.jp)
 - 関連 issue: #11 (IA) / #10 (本体実装) / #13 (デザイントークン)
 
@@ -484,21 +486,24 @@ E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前
 
 ### feature doc への影響
 
-| 対象 doc / 節                                              | 変更内容                                                                                                                  | 理由                                                                     |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| DesignDoc_corporate-site.md / 設計方針・ページ構成 (IA) P6 | **反映済** (spec-sync)。問い合わせフォームの送信を Workers 中継 (ADR-0009) とし、機能仕様の正本が spec #14 である旨を補足 | フォーム backend / island 方針のトレーサビリティ確保 (source: spec-sync) |
+| 対象 doc / 節                                              | 変更内容                                                                                                                    | 理由                                                                                        |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| DesignDoc_corporate-site.md / 設計方針・ページ構成 (IA) P6 | **反映済** (spec-sync)。問い合わせフォームの送信を Workers 中継 (ADR-0009) とする方針を補足                                 | フォーム backend / island 方針のトレーサビリティ確保 (source: spec-sync)                    |
+| DesignDoc_corporate-site.md / 問い合わせフォーム仕様       | **反映済** (spec-sync)。入力項目 / validation / flowchart / sequence / API 契約 / error code / 個人情報方針を正本として追加 | issue-local spec から durable な機能仕様を feature doc へハンドオフし、後続実装の正本にする |
 
 ### context への影響
 
-| 対象 doc / 節                                                     | 変更内容                                                                                                                                                    | 理由                                                                            |
-| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| infrastructure.md / Infrastructure Contract                       | **反映済** (spec-sync, ADR-0009)。Workers 依存「有」+ 送信経路 `/api/contact` + secret 名 (Resend / 宛先 / Turnstile site+secret) + SPF/DKIM を contract 化 | D1=A / D3=A / D2=C を採用 (source: spec-resolve)。以後 infrastructure.md が正本 |
-| infrastructure.md / Security・Operations                          | **反映済** (spec-sync, ADR-0009)。bot 対策 (Turnstile + honeypot) を Workers 側多層検証で記載 + 個人情報は永続化なし・利用目的明示を記載                    | D2=C / D6 を採用 (source: spec-resolve)。以後 infrastructure.md が正本          |
-| infrastructure.md / Security・Operations (rate limit)             | **反映済** (spec-sync)。`/api/contact` に Cloudflare Rate Limiting (叩き台 5 req/min/IP, 超過 429) を Infrastructure Contract / Security + ADR-0009 に追加  | D8=A を採用 (source: spec-resolve)。以後 infrastructure.md / ADR-0009 が正本    |
-| infrastructure.md / Security・Operations (メールインジェクション) | **反映済** (spec-sync)。Resend へのメール生成時の入力無害化 (宛先・件名固定 / 本文 plain text / ヘッダ CRLF 除去) を Security + ADR-0009 に追加             | D11=A を採用 (source: spec-resolve)。以後 infrastructure.md / ADR-0009 が正本   |
-| infrastructure.md / Security・Operations (リプレイ/CSRF)          | **反映済** (spec-sync)。Turnstile token 単回利用 + `/api/contact` の Origin/Referer 検証を Security + ADR-0009 に追加                                       | D12=A を採用 (source: spec-resolve)。以後 infrastructure.md / ADR-0009 が正本   |
+| 対象 doc / 節                                                     | 変更内容                                                                                                                                                    | 理由                                                                             |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| architecture.md / Edge API / Error Contract                       | **反映済** (spec-sync)。同一オリジン API、Workers 再検証、`{ ok, code, message?, errors? }` error envelope の横断方針を追加                                 | D9 を feature 固有 contract から横断 API 方針へ昇格。以後 architecture.md が正本 |
+| testing.md / API / Functions の検証境界                           | **反映済** (spec-sync)。Playwright は route intercept、Workers logic は Vitest、実結線は Cloudflare Pages preview 手動確認という分担を追加                  | D10 を横断テスト方針へ昇格。以後 testing.md が正本                               |
+| infrastructure.md / Infrastructure Contract                       | **反映済** (spec-sync, ADR-0009)。Workers 依存「有」+ 送信経路 `/api/contact` + secret 名 (Resend / 宛先 / Turnstile site+secret) + SPF/DKIM を contract 化 | D1=A / D3=A / D2=C を採用 (source: spec-resolve)。以後 infrastructure.md が正本  |
+| infrastructure.md / Security・Operations                          | **反映済** (spec-sync, ADR-0009)。bot 対策 (Turnstile + honeypot) を Workers 側多層検証で記載 + 個人情報は永続化なし・利用目的明示を記載                    | D2=C / D6 を採用 (source: spec-resolve)。以後 infrastructure.md が正本           |
+| infrastructure.md / Security・Operations (rate limit)             | **反映済** (spec-sync)。`/api/contact` に Cloudflare Rate Limiting (叩き台 5 req/min/IP, 超過 429) を Infrastructure Contract / Security + ADR-0009 に追加  | D8=A を採用 (source: spec-resolve)。以後 infrastructure.md / ADR-0009 が正本     |
+| infrastructure.md / Security・Operations (メールインジェクション) | **反映済** (spec-sync)。Resend へのメール生成時の入力無害化 (宛先・件名固定 / 本文 plain text / ヘッダ CRLF 除去) を Security + ADR-0009 に追加             | D11=A を採用 (source: spec-resolve)。以後 infrastructure.md / ADR-0009 が正本    |
+| infrastructure.md / Security・Operations (リプレイ/CSRF)          | **反映済** (spec-sync)。Turnstile token 単回利用 + `/api/contact` の Origin/Referer 検証を Security + ADR-0009 に追加                                       | D12=A を採用 (source: spec-resolve)。以後 infrastructure.md / ADR-0009 が正本    |
 
-> rate limit (D8) / メールインジェクション (D11) / リプレイ・CSRF (D12) を含め全行 `spec-sync` で back-propagation 済 (2026-06-17)。以後 infrastructure.md / ADR-0009 が durable 成果の正本。
+> 問い合わせフォームの durable 成果は `spec-sync` で back-propagation 済 (2026-06-17)。機能仕様は feature doc、API / error envelope は architecture.md、検証境界は testing.md、infra / security は infrastructure.md と ADR-0009 が正本。
 
 ### ADR の新規 / 更新
 
@@ -542,6 +547,7 @@ E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前
 | 2026-06-17 | Fukuemon | spec-resolve: D13 (永続化なし射程) を A (アプリ側 DB/ストレージ/ログに限定 + 通知経路の保持を明記) で確定。Content/Data・Security/Privacy を同期。D8〜D13 全件解決                                            |
 | 2026-06-17 | Fukuemon | spec-sync: D8 (rate limit) / D11 (メールインジェクション) / D12 (リプレイ・CSRF) + D9/D10/D13 を infrastructure.md (Contract / Security) と ADR-0009 (決定・トレードオフ) へ back-propagation                 |
 | 2026-06-17 | Codex    | Rv 指摘対応: メタ情報のステータスを再 spec-review PASS 済みの実態に合わせて `Review` へ更新                                                                                                                   |
+| 2026-06-17 | Codex    | spec-sync: 問い合わせフォームの機能仕様・フロー図・API/error 契約を feature doc へハンドオフし、API/error 方針を architecture.md、検証境界を testing.md へ反映。spec を決定時スナップショットに降格           |
 
 ## 備考
 

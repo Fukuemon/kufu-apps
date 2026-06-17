@@ -1,6 +1,6 @@
 # Testing Conventions
 
-> 最終更新: 2026-05-31
+> 最終更新: 2026-06-17
 
 E2E runtime contract と unit test の横断規約。feature 固有のテスト観点は各 [design/features/](../design/features/) に置く。
 
@@ -42,6 +42,15 @@ flowchart TD
 - root は `e2e:serve` 契約だけに依存し、app 固有 command を知らない。
 - 新 app を E2E 対象にするには `build` / `preview` / `e2e:serve` を実装し、`E2E_TARGET` に追加するだけで足りる。
 - port 衝突を避けるため、各 app の preview port は本 contract で固定する。
+
+## API / Functions の検証境界
+
+Cloudflare Pages Functions / Workers を伴う feature は、ローカル E2E runtime と Cloudflare runtime の差を前提に検証境界を分ける。
+
+- Playwright E2E は導線・表示・client 分岐を検証する。外部送信や実メール送信を避けるため、同一オリジン API は route intercept で fixture 化する。
+- Workers の validation / security / error code mapping は Vitest unit test で検証する。
+- Cloudflare Pages Functions と実 secret / 外部サービスの結線は preview deployment で手動スモーク確認する。CI E2E は Cloudflare runtime に依存させない。
+- E2E fixture は feature doc の API / error contract に従い、成功・validation error・security error・rate limit・外部送信失敗など主要分岐を固定する。
 
 ## 横断テスト方針
 
