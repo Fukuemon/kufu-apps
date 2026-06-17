@@ -1,6 +1,6 @@
 # Codebase Architecture
 
-> 最終更新: 2026-06-13
+> 最終更新: 2026-06-17
 
 Kufu Monorepo の package / runtime boundary と依存方向。全体像 (system landscape, モジュール責務) は [design/DesignDoc.md](../design/DesignDoc.md) を正本とし、本書はコードベースの境界規約を扱う。
 
@@ -49,12 +49,25 @@ Astro は React/shadcn コンポーネントもビルド時に静的 HTML へ描
 
 - **表示専用 UI** (Button-as-link / Card / Badge / Tag / section 等) は `@kufu/ui` の shadcn コンポーネントを `.astro` 内で **`client:*` なし**で使う (JS ゼロ)。`.astro` で再実装せず `@kufu/ui` を単一正本に保つ。
 - **`@astrojs/react` は導入してよい** (island が無ければランタイムは出荷されない)。
-- **`client:*` island はインタラクションに限定**: モバイルナビ開閉、フォーム (#14)、Radix インタラクティブ primitive (Dialog / Dropdown / Popover / Tooltip / Accordion / Tabs / Select 等)。
+- **`client:*` island はインタラクションに限定**: モバイルナビ開閉、問い合わせフォーム、Radix インタラクティブ primitive (Dialog / Dropdown / Popover / Tooltip / Accordion / Tabs / Select 等)。
 - island の既定ディレクティブは `client:visible` / `client:idle`。`client:load` は above-the-fold で即時操作が要る時のみ。
 - **ハードルール**: インタラクティブ Radix primitive を `client:*` なしで静的描画しない (見た目だけ出て動かないため必ず island 化)。
 - `client:*` 総数は PRD ガードレール「Unnecessary Client JS Count」で監視する。
 - 秘密情報を client bundle に含めない。Cloudflare の secret 管理に置くべき値は repo に保存しない ([infrastructure.md](infrastructure.md))。
 - 問い合わせフォームや外部 API 連携を追加する場合は、ブラウザから直接第三者 API を叩く構成を標準にせず、必要に応じて Workers を中継点にする。
+
+### Edge API / Error Contract
+
+Cloudflare Pages Functions / Workers で app 側 API を追加する場合の横断規約。具体 endpoint の request / response / error code 一覧は各 feature doc を正本とし、本節は実装方針の境界を定める。
+
+- API は原則として同一オリジン配下に置く (`/api/*`)。ブラウザから第三者 API を直接叩く構成は標準にしない。
+- secret / token / API key / 宛先などの秘匿値は Workers 側で参照し、client bundle・repo に含めない。
+- client validation は UX のために行い、Workers 側で必ず再検証する。server は client の validation 結果を信頼しない。
+- JSON API の成功 response は `{ "ok": true }`、失敗 response は `{ "ok": false, "code": string, "message"?: string, "errors"?: object }` を標準 envelope とする。
+- client は `message` の文言ではなく `code` と HTTP status で分岐する。`errors` は field-level validation error のみに使う。
+- bot 対策 / rate limit / Origin 検証などの security 判断は Workers 側に集約し、feature doc と [infrastructure.md](infrastructure.md) に反映する。
+
+corporate-site 問い合わせフォームの concrete contract は [DesignDoc_corporate-site.md](../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様) を正本とする。
 
 ## State Boundary (React app)
 
