@@ -15,19 +15,19 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態   | 最終更新   | 備考                                                |
-| --- | --------------------------- | ------ | ---------- | --------------------------------------------------- |
-| 1   | 起票                        | 完了   | 2026-06-17 | issue #6 / requirements 作成済み                    |
-| 2   | 下書き                      | 完了   | 2026-06-18 | spec-draft で scaffold                              |
-| 3   | 上位文書突合                | 完了   | 2026-06-18 | PRD / Design Doc / feature doc / context / ADR 確認 |
-| 4   | 論点整理                    | 完了   | 2026-06-18 | D1〜D6 を seed                                      |
-| 5   | 論点解決                    | 完了   | 2026-06-18 | D1〜D7 解決済み                                     |
-| 6   | Interface / Routing 設計    | 進行中 | 2026-06-18 | Storybook script / catalog 入口を反映中             |
-| 7   | Content / Data 設計         | 進行中 | 2026-06-18 | `.pen` component 名 / 対応表を反映中                |
-| 8   | Performance / Security 設計 | 完了   | 2026-06-18 | Storybook は production bundle 外                   |
-| 9   | Test / Metrics 設計         | 完了   | 2026-06-18 | Storybook build / review 観点を確定                 |
-| 10  | 実装分割                    | 進行中 | 2026-06-18 | prompts 生成前の分割案を更新中                      |
-| 11  | レビュー済                  | 未着手 |            | spec-review 未実施                                  |
+| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                |
+| --- | --------------------------- | ---------- | ---------- | --------------------------------------------------- |
+| 1   | 起票                        | 完了       | 2026-06-17 | issue #6 / requirements 作成済み                    |
+| 2   | 下書き                      | 完了       | 2026-06-18 | spec-draft で scaffold                              |
+| 3   | 上位文書突合                | 完了       | 2026-06-18 | PRD / Design Doc / feature doc / context / ADR 確認 |
+| 4   | 論点整理                    | 完了       | 2026-06-18 | D1〜D6 を seed                                      |
+| 5   | 論点解決                    | 完了       | 2026-06-18 | D1〜D10 解決済み                                    |
+| 6   | Interface / Routing 設計    | 完了       | 2026-06-18 | Storybook Astro framework / script contract 反映済  |
+| 7   | Content / Data 設計         | 完了       | 2026-06-18 | catalog 範囲・対応表成果物を反映済                  |
+| 8   | Performance / Security 設計 | 完了       | 2026-06-18 | Storybook は production bundle 外                   |
+| 9   | Test / Metrics 設計         | 完了       | 2026-06-18 | Storybook build / review 観点を確定                 |
+| 10  | 実装分割                    | 完了       | 2026-06-18 | D8〜D10 を prompts 生成方針へ反映済                 |
+| 11  | レビュー済                  | レビュー済 | 2026-06-18 | spec-review PASS                                    |
 
 ## 上位文書整合
 
@@ -64,6 +64,7 @@
 - `context/architecture.md`: colocation → `packages/ui` 昇格境界 / Astro static rendering 方針
 - `context/component-design.md`: component 設計 (ディレクトリ構成 / 命名 / Container-Presentation / Storybook 対象)
 - `context/design-workflow.md`: `.pen` と Storybook の正本境界
+- `design/features/corporate-site/component-map.md`: `.pen` component 名と実装 component 名の対応表
 - `specs/6-storybook-component-catalog/requirements.md`: 要求定義
 - 関連 issue / ticket: [#6](https://github.com/Fukuemon/kufu-apps/issues/6)
 
@@ -79,6 +80,8 @@
 
 - `packages/ui` に Storybook の起動・build・必要なら preview 導線を追加する
 - root / workspace から Storybook に辿れる script contract を必要最小限で追加する
+- `apps/corporate-site` に Storybook Astro framework の app-local Storybook 起動・build 導線を追加する
+- app-local Storybook に `ServicePillar` / `BusinessFeatureRow` / `ContactInfoRow` の Presentation story を初期掲載し、`.pen` 対応表成果物へ反映する
 - shared UI review の運用ルールを `context/` または `packages/ui` README に文書化する
 - `design/features/corporate-site/index.pen` の page section 内を実装 component 粒度へ細分化する
 - Pencil の `Components` フレームを `GenericComponents` と `CorporateSiteComponents` に分ける
@@ -105,12 +108,12 @@
 
 ### 成功条件
 
-- `packages/ui` の Storybook を package 起点で起動できる
-- root / workspace から Storybook task に辿れる
-- shared component には主要 variant / state の story がある
+- `pnpm --filter @kufu/ui storybook` と `pnpm storybook:ui` で `packages/ui` Storybook 起動に到達できる
+- `pnpm --filter @kufu/corporate-site storybook` と `pnpm storybook:corporate` で app-local Storybook 起動に到達できる
+- 初期 shared catalog 対象 component ごとに `Default` story が 1 件以上あり、variant / error / disabled を持つ component は該当 story 名が Storybook catalog に存在する
 - corporate-site 専用 section は `packages/ui` へ昇格せず、`apps/corporate-site` への colocation 方針が保たれている
-- `design/features/corporate-site/index.pen` の section / subcomponent 名が実装 component 名へ写像できる
-- `.pen` の component はデザイン意図、Storybook は実装 catalog という正本境界が文書化されている
+- `design/features/corporate-site/index.pen` の section / subcomponent 名と実装 component 名の対応表が存在し、全行が PascalCase 相当の実装名を持つ
+- `.pen` はデザイン意図、Storybook / code は実装 catalog という正本境界が `context/component-design.md` / `context/engineering.md` へリンクされている
 
 ### 対象ユーザー / 操作主体
 
@@ -120,25 +123,28 @@
 
 EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システムは `<expected behavior>` する)。
 
-- WHEN 開発者が `packages/ui` を確認するとき、システムは Storybook の起動導線を提供する
-- WHEN shared UI を追加・変更するとき、システムは Storybook story で主要 variant / state を確認できる
-- WHEN corporate-site を実装するとき、Pencil 上の section / subcomponent 名は実装 component 名と対応する
-- IF UI が corporate-site 内でしか使われない場合、実装者は `apps/corporate-site` に colocation し、`packages/ui` へ昇格しない
-- IF UI が複数 app / feature で再利用される場合、実装者は `packages/ui` へ昇格し、Storybook story を追加する
+- WHEN 開発者が `packages/ui` を確認するとき、システムは `pnpm --filter @kufu/ui storybook` と `pnpm storybook:ui` を実行可能な script として提供する
+- WHEN shared UI を追加・変更するとき、システムは対象 component の `Default` story と、variant / error / disabled がある場合の該当 story を Storybook catalog に表示する
+- WHEN corporate-site を実装するとき、システムは Pencil 上の section / subcomponent 名と実装 component 名の対応表を提供する
+- IF UI が corporate-site 内でしか使われない場合、review checklist は `apps/corporate-site` colocation と判定した記録を残し、`packages/ui` へ昇格しない
+- IF UI が複数 app / feature で再利用される場合、review checklist は `packages/ui` 昇格理由を記録し、該当 component の Storybook story を必須にする
 
 ## 設計時の論点
 
 設計 / 実装フェーズへ持ち越す残課題を 1 件ずつ管理する。確定したものは「解決済みの論点」へ移す。
 
-| #   | 論点                                                                                                                | 決定候補                                                                                                                           | 決定                                                                                                                             |
-| --- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| D1  | Storybook script contract を package のみ (`pnpm --filter @kufu/ui storybook`) に閉じるか、root script も追加するか | a) package scripts のみ / b) root `storybook:ui` を追加 / c) turbo task と root script を両方追加                                  | b) root `storybook:ui` を追加                                                                                                    |
-| D2  | Storybook catalog の初期掲載範囲をどこまでにするか                                                                  | a) `Button` のみ / b) GenericComponents 相当の shared 候補まで / c) page-level sample も初期追加                                   | b) GenericComponents 相当の shared 候補まで                                                                                      |
-| D3  | corporate-site 専用 component を Storybook に載せるか                                                               | a) 載せない / b) app-local Storybook を別途検討 / c) examples として非公開扱いで載せる                                             | b) `packages/ui` には載せず、`apps/corporate-site` の app-local Storybook を作る                                                 |
-| D4  | `design/features/corporate-site/index.pen` の component 分割をどの粒度で確定するか                                  | a) section は page 内保持 + subcomponent 分割 / b) section も Components 化 / c) 実装時に都度判断                                  | a) section は page 文脈を保持し、実装は `components/features/<feature>/` に集約                                                  |
-| D5  | shared UI review doc の置き場所をどこにするか                                                                       | a) `packages/ui/README.md` / b) `context/engineering.md` / c) 両方 (README は手順、context は運用契約)                             | c) 両方 (`context/engineering.md` が運用契約、`packages/ui/README.md` が手順)                                                    |
-| D6  | Storybook の test / CI 扱いをどうするか                                                                             | a) `storybook build` を任意確認 / b) package build に含める / c) CI quality gate に含める                                          | c) CI quality gate に含める。ただし production build には混ぜない                                                                |
-| D7  | Container / Presentation と feature component 階層の責務分けをどう設計するか                                        | a) route / container / presentation / primitive の 4 層に分ける / b) 実装時に component ごと判断 / c) Storybook 対象だけ先に決める | a') feature 配下で `<ComponentName>/<ComponentName>.astro` と `<ComponentName>Presentation.astro` に分け、命名は BCD Design 基準 |
+| #   | 論点                                                                                                                | 決定候補                                                                                                                            | 決定                                                                                                                             |
+| --- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| D1  | Storybook script contract を package のみ (`pnpm --filter @kufu/ui storybook`) に閉じるか、root script も追加するか | a) package scripts のみ / b) root `storybook:ui` を追加 / c) turbo task と root script を両方追加                                   | b) root `storybook:ui` を追加                                                                                                    |
+| D2  | Storybook catalog の初期掲載範囲をどこまでにするか                                                                  | a) `Button` のみ / b) GenericComponents 相当の shared 候補まで / c) page-level sample も初期追加                                    | b) GenericComponents 相当の shared 候補まで                                                                                      |
+| D3  | corporate-site 専用 component を Storybook に載せるか                                                               | a) 載せない / b) app-local Storybook を別途検討 / c) examples として非公開扱いで載せる                                              | b) `packages/ui` には載せず、`apps/corporate-site` の app-local Storybook を作る                                                 |
+| D4  | `design/features/corporate-site/index.pen` の component 分割をどの粒度で確定するか                                  | a) section は page 内保持 + subcomponent 分割 / b) section も Components 化 / c) 実装時に都度判断                                   | a) section は page 文脈を保持し、実装は `components/features/<feature>/` に集約                                                  |
+| D5  | shared UI review doc の置き場所をどこにするか                                                                       | a) `packages/ui/README.md` / b) `context/engineering.md` / c) 両方 (README は手順、context は運用契約)                              | c) 両方 (`context/engineering.md` が運用契約、`packages/ui/README.md` が手順)                                                    |
+| D6  | Storybook の test / CI 扱いをどうするか                                                                             | a) `storybook build` を任意確認 / b) package build に含める / c) CI quality gate に含める                                           | c) CI quality gate に含める。ただし production build には混ぜない                                                                |
+| D7  | Container / Presentation と feature component 階層の責務分けをどう設計するか                                        | a) route / container / presentation / primitive の 4 層に分ける / b) 実装時に component ごと判断 / c) Storybook 対象だけ先に決める  | a') feature 配下で `<ComponentName>/<ComponentName>.astro` と `<ComponentName>Presentation.astro` に分け、命名は BCD Design 基準 |
+| D8  | app-local Storybook で `.astro` Presentation component をどう表示するか                                             | a) Storybook Astro framework / b) React wrapper で確認 / c) app-local Storybook を後続 issue へ分離                                 | a) Storybook Astro framework (`@storybook/astro`) を採用                                                                         |
+| D9  | `GenericComponents` 相当 11 件を初期 `packages/ui` catalog に入れる例外理由をどう扱うか                             | a) shadcn primitive / token 検証の例外として明記 / b) `Button` + 実利用分へ縮小 / c) D2 を維持しつつ後続 review で昇格判定          | a) shadcn primitive / token 検証の例外として明記                                                                                 |
+| D10 | app-local Storybook の初期掲載 component と `.pen` → 実装 component 対応表の成果物をどう固定するか                  | a) `ServicePillar` / `BusinessFeatureRow` / `ContactInfoRow` に固定 / b) page section も含める / c) 対応表だけ先に作り story は後続 | a') story 初期対象は 3 component に固定し、対応表は page section と subcomponent の両方を含める                                  |
 
 ## 解決済みの論点
 
@@ -159,6 +165,8 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - `apps/corporate-site` 側にも app-local Storybook を用意し、corporate-site 固有 component を component 単位で確認できるようにする。
   - corporate-site の component 実装では Container / Presentation パターンを採用する。Storybook 対象は原則 Presentation component とし、Container は routing / data assembly / integration の責務を持つ。
   - `packages/ui` Storybook は shared component catalog、`apps/corporate-site` Storybook は feature-local component review として役割を分ける。
+  - root `storybook:corporate` は `apps/corporate-site` の app-local Storybook 起動へ委譲する。
+  - `.astro` Presentation component の Storybook framework は D8 で確定した Storybook Astro framework (`@storybook/astro`) を使う。
 - **D4 `index.pen` component 分割粒度 (2026-06-18 決定): a) section は page 文脈を保持し、実装は `components/features/<feature>/` に集約**
   - Pencil 上では page section (`Hero`, `BusinessSection`, `ProductsCategorySection`, `ContactSection` など) の文脈を残し、section 内の再利用部品を `GenericComponents` / `CorporateSiteComponents` へ分ける。
   - Astro の route entry は `apps/corporate-site/src/pages/` に置く。Astro では Next.js App Router のような nested route / colocated route segment を前提にしない。
@@ -181,13 +189,28 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - `apps/corporate-site/src/components/features/corporate-site/<ComponentName>/<ComponentName>Presentation.astro` を Presentation component とし、props だけで描画できる UI として app-local Storybook の主対象にする。
   - story は原則 `<ComponentName>Presentation.stories.*` とし、固定 props / fixture で状態差分を表現する。
   - 命名は BCD Design を基準にし、`Domain + Base` / `Domain + Base + Case` を優先する。Base だけで意味が通る shared primitive は `packages/ui` 側へ置く。
-  - BCD Design と colocation / functional cohesion の詳細ルールは、実装前に新規 `context/component-design.md` へ同期する候補とする。
+  - BCD Design と colocation / functional cohesion の詳細ルールは `context/component-design.md` へ同期済み。同 doc が横断正本であり、本 spec の該当記述は決定時スナップショットとして扱う。
+- **D8 app-local Storybook framework (2026-06-18 決定): a) Storybook Astro framework (`@storybook/astro`) を採用**
+  - app-local Storybook は `.astro` Presentation component を直接確認するため、React wrapper ではなく Astro framework を採用する。
+  - `apps/corporate-site/.storybook/main.ts` の framework は `@storybook/astro` を前提にする。
+  - story は `<ComponentName>Presentation.stories.*` とし、固定 props / fixture で状態差分を表現する。
+  - 実装時に `@storybook/astro` が Astro 6 / Storybook 9 の組み合わせで成立しない場合は、React wrapper に逃がさず app-local Storybook を後続 issue へ分離し、未実施理由を PR に残す。
+- **D9 GenericComponents 初期 catalog 例外理由 (2026-06-18 決定): a) shadcn primitive / token 検証の例外として明記**
+  - `GenericComponents` 相当 11 件は corporate-site 固有 UI ではなく、shadcn 語彙・Kufu token・shared primitive の表示契約を検証するための初期 shared catalog とする。
+  - これは PRD / Design Doc の「複数 consumer が出てから本格共有 package 化する」原則の例外ではなく、`packages/ui` skeleton の review surface を作るための最小初期化である。
+  - business wording や page 文脈を持つ component は含めない。domain を持つ component は D10 の app-local Storybook 対象に寄せる。
+  - `Select` などインタラクティブ primitive は Storybook で状態確認し、corporate-site 本体で使う場合は ADR-0008 に従って island 化を明示する。
+- **D10 app-local 初期掲載 component / 対応表成果物 (2026-06-18 決定): a') story 初期対象は 3 component、対応表は page section と subcomponent の両方**
+  - app-local Storybook の初期 story 対象は `ServicePillar`, `BusinessFeatureRow`, `ContactInfoRow` に固定する。
+  - page section (`Hero`, `BusinessSection`, `ProductsCategorySection`, `ContactSection` など) は page 文脈を保持し、初期 story 対象には含めない。
+  - `.pen` component 対応表は `design/features/corporate-site/index.pen` の page section と subcomponent を、実装予定の Container / Presentation component 名へ写像する成果物として残す。
+  - 対応表の置き場所は `design/features/corporate-site/component-map.md` とし、`.pen` の生 JSON 差分ではなく人間が review できる表にする。
 
 ## 未確定事項
 
 (決定できない項目を理由とともに残す。1 件でも残っていれば下流 phase は止める)
 
-- なし。D1〜D7 は解決済み。
+- なし。D1〜D10 は解決済み。
 
 ## 実装対象
 
@@ -200,9 +223,11 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 | `ui`             |    ◯     | Storybook 導線、shared UI story、catalog / review 入口              |
 | `config`         |    ◯     | 必要な場合のみ Storybook / Vite / TS 設定の共有境界を確認する       |
 | `e2e`            |    -     | Storybook 自体は root E2E 対象外。corporate-site 公開導線は別 issue |
-| `core`           |    -     | docs / workflow のみ。実装コードは持たない                          |
+| `core`           |    ◯     | docs / workflow 同期のみ。実装コードは持たない                      |
 
 ## 機能仕様
+
+> 決定時スナップショット。component 配置・命名・Storybook 対象の横断正本は [context/component-design.md](../../context/component-design.md)、Storybook review / quality gate の正本は [context/engineering.md](../../context/engineering.md) とする。
 
 ### User Flow
 
@@ -219,6 +244,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 - app や feature 内で閉じる UI / utility / asset はローカルに置く
 - `packages/ui` に載せる component は Storybook story を持つ
 - issue #6 の初期 catalog では、Pencil の `GenericComponents` 相当を shared component 候補として `packages/ui` に実装し、Storybook に掲載する
+- `GenericComponents` 相当を初期 catalog に含める理由は、shadcn primitive / token / shared component 表示契約の検証である。business wording や page 文脈を持つ component は含めない
 - corporate-site 固有 component と page-level sample は初期 catalog に含めず、app colocation の境界を維持する
 - corporate-site 固有 component は `apps/corporate-site` の app-local Storybook に掲載し、`packages/ui` Storybook には載せない
 - corporate-site の component は `<ComponentName>/<ComponentName>.astro` (Container) と `<ComponentName>Presentation.astro` (Presentation) に分け、Storybook では Presentation component を主対象にする
@@ -233,6 +259,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 - corporate-site 実装では Astro 静的生成と最小 island 方針を維持する
 - 表示専用 UI は `@kufu/ui` の shadcn component を Astro で静的描画し、`client:*` を付けない
 - インタラクティブ Radix primitive を使う場合は ADR-0008 に従い island 化を明示する
+- `Select` などインタラクティブ primitive は Storybook で状態確認できるようにする。corporate-site 本体で使う場合は ADR-0008 に従って island 化を明示し、静的描画だけで操作可能に見せる実装は禁止する
 
 ### Routing / URL State
 
@@ -246,6 +273,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 - Astro route entry は `apps/corporate-site/src/pages/` に置き、routing / page assembly だけを担わせる
 - corporate-site の実装 component は `apps/corporate-site/src/components/features/corporate-site/` 配下に集約する
 - `index.pen` の page section / subcomponent 名は、`components/features/corporate-site/` 配下の Container / Presentation component 名へ対応できるように整理する
+- `.pen` component 名と実装 component 名の対応表は `design/features/corporate-site/component-map.md` として P4 の成果物に含める
 - feature component は `<ComponentName>/<ComponentName>.astro` と `<ComponentName>Presentation.astro` を同一ディレクトリに置く
 - `<ComponentName>.astro` は Container、`<ComponentName>Presentation.astro` は Presentation として扱う
 - 汎用 component の候補:
@@ -271,6 +299,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 - `packages/ui` には複数 consumer が見込める primitive / shared UI を置く
 - issue #6 では `GenericComponents` 相当を初期 shared component として `packages/ui` に置く
+- `GenericComponents` 相当は shadcn primitive / token 検証の初期 catalog として扱い、domain を持つ corporate-site 固有 component は app-local Storybook に寄せる
 - corporate-site 固有 section / layout component は `apps/corporate-site` に colocation する
 - Storybook は `packages/ui` に公開される shared component の生きた catalog とする
 - `apps/corporate-site` の app-local Storybook は corporate-site 固有 Presentation component の review 入口とする
@@ -295,19 +324,21 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 ## Interface 設計
 
+> 決定時スナップショット。script / quality gate の正本は [context/project.md](../../context/project.md) と [context/engineering.md](../../context/engineering.md)、component 設計の正本は [context/component-design.md](../../context/component-design.md) とする。
+
 ### UI / API / Event Interface
 
 Storybook script contract の候補:
 
-| script                | 置き場所                           | 目的                                                       | 備考                                          |
-| --------------------- | ---------------------------------- | ---------------------------------------------------------- | --------------------------------------------- |
-| `storybook`           | `packages/ui/package.json`         | ローカル起動                                               | port は Storybook 既定または明示指定          |
-| `storybook:build`     | `packages/ui/package.json`         | 静的 build                                                 | CI quality gate 対象                          |
-| `storybook:ui`        | root `package.json`                | workspace root から `packages/ui` Storybook へ委譲         | 採用 (D1)                                     |
-| `storybook`           | `apps/corporate-site/package.json` | app-local Storybook 起動                                   | corporate-site 固有 Presentation component 用 |
-| `storybook:build`     | `apps/corporate-site/package.json` | app-local Storybook build                                  | CI quality gate 対象                          |
-| `storybook:build`     | root `package.json`                | shared / app-local Storybook build をまとめて実行          | CI quality gate 用                            |
-| `storybook:corporate` | root `package.json`                | workspace root から `apps/corporate-site` Storybook へ委譲 | 採用 (D3)                                     |
+| script                | 置き場所                           | 目的                                                       | 備考                                 |
+| --------------------- | ---------------------------------- | ---------------------------------------------------------- | ------------------------------------ |
+| `storybook`           | `packages/ui/package.json`         | ローカル起動                                               | port は Storybook 既定または明示指定 |
+| `storybook:build`     | `packages/ui/package.json`         | 静的 build                                                 | CI quality gate 対象                 |
+| `storybook:ui`        | root `package.json`                | workspace root から `packages/ui` Storybook へ委譲         | 採用 (D1)                            |
+| `storybook`           | `apps/corporate-site/package.json` | app-local Storybook 起動                                   | `@storybook/astro`                   |
+| `storybook:build`     | `apps/corporate-site/package.json` | app-local Storybook build                                  | CI quality gate 対象                 |
+| `storybook:build`     | root `package.json`                | shared / app-local Storybook build をまとめて実行          | CI quality gate 用                   |
+| `storybook:corporate` | root `package.json`                | workspace root から `apps/corporate-site` Storybook へ委譲 | 採用 (D3)                            |
 
 Storybook story 命名の候補:
 
@@ -323,7 +354,7 @@ Storybook story 命名の候補:
 | `Patterns/DefinitionRow`  | `Default`                       | shared information row pattern       |
 | `Examples/PageSamples`    | -                               | 初期追加しない                       |
 
-corporate-site app-local Storybook の命名候補:
+corporate-site app-local Storybook の初期掲載範囲:
 
 | 階層                               | 例                        | 内容                                       |
 | ---------------------------------- | ------------------------- | ------------------------------------------ |
@@ -335,7 +366,7 @@ corporate-site app-local Storybook の命名候補:
 
 API request / response は扱わない。component props は実装対象ごとに story と component source を正本とし、本 spec では方針だけを定める。
 
-corporate-site feature component のファイル構成:
+corporate-site feature component のファイル構成 (正本: [context/component-design.md](../../context/component-design.md)。本節は決定時スナップショット):
 
 ```text
 apps/corporate-site/src/components/features/corporate-site/
@@ -362,16 +393,20 @@ apps/corporate-site/src/components/features/corporate-site/
 
 ## Content / Data 設計
 
+> 決定時スナップショット。component 配置・Storybook 対象の正本は [context/component-design.md](../../context/component-design.md)、root command の正本は [context/project.md](../../context/project.md) とする。
+
 ### 保存・管理するデータ
 
 - Storybook story source (`*.stories.*`) は `packages/ui` 内に置く
 - Storybook config (`.storybook/*`) は `packages/ui` 内に置く
 - `Button`, `LinkButton`, `Tag`, `SectionHeading`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow` は issue #6 の初期 shared catalog 対象として `packages/ui` 内に置く
+- `apps/corporate-site` の Storybook config は Storybook Astro framework (`@storybook/astro`) を前提に `apps/corporate-site/.storybook/` に置く
 - corporate-site 固有 Presentation component の story source は `apps/corporate-site` 内に置く
 - corporate-site 固有 component は `<ComponentName>/<ComponentName>.astro` と `<ComponentName>Presentation.astro` に分け、Presentation は props で描画を完結できる形にする
 - route entry は `apps/corporate-site/src/pages/`、feature component は `apps/corporate-site/src/components/features/corporate-site/` に分ける
 - shared UI review の運用契約は `context/engineering.md`、`packages/ui` の実務手順は `packages/ui/README.md` に置く
 - `index.pen` の component 粒度整理は `design/features/corporate-site/index.pen` に反映する
+- `.pen` component 名と実装 component 名の対応表は `design/features/corporate-site/component-map.md` に成果物として残す
 
 ### コンテンツ配置 / package / route
 
@@ -387,6 +422,7 @@ apps/corporate-site/src/components/features/corporate-site/
 | shared UI review contract               | `context/engineering.md`                                           |
 | `packages/ui` Storybook 手順            | `packages/ui/README.md`                                            |
 | Pencil component 整理                   | `design/features/corporate-site/index.pen`                         |
+| `.pen` component 対応表                 | `design/features/corporate-site/component-map.md`                  |
 
 ## Performance / Security 設計
 
@@ -499,9 +535,9 @@ sequenceDiagram
 | Phase | 対象                                       | 概要                                                                                                                                                  | 依存             |
 | ----- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | P1    | `packages/ui`                              | Storybook config / package scripts を追加し、GenericComponents 相当の shared component と story を作る                                                | -                |
-| P2    | `apps/corporate-site`                      | app-local Storybook を追加し、`components/features/corporate-site/` 配下に corporate-site 固有 Presentation component の story を作る                 | -                |
+| P2    | `apps/corporate-site`                      | `@storybook/astro` の app-local Storybook を追加し、`ServicePillar` / `BusinessFeatureRow` / `ContactInfoRow` の Presentation story を作る            | -                |
 | P3    | root / docs                                | root `storybook:ui` / `storybook:corporate` / `storybook:build` script、`context/engineering.md` の運用契約、`packages/ui/README.md` の手順を追加する | -                |
-| P4    | `design/features/corporate-site/index.pen` | `GenericComponents` / `CorporateSiteComponents` へ分け、section 内を実装粒度に整理する                                                                | D4               |
+| P4    | `design/features/corporate-site/index.pen` | `GenericComponents` / `CorporateSiteComponents` へ分け、section 内を実装粒度に整理し、`component-map.md` に `.pen` → 実装 component 対応表を残す      | D4               |
 | P5    | verification                               | shared / app-local Storybook 起動・build、lint / typecheck を確認する                                                                                 | P1〜P4           |
 | P6    | sync                                       | durable な運用ルールを `context/component-design.md` / `context/engineering.md` / README へ同期する                                                   | P3 / spec-review |
 
@@ -537,17 +573,19 @@ sequenceDiagram
 
 ### context への影響
 
-| 対象 doc / 節                                                    | 変更内容                                                                                                                                         | 理由                                                                                                         |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `context/engineering.md` / Shared Config Boundary                | 反映済: Storybook / shared UI review 運用契約を追加 <!-- source: spec-resolve D5 -->                                                             | 現在「後続 issue で定義」となっていたため                                                                    |
-| `context/engineering.md` / Repository Quality Gate               | 反映済: Storybook build を dedicated CI quality gate として扱う方針を追加 <!-- source: spec-resolve D6 -->                                       | Storybook を production build に混ぜず、PR で catalog 破損を検出するため                                     |
-| `packages/ui/README.md`                                          | 反映済: `packages/ui` Storybook の起動方法・story 追加手順・review checklist へのリンクを追加 <!-- source: spec-resolve D5 -->                   | `packages/ui` を触る開発者が手順へ到達しやすくするため                                                       |
-| `context/project.md` / Quick Commands                            | 反映済: `pnpm storybook:ui` / `pnpm storybook:corporate` / `pnpm storybook:build` を追加 <!-- source: spec-resolve D1 / D3 / D6 -->              | root から Storybook に辿れる導線を正本化するため                                                             |
-| `context/architecture.md` / デザインシステム資産の正本と昇格境界 | 反映済: issue #6 では GenericComponents 相当を初期 shared component として扱う <!-- source: spec-resolve D2 -->                                  | Storybook catalog と `packages/ui` の初期 shared component 範囲を明確にするため                              |
-| `context/architecture.md` / Package Boundary                     | 反映済: 詳細な component 設計は `context/component-design.md` に委譲する方針を追加 <!-- source: spec-resolve D3 / D4 / D7 -->                    | architecture.md に詳細を抱え込まず、境界規約と component 設計規約を分けるため                                |
-| `context/component-design.md` / 新規                             | 反映済: BCD Design 基準の命名、Container / Presentation、feature component 階層、Storybook 対象の横断規約を追加 <!-- source: spec-resolve D7 --> | component 設計 (ディレクトリ構成・命名規則・責務) を横断 context として長期参照するため                      |
-| `apps/corporate-site/README.md`                                  | 反映済: app-local component 配置と Storybook 導線を追加 <!-- source: spec-resolve D3 / D7 -->                                                    | corporate-site 実装者が app-local component 規約へ到達しやすくするため                                       |
-| `context/design-workflow.md` / §8 既知の課題と緩和策             | 変更不要: `.pen` と Storybook の正本境界は既存記述と整合                                                                                         | `.pen` と Storybook の正本境界は `context/component-design.md` / `context/engineering.md` から参照可能なため |
+| 対象 doc / 節                                                    | 変更内容                                                                                                                                         | 理由                                                                                    |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| `context/engineering.md` / Shared Config Boundary                | 反映済: Storybook / shared UI review 運用契約を追加 <!-- source: spec-resolve D5 -->                                                             | 現在「後続 issue で定義」となっていたため                                               |
+| `context/engineering.md` / Repository Quality Gate               | 反映済: Storybook build を dedicated CI quality gate として扱う方針を追加 <!-- source: spec-resolve D6 -->                                       | Storybook を production build に混ぜず、PR で catalog 破損を検出するため                |
+| `context/toolchain.md` / 標準スタック                            | 反映済: UI catalog の備考に `packages/ui` と app-local Storybook の入口を明記 <!-- source: spec-resolve D8 -->                                   | app-local Storybook も Storybook Astro framework で扱うため                             |
+| `packages/ui/README.md`                                          | 反映済: `packages/ui` Storybook の起動方法・story 追加手順・review checklist へのリンクを追加 <!-- source: spec-resolve D5 -->                   | `packages/ui` を触る開発者が手順へ到達しやすくするため                                  |
+| `context/project.md` / Quick Commands                            | 反映済: `pnpm storybook:ui` / `pnpm storybook:corporate` / `pnpm storybook:build` を追加 <!-- source: spec-resolve D1 / D3 / D6 -->              | root から Storybook に辿れる導線を正本化するため                                        |
+| `context/architecture.md` / デザインシステム資産の正本と昇格境界 | 反映済: issue #6 では GenericComponents 相当を初期 shared component として扱う <!-- source: spec-resolve D2 -->                                  | Storybook catalog と `packages/ui` の初期 shared component 範囲を明確にするため         |
+| `context/architecture.md` / Package Boundary                     | 反映済: 詳細な component 設計は `context/component-design.md` に委譲する方針を追加 <!-- source: spec-resolve D3 / D4 / D7 -->                    | architecture.md に詳細を抱え込まず、境界規約と component 設計規約を分けるため           |
+| `context/component-design.md` / 新規                             | 反映済: BCD Design 基準の命名、Container / Presentation、feature component 階層、Storybook 対象の横断規約を追加 <!-- source: spec-resolve D7 --> | component 設計 (ディレクトリ構成・命名規則・責務) を横断 context として長期参照するため |
+| `apps/corporate-site/README.md`                                  | 反映済: app-local component 配置と Storybook 導線を追加 <!-- source: spec-resolve D3 / D7 -->                                                    | corporate-site 実装者が app-local component 規約へ到達しやすくするため                  |
+| `design/features/corporate-site/component-map.md`                | 反映済: `.pen` page section / GenericComponents / CorporateSiteComponents と実装 component 名の対応表を追加 <!-- source: spec-resolve D10 -->    | `.pen` component 名と実装 component 名の写像を人間が review できる成果物として残すため  |
+| `context/design-workflow.md` / Phase C 実装出力 path             | 反映済: component 配置を `src/components/features/<feature>/` へ更新 <!-- source: spec-review 対応 -->                                           | `context/component-design.md` と spec #6 の feature component 配置に合わせるため        |
 
 ### ADR の新規 / 更新
 
@@ -559,9 +597,11 @@ sequenceDiagram
 
 `spec-review` (fresh-context evaluator) の最新結果。完全な記録は `review.md` を参照。
 
-| 日付 | 結果 (PASS / NEEDS_WORK) | 指摘要点 | 対応 |
-| ---- | ------------------------ | -------- | ---- |
-|      |                          |          |      |
+| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                           | 対応                             |
+| ---------- | ------------------------ | ---------------------------------------------------------------------------------- | -------------------------------- |
+| 2026-06-18 | NEEDS_WORK               | 正本境界、D7 同期状態、app-local Storybook スコープ、phase 状態表、EARS 観測可能性 | D8〜D10 解決済み。再 review 待ち |
+| 2026-06-18 | PASS                     | rubric 7 観点すべて PASS。prompts は N/A                                           | 次 phase へ進行可                |
+|            |                          |                                                                                    |                                  |
 
 ## 変更履歴
 
