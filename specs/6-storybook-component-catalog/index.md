@@ -142,7 +142,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 | D5  | shared UI review doc の置き場所をどこにするか                                                                       | a) `packages/ui/README.md` / b) `context/engineering.md` / c) 両方 (README は手順、context は運用契約)                              | c) 両方 (`context/engineering.md` が運用契約、`packages/ui/README.md` が手順)                                                    |
 | D6  | Storybook の test / CI 扱いをどうするか                                                                             | a) `storybook build` を任意確認 / b) package build に含める / c) CI quality gate に含める                                           | c) CI quality gate に含める。ただし production build には混ぜない                                                                |
 | D7  | Container / Presentation と feature component 階層の責務分けをどう設計するか                                        | a) route / container / presentation / primitive の 4 層に分ける / b) 実装時に component ごと判断 / c) Storybook 対象だけ先に決める  | a') feature 配下で `<ComponentName>/<ComponentName>.astro` と `<ComponentName>Presentation.astro` に分け、命名は BCD Design 基準 |
-| D8  | app-local Storybook で `.astro` Presentation component をどう表示するか                                             | a) Storybook Astro framework / b) React wrapper で確認 / c) app-local Storybook を後続 issue へ分離                                 | a) Storybook Astro framework (`@storybook/astro`) を採用                                                                         |
+| D8  | app-local Storybook で `.astro` Presentation component をどう表示するか                                             | a) Storybook Astro framework / b) React wrapper で確認 / c) app-local Storybook を後続 issue へ分離                                 | a) Storybook Astro framework (`@storybook-astro/framework`) を Storybook 10 系で採用                                             |
 | D9  | `GenericComponents` 相当 11 件を初期 `packages/ui` catalog に入れる例外理由をどう扱うか                             | a) shadcn primitive / token 検証の例外として明記 / b) `Button` + 実利用分へ縮小 / c) D2 を維持しつつ後続 review で昇格判定          | a) shadcn primitive / token 検証の例外として明記                                                                                 |
 | D10 | app-local Storybook の初期掲載 component と `.pen` → 実装 component 対応表の成果物をどう固定するか                  | a) `ServicePillar` / `BusinessFeatureRow` / `ContactInfoRow` に固定 / b) page section も含める / c) 対応表だけ先に作り story は後続 | a') story 初期対象は 3 component に固定し、対応表は page section と subcomponent の両方を含める                                  |
 
@@ -166,7 +166,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - corporate-site の component 実装では Container / Presentation パターンを採用する。Storybook 対象は原則 Presentation component とし、Container は routing / data assembly / integration の責務を持つ。
   - `packages/ui` Storybook は shared component catalog、`apps/corporate-site` Storybook は feature-local component review として役割を分ける。
   - root `storybook:corporate` は `apps/corporate-site` の app-local Storybook 起動へ委譲する。
-  - `.astro` Presentation component の Storybook framework は D8 で確定した Storybook Astro framework (`@storybook/astro`) を使う。
+  - `.astro` Presentation component の Storybook framework は D8 で確定した Storybook Astro framework (`@storybook-astro/framework`) を Storybook 10 系で使う。
 - **D4 `index.pen` component 分割粒度 (2026-06-18 決定): a) section は page 文脈を保持し、実装は `components/features/<feature>/` に集約**
   - Pencil 上では page section (`Hero`, `BusinessSection`, `ProductsCategorySection`, `ContactSection` など) の文脈を残し、section 内の再利用部品を `GenericComponents` / `CorporateSiteComponents` へ分ける。
   - Astro の route entry は `apps/corporate-site/src/pages/` に置く。Astro では Next.js App Router のような nested route / colocated route segment を前提にしない。
@@ -190,11 +190,11 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - story は原則 `<ComponentName>Presentation.stories.*` とし、固定 props / fixture で状態差分を表現する。
   - 命名は BCD Design を基準にし、`Domain + Base` / `Domain + Base + Case` を優先する。Base だけで意味が通る shared primitive は `packages/ui` 側へ置く。
   - BCD Design と colocation / functional cohesion の詳細ルールは `context/component-design.md` へ同期済み。同 doc が横断正本であり、本 spec の該当記述は決定時スナップショットとして扱う。
-- **D8 app-local Storybook framework (2026-06-18 決定): a) Storybook Astro framework (`@storybook/astro`) を採用**
+- **D8 app-local Storybook framework (2026-06-18 決定 / 2026-06-19 更新): a) Storybook Astro framework (`@storybook-astro/framework`) を Storybook 10 系で採用**
   - app-local Storybook は `.astro` Presentation component を直接確認するため、React wrapper ではなく Astro framework を採用する。
-  - `apps/corporate-site/.storybook/main.ts` の framework は `@storybook/astro` を前提にする。
+  - `apps/corporate-site/.storybook/main.ts` の framework は `@storybook-astro/framework` を前提にする。
   - story は `<ComponentName>Presentation.stories.*` とし、固定 props / fixture で状態差分を表現する。
-  - 実装時に `@storybook/astro` が Astro 6 / Storybook 9 の組み合わせで成立しない場合は、React wrapper に逃がさず app-local Storybook を後続 issue へ分離し、未実施理由を PR に残す。
+  - 実装時に `@storybook-astro/framework` が Astro 6 / Storybook 10 の組み合わせで成立しない場合は、React wrapper に逃がさず app-local Storybook を後続 issue へ分離し、未実施理由を PR に残す。
 - **D9 GenericComponents 初期 catalog 例外理由 (2026-06-18 決定): a) shadcn primitive / token 検証の例外として明記**
   - `GenericComponents` 相当 11 件は corporate-site 固有 UI ではなく、shadcn 語彙・Kufu token・shared primitive の表示契約を検証するための初期 shared catalog とする。
   - これは PRD / Design Doc の「複数 consumer が出てから本格共有 package 化する」原則の例外ではなく、`packages/ui` skeleton の review surface を作るための最小初期化である。
@@ -335,10 +335,30 @@ Storybook script contract の候補:
 | `storybook`           | `packages/ui/package.json`         | ローカル起動                                               | port は Storybook 既定または明示指定 |
 | `storybook:build`     | `packages/ui/package.json`         | 静的 build                                                 | CI quality gate 対象                 |
 | `storybook:ui`        | root `package.json`                | workspace root から `packages/ui` Storybook へ委譲         | 採用 (D1)                            |
-| `storybook`           | `apps/corporate-site/package.json` | app-local Storybook 起動                                   | `@storybook/astro`                   |
+| `storybook`           | `apps/corporate-site/package.json` | app-local Storybook 起動                                   | `@storybook-astro/framework`         |
 | `storybook:build`     | `apps/corporate-site/package.json` | app-local Storybook build                                  | CI quality gate 対象                 |
 | `storybook:build`     | root `package.json`                | shared / app-local Storybook build をまとめて実行          | CI quality gate 用                   |
 | `storybook:corporate` | root `package.json`                | workspace root から `apps/corporate-site` Storybook へ委譲 | 採用 (D3)                            |
+
+Storybook package version contract:
+
+| 対象                  | package                               | version   | 用途                         |
+| --------------------- | ------------------------------------- | --------- | ---------------------------- |
+| `packages/ui`         | `storybook` / `@storybook/react-vite` | `^10.4.6` | React 19 + Vite catalog      |
+| `apps/corporate-site` | `storybook`                           | `^10.4.6` | app-local Storybook CLI      |
+| `apps/corporate-site` | `@storybook-astro/framework`          | `^1.5.0`  | Astro 5/6 component renderer |
+
+Storybook script command contract:
+
+| script                                 | command                                                                                        |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `@kufu/ui storybook`                   | `storybook dev --host 127.0.0.1 --port 6006`                                                   |
+| `@kufu/ui storybook:build`             | `storybook build`                                                                              |
+| `@kufu/corporate-site storybook`       | `storybook dev --host 127.0.0.1 --port 6007`                                                   |
+| `@kufu/corporate-site storybook:build` | `storybook build`                                                                              |
+| root `storybook:ui`                    | `pnpm --filter @kufu/ui storybook`                                                             |
+| root `storybook:corporate`             | `pnpm --filter @kufu/corporate-site storybook`                                                 |
+| root `storybook:build`                 | `pnpm --filter @kufu/ui storybook:build && pnpm --filter @kufu/corporate-site storybook:build` |
 
 Storybook story 命名の候補:
 
@@ -400,7 +420,8 @@ apps/corporate-site/src/components/features/corporate-site/
 - Storybook story source (`*.stories.*`) は `packages/ui` 内に置く
 - Storybook config (`.storybook/*`) は `packages/ui` 内に置く
 - `Button`, `LinkButton`, `Tag`, `SectionHeading`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow` は issue #6 の初期 shared catalog 対象として `packages/ui` 内に置く
-- `apps/corporate-site` の Storybook config は Storybook Astro framework (`@storybook/astro`) を前提に `apps/corporate-site/.storybook/` に置く
+- `packages/ui` の Storybook config は Storybook 10 + `@storybook/react-vite` を前提に `packages/ui/.storybook/` に置く
+- `apps/corporate-site` の Storybook config は Storybook 10 + `@storybook-astro/framework` を前提に `apps/corporate-site/.storybook/` に置く
 - corporate-site 固有 Presentation component の story source は `apps/corporate-site` 内に置く
 - corporate-site 固有 component は `<ComponentName>/<ComponentName>.astro` と `<ComponentName>Presentation.astro` に分け、Presentation は props で描画を完結できる形にする
 - route entry は `apps/corporate-site/src/pages/`、feature component は `apps/corporate-site/src/components/features/corporate-site/` に分ける
@@ -535,7 +556,7 @@ sequenceDiagram
 | Phase | 対象                                       | 概要                                                                                                                                                  | 依存             |
 | ----- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | P1    | `packages/ui`                              | Storybook config / package scripts を追加し、GenericComponents 相当の shared component と story を作る                                                | -                |
-| P2    | `apps/corporate-site`                      | `@storybook/astro` の app-local Storybook を追加し、`ServicePillar` / `BusinessFeatureRow` / `ContactInfoRow` の Presentation story を作る            | -                |
+| P2    | `apps/corporate-site`                      | `@storybook-astro/framework` の app-local Storybook を追加し、`ServicePillar` / `BusinessFeatureRow` / `ContactInfoRow` の Presentation story を作る  | -                |
 | P3    | root / docs                                | root `storybook:ui` / `storybook:corporate` / `storybook:build` script、`context/engineering.md` の運用契約、`packages/ui/README.md` の手順を追加する | -                |
 | P4    | `design/features/corporate-site/index.pen` | `GenericComponents` / `CorporateSiteComponents` へ分け、section 内を実装粒度に整理し、`component-map.md` に `.pen` → 実装 component 対応表を残す      | D4               |
 | P5    | verification                               | shared / app-local Storybook 起動・build、lint / typecheck を確認する                                                                                 | P1〜P4           |
