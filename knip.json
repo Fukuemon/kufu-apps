@@ -5,9 +5,18 @@
       "project": ["e2e/**/*.ts"]
     },
     "apps/corporate-site": {
-      "entry": ["src/pages/**/*.astro"],
+      "entry": [
+        "src/pages/**/*.astro",
+        ".storybook/{main,preview}.ts",
+        "src/**/*.stories.@(ts|tsx)",
+        "src/components/**/*.astro"
+      ],
       "project": ["src/**/*.{astro,ts,css}", "public/**/*"],
-      "ignoreDependencies": ["@kufu/ui"]
+      "ignoreDependencies": [
+        "@kufu/ui",
+        "@storybook-astro/framework",
+        "storybook"
+      ]
     },
     "packages/ui": {
       "project": ["src/**/*.{ts,tsx,css}", "components.json"],
