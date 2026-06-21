@@ -4341,6 +4341,7 @@
               "name": "Tag",
               "reusable": true,
               "fill": "$muted",
+              "cornerRadius": 4,
               "padding": [
                 6,
                 12
@@ -4421,43 +4422,6 @@
                   "lineHeight": 1.75,
                   "fontFamily": "$font-sans",
                   "fontSize": 15,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "cmpCard",
-              "name": "Card",
-              "width": 320,
-              "fill": "$card",
-              "stroke": "$border",
-              "strokeWidth": 1,
-              "layout": "vertical",
-              "gap": 12,
-              "padding": 20,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "cmpCardTitle",
-                  "name": "CardTitle",
-                  "fill": "$foreground",
-                  "content": "カード見出し",
-                  "fontFamily": "$font-serif",
-                  "fontSize": 20,
-                  "fontWeight": "600"
-                },
-                {
-                  "type": "text",
-                  "id": "cmpCardDescription",
-                  "name": "CardDescription",
-                  "fill": "$muted-foreground",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "content": "カード本文が入ります。",
-                  "lineHeight": 1.7,
-                  "fontFamily": "$font-sans",
-                  "fontSize": 14,
                   "fontWeight": "normal"
                 }
               ]
