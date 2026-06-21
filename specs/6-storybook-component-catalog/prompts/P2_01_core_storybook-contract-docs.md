@@ -31,16 +31,6 @@
 
 ## 作業ステップ
 
-### ステップ 0: ブランチ準備
-
-ブランチ命名と base branch は `AGENTS.md` の `Spec Workflow Contract` および `workflow-git` に従う。
-
-1. 最新の base branch を取得する
-2. 作業ブランチ `feature/6` を作成する
-3. PR テンプレートを確認し、完了条件を description に転記する
-4. Draft PR を作成して push する
-5. 検証: `git status --short` で作業ブランチ上にいることを確認する
-
 ### ステップ 1: root script contract
 
 1. root `package.json` に `storybook:ui` を追加し、`@kufu/ui` の Storybook 起動へ委譲する
