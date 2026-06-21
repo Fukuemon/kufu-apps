@@ -121,7 +121,6 @@ apps/corporate-site/src/components/features/corporate-site/
 - `Button`
 - `LinkButton`
 - `Tag`
-- `Card`
 - `Separator`
 - `FormField`
 - `Input`
