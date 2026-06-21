@@ -12,11 +12,7 @@
         "src/components/**/*.astro"
       ],
       "project": ["src/**/*.{astro,ts,css}", "public/**/*"],
-      "ignoreDependencies": [
-        "@kufu/ui",
-        "@storybook-astro/framework",
-        "storybook"
-      ]
+      "ignoreDependencies": ["@kufu/ui"]
     },
     "packages/ui": {
       "project": ["src/**/*.{ts,tsx,css}", "components.json"],
