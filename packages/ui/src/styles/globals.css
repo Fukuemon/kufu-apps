@@ -5,10 +5,16 @@
  * Astro (corporate-site) は tokens.css + fonts.css のみを直接 import する。
  */
 
+@import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "./tokens.css";
 @import "./fonts.css";
+
+@source "../components";
+@source "../hooks";
+@source "../lib";
+@source "../../.storybook";
 
 @custom-variant dark (&:is(.dark *));
 
