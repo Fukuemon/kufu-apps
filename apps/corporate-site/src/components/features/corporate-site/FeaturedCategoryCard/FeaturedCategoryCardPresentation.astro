@@ -1,0 +1,85 @@
+---
+export interface Props {
+  category: string;
+  count?: string;
+  title: string;
+  image?: string;
+}
+
+const { category, count, title, image } = Astro.props;
+---
+
+<article class="featured-category-card">
+  <div
+    class="featured-category-card__media"
+    style={image ? `background-image: url(${image})` : undefined}
+  >
+  </div>
+  <div class="featured-category-card__body">
+    <div class="featured-category-card__meta">
+      <p class="featured-category-card__category">{category}</p>
+      {count ? <p class="featured-category-card__count">{count}</p> : null}
+    </div>
+    <p class="featured-category-card__title">{title}</p>
+  </div>
+</article>
+
+<style>
+  .featured-category-card {
+    display: flex;
+    flex-direction: column;
+    inline-size: 16.25rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--card-foreground);
+  }
+
+  .featured-category-card__media {
+    block-size: 9.375rem;
+    background-color: var(--muted);
+    background-position: center;
+    background-size: cover;
+  }
+
+  .featured-category-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem 1rem;
+  }
+
+  .featured-category-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* count の有無でフォントサイズ差 (11px / 11.5px) による行高ずれが出ないよう固定 */
+    line-height: 1rem;
+  }
+
+  .featured-category-card__category,
+  .featured-category-card__count,
+  .featured-category-card__title {
+    margin: 0;
+  }
+
+  .featured-category-card__category {
+    color: var(--primary);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+  }
+
+  .featured-category-card__count {
+    color: var(--muted-foreground);
+    font-size: 0.71875rem;
+  }
+
+  .featured-category-card__title {
+    color: var(--foreground);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+</style>

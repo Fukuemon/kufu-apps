@@ -22,7 +22,6 @@ page section は page 文脈を保持し、初期 app-local Storybook の対象�
 | `Button`         | `Button`        | `Primitives/Button`      |
 | `LinkButton`     | `LinkButton`    | `Primitives/Button`      |
 | `Tag`            | `Tag`           | `Primitives/Tag`         |
-| `Card`           | `Card`          | `Primitives/Card`        |
 | `Separator`      | `Separator`     | `Primitives/Separator`   |
 | `FormField`      | `FormField`     | `Patterns/FormField`     |
 | `Input`          | `Input`         | `Patterns/FormField`     |
@@ -34,13 +33,14 @@ page section は page 文脈を保持し、初期 app-local Storybook の対象�
 
 初期 app-local Storybook 対象は Presentation component のみとする。
 
-| `.pen` component               | 実装 Container             | 実装 Presentation                      | Storybook 階層                                    |
-| ------------------------------ | -------------------------- | -------------------------------------- | ------------------------------------------------- |
-| `SectionHeading`               | `SectionHeading.astro`     | `SectionHeadingPresentation.astro`     | `CorporateSite/SectionHeading`                    |
-| `ServicePillar`                | `ServicePillar.astro`      | `ServicePillarPresentation.astro`      | `CorporateSite/ServicePillar`                     |
-| `BusinessFeatureRowMediaRight` | `BusinessFeatureRow.astro` | `BusinessFeatureRowPresentation.astro` | `CorporateSite/BusinessFeatureRow` (`MediaRight`) |
-| `BusinessFeatureRowMediaLeft`  | `BusinessFeatureRow.astro` | `BusinessFeatureRowPresentation.astro` | `CorporateSite/BusinessFeatureRow` (`MediaLeft`)  |
-| `ContactInfoRow`               | `ContactInfoRow.astro`     | `ContactInfoRowPresentation.astro`     | `CorporateSite/ContactInfoRow`                    |
+| `.pen` component               | 実装 Container               | 実装 Presentation                        | Storybook 階層                                    |
+| ------------------------------ | ---------------------------- | ---------------------------------------- | ------------------------------------------------- |
+| `SectionHeading`               | `SectionHeading.astro`       | `SectionHeadingPresentation.astro`       | `CorporateSite/SectionHeading`                    |
+| `FeaturedCategoryCard`         | `FeaturedCategoryCard.astro` | `FeaturedCategoryCardPresentation.astro` | `CorporateSite/FeaturedCategoryCard`              |
+| `ServicePillar`                | `ServicePillar.astro`        | `ServicePillarPresentation.astro`        | `CorporateSite/ServicePillar`                     |
+| `BusinessFeatureRowMediaRight` | `BusinessFeatureRow.astro`   | `BusinessFeatureRowPresentation.astro`   | `CorporateSite/BusinessFeatureRow` (`MediaRight`) |
+| `BusinessFeatureRowMediaLeft`  | `BusinessFeatureRow.astro`   | `BusinessFeatureRowPresentation.astro`   | `CorporateSite/BusinessFeatureRow` (`MediaLeft`)  |
+| `ContactInfoRow`               | `ContactInfoRow.astro`       | `ContactInfoRowPresentation.astro`       | `CorporateSite/ContactInfoRow`                    |
 
 ## Notes
 
