@@ -16,16 +16,7 @@
     },
     "packages/ui": {
       "project": ["src/**/*.{ts,tsx,css}", "components.json"],
-      "ignoreDependencies": [
-        "@fontsource-variable/geist-mono",
-        "@fontsource-variable/noto-sans-jp",
-        "@fontsource-variable/noto-serif-jp",
-        "@kufu/config",
-        "lucide-react",
-        "shadcn",
-        "storybook",
-        "tw-animate-css"
-      ]
+      "ignoreDependencies": ["@kufu/config"]
     },
     "packages/config": {
       "project": ["tsconfig/**/*.json", "oxlint/**/*.json", "vitest/**/*.ts"]
