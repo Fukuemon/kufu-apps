@@ -1,0 +1,66 @@
+---
+export interface Props {
+  number: string;
+  title: string;
+  lead: string;
+}
+
+const { number, title, lead } = Astro.props;
+---
+
+<article class="service-pillar">
+  <div class="service-pillar__rule" aria-hidden="true"></div>
+  <header class="service-pillar__header">
+    <p class="service-pillar__number">{number}</p>
+    <h3 class="service-pillar__title">{title}</h3>
+  </header>
+  <p class="service-pillar__lead">{lead}</p>
+</article>
+
+<style>
+  .service-pillar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    inline-size: 100%;
+    padding-block: 1rem;
+    color: var(--foreground);
+  }
+
+  .service-pillar__rule {
+    block-size: 1px;
+    inline-size: 100%;
+    background: var(--border);
+  }
+
+  .service-pillar__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .service-pillar__number {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.2em;
+    color: var(--primary);
+  }
+
+  .service-pillar__title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .service-pillar__lead {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.84375rem;
+    line-height: 1.7;
+  }
+</style>
