@@ -28,16 +28,18 @@
   "scripts": {
     "lint": "oxlint --type-aware --config ../config/oxlint/base.json src",
     "build": "tsdown src/index.ts --dts --format esm --platform neutral --external react --external react-dom --out-dir dist",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "storybook": "storybook dev --host 127.0.0.1 --port 6006",
+    "storybook:build": "storybook build"
   },
   "dependencies": {
+    "@base-ui/react": "^1.6.0",
     "@fontsource-variable/geist-mono": "^5.2.8",
     "@fontsource-variable/noto-sans-jp": "^5.2.10",
     "@fontsource-variable/noto-serif-jp": "^5.2.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.14.0",
-    "radix-ui": "^1.4.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "shadcn": "^4.7.0",
@@ -46,10 +48,14 @@
   },
   "devDependencies": {
     "@kufu/config": "workspace:*",
+    "@storybook/react-vite": "^10.4.6",
+    "@tailwindcss/vite": "^4.3.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "storybook": "^9.1.13",
+    "storybook": "^10.4.6",
+    "tailwindcss": "^4.3.1",
     "tsdown": "^0.16.6",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16"
   }
 }

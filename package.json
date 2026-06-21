@@ -11,6 +11,8 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "e2e": "playwright test",
+    "storybook:ui": "pnpm --filter @kufu/ui storybook",
+    "storybook:build": "pnpm --filter @kufu/ui storybook:build",
     "knip": "knip",
     "depcruise": "dependency-cruiser ."
   },
