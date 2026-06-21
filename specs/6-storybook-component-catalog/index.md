@@ -379,7 +379,7 @@ corporate-site app-local Storybook の初期掲載範囲:
 | ---------------------------------- | ------------------------- | ------------------------------------------ |
 | `CorporateSite/ServicePillar`      | `Default`                 | corporate-site 固有 Presentation component |
 | `CorporateSite/BusinessFeatureRow` | `MediaRight`, `MediaLeft` | corporate-site 固有 Presentation component |
-| `CorporateSite/ContactInfoRow`     | `Default`                 | corporate-site 固有 Presentation component |
+| `CorporateSite/ContactInfoRow`     | `Tel`, `Address`          | corporate-site 固有 Presentation component |
 
 ### Props / Request / Response
 
