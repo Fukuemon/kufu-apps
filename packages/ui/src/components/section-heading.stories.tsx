@@ -6,10 +6,11 @@ const meta = {
   title: "Patterns/SectionHeading",
   component: SectionHeading,
   args: {
-    eyebrow: "Category",
-    title: "Section heading",
+    number: "01",
+    eyebrow: "PRODUCTS / 取扱製品",
+    title: "製造現場を支える機器を、用途から探す",
     description:
-      "A reusable heading pattern with optional eyebrow and description text.",
+      "駆動・変減速機器から搬送・省力化機器まで、現場の課題に合わせて最適な製品カテゴリを確認できます。",
   },
 } satisfies Meta<typeof SectionHeading>;
 

@@ -4,6 +4,7 @@ import { cn } from "#lib/utils";
 
 function SectionHeading({
   className,
+  number,
   eyebrow,
   title,
   description,
@@ -11,6 +12,7 @@ function SectionHeading({
   align = "start",
   ...props
 }: React.ComponentProps<"div"> & {
+  number?: React.ReactNode;
   eyebrow?: React.ReactNode;
   title: React.ReactNode;
   description?: React.ReactNode;
@@ -24,23 +26,32 @@ function SectionHeading({
       data-slot="section-heading"
       data-align={align}
       className={cn(
-        "grid gap-3",
+        "grid w-full max-w-[760px] gap-[18px]",
         align === "center" &&
           "mx-auto max-w-3xl justify-items-center text-center",
         className,
       )}
       {...props}
     >
-      {eyebrow ? (
-        <p className="text-sm font-medium tracking-normal text-primary">
-          {eyebrow}
-        </p>
+      {number || eyebrow ? (
+        <div className="flex items-end gap-[18px]">
+          {number ? (
+            <p className="font-mono text-[34px] leading-[44px] font-medium text-foreground">
+              {number}
+            </p>
+          ) : null}
+          {eyebrow ? (
+            <p className="pb-1 font-mono text-[11px] leading-4 font-medium tracking-[2.2px] text-primary uppercase">
+              {eyebrow}
+            </p>
+          ) : null}
+        </div>
       ) : null}
-      <HeadingTag className="font-heading text-3xl font-semibold text-foreground sm:text-4xl">
+      <HeadingTag className="font-heading text-[42px] leading-[60px] font-semibold text-foreground">
         {title}
       </HeadingTag>
       {description ? (
-        <p className="max-w-2xl text-base leading-7 text-muted-foreground">
+        <p className="max-w-[620px] text-[15px] leading-[1.75] text-muted-foreground">
           {description}
         </p>
       ) : null}

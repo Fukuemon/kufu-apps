@@ -1,14 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./card.js";
-import { Button } from "./button.js";
+import { Card, CardDescription, CardHeader, CardTitle } from "./card.js";
 
 const meta = {
   title: "Primitives/Card",
@@ -28,24 +20,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: () => (
-    <Card>
+    <Card className="w-[260px]">
+      <div className="h-[150px] w-full bg-[color-mix(in_srgb,var(--kufu-gray-600),var(--kufu-teal-900)_12%)]" />
       <CardHeader>
-        <CardTitle>Card title</CardTitle>
-        <CardDescription>
-          Short supporting text for a shared surface.
-        </CardDescription>
+        <div className="flex items-center justify-between">
+          <CardDescription className="font-mono font-medium tracking-[1px] text-primary">
+            CATEGORY 01
+          </CardDescription>
+          <CardDescription>17社</CardDescription>
+        </div>
+        <CardTitle>駆動・変減速機器</CardTitle>
       </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground">
-          Use cards for repeated items, grouped controls, and framed tools.
-        </p>
-      </CardContent>
-      <CardFooter>
-        <Button size="sm">Action</Button>
-        <Button size="sm" variant="outline">
-          Secondary
-        </Button>
-      </CardFooter>
     </Card>
   ),
 };
