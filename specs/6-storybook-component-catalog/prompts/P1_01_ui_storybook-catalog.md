@@ -121,8 +121,8 @@
 - `packages/ui` Storybook は shared component catalog とする
 - `packages/ui` Storybook は Storybook 10 + `@storybook/react-vite` で構成する
 - `packages/ui/.storybook/main.ts` の型 import は `@storybook/react-vite` から行う
-- 初期 shared catalog 対象は `Button`, `LinkButton`, `Tag`, `SectionHeading`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow`
-- story 階層は `Primitives/Button`, `Primitives/Tag`, `Primitives/Separator`, `Primitives/Card`, `Patterns/SectionHeading`, `Patterns/FormField`, `Patterns/DefinitionRow`
+- 初期 shared catalog 対象は `Button`, `LinkButton`, `Tag`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow`
+- story 階層は `Primitives/Button`, `Primitives/Tag`, `Primitives/Separator`, `Primitives/Card`, `Patterns/FormField`, `Patterns/DefinitionRow`
 - shared component は default story を必須にする
 - variant / state がある component は同一 catalog に story を追加する
 - app 固有 component や page-level sample は `packages/ui` Storybook に載せない

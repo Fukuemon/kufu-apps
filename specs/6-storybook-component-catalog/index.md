@@ -157,8 +157,9 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - この決定は root から Storybook に辿れる導線を提供しつつ、`packages/ui` の過剰な platform 化を避けるため。
 - **D2 Storybook catalog 初期掲載範囲 (2026-06-18 決定): b) GenericComponents 相当の shared 候補まで**
   - issue #6 では Storybook 導線だけでなく、shared component と Storybook catalog の初期セットも作る。
-  - 初期掲載範囲は `GenericComponents` 相当の shared 候補 (`Button`, `LinkButton`, `Tag`, `SectionHeading`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow`) までとする。
-  - corporate-site 固有 component (`ServicePillar` など) と page-level sample は初期 catalog に含めない。これらは app colocation とし、D3 / D4 で境界を確定する。
+  - 初期掲載範囲は `GenericComponents` 相当の shared 候補 (`Button`, `LinkButton`, `Tag`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow`) までとする。
+  - `SectionHeading` は corporate-site の section 文脈を持つため shared catalog から外し、app-local Storybook 対象に寄せる。
+  - corporate-site 固有 component (`SectionHeading`, `ServicePillar` など) と page-level sample は初期 catalog に含めない。これらは app colocation とし、D3 / D4 で境界を確定する。
   - `packages/ui` に載せる component は default story を必須とし、主要 variant / state があるものは同じ初期 catalog に含める。
 - **D3 corporate-site 専用 component の Storybook (2026-06-18 決定): b) app-local Storybook を作る**
   - corporate-site 専用 component は `packages/ui` Storybook には載せない。
@@ -280,7 +281,6 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - `Button`
   - `LinkButton`
   - `Tag`
-  - `SectionHeading`
   - `Card`
   - `Separator`
   - `FormField`
@@ -362,17 +362,16 @@ Storybook script command contract:
 
 Storybook story 命名の候補:
 
-| 階層                      | 例                              | 内容                                 |
-| ------------------------- | ------------------------------- | ------------------------------------ |
-| `Primitives/Button`       | `Default`, `Variants`, `AsLink` | shared primitive component           |
-| `Primitives/Tag`          | `Default`, `Variants`           | shared primitive component           |
-| `Primitives/Separator`    | `Default`                       | shared primitive component           |
-| `Primitives/Card`         | `Default`                       | shared primitive component           |
-| `Foundations/Tokens`      | `Colors`, `Typography`          | token の確認。実装する場合は閲覧専用 |
-| `Patterns/SectionHeading` | `Default`, `WithEyebrow`        | shared section heading pattern       |
-| `Patterns/FormField`      | `Default`, `Error`, `Disabled`  | shared form pattern                  |
-| `Patterns/DefinitionRow`  | `Default`                       | shared information row pattern       |
-| `Examples/PageSamples`    | -                               | 初期追加しない                       |
+| 階層                     | 例                              | 内容                                 |
+| ------------------------ | ------------------------------- | ------------------------------------ |
+| `Primitives/Button`      | `Default`, `Variants`, `AsLink` | shared primitive component           |
+| `Primitives/Tag`         | `Default`, `Variants`           | shared primitive component           |
+| `Primitives/Separator`   | `Default`                       | shared primitive component           |
+| `Primitives/Card`        | `Default`                       | shared primitive component           |
+| `Foundations/Tokens`     | `Colors`, `Typography`          | token の確認。実装する場合は閲覧専用 |
+| `Patterns/FormField`     | `Default`, `Error`, `Disabled`  | shared form pattern                  |
+| `Patterns/DefinitionRow` | `Default`                       | shared information row pattern       |
+| `Examples/PageSamples`   | -                               | 初期追加しない                       |
 
 corporate-site app-local Storybook の初期掲載範囲:
 
@@ -419,7 +418,8 @@ apps/corporate-site/src/components/features/corporate-site/
 
 - Storybook story source (`*.stories.*`) は `packages/ui` 内に置く
 - Storybook config (`.storybook/*`) は `packages/ui` 内に置く
-- `Button`, `LinkButton`, `Tag`, `SectionHeading`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow` は issue #6 の初期 shared catalog 対象として `packages/ui` 内に置く
+- `Button`, `LinkButton`, `Tag`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow` は issue #6 の初期 shared catalog 対象として `packages/ui` 内に置く
+- `SectionHeading` は corporate-site 固有 component として `apps/corporate-site` 内に置く
 - `packages/ui` の Storybook config は Storybook 10 + `@storybook/react-vite` を前提に `packages/ui/.storybook/` に置く
 - `apps/corporate-site` の Storybook config は Storybook 10 + `@storybook-astro/framework` を前提に `apps/corporate-site/.storybook/` に置く
 - corporate-site 固有 Presentation component の story source は `apps/corporate-site` 内に置く

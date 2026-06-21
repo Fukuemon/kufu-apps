@@ -51,7 +51,7 @@ Storybook は UI component と page をアプリ本体から切り離して確�
 - shared UI review の運用ルールを `context/` または `packages/ui` README に文書化する。
 - `design/features/corporate-site/index.pen` の各 page section 内を実装 component 粒度へ細分化する。
 - Pencil の `Components` フレームは `GenericComponents` と `CorporateSiteComponents` に分ける。
-- `GenericComponents` には shadcn/ui に写像しやすい `Button`, `LinkButton`, `Tag`, `SectionHeading`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow` などの汎用パーツを置く。
+- `GenericComponents` には shadcn/ui に写像しやすい `Button`, `LinkButton`, `Tag`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow` などの汎用パーツを置く。`SectionHeading` は corporate-site の section 文脈を持つため app-local component として扱う。
 - `CorporateSiteComponents` には `ServicePillar`, `BusinessFeatureRowMediaRight`, `BusinessFeatureRowMediaLeft`, `ContactInfoRow` など、この page / feature 内で再利用する固有 component を置く。
 - page 固有 section (`Hero`, `BusinessSection`, `ProductsCategorySection`, `ContactSection` など) は page 内に保持する。
 - Storybook の catalog 粒度は SmartHR UI を参考に、基礎 component、layout/section component、page-level sample を分けて扱う。
