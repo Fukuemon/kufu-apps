@@ -121,7 +121,6 @@ apps/corporate-site/src/components/features/corporate-site/
 - `Button`
 - `LinkButton`
 - `Tag`
-- `SectionHeading`
 - `Card`
 - `Separator`
 - `FormField`
@@ -133,6 +132,7 @@ apps/corporate-site/src/components/features/corporate-site/
 置かないもの:
 
 - corporate-site の page section
+- corporate-site の section heading など、page 文脈や business wording を持つ component
 - feature 固有の business wording を持つ component
 - app-local data shape に依存する component
 - page-level sample

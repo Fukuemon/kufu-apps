@@ -17,19 +17,18 @@ page section は page 文脈を保持し、初期 app-local Storybook の対象�
 
 `GenericComponents` は `packages/ui` の初期 shared catalog 対象とする。business wording や page 文脈を持たせない。
 
-| `.pen` component | 実装 component   | Storybook 階層            |
-| ---------------- | ---------------- | ------------------------- |
-| `Button`         | `Button`         | `Primitives/Button`       |
-| `LinkButton`     | `LinkButton`     | `Primitives/Button`       |
-| `Tag`            | `Tag`            | `Primitives/Tag`          |
-| `SectionHeading` | `SectionHeading` | `Patterns/SectionHeading` |
-| `Card`           | `Card`           | `Primitives/Card`         |
-| `Separator`      | `Separator`      | `Primitives/Separator`    |
-| `FormField`      | `FormField`      | `Patterns/FormField`      |
-| `Input`          | `Input`          | `Patterns/FormField`      |
-| `Select`         | `Select`         | `Patterns/FormField`      |
-| `Textarea`       | `Textarea`       | `Patterns/FormField`      |
-| `DefinitionRow`  | `DefinitionRow`  | `Patterns/DefinitionRow`  |
+| `.pen` component | 実装 component  | Storybook 階層           |
+| ---------------- | --------------- | ------------------------ |
+| `Button`         | `Button`        | `Primitives/Button`      |
+| `LinkButton`     | `LinkButton`    | `Primitives/Button`      |
+| `Tag`            | `Tag`           | `Primitives/Tag`         |
+| `Card`           | `Card`          | `Primitives/Card`        |
+| `Separator`      | `Separator`     | `Primitives/Separator`   |
+| `FormField`      | `FormField`     | `Patterns/FormField`     |
+| `Input`          | `Input`         | `Patterns/FormField`     |
+| `Select`         | `Select`        | `Patterns/FormField`     |
+| `Textarea`       | `Textarea`      | `Patterns/FormField`     |
+| `DefinitionRow`  | `DefinitionRow` | `Patterns/DefinitionRow` |
 
 ## CorporateSiteComponents
 
@@ -37,6 +36,7 @@ page section は page 文脈を保持し、初期 app-local Storybook の対象�
 
 | `.pen` component               | 実装 Container             | 実装 Presentation                      | Storybook 階層                                    |
 | ------------------------------ | -------------------------- | -------------------------------------- | ------------------------------------------------- |
+| `SectionHeading`               | `SectionHeading.astro`     | `SectionHeadingPresentation.astro`     | `CorporateSite/SectionHeading`                    |
 | `ServicePillar`                | `ServicePillar.astro`      | `ServicePillarPresentation.astro`      | `CorporateSite/ServicePillar`                     |
 | `BusinessFeatureRowMediaRight` | `BusinessFeatureRow.astro` | `BusinessFeatureRowPresentation.astro` | `CorporateSite/BusinessFeatureRow` (`MediaRight`) |
 | `BusinessFeatureRowMediaLeft`  | `BusinessFeatureRow.astro` | `BusinessFeatureRowPresentation.astro` | `CorporateSite/BusinessFeatureRow` (`MediaLeft`)  |

@@ -20,7 +20,7 @@ shared config / root task / repository quality gate の境界規約。toolchain 
 - `dev`、`dev:corporate`、`build`、`lint`、`typecheck`、`test` は `turbo run` を使う。
 - `format`、`e2e`、`knip`、`depcruise` は root 管理ツールとして直実行する。
 - `e2e`、`knip`、`dependency-cruiser` は package task ではなく repository task として扱う。
-- Storybook 起動導線は root から対象 package / app へ委譲する: `storybook:ui` は `packages/ui`、`storybook:corporate` は `apps/corporate-site` を対象にする。
+- Storybook 起動導線は root から対象 package / app へ委譲する: `storybook` は shared / app-local を並列起動し、`storybook:ui` は `packages/ui`、`storybook:corporate` は `apps/corporate-site` を対象にする。
 - Storybook build は production `build` に混ぜず、dedicated quality gate (`storybook:build`) として扱う。
 - `lefthook` の `pre-commit` で `pnpm depcruise` と `pnpm knip` を自動実行し、commit 前に repository quality gate を通す。
 

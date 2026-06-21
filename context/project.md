@@ -50,6 +50,7 @@ $(ghq root)/github.com/Fukuemon/
 | Format (確認)             | `pnpm format:check`                          |
 | Unit test                 | `pnpm test`                                  |
 | E2E (既定 corporate-site) | `pnpm e2e`                                   |
+| Storybook (all dev)       | `pnpm storybook`                             |
 | Storybook (ui)            | `pnpm storybook:ui`                          |
 | Storybook (corporate)     | `pnpm storybook:corporate`                   |
 | Storybook build           | `pnpm storybook:build`                       |

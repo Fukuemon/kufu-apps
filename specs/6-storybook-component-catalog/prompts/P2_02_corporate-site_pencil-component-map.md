@@ -112,7 +112,8 @@
 - `.pen` は design 正本、code / Storybook は実装正本である
 - Pencil の `Components` フレームは `GenericComponents` と `CorporateSiteComponents` に分ける
 - page 固有 section (`Hero`, `BusinessSection`, `ProductsCategorySection`, `ContactSection`) は page 内に保持する
-- `GenericComponents` は `Button`, `LinkButton`, `Tag`, `SectionHeading`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow`
+- `GenericComponents` は `Button`, `LinkButton`, `Tag`, `Card`, `Separator`, `FormField`, `Input`, `Select`, `Textarea`, `DefinitionRow`
+- `SectionHeading` は corporate-site の section 文脈を持つため `CorporateSiteComponents` として扱う
 - `CorporateSiteComponents` は `ServicePillar`, `BusinessFeatureRowMediaRight`, `BusinessFeatureRowMediaLeft`, `ContactInfoRow`
 - 対応表の置き場所は `design/features/corporate-site/component-map.md`
 - 実装 component 名は PascalCase 相当にする
