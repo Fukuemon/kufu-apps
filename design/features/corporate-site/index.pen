@@ -4361,72 +4361,6 @@
               ]
             },
             {
-              "type": "frame",
-              "id": "I4TM90",
-              "name": "SectionHeading",
-              "reusable": true,
-              "width": 760,
-              "layout": "vertical",
-              "gap": 18,
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "j8SDs",
-                  "name": "Heading Top",
-                  "gap": 18,
-                  "alignItems": "end",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "ar5wY",
-                      "name": "Heading Number",
-                      "fill": "$foreground",
-                      "content": "00",
-                      "fontFamily": "$font-mono",
-                      "fontSize": 34,
-                      "fontWeight": "500"
-                    },
-                    {
-                      "type": "text",
-                      "id": "w7MGe",
-                      "name": "Heading Eyebrow",
-                      "fill": "$primary",
-                      "content": "SECTION / セクション",
-                      "fontFamily": "$font-mono",
-                      "fontSize": 11,
-                      "fontWeight": "500",
-                      "letterSpacing": 2.2
-                    }
-                  ]
-                },
-                {
-                  "type": "text",
-                  "id": "qwXZN",
-                  "name": "Heading Title",
-                  "fill": "$foreground",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "content": "セクションタイトル",
-                  "fontFamily": "$font-serif",
-                  "fontSize": 42,
-                  "fontWeight": "600"
-                },
-                {
-                  "type": "text",
-                  "id": "kDe8R",
-                  "name": "Heading Lead",
-                  "fill": "$muted-foreground",
-                  "textGrowth": "fixed-width",
-                  "width": 620,
-                  "content": "セクションのリード文。",
-                  "lineHeight": 1.75,
-                  "fontFamily": "$font-sans",
-                  "fontSize": 15,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
               "type": "rectangle",
               "id": "cmpSeparator",
               "name": "Separator",
@@ -5515,6 +5449,72 @@
               "fontFamily": "$font-sans",
               "fontSize": 13,
               "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "I4TM90",
+              "name": "SectionHeading",
+              "reusable": true,
+              "width": 760,
+              "layout": "vertical",
+              "gap": 18,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "j8SDs",
+                  "name": "Heading Top",
+                  "gap": 18,
+                  "alignItems": "end",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ar5wY",
+                      "name": "Heading Number",
+                      "fill": "$foreground",
+                      "content": "00",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 34,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "w7MGe",
+                      "name": "Heading Eyebrow",
+                      "fill": "$primary",
+                      "content": "SECTION / セクション",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 11,
+                      "fontWeight": "500",
+                      "letterSpacing": 2.2
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "qwXZN",
+                  "name": "Heading Title",
+                  "fill": "$foreground",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "セクションタイトル",
+                  "fontFamily": "$font-serif",
+                  "fontSize": 42,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "kDe8R",
+                  "name": "Heading Lead",
+                  "fill": "$muted-foreground",
+                  "textGrowth": "fixed-width",
+                  "width": 620,
+                  "content": "セクションのリード文。",
+                  "lineHeight": 1.75,
+                  "fontFamily": "$font-sans",
+                  "fontSize": 15,
+                  "fontWeight": "normal"
+                }
+              ]
             },
             {
               "type": "frame",
