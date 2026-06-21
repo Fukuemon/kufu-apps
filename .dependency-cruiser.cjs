@@ -18,7 +18,7 @@ module.exports = {
       from: {
         orphan: true,
         pathNot:
-          "(^|/)(astro\\.config\\.mjs|index\\.(ts|tsx)|README\\.md|package\\.json|playwright\\.config\\.ts)$|^e2e/|\\.d\\.ts$|\\.astro$",
+          "(^|/)(astro\\.config\\.mjs|index\\.(ts|tsx)|README\\.md|package\\.json|playwright\\.config\\.ts)$|^e2e/|(^|/)\\.storybook/|\\.d\\.ts$|\\.astro$",
       },
       to: {},
     },
