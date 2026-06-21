@@ -1,0 +1,160 @@
+---
+export interface Props {
+  number?: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  items: string[];
+  mediaLabel: string;
+  mediaCaption: string;
+  mediaPosition: "left" | "right";
+}
+
+const {
+  number,
+  eyebrow,
+  title,
+  description,
+  items,
+  mediaLabel,
+  mediaCaption,
+  mediaPosition,
+} = Astro.props;
+---
+
+<article class="business-feature" data-media-position={mediaPosition}>
+  <div class="business-feature__body">
+    {number ? <span class="business-feature__ghost" aria-hidden="true">{number}</span> : null}
+    <p class="business-feature__eyebrow">{eyebrow}</p>
+    <h3 class="business-feature__title">{title}</h3>
+    <p class="business-feature__description">{description}</p>
+    <ul class="business-feature__tags">
+      {items.map((item) => <li class="business-feature__tag">{item}</li>)}
+    </ul>
+  </div>
+  <div class="business-feature__media" role="img" aria-label={mediaCaption}>
+    <span class="business-feature__media-label">{mediaLabel}</span>
+  </div>
+</article>
+
+<style>
+  .business-feature {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    inline-size: 100%;
+    padding-block: 2.75rem;
+    color: var(--foreground);
+  }
+
+  .business-feature__body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .business-feature__ghost {
+    position: absolute;
+    inset-block-start: -2.125rem;
+    inset-inline-start: -0.625rem;
+    font-family: var(--font-mono);
+    font-size: 8.75rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ghost-foreground);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .business-feature__eyebrow,
+  .business-feature__title,
+  .business-feature__description,
+  .business-feature__tags {
+    position: relative;
+    z-index: 1;
+  }
+
+  .business-feature__eyebrow {
+    margin: 0;
+    color: var(--primary);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.16em;
+  }
+
+  .business-feature__title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .business-feature__description {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.9375rem;
+    line-height: 1.75;
+  }
+
+  .business-feature__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.375rem 0 0;
+    list-style: none;
+  }
+
+  .business-feature__tag {
+    padding: 0.375rem 0.75rem;
+    border-radius: 4px;
+    background: var(--secondary);
+    color: var(--foreground);
+    font-size: 0.78125rem;
+    line-height: 1.4;
+  }
+
+  .business-feature__media {
+    display: flex;
+    align-items: flex-end;
+    min-block-size: 23.75rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    background:
+      linear-gradient(var(--photo-overlay), var(--photo-overlay)),
+      var(--kufu-gray-800);
+  }
+
+  .business-feature__media-label {
+    color: var(--kufu-white);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+  }
+
+  @media (min-width: 760px) {
+    .business-feature {
+      flex-direction: row;
+      align-items: center;
+      gap: 3.5rem;
+    }
+
+    .business-feature__body {
+      flex: 0 0 30rem;
+      inline-size: 30rem;
+    }
+
+    .business-feature__media {
+      flex: 1 1 auto;
+    }
+
+    .business-feature[data-media-position="left"] .business-feature__media {
+      order: -1;
+    }
+  }
+</style>

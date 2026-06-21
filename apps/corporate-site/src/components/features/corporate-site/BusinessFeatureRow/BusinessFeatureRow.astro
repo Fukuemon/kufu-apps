@@ -1,0 +1,16 @@
+---
+import BusinessFeatureRowPresentation from "./BusinessFeatureRowPresentation.astro";
+
+const feature = {
+  eyebrow: "Business",
+  title: "金属加工の相談を、初期段階から伴走",
+  description:
+    "小ロットの試作から継続生産まで、仕様整理と加工条件の検討を並行して進めます。",
+  items: ["材料選定の相談", "加工工程の検討", "納期と品質の調整"],
+  mediaLabel: "Sales",
+  mediaCaption: "図面・条件・納期を整理する初期相談",
+  mediaPosition: "right" as const,
+};
+---
+
+<BusinessFeatureRowPresentation {...feature} />
