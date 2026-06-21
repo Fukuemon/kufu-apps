@@ -10,7 +10,9 @@
     "test": "vitest run --config vitest.config.ts --passWithNoTests",
     "typecheck": "ASTRO_TELEMETRY_DISABLED=1 astro check",
     "e2e:serve": "pnpm build && pnpm preview",
-    "astro": "astro"
+    "astro": "astro",
+    "storybook": "storybook dev --host 127.0.0.1 --port 6007",
+    "storybook:build": "storybook build"
   },
   "dependencies": {
     "@kufu/config": "workspace:*",
@@ -19,6 +21,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@storybook-astro/framework": "^1.5.0",
+    "storybook": "^10.4.6",
     "typescript": "^6.0.3"
   },
   "engines": {
