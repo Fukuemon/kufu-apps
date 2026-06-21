@@ -6,7 +6,6 @@ export * from "./form-field.js";
 export * from "./input.js";
 export * from "./label.js";
 export * from "./link-button.js";
-export * from "./section-heading.js";
 export * from "./select.js";
 export * from "./separator.js";
 export * from "./tag.js";
