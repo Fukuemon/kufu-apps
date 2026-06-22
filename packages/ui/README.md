@@ -6,7 +6,8 @@ Shared UI package for Kufu Monorepo.
 
 - Component design rules: [../../context/component-design.md](../../context/component-design.md)
 - Storybook review contract: [../../context/engineering.md](../../context/engineering.md#storybook-review-contract)
-- Design tokens: `src/styles/tokens.css`
+- Design tokens: `src/styles/tokens.css` (runtime CSS variables)
+- Tailwind theme mapping: `src/styles/theme.css` (`@theme inline`)
 - Full stylesheet entry: `src/styles/globals.css` (`@kufu/ui/styles.css`)
 
 ## Storybook

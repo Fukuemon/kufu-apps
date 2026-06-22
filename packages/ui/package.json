@@ -16,6 +16,7 @@
     ".": "./src/index.ts",
     "./styles.css": "./src/styles/globals.css",
     "./tokens.css": "./src/styles/tokens.css",
+    "./theme.css": "./src/styles/theme.css",
     "./fonts.css": "./src/styles/fonts.css",
     "./components": "./src/components/index.ts",
     "./components/*": "./src/components/*.tsx",
