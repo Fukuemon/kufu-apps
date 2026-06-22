@@ -1,6 +1,6 @@
 # Project Profile
 
-> 最終更新: 2026-06-14
+> 最終更新: 2026-06-18
 
 Kufu Monorepo 固有の値 (リポジトリ / 命名 / コマンド / 対象ドメイン / トラッカー / 正本パス) を集約する **唯一の正本**。`.rulesync/rules/CLAUDE.md` と `spec-*` / `dev-commands` 等の skill は、固有値をハードコードせず本ファイルを読む。
 
@@ -50,6 +50,10 @@ $(ghq root)/github.com/Fukuemon/
 | Format (確認)             | `pnpm format:check`                          |
 | Unit test                 | `pnpm test`                                  |
 | E2E (既定 corporate-site) | `pnpm e2e`                                   |
+| Storybook (all dev)       | `pnpm storybook`                             |
+| Storybook (ui)            | `pnpm storybook:ui`                          |
+| Storybook (corporate)     | `pnpm storybook:corporate`                   |
+| Storybook build           | `pnpm storybook:build`                       |
 | 健全性検査                | `pnpm knip` / `pnpm depcruise`               |
 | 依存追加                  | `pnpm --filter @kufu/<module> add <package>` |
 

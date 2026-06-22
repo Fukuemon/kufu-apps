@@ -11,7 +11,7 @@
  */
 
 :root {
-  /* primitive: color scale (値を持つ唯一の層) */
+  /* primitive */
   --kufu-white: #ffffff;
   --kufu-gray-50: #f7f8fa;
   --kufu-gray-100: #eceff3;
@@ -26,12 +26,12 @@
   --kufu-teal-600: #006b6b;
   --kufu-teal-900: #0a3d4a;
 
-  /* font family tokens (実体は fonts.css で登録。フォールバック付きスタック) */
+  /* fonts */
   --font-sans: "Noto Sans JP Variable", system-ui, sans-serif;
   --font-serif: "Noto Serif JP Variable", "Hiragino Mincho ProN", serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
 
-  /* semantic: shadcn 語彙 (primitive 参照) — ライト面既定 */
+  /* semantic */
   --background: var(--kufu-gray-50);
   --foreground: var(--kufu-gray-900);
   --card: var(--kufu-white);
@@ -41,6 +41,11 @@
   --primary: var(--kufu-teal-600);
   --primary-foreground: var(--kufu-white);
   --secondary: var(--kufu-gray-100);
+  --secondary-hover: color-mix(
+    in oklch,
+    var(--secondary),
+    var(--foreground) 5%
+  );
   --secondary-foreground: var(--kufu-gray-900);
   --muted: var(--kufu-gray-100);
   --muted-foreground: var(--kufu-gray-600);
@@ -48,20 +53,16 @@
   --input: var(--kufu-gray-300);
   --ring: var(--kufu-teal-600);
 
-  /* semantic: kufu 追加役割 (shadcn 語彙に無い用途) */
+  /* kufu semantic */
   --primary-soft: var(--kufu-teal-300);
   --card-overlay: color-mix(in srgb, var(--kufu-white) 90%, transparent);
   --photo-overlay: color-mix(in srgb, var(--kufu-teal-900) 12%, transparent);
   --ghost-foreground: color-mix(in srgb, var(--kufu-gray-900) 5%, transparent);
 
-  /* radius: .pen 実測で全面直角 (shadcn --radius 派生スケールの基準値) */
+  /* radius */
   --radius: 0rem;
 
-  /*
-   * shadcn 未使用変数: 名前は契約のため温存 (改名・削除しない)。
-   * #10 で該当コンポーネント (アラート / チャート / sidebar 等) 導入時に
-   * kufu パレットへ再設計する。それまでは shadcn デフォルト値のまま。
-   */
+  /* reserved shadcn tokens */
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -80,14 +81,46 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/*
- * ダーク面 section: semantic 変数を上書きするラッパー class。
- * スコープ内の shadcn コンポーネントもカスケードで自動再テーマされる (ADR-0007)。
- */
+/* section-level inverse surface */
 .surface-inverse {
   --background: var(--kufu-gray-950);
   --foreground: var(--kufu-white);
   --secondary-foreground: var(--kufu-gray-200);
   --muted-foreground: var(--kufu-gray-500);
   --border: var(--kufu-gray-800);
+}
+
+/* React app placeholder */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
 }
