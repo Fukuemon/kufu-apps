@@ -17,9 +17,9 @@ Import the stylesheet from `src/styles/globals.css` and keep Astro-local markup 
 Component design rules are defined in [../../context/component-design.md](../../context/component-design.md).
 
 - Route entries live in `src/pages/`.
-- Feature components live in `src/components/features/corporate-site/`.
-- Container components use `<ComponentName>.astro`.
-- Presentation components use `<ComponentName>Presentation.astro` and are the primary app-local Storybook target.
+- Feature components live in `src/components/features/<feature>/`, where `<feature>` is a content domain (`business`, `products`, `contact`, `services`) — not the app name. Cross-feature site components live in `src/components/common/`.
+- Presentation components use `<Component>.astro` (no `Presentation` suffix) and are the primary app-local Storybook target.
+- Data/logic belongs in the content layer (`src/content/<feature>.ts`, or an Astro Content Collection for homogeneous entry sets); a `<Feature>Section.astro` assembles content into presentation. Both are added when the page body is implemented.
 
 Root Storybook entry:
 

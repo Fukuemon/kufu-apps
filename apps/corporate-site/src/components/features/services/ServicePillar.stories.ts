@@ -1,8 +1,8 @@
-import ServicePillarPresentation from "./ServicePillarPresentation.astro";
+import ServicePillar from "./ServicePillar.astro";
 
 const meta = {
-  title: "CorporateSite/ServicePillar",
-  component: ServicePillarPresentation,
+  title: "Services/ServicePillar",
+  component: ServicePillar,
 };
 
 export default meta;

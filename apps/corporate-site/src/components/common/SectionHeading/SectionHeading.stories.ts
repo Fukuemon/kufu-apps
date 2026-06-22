@@ -1,8 +1,8 @@
-import SectionHeadingPresentation from "./SectionHeadingPresentation.astro";
+import SectionHeading from "./SectionHeading.astro";
 
 const meta = {
-  title: "CorporateSite/SectionHeading",
-  component: SectionHeadingPresentation,
+  title: "Common/SectionHeading",
+  component: SectionHeading,
 };
 
 export default meta;

@@ -1,8 +1,8 @@
-import FeaturedCategoryCardPresentation from "./FeaturedCategoryCardPresentation.astro";
+import FeaturedCategoryCard from "./FeaturedCategoryCard.astro";
 
 const meta = {
-  title: "CorporateSite/FeaturedCategoryCard",
-  component: FeaturedCategoryCardPresentation,
+  title: "Products/FeaturedCategoryCard",
+  component: FeaturedCategoryCard,
 };
 
 export default meta;
