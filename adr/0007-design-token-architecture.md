@@ -23,7 +23,7 @@
    - **`-foreground` ペアの整合を保つ**: shadcn は面 (`--primary`) とその上の文字 (`--primary-foreground`) をペアで使う。面だけ変えてコントラストが崩れないよう、必ずペアで割り当てる。
    - **追加した独自 semantic (`--primary-soft` 等) を `bg-*` 等のユーティリティで使うには `@theme inline` への追加マッピングが必要** (生 CSS の `var()` 直書きなら不要)。ユーティリティ提供は #10 の実需に応じて行う。
 3. **ダーク面は inverse スコープ**: `.dark` テーマでなく、semantic 変数を上書きするラッパー class (案: `.surface-inverse`) で section 単位のダーク面を表現する。class 内で `--background` / `--foreground` 等を上書きすると、**そのスコープ内の shadcn コンポーネントもカスケードで自動的にダーク面の見た目へ再テーマされる** (`.dark` と同じ機構)。名前を保って値だけ差し替える設計の利点。
-4. **3 entry 配信**: `@kufu/ui/tokens.css` (CSS 変数のみ) / `@kufu/ui/fonts.css` (fontsource font-face) / `@kufu/ui/styles.css` (全量エントリ = `globals.css`。tokens + fonts + Tailwind theme + shadcn 層) に分離する。Astro (corporate-site) は `tokens.css` + `fonts.css` のみ、React app (将来の cms) は `styles.css` を import する。
+4. **3 entry 配信**: `@kufu/ui/tokens.css` (CSS 変数のみ) / `@kufu/ui/fonts.css` (fontsource font-face) / `@kufu/ui/styles.css` (全量エントリ = `globals.css`。tokens + fonts + Tailwind theme + shadcn 層) に分離する。Astro (corporate-site) は `tokens.css` + `fonts.css` のみ、React app (将来の cms) は `styles.css` を import する。**(2026-06-22 改訂 — 下記「更新」参照)** corporate-site は全量 `styles.css` は取り込まないまま、app-local に lean な Tailwind v4 entry を立てて utility を使えるようにした。不採用にしたのは tw-animate-css / shadcn 層を含む「全量エントリの混入」であり、lean Tailwind 自体ではない。
 5. **実績ベースの最小定義**: type scale / spacing / shadow / breakpoint は独自トークンを作らず Tailwind 標準を使う (spacing は 4px グリッド + 推奨リズム 12/16/24/32/48/80 をガイド文書化)。radius は shadcn `--radius` に一本化し、`.pen` 実測 (全面直角) に基づき基準値 `0rem` とする。
 
 ## 代替案
@@ -54,6 +54,16 @@
 - `apps/corporate-site` への影響: import を `tokens.css` + `fonts.css` へ移行、`--kufu-font-body` → `--font-sans` 置換 (本実装は #10)
 - `design/features/corporate-site/index.pen` への影響: variables の semantic 名への rename と再取り込み
 - `e2e` への影響: なし (トークンガード検査の仕組み化は実装側で検討)
+
+## 更新
+
+### 2026-06-22: corporate-site に lean app-local Tailwind v4 を採用 (spec #6)
+
+- **背景**: corporate-site の component が scoped `<style>` + `var(--token)` で書かれ、Tailwind を使う `packages/ui` (shadcn) とスタイル記法が分裂していた。決定 2 / 5 で「utility 提供は #10 の実需に応じて」「spacing / type scale は Tailwind 標準を使う」としていた前提を、Storybook catalog の component (#6) を Tailwind へ統一する形で具体化する。
+- **決定**: corporate-site に **lean な Tailwind v4 entry** を立てる。`apps/corporate-site/src/styles/globals.css` で `@import "tailwindcss"` + `@kufu/ui/tokens.css` + `@kufu/ui/fonts.css` を読み込み、token → utility の `@theme inline` 写像は新設の **`@kufu/ui/theme.css`** に一元化し (4 entry 目)、`styles.css` (全量) と corporate-site の lean entry の双方が `@import` する。app 固有なのは document-level base。Tailwind の走査は Vite plugin の module graph に任せ、app-local `@source` は置かない。Tailwind v4 は **`@tailwindcss/vite`** で適用し、Astro は `astro.config.mjs` の `vite.plugins` に設定する。Storybook は `@storybook-astro/framework` が Astro config の Vite plugin を自動ロードする。PostCSS config は使わない。Vite 8 の rolldown resolver が `tsconfigPaths` 欠落で落ちるため、`astro.config.mjs` の `vite.resolve.tsconfigPaths` を `true` にする。
+- **責務分離**: `tokens.css` は runtime CSS 変数の実体のみ、`theme.css` は Tailwind utility へ公開する `@theme inline` mapping のみ、`globals.css` / `styles.css` は import / source / variant / base layer の entry のみに絞る。
+- **不採用との整合**: 「単一 styles.css 配信の維持」を不採用にした理由は tw-animate-css / shadcn 層を含む全量エントリの混入 (性能予算) であり、lean Tailwind はこの層を含まない。Tailwind v4 は検出した使用 utility のみ出力するため、静的配信の CSS payload は限定される。値の正本は引き続き `tokens.css`。
+- **影響**: corporate-site の 5 component (`BusinessFeatureRow` / `FeaturedCategoryCard` / `ContactInfoRow` / `ServicePillar` / `SectionHeading`) を scoped CSS から Tailwind utility へ移行。token ガード (design-workflow §6) は `text-foreground` 等 semantic class で自然に担保される。`ProductCategory` 等の本体実装・追加 utility 写像は #10 で継続。
 
 ## 関連チケット / PR
 

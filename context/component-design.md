@@ -191,6 +191,17 @@ content 層の実装方式は content の性質で選び分ける (ハイブリ�
 - Content Collection は実体が必要になった feature だけで `src/content.config.ts` に loader を定義し、全面採用しない。CMS 化時は loader を差し替える。
 - 規約は先に決め、Content Collection の実体は対象 feature を実装する段階で追加する (空 collection を先に作らない)。
 
+## スタイリング
+
+corporate-site の Astro component は **Tailwind utility** でスタイルする (scoped `<style>` + 生 CSS は原則使わない)。`packages/ui` (shadcn) とスタイル記法を揃え、token ガバナンスを保つため。
+
+- 値の正本は `@kufu/ui/tokens.css`。色・フォントは semantic token の utility (`text-foreground` / `bg-secondary` / `text-muted-foreground` / `border-border` / `font-mono` / `font-serif` など) を使う。
+- corporate-site は全量 `@kufu/ui/styles.css` を取り込まず、app-local の lean な Tailwind v4 entry (`src/styles/globals.css`: `@import "tailwindcss"` + tokens + fonts + `@kufu/ui/theme.css`) を持つ ([ADR-0007](../adr/0007-design-token-architecture.md) の「更新」)。token → utility の `@theme` 写像は `@kufu/ui/theme.css` に一元化し、`styles.css` と app entry の双方が import する。app entry は document-level base を置くために残す。Tailwind の走査は Vite plugin の module graph に任せ、app-local `@source` は置かない。
+- token ガード (design-workflow §6): raw hex / 色の arbitrary value (`text-[#fff]` 等) を直書きしない。semantic token utility を参照する。サイズ・余白の arbitrary value (`min-h-95` で表せない `text-[8.75rem]` 等) は可。
+- spacing は Tailwind スケール (0.25rem グリッド) の canonical 表記を優先する (`gap-4.5` > `gap-[1.125rem]`)。スケールに無い font-size / line-height / letter-spacing は arbitrary value でよい。
+- 条件付き class (variant / align / media position) は frontmatter で class 文字列を組み立てて渡す。
+- Storybook (app-local) でも Tailwind を効かせるため、`.storybook/preview.ts` で `globals.css` を import する。`@storybook-astro/framework` は `astro.config.mjs` の Vite plugin を自動ロードするため、Tailwind v4 は Astro 側と同じ `@tailwindcss/vite` 設定で動く。
+
 ## 命名規則
 
 命名は BCD Design の考え方を基準にし、component 名から Domain / Base / Case が読めるようにする。
