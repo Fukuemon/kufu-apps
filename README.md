@@ -66,7 +66,7 @@ pnpm install
 
 コーポレートサイトの開発サーバーは `http://127.0.0.1:4321` で起動します。
 
-`pnpm storybook:pages` は `packages/ui` と `apps/corporate-site` の Storybook を build し、GitHub Pages 用 artifact を `.storybook-pages/` にまとめます。`develop` への push 後に GitHub Pages へ deploy されます。
+`pnpm storybook:pages` は `packages/ui` と `apps/corporate-site` の Storybook を build し、GitHub Pages 用 artifact を `.storybook-pages/` にまとめます。PR では `pr-preview/pr-<number>/` へ preview deploy し、`develop` への push 後は Pages root へ deploy されます。
 
 ## パッケージ境界
 
