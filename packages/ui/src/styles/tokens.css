@@ -41,6 +41,11 @@
   --primary: var(--kufu-teal-600);
   --primary-foreground: var(--kufu-white);
   --secondary: var(--kufu-gray-100);
+  --secondary-hover: color-mix(
+    in oklch,
+    var(--secondary),
+    var(--foreground) 5%
+  );
   --secondary-foreground: var(--kufu-gray-900);
   --muted: var(--kufu-gray-100);
   --muted-foreground: var(--kufu-gray-600);
