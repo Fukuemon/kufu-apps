@@ -22,8 +22,11 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@storybook-astro/framework": "^1.5.0",
+    "@tailwindcss/vite": "^4.3.1",
     "storybook": "^10.4.6",
-    "typescript": "^6.0.3"
+    "tailwindcss": "^4.3.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16"
   },
   "engines": {
     "node": ">=22.12.0"

@@ -11,8 +11,7 @@
         "src/**/*.stories.@(ts|tsx)",
         "src/components/**/*.astro"
       ],
-      "project": ["src/**/*.{astro,ts,css}", "public/**/*"],
-      "ignoreDependencies": ["@kufu/ui"]
+      "project": ["src/**/*.{astro,ts,css}", "public/**/*"]
     },
     "packages/ui": {
       "project": ["src/**/*.{ts,tsx,css}", "components.json"],
