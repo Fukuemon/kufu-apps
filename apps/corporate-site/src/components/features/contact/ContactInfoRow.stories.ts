@@ -1,8 +1,8 @@
-import ContactInfoRowPresentation from "./ContactInfoRowPresentation.astro";
+import ContactInfoRow from "./ContactInfoRow.astro";
 
 const meta = {
-  title: "CorporateSite/ContactInfoRow",
-  component: ContactInfoRowPresentation,
+  title: "Contact/ContactInfoRow",
+  component: ContactInfoRow,
 };
 
 export default meta;

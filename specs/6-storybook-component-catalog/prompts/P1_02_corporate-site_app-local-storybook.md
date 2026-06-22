@@ -53,14 +53,14 @@
 6. 検証: `PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH" pnpm --filter @kufu/corporate-site typecheck`
 7. diff レビューを実施し、production build 設定へ混ぜていないことを確認する
 
-### ステップ 2: Presentation component と story
+### ステップ 2: presentation component と story
 
-1. `apps/corporate-site/src/components/features/corporate-site/` 配下に対象 component のディレクトリを作る
-2. `ServicePillar`, `BusinessFeatureRow`, `ContactInfoRow` を Container / Presentation に分ける
-3. story は `<ComponentName>Presentation.stories.*` とし、Presentation component を対象にする
+1. `apps/corporate-site/src/components/features/<feature>/` (domain feature 単位) 配下に対象 component を置く。横断 component は `components/common/<Component>/` に置く
+2. `ServicePillar` (services), `BusinessFeatureRow` (business), `ContactInfoRow` (contact) を presentation component (`<Component>.astro`、`Presentation` suffix なし) として実装する。content / fixture は component に直書きせず story 側に持つ (本体実装段階で content 層へ移す)
+3. story は `<Component>.stories.*` とし、presentation component を対象にする。title は feature 単位 (`Business/...`, `Products/...`, `Contact/...`, `Services/...`, `Common/...`)
 4. `BusinessFeatureRow` は `MediaRight` / `MediaLeft` の story を持つ
 5. 検証: `PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH" pnpm --filter @kufu/corporate-site storybook:build`
-6. diff レビューを実施し、Container を story 対象にしていないことを確認する
+6. diff レビューを実施し、空 Container を末端 component ごとに作っていないことを確認する
 
 ### ステップ最終: 最終確認
 
@@ -75,7 +75,7 @@
 - 参照する path:
   - `apps/corporate-site/package.json`
   - `apps/corporate-site/.storybook/`
-  - `apps/corporate-site/src/components/features/corporate-site/`
+  - `apps/corporate-site/src/components/features/<feature>/` (+ `components/common/`)
   - `apps/corporate-site/src/styles/globals.css`
   - `apps/corporate-site/README.md`
   - `design/features/corporate-site/component-map.md`
@@ -119,20 +119,20 @@
 - app-local Storybook は `.astro` Presentation component を直接確認するため Storybook 10 + `@storybook-astro/framework` を採用する
 - `apps/corporate-site/.storybook/main.ts` の型 import は `@storybook-astro/framework` から行う
 - `@storybook-astro/framework@1.5.0` の React renderer peer は optional なので、React wrapper 用依存を初期導入しない
-- corporate-site 固有 component は `apps/corporate-site/src/components/features/corporate-site/` 配下に置く
-- `<ComponentName>.astro` は Container、`<ComponentName>Presentation.astro` は Presentation とする
-- Storybook 対象は Presentation component とし、Container は routing / data assembly / integration の責務を持つ
+- corporate-site 固有 component は `apps/corporate-site/src/components/features/<feature>/` (domain feature 単位、app 名フォルダなし)、横断 component は `components/common/` に置く
+- presentation component は `<Component>.astro` (`Presentation` suffix なし)。data/logic は content 層、束ねは `<Feature>Section.astro` (本体実装段階で追加)
+- Storybook 対象は presentation component とする
 - 初期 story 対象は `ServicePillar`, `BusinessFeatureRow`, `ContactInfoRow`
-- story 階層は `CorporateSite/ServicePillar`, `CorporateSite/BusinessFeatureRow`, `CorporateSite/ContactInfoRow`
+- story 階層は `Services/ServicePillar`, `Business/BusinessFeatureRow`, `Contact/ContactInfoRow`
 - stories は固定 props / fixture を使い、本番 secret や実送信を伴わない
 
 ## テスト観点
 
 - `pnpm --filter @kufu/corporate-site storybook` で app-local Storybook が起動できる
 - `pnpm --filter @kufu/corporate-site storybook:build` で app-local Storybook build が成功する
-- corporate-site 固有 Presentation component が app-local Storybook catalog に掲載されている
-- corporate-site 固有 story が Container ではなく `<ComponentName>Presentation.astro` を対象にしている
-- corporate-site の route entry と feature component が `pages` / `components/features/corporate-site` に分かれている
+- corporate-site 固有 presentation component が app-local Storybook catalog に掲載されている
+- corporate-site 固有 story が presentation component (`<Component>.astro`) を対象にしている
+- corporate-site の route entry と feature component が `pages` / `components/features/<feature>` (domain feature 単位) に分かれている
 - Storybook 追加に起因する corporate-site runtime JS 増加がない
 
 ## 検証コマンド

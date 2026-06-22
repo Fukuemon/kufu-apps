@@ -42,68 +42,106 @@ Astro の file-based routing は `src/pages/` に置く。Next.js App Router の
 
 ## ディレクトリ構成
 
-app-local feature component は `apps/<app>/src/components/features/<feature>/` 配下に置く。
+縦軸は **app 内の domain feature** で切る。`features/<feature>/` の `<feature>` には、app 名ではなく content domain (`business`, `products`, `contact`, `services` など) を使う。`apps/<app>/` 配下に再度 app 名フォルダ (`features/<app-name>/`) を作らない。
 
 ```text
 apps/<app>/src/
-├── pages/
-│   └── <route>.astro
-└── components/
-    └── features/
-        └── <feature>/
-            └── <ComponentName>/
-                ├── <ComponentName>.astro
-                ├── <ComponentName>Presentation.astro
-                └── <ComponentName>Presentation.stories.ts
+├── content/                       # データ / ロジック層 ("何を")
+│   └── <feature>.ts
+├── components/
+│   ├── features/
+│   │   └── <feature>/             # domain feature 単位
+│   │       ├── <Feature>Section.astro     # section assembly (content → presentation)
+│   │       ├── <Component>.astro          # presentation (props only / story 対象)
+│   │       └── <Component>.stories.ts
+│   └── common/                    # feature 横断の site component
+│       └── <Component>/
+│           ├── <Component>.astro
+│           └── <Component>.stories.ts
+└── pages/
+    └── <route>.astro              # routing + page assembly
 ```
+
+- 1 component に 1 ディレクトリを強制しない。feature 内の component とその story は `features/<feature>/` 直下に並べる。
+- presentation component に `Presentation` suffix は付けない。`<Component>.astro` がそのまま presentation であり、story 対象。
+- 複数 feature をまたいで使う site component (`SectionHeading` など) は `components/common/<Component>/` に置く。
 
 corporate-site の例:
 
 ```text
-apps/corporate-site/src/components/features/corporate-site/
-├── Hero/
-│   ├── Hero.astro
-│   ├── HeroPresentation.astro
-│   └── HeroPresentation.stories.ts
-├── BusinessSection/
-│   ├── BusinessSection.astro
-│   ├── BusinessSectionPresentation.astro
-│   └── BusinessSectionPresentation.stories.ts
-└── ContactInfoRow/
-    ├── ContactInfoRow.astro
-    ├── ContactInfoRowPresentation.astro
-    └── ContactInfoRowPresentation.stories.ts
+apps/corporate-site/src/
+├── content/
+│   ├── business.ts
+│   ├── contact.ts
+│   └── services.ts
+├── components/
+│   ├── features/
+│   │   ├── business/
+│   │   │   ├── BusinessFeatureRow.astro
+│   │   │   └── BusinessFeatureRow.stories.ts
+│   │   ├── products/
+│   │   │   ├── FeaturedCategoryCard.astro
+│   │   │   └── FeaturedCategoryCard.stories.ts
+│   │   ├── contact/
+│   │   │   ├── ContactInfoRow.astro
+│   │   │   └── ContactInfoRow.stories.ts
+│   │   └── services/
+│   │       ├── ServicePillar.astro
+│   │       └── ServicePillar.stories.ts
+│   └── common/
+│       └── SectionHeading/
+│           ├── SectionHeading.astro
+│           └── SectionHeading.stories.ts
+└── pages/
+    └── index.astro
 ```
+
+> section assembly component (`<Feature>Section.astro`) と `content/<feature>.ts` は page body を実装する段階で追加する。Storybook catalog 整備の段階では presentation component と story だけを置き、fixture は story 内に持つ。
 
 ## 責務分割
 
-### Container
+ロジック (何を) と UI (どう見せる) を分離する。ただし分離の境界は **component 1 つずつに Container を被せる**のではなく、`content 層 → section assembly → presentation` の 3 階層で表す。静的サイトでは末端 component に渡すだけの空 Container を作らない。
 
-`<ComponentName>.astro` は Container component とする。
+### Content 層
+
+`src/content/<feature>.ts` (または Content Collection。下記参照) はデータ / ロジック層とする。
 
 責務:
 
-- content / fixture / static data の組み立て
-- feature-local state / 条件分岐
-- route entry から渡された値の整形
-- Presentation へ渡す props の生成
-- shared component と app-local Presentation の接続
+- 各 feature が表示する content / 静的データの定義
+- 旧 Container が抱えていた fixture / static data の集約先
+- 将来 CMS / API へ差し替えるときの seam (境界)
+
+禁止:
+
+- JSX / markup を持つこと
+- token / style を直接持つこと
+
+### Section assembly
+
+`<Feature>Section.astro` は section assembly component とする。これが「ロジックと UI を束ねる」本来の Container 役で、粒度は **section** とし、末端 component ごとには作らない。
+
+責務:
+
+- `content/<feature>.ts` (または Content Collection) の取得
+- content を presentation component の props へ整形・map
+- `SectionHeading` など共通 component と presentation の接続
+- section 内の layout assembly
 
 禁止:
 
 - Storybook の主対象にすること
-- 見た目の細かい分岐を直接持つこと
-- `packages/ui` に昇格すべき primitive を app 内で再実装すること
+- props を素通しするだけの薄いラッパーを末端 component ごとに作ること
 
 ### Presentation
 
-`<ComponentName>Presentation.astro` は Presentation component とする。
+`<Component>.astro` は presentation component とする (`Presentation` suffix は付けない)。
 
 責務:
 
 - props だけで描画を完結する
 - layout / typography / token / shared component の組み合わせを表現する
-- Storybook で default / variant / edge state を確認できる
+- Storybook で default / variant / edge state を確認できる (story の主対象)
 
 禁止:
 
@@ -111,6 +149,7 @@ apps/corporate-site/src/components/features/corporate-site/
 - API / Workers / external service を直接呼ぶこと
 - secret / runtime env に依存すること
 - route 固有の side effect を持つこと
+- content / fixture を component 内に直書きすること (story fixture は除く)
 
 ### Shared Primitive / Shared Pattern
 
@@ -135,6 +174,22 @@ apps/corporate-site/src/components/features/corporate-site/
 - feature 固有の business wording を持つ component
 - app-local data shape に依存する component
 - page-level sample
+
+## Content 層の選び分け
+
+content 層の実装方式は content の性質で選び分ける (ハイブリッド)。全面 Content Collections も全面 plain も避ける。
+
+| 方式                         | 適用する content                                                          | 例                                          |
+| ---------------------------- | ------------------------------------------------------------------------- | ------------------------------------------- |
+| plain `content/<feature>.ts` | singleton / bespoke / 数が固定 / レイアウト密結合                         | Hero コピー、Business feature、Contact info |
+| Astro Content Collections    | 同形エントリの集合 (N 件・増減する・個別ページ化 / フィルタ / CMS 化候補) | ProductCategory、CategoryMakers             |
+
+判断ルール:
+
+- 「このページ専用の固定文言」は plain `content/<feature>.ts` を既定にする。
+- 「複数件を並べる / 将来 CMS が所有する」同形データは Content Collection 候補とする。
+- Content Collection は実体が必要になった feature だけで `src/content.config.ts` に loader を定義し、全面採用しない。CMS 化時は loader を差し替える。
+- 規約は先に決め、Content Collection の実体は対象 feature を実装する段階で追加する (空 collection を先に作らない)。
 
 ## 命名規則
 
@@ -197,11 +252,11 @@ feature は `Domain + Case` を基本に切る。ただし corporate-site のよ
 
 ### app-local
 
-app-local Storybook は feature-local Presentation component の review 入口とする。
+app-local Storybook は feature-local presentation component の review 入口とする。
 
-- story は `<ComponentName>Presentation.stories.*` を基本にする。
+- story は `<Component>.stories.*` (`Presentation` suffix なし) を基本にする。
 - 固定 props / fixture で状態差分を表現する。
-- Container は原則 story 対象にしない。
+- section assembly / content 層は原則 story 対象にしない。
 - 本番 secret、実送信、external API call を伴う story を作らない。
 
 ## Design Artifact との関係
@@ -211,7 +266,7 @@ app-local Storybook は feature-local Presentation component の review 入口�
 - `.pen` の page section は page 文脈を保持する。
 - `.pen` の reusable component は `GenericComponents` / `CorporateSiteComponents` のように分類する。
 - `GenericComponents` は `packages/ui` への shared component 候補。
-- feature 固有 component は app-local Container / Presentation へ写像する。
+- feature 固有 component は app-local presentation (+ 必要なら content 層 / section assembly) へ写像する。
 - `.pen` と実装 component が 1:1 にならない場合は、spec / PR に分割・統合理由を残す。
 
 ## 参照

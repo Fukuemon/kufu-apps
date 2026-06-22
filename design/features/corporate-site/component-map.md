@@ -4,14 +4,14 @@
 
 ## Page Sections
 
-page section は page 文脈を保持し、初期 app-local Storybook の対象にはしない。実装では Container / Presentation に分ける。
+page section は page 文脈を保持し、初期 app-local Storybook の対象にはしない。実装では content 層 (`content/<feature>.ts`) → section assembly (`<Feature>Section.astro`) → presentation に分ける。section assembly と content の実体は page body 実装段階で追加する。
 
-| `.pen` section            | 実装 Container                  | 実装 Presentation                           | 配置                                                                                  |
-| ------------------------- | ------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `Hero`                    | `Hero.astro`                    | `HeroPresentation.astro`                    | `apps/corporate-site/src/components/features/corporate-site/Hero/`                    |
-| `BusinessSection`         | `BusinessSection.astro`         | `BusinessSectionPresentation.astro`         | `apps/corporate-site/src/components/features/corporate-site/BusinessSection/`         |
-| `ProductsCategorySection` | `ProductsCategorySection.astro` | `ProductsCategorySectionPresentation.astro` | `apps/corporate-site/src/components/features/corporate-site/ProductsCategorySection/` |
-| `ContactSection`          | `ContactSection.astro`          | `ContactSectionPresentation.astro`          | `apps/corporate-site/src/components/features/corporate-site/ContactSection/`          |
+| `.pen` section            | feature    | section assembly (page body 実装時) | 配置                                                    |
+| ------------------------- | ---------- | ----------------------------------- | ------------------------------------------------------- |
+| `Hero`                    | `hero`     | `Hero.astro`                        | `apps/corporate-site/src/components/features/hero/`     |
+| `BusinessSection`         | `business` | `BusinessSection.astro`             | `apps/corporate-site/src/components/features/business/` |
+| `ProductsCategorySection` | `products` | `ProductsCategorySection.astro`     | `apps/corporate-site/src/components/features/products/` |
+| `ContactSection`          | `contact`  | `ContactSection.astro`              | `apps/corporate-site/src/components/features/contact/`  |
 
 ## GenericComponents
 
@@ -31,18 +31,32 @@ page section は page 文脈を保持し、初期 app-local Storybook の対象�
 
 ## CorporateSiteComponents
 
-初期 app-local Storybook 対象は Presentation component のみとする。
+app-local Storybook 対象は presentation component (`<Component>.astro`、`Presentation` suffix なし) のみ。component とその story は `features/<feature>/` 直下 (横断 component は `common/<Component>/`) に並べる。
 
-| `.pen` component               | 実装 Container               | 実装 Presentation                        | Storybook 階層                                    |
-| ------------------------------ | ---------------------------- | ---------------------------------------- | ------------------------------------------------- |
-| `SectionHeading`               | `SectionHeading.astro`       | `SectionHeadingPresentation.astro`       | `CorporateSite/SectionHeading`                    |
-| `FeaturedCategoryCard`         | `FeaturedCategoryCard.astro` | `FeaturedCategoryCardPresentation.astro` | `CorporateSite/FeaturedCategoryCard`              |
-| `ServicePillar`                | `ServicePillar.astro`        | `ServicePillarPresentation.astro`        | `CorporateSite/ServicePillar`                     |
-| `BusinessFeatureRowMediaRight` | `BusinessFeatureRow.astro`   | `BusinessFeatureRowPresentation.astro`   | `CorporateSite/BusinessFeatureRow` (`MediaRight`) |
-| `BusinessFeatureRowMediaLeft`  | `BusinessFeatureRow.astro`   | `BusinessFeatureRowPresentation.astro`   | `CorporateSite/BusinessFeatureRow` (`MediaLeft`)  |
-| `ContactInfoRow`               | `ContactInfoRow.astro`       | `ContactInfoRowPresentation.astro`       | `CorporateSite/ContactInfoRow`                    |
+| `.pen` component               | 実装 presentation            | 配置 (実装済み)                                             | Storybook 階層                               |
+| ------------------------------ | ---------------------------- | ----------------------------------------------------------- | -------------------------------------------- |
+| `SectionHeading`               | `SectionHeading.astro`       | `apps/corporate-site/src/components/common/SectionHeading/` | `Common/SectionHeading`                      |
+| `FeaturedCategoryCard`         | `FeaturedCategoryCard.astro` | `apps/corporate-site/src/components/features/products/`     | `Products/FeaturedCategoryCard`              |
+| `ServicePillar`                | `ServicePillar.astro`        | `apps/corporate-site/src/components/features/services/`     | `Services/ServicePillar`                     |
+| `BusinessFeatureRowMediaRight` | `BusinessFeatureRow.astro`   | `apps/corporate-site/src/components/features/business/`     | `Business/BusinessFeatureRow` (`MediaRight`) |
+| `BusinessFeatureRowMediaLeft`  | `BusinessFeatureRow.astro`   | `apps/corporate-site/src/components/features/business/`     | `Business/BusinessFeatureRow` (`MediaLeft`)  |
+| `ContactInfoRow`               | `ContactInfoRow.astro`       | `apps/corporate-site/src/components/features/contact/`      | `Contact/ContactInfoRow`                     |
+
+## Content (data layer)
+
+content / static data は presentation に直書きせず content 層へ寄せる。実体は page body 実装段階で追加する ([component-design.md](../../../context/component-design.md) の「Content 層の選び分け」)。
+
+| `.pen` データ              | 種別               | content 層方式              |
+| -------------------------- | ------------------ | --------------------------- |
+| Hero コピー                | singleton          | plain `content/hero.ts`     |
+| Business feature 群        | 少数・bespoke      | plain `content/business.ts` |
+| Contact info rows          | 少数・固定         | plain `content/contact.ts`  |
+| Services (`ServicePillar`) | 少数・固定         | plain `content/services.ts` |
+| `ProductCategory`          | 同形エントリの集合 | Astro Content Collection    |
+| `CategoryMakers`           | 同形エントリの集合 | Astro Content Collection    |
 
 ## Notes
 
 - `.pen` と実装 component が 1:1 にならない場合は、この表に分割・統合理由を追記する。
+- `BusinessFeatureRowMediaRight` / `MediaLeft` は単一の `BusinessFeatureRow.astro` の story variant (`MediaRight` / `MediaLeft`) として表現する。
 - `Select` などインタラクティブ primitive を corporate-site 本体で使う場合は、ADR-0008 に従って island 化を明示する。

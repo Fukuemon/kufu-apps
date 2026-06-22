@@ -1,8 +1,8 @@
-import BusinessFeatureRowPresentation from "./BusinessFeatureRowPresentation.astro";
+import BusinessFeatureRow from "./BusinessFeatureRow.astro";
 
 const meta = {
-  title: "CorporateSite/BusinessFeatureRow",
-  component: BusinessFeatureRowPresentation,
+  title: "Business/BusinessFeatureRow",
+  component: BusinessFeatureRow,
 };
 
 export default meta;
