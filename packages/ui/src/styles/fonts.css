@@ -1,11 +1,4 @@
-/*
- * Font-face 登録 (fontsource variable / ADR-0007・spec #13 D3)
- *
- * 可変フォント + 日本語サブセット (各パッケージが unicode-range で分割) を利用する。
- * font-display: swap は fontsource パッケージが既定で付与する。
- * family 名は tokens.css の --font-sans / --font-serif / --font-mono が参照する:
- *   Noto Sans JP Variable / Noto Serif JP Variable / Geist Mono Variable
- */
+/* Font-face imports for tokens.css font families. */
 
 @import "@fontsource-variable/noto-sans-jp";
 @import "@fontsource-variable/noto-serif-jp";
