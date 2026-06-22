@@ -20,141 +20,58 @@ const {
   mediaCaption,
   mediaPosition,
 } = Astro.props;
+const mediaClass = [
+  "flex items-end min-h-95 p-5 border border-border bg-kufu-gray-800 bg-[linear-gradient(var(--photo-overlay),var(--photo-overlay))] min-[760px]:flex-[1_1_auto]",
+  mediaPosition === "left" ? "min-[760px]:order-[-1]" : "",
+].join(" ");
 ---
 
-<article class="business-feature" data-media-position={mediaPosition}>
-  <div class="business-feature__body">
-    {number ? <span class="business-feature__ghost" aria-hidden="true">{number}</span> : null}
-    <p class="business-feature__eyebrow">{eyebrow}</p>
-    <h3 class="business-feature__title">{title}</h3>
-    <p class="business-feature__description">{description}</p>
-    <ul class="business-feature__tags">
-      {items.map((item) => <li class="business-feature__tag">{item}</li>)}
+<article
+  class="flex flex-col gap-6 w-full py-11 text-foreground min-[760px]:flex-row min-[760px]:items-center min-[760px]:gap-14"
+>
+  <div
+    class="relative flex flex-col gap-4 min-[760px]:flex-[0_0_30rem] min-[760px]:w-120"
+  >
+    {
+      number ? (
+        <span
+          class="absolute -top-8.5 -left-2.5 font-mono text-[8.75rem] font-medium leading-none text-ghost-foreground pointer-events-none z-0"
+          aria-hidden="true"
+        >
+          {number}
+        </span>
+      ) : null
+    }
+    <p
+      class="relative z-1 text-primary font-mono text-xs font-normal leading-[1.4] tracking-[0.16em]"
+    >
+      {eyebrow}
+    </p>
+    <h3
+      class="relative z-1 font-serif text-[1.875rem] font-semibold leading-[1.45]"
+    >
+      {title}
+    </h3>
+    <p
+      class="relative z-1 text-muted-foreground text-[0.9375rem] leading-[1.75]"
+    >
+      {description}
+    </p>
+    <ul class="relative z-1 flex flex-wrap gap-2 pt-1.5 list-none">
+      {
+        items.map((item) => (
+          <li class="px-3 py-1.5 rounded-[4px] bg-secondary text-foreground text-[0.78125rem] leading-[1.4]">
+            {item}
+          </li>
+        ))
+      }
     </ul>
   </div>
-  <div class="business-feature__media" role="img" aria-label={mediaCaption}>
-    <span class="business-feature__media-label">{mediaLabel}</span>
+  <div class={mediaClass} role="img" aria-label={mediaCaption}>
+    <span
+      class="font-mono text-xs font-medium tracking-[0.13em] text-kufu-white"
+    >
+      {mediaLabel}
+    </span>
   </div>
 </article>
-
-<style>
-  .business-feature {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    inline-size: 100%;
-    padding-block: 2.75rem;
-    color: var(--foreground);
-  }
-
-  .business-feature__body {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .business-feature__ghost {
-    position: absolute;
-    inset-block-start: -2.125rem;
-    inset-inline-start: -0.625rem;
-    font-family: var(--font-mono);
-    font-size: 8.75rem;
-    font-weight: 500;
-    line-height: 1;
-    color: var(--ghost-foreground);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .business-feature__eyebrow,
-  .business-feature__title,
-  .business-feature__description,
-  .business-feature__tags {
-    position: relative;
-    z-index: 1;
-  }
-
-  .business-feature__eyebrow {
-    margin: 0;
-    color: var(--primary);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 400;
-    line-height: 1.4;
-    letter-spacing: 0.16em;
-  }
-
-  .business-feature__title {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-size: 1.875rem;
-    font-weight: 600;
-    line-height: 1.45;
-  }
-
-  .business-feature__description {
-    margin: 0;
-    color: var(--muted-foreground);
-    font-size: 0.9375rem;
-    line-height: 1.75;
-  }
-
-  .business-feature__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0.375rem 0 0;
-    list-style: none;
-  }
-
-  .business-feature__tag {
-    padding: 0.375rem 0.75rem;
-    border-radius: 4px;
-    background: var(--secondary);
-    color: var(--foreground);
-    font-size: 0.78125rem;
-    line-height: 1.4;
-  }
-
-  .business-feature__media {
-    display: flex;
-    align-items: flex-end;
-    min-block-size: 23.75rem;
-    padding: 1.25rem;
-    border: 1px solid var(--border);
-    background:
-      linear-gradient(var(--photo-overlay), var(--photo-overlay)),
-      var(--kufu-gray-800);
-  }
-
-  .business-feature__media-label {
-    color: var(--kufu-white);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.13em;
-  }
-
-  @media (min-width: 760px) {
-    .business-feature {
-      flex-direction: row;
-      align-items: center;
-      gap: 3.5rem;
-    }
-
-    .business-feature__body {
-      flex: 0 0 30rem;
-      inline-size: 30rem;
-    }
-
-    .business-feature__media {
-      flex: 1 1 auto;
-    }
-
-    .business-feature[data-media-position="left"] .business-feature__media {
-      order: -1;
-    }
-  }
-</style>
