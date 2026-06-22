@@ -18,16 +18,16 @@
 | #   | フェーズ                    | 状態   | 最終更新   | 備考                                                              |
 | --- | --------------------------- | ------ | ---------- | ----------------------------------------------------------------- |
 | 1   | 起票                        | 完了   | 2026-06-23 | issue #10 を intake。#3 / #6 / #11 / #13 / #14 / #16 / #17 を継承 |
-| 2   | 下書き                      | 進行中 | 2026-06-23 | spec-draft で初版生成                                             |
+| 2   | 下書き                      | 完了   | 2026-06-23 | spec-draft で初版生成                                             |
 | 3   | 上位文書突合                | 完了   | 2026-06-23 | 矛盾なし。既存正本を継承し、上位文書更新は不要                    |
 | 4   | 論点整理                    | 完了   | 2026-06-23 | 初期論点 D1〜D8 を抽出                                            |
 | 5   | 論点解決                    | 完了   | 2026-06-23 | D1〜D8 を `spec-resolve` で全件確定                               |
-| 6   | Interface / Routing 設計    | 未着手 |            | 3 route / header / footer / CTA / anchors を確定する              |
-| 7   | Content / Data 設計         | 未着手 |            | reference から content 層 / collection への変換方針を確定する     |
-| 8   | Performance / Security 設計 | 未着手 |            | island 数、画像、#26 への security 委譲境界を確定する             |
-| 9   | Test / Metrics 設計         | 未着手 |            | E2E 主要導線 / data-testid / visual QA 対象を確定する             |
-| 10  | 実装分割                    | 未着手 |            | prompts 生成前に実装タスクへ分解する                              |
-| 11  | レビュー済                  | 未着手 |            | `spec-review` 未実施                                              |
+| 6   | Interface / Routing 設計    | 完了   | 2026-06-23 | 3 route / header / footer / CTA / anchors を確定                  |
+| 7   | Content / Data 設計         | 完了   | 2026-06-23 | reference から content 層 / collection への変換方針を確定         |
+| 8   | Performance / Security 設計 | 完了   | 2026-06-23 | island 数、画像、#26 への security 委譲境界を確定                 |
+| 9   | Test / Metrics 設計         | 完了   | 2026-06-23 | E2E 主要導線 / data-testid / visual QA 対象を確定                 |
+| 10  | 実装分割                    | 完了   | 2026-06-23 | prompts 生成前の実装タスクへ分解済み                              |
+| 11  | レビュー済                  | 進行中 | 2026-06-23 | multi-agent review は NEEDS_WORK。指摘対応後に再 review           |
 
 ## 上位文書整合
 
@@ -37,20 +37,20 @@
 - Design Doc 更新要否: 不要
 - ADR 起票要否: 不要
 
-| 上位文書    | 節 / 該当箇所                                                                                   | 整合方針 (継承 / 補足 / 変更提案)                                  |
-| ----------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| PRD         | Phase 1 スコープ / 成功条件「取扱領域と問い合わせ先へ到達」「Astro 静的生成と最小 island」      | 継承                                                               |
-| Design Doc  | Goal / モジュール責務 `apps/corporate-site` / Non Goals「CMS/API・不要な React 化は初期対象外」 | 継承                                                               |
-| feature doc | ページ構成 (IA) / コンテンツ正本 / デザイントークン / 問い合わせフォーム仕様                    | 正本を継承。実装詳細を本 spec で補足                               |
-| context     | architecture → Package Boundary / Runtime Boundary / Edge API                                   | 継承。表示 UI は静的描画、フォーム API は #26 に委譲する           |
-| context     | component-design → content 層 / section assembly / presentation / Content Collection の選び分け | 継承。#6 の component map を実装配置へ展開                         |
-| context     | design-workflow → `.pen` 正本 / token guard / Phase C 実装                                      | 継承。`index.pen` を参照し、コードから `.pen` へ round-trip しない |
-| context     | testing → E2E Runtime Contract / API・Functions の検証境界                                      | 継承。root Playwright と route intercept を使う                    |
-| context     | infrastructure → Cloudflare Pages / Functions / secret / preview smoke                          | 継承。アプリ側 contract を満たす                                   |
-| ADR-0006    | 3 route IA (`/`, `/products`, `/contact`)                                                       | 継承                                                               |
-| ADR-0007    | デザイントークン 2 層構造 + app-local lean Tailwind v4                                          | 継承                                                               |
-| ADR-0008    | shadcn 静的描画 / `client:*` island はインタラクション限定                                      | 継承                                                               |
-| ADR-0009    | 問い合わせ送信は Cloudflare Pages Functions (Workers) 中継                                      | 継承                                                               |
+| 上位文書    | 節 / 該当箇所                                                                                   | 整合方針 (継承 / 補足 / 変更提案)                                                      |
+| ----------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| PRD         | Phase 1 スコープ / 成功条件「取扱領域と問い合わせ先へ到達」「Astro 静的生成と最小 island」      | 継承                                                                                   |
+| Design Doc  | Goal / モジュール責務 `apps/corporate-site` / Non Goals「CMS/API・不要な React 化は初期対象外」 | 継承                                                                                   |
+| feature doc | ページ構成 (IA) / コンテンツ正本 / デザイントークン / 問い合わせフォーム仕様                    | 正本を継承。P6 の完成形は feature doc、#10 は連絡先表示と #26 用フォーム境界までを実装 |
+| context     | architecture → Package Boundary / Runtime Boundary / Edge API                                   | 継承。表示 UI は静的描画、フォーム API は #26 に委譲する                               |
+| context     | component-design → content 層 / section assembly / presentation / Content Collection の選び分け | 継承。#6 の component map を実装配置へ展開                                             |
+| context     | design-workflow → `.pen` 正本 / token guard / Phase C 実装                                      | 継承。`index.pen` を参照し、コードから `.pen` へ round-trip しない                     |
+| context     | testing → E2E Runtime Contract / API・Functions の検証境界                                      | 継承。root Playwright と route intercept を使う                                        |
+| context     | infrastructure → Cloudflare Pages / Functions / secret / preview smoke                          | 継承。アプリ側 contract を満たす                                                       |
+| ADR-0006    | 3 route IA (`/`, `/products`, `/contact`)                                                       | 継承                                                                                   |
+| ADR-0007    | デザイントークン 2 層構造 + app-local lean Tailwind v4                                          | 継承                                                                                   |
+| ADR-0008    | shadcn 静的描画 / `client:*` island はインタラクション限定                                      | 継承                                                                                   |
+| ADR-0009    | 問い合わせ送信は Cloudflare Pages Functions (Workers) 中継                                      | 継承                                                                                   |
 
 > 現時点の突合では、issue #10 は既存正本の範囲内で実装詳細を補足する作業であり、`spec-sync` が必要な変更提案はない。
 
@@ -129,10 +129,10 @@ EARS 風で振る舞いを記述する。
 
 - WHEN 訪問者が `/` に到達した時、システムは 理念 / 事業内容 / 取扱製品索引 / 会社情報 / 問い合わせ導線を順に提示する。
 - WHEN 訪問者が取扱製品の詳細を知りたい時、システムは `/products` で 18 カテゴリとメーカー一覧を表示する。
-- WHEN 訪問者が問い合わせたい時、システムは 全ページ共通 CTA と `/contact` で電話 / FAX / メールの接点を提示し、#26 のフォーム実装境界を破綻なく表示する。
+- WHEN 訪問者が問い合わせたい時、システムは 全ページ共通 CTA と `/contact` で電話 / FAX / メールの接点を提示し、`contact-form-slot` として #26 のフォーム実装境界を表示する。
 - IF #26 のフォーム本体が未実装の時、システムは TEL / FAX / Email の代替導線で接点確保を維持する。
 - WHERE 表示専用 UI において、システムは Astro 静的描画を優先し、不要な React island を追加しない。
-- THE SYSTEM SHALL content 正本と表示先の対応を追跡可能にし、ページ直書きの重複データを避ける。
+- THE SYSTEM SHALL 実装データに参照元 reference path を明記し、代表コンテンツの表示確認と PR review で content 正本と表示先の対応を確認できるようにする。
 
 ## 設計時の論点
 
@@ -209,6 +209,12 @@ EARS 風で振る舞いを記述する。
 - #10 の範囲では React island を追加しない。問い合わせフォーム island は #26 で実装する (D4)。
 - LP は縦長になるため、画像 lazy-load / dimensions 指定 / above-the-fold asset の最適化を行う。
 - `/products` はメーカー一覧が長いため、初期 JS なしで走査できる HTML 構造を優先する。
+
+### React Compiler
+
+- #10 は Astro 静的描画を主対象とし、React component を新規 island として追加しないため React Compiler の適用対象外とする。
+- `@kufu/ui` の表示専用 React component は Astro から `client:*` なしで静的描画し、React runtime / React Compiler 前提の client 挙動を持ち込まない。
+- 問い合わせフォーム island / `POST /api/contact` の React 実装は #26 に委譲し、React Compiler 互換性の確認も #26 の実装 scope で扱う。
 
 ### Routing / URL State
 
@@ -348,9 +354,10 @@ EARS 風で振る舞いを記述する。
   - Contact の連絡先表示とフォーム差し込み境界。
   - mobile viewport で `site-nav-toggle` が開閉し、nav link が使えること。
 - Unit:
-  - content data の schema と reference markdown との同期確認。
+  - Astro Content Collection / content data の schema validation。
   - `/api/contact` validation / honeypot / error mapping は #26 で検証する。
 - Review:
+  - content data に参照元 reference path が明記され、reference markdown からの手動転記差分が PR review で確認されていること。
   - rg ベースの token guard で raw hex / 色 arbitrary value が混入していないこと。
   - design source と `src/assets` の配信用コピーの対応。
   - 画像の width / height / lazy loading / above-the-fold 扱い。
@@ -405,16 +412,16 @@ sequenceDiagram
 
 ### 実装タスク案
 
-| Phase | 対象             | 概要                                                                                                    | 依存                |
-| ----- | ---------------- | ------------------------------------------------------------------------------------------------------- | ------------------- |
-| P1    | `corporate-site` | reference markdown を手動転記した content data / Astro Content Collection 整備                          | -                   |
-| P2    | `corporate-site` | Layout / SiteHeader (minimal script mobile nav) / SiteFooter / route skeleton (`/products`, `/contact`) | P1                  |
-| P3    | `corporate-site` | LP sections (Hero / Business / Products index / Company / CTA)                                          | P1 / P2             |
-| P4    | `corporate-site` | Products page (18カテゴリ詳細 / INDEX / メーカー一覧)                                                   | P1 / P2             |
-| P5    | `corporate-site` | Contact page の連絡先表示 + #26 用フォーム差し込み境界                                                  | P1 / P2 / #14 / #26 |
-| P6    | `corporate-site` | design source から `src/assets` への配信用 asset 整備 / 画像最適化                                      | P3〜P5              |
-| P7    | `e2e`            | 3 route / nav / CTA / Products / Contact境界 / mobile nav E2E                                           | P2〜P6              |
-| P8    | `corporate-site` | performance / rg token guard / accessibility / preview smoke 修正                                       | P3〜P7              |
+| Phase | 対象             | 概要                                                                                                    | 依存          |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------------------- | ------------- |
+| P1    | `corporate-site` | reference markdown を手動転記した content data / Astro Content Collection 整備                          | -             |
+| P2    | `corporate-site` | Layout / SiteHeader (minimal script mobile nav) / SiteFooter / route skeleton (`/products`, `/contact`) | P1            |
+| P3    | `corporate-site` | LP sections (Hero / Business / Products index / Company / CTA)                                          | P1 / P2       |
+| P4    | `corporate-site` | Products page (18カテゴリ詳細 / INDEX / メーカー一覧)                                                   | P1 / P2       |
+| P5    | `corporate-site` | Contact page の連絡先表示 + #26 用フォーム差し込み境界                                                  | P1 / P2 / #14 |
+| P6    | `corporate-site` | design source から `src/assets` への配信用 asset 整備 / 画像最適化                                      | P3〜P5        |
+| P7    | `e2e`            | 3 route / nav / CTA / Products / Contact境界 / mobile nav E2E                                           | P2〜P6        |
+| P8    | `corporate-site` | performance / rg token guard / accessibility / preview smoke 修正                                       | P3〜P7        |
 
 ### prompts 生成方針
 
@@ -476,9 +483,9 @@ sequenceDiagram
 
 `spec-review` (fresh-context evaluator) の最新結果。完全な記録は `review.md` を参照。
 
-| 日付 | 結果 (PASS / NEEDS_WORK) | 指摘要点 | 対応 |
-| ---- | ------------------------ | -------- | ---- |
-|      |                          |          |      |
+| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                                                                | 対応                                                    |
+| ---------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| 2026-06-23 | NEEDS_WORK               | React Compiler 必須節欠落、P5 の #26 依存、設計フェーズ状況、Screen Spec ツリー、EARS / test 表現、フォーム境界の再確認 | 対応済み。再 review 待ち。詳細は [review.md](review.md) |
 
 ## 変更履歴
 
@@ -493,6 +500,7 @@ sequenceDiagram
 | 2026-06-23 | Codex  | spec-resolve: D6 を `src/assets` 配信用コピー + Astro Image / import で確定      |
 | 2026-06-23 | Codex  | spec-resolve: D7 を CTA + Contact 境界までの E2E で確定し、VRT 検討を #28 へ分離 |
 | 2026-06-23 | Codex  | spec-resolve: D8 を rg ベースの軽量 token guard 追加で確定                       |
+| 2026-06-23 | Codex  | multi-agent review の NEEDS_WORK 指摘を反映                                      |
 
 ## 備考
 
@@ -517,12 +525,14 @@ spec が画面 / 主要 UI を追加・変更する場合のみ取り込む。
 ```text
 <BaseLayout>
 ├── <SiteHeader />
-├── <Page route="/" | "/products" | "/contact">
+├── <Page route="/">
 │   ├── <Hero />
 │   ├── <BusinessSection />
 │   ├── <ProductsCategorySection />
-│   ├── <CompanySection />
-│   ├── <ProductsDetailSection />
+│   └── <CompanySection />
+├── <Page route="/products">
+│   └── <ProductsDetailSection />
+├── <Page route="/contact">
 │   └── <ContactSection />
 └── <SiteFooter variant="full" | "compact" />
 ```
