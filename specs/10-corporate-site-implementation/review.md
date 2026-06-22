@@ -75,3 +75,22 @@ Reviewer: multi-agent-review (external CLI: codex, cursor; skipped: claude auth 
 - Unit test 観点は schema validation に限定し、reference markdown との手動転記差分確認は Review 観点へ移した。
 - フォーム境界は上位文書を書き換えず、上位文書整合テーブルで「P6 の完成形は feature doc、#10 は連絡先表示と #26 用フォーム境界まで」と明記した。
 - hook 入力形式で `printf '%s' '{"file_path":"specs/10-corporate-site-implementation/index.md"}' | bash hooks/spec/validate_document.sh` を実行し、品質ゲート通過を確認した。
+
+## Review 2026-06-23 08:51
+
+Verdict: PASS
+Reviewer: spec-review (fresh-context, subagent=explorer)
+
+### 観点別評価
+
+- 上位文書整合: PASS — `specs/10-corporate-site-implementation/index.md:40-55` で PRD / Design Doc / feature doc / context / ADR-0006〜0009 との継承方針を明示。PRD の Phase 1 route / E2E / island 方針 (`PRD.md:75-83`, `PRD.md:105-120`) と矛盾なし。
+- 未解決論点: PASS — D1〜D8 はすべて決定済み (`specs/10-corporate-site-implementation/index.md:141-150`) で、未確定事項もなし (`specs/10-corporate-site-implementation/index.md:165-169`)。
+- 実装対象明示: PASS — target は `corporate-site`, `cms`, `ui`, `config`, `e2e`, `core` (`context/project.md:60-63`) と一致し、責務境界も明示 (`specs/10-corporate-site-implementation/index.md:171-183`)。
+- template 必須節: PASS — 必須節は存在確認済み。例: メタ情報〜備考 (`specs/10-corporate-site-implementation/index.md:5-508`)、Interface / Content / Data / Performance / Security / Error / Test / Flow / 実装分割 / 上位資料変更点も存在 (`specs/10-corporate-site-implementation/index.md:253-480`)。
+- EARS acceptance: PASS — WHEN / IF / THE SYSTEM SHALL 形式の受け入れ基準があり、route 表示、問い合わせ導線、form slot、参照元明記など観測可能 (`specs/10-corporate-site-implementation/index.md:128-135`)。
+- prompts 自己完結性: N/A — `prompts/` は未生成で、対象 spec は prompts 生成方針のみを持つ段階 (`specs/10-corporate-site-implementation/index.md:426-438`)。
+- 正本境界: PASS — spec は上位正本を継承する作業正本と明記 (`specs/10-corporate-site-implementation/index.md:1-3`)。`## 上位資料からの変更点` は「影響なし / spec 内補足のみ」で、durable 成果の新規ハンドオフ対象を作っていない (`specs/10-corporate-site-implementation/index.md:440-480`)。
+
+### 指摘
+
+- なし
