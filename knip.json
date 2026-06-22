@@ -5,22 +5,17 @@
       "project": ["e2e/**/*.ts"]
     },
     "apps/corporate-site": {
-      "entry": ["src/pages/**/*.astro"],
-      "project": ["src/**/*.{astro,ts,css}", "public/**/*"],
-      "ignoreDependencies": ["@kufu/ui"]
+      "entry": [
+        "src/pages/**/*.astro",
+        ".storybook/{main,preview}.ts",
+        "src/**/*.stories.@(ts|tsx)",
+        "src/components/**/*.astro"
+      ],
+      "project": ["src/**/*.{astro,ts,css}", "public/**/*"]
     },
     "packages/ui": {
       "project": ["src/**/*.{ts,tsx,css}", "components.json"],
-      "ignoreDependencies": [
-        "@fontsource-variable/geist-mono",
-        "@fontsource-variable/noto-sans-jp",
-        "@fontsource-variable/noto-serif-jp",
-        "@kufu/config",
-        "lucide-react",
-        "shadcn",
-        "storybook",
-        "tw-animate-css"
-      ]
+      "ignoreDependencies": ["@kufu/config"]
     },
     "packages/config": {
       "project": ["tsconfig/**/*.json", "oxlint/**/*.json", "vitest/**/*.ts"]

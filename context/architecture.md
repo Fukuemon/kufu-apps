@@ -1,6 +1,6 @@
 # Codebase Architecture
 
-> 最終更新: 2026-06-17
+> 最終更新: 2026-06-18
 
 Kufu Monorepo の package / runtime boundary と依存方向。全体像 (system landscape, モジュール責務) は [design/DesignDoc.md](../design/DesignDoc.md) を正本とし、本書はコードベースの境界規約を扱う。
 
@@ -12,6 +12,8 @@ Kufu Monorepo の package / runtime boundary と依存方向。全体像 (system
 - 共通 utility は必要性が明確な場合だけ package 化する。
 
 第一原則は feature / colocation。app や feature 内で閉じる UI・utility はローカルに置き、再利用が複数 app / feature にまたがって明確になった時点で `packages/*` の公開入口へ寄せる。
+
+component のディレクトリ構成、BCD Design 基準の命名、Container / Presentation、Storybook 対象は [component-design.md](component-design.md) を正本とする。本書は package / runtime の境界を扱い、component 設計の詳細は重複させない。
 
 ```text
 apps/corporate-site ─┐
@@ -36,6 +38,8 @@ colocation 第一原則の適用を資産種別ごとに定める (本テーブ�
 | utility                      | app 内 colocation                 | 必要性が明確な場合のみ package 化             |
 
 デザインシステム資産 (トークン / フォント / stylesheet) は colocation 原則の例外であり、最初から `packages/ui` を正本とする。UI コンポーネント / utility は従来の複数 consumer ルールに従う。
+
+issue #6 の初期 Storybook catalog では、Pencil の `GenericComponents` 相当を shared component 候補として `packages/ui` に置く。corporate-site 固有 component は `apps/corporate-site` 内に colocation し、app-local Storybook で確認する。
 
 ## Runtime Boundary
 

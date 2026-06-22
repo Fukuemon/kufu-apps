@@ -1,0 +1,159 @@
+name: Storybook Pages
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+    paths:
+      - ".github/workflows/storybook-pages.yml"
+      - "apps/corporate-site/**"
+      - "packages/ui/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "scripts/build-storybook-pages.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: storybook-pages-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish Storybook catalog
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Storybook Pages artifact
+        run: pnpm storybook:pages
+
+      - name: Prepare Pages branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin gh-pages; then
+            git fetch origin gh-pages --depth=1
+            git worktree add --detach pages-branch FETCH_HEAD
+          else
+            git worktree add --detach pages-branch
+            cd pages-branch
+            git checkout --orphan gh-pages
+            git rm -rf . || true
+            find . -mindepth 1 -maxdepth 1 ! -name ".git" -exec rm -rf {} +
+          fi
+
+      - name: Stage develop catalog
+        if: github.event_name != 'pull_request'
+        run: |
+          find pages-branch -mindepth 1 -maxdepth 1 ! -name ".git" ! -name "pr-preview" -exec rm -rf {} +
+          cp -R .storybook-pages/. pages-branch/
+          touch pages-branch/.nojekyll
+
+      - name: Stage PR preview catalog
+        if: github.event_name == 'pull_request'
+        run: |
+          preview_dir="pages-branch/pr-preview/pr-${{ github.event.pull_request.number }}"
+          rm -rf "$preview_dir"
+          mkdir -p "$preview_dir"
+          cp -R .storybook-pages/. "$preview_dir/"
+          touch pages-branch/.nojekyll
+
+      - name: Push Pages branch
+        run: |
+          cd pages-branch
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No Pages changes to publish."
+            exit 0
+          fi
+          git commit -m "Deploy Storybook Pages"
+          git push origin HEAD:gh-pages
+
+      - name: Comment PR preview URL
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr-preview/pr-${{ github.event.pull_request.number }}/
+        run: |
+          marker="<!-- storybook-preview -->"
+          body="$(printf "%s\n%s" "$marker" "Storybook preview: $PREVIEW_URL")"
+          comment_id="$(gh api "repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" --jq ".[] | select(.user.login == \"github-actions[bot]\" and (.body | contains(\"$marker\"))) | .id" | head -n 1)"
+          if [ -n "$comment_id" ]; then
+            gh api -X PATCH "repos/${{ github.repository }}/issues/comments/$comment_id" -f body="$body"
+          else
+            gh pr comment "${{ github.event.pull_request.number }}" --body "$body"
+          fi
+
+  cleanup-preview:
+    name: Cleanup PR preview
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare Pages branch
+        id: prepare-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git ls-remote --exit-code --heads origin gh-pages; then
+            echo "gh-pages branch does not exist. Nothing to clean up."
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git fetch origin gh-pages --depth=1
+          git worktree add --detach pages-branch FETCH_HEAD
+          echo "exists=true" >> "$GITHUB_OUTPUT"
+
+      - name: Remove PR preview
+        if: steps.prepare-pages.outputs.exists == 'true'
+        run: rm -rf "pages-branch/pr-preview/pr-${{ github.event.pull_request.number }}"
+
+      - name: Push Pages branch
+        if: steps.prepare-pages.outputs.exists == 'true'
+        run: |
+          cd pages-branch
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No PR preview changes to clean up."
+            exit 0
+          fi
+          git commit -m "Cleanup Storybook preview for PR #${{ github.event.pull_request.number }}"
+          git push origin HEAD:gh-pages
+
+      - name: Comment cleanup
+        if: steps.prepare-pages.outputs.exists == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          marker="<!-- storybook-preview -->"
+          body="$(printf "%s\n%s" "$marker" "Storybook preview was removed after this PR was closed.")"
+          comment_id="$(gh api "repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" --jq ".[] | select(.user.login == \"github-actions[bot]\" and (.body | contains(\"$marker\"))) | .id" | head -n 1)"
+          if [ -n "$comment_id" ]; then
+            gh api -X PATCH "repos/${{ github.repository }}/issues/comments/$comment_id" -f body="$body"
+          fi

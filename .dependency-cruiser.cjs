@@ -18,7 +18,7 @@ module.exports = {
       from: {
         orphan: true,
         pathNot:
-          "(^|/)(astro\\.config\\.mjs|index\\.(ts|tsx)|README\\.md|package\\.json|playwright\\.config\\.ts)$|^e2e/|\\.d\\.ts$|\\.astro$",
+          "(^|/)(astro\\.config\\.mjs|index\\.(ts|tsx)|README\\.md|package\\.json|playwright\\.config\\.ts)$|^e2e/|(^|/)\\.storybook/|\\.d\\.ts$|\\.astro$",
       },
       to: {},
     },
@@ -64,7 +64,7 @@ module.exports = {
       path: "node_modules",
     },
     exclude: {
-      path: "(^|/)(node_modules|dist|coverage|\\.astro|\\.turbo|\\.pnpm-store)(/|$)",
+      path: "(^|/)(node_modules|dist|coverage|storybook-static|\\.astro|\\.turbo|\\.pnpm-store)(/|$)",
     },
     includeOnly: "^((apps|packages)/|e2e/|playwright\\.config\\.ts$)",
     enhancedResolveOptions: {

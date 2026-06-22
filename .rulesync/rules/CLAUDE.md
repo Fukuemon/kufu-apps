@@ -35,6 +35,7 @@ globs:
 
 - リポジトリマップ・Quick Commands・命名規約・対象ドメインは [context/project.md](context/project.md) を正本とする。
 - コマンドのスコープ判断・E2E env contract・selector の使い分けは `dev-commands` skill。
+- `pnpm` / `npm` / `node` / `npx` を使うコマンドや Git hook を実行するときは、`mise` の shim を優先するため `PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH" <command>` の形で実行する。Codex 同梱 Node / Corepack は native binding の署名不一致を起こすことがあるため、既定で使わない。
 
 ## Skills (workflow 入口)
 

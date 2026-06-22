@@ -1,0 +1,127 @@
+import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+
+const root = process.cwd();
+const outputDir = join(root, ".storybook-pages");
+const catalogs = [
+  {
+    title: "@kufu/ui",
+    description: "Shared UI components and design tokens",
+    href: "ui/",
+    source: join(root, "packages/ui/storybook-static"),
+    target: join(outputDir, "ui"),
+  },
+  {
+    title: "corporate-site",
+    description: "Astro app-local components",
+    href: "corporate-site/",
+    source: join(root, "apps/corporate-site/storybook-static"),
+    target: join(outputDir, "corporate-site"),
+  },
+];
+
+rmSync(outputDir, { force: true, recursive: true });
+mkdirSync(outputDir, { recursive: true });
+writeFileSync(join(outputDir, ".nojekyll"), "");
+
+for (const catalog of catalogs) {
+  if (!existsSync(catalog.source)) {
+    throw new Error(`Missing Storybook build output: ${catalog.source}`);
+  }
+
+  cpSync(catalog.source, catalog.target, { recursive: true });
+}
+
+const links = catalogs
+  .map(
+    (catalog) => `<a class="catalog" href="${catalog.href}">
+  <span>${catalog.title}</span>
+  <small>${catalog.description}</small>
+</a>`,
+  )
+  .join("\n");
+
+writeFileSync(
+  join(outputDir, "index.html"),
+  `<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kufu Storybook Catalog</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: #f7f7f4;
+        color: #1b1b18;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      main {
+        width: min(720px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 56px 0;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 32px;
+        line-height: 1.15;
+      }
+
+      p {
+        margin: 0 0 28px;
+        color: #565650;
+        line-height: 1.7;
+      }
+
+      .catalogs {
+        display: grid;
+        gap: 12px;
+      }
+
+      .catalog {
+        display: grid;
+        gap: 6px;
+        padding: 18px 20px;
+        border: 1px solid #d8d8d0;
+        border-radius: 8px;
+        background: #ffffff;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .catalog:hover {
+        border-color: #1b1b18;
+      }
+
+      .catalog span {
+        font-weight: 700;
+      }
+
+      .catalog small {
+        color: #696963;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Kufu Storybook Catalog</h1>
+      <p>Review shared UI and app-local components from one GitHub Pages entry.</p>
+      <div class="catalogs">
+${links}
+      </div>
+    </main>
+  </body>
+</html>
+`,
+);

@@ -11,6 +11,11 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "e2e": "playwright test",
+    "storybook": "pnpm --parallel --filter @kufu/ui --filter @kufu/corporate-site storybook",
+    "storybook:ui": "pnpm --filter @kufu/ui storybook",
+    "storybook:corporate": "pnpm --filter @kufu/corporate-site storybook",
+    "storybook:build": "pnpm --filter @kufu/ui storybook:build && pnpm --filter @kufu/corporate-site storybook:build",
+    "storybook:pages": "pnpm storybook:build && node scripts/build-storybook-pages.mjs",
     "knip": "knip",
     "depcruise": "dependency-cruiser ."
   },

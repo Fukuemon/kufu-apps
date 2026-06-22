@@ -49,21 +49,24 @@ pnpm install
 
 ## コマンド
 
-| やりたいこと             | コマンド             |
-| ------------------------ | -------------------- |
-| 全 app を起動            | `pnpm dev`           |
-| コーポレートサイトを起動 | `pnpm dev:corporate` |
-| ビルド                   | `pnpm build`         |
-| 静的検査                 | `pnpm lint`          |
-| 型チェック               | `pnpm typecheck`     |
-| 単体テスト               | `pnpm test`          |
-| E2E                      | `pnpm e2e`           |
-| 整形                     | `pnpm format`        |
-| 整形確認                 | `pnpm format:check`  |
-| 未使用コード / 依存検査  | `pnpm knip`          |
-| 依存境界検査             | `pnpm depcruise`     |
+| やりたいこと             | コマンド               |
+| ------------------------ | ---------------------- |
+| 全 app を起動            | `pnpm dev`             |
+| コーポレートサイトを起動 | `pnpm dev:corporate`   |
+| ビルド                   | `pnpm build`           |
+| 静的検査                 | `pnpm lint`            |
+| 型チェック               | `pnpm typecheck`       |
+| 単体テスト               | `pnpm test`            |
+| E2E                      | `pnpm e2e`             |
+| 整形                     | `pnpm format`          |
+| 整形確認                 | `pnpm format:check`    |
+| Storybook Pages 生成     | `pnpm storybook:pages` |
+| 未使用コード / 依存検査  | `pnpm knip`            |
+| 依存境界検査             | `pnpm depcruise`       |
 
 コーポレートサイトの開発サーバーは `http://127.0.0.1:4321` で起動します。
+
+`pnpm storybook:pages` は `packages/ui` と `apps/corporate-site` の Storybook を build し、GitHub Pages 用 artifact を `.storybook-pages/` にまとめます。PR では `pr-preview/pr-<number>/` へ preview deploy し、`develop` への push 後は Pages root へ deploy されます。
 
 ## パッケージ境界
 
