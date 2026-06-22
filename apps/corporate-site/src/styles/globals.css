@@ -1,5 +1,7 @@
+@import "tailwindcss";
 @import "@kufu/ui/tokens.css";
 @import "@kufu/ui/fonts.css";
+@import "@kufu/ui/theme.css";
 
 :root {
   color-scheme: light;
