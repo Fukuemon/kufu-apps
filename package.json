@@ -15,6 +15,7 @@
     "storybook:ui": "pnpm --filter @kufu/ui storybook",
     "storybook:corporate": "pnpm --filter @kufu/corporate-site storybook",
     "storybook:build": "pnpm --filter @kufu/ui storybook:build && pnpm --filter @kufu/corporate-site storybook:build",
+    "storybook:pages": "pnpm storybook:build && node scripts/build-storybook-pages.mjs",
     "knip": "knip",
     "depcruise": "dependency-cruiser ."
   },
