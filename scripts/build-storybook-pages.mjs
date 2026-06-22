@@ -22,6 +22,7 @@ const catalogs = [
 
 rmSync(outputDir, { force: true, recursive: true });
 mkdirSync(outputDir, { recursive: true });
+writeFileSync(join(outputDir, ".nojekyll"), "");
 
 for (const catalog of catalogs) {
   if (!existsSync(catalog.source)) {
