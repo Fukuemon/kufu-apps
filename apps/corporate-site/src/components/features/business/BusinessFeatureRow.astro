@@ -21,7 +21,7 @@ const {
   mediaPosition,
 } = Astro.props;
 const mediaClass = [
-  "flex items-end min-h-95 p-5 border border-border bg-kufu-gray-800 bg-[linear-gradient(var(--photo-overlay),var(--photo-overlay))] min-[760px]:flex-[1_1_auto]",
+  "flex items-end min-h-95 p-5 border border-border bg-kufu-gray-800 bg-photo-overlay min-[760px]:flex-[1_1_auto]",
   mediaPosition === "left" ? "min-[760px]:order-[-1]" : "",
 ].join(" ");
 ---

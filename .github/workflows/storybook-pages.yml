@@ -24,8 +24,8 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: storybook-pages-${{ github.ref }}
-  cancel-in-progress: true
+  group: storybook-pages-publish
+  cancel-in-progress: false
 
 jobs:
   publish:
