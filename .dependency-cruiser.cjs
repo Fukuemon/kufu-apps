@@ -64,7 +64,7 @@ module.exports = {
       path: "node_modules",
     },
     exclude: {
-      path: "(^|/)(node_modules|dist|coverage|\\.astro|\\.turbo|\\.pnpm-store)(/|$)",
+      path: "(^|/)(node_modules|dist|coverage|storybook-static|\\.astro|\\.turbo|\\.pnpm-store)(/|$)",
     },
     includeOnly: "^((apps|packages)/|e2e/|playwright\\.config\\.ts$)",
     enhancedResolveOptions: {

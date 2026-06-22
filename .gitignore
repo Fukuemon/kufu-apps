@@ -16,3 +16,4 @@ __pycache__/
 *.pyc
 .turbo/
 storybook-static
+.storybook-pages
