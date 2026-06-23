@@ -1,0 +1,56 @@
+---
+import ContactInfoRow from "../contact/ContactInfoRow.astro";
+import SectionHeading from "../../common/SectionHeading/SectionHeading.astro";
+import { companyProfile } from "../../../content/company.js";
+import { contactInfo } from "../../../content/contact.js";
+---
+
+<section
+  id="company"
+  class="border-b border-border bg-background"
+  data-testid="home-section-company"
+>
+  <div class="mx-auto grid w-full max-w-360 gap-12 px-5 py-20 sm:px-8 lg:px-14">
+    <div class="grid gap-10 lg:grid-cols-[0.86fr_1.14fr]">
+      <SectionHeading
+        number="03"
+        eyebrow="COMPANY"
+        title="会社情報"
+        description="兵庫県加古郡稲美町を拠点に、工場の調達・保全・加工相談を支えます。"
+      />
+
+      <div class="grid border-t border-border bg-card">
+        {
+          companyProfile.rows.map(([label, value]) => (
+            <div class="grid gap-2 border-b border-border p-5 md:grid-cols-[10rem_1fr]">
+              <p class="font-mono text-xs font-medium tracking-[0.16em] text-primary">
+                {label}
+              </p>
+              <p class="text-sm leading-7 text-foreground">{value}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="grid gap-6 border border-border bg-card p-6 md:grid-cols-[1fr_auto] md:items-center">
+      <div class="grid gap-5 md:grid-cols-3">
+        {
+          contactInfo.rows.map((row) => (
+            <ContactInfoRow
+              label={row.label}
+              value={row.value}
+              href={"href" in row ? row.href : undefined}
+            />
+          ))
+        }
+      </div>
+      <a
+        class="inline-flex min-h-12 items-center justify-center border border-primary bg-primary px-6 font-medium text-primary-foreground hover:opacity-90"
+        href="/contact"
+      >
+        お問い合わせへ
+      </a>
+    </div>
+  </div>
+</section>
