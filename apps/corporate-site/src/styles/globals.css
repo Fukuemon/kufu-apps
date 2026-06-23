@@ -12,9 +12,242 @@ body {
   font-family: var(--font-sans);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+}
+
+[data-contact-cta],
+[data-contact-cta] * {
+  color: #ffffff !important;
+}
+
+.hero-industrial::before {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--border) 52%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--border) 52%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 4rem 4rem;
+  content: "";
+  mask-image: linear-gradient(to bottom, black, transparent 75%);
+  opacity: 0.55;
+}
+
+.hero-copy {
+  animation: section-rise 0.7s ease-out both;
+}
+
+.hero-media {
+  box-shadow: 0 2rem 5rem
+    color-mix(in srgb, var(--kufu-gray-950) 12%, transparent);
+}
+
+.hero-media img {
+  transform: scale(1.03);
+}
+
+.hero-media-ruler {
+  position: absolute;
+  top: 0;
+  right: 5rem;
+  bottom: 0;
+  width: 1px;
+  background: repeating-linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--kufu-white) 60%, transparent) 0 0.75rem,
+    transparent 0.75rem 1.5rem
+  );
+  opacity: 0.6;
+}
+
+.hero-spec-panel {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  gap: 0.35rem;
+  border: 1px solid color-mix(in srgb, var(--kufu-white) 45%, transparent);
+  background: color-mix(in srgb, var(--kufu-gray-950) 72%, transparent);
+  padding: 0.85rem 1rem;
+  color: var(--kufu-white);
+  font-family: var(--font-mono);
+}
+
+.hero-spec-panel span {
+  color: var(--kufu-gray-300);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+}
+
+.hero-spec-panel strong {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.flow-panel {
+  position: relative;
+}
+
+.reveal-section,
+.consultation-case,
+.business-row,
+.featured-category-card,
+.catalog-board,
+.custom-order-panel {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.reveal-section.is-visible,
+.consultation-case.is-visible,
+.business-row.is-visible,
+.featured-category-card.is-visible,
+.catalog-board.is-visible,
+.custom-order-panel.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.business-industrial {
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--primary) 7%, transparent),
+    transparent
+  );
+}
+
+.business-row-copy::after {
+  width: 4.5rem;
+  height: 2px;
+  margin-top: 0.5rem;
+  background: var(--primary);
+  content: "";
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.9s ease 0.12s;
+}
+
+.business-row.is-visible .business-row-copy::after {
+  transform: scaleX(1);
+}
+
+.business-tag {
+  border-left: 2px solid var(--primary);
+}
+
+.business-media {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 2.25rem),
+    calc(100% - 2.25rem) 100%,
+    0 100%
+  );
+}
+
+.business-media-image {
+  transform: scale(1.08) translateY(-0.75rem);
+  transition: transform 1.2s ease;
+}
+
+.business-row.is-visible .business-media-image {
+  transform: scale(1.08) translateY(0.75rem);
+}
+
+.business-media-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--kufu-white) 20%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--kufu-white) 20%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 3.25rem 3.25rem;
+  opacity: 0.22;
+}
+
+.custom-order-panel {
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.featured-category-card {
+  transition:
+    opacity 0.7s ease,
+    transform 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.featured-category-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-0.35rem);
+}
+
+.featured-category-media {
+  transition: transform 0.35s ease;
+}
+
+.featured-category-card:hover .featured-category-media {
+  transform: scale(1.04);
+}
+
+.catalog-board {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--border) 42%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--border) 42%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 2.75rem 2.75rem;
+}
+
+.catalog-row {
+  position: relative;
+}
+
+.catalog-row::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 1px;
+  background: var(--primary);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.22s ease;
+}
+
+.catalog-row:hover::after {
+  transform: scaleX(1);
 }
 
 .site-nav-menu {
@@ -96,6 +329,63 @@ a {
   background: var(--kufu-gray-800);
 }
 
+.scroll-cue-icon {
+  animation: scroll-cue 1.8s ease-in-out infinite;
+}
+
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(0.35rem);
+  }
+}
+
+@keyframes section-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .scroll-cue-icon,
+  .consultation-case,
+  .reveal-section,
+  .business-row-copy::after {
+    animation: none;
+    transition: none;
+  }
+
+  .reveal-section,
+  .consultation-case,
+  .business-row,
+  .featured-category-card,
+  .catalog-board,
+  .custom-order-panel {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 47.999rem) {
+  .hero-spec-panel {
+    display: none;
+  }
+}
+
 @media (min-width: 48rem) {
   .site-nav-menu {
     display: flex;
@@ -109,5 +399,10 @@ a {
   .site-nav-link {
     border-top: 0;
     padding: 0;
+  }
+
+  .flow-panel {
+    position: sticky;
+    top: 7rem;
   }
 }
