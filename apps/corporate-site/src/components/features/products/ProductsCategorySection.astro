@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
-import SectionHeading from "../../common/SectionHeading/SectionHeading.astro";
+import SectionHeading from "../../common/SectionHeading.astro";
 import FeaturedCategoryCard from "./FeaturedCategoryCard.astro";
 
 const productCategories = (await getCollection("productCategories")).sort(
@@ -65,7 +65,7 @@ const categoryColumns = [
             <FeaturedCategoryCard
               category={`CATEGORY ${String(category.data.order).padStart(2, "0")}`}
               count={`${makerCountsByCategoryId.get(category.id) ?? 0}社`}
-              title={`Featured ${category.data.name}`}
+              title={`${category.data.name}`}
               image={featuredImageByOrder.get(category.data.order)}
             />
           ))
