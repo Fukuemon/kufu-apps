@@ -1,6 +1,8 @@
 ---
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
+import productsImage from "../../../assets/corporate-products-supply.png";
 import SectionHeading from "../../common/SectionHeading/SectionHeading.astro";
 import FeaturedCategoryCard from "./FeaturedCategoryCard.astro";
 
@@ -32,16 +34,29 @@ const featuredCategories = productCategories.slice(0, 3);
       </a>
     </div>
 
-    <div class="grid gap-5 md:grid-cols-3">
-      {
-        featuredCategories.map((category) => (
-          <FeaturedCategoryCard
-            category={`CATEGORY ${String(category.data.order).padStart(2, "0")}`}
-            count="代表カテゴリ"
-            title={category.data.name}
-          />
-        ))
-      }
+    <div class="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+      <div class="relative min-h-72 overflow-hidden border border-border bg-kufu-gray-800">
+        <Image
+          src={productsImage}
+          alt="取扱製品と工場設備のイメージ"
+          width={784}
+          height={502}
+          loading="lazy"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+        <div class="absolute inset-0 bg-photo-overlay" aria-hidden="true"></div>
+      </div>
+      <div class="grid gap-5 md:grid-cols-3 lg:grid-cols-1">
+        {
+          featuredCategories.map((category) => (
+            <FeaturedCategoryCard
+              category={`CATEGORY ${String(category.data.order).padStart(2, "0")}`}
+              count="代表カテゴリ"
+              title={category.data.name}
+            />
+          ))
+        }
+      </div>
     </div>
 
     <ol

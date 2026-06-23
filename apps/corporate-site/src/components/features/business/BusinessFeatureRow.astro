@@ -1,4 +1,7 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
 export interface Props {
   number?: string;
   eyebrow: string;
@@ -8,6 +11,8 @@ export interface Props {
   mediaLabel: string;
   mediaCaption: string;
   mediaPosition: "left" | "right";
+  image?: ImageMetadata;
+  imageLoading?: "eager" | "lazy";
 }
 
 const {
@@ -19,9 +24,11 @@ const {
   mediaLabel,
   mediaCaption,
   mediaPosition,
+  image,
+  imageLoading = "lazy",
 } = Astro.props;
 const mediaClass = [
-  "flex items-end min-h-95 p-5 border border-border bg-kufu-gray-800 bg-photo-overlay min-[760px]:flex-[1_1_auto]",
+  "relative flex items-end min-h-95 overflow-hidden p-5 border border-border bg-kufu-gray-800 min-[760px]:flex-[1_1_auto]",
   mediaPosition === "left" ? "min-[760px]:order-[-1]" : "",
 ].join(" ");
 ---
@@ -67,10 +74,21 @@ const mediaClass = [
       }
     </ul>
   </div>
-  <div class={mediaClass} role="img" aria-label={mediaCaption}>
-    <span
-      class="font-mono text-xs font-medium tracking-[0.13em] text-kufu-white"
-    >
+  <div class={mediaClass}>
+    {
+      image ? (
+        <Image
+          src={image}
+          alt={mediaCaption}
+          width={768}
+          height={512}
+          loading={imageLoading}
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : null
+    }
+    <div class="absolute inset-0 bg-photo-overlay" aria-hidden="true"></div>
+    <span class="relative z-1 font-mono text-xs font-medium tracking-[0.13em] text-kufu-white">
       {mediaLabel}
     </span>
   </div>

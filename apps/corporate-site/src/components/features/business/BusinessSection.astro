@@ -2,8 +2,12 @@
 import SectionHeading from "../../common/SectionHeading/SectionHeading.astro";
 import BusinessFeatureRow from "./BusinessFeatureRow.astro";
 import ServicePillar from "../services/ServicePillar.astro";
+import machiningImage from "../../../assets/corporate-machining-service.png";
+import supplyImage from "../../../assets/corporate-products-supply.png";
 import { businessContent } from "../../../content/business.js";
 import { servicePillars } from "../../../content/services.js";
+
+const featureImages = [supplyImage, machiningImage] as const;
 ---
 
 <section
@@ -21,7 +25,7 @@ import { servicePillars } from "../../../content/services.js";
 
     <div class="grid gap-2">
       {
-        businessContent.features.map((feature) => (
+        businessContent.features.map((feature, index) => (
           <BusinessFeatureRow
             number={feature.number}
             eyebrow={feature.eyebrow}
@@ -31,6 +35,8 @@ import { servicePillars } from "../../../content/services.js";
             mediaLabel={feature.mediaLabel}
             mediaCaption={feature.mediaCaption}
             mediaPosition={feature.mediaPosition}
+            image={featureImages[index]}
+            imageLoading="lazy"
           />
         ))
       }
