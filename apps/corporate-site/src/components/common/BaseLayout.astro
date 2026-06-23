@@ -1,0 +1,34 @@
+---
+import "../../styles/globals.css";
+
+import SiteFooter from "./SiteFooter.astro";
+import SiteHeader from "./SiteHeader.astro";
+
+export interface Props {
+  title: string;
+  description: string;
+  footerVariant?: "full" | "compact";
+}
+
+const { title, description, footerVariant = "compact" } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body class="bg-background text-foreground antialiased">
+    <SiteHeader currentPath={currentPath} />
+    <main>
+      <slot />
+    </main>
+    <SiteFooter variant={footerVariant} />
+  </body>
+</html>

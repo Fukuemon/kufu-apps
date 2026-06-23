@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../components/common/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="取扱製品 | 有限会社フクウラ"
+  description="有限会社フクウラの取扱製品カテゴリとメーカー一覧。"
+  footerVariant="compact"
+>
+  <section
+    class="mx-auto flex min-h-100 w-full max-w-360 flex-col justify-center gap-6 px-5 py-20 sm:px-8 lg:px-14"
+    data-testid="products-section-index"
+  >
+    <p class="font-mono text-xs font-medium tracking-[0.18em] text-primary">
+      PRODUCTS
+    </p>
+    <h1 class="font-serif text-4xl font-semibold leading-tight">取扱製品</h1>
+    <p class="max-w-170 text-base leading-8 text-muted-foreground">
+      18カテゴリの詳細とカテゴリ別メーカー一覧を表示するページです。
+    </p>
+  </section>
+</BaseLayout>
