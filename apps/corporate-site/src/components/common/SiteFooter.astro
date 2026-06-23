@@ -11,61 +11,85 @@ const isFull = variant === "full";
 ---
 
 <footer
-  class="surface-inverse border-t border-border bg-background text-foreground"
+  class="surface-inverse bg-kufu-gray-950 text-kufu-white"
   data-testid="site-footer"
 >
+  {
+    !isFull ? (
+      <div class="mx-auto grid w-full max-w-360 gap-6 px-5 py-7 sm:px-8 md:grid-cols-[1fr_auto] md:items-center lg:px-14">
+        <div class="grid gap-1.5">
+          <p class="font-serif text-[1.375rem] font-semibold">有限会社フクウラ</p>
+          <p class="text-[0.8125rem] leading-normal text-kufu-gray-200">
+            機械工具と関連機器 / 販売・加工
+          </p>
+        </div>
+        <div class="grid gap-1.5 md:justify-items-end">
+          <p class="font-mono text-xs tracking-[0.14em] text-kufu-gray-200">
+            TEL 079-492-6465
+          </p>
+          <p class="text-[0.8125rem] text-kufu-gray-200">
+            兵庫県加古郡稲美町国安973番地の10
+          </p>
+        </div>
+      </div>
+    ) : (
   <div
     class:list={[
-      "mx-auto grid w-full max-w-360 gap-10 px-5 py-12 sm:px-8 lg:px-14",
+      "mx-auto grid w-full max-w-360 gap-10 px-5 py-12 sm:px-8 md:py-16 lg:px-14",
       isFull ? "md:grid-cols-[1fr_1.2fr_1fr]" : "md:grid-cols-[1fr_1fr]",
     ]}
   >
     <div class="grid gap-4">
       <p class="font-serif text-2xl font-semibold">{companyProfile.name}</p>
-      <p class="max-w-95 text-sm leading-7 text-secondary-foreground">
+      <p class="font-serif text-[0.9375rem] font-semibold leading-normal tracking-[0.0625rem] text-primary-soft">
         {companyProfile.philosophy}
+      </p>
+      <p class="max-w-75 text-[0.78125rem] leading-[1.9] text-kufu-gray-200">
+        機械工具と関連機器の販売、各種別作加工。兵庫県加古郡稲美町より、製造現場の調達と加工を支えます。
       </p>
     </div>
 
     {
       isFull ? (
         <nav class="grid gap-3" aria-label="フッターナビゲーション">
-          <p class="font-mono text-xs font-medium tracking-[0.18em] text-primary-soft">
-            SITE MAP
+          <p class="font-mono text-[0.625rem] font-normal tracking-[0.18em] text-kufu-gray-500">
+            SITEMAP
           </p>
           <a class="footer-link" href="/">
-            トップ
-          </a>
-          <a class="footer-link" href="/#business">
             事業内容
           </a>
           <a class="footer-link" href="/products">
             取扱製品
           </a>
           <a class="footer-link" href="/#company">
-            会社情報
+            会社概要
           </a>
           <a class="footer-link" href="/contact">
-            お問い合わせ
+            お問い合わせ・お見積り
           </a>
         </nav>
       ) : null
     }
 
     <div class="grid gap-3">
-      <p class="font-mono text-xs font-medium tracking-[0.18em] text-primary-soft">
+      <p class="font-mono text-[0.625rem] font-normal tracking-[0.18em] text-kufu-gray-500">
         CONTACT
       </p>
-      <p class="text-sm leading-7 text-secondary-foreground">
-        {companyProfile.address}
+      <p class="text-sm leading-7 text-kufu-gray-200">
+        〒675-1114
+      </p>
+      <p class="text-sm leading-7 text-kufu-gray-200">
+        兵庫県加古郡稲美町国安973番地の10
       </p>
       <a class="footer-link" href={`tel:${contactInfo.tel.replaceAll("-", "")}`}>
         TEL {contactInfo.tel}
       </a>
-      <p class="text-sm leading-7 text-secondary-foreground">FAX {contactInfo.fax}</p>
+      <p class="text-sm leading-7 text-kufu-gray-200">FAX {contactInfo.fax}</p>
       <a class="footer-link" href={`mailto:${contactInfo.email}`}>
         {contactInfo.email}
       </a>
     </div>
   </div>
+    )
+  }
 </footer>

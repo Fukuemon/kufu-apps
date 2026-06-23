@@ -28,13 +28,13 @@ const {
   imageLoading = "lazy",
 } = Astro.props;
 const mediaClass = [
-  "relative flex items-end min-h-95 overflow-hidden p-5 border border-border bg-kufu-gray-800 min-[760px]:flex-[1_1_auto]",
+  "relative flex min-h-[18.75rem] items-end overflow-hidden bg-kufu-gray-800 p-5 min-[760px]:min-h-[23.75rem] min-[760px]:flex-[1_1_auto]",
   mediaPosition === "left" ? "min-[760px]:order-[-1]" : "",
 ].join(" ");
 ---
 
 <article
-  class="flex flex-col gap-6 w-full py-11 text-foreground min-[760px]:flex-row min-[760px]:items-center min-[760px]:gap-14"
+  class="flex w-full flex-col gap-6 border-t border-border py-8 text-foreground last:border-b min-[760px]:min-h-[29.25rem] min-[760px]:flex-row min-[760px]:items-center min-[760px]:gap-14 min-[760px]:py-11"
 >
   <div
     class="relative flex flex-col gap-4 min-[760px]:flex-[0_0_30rem] min-[760px]:w-120"
@@ -42,7 +42,7 @@ const mediaClass = [
     {
       number ? (
         <span
-          class="absolute -top-8.5 -left-2.5 font-mono text-[8.75rem] font-medium leading-none text-ghost-foreground pointer-events-none z-0"
+          class="pointer-events-none absolute -top-8.5 -left-2.5 z-0 font-mono text-[7.5rem] font-medium leading-none text-ghost-foreground md:text-[8.75rem]"
           aria-hidden="true"
         >
           {number}
@@ -67,7 +67,7 @@ const mediaClass = [
     <ul class="relative z-1 flex flex-wrap gap-2 pt-1.5 list-none">
       {
         items.map((item) => (
-          <li class="px-3 py-1.5 rounded-[4px] bg-secondary text-foreground text-[0.78125rem] leading-[1.4]">
+          <li class="bg-secondary px-3 py-1.5 text-[0.78125rem] leading-[1.4] text-foreground">
             {item}
           </li>
         ))

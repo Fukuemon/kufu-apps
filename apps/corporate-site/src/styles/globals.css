@@ -32,12 +32,20 @@ a {
 }
 
 .site-nav-link {
+  display: grid;
+  gap: 0.125rem;
   border-top: 1px solid var(--border);
   padding: 1rem 1.25rem;
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.site-nav-sub-label {
   color: var(--muted-foreground);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.53125rem;
+  font-weight: 400;
   letter-spacing: 0.14em;
 }
 
@@ -70,7 +78,7 @@ a {
 }
 
 .footer-link {
-  color: var(--secondary-foreground);
+  color: var(--kufu-gray-200);
   font-size: 0.875rem;
   line-height: 1.75rem;
 }
@@ -79,12 +87,21 @@ a {
   color: var(--primary-soft);
 }
 
+.products-summary-cta {
+  background: var(--kufu-gray-950);
+  color: var(--kufu-white);
+}
+
+.products-summary-cta:hover {
+  background: var(--kufu-gray-800);
+}
+
 @media (min-width: 48rem) {
   .site-nav-menu {
     display: flex;
     position: static;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
     border-bottom: 0;
     background: transparent;
   }

@@ -1,61 +1,101 @@
----
-import { companyProfile } from "../../../content/company.js";
-import { contactInfo } from "../../../content/contact.js";
-import ContactInfoRow from "./ContactInfoRow.astro";
----
-
 <section class="bg-background">
-  <div class="mx-auto grid w-full max-w-360 gap-10 px-5 py-20 sm:px-8 lg:px-14">
-    <div class="grid gap-5">
-      <p class="font-mono text-xs font-medium tracking-[0.18em] text-primary">
-        CONTACT
-      </p>
-      <h1 class="font-serif text-4xl font-semibold leading-tight md:text-6xl">
-        お問い合わせ
+  <div class="mx-auto grid w-full max-w-360 gap-8 px-5 pb-18 pt-12 sm:px-8 md:gap-10 lg:px-14">
+    <div class="grid gap-4">
+      <nav class="flex gap-2 font-mono text-[0.6875rem] tracking-[0.14em] text-muted-foreground" aria-label="パンくず">
+        <a href="/">ホーム</a>
+        <span>/</span>
+        <span>お問い合わせ</span>
+      </nav>
+      <h1 class="font-serif text-[2.5rem] font-semibold leading-tight md:text-[3.375rem]">
+        お問い合わせ・お見積り
       </h1>
-      <p class="max-w-180 text-base leading-8 text-muted-foreground">
-        お見積もり、取扱製品、加工のご相談は、電話・FAX・メールでお問い合わせください。
+      <p class="font-mono text-xs tracking-[0.2em] text-primary">
+        Contact &amp; Estimate
+      </p>
+      <p class="max-w-190 text-base leading-[1.75] text-muted-foreground">
+        製品のお見積り、加工のご相談、掲載のないメーカー・製品のお取り寄せまで。お電話・FAX・メール・フォームよりお気軽にご連絡ください。
       </p>
     </div>
 
-    <div class="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+    <div class="grid gap-7 lg:grid-cols-[22.5rem_1fr]">
       <section
-        class="grid gap-6 border border-border bg-card p-6 md:p-8"
+        class="grid content-start gap-4 bg-card p-6"
         data-testid="contact-section-info"
       >
-        <div class="grid gap-2">
-          <h2 class="font-serif text-2xl font-semibold">連絡先</h2>
-          <p class="text-sm leading-7 text-muted-foreground">
-            {companyProfile.address}
+        <div class="grid gap-1.5">
+          <p class="font-mono text-[0.6875rem] tracking-[0.16em] text-primary">Tel</p>
+          <a class="text-[0.9375rem] leading-[1.7]" href="tel:0794926465">
+            079-492-6465
+          </a>
+        </div>
+        <div class="grid gap-1.5">
+          <p class="font-mono text-[0.6875rem] tracking-[0.16em] text-primary">Fax</p>
+          <p class="text-[0.9375rem] leading-[1.7]">079-492-6429</p>
+        </div>
+        <div class="grid gap-1.5">
+          <p class="font-mono text-[0.6875rem] tracking-[0.16em] text-primary">E-mail</p>
+          <a class="text-[0.9375rem] leading-[1.7]" href="mailto:fukuura@mist.ocn.ne.jp">
+            fukuura&#64;mist.ocn.ne.jp
+          </a>
+        </div>
+        <div class="grid gap-1.5">
+          <p class="font-mono text-[0.6875rem] tracking-[0.16em] text-primary">所在地</p>
+          <p class="text-[0.9375rem] leading-[1.7]">
+            〒675-1114<br />兵庫県加古郡稲美町国安973番地の10
           </p>
         </div>
-        <div class="grid gap-5">
-          {
-            contactInfo.rows.map((row) => (
-              <ContactInfoRow
-                label={row.label}
-                value={row.value}
-                href={"href" in row ? row.href : undefined}
-              />
-            ))
-          }
-        </div>
+        <p class="pt-2 text-sm leading-[1.75] text-muted-foreground">
+          受付時間 / 平日 9:00-18:00<br />
+          お見積りはお電話・FAX・メールでも承ります。図面がある場合はメール添付いただくとスムーズです。
+        </p>
       </section>
 
       <section
-        class="grid content-center gap-4 border border-dashed border-border bg-muted p-6 md:p-8"
+        class="grid gap-4 bg-card p-6"
         data-testid="contact-form-slot"
-        aria-label="問い合わせフォーム実装境界"
+        aria-label="問い合わせフォーム"
       >
-        <p class="font-mono text-xs font-medium tracking-[0.18em] text-primary">
-          FORM SLOT
-        </p>
-        <h2 class="font-serif text-2xl font-semibold">
-          問い合わせフォーム領域
-        </h2>
-        <p class="text-sm leading-7 text-muted-foreground">
-          フォーム本体は後続の実装で差し込みます。現時点では電話・FAX・メールで接点を確保します。
-        </p>
+        <div class="grid gap-4 md:grid-cols-2">
+          <label class="grid gap-2 text-[0.8125rem]">
+            会社名 必須
+            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="text" name="company" />
+          </label>
+          <label class="grid gap-2 text-[0.8125rem]">
+            ご担当者名 必須
+            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="text" name="name" />
+          </label>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          <label class="grid gap-2 text-[0.8125rem]">
+            メールアドレス 必須
+            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="email" name="email" />
+          </label>
+          <label class="grid gap-2 text-[0.8125rem]">
+            電話番号
+            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="tel" name="phone" />
+          </label>
+        </div>
+        <label class="grid gap-2 text-[0.8125rem]">
+          お問い合わせ種別
+          <select class="min-h-12 border border-border bg-background px-3 text-sm text-muted-foreground" name="category">
+            <option>お見積り依頼（販売）</option>
+            <option>加工のご相談</option>
+            <option>その他</option>
+          </select>
+        </label>
+        <label class="grid gap-2 text-[0.8125rem]">
+          お問い合わせ内容 必須
+          <textarea class="min-h-40 border border-border bg-background p-3 text-sm leading-[1.75] text-muted-foreground" name="message">製品名・型番・数量、加工内容（図面の有無）などをご記入ください。</textarea>
+        </label>
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <p class="text-[0.8125rem] text-muted-foreground">
+            ※ こちらはデザイン確認用のフォーム枠です。
+          </p>
+          <button class="inline-flex min-h-12 items-center justify-center gap-2 bg-primary px-5 text-sm font-semibold text-primary-foreground" type="button">
+            送信する
+            <span class="font-mono" aria-hidden="true">→</span>
+          </button>
+        </div>
       </section>
     </div>
   </div>
