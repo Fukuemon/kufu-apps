@@ -1,15 +1,46 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
-import productsImage from "../../../assets/corporate-products-supply.png";
 import SectionHeading from "../../common/SectionHeading/SectionHeading.astro";
 import FeaturedCategoryCard from "./FeaturedCategoryCard.astro";
 
 const productCategories = (await getCollection("productCategories")).sort(
   (a, b) => a.data.order - b.data.order,
 );
-const featuredCategories = productCategories.slice(0, 3);
+const categoryMakers = await getCollection("categoryMakers");
+const makerCountsByCategoryId = new Map(
+  categoryMakers.map((entry) => [entry.data.categoryId, entry.data.makers.length]),
+);
+const featuredOrders = new Set([1, 6, 14, 10]);
+const featuredImageByOrder = new Map([
+  [
+    1,
+    "https://images.unsplash.com/photo-1723022323088-ca3d68fae5db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
+  ],
+  [
+    6,
+    "https://images.unsplash.com/photo-1581092335331-5e00ac65e934?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
+  ],
+  [
+    14,
+    "https://images.unsplash.com/photo-1707304472925-c9f0fda4d7a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
+  ],
+  [
+    10,
+    "https://images.unsplash.com/photo-1695603414659-4d573962b517?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
+  ],
+]);
+const featuredCategories = [1, 6, 14, 10]
+  .map((order) => productCategories.find((category) => category.data.order === order))
+  .filter((category) => category !== undefined);
+const indexCategories = productCategories.filter(
+  (category) => !featuredOrders.has(category.data.order),
+);
+const categoryColumns = [
+  indexCategories.slice(0, 5),
+  indexCategories.slice(5, 10),
+  indexCategories.slice(10),
+];
 ---
 
 <section
@@ -17,72 +48,72 @@ const featuredCategories = productCategories.slice(0, 3);
   class="border-b border-border bg-muted"
   data-testid="home-section-products"
 >
-  <div class="mx-auto grid w-full max-w-360 gap-12 px-5 py-20 sm:px-8 lg:px-14">
-    <div class="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+  <div class="mx-auto grid w-full max-w-360 gap-14 px-5 py-14 sm:px-8 md:gap-16 md:py-20 lg:px-14">
+    <div class="grid gap-8">
       <SectionHeading
         number="02"
-        eyebrow="PRODUCTS"
-        title="取扱製品"
-        description="18カテゴリの取扱製品を単一データソースから表示し、詳細は取扱製品ページで確認できます。"
+        eyebrow="PRODUCTS & MAKERS / 取扱製品・取扱メーカー"
+        title="取扱製品カテゴリ"
+        description={"減速機や軸受などの駆動・伝動部品から、空圧・油圧、工具、測定機器、工場設備まで。\n調達のご相談に応える領域を18のカテゴリに整理しています。"}
       />
-      <a
-        class="inline-flex min-h-12 items-center justify-center border border-primary bg-primary px-6 font-medium text-primary-foreground hover:opacity-90"
-        href="/products"
-        data-testid="home-link-products"
-      >
-        取扱製品一覧へ
-      </a>
     </div>
 
-    <div class="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-      <div class="relative min-h-72 overflow-hidden border border-border bg-kufu-gray-800">
-        <Image
-          src={productsImage}
-          alt="取扱製品と工場設備のイメージ"
-          width={784}
-          height={502}
-          loading="lazy"
-          class="absolute inset-0 h-full w-full object-cover"
-        />
-        <div class="absolute inset-0 bg-photo-overlay" aria-hidden="true"></div>
-      </div>
-      <div class="grid gap-5 md:grid-cols-3 lg:grid-cols-1">
+    <div class="grid gap-8">
+      <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {
           featuredCategories.map((category) => (
             <FeaturedCategoryCard
               category={`CATEGORY ${String(category.data.order).padStart(2, "0")}`}
-              count="代表カテゴリ"
-              title={category.data.name}
+              count={`${makerCountsByCategoryId.get(category.id) ?? 0}社`}
+              title={`Featured ${category.data.name}`}
+              image={featuredImageByOrder.get(category.data.order)}
             />
           ))
         }
       </div>
-    </div>
 
-    <ol
-      class="grid list-none border-t border-l border-border bg-card md:grid-cols-2 lg:grid-cols-3"
-      data-testid="products-category-list"
-    >
-      {
-        productCategories.map((category) => (
-          <li class="border-r border-b border-border">
-            <a
-              class="grid min-h-24 gap-2 p-5 hover:bg-secondary"
-              href={`/products#${category.id}`}
-            >
-              <span class="font-mono text-xs font-medium tracking-[0.16em] text-primary">
-                {String(category.data.order).padStart(2, "0")}
-              </span>
-              <span class="font-serif text-lg font-semibold leading-normal">
-                {category.data.name}
-              </span>
-              <span class="text-sm leading-6 text-muted-foreground">
-                {category.data.summary}
-              </span>
-            </a>
-          </li>
-        ))
-      }
-    </ol>
+      <div class="border border-border bg-card p-4 md:p-7">
+        <ol
+          class="grid list-none gap-7 md:grid-cols-3 md:gap-12"
+          data-testid="products-category-list"
+        >
+          {
+            categoryColumns.map((column) => (
+              <li>
+                <ol class="grid list-none">
+                  {column.map((category) => (
+                    <li class="border-t border-border last:border-b">
+                      <a
+                        class="grid min-h-11 grid-cols-[4.5rem_1fr_auto] items-center gap-3 py-3 hover:text-primary"
+                        href={`/products#${category.id}`}
+                      >
+                        <span class="font-mono text-[0.6875rem] font-medium tracking-[0.16em] text-primary">
+                          {String(category.data.order).padStart(2, "0")}
+                        </span>
+                        <span class="font-serif text-[0.9375rem] font-semibold leading-normal">
+                          {category.data.name}
+                        </span>
+                        <span class="text-right text-[0.71875rem] text-muted-foreground">
+                          {makerCountsByCategoryId.get(category.id) ?? 0}社
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <a
+        class="products-summary-cta grid min-h-16 grid-cols-[1fr_auto] items-center gap-6 px-7 py-[1.375rem] text-[0.875rem] font-medium"
+        href="/products"
+        data-testid="home-link-products"
+      >
+        <span>各カテゴリの取扱メーカー一覧は、取扱製品ページに掲載しています。</span>
+        <span class="font-semibold">取扱製品ページへ →</span>
+      </a>
+    </div>
   </div>
 </section>

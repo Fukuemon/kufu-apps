@@ -1,8 +1,6 @@
 ---
-import ContactInfoRow from "../contact/ContactInfoRow.astro";
 import SectionHeading from "../../common/SectionHeading/SectionHeading.astro";
 import { companyProfile } from "../../../content/company.js";
-import { contactInfo } from "../../../content/contact.js";
 ---
 
 <section
@@ -10,47 +8,95 @@ import { contactInfo } from "../../../content/contact.js";
   class="border-b border-border bg-background"
   data-testid="home-section-company"
 >
-  <div class="mx-auto grid w-full max-w-360 gap-12 px-5 py-20 sm:px-8 lg:px-14">
-    <div class="grid gap-10 lg:grid-cols-[0.86fr_1.14fr]">
+  <div class="mx-auto grid w-full max-w-360 gap-8 px-5 py-14 sm:px-8 md:gap-10 md:py-20 lg:px-14">
+    <div class="grid gap-10">
       <SectionHeading
         number="03"
-        eyebrow="COMPANY"
-        title="会社情報"
-        description="兵庫県加古郡稲美町を拠点に、工場の調達・保全・加工相談を支えます。"
+        eyebrow="COMPANY / 会社概要"
+        title="会社概要"
       />
-
-      <div class="grid border-t border-border bg-card">
-        {
-          companyProfile.rows.map(([label, value]) => (
-            <div class="grid gap-2 border-b border-border p-5 md:grid-cols-[10rem_1fr]">
-              <p class="font-mono text-xs font-medium tracking-[0.16em] text-primary">
-                {label}
-              </p>
-              <p class="text-sm leading-7 text-foreground">{value}</p>
-            </div>
-          ))
-        }
+      <div class="grid gap-4 md:max-w-[38.75rem]">
+        <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
+          PHILOSOPHY / 経営理念
+        </p>
+        <p class="font-serif text-[1.75rem] font-semibold leading-[1.65] md:text-[2.25rem]">
+          <span class="text-primary">「創意」</span>と
+          <span class="text-primary">「誠意」</span>で真心奉仕
+        </p>
+        <p class="whitespace-pre-line text-[0.9375rem] leading-[1.75] text-muted-foreground">
+          {companyProfile.philosophyLead}
+        </p>
       </div>
     </div>
 
-    <div class="grid gap-6 border border-border bg-card p-6 md:grid-cols-[1fr_auto] md:items-center">
-      <div class="grid gap-5 md:grid-cols-3">
-        {
-          contactInfo.rows.map((row) => (
-            <ContactInfoRow
-              label={row.label}
-              value={row.value}
-              href={"href" in row ? row.href : undefined}
-            />
-          ))
-        }
+    <div class="grid gap-10 lg:grid-cols-[30rem_1fr] lg:gap-14">
+      <div class="grid content-start">
+        <div class="pb-4">
+          <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
+            PROFILE / 基本情報
+          </p>
+          <h3 class="mt-2 font-serif text-[1.75rem] font-semibold leading-normal">
+            基本情報
+          </h3>
+        </div>
+        <div class="grid border-b border-border">
+          {
+            companyProfile.rows.map(([label, value]) => (
+              <div class="grid gap-3 border-t border-border py-3.5 md:grid-cols-[6.5rem_1fr] md:gap-5">
+                <p class="font-mono text-[0.6875rem] font-normal leading-6 tracking-[0.12em] text-muted-foreground">
+                  {label}
+                </p>
+                <p class="text-sm leading-6 text-foreground">{value}</p>
+              </div>
+            ))
+          }
+        </div>
       </div>
-      <a
-        class="inline-flex min-h-12 items-center justify-center border border-primary bg-primary px-6 font-medium text-primary-foreground hover:opacity-90"
-        href="/contact"
-      >
-        お問い合わせへ
-      </a>
+
+      <div class="grid gap-9">
+        <div class="grid gap-5 border-b border-border pb-9">
+          <div>
+            <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
+              MESSAGE / 代表挨拶
+            </p>
+            <h3 class="mt-2 font-serif text-[1.75rem] font-semibold leading-normal">
+              ご挨拶
+            </h3>
+          </div>
+          <p class="max-w-[40.5rem] whitespace-pre-line text-[0.9375rem] leading-[1.75] text-muted-foreground">
+            {companyProfile.greeting}
+          </p>
+          <div class="flex items-center gap-4">
+            <div class="grid size-24 place-items-center border border-border bg-card font-mono text-[0.6875rem] tracking-[0.16em] text-muted-foreground">
+              顔写真
+            </div>
+            <div class="grid gap-1.5">
+              <p class="text-sm font-semibold">福浦 崇志</p>
+              <p class="text-[0.71875rem] tracking-[0.16em] text-muted-foreground">
+                代表取締役
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid gap-5">
+          <div>
+            <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
+              ACCESS / アクセス
+            </p>
+            <h3 class="mt-2 font-serif text-[1.75rem] font-semibold leading-normal">
+              アクセス
+            </h3>
+          </div>
+          <div class="grid min-h-[13.75rem] place-items-center border border-border bg-card font-mono text-xs tracking-[0.18em] text-muted-foreground">
+            地図 / Google Map 埋め込み
+          </div>
+          <p class="text-sm leading-7 text-foreground">{companyProfile.address}</p>
+          <p class="font-mono text-xs leading-7 tracking-[0.12em] text-muted-foreground">
+            TEL 079-492-6465 ／ FAX 079-492-6429
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>

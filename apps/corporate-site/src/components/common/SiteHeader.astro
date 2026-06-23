@@ -11,18 +11,34 @@ const { currentPath } = Astro.props;
 const isCurrent = (href: string) => currentPath === href;
 
 const navItems = [
-  { href: "/", label: "トップ", testId: "site-nav-home" },
-  { href: "/products", label: "取扱製品", testId: "site-nav-products" },
-  { href: "/contact", label: "お問い合わせ", testId: "site-nav-contact" },
+  { href: "/", label: "トップ", subLabel: "TOP", testId: "site-nav-home" },
+  {
+    href: "/#business",
+    label: "事業内容",
+    subLabel: "BUSINESS",
+    testId: "site-nav-business",
+  },
+  {
+    href: "/products",
+    label: "取扱製品",
+    subLabel: "PRODUCTS",
+    testId: "site-nav-products",
+  },
+  {
+    href: "/#company",
+    label: "会社情報",
+    subLabel: "COMPANY",
+    testId: "site-nav-company",
+  },
 ] as const;
 ---
 
 <header
-  class="site-header sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur"
+  class="site-header sticky top-0 z-20 bg-background/95 backdrop-blur"
   data-testid="site-header"
 >
   <div
-    class="mx-auto flex h-18 w-full max-w-360 items-center justify-between px-5 sm:px-8 lg:px-14"
+    class="mx-auto flex h-[4.1875rem] w-full max-w-360 items-center justify-between px-5 sm:px-8 md:h-24 lg:px-14"
   >
     <a class="flex items-center gap-3 text-foreground hover:text-primary" href="/">
       <Image
@@ -34,7 +50,7 @@ const navItems = [
         class="h-7 w-auto"
       />
       <span class="grid gap-0.5">
-        <span class="font-serif text-xl font-semibold leading-none">
+        <span class="font-serif text-[1.0625rem] font-semibold leading-none md:text-xl">
           有限会社フクウラ
         </span>
         <span
@@ -72,12 +88,22 @@ const navItems = [
             aria-current={isCurrent(item.href) ? "page" : undefined}
             data-testid={item.testId}
           >
-            {item.label}
+            <span>{item.label}</span>
+            <span class="site-nav-sub-label">{item.subLabel}</span>
           </a>
         ))
       }
+      <a
+        class="inline-flex min-h-10 items-center justify-center gap-2 bg-primary px-5 text-[0.8125rem] font-semibold text-primary-foreground hover:opacity-90"
+        href="/contact"
+        data-testid="site-nav-contact"
+      >
+        お問い合わせ
+        <span class="font-mono text-xs" aria-hidden="true">→</span>
+      </a>
     </nav>
   </div>
+  <div class="mx-auto h-px w-[calc(100%-2.5rem)] max-w-[83rem] bg-border sm:w-[calc(100%-4rem)] lg:w-[calc(100%-7rem)]" aria-hidden="true"></div>
 </header>
 
 <script>

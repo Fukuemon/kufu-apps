@@ -2,11 +2,11 @@ import { companyProfileSource } from "./source-references.js";
 
 export const heroContent = {
   sourceReferences: [companyProfileSource],
-  eyebrow: "FUKUURA INDUSTRIAL SUPPLY",
-  title: "「創意」と「誠意」で真心奉仕",
-  lead: "機械工具、省力化機器、伝動機器、物流・搬送機器から各種加工まで。工場の調達・保全・改善を、販売と加工の両面から支えます。",
+  eyebrow: "INDUSTRIAL SUPPLY & CUSTOM MACHINING",
+  title: "機械工具の調達と、特注加工を一社で。",
+  lead: "兵庫・稲美町から、製造現場に必要な製品供給と別作加工を支えます。\n見積もりから調達、図面・現物一個からの加工相談まで、現場の困りごとに応えます。",
   primaryCta: {
-    label: "お問い合わせ",
+    label: "お見積り・お問い合わせ",
     href: "/contact",
   },
   secondaryCta: {
