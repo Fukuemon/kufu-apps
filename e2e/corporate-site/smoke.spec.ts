@@ -10,9 +10,10 @@ test("renders main routes and content", async ({ page }) => {
   await expect(page.getByTestId("home-section-business")).toBeVisible();
   await expect(page.getByTestId("home-section-products")).toBeVisible();
   await expect(page.getByTestId("home-section-company")).toBeVisible();
+  // 18カテゴリのうち 4 件は featured カードで表示し、残り 14 件を索引リストに並べる
   await expect(
-    page.getByTestId("products-category-list").locator("li"),
-  ).toHaveCount(18);
+    page.getByTestId("products-category-list").locator("a"),
+  ).toHaveCount(14);
 
   await page.goto("/products");
   await expect(page).toHaveTitle("取扱製品 | 有限会社フクウラ");
