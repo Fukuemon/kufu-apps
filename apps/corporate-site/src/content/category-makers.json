@@ -1,0 +1,541 @@
+[
+  {
+    "id": "drive-reducers",
+    "categoryId": "drive-reducers",
+    "order": 1,
+    "categoryName": "駆動・変減速機器",
+    "makers": [
+      "住友重機械工業（株）",
+      "（株）日立産機システム",
+      "三菱電機（株）",
+      "（株）ツバキエマソン",
+      "（株）ニッセイ",
+      "オリエンタルモーター（株）",
+      "パナソニック（株）",
+      "日本電産シンポ（株）",
+      "三木プーリー（株）",
+      "（株）マキシンコー",
+      "（株）酒井製作所",
+      "（株）長谷川鉄工所",
+      "青木精密工業（株）",
+      "SEW オイドライブジャパン（株）",
+      "東芝産業機器システム（株）",
+      "富士電機（株）",
+      "（株）安川電機"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "bearings-linear-motion",
+    "categoryId": "bearings-linear-motion",
+    "order": 2,
+    "categoryName": "軸受・直動機器",
+    "makers": [
+      "NTN（株）",
+      "THK（株）",
+      "日本精工（株）",
+      "（株）不二越",
+      "日本トムソン（株）",
+      "旭精工（株）",
+      "日本ベアリング（株）",
+      "（株）ツバキナカシマ",
+      "オザック精工（株）",
+      "イグス（株）",
+      "オイレス工業（株）",
+      "東洋シャフト（株）",
+      "森本精密シャフト（株）",
+      "大同メタル工業（株）",
+      "ミネベア（株）",
+      "NOK（株）",
+      "新日本オイルシール（株）",
+      "（株）東洋オイルシール製作所",
+      "（株）富士精密"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "automation-labor-saving",
+    "categoryId": "automation-labor-saving",
+    "order": 3,
+    "categoryName": "自動化・省力化機器",
+    "makers": [
+      "（株）アイエイアイ",
+      "（株）デジタル",
+      "オムロン（株）",
+      "松下制御機器（株）",
+      "ミネベア（株）",
+      "三菱電機（株）",
+      "アズビル（株）",
+      "三洋電機（株）",
+      "日東工業（株）",
+      "富士電機機器制御（株）",
+      "（株）エー・アンド・デイ",
+      "（株）不二越",
+      "ファナック（株）",
+      "東芝産業機器システム（株）",
+      "（株）ハーモニック・ドライブ・システムズ",
+      "IDEC（株）"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "chain-belt-sprocket-gear",
+    "categoryId": "chain-belt-sprocket-gear",
+    "order": 4,
+    "categoryName": "チェーン・ベルト及びスプロケット・歯車",
+    "makers": [
+      "（株）椿本チェイン",
+      "日立機材（株）",
+      "片山チェイン（株）",
+      "日本チェイン（株）",
+      "鳥羽チェイン（株）",
+      "三ツ星ベルト（株）",
+      "バンドー化学（株）",
+      "ニッタ（株）",
+      "日本ジークリング（株）",
+      "小原歯車工業（株）",
+      "協育歯車工業（株）",
+      "関西金網（株）",
+      "（株）デイコム",
+      "鍋屋バイテック（株）",
+      "（株）大三商会",
+      "ツバキ山久チェイン（株）"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "power-transmission-supplies",
+    "categoryId": "power-transmission-supplies",
+    "order": 5,
+    "categoryName": "伝動機器・用品",
+    "makers": [
+      "鍋屋バイテック（株）",
+      "（株）イマオコーポレーション",
+      "（株）岩田製作所",
+      "（株）セイサ",
+      "（株）三好キカイ",
+      "倉敷化工（株）",
+      "神鋼電機（株）",
+      "日本ギヤー工業（株）",
+      "（株）昌和発条製作所",
+      "阪神発條（株）",
+      "三ツ星ベルト（株）",
+      "三木プーリー（株）",
+      "東洋ゴム工業（株）",
+      "アイセル（株）",
+      "太陽工機（株）"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "pneumatic-hydraulic",
+    "categoryId": "pneumatic-hydraulic",
+    "order": 6,
+    "categoryName": "空圧・油圧機器",
+    "makers": [
+      "SMC（株）",
+      "CKD（株）",
+      "（株）コガネイ",
+      "（株）TAIYO",
+      "クロダニューマテイクス（株）",
+      "（株）日本ピスコ",
+      "（株）ニューエラー",
+      "（株）妙徳",
+      "KYB（株）",
+      "理研機器（株）",
+      "油研工業（株）",
+      "（株）不二越",
+      "ダイキン工業（株）",
+      "アプライトパワージャパン（株）",
+      "（株）堀内機械",
+      "神威産業（株）",
+      "日本オイルポンプ（株）",
+      "（株）ブリヂストン",
+      "大生工業（株）",
+      "日本精器（株）"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "valves-hoses-piping",
+    "categoryId": "valves-hoses-piping",
+    "order": 7,
+    "categoryName": "バルブ・ホース配管機器",
+    "makers": [
+      "（株）キッツ",
+      "日立バルブ（株）",
+      "（株）ヨシタケ",
+      "（株）フジキン",
+      "（株）フジトク",
+      "大阪サニタリィー金属工業協同組合",
+      "日立金属（株）",
+      "シーケー金属（株）",
+      "イノック（株）",
+      "古林工業（株）",
+      "旭有機材工業（株）",
+      "積水化学工業（株）",
+      "（株）いけうち",
+      "スプレイングシステムジャパン（株）",
+      "（株）カクダイ",
+      "昌栄産業（株）",
+      "トーフレ（株）",
+      "シヨーボンドカップリング（株）",
+      "（株）昭和技研工業",
+      "イハラサイエンス（株）",
+      "フローバル（株）",
+      "東拓工業（株）",
+      "カナフレックスコーポレーション（株）",
+      "（株）トヨックス",
+      "十川産業（株）"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "pumps",
+    "categoryId": "pumps",
+    "order": 8,
+    "categoryName": "ポンプ関連機器",
+    "makers": [
+      "日本ブッシュ（株）",
+      "（株）荏原製作所",
+      "（株）鶴見製作所",
+      "テラル（株）",
+      "（株）酉島製作所",
+      "（株）丸八ポンプ",
+      "久喜ポンプ工業（株）",
+      "グルンドフォスポンプ（株）",
+      "ギャーエス工業（株）",
+      "（株）日立産機システム",
+      "（株）寺田ポンプ製作所",
+      "セイコー化工機（株）",
+      "（株）タクミナ",
+      "（株）工進",
+      "（株）イワキ",
+      "エレポン化工機（株）",
+      "（株）アンレット",
+      "オリオン機械（株）",
+      "（株）大阪空気機械製作所",
+      "神港精機（株）",
+      "有光工業（株）",
+      "（株）キョーワ",
+      "マルヤマエクセル（株）",
+      "三浦工業（株）",
+      "兵神装備（株）",
+      "（株）花塚製作所",
+      "（株）ヤマダコーポレーション"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "material-handling-conveyance",
+    "categoryId": "material-handling-conveyance",
+    "order": 9,
+    "categoryName": "荷役・搬送機器",
+    "makers": [
+      "（株）マキテック",
+      "オークラ輸送機（株）",
+      "マルヤス機械（株）",
+      "三機工業（株）",
+      "セントラルコンベア（株）",
+      "（株）メイキコウ",
+      "三和コンベア（株）",
+      "（株）日工",
+      "三洋機械産業（株）",
+      "伊東電機（株）",
+      "（株）協和製作所",
+      "ニッタ（株）",
+      "宇部樹脂加工（株）",
+      "（株）椿本バルクシステム",
+      "（株）フリーベアコーポレイション",
+      "（株）井口機構製作所",
+      "（株）富士製作所",
+      "（株）大日ハンソー",
+      "エクセン（株）",
+      "（株）スリーエッチ",
+      "（株）キトー",
+      "象印チェンブロック（株）",
+      "（株）ニッチ",
+      "（株）日立産機システム",
+      "（株）ダイフク",
+      "ハンマーキャスター（株）",
+      "（株）ナンシン",
+      "（株）内村製作所",
+      "（株）ヨドノ",
+      "（株）岡本工機",
+      "（株）永瀬工場"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "factory-equipment",
+    "categoryId": "factory-equipment",
+    "order": 10,
+    "categoryName": "工場設備関連",
+    "makers": [
+      "（株）ダイフク",
+      "トラスコ中山（株）",
+      "（株）サカエ",
+      "（株）河原",
+      "（株）スギヤス",
+      "鈴木製機（株）",
+      "（株）をくだ屋技研",
+      "ワタベ産業（株）",
+      "（株）淀川製鋼所",
+      "（株）大阪タイユー",
+      "ストラパック（株）",
+      "文化シャッター（株）",
+      "三甲（株）",
+      "アイリスオオヤマ（株）",
+      "リス（株）",
+      "（株）テイモー",
+      "サンキン（株）",
+      "スイコー（株）",
+      "コクヨ（株）",
+      "（株）ナイキ",
+      "アズワン（株）",
+      "コマニー（株）",
+      "生興（株）",
+      "（株）協和製作所",
+      "三進金属工業（株）",
+      "日成ビルド工業（株）",
+      "オリオン機械（株）",
+      "ダイキン工業（株）",
+      "（株）コロナ"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "fans-blowers-industrial",
+    "categoryId": "fans-blowers-industrial",
+    "order": 11,
+    "categoryName": "ファンブロア及び産業機器",
+    "makers": [
+      "フルタ電機（株）",
+      "昭和電機（株）",
+      "（株）スイデン",
+      "新東工業（株）",
+      "アマノ（株）",
+      "リョウセイ（株）",
+      "三立機器（株）",
+      "淀川電機製作所",
+      "（株）高木鉄工所",
+      "コベルココンプレッサー（株）",
+      "（株）日立産機システム",
+      "アネスト岩田（株）",
+      "三井精機工業（株）",
+      "（株）明治機器製作所",
+      "虹技（株）",
+      "（株）竹綱製作所",
+      "（株）八光電機",
+      "新日電熱工業（株）",
+      "厚地鉄工所（株）"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "measurement-instruments",
+    "categoryId": "measurement-instruments",
+    "order": 12,
+    "categoryName": "測定・計測機器",
+    "makers": [
+      "（株）ミツトヨ",
+      "シンワ測定（株）",
+      "（株）TJM デザイン",
+      "大西測定（株）",
+      "新潟精機（株）",
+      "（株）エー・アンド・デイ",
+      "（株）中村製作所",
+      "（株）第一計器製作所",
+      "長野計器（株）",
+      "（株）佐藤計量器製作所",
+      "大和製衡（株）",
+      "日置電機（株）"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "electric-pneumatic-hydraulic-tools",
+    "categoryId": "electric-pneumatic-hydraulic-tools",
+    "order": 13,
+    "categoryName": "電動・油空圧工具",
+    "makers": [
+      "日立工機（株）",
+      "日本ヒルティー（株）",
+      "日東工器（株）",
+      "（株）マキタ",
+      "パナソニック（株）",
+      "（株）やまびこ",
+      "ボッシュ（株）",
+      "レッキス工業（株）",
+      "（株）ロブテックス",
+      "（株）ベッセル",
+      "不二空機（株）",
+      "瓜生製作（株）",
+      "（株）空研",
+      "日本ニューマチック工業（株）"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "cutting-tools",
+    "categoryId": "cutting-tools",
+    "order": 14,
+    "categoryName": "切削工具",
+    "makers": [
+      "三菱マテリアルツールズ（株）",
+      "日立ツールズ（株）",
+      "オーエスジー（株）",
+      "岡崎精工（株）",
+      "京セラ（株）",
+      "（株）ニコテック",
+      "谷口工業（株）",
+      "（株）ミヤナガ",
+      "（株）弥満和製作所",
+      "ノガ・ジャパン",
+      "富士元工業（株）",
+      "大見工業（株）",
+      "エムアールテイ（株）",
+      "（株）ラキ"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "tooling-jigs",
+    "categoryId": "tooling-jigs",
+    "order": 15,
+    "categoryName": "ツーリング・治具",
+    "makers": [
+      "トラスコ中山（株）",
+      "（株）北川鉄工所",
+      "大昭和精機（株）",
+      "（株）ニューストロング",
+      "ユキワ精工（株）",
+      "カトウ工機（株）",
+      "エヌテイツール（株）",
+      "（株）日研工作所",
+      "津田駒工業（株）",
+      "カネテック（株）",
+      "（株）テクノプラン",
+      "扶桑精機（株）",
+      "（株）スーパーツール"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "grinding-polishing",
+    "categoryId": "grinding-polishing",
+    "order": 16,
+    "categoryName": "研削・研磨用品",
+    "makers": [
+      "日本レジボン（株）",
+      "ニューレジストン（株）",
+      "（株）イチグチ",
+      "住友スリーエム（株）",
+      "柳瀬（株）",
+      "（株）オフィスマイン",
+      "三共理化学（株）",
+      "（株）大陽商会",
+      "（株）ムラキ",
+      "トラスコ中山（株）"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "hand-tools",
+    "categoryId": "hand-tools",
+    "order": 17,
+    "categoryName": "作業工具",
+    "makers": [
+      "前田金属工業（株）",
+      "京都機械工具（株）",
+      "角田興業（株）",
+      "大同興業（株）",
+      "（株）ベッセル",
+      "（株）スーパーツール",
+      "ホーザン（株）",
+      "室本鉄工（株）",
+      "（株）ロブテックス",
+      "オーエッチ工業（株）",
+      "花園工具（株）",
+      "フジ矢（株）",
+      "浦谷商亊（株）"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  },
+  {
+    "id": "materials-bolts",
+    "categoryId": "materials-bolts",
+    "order": 18,
+    "categoryName": "材料・ボルト関連",
+    "makers": [
+      "エヌアイシー・オートテック（株）",
+      "クオドラントポリペンコジャパン（株）",
+      "双葉電子工業（株）",
+      "大同アシスター（株）",
+      "虹技（株）",
+      "伊東鋳工（株）",
+      "作新工業（株）",
+      "三ツ星ベルト（株）",
+      "（株）大和螺子",
+      "（株）コノエ",
+      "（株）スリーエッチ",
+      "東北ネジ製造（株）",
+      "（株）富士精密"
+    ],
+    "sourceReferences": [
+      "design/features/corporate-site/reference/company-profile.md",
+      "design/features/corporate-site/reference/manufacturers.md"
+    ]
+  }
+]
