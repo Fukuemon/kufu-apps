@@ -24,6 +24,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@storybook-astro/framework": "^1.5.0",
+    "@storybook/addon-docs": "10.4.6",
     "@tailwindcss/vite": "^4.3.1",
     "storybook": "^10.4.6",
     "tailwindcss": "^4.3.1",
