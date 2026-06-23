@@ -1015,53 +1015,202 @@
     "file": "_astro/noto-serif-jp-vietnamese-wght-normal-dN3mrpY_.woff2",
     "src": "../../node_modules/.pnpm/@fontsource-variable+noto-serif-jp@5.2.9/node_modules/@fontsource-variable/noto-serif-jp/files/noto-serif-jp-vietnamese-wght-normal.woff2"
   },
+  "../../node_modules/.pnpm/@mdx-js+react@3.1.1_@types+react@19.2.14_react@19.2.6/node_modules/@mdx-js/react/index.js": {
+    "file": "_astro/react-DRR9jkXc.js",
+    "name": "react",
+    "src": "../../node_modules/.pnpm/@mdx-js+react@3.1.1_@types+react@19.2.14_react@19.2.6/node_modules/@mdx-js/react/index.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js"
+    ]
+  },
+  "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js": {
+    "file": "_astro/Color-KMSTOMOX-Dl2IyYc6.js",
+    "name": "Color-KMSTOMOX",
+    "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "iframe.html",
+      "_chunk-S2IHWCOG-DH2oyU4_.js",
+      "_components-ByeNuhEq.js",
+      "_react-Cs_QX70J.js",
+      "_theming-y-h0tMk5.js"
+    ]
+  },
+  "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js": {
+    "file": "_astro/DocsRenderer-JROSPFPF-BPqGcjoY.js",
+    "name": "DocsRenderer-JROSPFPF",
+    "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "_preload-helper-BwFaOC_f.js",
+      "_chunk-S2IHWCOG-DH2oyU4_.js",
+      "_components-ByeNuhEq.js",
+      "_chunk-242VQQM5-C4riaKaH.js",
+      "_react-Cs_QX70J.js",
+      "_theming-y-h0tMk5.js"
+    ],
+    "dynamicImports": [
+      "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js",
+      "_components-ByeNuhEq.js",
+      "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js"
+    ]
+  },
+  "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js": {
+    "file": "_astro/WithTooltip-7X4HQR7L-Djgdudnt.js",
+    "name": "WithTooltip-7X4HQR7L",
+    "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "_chunk-242VQQM5-C4riaKaH.js",
+      "_react-Cs_QX70J.js",
+      "_chunk-3LY4VQVK-CMQlVsip.js",
+      "_theming-y-h0tMk5.js"
+    ]
+  },
+  "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js": {
+    "file": "_astro/formatter-L2YTDE3Q-rYFYxObz.js",
+    "name": "formatter-L2YTDE3Q",
+    "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "_chunk-3LY4VQVK-CMQlVsip.js"
+    ]
+  },
+  "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js": {
+    "file": "_astro/syntaxhighlighter-RTCFPKCB-DF3j0ZDy.js",
+    "name": "syntaxhighlighter-RTCFPKCB",
+    "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "_chunk-242VQQM5-C4riaKaH.js",
+      "_chunk-LITCR56V-DoiC2R1i.js",
+      "_react-Cs_QX70J.js",
+      "_chunk-3LY4VQVK-CMQlVsip.js",
+      "_theming-y-h0tMk5.js"
+    ]
+  },
   "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/mocking-utils/mocker-runtime.js": {
     "file": "vite-inject-mocker-entry.js",
     "name": "mocker-runtime",
     "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/mocking-utils/mocker-runtime.js",
     "isEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js",
-      "_preload-helper-BAcCHbuv.js"
+      "_chunk-BVpWp9h4.js",
+      "_preload-helper-BwFaOC_f.js"
     ]
   },
-  "_chunk-B5BL3XGC.js": {
-    "file": "_astro/chunk-B5BL3XGC.js",
+  "_chunk-242VQQM5-C4riaKaH.js": {
+    "file": "_astro/chunk-242VQQM5-C4riaKaH.js",
+    "name": "chunk-242VQQM5",
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "_react-Cs_QX70J.js"
+    ]
+  },
+  "_chunk-3LY4VQVK-CMQlVsip.js": {
+    "file": "_astro/chunk-3LY4VQVK-CMQlVsip.js",
+    "name": "chunk-3LY4VQVK",
+    "imports": [
+      "_chunk-BVpWp9h4.js"
+    ]
+  },
+  "_chunk-BVpWp9h4.js": {
+    "file": "_astro/chunk-BVpWp9h4.js",
     "name": "chunk"
   },
-  "_preload-helper-BAcCHbuv.js": {
-    "file": "_astro/preload-helper-BAcCHbuv.js",
+  "_chunk-LITCR56V-DoiC2R1i.js": {
+    "file": "_astro/chunk-LITCR56V-DoiC2R1i.js",
+    "name": "chunk-LITCR56V",
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "_chunk-242VQQM5-C4riaKaH.js",
+      "_react-Cs_QX70J.js",
+      "_theming-y-h0tMk5.js"
+    ]
+  },
+  "_chunk-S2IHWCOG-DH2oyU4_.js": {
+    "file": "_astro/chunk-S2IHWCOG-DH2oyU4_.js",
+    "name": "chunk-S2IHWCOG",
+    "imports": [
+      "_chunk-BVpWp9h4.js"
+    ]
+  },
+  "_components-ByeNuhEq.js": {
+    "file": "_astro/components-ByeNuhEq.js",
+    "name": "components",
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "_preload-helper-BwFaOC_f.js",
+      "_chunk-242VQQM5-C4riaKaH.js",
+      "_chunk-LITCR56V-DoiC2R1i.js",
+      "_react-Cs_QX70J.js",
+      "_chunk-3LY4VQVK-CMQlVsip.js",
+      "_theming-y-h0tMk5.js"
+    ],
+    "dynamicImports": [
+      "_theming-y-h0tMk5.js",
+      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js",
+      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js",
+      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js"
+    ]
+  },
+  "_preload-helper-BwFaOC_f.js": {
+    "file": "_astro/preload-helper-BwFaOC_f.js",
     "name": "preload-helper",
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
+    ]
+  },
+  "_react-Cs_QX70J.js": {
+    "file": "_astro/react-Cs_QX70J.js",
+    "name": "react",
+    "imports": [
+      "_chunk-BVpWp9h4.js"
+    ]
+  },
+  "_theming-y-h0tMk5.js": {
+    "file": "_astro/theming-y-h0tMk5.js",
+    "name": "theming",
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "_react-Cs_QX70J.js",
+      "_chunk-3LY4VQVK-CMQlVsip.js"
     ]
   },
   "iframe.html": {
-    "file": "_astro/iframe-GesCjPR6.js",
+    "file": "_astro/iframe-bAEGeiX6.js",
     "name": "iframe",
     "src": "iframe.html",
     "isEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js",
-      "_preload-helper-BAcCHbuv.js"
+      "_chunk-BVpWp9h4.js",
+      "_preload-helper-BwFaOC_f.js"
     ],
     "dynamicImports": [
-      "src/components/common/SectionHeading/SectionHeading.stories.ts",
+      "src/components/common/SectionHeading.stories.ts",
       "src/components/common/SiteFooter.stories.ts",
       "src/components/common/SiteHeader.stories.ts",
       "src/components/features/business/BusinessFeatureRow.stories.ts",
       "src/components/features/business/BusinessSection.stories.ts",
       "src/components/features/company/CompanySection.stories.ts",
+      "src/components/features/consultation/ConsultationSection.stories.ts",
       "src/components/features/contact/ContactInfoRow.stories.ts",
       "src/components/features/contact/ContactSection.stories.ts",
       "src/components/features/hero/Hero.stories.ts",
       "src/components/features/products/FeaturedCategoryCard.stories.ts",
       "src/components/features/products/ProductsCategorySection.stories.ts",
       "src/components/features/products/ProductsDetailSection.stories.ts",
-      "src/components/features/services/ServicePillar.stories.ts"
+      "src/components/features/services/ServicePillar.stories.ts",
+      "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js"
     ],
     "css": [
-      "_astro/iframe-B_oIaANy.css"
+      "_astro/iframe-B1DGCF_k.css"
     ],
     "assets": [
       "_astro/noto-sans-jp-0-wght-normal-ChZwicxE.woff2",
@@ -1320,139 +1469,148 @@
       "_astro/geist-mono-latin-wght-normal-B_7UjwxQ.woff2"
     ]
   },
-  "src/components/common/SectionHeading/SectionHeading.stories.ts": {
-    "file": "_astro/SectionHeading.stories-7N18aYQ3.js",
+  "src/components/common/SectionHeading.stories.ts": {
+    "file": "_astro/SectionHeading.stories-I0Asppr_.js",
     "name": "SectionHeading.stories",
-    "src": "src/components/common/SectionHeading/SectionHeading.stories.ts",
+    "src": "src/components/common/SectionHeading.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/common/SiteFooter.stories.ts": {
-    "file": "_astro/SiteFooter.stories-CfAMQzcz.js",
+    "file": "_astro/SiteFooter.stories-BkW4w049.js",
     "name": "SiteFooter.stories",
     "src": "src/components/common/SiteFooter.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/common/SiteHeader.stories.ts": {
-    "file": "_astro/SiteHeader.stories-FHTbQCGW.js",
+    "file": "_astro/SiteHeader.stories-ByNNgIXU.js",
     "name": "SiteHeader.stories",
     "src": "src/components/common/SiteHeader.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/features/business/BusinessFeatureRow.stories.ts": {
-    "file": "_astro/BusinessFeatureRow.stories-C7dR2G2b.js",
+    "file": "_astro/BusinessFeatureRow.stories-B2-vgd7N.js",
     "name": "BusinessFeatureRow.stories",
     "src": "src/components/features/business/BusinessFeatureRow.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/features/business/BusinessSection.stories.ts": {
-    "file": "_astro/BusinessSection.stories-DDpyiB6m.js",
+    "file": "_astro/BusinessSection.stories-5ClgLjH9.js",
     "name": "BusinessSection.stories",
     "src": "src/components/features/business/BusinessSection.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/features/company/CompanySection.stories.ts": {
-    "file": "_astro/CompanySection.stories-CXaRwXjs.js",
+    "file": "_astro/CompanySection.stories-BIJSYK0j.js",
     "name": "CompanySection.stories",
     "src": "src/components/features/company/CompanySection.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
+    ]
+  },
+  "src/components/features/consultation/ConsultationSection.stories.ts": {
+    "file": "_astro/ConsultationSection.stories-CHeICBas.js",
+    "name": "ConsultationSection.stories",
+    "src": "src/components/features/consultation/ConsultationSection.stories.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/features/contact/ContactInfoRow.stories.ts": {
-    "file": "_astro/ContactInfoRow.stories-DeEjdP5h.js",
+    "file": "_astro/ContactInfoRow.stories-1H7M_Fwn.js",
     "name": "ContactInfoRow.stories",
     "src": "src/components/features/contact/ContactInfoRow.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/features/contact/ContactSection.stories.ts": {
-    "file": "_astro/ContactSection.stories-BioA-59H.js",
+    "file": "_astro/ContactSection.stories-BF6dzHMD.js",
     "name": "ContactSection.stories",
     "src": "src/components/features/contact/ContactSection.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/features/hero/Hero.stories.ts": {
-    "file": "_astro/Hero.stories-DpnFaKMq.js",
+    "file": "_astro/Hero.stories-BhlrEeie.js",
     "name": "Hero.stories",
     "src": "src/components/features/hero/Hero.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/features/products/FeaturedCategoryCard.stories.ts": {
-    "file": "_astro/FeaturedCategoryCard.stories-C7qnASbr.js",
+    "file": "_astro/FeaturedCategoryCard.stories-mYRUvfpF.js",
     "name": "FeaturedCategoryCard.stories",
     "src": "src/components/features/products/FeaturedCategoryCard.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/features/products/ProductsCategorySection.stories.ts": {
-    "file": "_astro/ProductsCategorySection.stories-XfzuG_sI.js",
+    "file": "_astro/ProductsCategorySection.stories-BuR_oAU_.js",
     "name": "ProductsCategorySection.stories",
     "src": "src/components/features/products/ProductsCategorySection.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/features/products/ProductsDetailSection.stories.ts": {
-    "file": "_astro/ProductsDetailSection.stories-CP8OMk3W.js",
+    "file": "_astro/ProductsDetailSection.stories-BsxBBFgB.js",
     "name": "ProductsDetailSection.stories",
     "src": "src/components/features/products/ProductsDetailSection.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "src/components/features/services/ServicePillar.stories.ts": {
-    "file": "_astro/ServicePillar.stories-3ky6sTv4.js",
+    "file": "_astro/ServicePillar.stories-C0FFqSu4.js",
     "name": "ServicePillar.stories",
     "src": "src/components/features/services/ServicePillar.stories.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "virtual:astro-static-module/astro%3Ascripts%2Fbefore-hydration.js": {
-    "file": "_astro/astro_scripts/before-hydration_js-37665b80-D8305haC.js",
+    "file": "_astro/astro_scripts/before-hydration_js-37665b80-CxA7TBdV.js",
     "name": "astro_scripts/before-hydration_js-37665b80",
     "src": "virtual:astro-static-module/astro%3Ascripts%2Fbefore-hydration.js",
     "isEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "virtual:astro-static-module/astro%3Ascripts%2Fpage.js": {
-    "file": "_astro/astro_scripts/page_js-c45b4fb8-D8305haC.js",
+    "file": "_astro/astro_scripts/page_js-c45b4fb8-CxA7TBdV.js",
     "name": "astro_scripts/page_js-c45b4fb8",
     "src": "virtual:astro-static-module/astro%3Ascripts%2Fpage.js",
     "isEntry": true,
     "imports": [
-      "_chunk-B5BL3XGC.js"
+      "_chunk-BVpWp9h4.js"
     ]
   }
 }

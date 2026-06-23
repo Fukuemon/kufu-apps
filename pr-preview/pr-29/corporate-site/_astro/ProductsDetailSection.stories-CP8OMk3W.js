@@ -1,3 +1,0 @@
-import{t as e}from"./chunk-B5BL3XGC.js";var t,n=e((()=>{t=()=>{throw Error(`Astro components are rendered server-side by Storybook.`)},t.isAstroComponentFactory=!0,t.moduleId=`/home/runner/work/kufu-apps/kufu-apps/apps/corporate-site/src/components/features/products/ProductsDetailSection.astro`})),r,i,a;e((()=>{n(),r={title:`Corporate Site/Features/ProductsDetailSection`,component:t},i={args:{}},i.parameters={...i.parameters,docs:{...i.parameters?.docs,source:{originalSource:`{
-  args: {}
-}`,...i.parameters?.docs?.source}}},a=[`Default`]}))();export{i as Default,a as __namedExportsOrder,r as default};
