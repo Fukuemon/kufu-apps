@@ -7,6 +7,7 @@
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview --host 127.0.0.1 --port 4321",
     "lint": "oxlint --type-aware --config .oxlintrc.json astro.config.mjs vitest.config.ts",
+    "token:check": "node scripts/check-token-usage.mjs",
     "test": "vitest run --config vitest.config.ts --passWithNoTests",
     "typecheck": "ASTRO_TELEMETRY_DISABLED=1 astro check",
     "e2e:serve": "pnpm build && pnpm preview",
