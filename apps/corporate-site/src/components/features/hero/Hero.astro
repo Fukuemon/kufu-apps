@@ -7,13 +7,13 @@ import { servicePillars } from "../../../content/services.js";
 ---
 
 <section
-  class="relative overflow-hidden bg-background"
+  class="hero-industrial relative overflow-hidden bg-background"
   data-testid="home-section-hero"
 >
   <div
-    class="mx-auto grid w-full max-w-360 gap-6 px-5 pb-16 pt-10 sm:px-8 md:min-h-[46.75rem] md:grid-cols-[minmax(0,43.75rem)_minmax(24rem,36.25rem)] md:items-start md:gap-12 md:pb-24 md:pt-14 lg:px-14 xl:gap-12"
+    class="relative z-1 mx-auto grid w-full max-w-360 gap-6 px-5 pb-16 pt-10 sm:px-8 md:min-h-[46.75rem] md:grid-cols-[minmax(0,43.75rem)_minmax(24rem,36.25rem)] md:items-start md:gap-12 md:pb-24 md:pt-14 lg:px-14 xl:gap-12"
   >
-    <div class="grid gap-6 md:col-start-1 md:row-start-1 md:pt-6 lg:pt-20">
+    <div class="hero-copy grid gap-6 md:col-start-1 md:row-start-1 md:pt-6 lg:pt-20">
       <p class="font-mono text-[0.6875rem] font-medium leading-none tracking-[0.22em] text-primary">
         {heroContent.eyebrow}
       </p>
@@ -31,7 +31,7 @@ import { servicePillars } from "../../../content/services.js";
       </p>
     </div>
 
-    <div class="relative min-h-[18.75rem] overflow-hidden bg-kufu-gray-800 md:col-start-2 md:row-span-3 md:row-start-1 md:min-h-[38.75rem]">
+    <div class="hero-media relative min-h-[18.75rem] overflow-hidden bg-kufu-gray-800 md:col-start-2 md:row-span-3 md:row-start-1 md:min-h-[38.75rem]">
       <Image
         src={heroImage}
         alt="工場設備と加工相談のイメージ"
@@ -42,6 +42,15 @@ import { servicePillars } from "../../../content/services.js";
         class="absolute inset-0 h-full w-full object-cover"
       />
       <div class="absolute inset-0 bg-photo-overlay" aria-hidden="true"></div>
+      <div class="hero-media-ruler" aria-hidden="true"></div>
+      <div class="hero-spec-panel top-6 right-6" aria-hidden="true">
+        <span>取扱カテゴリ</span>
+        <strong>18分類</strong>
+      </div>
+      <div class="hero-spec-panel bottom-28 left-7" aria-hidden="true">
+        <span>加工相談</span>
+        <strong>図面・現物から対応</strong>
+      </div>
       <p
         class="absolute bottom-7 left-7 z-1 bg-card-overlay px-4 py-3 font-mono text-[0.6875rem] font-medium leading-5 tracking-[0.16em] text-foreground"
       >
@@ -54,7 +63,7 @@ import { servicePillars } from "../../../content/services.js";
       {
         servicePillars.map((pillar) => (
           <div class="border-t border-border py-4">
-            <div class="grid gap-2 sm:grid-cols-[9rem_1fr] sm:gap-6">
+            <div class="grid gap-2 sm:grid-cols-[4.5rem_1fr] sm:gap-4">
               <p class="font-mono text-[0.6875rem] font-medium tracking-[0.18em] text-primary">
                 {pillar.number}
               </p>
@@ -74,8 +83,9 @@ import { servicePillars } from "../../../content/services.js";
 
     <div class="flex flex-col gap-4 pt-1 sm:flex-row sm:items-center md:col-start-1 md:row-start-3">
       <a
-        class="inline-flex min-h-[3.375rem] items-center justify-center border border-primary bg-primary px-6 text-[0.9375rem] font-medium text-primary-foreground hover:opacity-90"
+        class="inline-flex min-h-[3.375rem] items-center justify-center border border-primary bg-primary px-6 text-[0.9375rem] font-medium text-kufu-white hover:opacity-90"
         href={heroContent.primaryCta.href}
+        data-contact-cta
         data-testid="home-link-contact"
       >
         {heroContent.primaryCta.label}
@@ -88,5 +98,16 @@ import { servicePillars } from "../../../content/services.js";
         {heroContent.secondaryCta.label}
       </a>
     </div>
+
+    <a
+      class="scroll-cue hidden items-center gap-3 justify-self-end font-mono text-[0.625rem] font-medium tracking-[0.2em] text-muted-foreground transition hover:text-primary md:col-start-2 md:row-start-3 md:flex"
+      href="#consultation"
+      aria-label="相談内容セクションへスクロール"
+    >
+      <span>SCROLL</span>
+      <span class="scroll-cue-icon grid size-9 place-items-center border border-border text-primary" aria-hidden="true">
+        ↓
+      </span>
+    </a>
   </div>
 </section>

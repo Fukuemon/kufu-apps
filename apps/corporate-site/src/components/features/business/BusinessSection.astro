@@ -10,7 +10,7 @@ const featureImages = [supplyImage, machiningImage] as const;
 
 <section
   id="business"
-  class="border-b border-border bg-card"
+  class="business-industrial reveal-section border-b border-border bg-card"
   data-testid="home-section-business"
 >
   <div class="mx-auto grid w-full max-w-360 gap-16 px-5 py-14 sm:px-8 md:gap-20 md:py-20 lg:px-14">
@@ -21,7 +21,7 @@ const featureImages = [supplyImage, machiningImage] as const;
       description={businessContent.heading.description}
     />
 
-    <div class="grid">
+    <div class="business-rows grid">
       {
         businessContent.features.map((feature, index) => (
           <BusinessFeatureRow
@@ -40,7 +40,7 @@ const featureImages = [supplyImage, machiningImage] as const;
       }
     </div>
 
-    <div class="grid border border-border bg-card md:grid-cols-[13.125rem_1fr]">
+    <div class="custom-order-panel grid border border-border bg-card md:grid-cols-[13.125rem_1fr]">
       <div class="border-b border-border px-5 py-5 md:border-b-0 md:border-r md:px-7 md:py-6">
         <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
           {businessContent.customOrder.eyebrow}
