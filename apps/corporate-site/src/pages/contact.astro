@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../components/common/BaseLayout.astro";
+import ContactSection from "../components/features/contact/ContactSection.astro";
 ---
 
 <BaseLayout
@@ -7,16 +8,5 @@ import BaseLayout from "../components/common/BaseLayout.astro";
   description="有限会社フクウラへのお問い合わせ先。電話、FAX、メールの連絡先を掲載しています。"
   footerVariant="compact"
 >
-  <section
-    class="mx-auto flex min-h-100 w-full max-w-360 flex-col justify-center gap-6 px-5 py-20 sm:px-8 lg:px-14"
-    data-testid="contact-section-info"
-  >
-    <p class="font-mono text-xs font-medium tracking-[0.18em] text-primary">
-      CONTACT
-    </p>
-    <h1 class="font-serif text-4xl font-semibold leading-tight">お問い合わせ</h1>
-    <p class="max-w-170 text-base leading-8 text-muted-foreground">
-      連絡先表示と、後続の問い合わせフォームを差し込む境界を配置するページです。
-    </p>
-  </section>
+  <ContactSection />
 </BaseLayout>
