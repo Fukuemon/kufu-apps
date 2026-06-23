@@ -1,0 +1,112 @@
+---
+import { getCollection } from "astro:content";
+
+const productCategories = (await getCollection("productCategories")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const categoryMakers = (await getCollection("categoryMakers")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const makersByCategory = new Map(
+  categoryMakers.map((entry) => [entry.data.categoryId, entry]),
+);
+
+const categoriesWithMakers = productCategories.map((category) => {
+  const makers = makersByCategory.get(category.id);
+
+  if (!makers) {
+    throw new Error(`Missing makers for product category: ${category.id}`);
+  }
+
+  return {
+    category,
+    makers,
+  };
+});
+---
+
+<section class="bg-background" data-testid="products-section-index">
+  <div class="mx-auto grid w-full max-w-360 gap-12 px-5 py-20 sm:px-8 lg:px-14">
+    <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+      <div class="grid gap-5">
+        <p class="font-mono text-xs font-medium tracking-[0.18em] text-primary">
+          PRODUCTS
+        </p>
+        <h1 class="font-serif text-4xl font-semibold leading-tight md:text-6xl">
+          取扱製品
+        </h1>
+        <p class="max-w-180 text-base leading-8 text-muted-foreground">
+          駆動・伝動、空圧・油圧、搬送、工具、加工周辺品まで、18カテゴリの取扱領域とメーカーを掲載しています。
+        </p>
+      </div>
+      <a
+        class="inline-flex min-h-12 items-center justify-center border border-primary bg-primary px-6 font-medium text-primary-foreground hover:opacity-90 lg:justify-self-end"
+        href="/contact"
+        data-testid="products-link-contact"
+      >
+        取扱製品について問い合わせる
+      </a>
+    </div>
+
+    <nav
+      class="grid border-t border-l border-border bg-card md:grid-cols-2 lg:grid-cols-3"
+      aria-label="取扱製品カテゴリ"
+      data-testid="products-category-list"
+    >
+      {
+        productCategories.map((category) => (
+          <a
+            class="grid gap-2 border-r border-b border-border p-5 hover:bg-secondary"
+            href={`#${category.id}`}
+          >
+            <span class="font-mono text-xs font-medium tracking-[0.16em] text-primary">
+              {String(category.data.order).padStart(2, "0")}
+            </span>
+            <span class="font-serif text-lg font-semibold leading-normal">
+              {category.data.name}
+            </span>
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="grid gap-8">
+      {
+        categoriesWithMakers.map(({ category, makers }) => (
+          <article
+            id={category.id}
+            class="grid gap-6 border border-border bg-card p-5 md:p-8"
+            data-testid={`products-category-${category.id}`}
+          >
+            <header class="grid gap-3 border-b border-border pb-5 md:grid-cols-[8rem_1fr] md:items-start">
+              <p class="font-mono text-sm font-medium tracking-[0.16em] text-primary">
+                {String(category.data.order).padStart(2, "0")}
+              </p>
+              <div class="grid gap-3">
+                <h2 class="font-serif text-2xl font-semibold leading-normal">
+                  {category.data.name}
+                </h2>
+                <p class="text-sm leading-7 text-muted-foreground">
+                  {category.data.summary}
+                </p>
+              </div>
+            </header>
+            <ul
+              class="flex flex-wrap gap-2 list-none"
+              data-testid={`products-maker-list-${category.id}`}
+            >
+              {
+                makers.data.makers.map((maker) => (
+                  <li class="border border-border bg-background px-3 py-2 text-sm leading-6 text-foreground">
+                    {maker}
+                  </li>
+                ))
+              }
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
