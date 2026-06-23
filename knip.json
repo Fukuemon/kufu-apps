@@ -11,7 +11,8 @@
         "src/**/*.stories.@(ts|tsx)",
         "src/components/**/*.astro"
       ],
-      "project": ["src/**/*.{astro,ts,css}", "public/**/*"]
+      "project": ["src/**/*.{astro,ts,css}", "public/**/*"],
+      "ignoreDependencies": ["sharp"]
     },
     "packages/ui": {
       "project": ["src/**/*.{ts,tsx,css}", "components.json"],

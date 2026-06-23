@@ -1,4 +1,7 @@
 ---
+import { Image } from "astro:assets";
+
+import heroImage from "../../../assets/corporate-hero-industrial.png";
 import { heroContent } from "../../../content/hero.js";
 ---
 
@@ -38,12 +41,20 @@ import { heroContent } from "../../../content/hero.js";
       </div>
     </div>
 
-    <div
-      class="grid min-h-96 content-end border border-border bg-kufu-gray-800 bg-photo-overlay p-6"
-      role="img"
-      aria-label="工場設備と加工相談のイメージ"
-    >
-      <p class="font-mono text-xs font-medium tracking-[0.16em] text-kufu-white">
+    <div class="relative grid min-h-96 overflow-hidden border border-border bg-kufu-gray-800">
+      <Image
+        src={heroImage}
+        alt="工場設備と加工相談のイメージ"
+        width={860}
+        height={459}
+        loading="eager"
+        fetchpriority="high"
+        class="absolute inset-0 h-full w-full object-cover"
+      />
+      <div class="absolute inset-0 bg-photo-overlay" aria-hidden="true"></div>
+      <p
+        class="relative z-1 self-end p-6 font-mono text-xs font-medium tracking-[0.16em] text-kufu-white"
+      >
         SUPPLY / MACHINING
       </p>
     </div>
