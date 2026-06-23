@@ -1,0 +1,109 @@
+---
+export interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const isCurrent = (href: string) => currentPath === href;
+
+const navItems = [
+  { href: "/", label: "トップ", testId: "site-nav-home" },
+  { href: "/products", label: "取扱製品", testId: "site-nav-products" },
+  { href: "/contact", label: "お問い合わせ", testId: "site-nav-contact" },
+] as const;
+---
+
+<header
+  class="site-header sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur"
+  data-testid="site-header"
+>
+  <div
+    class="mx-auto flex h-18 w-full max-w-360 items-center justify-between px-5 sm:px-8 lg:px-14"
+  >
+    <a
+      class="grid gap-0.5 text-foreground hover:text-primary"
+      href="/"
+      aria-label="有限会社フクウラ トップへ"
+    >
+      <span class="font-serif text-xl font-semibold leading-none">
+        有限会社フクウラ
+      </span>
+      <span
+        class="font-mono text-[0.625rem] font-medium tracking-[0.18em] text-primary"
+      >
+        FUKUURA
+      </span>
+    </a>
+
+    <button
+      class="site-nav-toggle inline-flex size-11 items-center justify-center border border-border bg-card text-foreground md:hidden"
+      type="button"
+      aria-label="ナビゲーションを開く"
+      aria-controls="site-nav-menu"
+      aria-expanded="false"
+      data-testid="site-nav-toggle"
+    >
+      <span class="site-nav-toggle-line" aria-hidden="true"></span>
+      <span class="site-nav-toggle-line" aria-hidden="true"></span>
+    </button>
+
+    <nav
+      id="site-nav-menu"
+      class="site-nav-menu"
+      aria-label="サイトナビゲーション"
+      data-open="false"
+      data-testid="site-nav-menu"
+    >
+      {
+        navItems.map((item) => (
+          <a
+            class="site-nav-link"
+            href={item.href}
+            aria-current={isCurrent(item.href) ? "page" : undefined}
+            data-testid={item.testId}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>(".site-nav-toggle");
+  const menu = document.querySelector<HTMLElement>(".site-nav-menu");
+
+  if (toggle && menu) {
+    const close = () => {
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "ナビゲーションを開く");
+      menu.dataset.open = "false";
+    };
+
+    const open = () => {
+      toggle.setAttribute("aria-expanded", "true");
+      toggle.setAttribute("aria-label", "ナビゲーションを閉じる");
+      menu.dataset.open = "true";
+    };
+
+    toggle.addEventListener("click", () => {
+      if (toggle.getAttribute("aria-expanded") === "true") {
+        close();
+        return;
+      }
+
+      open();
+    });
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", close);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        close();
+      }
+    });
+  }
+</script>
