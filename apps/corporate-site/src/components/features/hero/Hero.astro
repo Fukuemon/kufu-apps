@@ -1,0 +1,51 @@
+---
+import { heroContent } from "../../../content/hero.js";
+---
+
+<section
+  class="relative overflow-hidden border-b border-border bg-background"
+  data-testid="home-section-hero"
+>
+  <div
+    class="mx-auto grid min-h-150 w-full max-w-360 gap-12 px-5 py-20 sm:px-8 md:grid-cols-[1.08fr_0.92fr] md:items-center lg:px-14"
+  >
+    <div class="grid gap-8">
+      <div class="grid gap-5">
+        <p class="font-mono text-xs font-medium tracking-[0.18em] text-primary">
+          {heroContent.eyebrow}
+        </p>
+        <h1 class="max-w-220 font-serif text-4xl font-semibold leading-tight md:text-6xl">
+          {heroContent.title}
+        </h1>
+        <p class="max-w-170 text-base leading-8 text-muted-foreground">
+          {heroContent.lead}
+        </p>
+      </div>
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <a
+          class="inline-flex min-h-12 items-center justify-center border border-primary bg-primary px-6 font-medium text-primary-foreground hover:opacity-90"
+          href={heroContent.primaryCta.href}
+          data-testid="home-link-contact"
+        >
+          {heroContent.primaryCta.label}
+        </a>
+        <a
+          class="inline-flex min-h-12 items-center justify-center border border-border bg-card px-6 font-medium text-foreground hover:border-primary hover:text-primary"
+          href={heroContent.secondaryCta.href}
+        >
+          {heroContent.secondaryCta.label}
+        </a>
+      </div>
+    </div>
+
+    <div
+      class="grid min-h-96 content-end border border-border bg-kufu-gray-800 bg-photo-overlay p-6"
+      role="img"
+      aria-label="工場設備と加工相談のイメージ"
+    >
+      <p class="font-mono text-xs font-medium tracking-[0.16em] text-kufu-white">
+        SUPPLY / MACHINING
+      </p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,51 @@
+---
+import SectionHeading from "../../common/SectionHeading/SectionHeading.astro";
+import BusinessFeatureRow from "./BusinessFeatureRow.astro";
+import ServicePillar from "../services/ServicePillar.astro";
+import { businessContent } from "../../../content/business.js";
+import { servicePillars } from "../../../content/services.js";
+---
+
+<section
+  id="business"
+  class="border-b border-border bg-card"
+  data-testid="home-section-business"
+>
+  <div class="mx-auto grid w-full max-w-360 gap-12 px-5 py-20 sm:px-8 lg:px-14">
+    <SectionHeading
+      number={businessContent.heading.number}
+      eyebrow={businessContent.heading.eyebrow}
+      title={businessContent.heading.title}
+      description={businessContent.heading.description}
+    />
+
+    <div class="grid gap-2">
+      {
+        businessContent.features.map((feature) => (
+          <BusinessFeatureRow
+            number={feature.number}
+            eyebrow={feature.eyebrow}
+            title={feature.title}
+            description={feature.description}
+            items={[...feature.items]}
+            mediaLabel={feature.mediaLabel}
+            mediaCaption={feature.mediaCaption}
+            mediaPosition={feature.mediaPosition}
+          />
+        ))
+      }
+    </div>
+
+    <div class="grid gap-6 border-t border-border pt-10 md:grid-cols-2">
+      {
+        servicePillars.map((pillar) => (
+          <ServicePillar
+            number={pillar.number}
+            title={pillar.title}
+            lead={pillar.lead}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>

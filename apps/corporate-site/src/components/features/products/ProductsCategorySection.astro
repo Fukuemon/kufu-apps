@@ -1,0 +1,73 @@
+---
+import { getCollection } from "astro:content";
+
+import SectionHeading from "../../common/SectionHeading/SectionHeading.astro";
+import FeaturedCategoryCard from "./FeaturedCategoryCard.astro";
+
+const productCategories = (await getCollection("productCategories")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const featuredCategories = productCategories.slice(0, 3);
+---
+
+<section
+  id="products"
+  class="border-b border-border bg-muted"
+  data-testid="home-section-products"
+>
+  <div class="mx-auto grid w-full max-w-360 gap-12 px-5 py-20 sm:px-8 lg:px-14">
+    <div class="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+      <SectionHeading
+        number="02"
+        eyebrow="PRODUCTS"
+        title="取扱製品"
+        description="18カテゴリの取扱製品を単一データソースから表示し、詳細は取扱製品ページで確認できます。"
+      />
+      <a
+        class="inline-flex min-h-12 items-center justify-center border border-primary bg-primary px-6 font-medium text-primary-foreground hover:opacity-90"
+        href="/products"
+        data-testid="home-link-products"
+      >
+        取扱製品一覧へ
+      </a>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-3">
+      {
+        featuredCategories.map((category) => (
+          <FeaturedCategoryCard
+            category={`CATEGORY ${String(category.data.order).padStart(2, "0")}`}
+            count="代表カテゴリ"
+            title={category.data.name}
+          />
+        ))
+      }
+    </div>
+
+    <ol
+      class="grid list-none border-t border-l border-border bg-card md:grid-cols-2 lg:grid-cols-3"
+      data-testid="products-category-list"
+    >
+      {
+        productCategories.map((category) => (
+          <li class="border-r border-b border-border">
+            <a
+              class="grid min-h-24 gap-2 p-5 hover:bg-secondary"
+              href={`/products#${category.id}`}
+            >
+              <span class="font-mono text-xs font-medium tracking-[0.16em] text-primary">
+                {String(category.data.order).padStart(2, "0")}
+              </span>
+              <span class="font-serif text-lg font-semibold leading-normal">
+                {category.data.name}
+              </span>
+              <span class="text-sm leading-6 text-muted-foreground">
+                {category.data.summary}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
