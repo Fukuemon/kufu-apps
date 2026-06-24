@@ -397,18 +397,33 @@ a {
   color: var(--primary);
 }
 
-.products-nav-link.is-active::before {
+.products-nav-link {
+  position: relative;
+  padding-left: 0.625rem;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease;
+}
+
+.products-nav-link::before {
   position: absolute;
-  left: -0.75rem;
+  top: 50%;
+  left: 0;
   width: 2px;
   height: 1rem;
   background: var(--primary);
   content: "";
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity 0.2s ease;
 }
 
-.products-nav-link {
-  position: relative;
-  transition: opacity 0.2s ease;
+.products-nav-link.is-active {
+  color: var(--primary);
+}
+
+.products-nav-link.is-active::before {
+  opacity: 1;
 }
 
 .products-nav-link.is-dimmed {
@@ -449,6 +464,50 @@ a {
   .products-backtop {
     right: 2rem;
     bottom: 2rem;
+  }
+}
+
+/* products: スティッキー・サイドナビ */
+.products-nav-summary {
+  list-style: none;
+}
+
+.products-nav-summary::-webkit-details-marker {
+  display: none;
+}
+
+.products-nav[open] .products-nav-summary-icon {
+  transform: rotate(180deg);
+}
+
+.products-nav-group + .products-nav-group,
+[data-products-nav-group] + [data-products-nav-group] {
+  margin-top: 0.25rem;
+}
+
+.products-nav-list {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--border) 80%, transparent)
+    transparent;
+}
+
+.products-nav-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.products-nav-list::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--border) 80%, transparent);
+  border-radius: 3px;
+}
+
+@media (min-width: 64rem) {
+  /* デスクトップは常時展開（折りたたみ無効）し、フローティングボタンは不要 */
+  .products-nav > .products-nav-body {
+    display: grid !important;
+  }
+
+  .products-backtop {
+    display: none;
   }
 }
 
