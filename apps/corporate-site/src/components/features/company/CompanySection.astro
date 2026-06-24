@@ -1,6 +1,10 @@
 ---
 import SectionHeading from "../../common/SectionHeading.astro";
 import { companyProfile } from "../../../content/company.js";
+
+// API キー不要の埋め込み URL。住所からピンを立てる
+const mapQuery = encodeURIComponent("兵庫県加古郡稲美町国安973番地の10");
+const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=embed`;
 ---
 
 <section
@@ -88,9 +92,15 @@ import { companyProfile } from "../../../content/company.js";
               アクセス
             </h3>
           </div>
-          <div class="grid min-h-[13.75rem] place-items-center border border-border bg-card font-mono text-xs tracking-[0.18em] text-muted-foreground">
-            地図 / Google Map 埋め込み
-          </div>
+          <iframe
+            title="有限会社フクウラ 所在地の地図"
+            src={mapSrc}
+            class="aspect-[16/10] w-full border border-border"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+            data-testid="company-access-map"
+          ></iframe>
           <p class="text-sm leading-7 text-foreground">{companyProfile.address}</p>
           <p class="font-mono text-xs leading-7 tracking-[0.12em] text-muted-foreground">
             TEL 079-492-6465 ／ FAX 079-492-6429
