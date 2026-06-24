@@ -5,6 +5,34 @@
 
 :root {
   color-scheme: light;
+  /* 無骨さを保ちつつ角の硬さをやわらげる控えめな radius */
+  --radius: 0.25rem;
+}
+
+/* ボタン・フォーム・チップ・主要パネルに 4px の radius を付与
+   (面取り済みの business-media や円形ノードは対象外) */
+button,
+input,
+select,
+textarea,
+[data-contact-cta],
+.products-control-btn,
+.featured-carousel-arrow,
+.products-accordion-icon,
+.products-backtop,
+.contact-badge,
+.site-nav-toggle,
+.featured-category-card,
+.catalog-board,
+.products-summary-cta,
+.flow-panel,
+.products-nav,
+#products-category-groups,
+.hero-media,
+[data-testid="contact-section-info"],
+[data-testid="contact-form-slot"],
+[data-testid="company-access-map"] {
+  border-radius: var(--radius);
 }
 
 body {
@@ -608,7 +636,7 @@ a {
 .contact-badge {
   display: inline-flex;
   align-items: center;
-  border-radius: 1px;
+  border-radius: var(--radius);
   padding: 0.0625rem 0.375rem;
   font-family: var(--font-mono);
   font-size: 0.625rem;
