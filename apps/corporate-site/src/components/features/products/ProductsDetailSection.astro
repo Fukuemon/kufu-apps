@@ -32,13 +32,6 @@ const makerCountById = new Map(
   categoryMakers.map((entry) => [entry.data.categoryId, entry.data.makers.length]),
 );
 
-// 索引ナビは18カテゴリを3列に等分する
-const indexColumns = [
-  productCategories.slice(0, 6),
-  productCategories.slice(6, 12),
-  productCategories.slice(12, 18),
-];
-
 // design: Products Category List はカテゴリを4グループの見出しで束ねる
 const categoryGroups = [
   { eyebrow: "CATEGORY 01–05", title: "駆動・伝動", from: 1, to: 5 },
@@ -122,73 +115,90 @@ const categoryGroups = [
       </p>
     </div>
 
-    <nav
-      id="products-category-list"
-      class="reveal-section grid scroll-mt-24 gap-4 border border-border bg-card p-5 md:p-7"
-      aria-label="取扱製品カテゴリ索引"
-      data-testid="products-category-list"
-      data-category-nav
-    >
-      <p class="font-mono text-[0.625rem] font-medium tracking-[0.2em] text-muted-foreground">
-        INDEX
-      </p>
-      <div class="grid gap-x-10 md:grid-cols-3">
-        {
-          indexColumns.map((column) => (
-            <div class="grid border-b border-border">
-              {column.map((category) => (
-                <a
-                  class="products-nav-link grid grid-cols-[2.5rem_1fr_auto] items-center gap-3 border-t border-border py-2.5 hover:text-primary"
-                  href={`#${category.id}`}
-                  data-nav-target={category.id}
-                >
-                  <span class="font-mono text-[0.6875rem] font-medium tracking-[0.08em] text-primary">
-                    {String(category.data.order).padStart(2, "0")}
-                  </span>
-                  <span class="text-sm font-medium leading-normal">
-                    {category.data.name}
-                  </span>
-                  <span class="text-[0.71875rem] text-muted-foreground">
-                    {makerCountById.get(category.id) ?? 0}社
-                  </span>
-                </a>
-              ))}
+    <div class="grid gap-8 lg:grid-cols-[19.5rem_minmax(0,1fr)] lg:items-start lg:gap-10">
+      <aside class="products-nav-rail reveal-section lg:sticky lg:top-28 lg:self-start">
+        <details class="products-nav border border-border bg-card" open data-products-nav>
+          <summary class="products-nav-summary flex cursor-pointer items-center justify-between gap-3 px-5 py-4 lg:hidden">
+            <span class="flex items-baseline gap-3">
+              <span class="font-mono text-[0.625rem] font-medium tracking-[0.2em] text-primary">INDEX</span>
+              <span class="text-sm font-semibold">カテゴリを探す</span>
+            </span>
+            <span class="products-nav-summary-icon font-mono text-base text-muted-foreground" aria-hidden="true">▾</span>
+          </summary>
+
+          <div class="products-nav-body grid gap-4 px-5 pb-5 lg:pt-5">
+            <p class="hidden font-mono text-[0.625rem] font-medium tracking-[0.2em] text-muted-foreground lg:block">
+              CATEGORY NAVIGATION
+            </p>
+
+            <label class="grid gap-2">
+              <span class="sr-only">カテゴリ・メーカー名で検索</span>
+              <span class="relative block">
+                <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-base text-muted-foreground" aria-hidden="true">⌕</span>
+                <input
+                  type="search"
+                  class="min-h-11 w-full border border-border bg-background pl-9 pr-3 text-sm"
+                  placeholder="カテゴリ・メーカー名で検索"
+                  aria-controls="products-category-groups"
+                  data-products-search
+                />
+              </span>
+            </label>
+
+            <div class="flex items-center justify-between gap-3">
+              <p class="text-[0.75rem] text-muted-foreground" data-products-result aria-live="polite" hidden></p>
+              <div class="ml-auto flex gap-2">
+                <button type="button" class="products-control-btn" data-expand-all>すべて開く</button>
+                <button type="button" class="products-control-btn" data-collapse-all>すべて閉じる</button>
+              </div>
             </div>
-          ))
-        }
-      </div>
-    </nav>
 
-    <div
-      class="products-toolbar reveal-section grid gap-4 border border-border bg-card p-5 md:flex md:items-center md:justify-between md:gap-6 md:px-7"
-      data-products-toolbar
-    >
-      <label class="grid gap-2 md:min-w-80 md:flex-1">
-        <span class="sr-only">カテゴリ・メーカー名で検索</span>
-        <span class="relative block">
-          <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-base text-muted-foreground" aria-hidden="true">⌕</span>
-          <input
-            type="search"
-            class="min-h-12 w-full border border-border bg-background pl-9 pr-3 text-sm"
-            placeholder="カテゴリ名・メーカー名で検索"
-            aria-controls="products-category-groups"
-            data-products-search
-          />
-        </span>
-      </label>
-      <div class="flex items-center justify-between gap-4 md:justify-end">
-        <p class="text-[0.8125rem] text-muted-foreground" data-products-result aria-live="polite" hidden></p>
-        <div class="flex gap-2">
-          <button type="button" class="products-control-btn" data-expand-all>すべて開く</button>
-          <button type="button" class="products-control-btn" data-collapse-all>すべて閉じる</button>
-        </div>
-      </div>
-    </div>
+            <nav
+              id="products-category-list"
+              class="products-nav-list grid scroll-mt-24 gap-4 lg:max-h-[calc(100vh-18rem)] lg:overflow-y-auto"
+              aria-label="取扱製品カテゴリ索引"
+              data-testid="products-category-list"
+              data-category-nav
+            >
+              {
+                categoryGroups.map((group) => (
+                  <div class="grid gap-0.5" data-products-nav-group>
+                    <p class="products-nav-group-title font-mono text-[0.625rem] font-medium tracking-[0.16em] text-muted-foreground">
+                      {group.title}
+                    </p>
+                    <ul class="grid list-none">
+                      {group.items.map(({ category }) => (
+                        <li>
+                          <a
+                            class="products-nav-link grid grid-cols-[1.75rem_1fr_auto] items-center gap-2 py-1.5 hover:text-primary"
+                            href={`#${category.id}`}
+                            data-nav-target={category.id}
+                          >
+                            <span class="font-mono text-[0.625rem] font-medium tracking-[0.08em] text-primary">
+                              {String(category.data.order).padStart(2, "0")}
+                            </span>
+                            <span class="text-[0.8125rem] font-medium leading-snug">
+                              {category.data.name}
+                            </span>
+                            <span class="text-[0.6875rem] text-muted-foreground">
+                              {makerCountById.get(category.id) ?? 0}社
+                            </span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))
+              }
+            </nav>
+          </div>
+        </details>
+      </aside>
 
-    <div
-      id="products-category-groups"
-      class="border border-border bg-card p-5 md:px-10 md:py-8"
-    >
+      <div
+        id="products-category-groups"
+        class="border border-border bg-card p-5 md:px-8 md:py-7"
+      >
       <p class="hidden text-sm leading-[1.8] text-muted-foreground" data-products-empty>
         該当するカテゴリ・メーカーが見つかりませんでした。検索条件を変えてお試しください。
       </p>
@@ -250,6 +260,7 @@ const categoryGroups = [
           </div>
         ))
       }
+      </div>
     </div>
   </div>
 
