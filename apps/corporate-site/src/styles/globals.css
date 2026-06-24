@@ -114,6 +114,81 @@ a {
   opacity: 0.6;
 }
 
+/* デスクトップ: ヒーロー画像を右へフルブリードで広げ、左(コピー側)は
+   背景へフェードさせてコピー背面に溶け込ませる */
+/* ホームヒーローは md で 2カラム化するため md からブリード */
+@media (min-width: 48rem) {
+  .hero-industrial .hero-media {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(50% - 50vw);
+    left: auto;
+    z-index: -1;
+    width: 62vw;
+    max-width: 74rem;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    opacity: 0.9;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.5) 22%,
+      black 44%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.5) 22%,
+      black 44%
+    );
+  }
+
+  .hero-industrial .hero-media-overlay,
+  .hero-industrial .hero-media-ruler,
+  .hero-industrial .hero-media-caption {
+    display: none;
+  }
+}
+
+/* 取扱製品ヒーローは lg で 2カラム化するため lg からブリード */
+@media (min-width: 64rem) {
+  .products-hero-media {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(50% - 50vw);
+    left: auto;
+    z-index: -1;
+    width: 62vw;
+    max-width: 74rem;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    opacity: 0.9;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.5) 22%,
+      black 44%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.5) 22%,
+      black 44%
+    );
+  }
+
+  .products-hero-media-overlay,
+  .products-hero-media-caption {
+    display: none;
+  }
+}
+
 .flow-panel {
   position: relative;
 }
