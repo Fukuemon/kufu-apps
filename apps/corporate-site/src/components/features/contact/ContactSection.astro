@@ -57,35 +57,45 @@
       >
         <div class="grid gap-4 md:grid-cols-2">
           <label class="grid gap-2 text-[0.8125rem]">
-            会社名 必須
-            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="text" name="company" />
+            <span class="flex items-center gap-2">会社名<span class="contact-badge contact-badge--required">必須</span></span>
+            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="text" name="company" required aria-required="true" />
           </label>
           <label class="grid gap-2 text-[0.8125rem]">
-            ご担当者名 必須
-            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="text" name="name" />
+            <span class="flex items-center gap-2">ご担当者名<span class="contact-badge contact-badge--required">必須</span></span>
+            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="text" name="name" required aria-required="true" />
           </label>
         </div>
         <div class="grid gap-4 md:grid-cols-2">
           <label class="grid gap-2 text-[0.8125rem]">
-            メールアドレス 必須
-            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="email" name="email" />
+            <span class="flex items-center gap-2">メールアドレス<span class="contact-badge contact-badge--required">必須</span></span>
+            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="email" name="email" required aria-required="true" />
           </label>
           <label class="grid gap-2 text-[0.8125rem]">
-            電話番号
-            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="tel" name="phone" />
+            <span class="flex items-center gap-2">電話番号<span class="contact-badge contact-badge--required">必須</span></span>
+            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="tel" name="phone" required aria-required="true" />
           </label>
         </div>
         <label class="grid gap-2 text-[0.8125rem]">
-          お問い合わせ種別
-          <select class="min-h-12 border border-border bg-background px-3 text-sm text-muted-foreground" name="category">
-            <option>お見積り依頼（販売）</option>
-            <option>加工のご相談</option>
-            <option>その他</option>
-          </select>
+          <span class="flex items-center gap-2">住所<span class="contact-badge contact-badge--required">必須</span></span>
+          <input class="min-h-12 border border-border bg-background px-3 text-sm" type="text" name="address" autocomplete="street-address" placeholder="〒675-1114 兵庫県加古郡稲美町国安973番地の10" required aria-required="true" />
         </label>
+        <div class="grid gap-4 md:grid-cols-2">
+          <label class="grid gap-2 text-[0.8125rem]">
+            <span class="flex items-center gap-2">FAX番号<span class="contact-badge contact-badge--optional">任意</span></span>
+            <input class="min-h-12 border border-border bg-background px-3 text-sm" type="tel" name="fax" autocomplete="fax" />
+          </label>
+          <label class="grid gap-2 text-[0.8125rem]">
+            <span class="flex items-center gap-2">お問い合わせ種別<span class="contact-badge contact-badge--optional">任意</span></span>
+            <select class="min-h-12 border border-border bg-background px-3 text-sm text-muted-foreground" name="category">
+              <option>お見積り依頼（販売）</option>
+              <option>加工のご相談</option>
+              <option>その他</option>
+            </select>
+          </label>
+        </div>
         <label class="grid gap-2 text-[0.8125rem]">
-          お問い合わせ内容 必須
-          <textarea class="min-h-40 border border-border bg-background p-3 text-sm leading-[1.75] text-muted-foreground" name="message">製品名・型番・数量、加工内容（図面の有無）などをご記入ください。</textarea>
+          <span class="flex items-center gap-2">お問い合わせ内容<span class="contact-badge contact-badge--required">必須</span></span>
+          <textarea class="min-h-40 border border-border bg-background p-3 text-sm leading-[1.75] text-muted-foreground" name="message" required aria-required="true">製品名・型番・数量、加工内容（図面の有無）などをご記入ください。</textarea>
         </label>
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <p class="text-[0.8125rem] text-muted-foreground">

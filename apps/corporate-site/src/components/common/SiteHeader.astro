@@ -11,24 +11,27 @@ const { currentPath } = Astro.props;
 const isCurrent = (href: string) => currentPath === href;
 
 const navItems = [
-  { href: "/", label: "トップ", subLabel: "TOP", testId: "site-nav-home" },
+  { href: "/", label: "トップ", subLabel: "TOP", testId: "site-nav-home", isPage: false },
   {
     href: "/#business",
     label: "事業内容",
     subLabel: "BUSINESS",
     testId: "site-nav-business",
+    isPage: false,
   },
   {
     href: "/products",
     label: "取扱製品",
     subLabel: "PRODUCTS",
     testId: "site-nav-products",
+    isPage: true,
   },
   {
     href: "/#company",
     label: "会社情報",
     subLabel: "COMPANY",
     testId: "site-nav-company",
+    isPage: false,
   },
 ] as const;
 ---
@@ -83,12 +86,19 @@ const navItems = [
       {
         navItems.map((item) => (
           <a
-            class="site-nav-link"
+            class:list={["site-nav-link", { "site-nav-link--page": item.isPage }]}
             href={item.href}
             aria-current={isCurrent(item.href) ? "page" : undefined}
             data-testid={item.testId}
           >
-            <span>{item.label}</span>
+            <span class="site-nav-label">
+              {item.label}
+              {item.isPage && (
+                <span class="site-nav-page-icon" aria-hidden="true">
+                  ↗
+                </span>
+              )}
+            </span>
             <span class="site-nav-sub-label">{item.subLabel}</span>
           </a>
         ))

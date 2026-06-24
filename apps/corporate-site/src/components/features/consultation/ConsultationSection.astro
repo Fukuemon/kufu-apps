@@ -17,10 +17,10 @@ import { consultationContent } from "../../../content/consultation.js";
     />
 
     <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_25rem] lg:items-start lg:gap-12">
-      <div class="grid border border-border bg-background">
+      <div class="grid content-start">
         {
           consultationContent.cases.map((item, index) => (
-            <article class="consultation-case grid gap-4 border-b border-border px-5 py-5 last:border-b-0 md:grid-cols-[4rem_1fr] md:items-start md:gap-6 md:px-6">
+            <article class="consultation-case grid gap-2 border-t border-border py-6 last:border-b sm:grid-cols-[4rem_1fr] sm:gap-5">
               <p class="font-mono text-[0.75rem] font-medium tracking-[0.18em] text-primary">
                 {String(index + 1).padStart(2, "0")}
               </p>
@@ -37,20 +37,25 @@ import { consultationContent } from "../../../content/consultation.js";
         }
       </div>
 
-      <aside class="flow-panel grid border border-border bg-muted">
-        <div class="border-b border-border px-5 py-5 md:px-6">
+      <aside class="flow-panel grid content-start border border-border bg-muted">
+        <div class="flex items-baseline justify-between gap-4 border-b border-border px-5 py-5 md:px-6">
           <h3 class="font-serif text-[1.5rem] font-semibold leading-normal">
             相談から納品まで
           </h3>
+          <span class="font-mono text-[0.625rem] font-medium tracking-[0.2em] text-muted-foreground">
+            全4ステップ
+          </span>
         </div>
-        <ol class="grid list-none px-5 py-2 md:px-6">
+        <ol class="consultation-flow grid list-none px-5 py-6 md:px-6">
           {
             consultationContent.flow.map((item) => (
-              <li class="grid grid-cols-[3.25rem_1fr] gap-4 border-b border-border py-5 last:border-b-0">
-                <p class="font-mono text-[0.75rem] font-medium tracking-[0.18em] text-primary">
-                  {item.step}
-                </p>
-                <div class="grid gap-1.5">
+              <li class="consultation-flow-step grid grid-cols-[2.75rem_1fr] gap-4 pb-7 last:pb-0">
+                <span class="consultation-flow-marker" aria-hidden="true">
+                  <span class="consultation-flow-node font-mono text-[0.8125rem] font-semibold">
+                    {item.step}
+                  </span>
+                </span>
+                <div class="grid gap-1.5 pt-1">
                   <p class="font-serif text-[1rem] font-semibold leading-normal">
                     {item.title}
                   </p>

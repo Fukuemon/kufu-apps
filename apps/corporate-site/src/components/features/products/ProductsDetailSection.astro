@@ -57,7 +57,7 @@ const categoryGroups = [
 <section class="bg-background">
   <div class="mx-auto grid w-full max-w-360 gap-10 px-5 py-12 sm:px-8 md:gap-16 md:py-16 lg:px-14">
     <div class="grid gap-10 lg:grid-cols-[38.125rem_1fr] lg:items-center">
-      <div class="grid gap-5">
+      <div class="reveal-section grid gap-5">
         <nav class="flex gap-2 font-mono text-[0.6875rem] tracking-[0.12em] text-muted-foreground" aria-label="パンくず">
           <a href="/">トップ</a>
           <span>/</span>
@@ -87,7 +87,7 @@ const categoryGroups = [
           </a>
         </div>
       </div>
-      <div class="relative min-h-[26.25rem] overflow-hidden border border-border bg-kufu-gray-800">
+      <div class="reveal-section relative min-h-[26.25rem] overflow-hidden border border-border bg-kufu-gray-800">
         <Image
           src={productsImage}
           alt="機械工具・関連機器"
@@ -124,9 +124,10 @@ const categoryGroups = [
 
     <nav
       id="products-category-list"
-      class="grid gap-4 border border-border bg-card p-5 md:p-7"
+      class="reveal-section grid scroll-mt-24 gap-4 border border-border bg-card p-5 md:p-7"
       aria-label="取扱製品カテゴリ索引"
       data-testid="products-category-list"
+      data-category-nav
     >
       <p class="font-mono text-[0.625rem] font-medium tracking-[0.2em] text-muted-foreground">
         INDEX
@@ -137,8 +138,9 @@ const categoryGroups = [
             <div class="grid border-b border-border">
               {column.map((category) => (
                 <a
-                  class="grid grid-cols-[2.5rem_1fr_auto] items-center gap-3 border-t border-border py-2.5 hover:text-primary"
+                  class="products-nav-link grid grid-cols-[2.5rem_1fr_auto] items-center gap-3 border-t border-border py-2.5 hover:text-primary"
                   href={`#${category.id}`}
+                  data-nav-target={category.id}
                 >
                   <span class="font-mono text-[0.6875rem] font-medium tracking-[0.08em] text-primary">
                     {String(category.data.order).padStart(2, "0")}
@@ -157,11 +159,43 @@ const categoryGroups = [
       </div>
     </nav>
 
-    <div class="border border-border bg-card p-5 md:px-10 md:py-8">
+    <div
+      class="products-toolbar reveal-section grid gap-4 border border-border bg-card p-5 md:flex md:items-center md:justify-between md:gap-6 md:px-7"
+      data-products-toolbar
+    >
+      <label class="grid gap-2 md:min-w-80 md:flex-1">
+        <span class="sr-only">カテゴリ・メーカー名で検索</span>
+        <span class="relative block">
+          <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-base text-muted-foreground" aria-hidden="true">⌕</span>
+          <input
+            type="search"
+            class="min-h-12 w-full border border-border bg-background pl-9 pr-3 text-sm"
+            placeholder="カテゴリ名・メーカー名で検索"
+            aria-controls="products-category-groups"
+            data-products-search
+          />
+        </span>
+      </label>
+      <div class="flex items-center justify-between gap-4 md:justify-end">
+        <p class="text-[0.8125rem] text-muted-foreground" data-products-result aria-live="polite" hidden></p>
+        <div class="flex gap-2">
+          <button type="button" class="products-control-btn" data-expand-all>すべて開く</button>
+          <button type="button" class="products-control-btn" data-collapse-all>すべて閉じる</button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="products-category-groups"
+      class="border border-border bg-card p-5 md:px-10 md:py-8"
+    >
+      <p class="hidden text-sm leading-[1.8] text-muted-foreground" data-products-empty>
+        該当するカテゴリ・メーカーが見つかりませんでした。検索条件を変えてお試しください。
+      </p>
       {
         categoryGroups.map((group) => (
-          <div class="mt-11 grid first:mt-0">
-            <div class="grid gap-2 pb-1">
+          <div class="products-group mt-11 grid first:mt-0" data-products-group>
+            <div class="grid gap-2 pb-1" data-group-heading>
               <p class="font-mono text-[0.6875rem] font-medium tracking-[0.18em] text-primary">
                 {group.eyebrow}
               </p>
@@ -172,32 +206,45 @@ const categoryGroups = [
             {group.items.map(({ category, makers }) => (
               <article
                 id={category.id}
-                class="grid gap-5 border-t border-border py-6 md:gap-7 md:py-7"
+                class="reveal-section grid scroll-mt-28 border-t border-border"
                 data-testid={`products-category-${category.id}`}
+                data-category-item
+                data-category-name={category.data.name}
               >
-                <div class="grid gap-5 md:grid-cols-[19.375rem_1fr] md:gap-8">
-                  <div class="grid content-start gap-2">
-                    <p class="font-mono text-[0.8125rem] font-medium tracking-[0.08em] text-primary">
+                <details class="products-accordion" open>
+                  <summary class="products-accordion-summary grid cursor-pointer grid-cols-[2.75rem_1fr_auto] items-center gap-3 py-5 md:gap-5 md:py-6">
+                    <span class="font-mono text-[0.8125rem] font-medium tracking-[0.08em] text-primary">
                       {String(category.data.order).padStart(2, "0")}
-                    </p>
-                    <h4 class="font-serif text-xl font-semibold leading-[1.35] text-foreground">
-                      {category.data.name}
-                    </h4>
-                    <p class="text-xs font-medium text-primary">
-                      取扱メーカー {makers.data.makers.length}社
-                    </p>
+                    </span>
+                    <span class="grid gap-1">
+                      <span class="font-serif text-xl font-semibold leading-[1.35] text-foreground">
+                        {category.data.name}
+                      </span>
+                      <span class="text-xs font-medium text-primary">
+                        取扱メーカー {makers.data.makers.length}社
+                      </span>
+                    </span>
+                    <span class="products-accordion-icon inline-flex size-7 items-center justify-center border border-border font-mono text-base text-muted-foreground" aria-hidden="true">
+                      +
+                    </span>
+                  </summary>
+                  <div class="pb-6 pl-14 md:pb-7 md:pl-16">
+                    <ul
+                      class="columns-1 gap-7 sm:columns-2 lg:columns-3 list-none"
+                      data-testid={`products-maker-list-${category.id}`}
+                      data-maker-list
+                    >
+                      {makers.data.makers.map((maker) => (
+                        <li
+                          class="break-inside-avoid text-[0.8125rem] leading-[1.95] text-muted-foreground"
+                          data-maker={maker}
+                        >
+                          {maker}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul
-                    class="columns-1 gap-7 sm:columns-2 lg:columns-3 list-none"
-                    data-testid={`products-maker-list-${category.id}`}
-                  >
-                    {makers.data.makers.map((maker) => (
-                      <li class="break-inside-avoid text-[0.8125rem] leading-[1.95] text-muted-foreground">
-                        {maker}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                </details>
               </article>
             ))}
           </div>
@@ -205,6 +252,17 @@ const categoryGroups = [
       }
     </div>
   </div>
+
+  <button
+    type="button"
+    class="products-backtop"
+    data-products-backtop
+    aria-label="カテゴリ一覧の先頭へ戻る"
+    hidden
+  >
+    <span class="font-mono text-base leading-none" aria-hidden="true">↑</span>
+    <span class="products-backtop-label">カテゴリ先頭へ</span>
+  </button>
 </section>
 
 <section class="bg-kufu-gray-950 text-kufu-white">
@@ -230,3 +288,139 @@ const categoryGroups = [
     </a>
   </div>
 </section>
+
+<script>
+  const normalize = (value: string) =>
+    value.toLowerCase().normalize("NFKC").replace(/\s+/g, "");
+
+  const search = document.querySelector<HTMLInputElement>("[data-products-search]");
+  const result = document.querySelector<HTMLElement>("[data-products-result]");
+  const empty = document.querySelector<HTMLElement>("[data-products-empty]");
+  const items = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-category-item]"),
+  );
+  const groups = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-products-group]"),
+  );
+  const navLinks = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>("[data-nav-target]"),
+  );
+
+  // 検索: カテゴリ名 / メーカー名で絞り込み、一致した accordion を開く
+  const applyFilter = (raw: string) => {
+    const query = normalize(raw);
+    let matchCount = 0;
+
+    items.forEach((item) => {
+      const details = item.querySelector<HTMLDetailsElement>("details");
+      const makers = Array.from(item.querySelectorAll<HTMLElement>("[data-maker]"));
+      const nameMatch = normalize(item.dataset.categoryName ?? "").includes(query);
+
+      let makerMatch = false;
+      makers.forEach((maker) => {
+        const hit =
+          query === "" || nameMatch ||
+          normalize(maker.dataset.maker ?? "").includes(query);
+        maker.hidden = !hit;
+        if (hit && query !== "") {
+          makerMatch = true;
+        }
+      });
+
+      const visible = query === "" || nameMatch || makerMatch;
+      item.hidden = !visible;
+      if (visible) {
+        matchCount += 1;
+      }
+      if (details && query !== "" && visible) {
+        details.open = true;
+      }
+    });
+
+    groups.forEach((group) => {
+      const anyVisible = group.querySelector<HTMLElement>(
+        "[data-category-item]:not([hidden])",
+      );
+      group.hidden = !anyVisible;
+    });
+
+    navLinks.forEach((link) => {
+      const target = link.dataset.navTarget ?? "";
+      const item = document.getElementById(target);
+      link.classList.toggle("is-dimmed", Boolean(item?.hidden));
+    });
+
+    if (result) {
+      if (query === "") {
+        result.hidden = true;
+      } else {
+        result.hidden = false;
+        result.textContent = `${matchCount}件のカテゴリが一致`;
+      }
+    }
+    if (empty) {
+      empty.classList.toggle("hidden", matchCount !== 0);
+    }
+  };
+
+  search?.addEventListener("input", () => applyFilter(search.value));
+
+  document
+    .querySelector("[data-expand-all]")
+    ?.addEventListener("click", () => {
+      items.forEach((item) => {
+        const details = item.querySelector<HTMLDetailsElement>("details");
+        if (details) details.open = true;
+      });
+    });
+
+  document
+    .querySelector("[data-collapse-all]")
+    ?.addEventListener("click", () => {
+      items.forEach((item) => {
+        const details = item.querySelector<HTMLDetailsElement>("details");
+        if (details) details.open = false;
+      });
+    });
+
+  // scrollspy: 索引ナビの現在地をハイライト
+  if (items.length > 0) {
+    const spy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          navLinks.forEach((link) =>
+            link.classList.toggle(
+              "is-active",
+              link.dataset.navTarget === id,
+            ),
+          );
+        });
+      },
+      { rootMargin: "-30% 0px -60% 0px", threshold: 0 },
+    );
+    items.forEach((item) => spy.observe(item));
+  }
+
+  // カテゴリ一覧セクションにいる間だけ「先頭へ戻る」ボタンを表示
+  const backtop = document.querySelector<HTMLButtonElement>("[data-products-backtop]");
+  const categoryGroups = document.getElementById("products-category-groups");
+  const indexTop = document.getElementById("products-category-list");
+
+  if (backtop && categoryGroups && indexTop) {
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          backtop.hidden = !entry.isIntersecting;
+        });
+      },
+      { rootMargin: "-15% 0px -10% 0px", threshold: 0 },
+    );
+    sectionObserver.observe(categoryGroups);
+
+    backtop.addEventListener("click", () => {
+      indexTop.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+</script>
