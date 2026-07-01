@@ -1,3 +1,7 @@
+---
+import { Button } from "@kufu/ui";
+---
+
 <section class="bg-background">
   <div class="mx-auto grid w-full max-w-360 gap-8 px-5 pb-18 pt-12 sm:px-8 md:gap-10 lg:px-14">
     <div class="grid gap-4">
@@ -101,10 +105,14 @@
           <p class="text-[0.8125rem] text-muted-foreground">
             ※ こちらはデザイン確認用のフォーム枠です。
           </p>
-          <button class="inline-flex min-h-12 items-center justify-center gap-2 bg-primary px-5 text-sm font-semibold text-kufu-white" type="button" data-contact-cta>
+          <Button
+            type="button"
+            className="h-auto min-h-12 gap-2 bg-primary px-5 text-sm font-semibold hover:bg-primary"
+            data-contact-cta
+          >
             送信する
             <span class="font-mono" aria-hidden="true">→</span>
-          </button>
+          </Button>
         </div>
       </section>
     </div>

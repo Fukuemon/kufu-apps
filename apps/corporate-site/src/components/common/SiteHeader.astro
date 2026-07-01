@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { LinkButton } from "@kufu/ui";
 
 import fukuuraMark from "../../assets/fukuura-mark.png";
 
@@ -104,15 +105,15 @@ const navItems = [
           </a>
         ))
       }
-      <a
-        class="inline-flex min-h-10 items-center justify-center gap-2 bg-primary px-5 text-[0.8125rem] font-semibold text-kufu-white hover:opacity-90"
+      <LinkButton
         href="/contact"
+        className="h-auto min-h-10 gap-2 bg-primary px-5 text-[0.8125rem] font-semibold hover:bg-primary hover:opacity-90"
         data-contact-cta
         data-testid="site-nav-contact"
       >
         お問い合わせ
         <span class="font-mono text-xs" aria-hidden="true">→</span>
-      </a>
+      </LinkButton>
     </nav>
   </div>
   <div class="mx-auto h-px w-[calc(100%-2.5rem)] max-w-[83rem] bg-border sm:w-[calc(100%-4rem)] lg:w-[calc(100%-7rem)]" aria-hidden="true"></div>

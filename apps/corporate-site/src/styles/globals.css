@@ -2,6 +2,12 @@
 @import "@kufu/ui/tokens.css";
 @import "@kufu/ui/theme.css";
 
+/* @kufu/ui の React component が使う Tailwind クラスをこのアプリの
+   ビルドにも生成させる (component 側は astro のコンテンツスキャン対象外のため) */
+@source "../../../../packages/ui/src/components";
+@source "../../../../packages/ui/src/hooks";
+@source "../../../../packages/ui/src/lib";
+
 :root {
   color-scheme: light;
   /* 無骨さを保ちつつ角の硬さをやわらげる控えめな radius */
