@@ -1,6 +1,6 @@
 {
   "../../node_modules/.pnpm/@mdx-js+react@3.1.1_@types+react@19.2.14_react@19.2.6/node_modules/@mdx-js/react/index.js": {
-    "file": "_astro/react-C8mqv9ln.js",
+    "file": "_astro/react-CanRoarf.js",
     "name": "react",
     "src": "../../node_modules/.pnpm/@mdx-js+react@3.1.1_@types+react@19.2.14_react@19.2.6/node_modules/@mdx-js/react/index.js",
     "isDynamicEntry": true,
@@ -9,7 +9,7 @@
     ]
   },
   "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js": {
-    "file": "_astro/Color-KMSTOMOX-D-Ffdz0y.js",
+    "file": "_astro/Color-KMSTOMOX-C2ouUgTh.js",
     "name": "Color-KMSTOMOX",
     "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js",
     "isDynamicEntry": true,
@@ -17,13 +17,13 @@
       "_chunk-BVpWp9h4.js",
       "iframe.html",
       "_chunk-S2IHWCOG-DH2oyU4_.js",
-      "_components-ByeNuhEq.js",
+      "_components-_0ja0SA9.js",
       "_react-Cs_QX70J.js",
       "_theming-y-h0tMk5.js"
     ]
   },
   "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js": {
-    "file": "_astro/DocsRenderer-JROSPFPF-Cl9Sz1Lk.js",
+    "file": "_astro/DocsRenderer-JROSPFPF-BGUMePc4.js",
     "name": "DocsRenderer-JROSPFPF",
     "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js",
     "isDynamicEntry": true,
@@ -31,26 +31,28 @@
       "_chunk-BVpWp9h4.js",
       "_preload-helper-BwFaOC_f.js",
       "_chunk-S2IHWCOG-DH2oyU4_.js",
-      "_components-ByeNuhEq.js",
-      "_chunk-242VQQM5-C4riaKaH.js",
+      "_components-_0ja0SA9.js",
+      "_react-18-e1mr5L9u.js",
+      "_client-Bgz0hsBt.js",
       "_react-Cs_QX70J.js",
       "_theming-y-h0tMk5.js"
     ],
     "dynamicImports": [
       "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js",
-      "_components-ByeNuhEq.js",
+      "_components-_0ja0SA9.js",
       "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js"
     ]
   },
   "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js": {
-    "file": "_astro/WithTooltip-7X4HQR7L-Djgdudnt.js",
+    "file": "_astro/WithTooltip-7X4HQR7L-Dg3TzY03.js",
     "name": "WithTooltip-7X4HQR7L",
     "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
     "isDynamicEntry": true,
     "imports": [
       "_chunk-BVpWp9h4.js",
-      "_chunk-242VQQM5-C4riaKaH.js",
+      "_client-Bgz0hsBt.js",
       "_react-Cs_QX70J.js",
+      "_chunk-242VQQM5-Susk5s9q.js",
       "_chunk-3LY4VQVK-CMQlVsip.js",
       "_theming-y-h0tMk5.js"
     ]
@@ -66,15 +68,15 @@
     ]
   },
   "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js": {
-    "file": "_astro/syntaxhighlighter-RTCFPKCB-DF3j0ZDy.js",
+    "file": "_astro/syntaxhighlighter-RTCFPKCB-DJ-ekX7l.js",
     "name": "syntaxhighlighter-RTCFPKCB",
     "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js",
     "isDynamicEntry": true,
     "imports": [
       "_chunk-BVpWp9h4.js",
-      "_chunk-242VQQM5-C4riaKaH.js",
-      "_chunk-LITCR56V-DoiC2R1i.js",
+      "_chunk-LITCR56V-yVolJugf.js",
       "_react-Cs_QX70J.js",
+      "_chunk-242VQQM5-Susk5s9q.js",
       "_chunk-3LY4VQVK-CMQlVsip.js",
       "_theming-y-h0tMk5.js"
     ]
@@ -89,12 +91,11 @@
       "_preload-helper-BwFaOC_f.js"
     ]
   },
-  "_chunk-242VQQM5-C4riaKaH.js": {
-    "file": "_astro/chunk-242VQQM5-C4riaKaH.js",
+  "_chunk-242VQQM5-Susk5s9q.js": {
+    "file": "_astro/chunk-242VQQM5-Susk5s9q.js",
     "name": "chunk-242VQQM5",
     "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_react-Cs_QX70J.js"
+      "_chunk-BVpWp9h4.js"
     ]
   },
   "_chunk-3LY4VQVK-CMQlVsip.js": {
@@ -108,12 +109,12 @@
     "file": "_astro/chunk-BVpWp9h4.js",
     "name": "chunk"
   },
-  "_chunk-LITCR56V-DoiC2R1i.js": {
-    "file": "_astro/chunk-LITCR56V-DoiC2R1i.js",
+  "_chunk-LITCR56V-yVolJugf.js": {
+    "file": "_astro/chunk-LITCR56V-yVolJugf.js",
     "name": "chunk-LITCR56V",
     "imports": [
       "_chunk-BVpWp9h4.js",
-      "_chunk-242VQQM5-C4riaKaH.js",
+      "_client-Bgz0hsBt.js",
       "_react-Cs_QX70J.js",
       "_theming-y-h0tMk5.js"
     ]
@@ -125,15 +126,24 @@
       "_chunk-BVpWp9h4.js"
     ]
   },
-  "_components-ByeNuhEq.js": {
-    "file": "_astro/components-ByeNuhEq.js",
+  "_client-Bgz0hsBt.js": {
+    "file": "_astro/client-Bgz0hsBt.js",
+    "name": "client",
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "_react-Cs_QX70J.js"
+    ]
+  },
+  "_components-_0ja0SA9.js": {
+    "file": "_astro/components-_0ja0SA9.js",
     "name": "components",
     "imports": [
       "_chunk-BVpWp9h4.js",
       "_preload-helper-BwFaOC_f.js",
-      "_chunk-242VQQM5-C4riaKaH.js",
-      "_chunk-LITCR56V-DoiC2R1i.js",
+      "_client-Bgz0hsBt.js",
+      "_chunk-LITCR56V-yVolJugf.js",
       "_react-Cs_QX70J.js",
+      "_chunk-242VQQM5-Susk5s9q.js",
       "_chunk-3LY4VQVK-CMQlVsip.js",
       "_theming-y-h0tMk5.js"
     ],
@@ -149,6 +159,15 @@
     "name": "preload-helper",
     "imports": [
       "_chunk-BVpWp9h4.js"
+    ]
+  },
+  "_react-18-e1mr5L9u.js": {
+    "file": "_astro/react-18-e1mr5L9u.js",
+    "name": "react-18",
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "_client-Bgz0hsBt.js",
+      "_react-Cs_QX70J.js"
     ]
   },
   "_react-Cs_QX70J.js": {
@@ -168,13 +187,14 @@
     ]
   },
   "iframe.html": {
-    "file": "_astro/iframe-DhRiig5J.js",
+    "file": "_astro/iframe-BGo-ST1-.js",
     "name": "iframe",
     "src": "iframe.html",
     "isEntry": true,
     "imports": [
       "_chunk-BVpWp9h4.js",
-      "_preload-helper-BwFaOC_f.js"
+      "_preload-helper-BwFaOC_f.js",
+      "_react-Cs_QX70J.js"
     ],
     "dynamicImports": [
       "src/components/common/SectionHeading.stories.ts",
@@ -188,13 +208,18 @@
       "src/components/features/contact/ContactSection.stories.ts",
       "src/components/features/hero/Hero.stories.ts",
       "src/components/features/products/FeaturedCategoryCard.stories.ts",
+      "src/components/features/products/FeaturedCategoryCarousel.stories.ts",
+      "src/components/features/products/ProductsCategoryAccordionList.stories.ts",
       "src/components/features/products/ProductsCategorySection.stories.ts",
       "src/components/features/products/ProductsDetailSection.stories.ts",
+      "src/components/features/products/ProductsHero.stories.ts",
+      "src/components/features/products/ProductsSidebarNav.stories.ts",
       "src/components/features/services/ServicePillar.stories.ts",
+      "_react-18-e1mr5L9u.js",
       "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js"
     ],
     "css": [
-      "_astro/iframe-WAmrB0-t.css"
+      "_astro/iframe-DZXfbl9r.css"
     ]
   },
   "src/components/common/SectionHeading.stories.ts": {
@@ -296,6 +321,24 @@
       "_chunk-BVpWp9h4.js"
     ]
   },
+  "src/components/features/products/FeaturedCategoryCarousel.stories.ts": {
+    "file": "_astro/FeaturedCategoryCarousel.stories-CsutG6_b.js",
+    "name": "FeaturedCategoryCarousel.stories",
+    "src": "src/components/features/products/FeaturedCategoryCarousel.stories.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BVpWp9h4.js"
+    ]
+  },
+  "src/components/features/products/ProductsCategoryAccordionList.stories.ts": {
+    "file": "_astro/ProductsCategoryAccordionList.stories-BdRY3340.js",
+    "name": "ProductsCategoryAccordionList.stories",
+    "src": "src/components/features/products/ProductsCategoryAccordionList.stories.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BVpWp9h4.js"
+    ]
+  },
   "src/components/features/products/ProductsCategorySection.stories.ts": {
     "file": "_astro/ProductsCategorySection.stories-BuR_oAU_.js",
     "name": "ProductsCategorySection.stories",
@@ -314,6 +357,24 @@
       "_chunk-BVpWp9h4.js"
     ]
   },
+  "src/components/features/products/ProductsHero.stories.ts": {
+    "file": "_astro/ProductsHero.stories-CRtMf5My.js",
+    "name": "ProductsHero.stories",
+    "src": "src/components/features/products/ProductsHero.stories.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BVpWp9h4.js"
+    ]
+  },
+  "src/components/features/products/ProductsSidebarNav.stories.ts": {
+    "file": "_astro/ProductsSidebarNav.stories-CyEc5Cin.js",
+    "name": "ProductsSidebarNav.stories",
+    "src": "src/components/features/products/ProductsSidebarNav.stories.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_chunk-BVpWp9h4.js"
+    ]
+  },
   "src/components/features/services/ServicePillar.stories.ts": {
     "file": "_astro/ServicePillar.stories-C0FFqSu4.js",
     "name": "ServicePillar.stories",
@@ -321,6 +382,17 @@
     "isDynamicEntry": true,
     "imports": [
       "_chunk-BVpWp9h4.js"
+    ]
+  },
+  "virtual:astro-static-module/%40astrojs%2Freact%2Fclient.js": {
+    "file": "_astro/react/client_js-43e45681-C4ReM32W.js",
+    "name": "react/client_js-43e45681",
+    "src": "virtual:astro-static-module/%40astrojs%2Freact%2Fclient.js",
+    "isEntry": true,
+    "imports": [
+      "_chunk-BVpWp9h4.js",
+      "_client-Bgz0hsBt.js",
+      "_react-Cs_QX70J.js"
     ]
   },
   "virtual:astro-static-module/astro%3Ascripts%2Fbefore-hydration.js": {
