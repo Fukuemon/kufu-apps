@@ -1,0 +1,186 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import FeaturedCategoryCard from "./FeaturedCategoryCard.astro";
+
+export interface Props {
+  categories: CollectionEntry<"productCategories">[];
+  makerCountsByCategoryId: Record<string, number>;
+}
+
+const { categories, makerCountsByCategoryId } = Astro.props;
+---
+
+<div
+  class="featured-carousel reveal-section relative min-w-0"
+  data-testid="home-products-carousel"
+  data-featured-carousel
+>
+  <div
+    class="featured-carousel-viewport flex w-full min-w-0 max-w-full gap-5 overflow-x-auto"
+    data-carousel-track
+    tabindex="0"
+    role="group"
+    aria-label="取扱製品カテゴリ カルーセル（横スクロール・左右ボタンで操作）"
+  >
+    {
+      [...categories, ...categories, ...categories].map((category, index) => (
+        <div
+          class="featured-carousel-item w-64 shrink-0"
+          aria-hidden={index >= categories.length ? "true" : undefined}
+        >
+          <FeaturedCategoryCard
+            category={`CATEGORY ${String(category.data.order).padStart(2, "0")}`}
+            count={`${makerCountsByCategoryId[category.id] ?? 0}社`}
+            title={`${category.data.name}`}
+            image={category.data.featuredImage}
+          />
+        </div>
+      ))
+    }
+  </div>
+  <button
+    type="button"
+    class="featured-carousel-arrow featured-carousel-arrow--prev"
+    data-carousel-prev
+    aria-label="前のカテゴリ"
+  >
+    ←
+  </button>
+  <button
+    type="button"
+    class="featured-carousel-arrow featured-carousel-arrow--next"
+    data-carousel-next
+    aria-label="次のカテゴリ"
+  >
+    →
+  </button>
+</div>
+
+<script>
+  const carousel = document.querySelector<HTMLElement>("[data-featured-carousel]");
+  const track = carousel?.querySelector<HTMLElement>("[data-carousel-track]");
+
+  if (carousel && track && track.children.length > 0) {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // 3コピー分を並べ、中央コピーを基準に前後どちらへも無限ループさせる
+    const setCount = track.children.length / 3;
+
+    const stepWidth = () => {
+      const first = track.children[0] as HTMLElement;
+      const second = track.children[1] as HTMLElement | undefined;
+      return second
+        ? second.offsetLeft - first.offsetLeft
+        : first.getBoundingClientRect().width;
+    };
+
+    // 毎フレームの layout 読み取りを避けるため寸法をキャッシュする
+    let unit = stepWidth();
+    let oneSet = unit * setCount;
+
+    const measure = () => {
+      unit = stepWidth();
+      oneSet = unit * setCount;
+    };
+
+    const center = () => {
+      track.scrollLeft = oneSet;
+    };
+
+    // 端のコピーに入ったら、見た目を変えずに中央コピーへ巻き戻す
+    const recenter = () => {
+      if (track.scrollLeft <= oneSet * 0.5) {
+        track.scrollLeft += oneSet;
+      } else if (track.scrollLeft >= oneSet * 1.5) {
+        track.scrollLeft -= oneSet;
+      }
+    };
+
+    const move = (direction: number) => {
+      track.scrollBy({
+        left: unit * direction,
+        behavior: reduceMotion.matches ? "auto" : "smooth",
+      });
+    };
+
+    requestAnimationFrame(() => {
+      measure();
+      center();
+    });
+    window.addEventListener("resize", () => {
+      measure();
+      center();
+    });
+
+    let recenterTimer = 0;
+    track.addEventListener("scroll", () => {
+      window.clearTimeout(recenterTimer);
+      recenterTimer = window.setTimeout(recenter, 80);
+    });
+
+    carousel
+      .querySelector("[data-carousel-prev]")
+      ?.addEventListener("click", () => move(-1));
+    carousel
+      .querySelector("[data-carousel-next]")
+      ?.addEventListener("click", () => move(1));
+
+    // マウスドラッグで左右に動かせるようにする（タッチは native の横スクロールに任せる）
+    let dragging = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    track.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "mouse") return;
+      dragging = true;
+      startX = event.clientX;
+      startScroll = track.scrollLeft;
+      track.classList.add("is-dragging");
+      track.setPointerCapture(event.pointerId);
+    });
+
+    track.addEventListener("pointermove", (event) => {
+      if (!dragging) return;
+      event.preventDefault();
+      track.scrollLeft = startScroll - (event.clientX - startX);
+    });
+
+    const endDrag = (event: PointerEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      track.classList.remove("is-dragging");
+      if (track.hasPointerCapture(event.pointerId)) {
+        track.releasePointerCapture(event.pointerId);
+      }
+      recenter();
+    };
+
+    track.addEventListener("pointerup", endDrag);
+    track.addEventListener("pointercancel", endDrag);
+
+    // 画像が自動で流れるよう連続スクロール。ホバー・フォーカス・ドラッグ中は停止
+    if (!reduceMotion.matches) {
+      let paused = false;
+      const speed = 0.5; // px/frame（約30px/秒のゆっくりした流れ）
+      const tick = () => {
+        if (!paused && !dragging) {
+          track.scrollLeft += speed;
+          recenter();
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+
+      const pause = () => {
+        paused = true;
+      };
+      const resume = () => {
+        paused = false;
+      };
+      carousel.addEventListener("pointerenter", pause);
+      carousel.addEventListener("pointerleave", resume);
+      carousel.addEventListener("focusin", pause);
+      carousel.addEventListener("focusout", resume);
+    }
+  }
+</script>
