@@ -1,10 +1,11 @@
 ---
 import { getCollection } from "astro:content";
-import { LinkButton } from "@kufu/ui";
 
+import ContactCtaLink from "../../common/ContactCtaLink.astro";
 import ProductsCategoryAccordionList from "./ProductsCategoryAccordionList.astro";
 import ProductsHero from "./ProductsHero.astro";
 import ProductsSidebarNav from "./ProductsSidebarNav.astro";
+import { productGroups } from "../../../content/product-groups.js";
 
 const productCategories = (await getCollection("productCategories")).sort(
   (a, b) => a.data.order - b.data.order,
@@ -35,12 +36,9 @@ const makerCountById = Object.fromEntries(
 );
 
 // design: Products Category List はカテゴリを groupId 単位の見出しで束ねる
-const groupTitleById: Record<string, string> = {
-  "drive-transmission": "駆動・伝動",
-  "fluid-piping": "流体・配管",
-  "conveyance-facility": "搬送・工場設備",
-  "tooling-measurement-materials": "工具・測定・材料",
-};
+const groupTitleById: Record<string, string> = Object.fromEntries(
+  productGroups.map((group) => [group.id, group.title]),
+);
 
 const itemsByGroupId = new Map<string, typeof categoriesWithMakers>();
 for (const item of categoriesWithMakers) {
@@ -108,18 +106,22 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
         メーカー名、型番、数量、希望納期が分かる場合は、問い合わせ時にご記入ください。代替品や別作加工の可否も含めて確認します。
       </p>
     </div>
-    <LinkButton
-      href="/contact"
-      className="h-auto min-h-13 gap-3 bg-primary px-6 text-[0.9375rem] font-semibold hover:bg-primary hover:opacity-90"
-      data-contact-cta
-    >
+    <ContactCtaLink href="/contact" size="lg">
       お問い合わせ・お見積り
       <span class="font-mono text-xs" aria-hidden="true">→</span>
-    </LinkButton>
+    </ContactCtaLink>
   </div>
 </section>
 
 <script>
+  // このセクション横断スクリプトが依存する DOM の所有元:
+  //   - [data-products-search] [data-expand-all] [data-collapse-all]
+  //     [data-nav-target] : ProductsSidebarNav.astro
+  //   - [data-category-item] [data-products-group] [data-maker-list]
+  //     [data-products-empty] : ProductsCategoryAccordionList.astro
+  //   - [data-products-backtop] #products-category-groups
+  //     #products-category-list : このファイル (assembly 層)
+  // 上記コンポーネントの data-* / id を変更する場合はこのスクリプトも合わせて更新する。
   const normalize = (value: string) =>
     value.toLowerCase().normalize("NFKC").replace(/\s+/g, "");
 

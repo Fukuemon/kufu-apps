@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import { LinkButton } from "@kufu/ui";
 
+import ContactCtaLink from "../../common/ContactCtaLink.astro";
 import productsImage from "../../../assets/corporate-products-supply.png";
 ---
 
@@ -24,15 +24,10 @@ import productsImage from "../../../assets/corporate-products-supply.png";
           駆動・伝動、空圧・油圧、工具、測定、搬送、工場設備まで。全18カテゴリ・延べ約320社の取扱メーカーから、製品の選定と調達に応えます。
         </p>
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <LinkButton
-            href="/contact"
-            className="h-auto min-h-13 gap-3 bg-primary px-6 text-[0.9375rem] font-semibold hover:bg-primary hover:opacity-90"
-            data-contact-cta
-            data-testid="products-link-contact"
-          >
+          <ContactCtaLink href="/contact" size="lg" data-testid="products-link-contact">
             製品について相談する
             <span class="font-mono text-xs" aria-hidden="true">→</span>
-          </LinkButton>
+          </ContactCtaLink>
           <a class="text-[0.9375rem] font-medium" href="#products-category-list">
             カテゴリ一覧を見る
           </a>
