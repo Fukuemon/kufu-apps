@@ -11,6 +11,8 @@ const productCategories = defineCollection({
     order: z.number().int().positive(),
     name: z.string().min(1),
     summary: z.string().min(1),
+    groupId: z.string().min(1),
+    featuredImage: z.url().optional(),
     sourceReferences: sourceReferenceSchema,
   }),
 });

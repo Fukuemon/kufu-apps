@@ -6,6 +6,16 @@
   color-scheme: light;
   /* 無骨さを保ちつつ角の硬さをやわらげる控えめな radius */
   --radius: 0.25rem;
+  /* ヒーロー系フルブリード画像 (home / products) で共有する値。
+     ここを変えると両方のブリード演出に反映される */
+  --hero-bleed-width: 62vw;
+  --hero-bleed-max-width: 74rem;
+  --hero-bleed-mask: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.5) 22%,
+    black 44%
+  );
 }
 
 /* ボタン・フォーム・チップ・主要パネルに 4px の radius を付与
@@ -63,7 +73,7 @@ a {
 
 [data-contact-cta],
 [data-contact-cta] * {
-  color: #ffffff !important;
+  color: var(--primary-foreground) !important;
 }
 
 .hero-industrial::before {
@@ -124,25 +134,15 @@ a {
     right: calc(50% - 50vw);
     left: auto;
     z-index: -1;
-    width: 62vw;
-    max-width: 74rem;
+    width: var(--hero-bleed-width);
+    max-width: var(--hero-bleed-max-width);
     min-height: 0;
     border: 0;
     border-radius: 0;
     box-shadow: none;
     opacity: 0.9;
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(0, 0, 0, 0.5) 22%,
-      black 44%
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(0, 0, 0, 0.5) 22%,
-      black 44%
-    );
+    -webkit-mask-image: var(--hero-bleed-mask);
+    mask-image: var(--hero-bleed-mask);
   }
 
   .hero-industrial .hero-media-overlay,
@@ -161,25 +161,15 @@ a {
     right: calc(50% - 50vw);
     left: auto;
     z-index: -1;
-    width: 62vw;
-    max-width: 74rem;
+    width: var(--hero-bleed-width);
+    max-width: var(--hero-bleed-max-width);
     min-height: 0;
     border: 0;
     border-radius: 0;
     box-shadow: none;
     opacity: 0.9;
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(0, 0, 0, 0.5) 22%,
-      black 44%
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(0, 0, 0, 0.5) 22%,
-      black 44%
-    );
+    -webkit-mask-image: var(--hero-bleed-mask);
+    mask-image: var(--hero-bleed-mask);
   }
 
   .products-hero-media-overlay,
