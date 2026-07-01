@@ -1,0 +1,83 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  categoryGroups: {
+    eyebrow: string;
+    title: string;
+    items: {
+      category: CollectionEntry<"productCategories">;
+      makers: CollectionEntry<"categoryMakers">;
+    }[];
+  }[];
+}
+
+const { categoryGroups } = Astro.props;
+---
+
+<div
+  id="products-category-groups"
+  class="border border-border bg-card p-5 md:px-8 md:py-7"
+>
+  <p class="hidden text-sm leading-[1.8] text-muted-foreground" data-products-empty>
+    該当するカテゴリ・メーカーが見つかりませんでした。検索条件を変えてお試しください。
+  </p>
+  {
+    categoryGroups.map((group) => (
+      <div class="products-group mt-11 grid first:mt-0" data-products-group>
+        <div class="grid gap-2 pb-1" data-group-heading>
+          <p class="font-mono text-[0.6875rem] font-medium tracking-[0.18em] text-primary">
+            {group.eyebrow}
+          </p>
+          <h3 class="font-serif text-2xl font-semibold leading-normal text-foreground md:text-[1.625rem]">
+            {group.title}
+          </h3>
+        </div>
+        {group.items.map(({ category, makers }) => (
+          <article
+            id={category.id}
+            class="reveal-section grid scroll-mt-28 border-t border-border"
+            data-testid={`products-category-${category.id}`}
+            data-category-item
+            data-category-name={category.data.name}
+          >
+            <details class="products-accordion" open>
+              <summary class="products-accordion-summary grid cursor-pointer grid-cols-[2.75rem_1fr_auto] items-center gap-3 py-5 md:gap-5 md:py-6">
+                <span class="font-mono text-[0.8125rem] font-medium tracking-[0.08em] text-primary">
+                  {String(category.data.order).padStart(2, "0")}
+                </span>
+                <span class="grid gap-1">
+                  <span class="font-serif text-xl font-semibold leading-[1.35] text-foreground">
+                    {category.data.name}
+                  </span>
+                  <span class="text-xs font-medium text-primary">
+                    取扱メーカー {makers.data.makers.length}社
+                  </span>
+                </span>
+                <span class="products-accordion-icon inline-flex size-7 items-center justify-center border border-border font-mono text-base text-muted-foreground" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+              <div class="pb-6 pl-14 md:pb-7 md:pl-16">
+                <ul
+                  class="columns-1 gap-7 sm:columns-2 lg:columns-3 list-none"
+                  data-testid={`products-maker-list-${category.id}`}
+                  data-maker-list
+                >
+                  {makers.data.makers.map((maker) => (
+                    <li
+                      class="break-inside-avoid text-[0.8125rem] leading-[1.95] text-muted-foreground"
+                      data-maker={maker}
+                    >
+                      {maker}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </details>
+          </article>
+        ))}
+      </div>
+    ))
+  }
+</div>
