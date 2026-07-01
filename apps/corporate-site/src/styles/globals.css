@@ -5,7 +5,6 @@
 /* @kufu/ui の React component が使う Tailwind クラスをこのアプリの
    ビルドにも生成させる (component 側は astro のコンテンツスキャン対象外のため) */
 @source "../../../../packages/ui/src/components";
-@source "../../../../packages/ui/src/hooks";
 @source "../../../../packages/ui/src/lib";
 
 :root {
@@ -703,18 +702,11 @@ a {
   color: var(--primary-soft);
 }
 
+/* 必須/任意バッジの書体 (mono + tracking) はこのサイトの固有表現のため app 側で保持。
+   サイズ/形状/配色トーンは @kufu/ui の Tag size="sm" が担う */
 .contact-badge {
-  display: inline-flex;
-  height: auto;
-  border-width: 0;
-  align-items: center;
-  border-radius: var(--radius);
-  padding: 0.0625rem 0.375rem;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  font-weight: 600;
   letter-spacing: 0.08em;
-  line-height: 1.4;
 }
 
 .contact-badge--required {
@@ -725,39 +717,6 @@ a {
 .contact-badge--optional {
   background: color-mix(in srgb, var(--muted-foreground) 14%, transparent);
   color: var(--muted-foreground);
-}
-
-/* @kufu/ui の DefinitionRow は sm: (40rem) で 2 カラム化する既定を持つが、
-   会社概要の基本情報リストは md: (48rem) から 2 カラム化するデザインのため、
-   実 media query を持つこの class で明示的に上書きする */
-.company-profile-row {
-  grid-template-columns: none;
-  gap: 0.75rem;
-  border-bottom-width: 0;
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-top-color: var(--border);
-  padding-block: 0.875rem;
-}
-
-@media (min-width: 48rem) {
-  .company-profile-row {
-    grid-template-columns: 6.5rem 1fr;
-    gap: 1.25rem;
-  }
-}
-
-.company-profile-row dt {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 400;
-  line-height: 1.5rem;
-  letter-spacing: 0.12em;
-}
-
-.company-profile-row dd {
-  font-size: 0.875rem;
-  line-height: 1.5rem;
 }
 
 .products-summary-cta {

@@ -48,7 +48,7 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
         <div class="grid border-b border-border">
           {
             companyProfile.rows.map(([label, value]) => (
-              <DefinitionRow className="company-profile-row" term={label}>
+              <DefinitionRow layout="compact" term={label}>
                 {value}
               </DefinitionRow>
             ))
