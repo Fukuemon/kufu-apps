@@ -8,7 +8,7 @@ export interface Props {
 }
 
 const { currentPath } = Astro.props;
-const isCurrent = (href: string) => currentPath === href;
+const isCurrent = (href: string) => !href.includes("#") && currentPath === href;
 
 const navItems = [
   { href: "/", label: "トップ", subLabel: "TOP", testId: "site-nav-home", isPage: false },

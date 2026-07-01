@@ -13,34 +13,16 @@ const makerCountsByCategoryId = new Map(
 );
 
 // 画像を持つカテゴリのみカルーセルに載せる (画像がなければ表示しない方針)
-const featuredImageByOrder = new Map([
-  [
-    1,
-    "https://images.unsplash.com/photo-1723022323088-ca3d68fae5db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
-  ],
-  [
-    6,
-    "https://images.unsplash.com/photo-1581092335331-5e00ac65e934?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
-  ],
-  [
-    10,
-    "https://images.unsplash.com/photo-1695603414659-4d573962b517?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
-  ],
-  [
-    14,
-    "https://images.unsplash.com/photo-1707304472925-c9f0fda4d7a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
-  ],
-]);
-const carouselCategories = productCategories.filter((category) =>
-  featuredImageByOrder.has(category.data.order),
+const carouselCategories = productCategories.filter(
+  (category) => category.data.featuredImage,
 );
 
-// 索引リストは18カテゴリを連番のまま3列に等分する
-const categoryColumns = [
-  productCategories.slice(0, 6),
-  productCategories.slice(6, 12),
-  productCategories.slice(12, 18),
-];
+// 索引リストは連番のカテゴリを列数で等分する (カテゴリ数の増減に追従する)
+const columnCount = 3;
+const columnSize = Math.ceil(productCategories.length / columnCount);
+const categoryColumns = Array.from({ length: columnCount }, (_, index) =>
+  productCategories.slice(index * columnSize, (index + 1) * columnSize),
+);
 ---
 
 <section
@@ -81,7 +63,7 @@ const categoryColumns = [
                   category={`CATEGORY ${String(category.data.order).padStart(2, "0")}`}
                   count={`${makerCountsByCategoryId.get(category.id) ?? 0}社`}
                   title={`${category.data.name}`}
-                  image={featuredImageByOrder.get(category.data.order)}
+                  image={category.data.featuredImage}
                 />
               </div>
             ))

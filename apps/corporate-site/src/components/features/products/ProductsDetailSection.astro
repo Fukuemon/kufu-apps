@@ -32,19 +32,31 @@ const makerCountById = new Map(
   categoryMakers.map((entry) => [entry.data.categoryId, entry.data.makers.length]),
 );
 
-// design: Products Category List はカテゴリを4グループの見出しで束ねる
-const categoryGroups = [
-  { eyebrow: "CATEGORY 01–05", title: "駆動・伝動", from: 1, to: 5 },
-  { eyebrow: "CATEGORY 06–08", title: "流体・配管", from: 6, to: 8 },
-  { eyebrow: "CATEGORY 09–11", title: "搬送・工場設備", from: 9, to: 11 },
-  { eyebrow: "CATEGORY 12–18", title: "工具・測定・材料", from: 12, to: 18 },
-].map((group) => ({
-  ...group,
-  items: categoriesWithMakers.filter(
-    ({ category }) =>
-      category.data.order >= group.from && category.data.order <= group.to,
-  ),
-}));
+// design: Products Category List はカテゴリを groupId 単位の見出しで束ねる
+const groupTitleById: Record<string, string> = {
+  "drive-transmission": "駆動・伝動",
+  "fluid-piping": "流体・配管",
+  "conveyance-facility": "搬送・工場設備",
+  "tooling-measurement-materials": "工具・測定・材料",
+};
+
+const itemsByGroupId = new Map<string, typeof categoriesWithMakers>();
+for (const item of categoriesWithMakers) {
+  const groupId = item.category.data.groupId;
+  const items = itemsByGroupId.get(groupId) ?? [];
+  items.push(item);
+  itemsByGroupId.set(groupId, items);
+}
+
+const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
+  const orders = items.map(({ category }) => category.data.order);
+
+  return {
+    eyebrow: `CATEGORY ${String(Math.min(...orders)).padStart(2, "0")}–${String(Math.max(...orders)).padStart(2, "0")}`,
+    title: groupTitleById[groupId] ?? groupId,
+    items,
+  };
+});
 ---
 
 <section class="relative overflow-hidden bg-background">
@@ -86,7 +98,11 @@ const categoryGroups = [
           alt="機械工具・関連機器"
           width={784}
           height={502}
+          widths={[392, 784, 1176]}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          format="webp"
           loading="eager"
+          fetchpriority="high"
           class="absolute inset-0 h-full w-full object-cover"
         />
         <div class="products-hero-media-overlay absolute inset-0 bg-photo-overlay" aria-hidden="true"></div>
