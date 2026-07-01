@@ -1,9 +1,0 @@
-import{i as e}from"./preload-helper-xPQekRTU.js";import{C as t}from"./iframe-D8s77-4X.js";import{t as n}from"./jsx-runtime-CaZkqeYb.js";import{n as r,t as i}from"./utils-CxKdngKp.js";function a({className:e,term:t,children:n,...r}){return(0,o.jsxs)(`div`,{"data-slot":`definition-row`,className:i(`grid gap-1 border-b border-border py-3 text-sm sm:grid-cols-[12rem_1fr] sm:gap-6`,e),...r,children:[(0,o.jsx)(`dt`,{className:`font-medium text-muted-foreground`,children:t}),(0,o.jsx)(`dd`,{className:`text-foreground`,children:n})]})}var o,s=e((()=>{t(),r(),o=n(),a.__docgenInfo={description:``,methods:[],displayName:`DefinitionRow`,props:{term:{required:!0,tsType:{name:`ReactReactNode`,raw:`React.ReactNode`},description:``}}}})),c,l,u,d,f;e((()=>{s(),c=n(),l={title:`Patterns/DefinitionRow`,component:a,args:{term:`Label`,children:`Definition value`},decorators:[e=>(0,c.jsx)(`dl`,{className:`max-w-2xl`,children:(0,c.jsx)(e,{})})]},u={args:{}},d={render:()=>(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{term:`Status`,children:`Ready`}),(0,c.jsx)(a,{term:`Owner`,children:`Shared UI`}),(0,c.jsx)(a,{term:`Updated`,children:`2026-06-20`})]})},u.parameters={...u.parameters,docs:{...u.parameters?.docs,source:{originalSource:`{
-  args: {}
-}`,...u.parameters?.docs?.source}}},d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
-  render: () => <>
-      <DefinitionRow term="Status">Ready</DefinitionRow>
-      <DefinitionRow term="Owner">Shared UI</DefinitionRow>
-      <DefinitionRow term="Updated">2026-06-20</DefinitionRow>
-    </>
-}`,...d.parameters?.docs?.source}}},f=[`Default`,`MultipleRows`]}))();export{u as Default,d as MultipleRows,f as __namedExportsOrder,l as default};
