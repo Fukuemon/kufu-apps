@@ -1,4 +1,6 @@
 ---
+import { DefinitionRow } from "@kufu/ui";
+
 import SectionHeading from "../../common/SectionHeading.astro";
 import { companyProfile } from "../../../content/company.js";
 
@@ -46,12 +48,9 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
         <div class="grid border-b border-border">
           {
             companyProfile.rows.map(([label, value]) => (
-              <div class="grid gap-3 border-t border-border py-3.5 md:grid-cols-[6.5rem_1fr] md:gap-5">
-                <p class="font-mono text-[0.6875rem] font-normal leading-6 tracking-[0.12em] text-muted-foreground">
-                  {label}
-                </p>
-                <p class="text-sm leading-6 text-foreground">{value}</p>
-              </div>
+              <DefinitionRow className="company-profile-row" term={label}>
+                {value}
+              </DefinitionRow>
             ))
           }
         </div>
