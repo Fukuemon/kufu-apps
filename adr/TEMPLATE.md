@@ -38,6 +38,5 @@ YYYY-MM-DD
 
 ## 関連ドキュメント
 
-- `PRD.md`:
 - `design/DesignDoc.md`:
 - `specs/...`:
