@@ -1,19 +1,18 @@
 # Engineering Context Library
 
-> 最終更新: 2026-06-18
+> 最終更新: 2026-07-04
 
-`context/` は **技術スタック別のコード規約・コードベースアーキテクチャ・運用契約** を集約する永続ナレッジ層である。Feature を問わず横断する "How" を置き、PRD / Design Doc / spec から参照する。
+`context/` は **技術スタック別のコード規約・コードベースアーキテクチャ・運用契約** を集約する永続ナレッジ層である。Feature を問わず横断する "How" を置き、Design Doc / spec から参照する。
 
 ## 位置づけ
 
-| 層              | 文書                                          | 役割                                              |
-| --------------- | --------------------------------------------- | ------------------------------------------------- |
-| Why / What      | [PRD.md](../PRD.md)                           | 誰のどの課題を、なぜ・何で解決するか              |
-| How (全体像)    | [design/DesignDoc.md](../design/DesignDoc.md) | system landscape / モジュール責務 / 横断方針      |
-| How (feature)   | [design/features/](../design/features/)       | feature 単位の設計 (データ構造・画面・フロー)     |
-| How (規約/契約) | **context/** (本ライブラリ)                   | 技術スタック規約・codebase architecture・運用契約 |
-| 意思決定        | [adr/](../adr/)                               | 長期参照する技術選定・境界の確定                  |
-| 作業文書        | [specs/](../specs/)                           | issue / 機能単位の要求・設計・テスト観点          |
+| 層                  | 文書                                          | 役割                                                                                |
+| ------------------- | --------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Why / What / 全体像 | [design/DesignDoc.md](../design/DesignDoc.md) | 誰のどの課題を、なぜ・何で解決するか / system landscape / モジュール責務 / 横断方針 |
+| How (feature)       | [design/features/](../design/features/)       | feature 単位の設計 (データ構造・画面・フロー)                                       |
+| How (規約/契約)     | **context/** (本ライブラリ)                   | 技術スタック規約・codebase architecture・運用契約                                   |
+| 意思決定            | [adr/](../adr/)                               | 長期参照する技術選定・境界の確定                                                    |
+| 作業文書            | [specs/](../specs/)                           | issue / 機能単位の要求・設計・テスト観点                                            |
 
 ## ファイル一覧
 
@@ -36,4 +35,4 @@
 
 ## 記載しないもの
 
-- Why / What (→ PRD)、feature 固有の設計 (→ design/features)、確定した意思決定の経緯 (→ ADR)、issue 固有の作業ログ (→ specs)
+- Why / What (→ Design Doc の Why/What 節)、feature 固有の設計 (→ design/features)、確定した意思決定の経緯 (→ ADR)、issue 固有の作業ログ (→ specs)

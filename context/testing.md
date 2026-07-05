@@ -1,6 +1,6 @@
 # Testing Conventions
 
-> 最終更新: 2026-06-17
+> 最終更新: 2026-07-03
 
 E2E runtime contract と unit test の横断規約。feature 固有のテスト観点は各 [design/features/](../design/features/) に置く。
 
@@ -29,7 +29,7 @@ flowchart TD
     Root -->|"E2E_TARGET<br/>(既定: corporate-site)"| Selector{対象 app}
     Root -->|"E2E_PORT / E2E_BASE_URL<br/>を解決"| Selector
     Selector -->|corporate-site| Corporate["apps/corporate-site<br/>e2e:serve"]
-    Selector -->|cms (将来)| CMS["apps/cms<br/>e2e:serve"]
+    Selector -->|cms (Phase 2 以降)| CMS["apps/cms<br/>e2e:serve"]
     Corporate --> CorporateBuild["build → preview<br/>:4321"]
     CMS --> CMSBuild["build → preview<br/>:4173"]
     CorporateBuild --> Suite["e2e/&lt;target&gt;/<br/>Playwright suite"]
@@ -55,5 +55,4 @@ Cloudflare Pages Functions / Workers を伴う feature は、ローカル E2E ru
 ## 横断テスト方針
 
 - 公開判定には deploy 成功だけでなく、preview での導線確認を含める ([infrastructure.md](infrastructure.md))。
-- `apps/cms` 追加時は TanStack Router / TanStack Query / React Hook Form / Zustand / React Compiler 前提が守られることを確認する。
-- CMS/API を導入する場合は、ADR と spec が先に作成されていること。
+- `apps/cms` 追加時の候補技術・採用判断ゲートのテスト観点は [DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md) を正本とする。

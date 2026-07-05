@@ -1,6 +1,6 @@
 # Infrastructure & Operations
 
-> 最終更新: 2026-06-17
+> 最終更新: 2026-07-03
 
 公開基盤・環境戦略・運用・セキュリティの契約。Terraform 実体は別 repo (`kufu-infra`) で管理する ([ADR-0001](../adr/0001-terraform-infra-repository-boundary.md))。本書は **app 側が依存する contract** を定義する。
 
@@ -42,7 +42,8 @@ app 側から infra repo へ受け渡す contract:
 | production  | 公開サイト             | Cloudflare Pages production deployment を正本とする。       |
 
 - Preview URL を使って、レイアウト崩れ、リンク、フォーム導線、SEO メタデータをレビューする。
-- 本番 deploy は `main` へのマージを起点に行う前提で設計する。
+- 統合 branch は `develop` (default / protected)。feature PR の base は `develop` とする。
+- 本番 deploy は `develop` → `main` のマージを起点に行う前提で設計する (`main` も protected)。
 - branch 単位で安全に確認できることを、コーポレートサイト改修の標準 workflow に含める。
 
 ```mermaid
@@ -52,7 +53,8 @@ flowchart LR
     end
     subgraph GH["GitHub"]
         FB["feature/&lt;issue&gt; branch"]
-        PR["Pull Request"]
+        PR["Pull Request<br/>(base: develop)"]
+        Develop["develop (default / protected)"]
         Main["main (protected)"]
     end
     subgraph CF["Cloudflare Pages"]
@@ -63,7 +65,8 @@ flowchart LR
     FB --> PR
     PR -->|push| Preview
     Preview -->|レビュー: 表示 / 導線 / SEO| PR
-    PR -->|approve & merge| Main
+    PR -->|approve & merge| Develop
+    Develop -->|release merge| Main
     Main -->|merge トリガ| Prod
     Prod --> Users["公開サイト訪問者"]
 ```
@@ -72,7 +75,7 @@ flowchart LR
 
 - preview と production はどちらも Cloudflare Pages 上で同じ build 経路を通る。
 - preview レビュー (レイアウト / リンク / フォーム / SEO) を通過しない PR は merge しない。
-- production への昇格は **`main` へのマージのみ**が起点で、手動 deploy 経路を標準にしない。
+- production への昇格は **`develop` から `main` へのマージのみ**が起点で、手動 deploy 経路を標準にしない。
 - infra 側 (Pages project / domain / secret) の変更は Infrastructure Contract 経由で `kufu-infra` repo へ依頼する。
 
 ## Operations / Observability
@@ -89,7 +92,7 @@ flowchart LR
 - Terraform variable や provider credential など infra 用の秘匿情報は app repo に持ち込まない。
 - フォーム保護や bot 対策が必要な場合は、Cloudflare Turnstile など edge 側サービスを候補に含める。corporate-site の問い合わせフォームは **Cloudflare Turnstile + honeypot を Workers 側で多層検証**する ([ADR-0009](../adr/0009-corporate-site-contact-form-backend.md))。Turnstile token の `siteverify` と honeypot 判定、入力の server 側再検証はすべて `/api/contact` (Pages Functions) で行い、client を信頼しない。
 - リプレイ / CSRF 対策: Turnstile token は単回利用 (`siteverify` の二度目拒否に依拠) とし、Workers で `/api/contact` のリクエスト元 Origin / Referer を自サイトに限定する ([feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様))。
-- 濫用 / 連投対策: `/api/contact` に Cloudflare Rate Limiting (叩き台 5 req/min/IP、超過 429) を設定し、Resend 無料枠枯渇による送信不能 (可用性) を防ぐ (Infrastructure Contract / feature doc)。
+- 濫用 / 連投対策: `/api/contact` の Cloudflare Rate Limiting は上記 Infrastructure Contract の設定を正とする (本節では重複記載しない)。
 - メール生成時のインジェクション対策: Resend へ渡す宛先・件名はサーバ固定値とし、ユーザー入力は本文に plain text としてのみ埋め込み、改行・制御文字 (CRLF) を無害化する。email を Reply-To に使う場合も CRLF 除去・単一値に制限する ([feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様))。
 - CMS/API を導入する場合は、認証、権限、公開フロー、プレビュー環境を設計する ([DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md))。
 - コーポレートサイトの assets はライセンスと利用許諾を確認する。
