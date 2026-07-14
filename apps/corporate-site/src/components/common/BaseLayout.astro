@@ -29,6 +29,9 @@ const currentPath = Astro.url.pathname;
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
     <link rel="preload" as="style" href={fontsHref} onload="this.rel='stylesheet'" />
     <noscript><link rel="stylesheet" href={fontsHref} /></noscript>
   </head>
@@ -44,7 +47,7 @@ const currentPath = Astro.url.pathname;
         ".reveal-section, .consultation-case, .business-row, .featured-category-card, .catalog-board, .custom-order-panel",
       );
 
-      if (motionQuery.matches) {
+      if (motionQuery.matches || !("IntersectionObserver" in window)) {
         revealTargets.forEach((target) => {
           target.classList.add("is-visible");
         });

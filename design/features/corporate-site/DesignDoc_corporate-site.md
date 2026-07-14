@@ -68,7 +68,8 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 - 旧 P2 (事業内容 `/services`) / 旧 P4 (会社情報 `/company`) は LP 内 section に統合し、単独 route は設けない。直接導線は LP 内アンカーで提供する。
 - コンテナ幅・横余白は全ページ 1440px・横 padding 56 に統一する。実装は単一 max-width + 共通 padding に正規化する (#17 D6)。
 - `.pen` 正本は 3 画面の desktop に加えてモバイル variant を含める。hover / focus / form error 等の状態系はデザイン正本に含めず、実装時に `@kufu/ui` 規約で判断する (#17 D7)。
-- P3 のカテゴリ・メーカー検索は `q` query parameter を唯一の状態正本とする。初期表示・再読込・共有URLから検索条件を復元し、入力中は履歴を増やさない。空文字では `q` を削除する。JavaScript実行前のHTMLには18カテゴリと全メーカーを保持する。
+- P3 のカテゴリ・メーカー検索は `q` query parameter を唯一の状態正本とする。初期表示・再読込・共有 URL から検索条件を復元し、入力中は履歴を増やさない。空文字では `q` を削除する。JavaScript 実行前の HTML には 18 カテゴリと全メーカーを保持する。
+- reveal アニメーションは progressive enhancement とし、JavaScript が無効または `IntersectionObserver` が利用できない環境では全コンテンツを初期表示する。アニメーションのために HTML-first の可読性を損なわない。
 
 情報項目 → 配置マッピング (コンテンツ正本: [reference/](reference/)):
 

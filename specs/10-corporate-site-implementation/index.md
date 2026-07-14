@@ -305,6 +305,7 @@ EARS 風で振る舞いを記述する。
 ### Performance
 
 - HTML first。Products の長い一覧も JS なしで読める構造にする。
+- reveal 対象は JavaScript が実行できた場合のみ初期非表示にし、JavaScript 無効時または `IntersectionObserver` 非対応時は全コンテンツを表示する。
 - `@kufu/ui` の表示専用 React component は Astro 静的描画 (`client:*` なし) で使い、React runtime を出荷しない (D5)。
 - raw hex / 色 arbitrary value は使わず、semantic token utility (`text-foreground`, `bg-background`, `border-border` 等) を使う。rg ベースの軽量 token guard で混入を検出する (D8)。
 - 画像は `apps/corporate-site/src/assets` から import し、Astro Image / import で幅 / 高さ / lazy loading を明示する (D6)。
@@ -468,6 +469,7 @@ sequenceDiagram
 | DesignDoc_corporate-site.md / デザイントークン         | 影響なし (spec 内補足のみ)。raw hex / 色 arbitrary value の混入を検出する rg ベースの軽量 token guard を #10 に含めると確定 (source: spec-resolve D8)                                                         | design-workflow §6 の token guard を本体実装時に最低限機械検査するため                            |
 | DesignDoc_corporate-site.md / デザイントークン         | **反映済 (2026-07-15)**: #6 の `.pen` 更新と #10 の実装実績に合わせ、radius 基準値を4pxへ改訂                                                                                                                 | app側のtoken上書きを解消し、`tokens.css`を値の単一正本へ戻すため                                  |
 | DesignDoc_corporate-site.md / ページ構成 (IA) P3       | **反映済 (2026-07-15)**: カテゴリ・メーカー検索の状態を `q` query parameterへ同期                                                                                                                             | 検索条件を再読込・共有可能にし、URLで表現できる状態をDOM内だけに保持しないため                    |
+| DesignDoc_corporate-site.md / ページ構成 (IA)          | **反映済 (2026-07-15)**: reveal アニメーションを progressive enhancement とし、JavaScript 無効時の初期表示を保証                                                                                              | HTML-first の可読性をアニメーション実装へ依存させないため                                         |
 
 ### context への影響
 
@@ -507,6 +509,7 @@ sequenceDiagram
 | 2026-06-23 | Codex  | multi-agent review の NEEDS_WORK 指摘を反映                                      |
 | 2026-07-15 | Codex  | branch reviewの指摘に対応し、radiusの正本を4px基準へ同期                         |
 | 2026-07-15 | Codex  | 製品検索を `q` query parameterへ同期し、feature docへ正本ハンドオフ              |
+| 2026-07-15 | Codex  | reveal 表示を progressive enhancement 化し、JavaScript 無効時の E2E を追加       |
 
 ## 備考
 
