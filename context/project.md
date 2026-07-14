@@ -93,7 +93,7 @@ Issue / PR のラベル体系の **唯一の正本**。`workflow-git` skill は�
 
 `spec-*` skill が参照するパス。`Spec Workflow Contract` はこの表を読む。
 
-- PRD: 統合モード採用のため独立ファイルなし。`design/DesignDoc.md` の `## Why / What` 節を正本とする
+- PRD: `design/DesignDoc.md` の `## Why / What` 節 (独立ファイルなし)
 - Design Doc (landscape): `design/DesignDoc.md`
 - feature doc dir: `design/features/<feature>/`
 - feature doc: `design/features/<feature>/DesignDoc_<feature>.md`
@@ -108,7 +108,7 @@ Issue / PR のラベル体系の **唯一の正本**。`workflow-git` skill は�
 
 ## Templates
 
-- PRD: `templates/prd/template.md` (本プロジェクトは統合モードのため未使用。分離モードへ戻す場合のみ使う)
+- PRD: `templates/prd/template.md` (本プロジェクトでは未使用)
 - Design Doc: `templates/design-doc/template.md`
 - context: `templates/context/<topic>.md`
 - spec core: `templates/specs/template.md`

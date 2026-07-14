@@ -27,7 +27,7 @@
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/playwright.config.ts`
 - 参照ファイル:
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/specs/3-monorepo-foundation/index.md`
-  - `$(ghq root)/github.com/Fukuemon/kufu-apps/PRD.md`
+  - `$(ghq root)/github.com/Fukuemon/kufu-apps/design/DesignDoc.md` (`## Why / What`)
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/design/DesignDoc.md`
 
 ## 前提条件

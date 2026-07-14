@@ -31,32 +31,32 @@
 
 ## 上位文書整合
 
-正本 ([PRD](../../PRD.md) / [Design Doc](../../design/DesignDoc.md) / [feature doc](../../design/features/corporate-site/DesignDoc_corporate-site.md) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
+正本 ([Design Doc `## Why / What`](../../design/DesignDoc.md#why--what) / [Design Doc landscape](../../design/DesignDoc.md) / [feature doc](../../design/features/corporate-site/DesignDoc_corporate-site.md) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
 
-- PRD 更新要否: 不要
+- Design Doc Why / What 更新要否: 不要
 - Design Doc 更新要否: 不要
 - ADR 起票要否: 不要
 
-| 上位文書    | 節 / 該当箇所                                                                                   | 整合方針 (継承 / 補足 / 変更提案)                                                      |
-| ----------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| PRD         | Phase 1 スコープ / 成功条件「取扱領域と問い合わせ先へ到達」「Astro 静的生成と最小 island」      | 継承                                                                                   |
-| Design Doc  | Goal / モジュール責務 `apps/corporate-site` / Non Goals「CMS/API・不要な React 化は初期対象外」 | 継承                                                                                   |
-| feature doc | ページ構成 (IA) / コンテンツ正本 / デザイントークン / 問い合わせフォーム仕様                    | 正本を継承。P6 の完成形は feature doc、#10 は連絡先表示と #26 用フォーム境界までを実装 |
-| context     | architecture → Package Boundary / Runtime Boundary / Edge API                                   | 継承。表示 UI は静的描画、フォーム API は #26 に委譲する                               |
-| context     | component-design → content 層 / section assembly / presentation / Content Collection の選び分け | 継承。#6 の component map を実装配置へ展開                                             |
-| context     | design-workflow → `.pen` 正本 / token guard / Phase C 実装                                      | 継承。`index.pen` を参照し、コードから `.pen` へ round-trip しない                     |
-| context     | testing → E2E Runtime Contract / API・Functions の検証境界                                      | 継承。root Playwright と route intercept を使う                                        |
-| context     | infrastructure → Cloudflare Pages / Functions / secret / preview smoke                          | 継承。アプリ側 contract を満たす                                                       |
-| ADR-0006    | 3 route IA (`/`, `/products`, `/contact`)                                                       | 継承                                                                                   |
-| ADR-0007    | デザイントークン 2 層構造 + app-local lean Tailwind v4                                          | 継承                                                                                   |
-| ADR-0008    | shadcn 静的描画 / `client:*` island はインタラクション限定                                      | 継承                                                                                   |
-| ADR-0009    | 問い合わせ送信は Cloudflare Pages Functions (Workers) 中継                                      | 継承                                                                                   |
+| 上位文書    | 節 / 該当箇所                                                                                           | 整合方針 (継承 / 補足 / 変更提案)                                                      |
+| ----------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Design Doc  | Why / What → Phase 1 スコープ / 成功条件「取扱領域と問い合わせ先へ到達」「Astro 静的生成と最小 island」 | 継承                                                                                   |
+| Design Doc  | Goal / モジュール責務 `apps/corporate-site` / Non Goals「CMS/API・不要な React 化は初期対象外」         | 継承                                                                                   |
+| feature doc | ページ構成 (IA) / コンテンツ正本 / デザイントークン / 問い合わせフォーム仕様                            | 正本を継承。P6 の完成形は feature doc、#10 は連絡先表示と #26 用フォーム境界までを実装 |
+| context     | architecture → Package Boundary / Runtime Boundary / Edge API                                           | 継承。表示 UI は静的描画、フォーム API は #26 に委譲する                               |
+| context     | component-design → content 層 / section assembly / presentation / Content Collection の選び分け         | 継承。#6 の component map を実装配置へ展開                                             |
+| context     | design-workflow → `.pen` 正本 / token guard / Phase C 実装                                              | 継承。`index.pen` を参照し、コードから `.pen` へ round-trip しない                     |
+| context     | testing → E2E Runtime Contract / API・Functions の検証境界                                              | 継承。root Playwright と route intercept を使う                                        |
+| context     | infrastructure → Cloudflare Pages / Functions / secret / preview smoke                                  | 継承。アプリ側 contract を満たす                                                       |
+| ADR-0006    | 3 route IA (`/`, `/products`, `/contact`)                                                               | 継承                                                                                   |
+| ADR-0007    | デザイントークン 2 層構造 + app-local lean Tailwind v4                                                  | 継承                                                                                   |
+| ADR-0008    | shadcn 静的描画 / `client:*` island はインタラクション限定                                              | 継承                                                                                   |
+| ADR-0009    | 問い合わせ送信は Cloudflare Pages Functions (Workers) 中継                                              | 継承                                                                                   |
 
 > 現時点の突合では、issue #10 は既存正本の範囲内で実装詳細を補足する作業であり、`spec-sync` が必要な変更提案はない。
 
 ## 関連資料
 
-- `PRD.md`: Phase 1 要求、成功条件、ガードレール
+- `design/DesignDoc.md` `## Why / What`: Phase 1 要求、成功条件、ガードレール
 - `design/DesignDoc.md`: system landscape、モジュール責務
 - `design/features/corporate-site/DesignDoc_corporate-site.md`: IA / コンテンツ / 問い合わせフォーム / トークン / フローの正本
 - `design/features/corporate-site/index.pen`: デザイン正本
@@ -367,7 +367,7 @@ EARS 風で振る舞いを記述する。
 
 ### 計測指標
 
-- Phase 1 中は PRD と同様に build / E2E / island 方針 / 正本リンクを検証可能な成功条件とする。
+- Phase 1 中は Design Doc Why / What と同様に build / E2E / island 方針 / 正本リンクを検証可能な成功条件とする。
 - Lighthouse / bundle size / 問い合わせ転換率などの数値目標は公開前検証または公開後運用で別途確定する。
 
 ## フロー / シーケンス
@@ -439,9 +439,9 @@ sequenceDiagram
 
 ## 上位資料からの変更点
 
-本 spec で PRD / Design Doc / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。
+本 spec で Design Doc Why / What / landscape / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。
 
-### PRD への影響
+### Design Doc Why / What への影響
 
 | 対象節 | 変更内容 | 理由                                |
 | ------ | -------- | ----------------------------------- |

@@ -83,7 +83,7 @@ Reviewer: spec-review (fresh-context, subagent=explorer)
 
 ### 観点別評価
 
-- 上位文書整合: PASS — `specs/10-corporate-site-implementation/index.md:40-55` で PRD / Design Doc / feature doc / context / ADR-0006〜0009 との継承方針を明示。PRD の Phase 1 route / E2E / island 方針 (`PRD.md:75-83`, `PRD.md:105-120`) と矛盾なし。
+- 上位文書整合: PASS — `specs/10-corporate-site-implementation/index.md:40-55` で Design Doc Why / What / Design Doc landscape / feature doc / context / ADR-0006〜0009 との継承方針を明示。Design Doc Why / What の Phase 1 route / E2E / island 方針と矛盾なし。
 - 未解決論点: PASS — D1〜D8 はすべて決定済み (`specs/10-corporate-site-implementation/index.md:141-150`) で、未確定事項もなし (`specs/10-corporate-site-implementation/index.md:165-169`)。
 - 実装対象明示: PASS — target は `corporate-site`, `cms`, `ui`, `config`, `e2e`, `core` (`context/project.md:60-63`) と一致し、責務境界も明示 (`specs/10-corporate-site-implementation/index.md:171-183`)。
 - template 必須節: PASS — 必須節は存在確認済み。例: メタ情報〜備考 (`specs/10-corporate-site-implementation/index.md:5-508`)、Interface / Content / Data / Performance / Security / Error / Test / Flow / 実装分割 / 上位資料変更点も存在 (`specs/10-corporate-site-implementation/index.md:253-480`)。

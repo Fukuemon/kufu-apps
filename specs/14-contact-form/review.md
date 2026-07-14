@@ -7,7 +7,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 ### 観点別評価
 
-- 上位文書整合: PASS — `## 上位文書整合` (index.md:42-51) が PRD / Design Doc / feature doc / context / ADR-0008 / ADR-0009 と整合。PRD の連絡導線 (PRD.md:54,62,80,126) / Phase1 スコープ (PRD.md:116)、Design Doc のモジュール責務 (DesignDoc.md:124,186)、architecture.md の Runtime Boundary (architecture.md:56-57)、infrastructure.md の Workers 依存・Security (infrastructure.md:26-34,89,92) と矛盾なし。既存 ADR を覆さず ADR-0009 を新規ハンドオフ。
+- 上位文書整合: PASS — `## 上位文書整合` (index.md:42-51) が Design Doc Why / What / Design Doc landscape / feature doc / context / ADR-0008 / ADR-0009 と整合。Design Doc Why / What の連絡導線 / Phase1 スコープ、Design Doc landscape のモジュール責務、architecture.md の Runtime Boundary、infrastructure.md の Workers 依存・Security と矛盾なし。既存 ADR を覆さず ADR-0009 を新規ハンドオフ。
 - 未解決論点: PASS — D1〜D7 すべて「確定」(index.md:125-131)、`## 未確定事項` は「なし」(index.md:149)。下流 (Flowchart / Sequence / API / testid) は確定論点のみ参照。
 - 実装対象明示: PASS — target が project.md の対象ドメイン (project.md:58) と一致 (index.md:155-162)、責務境界が読め、ui は `@kufu/ui` 公開入口経由で越境なし (index.md:176,199 / architecture.md:22-23)。
 - template 必須節: PASS — template.md の全必須節が存在 (メタ情報〜備考、欠落なし)。
@@ -39,7 +39,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 ### サマリ
 
-- **総合判定: ブロッカーなし**。3 エージェントとも「上位文書 (PRD / feature doc / ADR-0008・0009 / infrastructure.md) との大筋整合・D1〜D7 解決・#11 からのスコープ委譲は妥当」で一致。指摘はいずれも `spec-prompts` 前に spec 内で詰めると受け入れ基準の検証可能性が上がるレベル。
+- **総合判定: ブロッカーなし**。3 エージェントとも「上位文書 (Design Doc Why / What / feature doc / ADR-0008・0009 / infrastructure.md) との大筋整合・D1〜D7 解決・#11 からのスコープ委譲は妥当」で一致。指摘はいずれも `spec-prompts` 前に spec 内で詰めると受け入れ基準の検証可能性が上がるレベル。
 - **指摘総数: 13 件** (合意 7 + 単独 6) / 重大度内訳: high 0 / medium 10 / low 3。
 - **合意 (×2 以上) の要対応 7 件**: ①`send_failed` ステータス揺れ(×3) ②rate limit 濫用制御の未設計(×3) ③API エラー body スキーマ未定義(×2) ④スパム対策の検証境界未確定(×2) ⑤spec-sync 注記の drift(×2) ⑥フェーズ状態の文書内矛盾(×3) ⑦honeypot 200 と 400 系の表記不一致(×2)。
 - **単独だが要注目 (security の穴)**: メールヘッダ/本文インジェクション対策の未記載 (claude) / Turnstile token リプレイ・Origin 検証の未定義 (claude)。
@@ -73,7 +73,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 ### 注記
 
 - skipped なし。3/3 エージェントの結果に基づく完全な結果。
-- 総評 (各エージェント共通): 上位文書 (PRD / feature doc / ADR-0008・0009 / infrastructure.md) との大筋整合・D1〜D7 解決・#11 からのスコープ委譲は妥当。**ブロッカー級の矛盾はなし**。残る指摘は API エラー契約の粒度・スパム/エラー体験の内部不整合・E2E 検証境界・濫用制御で、`spec-prompts` 前に spec 内で詰めると受け入れ基準の検証可能性が上がる。
+- 総評 (各エージェント共通): 上位文書 (Design Doc Why / What / feature doc / ADR-0008・0009 / infrastructure.md) との大筋整合・D1〜D7 解決・#11 からのスコープ委譲は妥当。**ブロッカー級の矛盾はなし**。残る指摘は API エラー契約の粒度・スパム/エラー体験の内部不整合・E2E 検証境界・濫用制御で、`spec-prompts` 前に spec 内で詰めると受け入れ基準の検証可能性が上がる。
 
 ---
 
@@ -86,7 +86,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 ### 観点別評価
 
-- 上位文書整合: PASS — PRD (性能原則 / Phase1 完成条件) / architecture (Runtime Boundary / secret) / feature doc (P6 双方向) / ADR-0009 と整合。
+- 上位文書整合: PASS — Design Doc Why / What (性能原則 / Phase1 完成条件) / architecture (Runtime Boundary / secret) / feature doc (P6 双方向) / ADR-0009 と整合。
 - 未解決論点: PASS — D1〜D13 全件「確定」、未確定事項なし。下流 (図 / API / testid) は確定決定に基づく。
 - 実装対象明示: PASS — target が project.md と一致、越境なし。
 - template 必須節: PASS — 欠落なし。

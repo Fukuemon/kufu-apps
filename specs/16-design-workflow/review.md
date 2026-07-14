@@ -7,7 +7,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 ### 観点別評価
 
-- 上位文書整合: PASS — `## 上位文書整合` (index.md:47-53) 全行充足。PRD Phase 1 スコープ (PRD.md:41/99-100)、Design Doc の「feature 設計は `design/features/` を正本」方針 (DesignDoc.md:103/154)、ADR-0004 (状態=提案、参照のみで未改変)、context/design-workflow.md と矛盾なし。
+- 上位文書整合: PASS — `## 上位文書整合` (index.md:47-53) 全行充足。Design Doc Why / What の Phase 1 スコープ、Design Doc landscape の「feature 設計は `design/features/` を正本」方針、ADR-0004 (状態=提案、参照のみで未改変)、context/design-workflow.md と矛盾なし。
 - 未解決論点: PASS — `## 設計時の論点` 全件解決済 (index.md:121)、D1〜D4 が「解決済みの論点」へ移動済。`## 未確定事項` は「なし」、follow-up (D2 拡張子確定 / D3 lint 自動化) は下流を止めない旨明記 (index.md:139)。
 - 実装対象明示: PASS — `## 実装対象` (index.md:145-152) は正規 target の `corporate-site` / `ui` のみ ◯。責務境界が読め、app 間直接依存なし。
 - template 必須節: PASS — minimal core 必須節 (メタ情報〜備考) がすべて存在。機能仕様サブ節も揃う。
@@ -28,7 +28,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 ### 観点別評価
 
-- 上位文書整合: PASS — `## 上位文書整合` (index.md:47-53) が全行充足。PRD Phase 1 スコープ、Design Doc の「feature 設計は design/features を正本」方針、ADR-0004、context/design-workflow.md と矛盾なし。ADR-0004 は参照のみで未改変。
+- 上位文書整合: PASS — `## 上位文書整合` (index.md:47-53) が全行充足。Design Doc Why / What の Phase 1 スコープ、Design Doc landscape の「feature 設計は design/features を正本」方針、ADR-0004、context/design-workflow.md と矛盾なし。ADR-0004 は参照のみで未改変。
 - 未解決論点: PASS — `## 設計時の論点` 全件解決済 (index.md:121)。`## 未確定事項` は「なし」、follow-up が下流 phase を止めない旨を明記 (index.md:139)。
 - 実装対象明示: PASS — `## 実装対象` (index.md:145-152) は正規 target (`corporate-site` / `ui`) のみ。責務境界 (corporate-site=パイロット実走、ui=トークン正本 consume) が読め、app 間直接依存なし。
 - template 必須節: PASS — minimal core 必須節 (メタ情報〜備考) がすべて存在。機能仕様サブ節 (Performance / Routing / Content / UI Reuse / React Compiler / Testing) も揃う。
