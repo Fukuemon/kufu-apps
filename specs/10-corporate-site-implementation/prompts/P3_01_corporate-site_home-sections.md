@@ -43,7 +43,7 @@
 ### ステップ 1: LP section assembly を追加
 
 1. `Hero.astro`, `BusinessSection.astro`, `ProductsCategorySection.astro`, `CompanySection.astro` を app-local component として追加する
-2. `SectionHeading`, `BusinessFeatureRow`, `FeaturedCategoryCard`, `ContactInfoRow`, `ServicePillar` を必要に応じて静的描画で利用する
+2. section 内で同じ見出し / 事業説明 / featured 製品 / 連絡先 / サービス柱の表示パターンが 2 回以上出る場合は、`SectionHeading`, `BusinessFeatureRow`, `FeaturedCategoryCard`, `ContactInfoRow`, `ServicePillar` を静的描画で利用する
 3. `home-section-hero`, `home-section-business`, `home-section-products`, `home-section-company` を付与する
 4. 検証: `PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH" pnpm typecheck`
 5. diff レビューで business wording が app-local に閉じていることを確認する

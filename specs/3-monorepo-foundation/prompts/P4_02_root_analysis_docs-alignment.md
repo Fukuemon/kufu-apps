@@ -23,7 +23,7 @@
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/`
 - 参照ファイル:
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/specs/3-monorepo-foundation/index.md`
-  - `$(ghq root)/github.com/Fukuemon/kufu-apps/PRD.md`
+  - `$(ghq root)/github.com/Fukuemon/kufu-apps/design/DesignDoc.md` (`## Why / What`)
   - `$(ghq root)/github.com/Fukuemon/kufu-apps/design/DesignDoc.md`
 
 ## 前提条件
@@ -48,7 +48,7 @@
 
 - root `package.json` に `knip` / `depcruise` script を接続する
 - 必要なら root config を追加して最小実行導線を成立させる
-- 実装結果が spec / PRD / Design Doc の contract とズレていないか確認し、必要最小限の文言調整を行う
+- 実装結果が spec / Design Doc Why / What / landscape の contract とズレていないか確認し、必要最小限の文言調整を行う
 
 ### 実装しない範囲
 
@@ -89,5 +89,5 @@ pnpm e2e
 
 - [ ] `knip` と `depcruise` の root 実行導線がある
 - [ ] 必要なら最小 config が追加されている
-- [ ] spec / PRD / Design Doc と実装の明確なズレが残っていない
+- [ ] spec / Design Doc Why / What / landscape と実装の明確なズレが残っていない
 - [ ] infra repo へ送る論点がこの repo の実装スコープへ混入していない

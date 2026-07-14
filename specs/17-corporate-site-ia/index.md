@@ -32,25 +32,25 @@
 
 ## 上位文書整合
 
-正本 ([PRD](../../PRD.md) / [Design Doc](../../design/DesignDoc.md) / [feature doc](../../design/features/) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
+正本 ([Design Doc `## Why / What`](../../design/DesignDoc.md#why--what) / [Design Doc landscape](../../design/DesignDoc.md) / [feature doc](../../design/features/) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
 
-- PRD 更新要否: 不要 (現時点)
+- Design Doc Why / What 更新要否: 不要 (現時点)
 - Design Doc 更新要否: **要 → 反映済** (2026-06-12: Open Questions のページ構成記述を 3 route + #17 / ADR-0006 リンクへ更新。spec-review 指摘 1)
 - ADR 起票要否: **要** (D4 確定 2026-06-11: 5p → 3 route の IA 構造変更を新規 ADR として起票し、`spec-sync` で実行)
 
 | 上位文書    | 節 / 該当箇所                                                                                           | 整合方針 (継承 / 補足 / 変更提案)                                                                   |
 | ----------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| PRD         | Phase 1 スコープ (corporate-site + `packages/ui` skeleton)                                              | 継承                                                                                                |
+| Design Doc  | Why / What → Phase 1 スコープ (corporate-site + `packages/ui` skeleton)                                 | 継承                                                                                                |
 | Design Doc  | feature 単位設計は `design/features/` を正本                                                            | 継承                                                                                                |
 | feature doc | `DesignDoc_corporate-site.md` 「ページ構成 (IA)」(P1/P2/P3/P4/P6 + 共通 G)                              | **変更提案** (D1 確定: 5p → 3 route 統合。反映済 2026-06-11: ADR-0006 + feature doc + #11 コメント) |
 | context     | `context/design-workflow.md` §2 フェーズ分担 (A0→A→import→B) / §4 ファイル規約 / §6 トークンガード      | 継承 + **§4 変更提案・反映済** (2026-06-12: 単一 `.pen` 既定化。パイロット知見の back-propagation)  |
 | ADR-0006    | [`0006-corporate-site-three-route-ia.md`](../../adr/0006-corporate-site-three-route-ia.md) (3 route IA) | **新規起票・反映済** (2026-06-11、spec-sync)                                                        |
 
-> 矛盾を検出した場合は `spec-sync` で PRD / Design Doc / feature doc / context / ADR への back-propagation を提案する。D1 確定 (2026-06-11) により feature doc IA への変更提案が確定。D4 確定により反映範囲は「ADR 新規 + feature doc + #11 コメント」で `spec-sync` を実行する。
+> 矛盾を検出した場合は `spec-sync` で Design Doc Why / What / Design Doc landscape / feature doc / context / ADR への back-propagation を提案する。D1 確定 (2026-06-11) により feature doc IA への変更提案が確定。D4 確定により反映範囲は「ADR 新規 + feature doc + #11 コメント」で `spec-sync` を実行する。
 
 ## 関連資料
 
-- `PRD.md`: Phase 1 = corporate-site 主対象
+- `design/DesignDoc.md` `## Why / What`: Phase 1 = corporate-site 主対象
 - `design/DesignDoc.md`: feature 単位設計の正本境界
 - `design/features/corporate-site/DesignDoc_corporate-site.md`: 現行 IA 正本 (再評価対象)
 - `context/design-workflow.md`: 実走するデザイン制作ワークフロー正本
@@ -284,9 +284,9 @@ EARS 風で振る舞いを記述する。
 
 ## 上位資料からの変更点
 
-本 spec で PRD / Design Doc / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。
+本 spec で Design Doc Why / What / landscape / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。
 
-### PRD への影響
+### Design Doc Why / What への影響
 
 | 対象節                                                        | 変更内容 | 理由 |
 | ------------------------------------------------------------- | -------- | ---- |

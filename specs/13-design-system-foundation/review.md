@@ -7,7 +7,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 ### 観点別評価
 
-- 上位文書整合: NEEDS_WORK — 整合テーブルは全行埋まっており PRD / Design Doc / ADR-0004 / 0006 との矛盾はない。ただし D5 / D6 が「変数正本は `tokens.css`」と定める一方、design-workflow.md §4 は「トークン正本 = `globals.css`、ここでしか定義しない」を規定しており、この差分が「context への影響」に変更提案として記録されていない (整合テーブルで §4 を「継承」と宣言したまま)。spec 内部でも正本ファイルの記述が分裂している。
+- 上位文書整合: NEEDS_WORK — 整合テーブルは全行埋まっており Design Doc Why / What / landscape / ADR-0004 / 0006 との矛盾はない。ただし D5 / D6 が「変数正本は `tokens.css`」と定める一方、design-workflow.md §4 は「トークン正本 = `globals.css`、ここでしか定義しない」を規定しており、この差分が「context への影響」に変更提案として記録されていない (整合テーブルで §4 を「継承」と宣言したまま)。spec 内部でも正本ファイルの記述が分裂している。
 - 未解決論点: PASS — 設計時の論点テーブルに未決行なし、未確定事項は「なし」で根拠 (`.pen` 実測) 付き。
 - 実装対象明示: PASS — target は正規 6 種と一致。実装は `ui` のみ ◯ で責務境界が明確。
 - template 必須節: PASS — 必須節はすべて存在する。

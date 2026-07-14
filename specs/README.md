@@ -1,6 +1,6 @@
 # Specs
 
-`specs/` は issue / 機能単位で要求、仕様、設計、テスト観点を一時的に整理する作業領域である。上位方針の正本は `design/DesignDoc.md` (Why/What/How を統合) に残し、恒久的な意思決定は `adr/` に昇格する。
+`specs/` は issue / 機能単位で要求、仕様、設計、テスト観点を一時的に整理する作業領域である。上位方針の正本は `design/DesignDoc.md` の `## Why / What` と landscape 節に残し、恒久的な意思決定は `adr/` に昇格する。
 
 ## 命名規約
 
