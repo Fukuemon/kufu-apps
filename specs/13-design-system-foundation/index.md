@@ -159,6 +159,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 - **D4 spacing / radius / shadow / breakpoint (2026-06-12 決定): b) 実績ベースの最小定義**
   - **spacing**: 独自トークンを新設しない。4px グリッド + 推奨リズム 6 段 (12/16/24/32/48/80 = Tailwind `3/4/6/8/12/20`) をガイドとして文書化する。`.pen` の `space-*` 変数は Tailwind 標準スケールに写像できるため 1:1 トークンは不要 (Pencil 側は variables として維持してよいが、CSS 側に対応トークンは作らない)
   - **radius**: shadcn の `--radius` (基準値 + 派生スケール) に一本化し、`--kufu-radius-sm/md/lg` は削除する。基準値は `.pen` 実測で確定済み: 全要素で cornerRadius 未使用 (直角デザイン) のため `--radius: 0rem` を基準値とする (角丸が必要になったら #10 以降で再評価)
+  - **2026-07-15 追記**: 本項は 2026-06-12 時点の決定スナップショット。#6 の `.pen` 更新と #10 の実装実績を受け、現在の基準値は4pxへ改訂した。現行正本は `tokens.css` / ADR-0007 / corporate-site feature docを参照する
   - **shadow / breakpoint**: Tailwind 標準を既定とし、独自トークンは作らない。コンテナ幅 1440px / 横 padding 56 は feature doc 確定済み (#17 D6) のレイアウト規約であり、トークン化しない。実需が出たら #10 以降で昇格する
 - **D5 参照経路 (2026-06-12 決定): b) トークン部分を分離した 3 entry 構成**
   - `@kufu/ui/tokens.css` (新設): primitive + semantic CSS 変数のみ。フレームワーク非依存
@@ -473,6 +474,7 @@ sequenceDiagram
 | 2026-06-13 | Claude | ユーザー指摘で feature doc を「値の対応表」から「参照ハブ」へ変更 (値の正本は tokens.css に一意化、doc には複製しない)。spacing / radius / type scale の doc 管理ガイドのみ feature doc に残す                                       |
 | 2026-06-13 | Claude | `spec-prompts` 実行: P1 実装プロンプト 2 件 (P1_01_ui / P1_02_corporate-site) を生成。P2 は Pencil MCP 作業、P3 は sync 済のため対象外                                                                                               |
 | 2026-06-13 | Codex  | prompts 生成後の最終レビューを実施し PASS を記録。spec ステータスを `Completed`、レビュー済フェーズを `レビュー済` に更新                                                                                                            |
+| 2026-07-15 | Codex  | #6 の `.pen` 更新と #10 の実装実績に合わせ、radius 基準値を4pxへ改訂。durable な正本は `tokens.css` / ADR-0007 / corporate-site feature docへ同期し、本specのD4は決定時スナップショットとして維持                                    |
 
 ## 備考
 

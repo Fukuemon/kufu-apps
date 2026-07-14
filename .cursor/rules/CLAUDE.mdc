@@ -10,7 +10,7 @@ globs: **/*
 
 ## Documents (正本)
 
-- プロダクト要求 (Why / What): [PRD.md](PRD.md) — PRD を作らない統合モードでは [design/DesignDoc.md](design/DesignDoc.md) の Why/What 節
+- プロダクト要求 (Why / What): [context/project.md](context/project.md) の Source of Truth で定義された PRD。統合モードでは Design Doc の Why / What 節
 - 全体像 / モジュール責務 (How: landscape): [design/DesignDoc.md](design/DesignDoc.md)
 - feature 単位の設計 (How: feature): [design/features/](design/features/)
 - 技術規約 / codebase architecture / 運用契約 (How: 横断): [context/](context/)

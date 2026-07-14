@@ -195,7 +195,42 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
     }
   };
 
-  search?.addEventListener("input", () => applyFilter(search.value));
+  const searchParam = "q";
+
+  const readSearchFromUrl = () =>
+    new URL(window.location.href).searchParams.get(searchParam) ?? "";
+
+  const applySearchFromUrl = () => {
+    if (!search) return;
+
+    const value = readSearchFromUrl();
+    search.value = value;
+    applyFilter(value);
+  };
+
+  const writeSearchToUrl = (value: string) => {
+    const url = new URL(window.location.href);
+    const query = value.trim();
+
+    if (query === "") {
+      url.searchParams.delete(searchParam);
+    } else {
+      url.searchParams.set(searchParam, query);
+    }
+
+    window.history.replaceState(
+      window.history.state,
+      "",
+      `${url.pathname}${url.search}${url.hash}`,
+    );
+  };
+
+  search?.addEventListener("input", () => {
+    applyFilter(search.value);
+    writeSearchToUrl(search.value);
+  });
+  window.addEventListener("popstate", applySearchFromUrl);
+  applySearchFromUrl();
 
   document
     .querySelector("[data-expand-all]")

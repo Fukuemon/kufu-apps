@@ -26,6 +26,9 @@ args = ["chrome-devtools-mcp@latest"]
 [mcp_servers.deepwiki]
 url = "https://mcp.deepwiki.com/mcp"
 
+[permissions.rulesync.filesystem]
+":minimal" = "read"
+
 [permissions.rulesync.network]
 enabled = true
 

@@ -24,7 +24,7 @@
    - **追加した独自 semantic (`--primary-soft` 等) を `bg-*` 等のユーティリティで使うには `@theme inline` への追加マッピングが必要** (生 CSS の `var()` 直書きなら不要)。ユーティリティ提供は #10 の実需に応じて行う。
 3. **ダーク面は inverse スコープ**: `.dark` テーマでなく、semantic 変数を上書きするラッパー class (案: `.surface-inverse`) で section 単位のダーク面を表現する。class 内で `--background` / `--foreground` 等を上書きすると、**そのスコープ内の shadcn コンポーネントもカスケードで自動的にダーク面の見た目へ再テーマされる** (`.dark` と同じ機構)。名前を保って値だけ差し替える設計の利点。
 4. **3 entry 配信**: `@kufu/ui/tokens.css` (CSS 変数のみ) / `@kufu/ui/fonts.css` (fontsource font-face) / `@kufu/ui/styles.css` (全量エントリ = `globals.css`。tokens + fonts + Tailwind theme + shadcn 層) に分離する。Astro (corporate-site) は `tokens.css` + `fonts.css` のみ、React app (将来の cms) は `styles.css` を import する。**(2026-06-22 改訂 — 下記「更新」参照)** corporate-site は全量 `styles.css` は取り込まないまま、app-local に lean な Tailwind v4 entry を立てて utility を使えるようにした。不採用にしたのは tw-animate-css / shadcn 層を含む「全量エントリの混入」であり、lean Tailwind 自体ではない。
-5. **実績ベースの最小定義**: type scale / spacing / shadow / breakpoint は独自トークンを作らず Tailwind 標準を使う (spacing は 4px グリッド + 推奨リズム 12/16/24/32/48/80 をガイド文書化)。radius は shadcn `--radius` に一本化し、`.pen` 実測 (全面直角) に基づき基準値 `0rem` とする。
+5. **実績ベースの最小定義**: type scale / spacing / shadow / breakpoint は独自トークンを作らず Tailwind 標準を使う (spacing は 4px グリッド + 推奨リズム 12/16/24/32/48/80 をガイド文書化)。radius は shadcn `--radius` に一本化する。基準値は `0.25rem` (4px) とし、Button 8px / Tag 4px など component 固有値は `.pen` と `@kufu/ui` の対応する component variant で管理する。
 
 ## 代替案
 
@@ -56,6 +56,12 @@
 - `e2e` への影響: なし (トークンガード検査の仕組み化は実装側で検討)
 
 ## 更新
+
+### 2026-07-15: radius 基準値を 4px へ改訂 (spec #10)
+
+- **背景**: 2026-06-12 時点の `.pen` は全面直角だったが、その後の #6 で Button 8px / Tag 4px がデザイン正本へ追加され、#10 の実装でも主要面に4pxの控えめな角丸を採用した。`tokens.css` が0pxのまま app側で値を上書きすると、トークン正本が分裂する。
+- **決定**: `tokens.css` の `--radius` を4pxへ変更し、app側の同名上書きを削除する。4pxを共通基準とし、Button 8pxなどの例外はcomponent variantが所有する。
+- **影響**: `--radius-*` 派生値を使う共有UIにも新しい基準値が適用される。corporate-siteの現行表示は維持される。
 
 ### 2026-06-22: corporate-site に lean app-local Tailwind v4 を採用 (spec #6)
 

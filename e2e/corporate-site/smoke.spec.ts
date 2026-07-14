@@ -79,3 +79,23 @@ test("toggles mobile navigation", async ({ page }) => {
   await page.getByTestId("site-nav-products").click();
   await expect(page).toHaveURL("/products");
 });
+
+test("persists product search in the URL", async ({ page }) => {
+  await page.goto("/products");
+
+  const search = page.getByRole("searchbox", {
+    name: "カテゴリ・メーカー名で検索",
+  });
+  await search.fill("住友重機械工業");
+
+  await expect(page).toHaveURL(/\/products\?q=/);
+  await expect(page.locator("[data-products-result]")).toContainText(
+    "件のカテゴリが一致",
+  );
+
+  await page.reload();
+  await expect(search).toHaveValue("住友重機械工業");
+
+  await search.fill("");
+  await expect(page).toHaveURL("/products");
+});
