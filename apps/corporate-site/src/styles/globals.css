@@ -185,12 +185,12 @@ a {
   position: relative;
 }
 
-.reveal-section,
-.consultation-case,
-.business-row,
-.featured-category-card,
-.catalog-board,
-.custom-order-panel {
+.js .reveal-section,
+.js .consultation-case,
+.js .business-row,
+.js .featured-category-card,
+.js .catalog-board,
+.js .custom-order-panel {
   opacity: 0;
   transform: translateY(1.25rem);
   transition:
