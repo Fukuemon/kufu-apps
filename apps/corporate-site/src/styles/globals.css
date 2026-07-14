@@ -9,8 +9,6 @@
 
 :root {
   color-scheme: light;
-  /* 無骨さを保ちつつ角の硬さをやわらげる控えめな radius */
-  --radius: 0.25rem;
   /* ヒーロー系フルブリード画像 (home / products) で共有する値。
      ここを変えると両方のブリード演出に反映される */
   --hero-bleed-width: 62vw;

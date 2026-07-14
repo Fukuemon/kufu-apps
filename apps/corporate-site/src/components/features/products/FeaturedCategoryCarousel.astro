@@ -129,6 +129,43 @@ const { categories, makerCountsByCategoryId } = Astro.props;
     let dragging = false;
     let startX = 0;
     let startScroll = 0;
+    let hovered = false;
+    let focused = false;
+    let inViewport = false;
+    let pageVisible = document.visibilityState === "visible";
+    let animationFrame = 0;
+    const speed = 0.5; // px/frame（約30px/秒のゆっくりした流れ）
+
+    const shouldAnimate = () =>
+      !reduceMotion.matches &&
+      inViewport &&
+      pageVisible &&
+      !hovered &&
+      !focused &&
+      !dragging;
+
+    const tick = () => {
+      animationFrame = 0;
+      if (!shouldAnimate()) return;
+
+      track.scrollLeft += speed;
+      recenter();
+      animationFrame = requestAnimationFrame(tick);
+    };
+
+    const updateAnimation = () => {
+      if (shouldAnimate()) {
+        if (animationFrame === 0) {
+          animationFrame = requestAnimationFrame(tick);
+        }
+        return;
+      }
+
+      if (animationFrame !== 0) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+      }
+    };
 
     track.addEventListener("pointerdown", (event) => {
       if (event.pointerType !== "mouse") return;
@@ -137,6 +174,7 @@ const { categories, makerCountsByCategoryId } = Astro.props;
       startScroll = track.scrollLeft;
       track.classList.add("is-dragging");
       track.setPointerCapture(event.pointerId);
+      updateAnimation();
     });
 
     track.addEventListener("pointermove", (event) => {
@@ -153,34 +191,43 @@ const { categories, makerCountsByCategoryId } = Astro.props;
         track.releasePointerCapture(event.pointerId);
       }
       recenter();
+      updateAnimation();
     };
 
     track.addEventListener("pointerup", endDrag);
     track.addEventListener("pointercancel", endDrag);
 
-    // 画像が自動で流れるよう連続スクロール。ホバー・フォーカス・ドラッグ中は停止
-    if (!reduceMotion.matches) {
-      let paused = false;
-      const speed = 0.5; // px/frame（約30px/秒のゆっくりした流れ）
-      const tick = () => {
-        if (!paused && !dragging) {
-          track.scrollLeft += speed;
-          recenter();
-        }
-        requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
+    // 画面外・非表示タブではフレーム予約自体を止める
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        inViewport = entry?.isIntersecting ?? false;
+        updateAnimation();
+      },
+      { threshold: 0.05 },
+    );
+    visibilityObserver.observe(carousel);
 
-      const pause = () => {
-        paused = true;
-      };
-      const resume = () => {
-        paused = false;
-      };
-      carousel.addEventListener("pointerenter", pause);
-      carousel.addEventListener("pointerleave", resume);
-      carousel.addEventListener("focusin", pause);
-      carousel.addEventListener("focusout", resume);
-    }
+    document.addEventListener("visibilitychange", () => {
+      pageVisible = document.visibilityState === "visible";
+      updateAnimation();
+    });
+    reduceMotion.addEventListener("change", updateAnimation);
+
+    carousel.addEventListener("pointerenter", () => {
+      hovered = true;
+      updateAnimation();
+    });
+    carousel.addEventListener("pointerleave", () => {
+      hovered = false;
+      updateAnimation();
+    });
+    carousel.addEventListener("focusin", () => {
+      focused = true;
+      updateAnimation();
+    });
+    carousel.addEventListener("focusout", (event) => {
+      focused = carousel.contains(event.relatedTarget as Node | null);
+      updateAnimation();
+    });
   }
 </script>

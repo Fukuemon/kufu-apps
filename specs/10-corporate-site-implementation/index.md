@@ -220,7 +220,7 @@ EARS 風で振る舞いを記述する。
 
 - route は `/`, `/products`, `/contact` の 3 つ。
 - `/services` / `/company` は作らず、LP 内アンカー (`#business`, `#company` など) で直接導線を提供する。
-- URL state を持つフィルタ / 検索は初期実装では導入しない。必要になった場合は別論点として扱う。
+- `/products` のカテゴリ・メーカー検索は `q` query parameter を唯一の状態正本とする。初期表示・再読込・共有URLから復元し、入力中は `history.replaceState` でURLを更新して履歴を増やさない。空文字では `q` を削除する。durable な仕様正本は corporate-site feature doc のページ構成 (IA) を参照する。
 
 ### Content / Assets
 
@@ -466,6 +466,8 @@ sequenceDiagram
 | DesignDoc_corporate-site.md / データ・コンテンツモデル | 影響なし (spec 内補足のみ)。design source 画像は `design/features/corporate-site/assets/`、配信用コピーは `apps/corporate-site/src/assets` に置き Astro Image / import で扱うと確定 (source: spec-resolve D6) | design 正本と runtime asset の責務境界を保ちつつ、Astro build の asset graph に乗せるため         |
 | DesignDoc_corporate-site.md / テスト観点               | 影響なし (spec 内補足のみ)。#10 の E2E 最小合格は CTA + Contact 境界までとし、visual screenshot / VRT は #28 で検討すると確定 (source: spec-resolve D7)                                                       | #10 の主要導線検証と、デザイン回帰検知の検討を責務分離するため                                    |
 | DesignDoc_corporate-site.md / デザイントークン         | 影響なし (spec 内補足のみ)。raw hex / 色 arbitrary value の混入を検出する rg ベースの軽量 token guard を #10 に含めると確定 (source: spec-resolve D8)                                                         | design-workflow §6 の token guard を本体実装時に最低限機械検査するため                            |
+| DesignDoc_corporate-site.md / デザイントークン         | **反映済 (2026-07-15)**: #6 の `.pen` 更新と #10 の実装実績に合わせ、radius 基準値を4pxへ改訂                                                                                                                 | app側のtoken上書きを解消し、`tokens.css`を値の単一正本へ戻すため                                  |
+| DesignDoc_corporate-site.md / ページ構成 (IA) P3       | **反映済 (2026-07-15)**: カテゴリ・メーカー検索の状態を `q` query parameterへ同期                                                                                                                             | 検索条件を再読込・共有可能にし、URLで表現できる状態をDOM内だけに保持しないため                    |
 
 ### context への影響
 
@@ -475,9 +477,10 @@ sequenceDiagram
 
 ### ADR の新規 / 更新
 
-| ADR ID | 変更内容 | 理由                                          |
-| ------ | -------- | --------------------------------------------- |
-| -      | なし     | 既存 ADR-0006 / 0007 / 0008 / 0009 を継承する |
+| ADR ID   | 変更内容                                          | 理由                                                     |
+| -------- | ------------------------------------------------- | -------------------------------------------------------- |
+| -        | なし                                              | 既存 ADR-0006 / 0007 / 0008 / 0009 を継承する            |
+| ADR-0007 | **更新済 (2026-07-15)**: radius 基準値を4pxへ改訂 | `.pen` / component / runtime token のdriftを解消するため |
 
 ## レビュー
 
@@ -502,6 +505,8 @@ sequenceDiagram
 | 2026-06-23 | Codex  | spec-resolve: D7 を CTA + Contact 境界までの E2E で確定し、VRT 検討を #28 へ分離 |
 | 2026-06-23 | Codex  | spec-resolve: D8 を rg ベースの軽量 token guard 追加で確定                       |
 | 2026-06-23 | Codex  | multi-agent review の NEEDS_WORK 指摘を反映                                      |
+| 2026-07-15 | Codex  | branch reviewの指摘に対応し、radiusの正本を4px基準へ同期                         |
+| 2026-07-15 | Codex  | 製品検索を `q` query parameterへ同期し、feature docへ正本ハンドオフ              |
 
 ## 備考
 

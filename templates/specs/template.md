@@ -33,7 +33,7 @@
 
 ## 上位文書整合
 
-正本 ([PRD](../../PRD.md) / [Design Doc](../../design/DesignDoc.md) / [feature doc](../../design/features/) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
+正本 ([project profile の Source of Truth](../../context/project.md#source-of-truth-正本ドキュメントのパス契約) / [Design Doc](../../design/DesignDoc.md) / [feature doc](../../design/features/) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
 
 - PRD 更新要否: 要 / 不要
 - Design Doc 更新要否: 要 / 不要
