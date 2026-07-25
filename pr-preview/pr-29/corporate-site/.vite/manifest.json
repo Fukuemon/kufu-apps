@@ -1,6 +1,6 @@
 {
   "../../node_modules/.pnpm/@mdx-js+react@3.1.1_@types+react@19.2.14_react@19.2.6/node_modules/@mdx-js/react/index.js": {
-    "file": "_astro/react-Bz2og7XI.js",
+    "file": "_astro/react-SK9dY5yD.js",
     "name": "react",
     "src": "../../node_modules/.pnpm/@mdx-js+react@3.1.1_@types+react@19.2.14_react@19.2.6/node_modules/@mdx-js/react/index.js",
     "isDynamicEntry": true,
@@ -9,7 +9,7 @@
     ]
   },
   "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js": {
-    "file": "_astro/Color-KMSTOMOX-DsZPUD4-.js",
+    "file": "_astro/Color-KMSTOMOX-DVISt5e8.js",
     "name": "Color-KMSTOMOX",
     "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js",
     "isDynamicEntry": true,
@@ -23,7 +23,7 @@
     ]
   },
   "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js": {
-    "file": "_astro/DocsRenderer-JROSPFPF-CayM5O-p.js",
+    "file": "_astro/DocsRenderer-JROSPFPF-BZfLPwVb.js",
     "name": "DocsRenderer-JROSPFPF",
     "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js",
     "isDynamicEntry": true,
@@ -187,7 +187,7 @@
     ]
   },
   "iframe.html": {
-    "file": "_astro/iframe-BBoIY5-G.js",
+    "file": "_astro/iframe-BLUXC_-g.js",
     "name": "iframe",
     "src": "iframe.html",
     "isEntry": true,
@@ -219,7 +219,7 @@
       "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js"
     ],
     "css": [
-      "_astro/iframe-C-dIy2nm.css"
+      "_astro/iframe-BDPEx_r_.css"
     ]
   },
   "src/components/common/SectionHeading.stories.ts": {
