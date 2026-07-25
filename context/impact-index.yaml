@@ -14,6 +14,27 @@
 # feature の追加・変更時にエントリを更新する。coverage: partial は未整備の印。
 
 features:
+  - name: "docs-operation"
+    keywords:
+      [
+        "specs",
+        "closeout",
+        "spec 削除",
+        "ドキュメント運用",
+        "正本境界",
+        "デザイン正本",
+        "DesignDoc 記述方針",
+        "C4 図",
+      ]
+    read:
+      - "adr/0011-specs-closeout-enforcement.md"
+      - "adr/0012-design-source-of-truth-implementation.md"
+      - "adr/0013-designdoc-present-facts-only.md"
+      - "context/design-workflow.md"
+    source_refs:
+      - "specs/31-docs-restructure/index.md (作業中のみ。issue #31 close 時に削除)"
+    coverage: "partial" # DesignDoc / design-workflow の本文書き換えは別 issue で実施予定
+
   - name: "<feature 名 (例: contact-form)>"
     keywords: ["<検索の手掛かり>", "<API 名>", "<画面名>"]
     read: # このエントリを触るとき最初に読むファイル (小さく保つ)

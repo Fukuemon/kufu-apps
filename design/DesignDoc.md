@@ -1,6 +1,6 @@
 # Kufu Monorepo Design Docs
 
-> 最終更新: 2026-07-05
+> 最終更新: 2026-07-25
 
 **Document Status:** Approved
 **Development Status:** In Progress
@@ -118,12 +118,15 @@ Phase 1 完成条件 (Definition of Done):
 
 ## Related ADRs
 
-| ADR                                                                    | 決定                                                        | 関連ドキュメント                                                                                                                                                                             |
-| ---------------------------------------------------------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md)         | Cloudflare の Terraform は別 repo (`kufu-infra`) で管理する | [context/infrastructure.md](../context/infrastructure.md)                                                                                                                                    |
-| [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md)     | app scaffold は公式 create command を優先する               | [context/toolchain.md](../context/toolchain.md)                                                                                                                                              |
-| [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) | Phase 1 は `apps/corporate-site` のみ。`apps/cms` は後続    | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md), [features/cms/DesignDoc_cms.md](features/cms/DesignDoc_cms.md)                   |
-| [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md)         | 問い合わせ送信は Cloudflare Pages Functions を中継する      | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様), [context/infrastructure.md](../context/infrastructure.md) |
+| ADR                                                                    | 決定                                                                              | 関連ドキュメント                                                                                                                                                                             |
+| ---------------------------------------------------------------------- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md)         | Cloudflare の Terraform は別 repo (`kufu-infra`) で管理する                       | [context/infrastructure.md](../context/infrastructure.md)                                                                                                                                    |
+| [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md)     | app scaffold は公式 create command を優先する                                     | [context/toolchain.md](../context/toolchain.md)                                                                                                                                              |
+| [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) | Phase 1 は `apps/corporate-site` のみ。`apps/cms` は後続                          | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md), [features/cms/DesignDoc_cms.md](features/cms/DesignDoc_cms.md)                   |
+| [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md)         | 問い合わせ送信は Cloudflare Pages Functions を中継する                            | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様), [context/infrastructure.md](../context/infrastructure.md) |
+| [ADR-0011](../adr/0011-specs-closeout-enforcement.md)                  | specs は存続させ closeout (close 時削除) を徹底する                               | `CLAUDE.md` Spec Workflow Contract                                                                                                                                                           |
+| [ADR-0012](../adr/0012-design-source-of-truth-implementation.md)       | デザイン正本は実装 (コード + Storybook)。ADR-0004 を置換                          | [context/design-workflow.md](../context/design-workflow.md) (改訂は別 issue)                                                                                                                 |
+| [ADR-0013](../adr/0013-designdoc-present-facts-only.md)                | 本 doc は現状事実のみ記載、将来計画は Future Work 節へ一元化 (書き換えは別 issue) | 本 doc                                                                                                                                                                                       |
 
 ## Project Profile
 
@@ -328,3 +331,4 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 | 2026-07-03 | Claude | 個別ライブラリ名を feature doc への参照に置換、ガードレールの測定方法を明記                               |
 | 2026-07-05 | Claude | Why/What 節 (想定ユーザー・成功条件・スコープ) を追加。重複記述を整理し未決事項を1つの表にまとめた        |
 | 2026-07-05 | Claude | 背景・課題 (Why) を事業上の課題 (訪問者・見込み顧客・内容更新者視点) 先出しに再構成し、開発上の制約と分離 |
+| 2026-07-25 | Claude | Related ADRs に ADR-0011/0012/0013 を追記 (#31 sync)。現状事実化・C4 再設計の書き換え実施は別 issue       |

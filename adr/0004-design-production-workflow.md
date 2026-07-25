@@ -2,7 +2,7 @@
 
 ## 状態
 
-提案
+置換 ([ADR-0012](0012-design-source-of-truth-implementation.md) により置換。2026-07-25。デザイン正本は実装 (コード + Storybook) とし、Pencil / `.pen` 工程を廃止)
 
 ## 決定日
 

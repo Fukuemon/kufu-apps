@@ -17,41 +17,41 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                                       |
-| --- | --------------------------- | ---------- | ---------- | -------------------------------------------------------------------------- |
-| 1   | 起票                        | 完了       | 2026-07-25 | issue #31。requirements.md の intake 再検証済 (欠落なし)                   |
-| 2   | 下書き                      | 完了       | 2026-07-25 | scaffold で index.md 初版生成。実装突合: 対象 (既存文書群への増分)         |
-| 3   | 上位文書突合                | 完了       | 2026-07-25 | 変更提案を検出 (本 issue の成果物そのもの。sync phase で反映)              |
-| 4   | 論点整理                    | 完了       | 2026-07-25 | D1〜D6 を抽出                                                              |
-| 5   | 論点解決                    | レビュー済 | 2026-07-25 | D1〜D6 全件解決。未決定ゼロ (D6: Future Work 一元化 + C4 L1/L2 内容再設計) |
-| 6   | Interface / Routing 設計    | 完了       | 2026-07-25 | 対象外で確定 (文書運用 issue のため。clarify 全件解決時に判定)             |
-| 7   | Content / Data 設計         | 完了       | 2026-07-25 | 文書構成は D1/D3/D6 で確定。diagram で清算フロー・検査・C4 再設計案を図化  |
-| 8   | Performance / Security 設計 | 完了       | 2026-07-25 | 対象外で確定 (文書運用 issue のため)                                       |
-| 9   | Test / Metrics 設計         | 完了       | 2026-07-25 | テスト観点 = EARS 5 件の成果物充足 + 整合検証で確定 (計測指標は対象外)     |
-| 10  | 実装分割                    | 未着手     |            | `prompts` phase で生成                                                     |
-| 11  | レビュー済                  | 未着手     |            |                                                                            |
+| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                                             |
+| --- | --------------------------- | ---------- | ---------- | -------------------------------------------------------------------------------- |
+| 1   | 起票                        | 完了       | 2026-07-25 | issue #31。requirements.md の intake 再検証済 (欠落なし)                         |
+| 2   | 下書き                      | 完了       | 2026-07-25 | scaffold で index.md 初版生成。実装突合: 対象 (既存文書群への増分)               |
+| 3   | 上位文書突合                | 完了       | 2026-07-25 | sync 完了: ADR-0011/0012/0013 起票、0004 置換、注記反映 (本文書き換えは別 issue) |
+| 4   | 論点整理                    | 完了       | 2026-07-25 | D1〜D6 を抽出                                                                    |
+| 5   | 論点解決                    | レビュー済 | 2026-07-25 | D1〜D6 全件解決。未決定ゼロ (D6: Future Work 一元化 + C4 L1/L2 内容再設計)       |
+| 6   | Interface / Routing 設計    | 完了       | 2026-07-25 | 対象外で確定 (文書運用 issue のため。clarify 全件解決時に判定)                   |
+| 7   | Content / Data 設計         | 完了       | 2026-07-25 | 文書構成は D1/D3/D6 で確定。diagram で清算フロー・検査・C4 再設計案を図化        |
+| 8   | Performance / Security 設計 | 完了       | 2026-07-25 | 対象外で確定 (文書運用 issue のため)                                             |
+| 9   | Test / Metrics 設計         | 完了       | 2026-07-25 | テスト観点 = EARS 5 件の成果物充足 + 整合検証で確定 (計測指標は対象外)           |
+| 10  | 実装分割                    | 未着手     |            | `prompts` phase で生成                                                           |
+| 11  | レビュー済                  | 未着手     |            |                                                                                  |
 
 ## 上位文書整合
 
 正本 ([Design Doc `## Why / What`](../../design/DesignDoc.md#why--what) / [Design Doc landscape](../../design/DesignDoc.md) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
 
-- Design Doc Why / What 更新要否: 要 (フェーズ展望など時系列記述の現状事実化の対象)
-- Design Doc 更新要否: **要** (C4 図 1 枚化 / 現状事実化)
-- ADR 起票要否: **要** (業務ルール 1 により 1 判断 1 ファイル。specs 運用是正 / Pencil 正本扱い / phase 記述方針)
+- Design Doc Why / What 更新要否: 要 → **方針を ADR-0013 に反映済** (書き換え実施は別 issue)
+- Design Doc 更新要否: **要** → **Related ADRs 表へ ADR-0011/0012/0013 追記済** (現状事実化・C4 再設計の書き換え実施は別 issue)
+- ADR 起票要否: **要 → 反映済**。[ADR-0011](../../adr/0011-specs-closeout-enforcement.md) (specs 運用是正) / [ADR-0012](../../adr/0012-design-source-of-truth-implementation.md) (デザイン正本 = 実装、0004 置換) / [ADR-0013](../../adr/0013-designdoc-present-facts-only.md) (DesignDoc 記述方針)
 
 本 issue は上位文書の変更**そのもの**を成果物とするため、以下の「変更提案」は矛盾による停止対象ではなく、clarify で内容を確定し sync phase で反映するハンドオフ対象として扱う。spec 単独で上位文書を書き換えない原則は維持する。
 
-| 上位文書         | 節 / 該当箇所                                                                                           | 整合方針 (継承 / 補足 / 変更提案)                                        |
-| ---------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Design Doc       | アーキテクチャ概観 (C4 L1/L2)                                                                           | 変更提案 (L1/L2 を維持し内容再設計)                                      |
-| Design Doc       | Why / What のフェーズ展望・Phase 1 記述                                                                 | 変更提案 (現状事実のみ化)                                                |
-| Design Doc       | モジュール責務 `specs` 行                                                                               | 継承 (specs 存続のため変更不要)                                          |
-| CLAUDE.md (契約) | Spec Workflow Contract (正本境界 / closeout)                                                            | 継承 + 補足 (closeout 契約は現行のまま。徹底する運用 / 検査を追加)       |
-| context          | design-workflow.md (§1 正本 / §2 フロー / §4 配置規約の `.pen` 前提)                                    | 変更提案 (Pencil 削除に伴う改訂)                                         |
-| feature doc      | corporate-site → デザイン正本 = `index.pen` の参照記述 (概要 / デザイントークン / コンポーネント節ほか) | 変更提案 (D5 に伴う `.pen` 正本参照の改訂。正本 = コード + Storybook へ) |
-| ADR-0003 / 0004  | phase 分割 / design workflow (Pencil 中核採用)                                                          | 変更提案 (0004 改訂 or 差し替え。将来計画の集約先として 0003 参照)       |
+| 上位文書         | 節 / 該当箇所                                                                                           | 整合方針 (継承 / 補足 / 変更提案)                                             |
+| ---------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Design Doc       | アーキテクチャ概観 (C4 L1/L2)                                                                           | 変更提案 (L1/L2 を維持し内容再設計)                                           |
+| Design Doc       | Why / What のフェーズ展望・Phase 1 記述                                                                 | 変更提案 (現状事実のみ化)                                                     |
+| Design Doc       | モジュール責務 `specs` 行                                                                               | 継承 (specs 存続のため変更不要)                                               |
+| CLAUDE.md (契約) | Spec Workflow Contract (正本境界 / closeout)                                                            | 継承 + 補足 (closeout 契約は現行のまま。徹底する運用 / 検査を追加)            |
+| context          | design-workflow.md (§1 正本 / §2 フロー / §4 配置規約の `.pen` 前提)                                    | 変更提案 (Pencil 削除に伴う改訂)                                              |
+| feature doc      | corporate-site → デザイン正本 = `index.pen` の参照記述 (概要 / デザイントークン / コンポーネント節ほか) | 変更提案 (D5 に伴う `.pen` 正本参照の改訂。正本 = コード + Storybook へ)      |
+| ADR-0003 / 0004  | phase 分割 / design workflow (Pencil 中核採用)                                                          | 変更提案 → 反映済 (0004 は ADR-0012 で置換。将来計画の集約先として 0003 参照) |
 
-> 反映は phase: sync の正本ハンドオフで行う。
+> sync (2026-07-25) で ADR-0011/0012/0013 起票・0004 置換・注記反映を実施済み。以後これらの判断の正本は ADR 側にあり、本 spec の記述は決定時スナップショット。DesignDoc / design-workflow / feature doc の本文書き換えは別 issue で実施する。
 
 ## 関連資料
 
@@ -117,12 +117,12 @@ EARS 風受け入れ基準 (requirements.md より):
 
 要求レベルの論点 4 件 (specs 存廃 / Pencil / phase 記述 / C4 図) は requirements.md の「決定事項」で確定済み (決定事項 #1 は下記 D1 で更新)。
 
-- **D1: specs は存続し closeout (issue close 時削除) を徹底する** (2026-07-25, ユーザー)。当初の要求決定「廃止し design / ADR に集約」と clarify 中の暫定決定「issue 集約」を撤回し、requirements.md 決定事項 #1 を更新した。spec 運用 (作成 → 設計 → sync → close 時削除) は現行契約のまま。本 issue の成果は残存 9 dir の清算手順と、削除を担保する運用 / 検査の設計。
-- **D2: phase gate (spec-review) は現行のまま存続する** (2026-07-25, ユーザー)。specs が存続するため評価対象の差し替えは不要。gate 代替の設計は論点から取り下げ。
-- **D3: 残存 9 dir は本 issue で全件清算し、検査はスクリプト方式とする** (2026-07-25, ユーザー)。清算は「dir ごとの sync 済み確認 → 未 sync 分の sync → 手順文書化 → 全件削除」の順 (IF 基準: 手順文書化前の削除は禁止)。今後の close 時削除は、closed issue × `specs/` 残存を照合する検査スクリプト (手動 + 将来 CI [#12] で実行、hook には組み込まない) で担保する。requirements.md のスコープを「削除実施まで」に拡大済み。
-- **D4: 検査は本 repo ローカル完結とし、テンプレ側の手順改修は派生 issue を起票する** (2026-07-25, ユーザー)。検査スクリプト + コマンド登録 + context/engineering.md 記載は本 repo に閉じる。closeout 手順 (`spec-lifecycle` の closeout.md) へ検査実行ステップを足す sdd-template 側の派生 issue を sync phase で起票する (他の消費 repo にも展開されるため)。
-- **D5: 新 ADR で ADR-0004 を supersede し、デザインフローは「Claude Design → 実装直結」とする** (2026-07-25, ユーザー)。新 ADR「デザイン正本を実装 (コード + Storybook) とする」を起票し、0004 は superseded に更新。フローは A0 依頼文 (.prompt.md, commit) → A: Claude Design で発散 (使い捨て) → C: 採用案を参照し直接実装 → 確認は Storybook + 実画面。Pencil (phase B) と `.pen` 中間正本を廃止。`index.pen` の実削除と context/design-workflow.md の書き換えは改訂方針を示した上で別 issue。
-- **D6: 将来計画は DesignDoc の Open Questions / Future Work 節に一元化し、C4 図は L1/L2 の階層を維持して内容を再設計する** (2026-07-25, ユーザー。要求決定 #3/#4 の詳細化。#4 の「1 枚統合」は撤回し requirements.md を更新)。他の全節から Phase 語彙・将来記述を排除し「今の事実」のみにする (根拠は ADR-0003 へリンク)。L1 = 利用者視点に絞る: 訪問者・内容更新者 → コーポレートサイト → 外部サービス (Cloudflare / Resend)。開発者・GitHub・docs workflow は除外し、記法は C4Context → flowchart。L2 = 実在の実行単位とデータの流れのみ: corporate-site / Pages Functions / packages (ui・config) / e2e / 外部サービス。未実装 `apps/cms` (点線) と正本ドキュメント群のノードは除外 (cms は Future Work 節、docs は「詳細の所在」節へ)。図の具体化は diagram phase で行う。
+- **D1: specs は存続し closeout (issue close 時削除) を徹底する** (2026-07-25, ユーザー)。当初の要求決定「廃止し design / ADR に集約」と clarify 中の暫定決定「issue 集約」を撤回し、requirements.md 決定事項 #1 を更新した。spec 運用 (作成 → 設計 → sync → close 時削除) は現行契約のまま。本 issue の成果は残存 9 dir の清算手順と、削除を担保する運用 / 検査の設計。**反映先: ADR ([ADR-0011](../../adr/0011-specs-closeout-enforcement.md) — 反映済)**
+- **D2: phase gate (spec-review) は現行のまま存続する** (2026-07-25, ユーザー)。specs が存続するため評価対象の差し替えは不要。gate 代替の設計は論点から取り下げ。**反映先: spec で閉じる (現行契約の継承であり上位文書の変更なし)**
+- **D3: 残存 9 dir は本 issue で全件清算し、検査はスクリプト方式とする** (2026-07-25, ユーザー)。清算は「dir ごとの sync 済み確認 → 未 sync 分の sync → 手順文書化 → 全件削除」の順 (IF 基準: 手順文書化前の削除は禁止)。今後の close 時削除は、closed issue × `specs/` 残存を照合する検査スクリプト (手動 + 将来 CI [#12] で実行、hook には組み込まない) で担保する。requirements.md のスコープを「削除実施まで」に拡大済み。**反映先: ADR ([ADR-0011](../../adr/0011-specs-closeout-enforcement.md) — 反映済)。検査スクリプト実装は実装フェーズ**
+- **D4: 検査は本 repo ローカル完結とし、テンプレ側の手順改修は派生 issue を起票する** (2026-07-25, ユーザー)。検査スクリプト + コマンド登録 + context/engineering.md 記載は本 repo に閉じる。closeout 手順 (`spec-lifecycle` の closeout.md) へ検査実行ステップを足す sdd-template 側の派生 issue を sync phase で起票する (他の消費 repo にも展開されるため)。**反映先: ADR ([ADR-0011](../../adr/0011-specs-closeout-enforcement.md)) + [sdd-template#7](https://github.com/Fukuemon/sdd-template/issues/7) — いずれも反映済**
+- **D5: 新 ADR で ADR-0004 を supersede し、デザインフローは「Claude Design → 実装直結」とする** (2026-07-25, ユーザー)。新 ADR「デザイン正本を実装 (コード + Storybook) とする」を起票し、0004 は superseded に更新。フローは A0 依頼文 (.prompt.md, commit) → A: Claude Design で発散 (使い捨て) → C: 採用案を参照し直接実装 → 確認は Storybook + 実画面。Pencil (phase B) と `.pen` 中間正本を廃止。`index.pen` の実削除と context/design-workflow.md の書き換えは改訂方針を示した上で別 issue。**反映先: ADR ([ADR-0012](../../adr/0012-design-source-of-truth-implementation.md) — 反映済、ADR-0004 は置換) + context / feature doc へ注記追加済**
+- **D6: 将来計画は DesignDoc の Open Questions / Future Work 節に一元化し、C4 図は L1/L2 の階層を維持して内容を再設計する** (2026-07-25, ユーザー。要求決定 #3/#4 の詳細化。#4 の「1 枚統合」は撤回し requirements.md を更新)。他の全節から Phase 語彙・将来記述を排除し「今の事実」のみにする (根拠は ADR-0003 へリンク)。L1 = 利用者視点に絞る: 訪問者・内容更新者 → コーポレートサイト → 外部サービス (Cloudflare / Resend)。開発者・GitHub・docs workflow は除外し、記法は C4Context → flowchart。L2 = 実在の実行単位とデータの流れのみ: corporate-site / Pages Functions / packages (ui・config) / e2e / 外部サービス。未実装 `apps/cms` (点線) と正本ドキュメント群のノードは除外 (cms は Future Work 節、docs は「詳細の所在」節へ)。図の具体化は diagram phase で行う。**反映先: ADR ([ADR-0013](../../adr/0013-designdoc-present-facts-only.md) — 反映済)。DesignDoc 本文の書き換えは別 issue**
 
 ## 未確定事項
 
@@ -321,38 +321,39 @@ flowchart TD
 
 統合モード (PRD = `design/DesignDoc.md` の `## Why / What` 節) のため、対象ファイルは Design Doc と同一。
 
-| 対象節                                                                                | 変更内容                                                                                                                                                | 理由                           |
-| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| Why / What → フェーズ展望・想定ユーザー表の Phase 優先度列・成功条件の Phase 1 target | 時系列 (Phase 1/2/3) 記述を現状事実化し、将来計画は Open Questions / Future Work 節へ一元化 (Design Doc への影響 3 行目と同一変更の PRD 相当節への適用) | D6 決定 (source: track で補完) |
+| 対象節                                                                                | 変更内容                                                                                                                                                | 理由                                                                                           |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Why / What → フェーズ展望・想定ユーザー表の Phase 優先度列・成功条件の Phase 1 target | 時系列 (Phase 1/2/3) 記述を現状事実化し、将来計画は Open Questions / Future Work 節へ一元化 (Design Doc への影響 3 行目と同一変更の PRD 相当節への適用) | D6 決定 (source: track で補完)。**反映済: 方針を ADR-0013 として記録。書き換え実施は別 issue** |
 
 ### Design Doc への影響
 
-| 対象節                                                                                                 | 変更内容                                                                                                                | 理由                      |
-| ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| アーキテクチャ概観 → System Context (L1)                                                               | 利用者視点に絞る (訪問者・内容更新者 → サイト → Cloudflare / Resend)。開発者・GitHub を除外し flowchart 記法へ          | D6 決定 (source: clarify) |
-| アーキテクチャ概観 → Container (L2)                                                                    | 実在の実行単位とデータの流れのみに絞る。未実装 `apps/cms` 点線と正本ドキュメント群ノードを除外                          | D6 決定 (source: clarify) |
-| Why/What フェーズ展望・スコープ・Lower-Priority Goals・設計上の前提・モジュール責務 `apps/cms` 行 ほか | Phase 語彙・将来記述を排除し現状事実のみ化。将来計画は Open Questions / Future Work 節へ一元化 (根拠は ADR-0003 リンク) | D6 決定 (source: clarify) |
+| 対象節                                                                                                 | 変更内容                                                                                                                | 理由                                                                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| アーキテクチャ概観 → System Context (L1)                                                               | 利用者視点に絞る (訪問者・内容更新者 → サイト → Cloudflare / Resend)。開発者・GitHub を除外し flowchart 記法へ          | D6 決定 (source: clarify)                                                                                                                                                                   |
+| アーキテクチャ概観 → Container (L2)                                                                    | 実在の実行単位とデータの流れのみに絞る。未実装 `apps/cms` 点線と正本ドキュメント群ノードを除外                          | D6 決定 (source: clarify)                                                                                                                                                                   |
+| Why/What フェーズ展望・スコープ・Lower-Priority Goals・設計上の前提・モジュール責務 `apps/cms` 行 ほか | Phase 語彙・将来記述を排除し現状事実のみ化。将来計画は Open Questions / Future Work 節へ一元化 (根拠は ADR-0003 リンク) | D6 決定 (source: clarify)。**反映済: 方針 = ADR-0013 (L1/L2 の内容基準含む)、Related ADRs 表へ追記済。書き換え実施は別 issue (C4 再設計図案は本 spec のフロー / シーケンス節から引き継ぐ)** |
 
 ### feature doc への影響
 
-| 対象 doc / 節                                                                                              | 変更内容                                                                                                  | 理由                      |
-| ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------- |
-| corporate-site → DesignDoc_corporate-site.md の `index.pen` 正本参照 (デザイン正本リンク・`.pen` 運用記述) | 「デザイン正本 = index.pen」記述を「正本 = 実装 (コード + Storybook)」へ改訂 (反映実施は sync / 別 issue) | D5 決定 (source: clarify) |
+| 対象 doc / 節                                                                                              | 変更内容                                                                                                  | 理由                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| corporate-site → DesignDoc_corporate-site.md の `index.pen` 正本参照 (デザイン正本リンク・`.pen` 運用記述) | 「デザイン正本 = index.pen」記述を「正本 = 実装 (コード + Storybook)」へ改訂 (反映実施は sync / 別 issue) | D5 決定 (source: clarify)。**反映済: 冒頭に ADR-0012 による正本変更の注記を追加。全面改訂は別 issue** |
 
 ### context への影響
 
-| 対象 doc / 節                                          | 変更内容                                                                                                                          | 理由                      |
-| ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| engineering.md (quality gate) / project.yml (commands) | specs 残存検査スクリプト (closed issue × `specs/` 照合) の追加とコマンド登録。CI 常設化は #12 に委譲                              | D3 決定 (source: clarify) |
-| design-workflow.md (§1 正本 / §2 フロー / §4 配置規約) | Pencil (phase B) と `.pen` 正本の記述を廃し、Claude Design → 実装直結 + 正本 = コード + Storybook に改訂 (書き換え実施は別 issue) | D5 決定 (source: clarify) |
+| 対象 doc / 節                                          | 変更内容                                                                                                                          | 理由                                                                                                                               |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| engineering.md (quality gate) / project.yml (commands) | specs 残存検査スクリプト (closed issue × `specs/` 照合) の追加とコマンド登録。CI 常設化は #12 に委譲                              | D3 決定 (source: clarify)。**方針 = ADR-0011 に記録済。スクリプト実装とコマンド登録・engineering.md 追記は実装フェーズ (prompts)** |
+| design-workflow.md (§1 正本 / §2 フロー / §4 配置規約) | Pencil (phase B) と `.pen` 正本の記述を廃し、Claude Design → 実装直結 + 正本 = コード + Storybook に改訂 (書き換え実施は別 issue) | D5 決定 (source: clarify)。**反映済: 冒頭に ADR-0012 による改訂予定の注記を追加。全面改訂は別 issue**                              |
 
 ### ADR の新規 / 更新
 
-| ADR ID                | 変更内容                                                                                  | 理由                              |
-| --------------------- | ----------------------------------------------------------------------------------------- | --------------------------------- |
-| 新規 (specs 運用是正) | specs 存続 + closeout 徹底 (廃止案の却下理由含む) と残存 9 dir の清算手順・検査方針を起票 | D1・D3・D4 決定 (source: clarify) |
-| 新規 (デザイン正本)   | デザイン正本を実装 (コード + Storybook) とし、Claude Design → 実装直結フローを定める      | D5 決定 (source: clarify)         |
-| ADR-0004              | 状態を superseded (新デザイン正本 ADR による置換) に更新                                  | D5 決定 (source: clarify)         |
+| ADR ID                    | 変更内容                                                                                                           | 理由                                                                                                                                                                                             |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 新規 (specs 運用是正)     | specs 存続 + closeout 徹底 (廃止案の却下理由含む) と残存 9 dir の清算手順・検査方針を起票                          | D1・D3・D4 決定 (source: clarify)。**反映済: [ADR-0011](../../adr/0011-specs-closeout-enforcement.md)。テンプレ側は [sdd-template#7](https://github.com/Fukuemon/sdd-template/issues/7) 起票済** |
+| 新規 (デザイン正本)       | デザイン正本を実装 (コード + Storybook) とし、Claude Design → 実装直結フローを定める                               | D5 決定 (source: clarify)。**反映済: [ADR-0012](../../adr/0012-design-source-of-truth-implementation.md)**                                                                                       |
+| ADR-0004                  | 状態を superseded (新デザイン正本 ADR による置換) に更新                                                           | D5 決定 (source: clarify)。**反映済: 状態 = 置換 (ADR-0012)**                                                                                                                                    |
+| 新規 (DesignDoc 記述方針) | 現状事実のみ記載 + Future Work 一元化 + C4 L1/L2 内容基準を起票 (業務ルール 1: 1 判断 1 ファイルにより独立 ADR 化) | D6 決定 (source: sync)。**反映済: [ADR-0013](../../adr/0013-designdoc-present-facts-only.md)**                                                                                                   |
 
 ## レビュー
 
@@ -366,18 +367,19 @@ flowchart TD
 
 ## 変更履歴
 
-| 日付       | 変更者                   | 変更内容                                                                                                       |
-| ---------- | ------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| 2026-07-25 | spec-lifecycle           | scaffold: index.md 初版生成、初期論点 D1〜D6 を抽出                                                            |
-| 2026-07-25 | spec-lifecycle (clarify) | D1 を「存続 + closeout 徹底」へ方針転換 (issue 集約案を撤回)、D2 を取り下げ。requirements.md も同期            |
-| 2026-07-25 | spec-lifecycle (clarify) | D3 解決: 残存 9 dir を本 issue で全件清算、検査はスクリプト方式。スコープ / EARS を同期                        |
-| 2026-07-25 | spec-lifecycle (clarify) | D4 解決: 検査はローカル完結、closeout 手順改修の sdd-template 派生 issue を sync で起票                        |
-| 2026-07-25 | spec-lifecycle (clarify) | D5 解決: 新 ADR で 0004 を supersede、フローは Claude Design → 実装直結 (正本 = コード + Storybook)            |
-| 2026-07-25 | spec-lifecycle (clarify) | D6 解決: 将来計画は Future Work 節へ一元化、C4 は L1/L2 維持で内容再設計 (要求決定 #4 を更新)。全論点解決      |
-| 2026-07-25 | spec-review 対応         | gate レビュー指摘 3 件対応: feature doc 整合行 (D5 起因) を 2 テーブルへ追記、Content/Data の placeholder 是正 |
-| 2026-07-25 | spec-lifecycle (diagram) | 清算 / closeout フロー図・検査スクリプトシーケンス・C4 L1/L2 再設計案 (D6) を生成                              |
-| 2026-07-25 | spec-lifecycle (track)   | PRD への影響 (統合モードの Why/What 現状事実化) を補完。変更点テーブルの反映漏れ突合完了                       |
-| 2026-07-25 | spec-review (track gate) | 累積レビュー PASS。軽微指摘: EARS 件数表記を 5 件に統一 (対応済)、清算手順文書化の明示は prompts へ持ち越し    |
+| 日付       | 変更者                   | 変更内容                                                                                                                                  |
+| ---------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-07-25 | spec-lifecycle           | scaffold: index.md 初版生成、初期論点 D1〜D6 を抽出                                                                                       |
+| 2026-07-25 | spec-lifecycle (clarify) | D1 を「存続 + closeout 徹底」へ方針転換 (issue 集約案を撤回)、D2 を取り下げ。requirements.md も同期                                       |
+| 2026-07-25 | spec-lifecycle (clarify) | D3 解決: 残存 9 dir を本 issue で全件清算、検査はスクリプト方式。スコープ / EARS を同期                                                   |
+| 2026-07-25 | spec-lifecycle (clarify) | D4 解決: 検査はローカル完結、closeout 手順改修の sdd-template 派生 issue を sync で起票                                                   |
+| 2026-07-25 | spec-lifecycle (clarify) | D5 解決: 新 ADR で 0004 を supersede、フローは Claude Design → 実装直結 (正本 = コード + Storybook)                                       |
+| 2026-07-25 | spec-lifecycle (clarify) | D6 解決: 将来計画は Future Work 節へ一元化、C4 は L1/L2 維持で内容再設計 (要求決定 #4 を更新)。全論点解決                                 |
+| 2026-07-25 | spec-review 対応         | gate レビュー指摘 3 件対応: feature doc 整合行 (D5 起因) を 2 テーブルへ追記、Content/Data の placeholder 是正                            |
+| 2026-07-25 | spec-lifecycle (diagram) | 清算 / closeout フロー図・検査スクリプトシーケンス・C4 L1/L2 再設計案 (D6) を生成                                                         |
+| 2026-07-25 | spec-lifecycle (track)   | PRD への影響 (統合モードの Why/What 現状事実化) を補完。変更点テーブルの反映漏れ突合完了                                                  |
+| 2026-07-25 | spec-review (track gate) | 累積レビュー PASS。軽微指摘: EARS 件数表記を 5 件に統一 (対応済)、清算手順文書化の明示は prompts へ持ち越し                               |
+| 2026-07-25 | spec-lifecycle (sync)    | ADR-0011/0012/0013 起票、ADR-0004 を置換、DesignDoc Related ADRs 追記、context/feature doc へ注記、impact-index 追加、sdd-template#7 起票 |
 
 ## 備考
 
