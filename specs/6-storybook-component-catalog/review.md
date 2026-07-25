@@ -52,7 +52,7 @@ Reviewer: multi-agent-review + spec-review rubric (fresh-context CLI agents: cla
 
 ### 対応状況 2026-06-18
 
-- 正本境界: `index.md` の機能仕様 / Interface / Content Data に、決定時スナップショットであることと `context/component-design.md` / `context/engineering.md` / `context/project.md` への正本リンクを追記。
+- 正本境界: `index.md` の機能仕様 / Interface / Content Data に、決定時スナップショットであることと `context/component-design.md` / `context/engineering.md` / `context/project.yml` への正本リンクを追記。
 - D7 同期状態: `context/component-design.md` への同期を「候補」から「同期済み」に更新。
 - app-local Storybook スコープ: `apps/corporate-site` の Storybook 起動・build 導線をスコープに追加。ただし framework / builder は D8 として未決定化。
 - phase 状態表: D8〜D10 の未決定に合わせ、Interface / Content / 実装分割を保留へ更新。
@@ -75,11 +75,11 @@ Reviewer: spec-review (fresh-context, subagent=codex exec)
 
 - 上位文書整合: PASS — spec `## 上位文書整合` が Design Doc Why / What / landscape / feature doc / context / ADR-0004 / ADR-0007 / ADR-0008 との整合方針を明示し、`GenericComponents` 初期 catalog も `## 解決済みの論点` D9 で例外理由を限定している。
 - 未解決論点: PASS — spec `## 設計時の論点` は D1〜D10 の決定欄が埋まり、`## 未確定事項` は「なし。D1〜D10 は解決済み。」として下流 phase が進められる状態。
-- 実装対象明示: PASS — spec `## 実装対象` が `corporate-site`, `ui`, `config`, `e2e`, `core` を `context/project.md` の対象ドメインと一致する形で列挙し、責務も分離している。
+- 実装対象明示: PASS — spec `## 実装対象` が `corporate-site`, `ui`, `config`, `e2e`, `core` を `context/project.yml` の対象ドメインと一致する形で列挙し、責務も分離している。
 - template 必須節: PASS — spec は `## メタ情報` から `## 備考` まで rubric の必須節を一通り持ち、Interface / Content / Performance / Security / Error / Fallback / Test / Flow / Sequence / 実装分割も存在する。
 - EARS acceptance: PASS — spec `## 要件の解釈` の EARS 記述が `WHEN` / `IF` で始まり、実行可能 script、Storybook story 表示、対応表、review checklist 記録など観測可能な条件になっている。
 - prompts 自己完結性: N/A — 今回のレビュー対象は spec 本体であり、`prompts/` 配下は指定していない。
-- 正本境界: PASS — spec `## 上位資料からの変更点` に `反映済` 行があり、`## 機能仕様` / `## Interface 設計` / `## Content / Data 設計` が決定時スナップショットとして `context/component-design.md`, `context/engineering.md`, `context/project.md` へ正本リンクしている。
+- 正本境界: PASS — spec `## 上位資料からの変更点` に `反映済` 行があり、`## 機能仕様` / `## Interface 設計` / `## Content / Data 設計` が決定時スナップショットとして `context/component-design.md`, `context/engineering.md`, `context/project.yml` へ正本リンクしている。
 
 ### 指摘
 

@@ -37,8 +37,7 @@
 
 - `AGENTS.md`
 - `CLAUDE.md`
-- `.agents/` (Codex repo skills)
-- `.codex/` (Codex config / hooks)
+- `.codex/`
 - `.claude/` (※ `.claude/skills/` も含む — skill の正本は `.rulesync/skills/`)
 - `.cursor/`
 

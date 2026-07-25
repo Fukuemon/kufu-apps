@@ -27,9 +27,9 @@
 
 ## 背景・目的
 
-`kufu-apps` の SDD workflow は、現状プロジェクト固有値が `.rulesync/rules/CLAUDE.md` に直書きされている。一方、`sdd-template` は `context/project.md` をプロジェクト固有値の唯一の正本とし、skills / templates / rules が固有値を直接持たない構成になっている。
+`kufu-apps` の SDD workflow は、現状プロジェクト固有値が `.rulesync/rules/CLAUDE.md` に直書きされている。一方、`sdd-template` は `context/project.yml` をプロジェクト固有値の唯一の正本とし、skills / templates / rules が固有値を直接持たない構成になっている。
 
-`sdd-template` の構成を `kufu-apps` へ適用し、今後の SDD workflow 改善を取り込みやすくする。あわせて Kufu 固有の design workflow は失わず、`context/project.md` と既存 context に退避・明文化する。
+`sdd-template` の構成を `kufu-apps` へ適用し、今後の SDD workflow 改善を取り込みやすくする。あわせて Kufu 固有の design workflow は失わず、`context/project.yml` と既存 context に退避・明文化する。
 
 ## 想定ユーザー/ステークホルダー
 
@@ -48,8 +48,8 @@
 
 ### やること
 
-- `context/project.md` を追加し、repository path、commands、naming、対象ドメイン、Issue Tracker、Source of Truth、Templates、Decision Priority を Kufu 向けに記述する。
-- `.rulesync/rules/CLAUDE.md` を `sdd-template` 型へ寄せ、プロジェクト固有値の直書きを `context/project.md` 参照へ移す。
+- `context/project.yml` を追加し、repository path、commands、naming、対象ドメイン、Issue Tracker、Source of Truth、Templates、Decision Priority を Kufu 向けに記述する。
+- `.rulesync/rules/CLAUDE.md` を `sdd-template` 型へ寄せ、プロジェクト固有値の直書きを `context/project.yml` 参照へ移す。
 - `.rulesync/skills` の SDD 共通 skill / workflow skill を `sdd-template` ベースへ更新する。
 - `context-bootstrap` / `design-doc` / `styleguide-documents` skill を追加する。
 - `design-prompt` と `context/design-workflow.md` は Kufu 固有 workflow として維持し、agent contract から参照できる状態にする。
@@ -67,12 +67,12 @@
 
 ## 業務ルール
 
-| #   | ルール                                          | 理由                                               | 備考                                                 |
-| --- | ----------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------- |
-| 1   | SDD 共通ルールは `sdd-template` を基準にする    | template 追従を容易にするため                      | `.rulesync/skills`, `templates`, root rule が主対象  |
-| 2   | Kufu 固有値は `context/project.md` を正本にする | skill / rule への project 固有値直書きを避けるため | commands, tracker, domains, paths を集約             |
-| 3   | Kufu 固有 workflow は context に残す            | design workflow を失わないため                     | `design-prompt`, `context/design-workflow.md` を維持 |
-| 4   | AI provider 生成物は `.rulesync/` から生成する  | generated artifact の drift を防ぐため             | `rulesync-sync` に従う                               |
+| #   | ルール                                           | 理由                                               | 備考                                                 |
+| --- | ------------------------------------------------ | -------------------------------------------------- | ---------------------------------------------------- |
+| 1   | SDD 共通ルールは `sdd-template` を基準にする     | template 追従を容易にするため                      | `.rulesync/skills`, `templates`, root rule が主対象  |
+| 2   | Kufu 固有値は `context/project.yml` を正本にする | skill / rule への project 固有値直書きを避けるため | commands, tracker, domains, paths を集約             |
+| 3   | Kufu 固有 workflow は context に残す             | design workflow を失わないため                     | `design-prompt`, `context/design-workflow.md` を維持 |
+| 4   | AI provider 生成物は `.rulesync/` から生成する   | generated artifact の drift を防ぐため             | `rulesync-sync` に従う                               |
 
 ## 入出力要件
 
@@ -90,7 +90,7 @@
 | #   | 出力                                             | 条件                   | 備考                                                         |
 | --- | ------------------------------------------------ | ---------------------- | ------------------------------------------------------------ |
 | 1   | `specs/21-sdd-template-adoption/requirements.md` | Issue 起票後           | 起票前は `specs/draft-sdd-template-adoption/requirements.md` |
-| 2   | `context/project.md`                             | 実装時                 | Kufu 固有値の正本                                            |
+| 2   | `context/project.yml`                            | 実装時                 | Kufu 固有値の正本                                            |
 | 3   | `.rulesync/` 更新                                | 実装時                 | rules / skills / hooks / permissions 等                      |
 | 4   | `templates/` 更新                                | 実装時                 | `sdd-template` ベース                                        |
 | 5   | provider 生成物                                  | `rulesync generate` 後 | `AGENTS.md`, `CLAUDE.md`, `.codex/`, `.claude/`, `.cursor/`  |
@@ -107,8 +107,8 @@
 
 | #   | 対象                | ルール                                                          | エラー時の扱い                                 |
 | --- | ------------------- | --------------------------------------------------------------- | ---------------------------------------------- |
-| 1   | agent contract      | 固有値は `context/project.md` 参照になっている                  | `.rulesync/rules/CLAUDE.md` を修正する         |
-| 2   | skills              | skill 本体に project 固有 path / CLI / framework を直書きしない | 該当 skill を `context/project.md` 参照に戻す  |
+| 1   | agent contract      | 固有値は `context/project.yml` 参照になっている                 | `.rulesync/rules/CLAUDE.md` を修正する         |
+| 2   | skills              | skill 本体に project 固有 path / CLI / framework を直書きしない | 該当 skill を `context/project.yml` 参照に戻す |
 | 3   | generated artifacts | `.rulesync/` の意図と生成先差分が一致する                       | `rulesync generate` を再実行し、差分を確認する |
 | 4   | Kufu 固有 workflow  | `design-prompt` / `context/design-workflow.md` が維持されている | context 参照を追加する                         |
 
@@ -152,12 +152,12 @@
 
 ## 既存資料からの変更点
 
-| 対象                        | 変更内容                                                  | 理由                                     |
-| --------------------------- | --------------------------------------------------------- | ---------------------------------------- |
-| `.rulesync/rules/CLAUDE.md` | Kufu 固有値の直書きを `context/project.md` 参照へ変更する | SDD workflow の抽象化                    |
-| `context/`                  | `project.md` を追加し、既存 context との役割を整理する    | プロジェクト固有値の正本化               |
-| `.rulesync/skills`          | `sdd-template` の共通 skill 構成へ更新する                | template 追従性向上                      |
-| `templates/`                | `sdd-template` の template 構成へ更新する                 | spec / design / context の scaffold 統一 |
+| 対象                        | 変更内容                                                   | 理由                                     |
+| --------------------------- | ---------------------------------------------------------- | ---------------------------------------- |
+| `.rulesync/rules/CLAUDE.md` | Kufu 固有値の直書きを `context/project.yml` 参照へ変更する | SDD workflow の抽象化                    |
+| `context/`                  | `project.yml` を追加し、既存 context との役割を整理する    | プロジェクト固有値の正本化               |
+| `.rulesync/skills`          | `sdd-template` の共通 skill 構成へ更新する                 | template 追従性向上                      |
+| `templates/`                | `sdd-template` の template 構成へ更新する                  | spec / design / context の scaffold 統一 |
 
 ## 変更履歴
 

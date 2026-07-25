@@ -48,7 +48,7 @@
 1. `context/engineering.md` に Storybook / shared UI review 運用契約を反映する
 2. `packages/ui/README.md` に起動方法、story 追加手順、review checklist へのリンクを追加する
 3. `apps/corporate-site/README.md` に app-local component 配置と Storybook 導線を追加する
-4. 必要なら `context/project.md` の Quick Commands と整合させる
+4. 必要なら `context/project.yml` の Quick Commands と整合させる
 5. 検証: `PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH" pnpm format:check`
 6. diff レビューを実施し、正本の二重管理になっていないことを確認する
 
@@ -64,13 +64,13 @@
 - repo root: `$(ghq root)/github.com/Fukuemon/kufu-apps`
 - 参照する path:
   - `package.json`
-  - `context/project.md`
+  - `context/project.yml`
   - `context/engineering.md`
   - `context/component-design.md`
   - `packages/ui/README.md`
   - `apps/corporate-site/README.md`
 - 正本:
-  - `context/project.md`
+  - `context/project.yml`
   - `context/engineering.md`
   - `context/component-design.md`
 

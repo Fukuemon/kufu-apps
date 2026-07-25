@@ -52,7 +52,7 @@
 
 ### ステップ 3: spec sync check
 
-1. `context/component-design.md`, `context/engineering.md`, README, `context/project.md` の記述が実装結果と一致するか確認する
+1. `context/component-design.md`, `context/engineering.md`, README, `context/project.yml` の記述が実装結果と一致するか確認する
 2. 差分が durable な運用ルールなら `spec-track` / `spec-sync` に渡す
 3. spec の `## 上位資料からの変更点` に必要な追記があれば更新する
 4. 検証: `PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH" pnpm format:check`
@@ -72,7 +72,7 @@
   - `package.json`
   - `packages/ui/`
   - `apps/corporate-site/`
-  - `context/project.md`
+  - `context/project.yml`
   - `context/engineering.md`
   - `context/component-design.md`
   - `packages/ui/README.md`
@@ -80,7 +80,7 @@
   - `design/features/corporate-site/component-map.md`
   - `specs/6-storybook-component-catalog/index.md`
 - 正本:
-  - `context/project.md`
+  - `context/project.yml`
   - `context/engineering.md`
   - `context/component-design.md`
 

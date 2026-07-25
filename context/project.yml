@@ -1,0 +1,155 @@
+# Project Profile — Kufu Monorepo 固有値の唯一の正本 (機械可読)
+#
+# `.rulesync/rules/CLAUDE.md` と `spec-*` / `dev-commands` / `workflow-git` 等の skill は、
+# 固有名をハードコードせず本ファイルを読む。値を変えたら meta.updated を更新し、
+# 依存する context/*.md との整合を確認する。
+
+meta:
+  updated: 2026-07-24
+
+product:
+  name: Kufu
+  slug: kufu-apps
+
+# Repository Map。詳細責務 / Phase 2 以降の予定は design/DesignDoc.md のモジュール責務テーブルが正本。
+repos:
+  convention: ghq。$(ghq root)/github.com/Fukuemon/<repo>
+  app: "." # $(ghq root)/github.com/Fukuemon/kufu-apps
+  docs: "."
+  infra: $(ghq root)/github.com/Fukuemon/kufu-infra # Terraform は別 repo 管理 (根拠: adr/0001-terraform-infra-repository-boundary.md)
+  layout: |
+    <repo-root>/
+    ├── apps/
+    │   └── corporate-site/ # Astro corporate site (Phase 1 の主対象)
+    ├── packages/
+    │   ├── ui/             # 共通 UI (shadcn/ui ベース、skeleton)
+    │   └── config/         # 共通設定 (tsconfig / lint 等)
+    ├── design/             # DesignDoc.md (landscape) + features/
+    ├── context/            # 技術規約 / codebase architecture / 運用契約
+    ├── e2e/                # Playwright (root 管理)
+    └── playwright.config.ts
+
+# Naming Conventions
+naming:
+  package: "@kufu/<module> (例: @kufu/corporate-site, @kufu/ui)"
+  component: PascalCase (例 Button.tsx, UserCard.tsx)
+  branch: feature/<issue-number> (例 feature/21)
+
+# Quick Commands (dev-commands skill が読むコマンド契約)
+commands:
+  dev: pnpm dev # 全 app。コーポレートサイトのみは pnpm dev:corporate
+  build: pnpm build
+  lint: pnpm lint # typecheck は pnpm typecheck
+  typecheck: pnpm typecheck
+  format: pnpm format:check # 適用は pnpm format
+  test: pnpm test
+  e2e: pnpm e2e # 既定 corporate-site
+  storybook: pnpm storybook # ui のみ pnpm storybook:ui / corporate は pnpm storybook:corporate
+  storybook-build: pnpm storybook:build # Pages artifact は pnpm storybook:pages
+  check: pnpm knip && pnpm depcruise # 健全性検査
+  add-dep: pnpm --filter @kufu/<module> add <package>
+
+tracker:
+  type: github
+  cli: gh
+  project: Fukuemon/kufu-apps
+
+# 対象ドメイン (spec「実装対象」テーブルと domain:* ラベルの正本)
+domains:
+  - corporate-site
+  - cms
+  - ui
+  - config
+  - e2e
+  - core
+
+# Label Policy — Issue / PR のラベル体系の唯一の正本 (workflow-git skill が読む)
+labels:
+  axes:
+    - axis: "type:*"
+      values: [type:feature, type:bug, type:research, type:task, type:chore]
+      color: "#1d76db"
+      rule: 必須・1 件。issue の種類 (workflow-git の issue-format と一致させる)
+    - axis: "phase:*"
+      values: [phase:design, phase:implementation]
+      color: "#5319e7"
+      rule: SDD ライフサイクル。設計 issue は phase:design
+    - axis: "domain:*"
+      values_from: domains # 上記 domains と一対一。横断は domain:core
+      color: "#0e8a16"
+      rule: 1 件以上。ドメインを増やすときは domains と両方更新する
+    - axis: flag
+      values: [epic]
+      color: "#fbca04"
+      rule: 複数 phase / spec にまたがる大きい要件 (親)
+    - axis: "status:*"
+      values: [status:designing, status:ready-to-implement, status:implementing]
+      color: "#0052cc"
+      rule: 設計対象 issue に常に 1 件。遷移は節目の skill が行う (workflow-git の issue-status.md)
+    - axis: "quality:*"
+      values: [quality:requirement-gap, quality:design-gap]
+      color: "#d93f0b"
+      rule: 派生 issue (前段 phase の取りこぼし) 側にのみ付与し、変更元 issue には付けない (workflow-git の derived-issue.md)
+  minimum:
+    - すべての issue に type:* を 1 件付ける
+    - 実装対象が定まる issue には該当する domain:* を付ける
+    - 設計フェーズ issue には phase:design、実装フェーズには phase:implementation
+    - 複数 phase / spec に展開される親 issue には epic を付ける
+
+spec:
+  phases: [intake, scaffold, clarify, diagram, track, sync, prompts]
+
+design:
+  prd: integrated # PRD は design/DesignDoc.md の Why/What 節に統合 (独立ファイルなし)
+
+# Source of Truth — 正本ドキュメントのパス契約
+paths:
+  prd: design/DesignDoc.md # 統合モード (## Why / What 節)
+  design_doc: design/DesignDoc.md
+  feature_dir: design/features/<feature>/
+  feature_doc: design/features/<feature>/DesignDoc_<feature>.md
+  feature_reference: design/features/<feature>/reference/ # 任意
+  context: context/<topic>.md
+  adr: adr/
+  spec_dir: specs/<issue-id>-<slug>/
+  spec_body: specs/<issue-id>-<slug>/index.md
+  spec_prompts: specs/<issue-id>-<slug>/prompts/
+  spec_requirements: specs/<issue-id>-<slug>/requirements.md # 任意
+  spec_review: specs/<issue-id>-<slug>/review.md # 任意
+
+templates:
+  prd: templates/prd/template.md # 本プロジェクトでは未使用 (統合モード)
+  design_doc: templates/design-doc/template.md
+  context: templates/context/<topic>.md
+  spec: templates/specs/template.md
+  spec_appendices: templates/specs/appendices/<topic>.md
+  feature: templates/features/template.md
+  requirements: templates/requirements/template.md
+  adr: templates/adr/template.md
+
+# プロジェクト固有 workflow
+workflows:
+  - デザイン制作 (ワイヤー → UI → 実装) は context/design-workflow.md を正本とする
+  - Phase A0 の Claude Design 依頼文作成は design-prompt skill (.rulesync/skills/design-prompt。本 repo 固有) を使う
+  - SDD workflow と直交する Git / GitHub 操作は workflow-git skill を使う
+
+# Decision Priority — 迷ったときの判断優先度。技術選定の根拠は design/DesignDoc.md と adr/。
+decision_priority:
+  - パフォーマンス (特にコーポレートサイト — Astro 静的生成と最小 island を優先)
+  - 一貫性 (UI / 構造 / 命名 — app 配下で独自実装しない)
+  - 開発体験
+  - 将来拡張性
+
+# プロダクト固有の禁止事項 (contract の Forbidden Patterns に追加で適用)
+forbidden:
+  - 各 app での UI 独自実装 (shadcn/ui の直接 init 含む)
+  - state のグローバル乱用 (URL で表現できる状態は Router へ寄せる)
+  - 不必要な React 化 (Astro で解決できるものを React island にしない)
+  - 共通化されていないユーティリティ関数の散在
+  - 実装コードでのデザイントークン直書き (raw hex / arbitrary value 等)。@kufu/ui / globals.css のセマンティックトークンを参照する (トークン正本ガード: context/design-workflow.md §6)
+
+glossary:
+  - term: island
+    def: Astro の部分 hydration 単位。最小限に保つ (decision_priority 1)
+  - term: セマンティックトークン
+    def: "@kufu/ui / globals.css が正本のデザイントークン。実装コードで raw 値を直書きしない"
