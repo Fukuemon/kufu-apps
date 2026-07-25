@@ -437,10 +437,11 @@ flowchart TD
 
 ### feature doc への影響
 
-| 対象 doc / 節                                          | 変更内容                                                                                                               | 理由                                      |
-| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| `component-map.md` / DesignDoc_corporate-site 設計方針 | sections の route 層グルーピングと移行先マップ (home / products / contact + common) を追記 <!-- source: clarify D8 --> | D8 決定。ページ対応が物理構造で一意になる |
-| `component-map.md`                                     | products の hero / category / detail 3 分割と各 section の公開面を追記 <!-- source: clarify D9 -->                     | D9 決定。起点 (index.ts) が一意になる     |
+| 対象 doc / 節                                          | 変更内容                                                                                                                                         | 理由                                                                           |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `component-map.md` / DesignDoc_corporate-site 設計方針 | sections の route 層グルーピングと移行先マップ (home / products / contact + common) を追記 <!-- source: clarify D8 -->                           | D8 決定。ページ対応が物理構造で一意になる                                      |
+| `component-map.md`                                     | products の hero / category / detail 3 分割と各 section の公開面を追記 <!-- source: clarify D9 -->                                               | D9 決定。起点 (index.ts) が一意になる                                          |
+| DesignDoc_corporate-site 設計方針                      | `src/styles/` の分割ファイル構成 (entry + base / components 受け皿 / animations / utilities) の corporate-site 適用を追記 <!-- source: track --> | D6 の app 固有適用形。横断規約 (context) と固有構成 (feature doc) の分置 (D11) |
 
 ### context への影響
 
@@ -456,10 +457,11 @@ flowchart TD
 
 ### ADR の新規 / 更新
 
-| ADR ID          | 変更内容                                                                                                         | 理由                                                       |
-| --------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| 新規 (番号未定) | 「corporate-site の sections 再編と section 公開面規約」を起票 (D8〜D10 の判断経緯) <!-- source: clarify D11 --> | D11 決定。issue close 後も再編の判断経緯を長期参照するため |
-| ADR-0007        | 「更新」節に `@source` の theme.css 移動 (app entry は import のみ) を追記 <!-- source: clarify 突合④ -->        | レビュー指摘① / 突合④ 決定。lean entry 原則の維持          |
+| ADR ID          | 変更内容                                                                                                         | 理由                                                                                          |
+| --------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| 新規 (番号未定) | 「corporate-site の sections 再編と section 公開面規約」を起票 (D8〜D10 の判断経緯) <!-- source: clarify D11 --> | D11 決定。issue close 後も再編の判断経緯を長期参照するため                                    |
+| ADR-0007        | 「更新」節に `@source` の theme.css 移動 (app entry は import のみ) を追記 <!-- source: clarify 突合④ -->        | レビュー指摘① / 突合④ 決定。lean entry 原則の維持                                             |
+| ADR-0007        | 「更新」節に motion トークン (duration / easing) の tokens.css 追加を追記 <!-- source: track -->                 | D5 決定。「実績ベースの最小定義」(独自トークン最小) に対する新トークン層のため ADR 側にも記録 |
 
 ## レビュー
 
@@ -472,12 +474,13 @@ flowchart TD
 
 ## 変更履歴
 
-| 日付       | 変更者         | 変更内容                                                                                      |
-| ---------- | -------------- | --------------------------------------------------------------------------------------------- |
-| 2026-07-25 | spec-lifecycle | scaffold で index.md 初版生成。設計論点 D1〜D11 を初期抽出                                    |
-| 2026-07-25 | spec-lifecycle | clarify: 実装突合ゲート 3 件を決着、D1〜D11 全件をユーザー対話で解決                          |
-| 2026-07-25 | spec-lifecycle | レビュー指摘対応: 突合④ (@source を theme.css へ移動) を追加決定、ADR 起票要否の stale を修正 |
-| 2026-07-25 | spec-lifecycle | diagram: 置き場判断フロー / 移行先マップ (component 単位) / styles entry 構成を図化           |
+| 日付       | 変更者         | 変更内容                                                                                            |
+| ---------- | -------------- | --------------------------------------------------------------------------------------------------- |
+| 2026-07-25 | spec-lifecycle | scaffold で index.md 初版生成。設計論点 D1〜D11 を初期抽出                                          |
+| 2026-07-25 | spec-lifecycle | clarify: 実装突合ゲート 3 件を決着、D1〜D11 全件をユーザー対話で解決                                |
+| 2026-07-25 | spec-lifecycle | レビュー指摘対応: 突合④ (@source を theme.css へ移動) を追加決定、ADR 起票要否の stale を修正       |
+| 2026-07-25 | spec-lifecycle | diagram: 置き場判断フロー / 移行先マップ (component 単位) / styles entry 構成を図化                 |
+| 2026-07-25 | spec-lifecycle | track: 未追記差分 2 件を反映 (feature doc への styles 構成適用 / ADR-0007 への motion トークン追記) |
 
 ## 備考
 
