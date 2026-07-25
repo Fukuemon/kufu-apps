@@ -1,11 +1,11 @@
 # Git Workflow Order
 
-本リポジトリで Git / GitHub 操作を進めるときの標準順序。Branch pattern / Issue Tracker は [context/project.md](../../../../context/project.md) を読む。
+本リポジトリ で Git / GitHub 操作を進めるときの標準順序。
 
 ## 標準順序
 
 1. Issue または作業単位を確定する
-2. protected branch から `context/project.md` の Branch pattern に従って作業ブランチを切る
+2. `develop` から作業ブランチを切る
 3. 実装・文書修正を行う
 4. 差分確認と必要ファイルのステージングを行う
 5. コミットメッセージを作成して commit する
@@ -29,7 +29,7 @@
 - 差分と本文の整合性
 - 変更理由を説明できるか
 - 関連 Issue / PR / spec のリンク先が正しいか
-- base branch が対象 workflow の既定 branch になっているか
+- base branch が `develop` になっているか
 
 ## push / PR の扱い
 

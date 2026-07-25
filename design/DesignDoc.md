@@ -9,7 +9,7 @@
 
 ## 概要 (Summary)
 
-Kufu Monorepo は、Kufu のコーポレートサイト、Phase 2 以降の CMS アプリ・管理画面・内部業務ツール、共通 UI / 設定 / テスト基盤を pnpm workspace で一元管理するリポジトリである。Phase 1 は Astro によるコーポレートサイト構築を最優先にし、高いパフォーマンスと保守性を保って公開する。主な利用者はコーポレートサイト訪問者と内容更新者であり、開発者 / AI エージェントはその価値を安全に実装するためのステークホルダーである。詳細な feature 設計は [design/features/](features/)、技術規約は [context/](../context/)、プロジェクト固有値は [context/project.md](../context/project.md) を正本とする。
+Kufu Monorepo は、Kufu のコーポレートサイト、Phase 2 以降の CMS アプリ・管理画面・内部業務ツール、共通 UI / 設定 / テスト基盤を pnpm workspace で一元管理するリポジトリである。Phase 1 は Astro によるコーポレートサイト構築を最優先にし、高いパフォーマンスと保守性を保って公開する。主な利用者はコーポレートサイト訪問者と内容更新者であり、開発者 / AI エージェントはその価値を安全に実装するためのステークホルダーである。詳細な feature 設計は [design/features/](features/)、技術規約は [context/](../context/)、プロジェクト固有値は [context/project.yml](../context/project.yml) を正本とする。
 
 ## Why / What
 
@@ -127,7 +127,7 @@ Phase 1 完成条件 (Definition of Done):
 
 ## Project Profile
 
-- repository path、commands、branch pattern、対象ドメイン、Issue Tracker は [context/project.md](../context/project.md) を正本とする。
+- repository path、commands、branch pattern、対象ドメイン、Issue Tracker は [context/project.yml](../context/project.yml) を正本とする。
 - infra repo 境界は [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md) を正本とする。
 
 ## Goal
@@ -254,11 +254,11 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 
 ### Engineering Context (How: 横断規約)
 
-技術スタック規約・codebase architecture・運用契約は [context/](../context/) ライブラリを正本とする。プロジェクト固有値は [context/project.md](../context/project.md) を正本とする。
+技術スタック規約・codebase architecture・運用契約は [context/](../context/) ライブラリを正本とする。プロジェクト固有値は [context/project.yml](../context/project.yml) を正本とする。
 
 | トピック                                    | 文書                                                      |
 | ------------------------------------------- | --------------------------------------------------------- |
-| repository 固有値 / commands / tracker      | [context/project.md](../context/project.md)               |
+| repository 固有値 / commands / tracker      | [context/project.yml](../context/project.yml)             |
 | package / runtime / state boundary          | [context/architecture.md](../context/architecture.md)     |
 | toolchain・build・scaffold policy           | [context/toolchain.md](../context/toolchain.md)           |
 | root task / shared config / quality gate    | [context/engineering.md](../context/engineering.md)       |

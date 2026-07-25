@@ -21,7 +21,7 @@ Reviewer: multi-agent-review (external CLI: codex, cursor; skipped: claude auth 
 - 未解決論点: PASS
   - D1〜D8 は決定済みで、未解決事項なし。
 - 実装対象明示: PASS
-  - `corporate-site` / `ui` / `e2e` の target は `context/project.md` の対象ドメイン内で、責務境界も読める。
+  - `corporate-site` / `ui` / `e2e` の target は `context/project.yml` の対象ドメイン内で、責務境界も読める。
 - template 必須節: NEEDS_WORK
   - `hooks/spec/validate_document.sh` が要求する `### React Compiler` 節が `## 機能仕様` 配下にない。
 - EARS acceptance: PASS / NEEDS_WORK mixed
@@ -85,7 +85,7 @@ Reviewer: spec-review (fresh-context, subagent=explorer)
 
 - 上位文書整合: PASS — `specs/10-corporate-site-implementation/index.md:40-55` で Design Doc Why / What / Design Doc landscape / feature doc / context / ADR-0006〜0009 との継承方針を明示。Design Doc Why / What の Phase 1 route / E2E / island 方針と矛盾なし。
 - 未解決論点: PASS — D1〜D8 はすべて決定済み (`specs/10-corporate-site-implementation/index.md:141-150`) で、未確定事項もなし (`specs/10-corporate-site-implementation/index.md:165-169`)。
-- 実装対象明示: PASS — target は `corporate-site`, `cms`, `ui`, `config`, `e2e`, `core` (`context/project.md:60-63`) と一致し、責務境界も明示 (`specs/10-corporate-site-implementation/index.md:171-183`)。
+- 実装対象明示: PASS — target は `corporate-site`, `cms`, `ui`, `config`, `e2e`, `core` (`context/project.yml:60-63`) と一致し、責務境界も明示 (`specs/10-corporate-site-implementation/index.md:171-183`)。
 - template 必須節: PASS — 必須節は存在確認済み。例: メタ情報〜備考 (`specs/10-corporate-site-implementation/index.md:5-508`)、Interface / Content / Data / Performance / Security / Error / Test / Flow / 実装分割 / 上位資料変更点も存在 (`specs/10-corporate-site-implementation/index.md:253-480`)。
 - EARS acceptance: PASS — WHEN / IF / THE SYSTEM SHALL 形式の受け入れ基準があり、route 表示、問い合わせ導線、form slot、参照元明記など観測可能 (`specs/10-corporate-site-implementation/index.md:128-135`)。
 - prompts 自己完結性: N/A — `prompts/` は未生成で、対象 spec は prompts 生成方針のみを持つ段階 (`specs/10-corporate-site-implementation/index.md:426-438`)。
