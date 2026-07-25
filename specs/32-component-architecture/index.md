@@ -2,7 +2,14 @@
 
 > 対象: corporate-site / packages/ui のコンポーネント設計とディレクトリ構成の見直し方針の詳細化。
 > スコープ: Storybook カタログ規約 / cva variants 集約 (アニメーション含む) / globals.css レイヤ分割 / ハードコード基準 / features → sections 再編と index.ts 公開規約。
-> 正本境界: 本 spec は issue #32 の論点・決定経緯・受け入れ基準・実装分割を記録する。durable な規約は sync phase で context / feature doc / ADR へハンドオフし、以後そちらを正本とする。要求レベルの決定 7 件は [requirements.md](requirements.md) 決定事項を参照。
+> 正本境界: 本 spec は issue #32 の論点・決定経緯・受け入れ基準・実装分割を記録する。durable な規約は **sync phase (2026-07-25) で反映済**であり、以後は下記が正本:
+>
+> - 横断規約 (ディレクトリ / 公開面 / Storybook / スタイル / ハードコード基準): [context/component-design.md](../../context/component-design.md)
+> - app 内依存方向: [context/architecture.md](../../context/architecture.md)
+> - corporate-site の route / section マップ: [component-map.md](../../design/features/corporate-site/component-map.md) と [feature doc](../../design/features/corporate-site/DesignDoc_corporate-site.md)
+> - 再編のアーキ判断: [ADR-0011](../../adr/0011-corporate-site-sections-architecture.md) / トークン層の更新: [ADR-0007](../../adr/0007-design-token-architecture.md)
+>
+> 本 spec 内の規約記述は **決定時スナップショット** であり、以後の更新は上記正本側で行う。要求レベルの決定 7 件は [requirements.md](requirements.md) 決定事項を参照。
 
 ## メタ情報
 
@@ -17,19 +24,19 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                               |
-| --- | --------------------------- | ---------- | ---------- | ------------------------------------------------------------------ |
-| 1   | 起票                        | 完了       | 2026-07-25 | issue #32 (spec-requirement で起票、要求論点 7 件解決済み)         |
-| 2   | 下書き                      | 完了       | 2026-07-25 | scaffold で index.md 初版生成。実装突合: 対象 (既存実装への増分)   |
-| 3   | 上位文書突合                | 完了       | 2026-07-25 | 変更提案あり (component-design.md ほか)。sync でハンドオフ予定     |
-| 4   | 論点整理                    | レビュー済 | 2026-07-25 | D1〜D11 抽出 + 実装突合ゲート 4 件 (clarify 冒頭 + Rv 指摘①)       |
-| 5   | 論点解決                    | レビュー済 | 2026-07-25 | D1〜D11 + 突合①〜④ 全件解決。spec-review PASS (指摘 2 件対応済)    |
-| 6   | Interface / Routing 設計    | 完了       | 2026-07-25 | 規約 (ディレクトリ / 公開面) 設計は D8〜D10 で確定、diagram で図化 |
-| 7   | Content / Data 設計         | 完了       | 2026-07-25 | ハードコード基準は D7 で確定 (機能仕様 Content/Assets に反映)      |
-| 8   | Performance / Security 設計 | 完了       | 2026-07-25 | CSS payload / island 方針は現状維持を確認 (D4〜D6 / styles 構成図) |
-| 9   | Test / Metrics 設計         | 完了       | 2026-07-25 | depcruise 境界ルール案は D10 で確定 (実装は実施 issue)             |
-| 10  | 実装分割                    | 未着手     |            | 実施 issue への移行手順 (段階的移動 / depcruise 検証) を含む       |
-| 11  | レビュー済                  | 未着手     |            |                                                                    |
+| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                                          |
+| --- | --------------------------- | ---------- | ---------- | ----------------------------------------------------------------------------- |
+| 1   | 起票                        | 完了       | 2026-07-25 | issue #32 (spec-requirement で起票、要求論点 7 件解決済み)                    |
+| 2   | 下書き                      | 完了       | 2026-07-25 | scaffold で index.md 初版生成。実装突合: 対象 (既存実装への増分)              |
+| 3   | 上位文書突合                | 完了       | 2026-07-25 | 変更提案あり。**sync で全件ハンドオフ済** (context 2 / feature doc 2 / ADR 2) |
+| 4   | 論点整理                    | レビュー済 | 2026-07-25 | D1〜D11 抽出 + 実装突合ゲート 4 件 (clarify 冒頭 + Rv 指摘①)                  |
+| 5   | 論点解決                    | レビュー済 | 2026-07-25 | D1〜D11 + 突合①〜④ 全件解決。spec-review PASS (指摘 2 件対応済)               |
+| 6   | Interface / Routing 設計    | レビュー済 | 2026-07-25 | 規約 (ディレクトリ / 公開面) 設計は D8〜D10 で確定、diagram で図化            |
+| 7   | Content / Data 設計         | レビュー済 | 2026-07-25 | ハードコード基準は D7 で確定 (機能仕様 Content/Assets に反映)                 |
+| 8   | Performance / Security 設計 | レビュー済 | 2026-07-25 | CSS payload / island 方針は現状維持を確認 (D4〜D6 / styles 構成図)            |
+| 9   | Test / Metrics 設計         | レビュー済 | 2026-07-25 | depcruise 境界ルール案は D10 で確定 (実装は実施 issue)                        |
+| 10  | 実装分割                    | 未着手     |            | 実施 issue への移行手順 (段階的移動 / depcruise 検証) を含む                  |
+| 11  | レビュー済                  | 未着手     |            |                                                                               |
 
 ## 上位文書整合
 
@@ -37,7 +44,7 @@
 
 - Design Doc Why / What 更新要否: 不要 (継承。ガードレール「Unnecessary Client JS Count」「Direct UI Duplication Count」の枠内)
 - Design Doc 更新要否: 不要 (継承。モジュール責務は変えず、component 規約の詳細化のみ)
-- ADR 起票要否: 要 (D11 で確定。「corporate-site の sections 再編と section 公開面規約」を新規 1 本、sync phase で起票。あわせて ADR-0007 に `@source` の theme.css 移動を「更新」として追記)
+- ADR 起票要否: 要 → **反映済 (2026-07-25 sync)**。新規 [ADR-0011](../../adr/0011-corporate-site-sections-architecture.md) を起票し、[ADR-0007](../../adr/0007-design-token-architecture.md) に「更新」節 (`@source` の theme.css 移動 / motion トークン追加) を追記した
 
 | 上位文書    | 節 / 該当箇所                                                      | 整合方針 (継承 / 補足 / 変更提案)                                                                |
 | ----------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
@@ -148,6 +155,26 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 ## 解決済みの論点
 
 要求レベルの決定 7 件 (autodocs 全面採用 / cva 集約 / レイヤ別分割 / 文言 content 化・値の定数化 / ページ対応 + common・sections 改名 / index.ts 再輸出 + 内部非公開 / 規約は context と feature doc に分置) は [requirements.md](requirements.md) の決定事項を正とする。本 spec ではその詳細化のみを扱い、要求決定を上書きしない。
+
+各論点の反映先判定 (sync phase の棚卸し。以下はすべて 2026-07-25 に反映済み):
+
+| 論点  | 反映先 (以後の正本)                                                                |
+| ----- | ---------------------------------------------------------------------------------- |
+| D1    | context/component-design.md (Storybook 対象節) + component-map.md (title 列)       |
+| D2    | context/component-design.md (Storybook 対象節)                                     |
+| D3    | context/component-design.md (Storybook 対象節)                                     |
+| D4    | context/component-design.md (スタイリング節)                                       |
+| D5    | context/component-design.md (スタイリング節) + ADR-0007 更新節                     |
+| D6    | context/component-design.md (スタイリング節) + feature doc 設計方針 (app 固有適用) |
+| D7    | context/component-design.md (ハードコード基準節)                                   |
+| D8    | ADR-0011 + context/component-design.md (ディレクトリ構成節) + component-map.md     |
+| D9    | ADR-0011 + context/component-design.md (ディレクトリ構成節) + component-map.md     |
+| D10   | ADR-0011 + context/architecture.md (App 内依存方向節)                              |
+| D11   | 本 sync の反映先割り付けそのもの (メタ決定。spec で閉じる)                         |
+| 突合① | context/component-design.md (スタイリング節。cva / styles 分割で解消する設計)      |
+| 突合② | context/component-design.md (Storybook 対象節: Section story を公認)               |
+| 突合③ | spec で閉じる (現状経路の追認。実装変更なし)                                       |
+| 突合④ | ADR-0007 更新節 + context/component-design.md (スタイリング節)                     |
 
 - **D8 (2026-07-25, ユーザー): sections は route 層でグルーピングする (案 A)**。`components/sections/<route>/<section>/` の 2 階層とし、section 単位のディレクトリを作る。移行先マップ (section 単位):
   - `sections/home/` ← hero / business / services / company / consultation (現 5 features)
@@ -324,6 +351,8 @@ flowchart TD
     Q1 -->|"いいえ"| Q2{"複数 route で共有する?"}
     Q2 -->|"はい"| Common["components/common/ に置く"]
     Q2 -->|"いいえ"| Section["sections/&lt;route&gt;/&lt;section&gt;/ に置く\n公開は index.ts 再輸出のみ (D9/D10)"]
+    Common --> Q3
+    UI --> Q3
     Section --> Q3{"視覚 variant /\n状態分岐を持つ?"}
     Q3 -->|"はい"| Cva["cva で variants を定義 (D4)"]
     Q3 -->|"いいえ"| Utility["Tailwind utility 直書き (D4)"]
@@ -423,6 +452,8 @@ flowchart TD
 
 本 spec で PRD / Design Doc / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。track / sync phase で更新する。
 
+> **全行 2026-07-25 の sync phase で反映済** (commit は本 branch `feature/32`)。以後の更新は反映先の正本側で行う。
+
 ### PRD への影響
 
 | 対象節 | 変更内容 | 理由 |
@@ -457,11 +488,11 @@ flowchart TD
 
 ### ADR の新規 / 更新
 
-| ADR ID          | 変更内容                                                                                                         | 理由                                                                                          |
-| --------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| 新規 (番号未定) | 「corporate-site の sections 再編と section 公開面規約」を起票 (D8〜D10 の判断経緯) <!-- source: clarify D11 --> | D11 決定。issue close 後も再編の判断経緯を長期参照するため                                    |
-| ADR-0007        | 「更新」節に `@source` の theme.css 移動 (app entry は import のみ) を追記 <!-- source: clarify 突合④ -->        | レビュー指摘① / 突合④ 決定。lean entry 原則の維持                                             |
-| ADR-0007        | 「更新」節に motion トークン (duration / easing) の tokens.css 追加を追記 <!-- source: track -->                 | D5 決定。「実績ベースの最小定義」(独自トークン最小) に対する新トークン層のため ADR 側にも記録 |
+| ADR ID                                                             | 変更内容                                                                                                                                                                             | 理由                                                                                          |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| [ADR-0011](../../adr/0011-corporate-site-sections-architecture.md) | 「corporate-site の component を sections (route 層) で再編し、section 公開面を index.ts + depcruise で固定する」を起票 (D8〜D10 の判断経緯) <!-- source: clarify D11 --> **反映済** | D11 決定。issue close 後も再編の判断経緯を長期参照するため                                    |
+| ADR-0007                                                           | 「更新」節に `@source` の theme.css 移動 (app entry は import のみ) を追記 <!-- source: clarify 突合④ -->                                                                            | レビュー指摘① / 突合④ 決定。lean entry 原則の維持                                             |
+| ADR-0007                                                           | 「更新」節に motion トークン (duration / easing) の tokens.css 追加を追記 <!-- source: track -->                                                                                     | D5 決定。「実績ベースの最小定義」(独自トークン最小) に対する新トークン層のため ADR 側にも記録 |
 
 ## レビュー
 
@@ -475,13 +506,14 @@ flowchart TD
 
 ## 変更履歴
 
-| 日付       | 変更者         | 変更内容                                                                                            |
-| ---------- | -------------- | --------------------------------------------------------------------------------------------------- |
-| 2026-07-25 | spec-lifecycle | scaffold で index.md 初版生成。設計論点 D1〜D11 を初期抽出                                          |
-| 2026-07-25 | spec-lifecycle | clarify: 実装突合ゲート 3 件を決着、D1〜D11 全件をユーザー対話で解決                                |
-| 2026-07-25 | spec-lifecycle | レビュー指摘対応: 突合④ (@source を theme.css へ移動) を追加決定、ADR 起票要否の stale を修正       |
-| 2026-07-25 | spec-lifecycle | diagram: 置き場判断フロー / 移行先マップ (component 単位) / styles entry 構成を図化                 |
-| 2026-07-25 | spec-lifecycle | track: 未追記差分 2 件を反映 (feature doc への styles 構成適用 / ADR-0007 への motion トークン追記) |
+| 日付       | 変更者         | 変更内容                                                                                                                           |
+| ---------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-07-25 | spec-lifecycle | scaffold で index.md 初版生成。設計論点 D1〜D11 を初期抽出                                                                         |
+| 2026-07-25 | spec-lifecycle | clarify: 実装突合ゲート 3 件を決着、D1〜D11 全件をユーザー対話で解決                                                               |
+| 2026-07-25 | spec-lifecycle | レビュー指摘対応: 突合④ (@source を theme.css へ移動) を追加決定、ADR 起票要否の stale を修正                                      |
+| 2026-07-25 | spec-lifecycle | diagram: 置き場判断フロー / 移行先マップ (component 単位) / styles entry 構成を図化                                                |
+| 2026-07-25 | spec-lifecycle | track: 未追記差分 2 件を反映 (feature doc への styles 構成適用 / ADR-0007 への motion トークン追記)                                |
+| 2026-07-25 | spec-lifecycle | sync: context 2 本 / feature doc 2 本を改訂、ADR-0011 起票 + ADR-0007 更新、impact-index 追加。spec を決定時スナップショットへ降格 |
 
 ## 備考
 

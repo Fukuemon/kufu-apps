@@ -1,6 +1,6 @@
 # Codebase Architecture
 
-> 最終更新: 2026-06-18
+> 最終更新: 2026-07-25
 
 Kufu Monorepo の package / runtime boundary と依存方向。全体像 (system landscape, モジュール責務) は [design/DesignDoc.md](../design/DesignDoc.md) を正本とし、本書はコードベースの境界規約を扱う。
 
@@ -25,6 +25,19 @@ apps/cms ─────┼─→ packages/ui ─→ packages/config
 - `apps/* → apps/*` (app 間直接依存) は禁止。
 - `packages/ui` → `packages/config` は許可。
 - 循環依存・未宣言依存・devDependency 流入は禁止 ([engineering.md](engineering.md) の repository quality gate で検査)。
+
+### App 内依存方向 (sections 公開面)
+
+app 内の component 依存は次の一方向に固定する (決定経緯: issue #32 D10 / [ADR-0011](../adr/0011-corporate-site-sections-architecture.md)。ディレクトリ構成は [component-design.md](component-design.md) が正本):
+
+```text
+pages → sections (index.ts) → common → @kufu/ui
+```
+
+- pages から section 内部ファイルへの直接 import は禁止 (各 section の `index.ts` 経由のみ許可)。
+- section 間の import は index 経由でも禁止。共有が必要になった部品は `common/` (app 内) または `packages/ui` (複数 app) へ昇格する。
+- 同 section 内 (story 含む) の直接参照は自由 (story の colocation を維持)。
+- 本境界は dependency-cruiser のルールとして機械検査する (ルール実装は実施 issue 側)。
 
 ### デザインシステム資産の正本と昇格境界
 

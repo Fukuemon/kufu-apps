@@ -1,8 +1,8 @@
 # Component Design
 
-> 最終更新: 2026-06-18
+> 最終更新: 2026-07-25
 
-Kufu Monorepo の frontend component 設計規約。本 doc を component のディレクトリ構成、命名、責務分割、Storybook 対象の横断正本とする。決定経緯は [spec #6](../specs/6-storybook-component-catalog/index.md) D3 / D4 / D7。
+Kufu Monorepo の frontend component 設計規約。本 doc を component のディレクトリ構成、命名、責務分割、Storybook 対象の横断正本とする。決定経緯は [spec #6](../specs/6-storybook-component-catalog/index.md) D3 / D4 / D7、sections 再編・公開面・カタログ / スタイル規約は issue #32 ([ADR-0011](../adr/0011-corporate-site-sections-architecture.md))。
 
 ## 原則
 
@@ -42,19 +42,21 @@ Astro の file-based routing は `src/pages/` に置く。Next.js App Router の
 
 ## ディレクトリ構成
 
-縦軸は **app 内の domain feature** で切る。`features/<feature>/` の `<feature>` には、app 名ではなく content domain (`business`, `products`, `contact`, `services` など) を使う。`apps/<app>/` 配下に再度 app 名フォルダ (`features/<app-name>/`) を作らない。
+区切りの概念は **section** とし、**route 層でグルーピング**する (`components/sections/<route>/<section>/`)。ページとの対応が物理構造で一意になる。旧 `components/features/<feature>/` 構成は本規約で置換した (決定経緯: issue #32 / [ADR-0011](../adr/0011-corporate-site-sections-architecture.md))。
 
 ```text
 apps/<app>/src/
 ├── content/                       # データ / ロジック層 ("何を")
 │   └── <feature>.ts
 ├── components/
-│   ├── features/
-│   │   └── <feature>/             # domain feature 単位
-│   │       ├── <Feature>Section.astro     # section assembly (content → presentation)
-│   │       ├── <Component>.astro          # presentation (props only / story 対象)
-│   │       └── <Component>.stories.ts
-│   └── common/                    # feature 横断の site component
+│   ├── sections/
+│   │   └── <route>/               # route 単位 (home / products / contact ...)
+│   │       └── <section>/         # section 単位
+│   │           ├── index.ts               # 公開面 (Section component のみ再輸出)
+│   │           ├── <Feature>Section.astro # section assembly (content → presentation)
+│   │           ├── <Component>.astro      # presentation (props only / story 対象)
+│   │           └── <Component>.stories.ts
+│   └── common/                    # route 横断の site component
 │       └── <Component>/
 │           ├── <Component>.astro
 │           └── <Component>.stories.ts
@@ -62,41 +64,31 @@ apps/<app>/src/
     └── <route>.astro              # routing + page assembly
 ```
 
-- 1 component に 1 ディレクトリを強制しない。feature 内の component とその story は `features/<feature>/` 直下に並べる。
+- section 内部は **フラット + `index.ts`**: 公開面は `index.ts` のみ (Section component だけを再輸出)。内部 component と story は section dir 直下に並べる。`internal/` サブディレクトリは作らない (1 component 1 ディレクトリを強制しない方針を継承)。
+- **section の内部非公開**: pages からは `index.ts` 経由の import のみ許可。section 間の import は index 経由でも禁止し、共有が必要になった部品は `common/` (app 内) または `packages/ui` (複数 app) へ昇格する。依存方向は `pages → sections (index) → common → @kufu/ui` の一方向 ([architecture.md](architecture.md) の depcruise 検査対象)。
 - presentation component に `Presentation` suffix は付けない。`<Component>.astro` がそのまま presentation であり、story 対象。
-- 複数 feature をまたいで使う site component (`SectionHeading` など) は `components/common/<Component>/` に置く。
+- 複数 route をまたいで使う site component (`SectionHeading` など) は `components/common/<Component>/` に置く。
 
-corporate-site の例:
+corporate-site の例 (route / section の実マップは [component-map.md](../design/features/corporate-site/component-map.md) を正本とする):
 
 ```text
-apps/corporate-site/src/
-├── content/
-│   ├── business.ts
-│   ├── contact.ts
-│   └── services.ts
-├── components/
-│   ├── features/
+apps/corporate-site/src/components/
+├── sections/
+│   ├── home/
+│   │   ├── hero/
 │   │   ├── business/
+│   │   │   ├── index.ts
+│   │   │   ├── BusinessSection.astro
 │   │   │   ├── BusinessFeatureRow.astro
 │   │   │   └── BusinessFeatureRow.stories.ts
-│   │   ├── products/
-│   │   │   ├── FeaturedCategoryCard.astro
-│   │   │   └── FeaturedCategoryCard.stories.ts
-│   │   ├── contact/
-│   │   │   ├── ContactInfoRow.astro
-│   │   │   └── ContactInfoRow.stories.ts
-│   │   └── services/
-│   │       ├── ServicePillar.astro
-│   │       └── ServicePillar.stories.ts
-│   └── common/
-│       └── SectionHeading/
-│           ├── SectionHeading.astro
-│           └── SectionHeading.stories.ts
-└── pages/
-    └── index.astro
+│   │   ├── services/ company/ consultation/
+│   ├── products/
+│   │   ├── hero/ category/ detail/
+│   └── contact/
+│       └── contact/
+└── common/
+    └── SectionHeading/
 ```
-
-> section assembly component (`<Feature>Section.astro`) と `content/<feature>.ts` は page body を実装する段階で追加する。Storybook catalog 整備の段階では presentation component と story だけを置き、fixture は story 内に持つ。
 
 ## 責務分割
 
@@ -191,12 +183,25 @@ content 層の実装方式は content の性質で選び分ける (ハイブリ�
 - Content Collection は実体が必要になった feature だけで `src/content.config.ts` に loader を定義し、全面採用しない。CMS 化時は loader を差し替える。
 - 規約は先に決め、Content Collection の実体は対象 feature を実装する段階で追加する (空 collection を先に作らない)。
 
+### ハードコード基準
+
+実装内の直書きは次の 3 区分で判断する (決定経緯: issue #32 D7):
+
+1. **文言・リスト**: content 層へ (上記の選び分けに従う)。component 内への content 直書きは禁止 (story fixture は除く)。
+2. **繰り返し値** (数値 / URL / 閾値): 定数化する。content 由来なら content 層、表示ロジック由来なら section 内 constants に置く。
+3. **スタイル値**: セマンティックトークン参照のみ (project.yml forbidden / design-workflow §6)。
+
+許容する直書き: `aria-label` / `alt` / sr-only 等の**機能的文言**と、単一箇所でのみ使う一時値。ただし同じ値が 2 箇所以上に現れたら定数化する。
+
 ## スタイリング
 
 corporate-site の Astro component は **Tailwind utility** でスタイルする (scoped `<style>` + 生 CSS は原則使わない)。`packages/ui` (shadcn) とスタイル記法を揃え、token ガバナンスを保つため。
 
 - 値の正本は `@kufu/ui/tokens.css`。色・フォントは semantic token の utility (`text-foreground` / `bg-secondary` / `text-muted-foreground` / `border-border` / `font-mono` / `font-serif` など) を使う。
-- corporate-site は全量 `@kufu/ui/styles.css` を取り込まず、app-local の lean な Tailwind v4 entry (`src/styles/globals.css`: `@import "tailwindcss"` + tokens + fonts + `@kufu/ui/theme.css`) を持つ ([ADR-0007](../adr/0007-design-token-architecture.md) の「更新」)。token → utility の `@theme` 写像は `@kufu/ui/theme.css` に一元化し、`styles.css` と app entry の双方が import する。app entry は document-level base を置くために残す。Tailwind の走査は Vite plugin の module graph に任せ、app-local `@source` は置かない。
+- corporate-site は全量 `@kufu/ui/styles.css` を取り込まず、app-local の lean な Tailwind v4 entry (`src/styles/globals.css`) を持つ ([ADR-0007](../adr/0007-design-token-architecture.md) の「更新」)。token → utility の `@theme` 写像は `@kufu/ui/theme.css` に一元化し、`styles.css` と app entry の双方が import する。Tailwind の走査は Vite plugin の module graph に任せ、app 自身のソースへの app-local `@source` は置かない。workspace package (`packages/ui`) のソース走査は `@kufu/ui/theme.css` が自身の `src/components` を `@source` で指す (app entry に書かない。issue #32 突合④)。
+- app の `src/styles/` はレイヤ別に分割し、`globals.css` は `@import` のみの entry とする: `base.css` (@layer base: document-level / `:root`) / `components.css` (@layer components: 既存生 CSS の移行受け皿。cva / utility 移行で逐次削減し最終的に削除を目標) / `animations.css` (@keyframes) / `utilities.css` (@utility 拡張)。
+- **cva への集約**: 視覚 variant / 状態分岐を持つ component は cva で variants を定義し、frontmatter の条件付き class 組み立てを置換する (shadcn/ui パターンと整合)。variant のない固定 class の component は Tailwind utility 直書きのままでよい。
+- **アニメーション**: duration / easing の motion トークンは `@kufu/ui/tokens.css` に置く (トークンは常に ui)。site 固有演出の keyframes は app-local (`src/styles/animations.css`) に置き、複数 app での再利用が明確になったら `@kufu/ui` へ昇格する。
 - token ガード (design-workflow §6): raw hex / 色の arbitrary value (`text-[#fff]` 等) を直書きしない。semantic token utility を参照する。サイズ・余白の arbitrary value (`min-h-95` で表せない `text-[8.75rem]` 等) は可。
 - spacing は Tailwind スケール (0.25rem グリッド) の canonical 表記を優先する (`gap-4.5` > `gap-[1.125rem]`)。スケールに無い font-size / line-height / letter-spacing は arbitrary value でよい。
 - 条件付き class (variant / align / media position) は frontmatter で class 文字列を組み立てて渡す。
@@ -253,6 +258,16 @@ feature は `Domain + Case` を基本に切る。ただし corporate-site のよ
 
 ## Storybook 対象
 
+Storybook は **component catalog** として運用する (探しやすさ / ドキュメント性 / バリエーション網羅。決定経緯: issue #32 D1〜D3)。
+
+### カタログ共通規約
+
+- **autodocs 全面採用**: `.storybook/preview` の `tags: ['autodocs']` で全 story に適用し、例外は story 側で `!autodocs` を指定する。
+- **title はディレクトリと 1:1**: title は物理配置から機械的に決める。分類の判断を story 作成時にしない。
+  - app-local: `Sections/<Route>/<Section>/<Component>` / `Common/<Component>`
+  - packages/ui: `UI/<Component>`
+- **バリエーション網羅**: presentation component は cva variants の全組み合わせを args で列挙する story と、edge state (長文 / 空データ / 最小構成) の story を必須にする。
+
 ### packages/ui
 
 `packages/ui` Storybook は shared component catalog とする。
@@ -263,11 +278,11 @@ feature は `Domain + Case` を基本に切る。ただし corporate-site のよ
 
 ### app-local
 
-app-local Storybook は feature-local presentation component の review 入口とする。
+app-local Storybook は section-local presentation component の review 入口とする。
 
 - story は `<Component>.stories.*` (`Presentation` suffix なし) を基本にする。
 - 固定 props / fixture で状態差分を表現する。
-- section assembly / content 層は原則 story 対象にしない。
+- **section assembly の story も公認する**: Section story は「ページ文脈での確認入口」としてカタログに含める。fixture は story 内に限定し、網羅は代表ケースのみでよい (variant 網羅の主対象は presentation component)。
 - 本番 secret、実送信、external API call を伴う story を作らない。
 
 ## Design Artifact との関係
