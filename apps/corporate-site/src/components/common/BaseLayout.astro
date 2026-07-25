@@ -1,0 +1,75 @@
+---
+import "../../styles/globals.css";
+// フォント定義 (Noto Sans/Serif JP・Geist Mono の variable @font-face) は
+// 254 個の @font-face で約 240KB あり、render-blocking な critical CSS に含めると
+// FCP/LCP を大きく遅らせる。?url で独立した CSS アセットとして emit し、
+// preload→onload で stylesheet 化することで非ブロッキング読み込みにする。
+// variable + unicode-range のため実際の woff2 転送はページ上の字形分のみで軽量。
+import fontsHref from "@kufu/ui/fonts.css?url";
+
+import SiteFooter from "./SiteFooter.astro";
+import SiteHeader from "./SiteHeader.astro";
+
+export interface Props {
+  title: string;
+  description: string;
+  footerVariant?: "full" | "compact";
+}
+
+const { title, description, footerVariant = "compact" } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+    <link rel="preload" as="style" href={fontsHref} onload="this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href={fontsHref} /></noscript>
+  </head>
+  <body class="bg-background text-foreground antialiased">
+    <SiteHeader currentPath={currentPath} />
+    <main>
+      <slot />
+    </main>
+    <SiteFooter variant={footerVariant} />
+    <script>
+      const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const revealTargets = document.querySelectorAll<HTMLElement>(
+        ".reveal-section, .consultation-case, .business-row, .featured-category-card, .catalog-board, .custom-order-panel",
+      );
+
+      if (motionQuery.matches || !("IntersectionObserver" in window)) {
+        revealTargets.forEach((target) => {
+          target.classList.add("is-visible");
+        });
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) {
+                return;
+              }
+
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            });
+          },
+          { rootMargin: "0px 0px -12% 0px", threshold: 0.12 },
+        );
+
+        revealTargets.forEach((target) => {
+          observer.observe(target);
+        });
+      }
+    </script>
+  </body>
+</html>

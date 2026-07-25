@@ -33,28 +33,28 @@
 
 ## 上位文書整合
 
-正本 ([PRD](../../PRD.md) / [Design Doc](../../design/DesignDoc.md) / [feature doc](../../design/features/corporate-site/DesignDoc_corporate-site.md) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
+正本 ([Design Doc `## Why / What`](../../design/DesignDoc.md#why--what) / [Design Doc landscape](../../design/DesignDoc.md) / [feature doc](../../design/features/corporate-site/DesignDoc_corporate-site.md) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
 
-- PRD 更新要否: 不要 (継承。Phase 1「問い合わせ導線」完成条件の範囲)
+- Design Doc Why / What 更新要否: 不要 (継承。Phase 1「問い合わせ導線」完成条件の範囲)
 - Design Doc 更新要否: 不要 (継承。feature doc 側で扱う)
 - ADR 起票要否: **要 → 反映済 (D7)**。新規 [ADR-0009](../../adr/0009-corporate-site-contact-form-backend.md) を `spec-sync` で起票済み。corporate-site の問い合わせ送信を Cloudflare Pages Functions (Workers) 中継にする決定 (`output: "static"` + Functions 併用) を記録した。
 
-| 上位文書    | 節 / 該当箇所                                               | 整合方針 (継承 / 補足 / 変更提案)                                           |
-| ----------- | ----------------------------------------------------------- | --------------------------------------------------------------------------- |
-| PRD         | プロダクト原則「コーポレートサイトの性能を最優先する」      | 継承                                                                        |
-| Design Doc  | モジュール責務 → `apps/corporate-site`                      | 継承                                                                        |
-| feature doc | 問い合わせフォーム仕様 / P6 `/contact`                      | **正本** (spec-sync で反映済。機能仕様・フロー・API 契約は feature doc)     |
-| context     | architecture → Runtime Boundary / Edge API / Error Contract | **正本** (API / error envelope の横断方針を spec-sync で反映済)             |
-| context     | infrastructure → Cloudflare Pages / Turnstile / Workers     | **正本** (送信経路・secret・security / rate limit を spec-sync で反映済)    |
-| context     | testing → E2E Runtime Contract / API・Functions の検証境界  | **正本** (route intercept / Vitest / preview 手動確認を spec-sync で反映済) |
-| ADR-0008    | corporate-site の React island policy                       | 継承 (フォームは「最初の主要 island」)                                      |
-| ADR-0009    | 問い合わせ送信を Workers 中継にする決定 (本 spec で起票)    | **正本** (spec-sync で起票。アーキ決定は ADR-0009 / infra contract が正本)  |
+| 上位文書    | 節 / 該当箇所                                                       | 整合方針 (継承 / 補足 / 変更提案)                                           |
+| ----------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Design Doc  | Why / What → プロダクト原則「コーポレートサイトの性能を最優先する」 | 継承                                                                        |
+| Design Doc  | モジュール責務 → `apps/corporate-site`                              | 継承                                                                        |
+| feature doc | 問い合わせフォーム仕様 / P6 `/contact`                              | **正本** (spec-sync で反映済。機能仕様・フロー・API 契約は feature doc)     |
+| context     | architecture → Runtime Boundary / Edge API / Error Contract         | **正本** (API / error envelope の横断方針を spec-sync で反映済)             |
+| context     | infrastructure → Cloudflare Pages / Turnstile / Workers             | **正本** (送信経路・secret・security / rate limit を spec-sync で反映済)    |
+| context     | testing → E2E Runtime Contract / API・Functions の検証境界          | **正本** (route intercept / Vitest / preview 手動確認を spec-sync で反映済) |
+| ADR-0008    | corporate-site の React island policy                               | 継承 (フォームは「最初の主要 island」)                                      |
+| ADR-0009    | 問い合わせ送信を Workers 中継にする決定 (本 spec で起票)            | **正本** (spec-sync で起票。アーキ決定は ADR-0009 / infra contract が正本)  |
 
 > 送信バックエンド方式 (D1) / フォーム仕様 (D4〜D6) / API・error 契約 (D9) / 検証境界 (D10) / security 方針 (D8 / D11 / D12 / D13) は確定済。feature doc / context / ADR-0009 へ `spec-sync` で反映済 (2026-06-17)。
 
 ## 関連資料
 
-- `PRD.md`: コーポレートサイト性能原則 / Phase 1「問い合わせ導線」完成条件
+- `design/DesignDoc.md` `## Why / What`: コーポレートサイト性能原則 / Phase 1「問い合わせ導線」完成条件
 - `design/DesignDoc.md`: モジュール責務 (`apps/corporate-site`)
 - [feature doc](../../design/features/corporate-site/DesignDoc_corporate-site.md): P6 `/contact` の IA / island 境界 / 問い合わせフォーム仕様の正本
 - [spec #11 (IA)](../11-corporate-site-ia/index.md): Q4 でフォーム設置を決定 (機能仕様は本 spec へ委譲)
@@ -68,7 +68,7 @@
 ## 背景
 
 - なぜこの spec が必要か: IA 設計 (#11 Q4) で「お問い合わせページに問い合わせフォームを設置する」と決定したが、フォームの機能仕様 (送信処理 / バリデーション / スパム対策) は IA のスコープ外として #14 へ委譲された。
-- Phase 1 のどの完成条件に関わるか: 「コーポレートサイトの主要ページと問い合わせ導線を E2E で検証できる状態にする」(PRD / feature doc)。フォームは問い合わせ導線の終端 (接点確保 BR2)。
+- Phase 1 のどの完成条件に関わるか: 「コーポレートサイトの主要ページと問い合わせ導線を E2E で検証できる状態にする」(Design Doc Why / What / feature doc)。フォームは問い合わせ導線の終端 (接点確保 BR2)。
 - 影響範囲: **コーポレートサイト** (`apps/corporate-site`)。フォームは ADR-0008 が定める「最初の主要 React island」であり、性能予算 (Unnecessary Client JS Count) と両立させる必要がある。送信経路は Cloudflare Pages の静的配信前提と整合させる。
 
 ## スコープ
@@ -194,7 +194,7 @@ EARS 風で振る舞いを記述する。
 
 - ADR-0008 に従い、表示専用 UI は静的描画 (JS ゼロ)、フォームのみ `client:*` island 化する。
 - フォーム全体を単一 island とし、directive は `client:visible` (D5)。`/contact` の `client:*` は 1 個に収める。
-- `client:*` 総数は PRD ガードレール「Unnecessary Client JS Count」で監視する範囲に収める。
+- `client:*` 総数は Design Doc Why / What のガードレール「Unnecessary Client JS Count」で監視する範囲に収める。
 
 ### Routing / URL State
 
@@ -308,7 +308,7 @@ EARS 風で振る舞いを記述する。
 ### 計測指標
 
 - E2E Critical Flow Coverage (問い合わせ導線)。
-- Unnecessary Client JS Count (PRD ガードレール) を超過しないこと。
+- Unnecessary Client JS Count (Design Doc Why / What のガードレール) を超過しないこと。
 
 ## フロー / シーケンス
 
@@ -470,9 +470,9 @@ E2E (問い合わせ導線) 用。命名規則: `{画面}-{要素種別}-{名前
 
 ## 上位資料からの変更点
 
-本 spec で PRD / Design Doc / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。
+本 spec で Design Doc Why / What / landscape / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。
 
-### PRD への影響
+### Design Doc Why / What への影響
 
 | 対象節 | 変更内容        | 理由 |
 | ------ | --------------- | ---- |

@@ -1,0 +1,293 @@
+---
+import { getCollection } from "astro:content";
+
+import ContactCtaLink from "../../common/ContactCtaLink.astro";
+import ProductsCategoryAccordionList from "./ProductsCategoryAccordionList.astro";
+import ProductsHero from "./ProductsHero.astro";
+import ProductsSidebarNav from "./ProductsSidebarNav.astro";
+import { productGroups } from "../../../content/product-groups.js";
+
+const productCategories = (await getCollection("productCategories")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const categoryMakers = (await getCollection("categoryMakers")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const makersByCategory = new Map(
+  categoryMakers.map((entry) => [entry.data.categoryId, entry]),
+);
+
+const categoriesWithMakers = productCategories.map((category) => {
+  const makers = makersByCategory.get(category.id);
+
+  if (!makers) {
+    throw new Error(`Missing makers for product category: ${category.id}`);
+  }
+
+  return {
+    category,
+    makers,
+  };
+});
+
+const makerCountById = Object.fromEntries(
+  categoryMakers.map((entry) => [entry.data.categoryId, entry.data.makers.length]),
+);
+
+// design: Products Category List はカテゴリを groupId 単位の見出しで束ねる
+const groupTitleById: Record<string, string> = Object.fromEntries(
+  productGroups.map((group) => [group.id, group.title]),
+);
+
+const itemsByGroupId = new Map<string, typeof categoriesWithMakers>();
+for (const item of categoriesWithMakers) {
+  const groupId = item.category.data.groupId;
+  const items = itemsByGroupId.get(groupId) ?? [];
+  items.push(item);
+  itemsByGroupId.set(groupId, items);
+}
+
+const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
+  const orders = items.map(({ category }) => category.data.order);
+
+  return {
+    eyebrow: `CATEGORY ${String(Math.min(...orders)).padStart(2, "0")}–${String(Math.max(...orders)).padStart(2, "0")}`,
+    title: groupTitleById[groupId] ?? groupId,
+    items,
+  };
+});
+---
+
+<ProductsHero />
+
+<section class="bg-muted" data-testid="products-section-index">
+  <div class="mx-auto grid w-full max-w-360 gap-8 px-5 py-14 sm:px-8 md:gap-10 md:py-20 lg:px-14">
+    <div class="grid gap-4">
+      <p class="font-mono text-[0.6875rem] font-medium tracking-[0.22em] text-primary">
+        CATEGORY INDEX
+      </p>
+      <h2 class="font-serif text-[2rem] font-semibold leading-[1.45] md:text-[2.625rem]">
+        取扱製品カテゴリ
+      </h2>
+      <p class="max-w-180 text-[0.9375rem] leading-[1.75] text-muted-foreground">
+        製造現場の調達で相談が多い領域を18のカテゴリに整理し、各カテゴリの取扱メーカーを一覧にまとめています。
+      </p>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-[19.5rem_minmax(0,1fr)] lg:items-start lg:gap-10">
+      <ProductsSidebarNav categoryGroups={categoryGroups} makerCountById={makerCountById} />
+      <ProductsCategoryAccordionList categoryGroups={categoryGroups} />
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="products-backtop"
+    data-products-backtop
+    aria-label="カテゴリ一覧の先頭へ戻る"
+    hidden
+  >
+    <span class="font-mono text-base leading-none" aria-hidden="true">↑</span>
+    <span class="products-backtop-label">カテゴリ先頭へ</span>
+  </button>
+</section>
+
+<section class="bg-kufu-gray-950 text-kufu-white">
+  <div class="mx-auto grid w-full max-w-360 gap-8 px-5 py-16 sm:px-8 md:grid-cols-[1fr_auto] md:items-center lg:px-14">
+    <div class="grid gap-3">
+      <p class="font-mono text-[0.6875rem] font-medium tracking-[0.22em] text-primary-soft">
+        MAKER SEARCH
+      </p>
+      <h2 class="font-serif text-[2rem] font-semibold leading-normal">
+        掲載のないメーカー・型番も確認します。
+      </h2>
+      <p class="max-w-180 text-sm leading-[1.8] text-kufu-gray-200">
+        メーカー名、型番、数量、希望納期が分かる場合は、問い合わせ時にご記入ください。代替品や別作加工の可否も含めて確認します。
+      </p>
+    </div>
+    <ContactCtaLink href="/contact" size="lg">
+      お問い合わせ・お見積り
+      <span class="font-mono text-xs" aria-hidden="true">→</span>
+    </ContactCtaLink>
+  </div>
+</section>
+
+<script>
+  // このセクション横断スクリプトが依存する DOM の所有元:
+  //   - [data-products-search] [data-expand-all] [data-collapse-all]
+  //     [data-nav-target] : ProductsSidebarNav.astro
+  //   - [data-category-item] [data-products-group] [data-maker-list]
+  //     [data-products-empty] : ProductsCategoryAccordionList.astro
+  //   - [data-products-backtop] #products-category-groups
+  //     #products-category-list : このファイル (assembly 層)
+  // 上記コンポーネントの data-* / id を変更する場合はこのスクリプトも合わせて更新する。
+  const normalize = (value: string) =>
+    value.toLowerCase().normalize("NFKC").replace(/\s+/g, "");
+
+  const search = document.querySelector<HTMLInputElement>("[data-products-search]");
+  const result = document.querySelector<HTMLElement>("[data-products-result]");
+  const empty = document.querySelector<HTMLElement>("[data-products-empty]");
+  const items = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-category-item]"),
+  );
+  const groups = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-products-group]"),
+  );
+  const navLinks = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>("[data-nav-target]"),
+  );
+
+  // 検索: カテゴリ名 / メーカー名で絞り込み、一致した accordion を開く
+  const applyFilter = (raw: string) => {
+    const query = normalize(raw);
+    let matchCount = 0;
+
+    items.forEach((item) => {
+      const details = item.querySelector<HTMLDetailsElement>("details");
+      const makers = Array.from(item.querySelectorAll<HTMLElement>("[data-maker]"));
+      const nameMatch = normalize(item.dataset.categoryName ?? "").includes(query);
+
+      let makerMatch = false;
+      makers.forEach((maker) => {
+        const hit =
+          query === "" || nameMatch ||
+          normalize(maker.dataset.maker ?? "").includes(query);
+        maker.hidden = !hit;
+        if (hit && query !== "") {
+          makerMatch = true;
+        }
+      });
+
+      const visible = query === "" || nameMatch || makerMatch;
+      item.hidden = !visible;
+      if (visible) {
+        matchCount += 1;
+      }
+      if (details && query !== "" && visible) {
+        details.open = true;
+      }
+    });
+
+    groups.forEach((group) => {
+      const anyVisible = group.querySelector<HTMLElement>(
+        "[data-category-item]:not([hidden])",
+      );
+      group.hidden = !anyVisible;
+    });
+
+    navLinks.forEach((link) => {
+      const target = link.dataset.navTarget ?? "";
+      const item = document.getElementById(target);
+      link.classList.toggle("is-dimmed", Boolean(item?.hidden));
+    });
+
+    if (result) {
+      if (query === "") {
+        result.hidden = true;
+      } else {
+        result.hidden = false;
+        result.textContent = `${matchCount}件のカテゴリが一致`;
+      }
+    }
+    if (empty) {
+      empty.classList.toggle("hidden", matchCount !== 0);
+    }
+  };
+
+  const searchParam = "q";
+
+  const readSearchFromUrl = () =>
+    new URL(window.location.href).searchParams.get(searchParam) ?? "";
+
+  const applySearchFromUrl = () => {
+    if (!search) return;
+
+    const value = readSearchFromUrl();
+    search.value = value;
+    applyFilter(value);
+  };
+
+  const writeSearchToUrl = (value: string) => {
+    const url = new URL(window.location.href);
+    const query = value.trim();
+
+    if (query === "") {
+      url.searchParams.delete(searchParam);
+    } else {
+      url.searchParams.set(searchParam, query);
+    }
+
+    window.history.replaceState(
+      window.history.state,
+      "",
+      `${url.pathname}${url.search}${url.hash}`,
+    );
+  };
+
+  search?.addEventListener("input", () => {
+    applyFilter(search.value);
+    writeSearchToUrl(search.value);
+  });
+  window.addEventListener("popstate", applySearchFromUrl);
+  applySearchFromUrl();
+
+  document
+    .querySelector("[data-expand-all]")
+    ?.addEventListener("click", () => {
+      items.forEach((item) => {
+        const details = item.querySelector<HTMLDetailsElement>("details");
+        if (details) details.open = true;
+      });
+    });
+
+  document
+    .querySelector("[data-collapse-all]")
+    ?.addEventListener("click", () => {
+      items.forEach((item) => {
+        const details = item.querySelector<HTMLDetailsElement>("details");
+        if (details) details.open = false;
+      });
+    });
+
+  // scrollspy: 索引ナビの現在地をハイライト
+  if (items.length > 0) {
+    const spy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          navLinks.forEach((link) =>
+            link.classList.toggle(
+              "is-active",
+              link.dataset.navTarget === id,
+            ),
+          );
+        });
+      },
+      { rootMargin: "-30% 0px -60% 0px", threshold: 0 },
+    );
+    items.forEach((item) => spy.observe(item));
+  }
+
+  // カテゴリ一覧セクションにいる間だけ「先頭へ戻る」ボタンを表示
+  const backtop = document.querySelector<HTMLButtonElement>("[data-products-backtop]");
+  const categoryGroups = document.getElementById("products-category-groups");
+  const indexTop = document.getElementById("products-category-list");
+
+  if (backtop && categoryGroups && indexTop) {
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          backtop.hidden = !entry.isIntersecting;
+        });
+      },
+      { rootMargin: "-15% 0px -10% 0px", threshold: 0 },
+    );
+    sectionObserver.observe(categoryGroups);
+
+    backtop.addEventListener("click", () => {
+      indexTop.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+</script>

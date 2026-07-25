@@ -60,7 +60,7 @@
 ### やらないこと
 
 - `sdd-template` repository 自体の変更。
-- Kufu の PRD / Design Doc / ADR の内容刷新。
+- Kufu の Design Doc Why / What / landscape / ADR の内容刷新。
 - `apps/` や `packages/` の実装コード変更。
 - Kufu 固有の design workflow の削除。
 - provider 生成物の手動編集。

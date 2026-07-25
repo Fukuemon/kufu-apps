@@ -43,7 +43,7 @@ issue #6 の初期 Storybook catalog では、Pencil の `GenericComponents` 相
 
 ## Runtime Boundary
 
-- `apps/corporate-site` は、Cloudflare 上でもできる限り静的配信で成立させる。
+- `apps/corporate-site` は静的配信を基本とし、`client:*` island は下記「shadcn 消費と React island の境界」の基準に従って限定する。
 - React island は必要最小限とし、配信する JavaScript 量を抑える。
 - 環境変数は build-time に閉じるものと runtime で参照するものを分けて扱う。
 
@@ -56,9 +56,9 @@ Astro は React/shadcn コンポーネントもビルド時に静的 HTML へ描
 - **`client:*` island はインタラクションに限定**: モバイルナビ開閉、問い合わせフォーム、Radix インタラクティブ primitive (Dialog / Dropdown / Popover / Tooltip / Accordion / Tabs / Select 等)。
 - island の既定ディレクティブは `client:visible` / `client:idle`。`client:load` は above-the-fold で即時操作が要る時のみ。
 - **ハードルール**: インタラクティブ Radix primitive を `client:*` なしで静的描画しない (見た目だけ出て動かないため必ず island 化)。
-- `client:*` 総数は PRD ガードレール「Unnecessary Client JS Count」で監視する。
+- `client:*` 総数は [design/DesignDoc.md](../design/DesignDoc.md) の Why/What 節にあるガードレール「Unnecessary Client JS Count」で監視する。
 - 秘密情報を client bundle に含めない。Cloudflare の secret 管理に置くべき値は repo に保存しない ([infrastructure.md](infrastructure.md))。
-- 問い合わせフォームや外部 API 連携を追加する場合は、ブラウザから直接第三者 API を叩く構成を標準にせず、必要に応じて Workers を中継点にする。
+- 問い合わせフォームや外部 API 連携を追加する場合は、ブラウザから直接第三者 API を叩く構成を標準にせず、Workers を中継点にする (下記「Edge API / Error Contract」)。
 
 ### Edge API / Error Contract
 

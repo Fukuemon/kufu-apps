@@ -11,39 +11,39 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態 | 最終更新   | 備考                                         |
-| --- | --------------------------- | ---- | ---------- | -------------------------------------------- |
-| 1   | 起票                        | 完了 | 2026-05-08 | issue #3 起票済み                            |
-| 2   | 下書き                      | 完了 | 2026-05-09 | monorepo scaffold の contract を確定         |
-| 3   | 上位文書突合                | 完了 | 2026-05-09 | PRD / Design Doc / AI rules を更新           |
-| 4   | 論点整理                    | 完了 | 2026-05-09 | app 範囲、E2E、analysis tool を確定          |
-| 5   | 論点解決                    | 完了 | 2026-05-09 | Phase 1 対象と後続論点を切り分けた           |
-| 6   | Interface / Routing 設計    | 完了 | 2026-05-09 | root script と E2E contract を定義           |
-| 7   | Content / Data 設計         | 完了 | 2026-05-09 | app / package / root の責務境界を定義        |
-| 8   | Performance / Security 設計 | 完了 | 2026-05-09 | コーポレートサイト優先と secret 境界を明文化 |
-| 9   | Test / Metrics 設計         | 完了 | 2026-05-10 | lint / typecheck / e2e / analysis を確認     |
-| 10  | 実装分割                    | 完了 | 2026-05-09 | P1-P4 の prompt と実装分割を確定             |
-| 11  | レビュー済                  | 完了 | 2026-05-10 | 実装との差分を是正済み                       |
+| #   | フェーズ                    | 状態 | 最終更新   | 備考                                                |
+| --- | --------------------------- | ---- | ---------- | --------------------------------------------------- |
+| 1   | 起票                        | 完了 | 2026-05-08 | issue #3 起票済み                                   |
+| 2   | 下書き                      | 完了 | 2026-05-09 | monorepo scaffold の contract を確定                |
+| 3   | 上位文書突合                | 完了 | 2026-05-09 | Design Doc Why / What / landscape / AI rules を更新 |
+| 4   | 論点整理                    | 完了 | 2026-05-09 | app 範囲、E2E、analysis tool を確定                 |
+| 5   | 論点解決                    | 完了 | 2026-05-09 | Phase 1 対象と後続論点を切り分けた                  |
+| 6   | Interface / Routing 設計    | 完了 | 2026-05-09 | root script と E2E contract を定義                  |
+| 7   | Content / Data 設計         | 完了 | 2026-05-09 | app / package / root の責務境界を定義               |
+| 8   | Performance / Security 設計 | 完了 | 2026-05-09 | コーポレートサイト優先と secret 境界を明文化        |
+| 9   | Test / Metrics 設計         | 完了 | 2026-05-10 | lint / typecheck / e2e / analysis を確認            |
+| 10  | 実装分割                    | 完了 | 2026-05-09 | P1-P4 の prompt と実装分割を確定                    |
+| 11  | レビュー済                  | 完了 | 2026-05-10 | 実装との差分を是正済み                              |
 
 ## 上位文書整合
 
-- PRD 更新要否: 更新済み。Phase 1 をコーポレートサイト foundation に絞る前提へ修正
+- Design Doc Why / What 更新要否: 更新済み。Phase 1 をコーポレートサイト foundation に絞る前提へ修正
 - Design Doc 更新要否: 更新済み。`e2e` と `packages/config` の責務境界を修正
 - ADR 起票要否: 更新済み。`adr/0002` と `adr/0003` を追加
 
-| 上位文書    | 節 / 該当箇所                                    | 整合方針 (継承 / 補足 / 変更提案) |
-| ----------- | ------------------------------------------------ | --------------------------------- |
-| PRD         | Phase 1 スコープ → コーポレートサイト foundation | 変更提案 (反映済)                 |
-| Design Doc  | モジュール責務 → `e2e` / `packages/config` 境界  | 変更提案 (反映済)                 |
-| Design Doc  | Toolchain → 採用技術と導入順                     | 補足                              |
-| feature doc | -                                                | 影響なし (foundation のため)      |
-| context     | architecture / toolchain → 責務境界・採用方針    | 補足                              |
-| ADR-0002    | scaffold は公式 create command を優先            | 変更提案 (新規起票)               |
-| ADR-0003    | Phase 1 は corporate-site のみ / CMS は後続      | 変更提案 (新規起票)               |
+| 上位文書    | 節 / 該当箇所                                                 | 整合方針 (継承 / 補足 / 変更提案) |
+| ----------- | ------------------------------------------------------------- | --------------------------------- |
+| Design Doc  | Why / What → Phase 1 スコープ → コーポレートサイト foundation | 変更提案 (反映済)                 |
+| Design Doc  | モジュール責務 → `e2e` / `packages/config` 境界               | 変更提案 (反映済)                 |
+| Design Doc  | Toolchain → 採用技術と導入順                                  | 補足                              |
+| feature doc | -                                                             | 影響なし (foundation のため)      |
+| context     | architecture / toolchain → 責務境界・採用方針                 | 補足                              |
+| ADR-0002    | scaffold は公式 create command を優先                         | 変更提案 (新規起票)               |
+| ADR-0003    | Phase 1 は corporate-site のみ / CMS は後続                   | 変更提案 (新規起票)               |
 
 ## 関連資料
 
-- `PRD.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/PRD.md`
+- `design/DesignDoc.md` `## Why / What`: `$(ghq root)/github.com/Fukuemon/kufu-apps/design/DesignDoc.md`
 - `design/DesignDoc.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/design/DesignDoc.md`
 - `adr/0001-terraform-infra-repository-boundary.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/adr/0001-terraform-infra-repository-boundary.md`
 - `adr/0002-monorepo-scaffold-create-command-policy.md`: `$(ghq root)/github.com/Fukuemon/kufu-apps/adr/0002-monorepo-scaffold-create-command-policy.md`
@@ -53,7 +53,7 @@
 ## 背景
 
 - 現状の repository は docs / rules / hooks が中心で、`apps/`、`packages/`、`e2e/`、workspace 設定など monorepo の実体がまだ存在しない
-- PRD、Design Docs、AI 向けルールは将来的な monorepo 構成を前提に整備済みであり、文書上の contract と実ファイル構成に差がある
+- Design Doc Why / What / landscape、AI 向けルールは将来的な monorepo 構成を前提に整備済みであり、文書上の contract と実ファイル構成に差がある
 - issue #3 は、この差を埋めるために Kufu Monorepo の最小 scaffold を作成し、後続のコーポレートサイト実装と CMS 設計判断の基盤を揃えるためのもの
 - Phase 1 の完成条件のうち、コーポレートサイト用 app 境界、共通 package 境界、workspace task 導線、AI が迷わない構成整備に直接関わる
 - 影響範囲は `apps/corporate-site`、`packages/ui`、`packages/config`、`e2e`、および root workspace 設定一式である
@@ -66,7 +66,7 @@
 - `apps/corporate-site`、`packages/ui`、`packages/config`、`e2e` の最小 scaffold を作成する前提を整理する
 - `pnpm install` 後に `dev`、`dev:corporate`、`build`、`lint`、`format`、`typecheck`、`test`、`e2e` の最小導線を成立させる contract を定義する
 - app / package / root config の責務境界と共有ルールを明文化する
-- PRD / Design Docs / ADR と scaffold 実装のズレが出ないよう確認観点を定義する
+- Design Doc Why / What / landscape / ADR と scaffold 実装のズレが出ないよう確認観点を定義する
 - app 実装と並行して E2E と typecheck を追加できるよう、app ごとの標準 command contract を定義する
 
 ### やらないこと
@@ -574,7 +574,7 @@ sequenceDiagram
 
 本 spec で各上位資料から変更・追加した内容を反映先別に記録する。
 
-### PRD への影響
+### Design Doc Why / What への影響
 
 | 対象節           | 変更内容                                                                        | 理由     |
 | ---------------- | ------------------------------------------------------------------------------- | -------- |

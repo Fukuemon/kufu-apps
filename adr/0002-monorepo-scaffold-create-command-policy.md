@@ -75,7 +75,6 @@
 
 ## 関連ドキュメント
 
-- `PRD.md`: Phase 1 foundation の範囲
-- `design/DesignDoc.md`: monorepo 構成と toolchain 方針
+- `design/DesignDoc.md`: Phase 1 foundation の範囲 (Why/What 節)、monorepo 構成と toolchain 方針
 - `specs/3-monorepo-foundation/index.md`: issue #3 の詳細設計
 - `specs/3-monorepo-foundation/prompts/`: 実装 prompt 群

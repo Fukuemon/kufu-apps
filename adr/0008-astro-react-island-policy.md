@@ -22,7 +22,7 @@
 3. **`client:*` island は本物のインタラクションに限定する**: モバイルナビ開閉、問い合わせフォーム (#14)、および Radix のインタラクティブ primitive (Dialog / DropdownMenu / Popover / Tooltip / Accordion / Tabs / Select 等) のみ island 化する。
 4. **island の既定ディレクティブは遅延系**: `client:visible` または `client:idle` を既定とし、above-the-fold で即時操作が必要な箇所のみ `client:load` を使う。
 5. **ハードルール (正しさ)**: インタラクティブ Radix primitive を `client:*` なしで静的描画しない。静的描画では見た目だけ出て動作しないため、必ず island 化する。
-6. **予算管理**: `client:*` の総数を PRD ガードレール「Unnecessary Client JS Count」で監視し、増加時は island 化の妥当性をレビューする。
+6. **予算管理**: `client:*` の総数を [Design Doc](../design/DesignDoc.md) のガードレール「Unnecessary Client JS Count」で監視し、増加時は island 化の妥当性をレビューする。
 
 ## 代替案
 

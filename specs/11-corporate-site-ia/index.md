@@ -34,7 +34,7 @@
 
 ## 上位文書整合
 
-- PRD 更新要否: 不要 (継承。Open Questions に補足回答する範囲)
+- Design Doc Why / What 更新要否: 不要 (継承。Open Questions に補足回答する範囲)
 - Design Docs 更新要否: 反映済 (`spec-sync`) — Open Questions「具体的なページ構成」に spec #11 で回答を追記
 - ADR 起票要否: 不要 (新規意思決定なし)
 
@@ -42,7 +42,7 @@
 >
 > | 上位文書    | 節 / 該当箇所                                  | 整合方針                  |
 > | ----------- | ---------------------------------------------- | ------------------------- |
-> | PRD         | スコープ → Phase 1 / コーポレートサイト要求    | 継承                      |
+> | Design Doc  | Why / What → Phase 1 / コーポレートサイト要求  | 継承                      |
 > | Design Doc  | モジュール責務 → `apps/corporate-site`         | 継承                      |
 > | Design Doc  | Open Questions「具体的なページ構成」           | 補足 (反映済)             |
 > | feature doc | corporate-site → データ / コンテンツモデル     | 補足 (`spec-sync` 反映済) |
@@ -54,7 +54,7 @@
 
 ## 関連資料
 
-- `PRD.md`: コーポレートサイト要求 / Phase 1 スコープ
+- `design/DesignDoc.md` `## Why / What`: コーポレートサイト要求 / Phase 1 スコープ
 - `design/DesignDoc.md`: モジュール責務 (`apps/corporate-site`) / Open Questions
 - [requirements.md](requirements.md): 要求定義 (確定済)
 - [design/features/corporate-site/reference/company-profile.md](../../design/features/corporate-site/reference/company-profile.md): 会社概要 / 業務内容 / 取扱製品カテゴリの正本
@@ -166,7 +166,7 @@ EARS 風の振る舞い:
 
 ### Performance
 
-- 各ページは Astro 静的生成を基本とし、不要な client JS / island を増やさない (PRD プロダクト原則)。
+- 各ページは Astro 静的生成を基本とし、不要な client JS / island を増やさない (Design Doc Why / What のプロダクト原則)。
 - 地図埋め込み等の外部 widget は性能予算を踏まえ導入可否を判断する (D2 / E2)。
 - 画像 (製品カテゴリ等) は性能予算内で圧縮・遅延読み込みを検討する。
 
@@ -293,7 +293,7 @@ Figma / Pencil で画面イメージを作成し、その成果を既存ドキ�
 
 ### 計測指標
 
-- Corporate Site Performance Budget Pass Rate (PRD アウトカム)。
+- Corporate Site Performance Budget Pass Rate (Design Doc Why / What のアウトカム)。
 - E2E Critical Flow Coverage (主要導線 + 問い合わせ導線)。
 
 ## フロー / シーケンス
@@ -388,7 +388,7 @@ sequenceDiagram
 
 本 spec で各上位資料から変更・追加した内容を反映先別に記録する。issue #11 のスコープ再編 (デザインシステム → #13 / フォーム → #14) は備考を参照。
 
-### PRD への影響
+### Design Doc Why / What への影響
 
 | 対象節 | 変更内容                                           | 理由 |
 | ------ | -------------------------------------------------- | ---- |

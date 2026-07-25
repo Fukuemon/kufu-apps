@@ -15,32 +15,32 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                    |
-| --- | --------------------------- | ---------- | ---------- | ------------------------------------------------------- |
-| 1   | 起票                        | 完了       | 2026-06-17 | issue #6 / requirements 作成済み                        |
-| 2   | 下書き                      | 完了       | 2026-06-18 | spec-draft で scaffold                                  |
-| 3   | 上位文書突合                | 完了       | 2026-06-18 | PRD / Design Doc / feature doc / context / ADR 確認     |
-| 4   | 論点整理                    | 完了       | 2026-06-18 | D1〜D6 を seed                                          |
-| 5   | 論点解決                    | 完了       | 2026-06-22 | D1〜D11 解決済み (D4 / D7 を 2026-06-22 更新、D11 追加) |
-| 6   | Interface / Routing 設計    | 完了       | 2026-06-18 | Storybook Astro framework / script contract 反映済      |
-| 7   | Content / Data 設計         | 完了       | 2026-06-18 | catalog 範囲・対応表成果物を反映済                      |
-| 8   | Performance / Security 設計 | 完了       | 2026-06-18 | Storybook は production bundle 外                       |
-| 9   | Test / Metrics 設計         | 完了       | 2026-06-18 | Storybook build / review 観点を確定                     |
-| 10  | 実装分割                    | 完了       | 2026-06-18 | D8〜D10 を prompts 生成方針へ反映済                     |
-| 11  | レビュー済                  | レビュー済 | 2026-06-18 | spec-review PASS                                        |
+| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                                 |
+| --- | --------------------------- | ---------- | ---------- | -------------------------------------------------------------------- |
+| 1   | 起票                        | 完了       | 2026-06-17 | issue #6 / requirements 作成済み                                     |
+| 2   | 下書き                      | 完了       | 2026-06-18 | spec-draft で scaffold                                               |
+| 3   | 上位文書突合                | 完了       | 2026-06-18 | Design Doc Why / What / landscape / feature doc / context / ADR 確認 |
+| 4   | 論点整理                    | 完了       | 2026-06-18 | D1〜D6 を seed                                                       |
+| 5   | 論点解決                    | 完了       | 2026-06-22 | D1〜D11 解決済み (D4 / D7 を 2026-06-22 更新、D11 追加)              |
+| 6   | Interface / Routing 設計    | 完了       | 2026-06-18 | Storybook Astro framework / script contract 反映済                   |
+| 7   | Content / Data 設計         | 完了       | 2026-06-18 | catalog 範囲・対応表成果物を反映済                                   |
+| 8   | Performance / Security 設計 | 完了       | 2026-06-18 | Storybook は production bundle 外                                    |
+| 9   | Test / Metrics 設計         | 完了       | 2026-06-18 | Storybook build / review 観点を確定                                  |
+| 10  | 実装分割                    | 完了       | 2026-06-18 | D8〜D10 を prompts 生成方針へ反映済                                  |
+| 11  | レビュー済                  | レビュー済 | 2026-06-18 | spec-review PASS                                                     |
 
 ## 上位文書整合
 
-正本 ([PRD](../../PRD.md) / [Design Doc](../../design/DesignDoc.md) / [feature doc](../../design/features/) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
+正本 ([Design Doc `## Why / What`](../../design/DesignDoc.md#why--what) / [Design Doc landscape](../../design/DesignDoc.md) / [feature doc](../../design/features/) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
 
-- PRD 更新要否: 不要
+- Design Doc Why / What 更新要否: 不要
 - Design Doc 更新要否: 不要
 - ADR 起票要否: 不要
 
 | 上位文書    | 節 / 該当箇所                                                                                                                   | 整合方針 (継承 / 補足 / 変更提案)                                                                    |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| PRD         | プロダクト原則「共通化は利用実績に基づく」/ Phase 1 スコープ (`packages/ui` skeleton)                                           | 継承 (`packages/ui` を過剰拡張せず、共有 UI review の入口だけを整える)                               |
-| PRD         | Monorepo 要求 / Phase 1 完成条件                                                                                                | 補足 (AI / 開発者が shared UI と app colocation の境界を参照できる状態にする)                        |
+| Design Doc  | Why / What → プロダクト原則「共通化は利用実績に基づく」/ Phase 1 スコープ (`packages/ui` skeleton)                              | 継承 (`packages/ui` を過剰拡張せず、共有 UI review の入口だけを整える)                               |
+| Design Doc  | Why / What → Monorepo 要求 / Phase 1 完成条件                                                                                   | 補足 (AI / 開発者が shared UI と app colocation の境界を参照できる状態にする)                        |
 | Design Doc  | モジュール責務 → `packages/ui` / `apps/corporate-site` / `packages/config`                                                      | 補足 (`packages/ui` は Storybook catalog、corporate-site 固有 UI は app colocation として整理)       |
 | Design Doc  | Non Goals (`packages/ui` の過剰抽象化禁止) / Open Questions (`packages/ui` 本格共有 package への移行条件)                       | 継承 (複数 consumer が明確な component だけを `packages/ui` と Storybook に載せる)                   |
 | feature doc | [corporate-site](../../design/features/corporate-site/DesignDoc_corporate-site.md) → 設計方針 / デザイントークン / ブランド指針 | 補足 (`index.pen` の component 粒度を実装 component 名へ写像し、トークン正本は `packages/ui` に保つ) |
@@ -58,7 +58,7 @@
 
 ## 関連資料
 
-- `PRD.md`: プロダクト原則 / Phase 1 スコープ / Monorepo 要求
+- `design/DesignDoc.md` `## Why / What`: プロダクト原則 / Phase 1 スコープ / Monorepo 要求
 - `design/DesignDoc.md`: モジュール責務 (`packages/ui`, `apps/corporate-site`, `packages/config`) / Non Goals
 - `design/features/corporate-site/DesignDoc_corporate-site.md`: コーポレートサイト設計方針 / デザイントークン / ブランド指針
 - `context/architecture.md`: colocation → `packages/ui` 昇格境界 / Astro static rendering 方針
@@ -72,7 +72,7 @@
 
 `packages/ui` には shared UI package の skeleton と `Button` があり、`design/features/corporate-site/index.pen` にはコーポレートサイトの画面デザインと component 意図が含まれる。Phase 1 の後続実装では、開発者 / AI Agent が Pencil の section / subcomponent と実装 component の対応を見て作業できる状態が必要になる。
 
-一方で、PRD と Design Doc は `packages/ui` の過剰抽象化を明確に禁じている。したがって本 spec は「corporate-site 専用 UI をすべて `packages/ui` に上げる」ものではなく、shared UI と app colocation の境界を保ったまま、Storybook を shared UI review の入口として整備する。
+一方で、Design Doc Why / What と landscape は `packages/ui` の過剰抽象化を明確に禁じている。したがって本 spec は「corporate-site 専用 UI をすべて `packages/ui` に上げる」ものではなく、shared UI と app colocation の境界を保ったまま、Storybook を shared UI review の入口として整備する。
 
 ## スコープ
 
@@ -204,7 +204,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - 実装時に `@storybook-astro/framework` が Astro 6 / Storybook 10 の組み合わせで成立しない場合は、React wrapper に逃がさず app-local Storybook を後続 issue へ分離し、未実施理由を PR に残す。
 - **D9 GenericComponents 初期 catalog 例外理由 (2026-06-18 決定): a) shadcn primitive / token 検証の例外として明記**
   - `GenericComponents` 相当 11 件は corporate-site 固有 UI ではなく、shadcn 語彙・Kufu token・shared primitive の表示契約を検証するための初期 shared catalog とする。
-  - これは PRD / Design Doc の「複数 consumer が出てから本格共有 package 化する」原則の例外ではなく、`packages/ui` skeleton の review surface を作るための最小初期化である。
+  - これは Design Doc Why / What / landscape の「複数 consumer が出てから本格共有 package 化する」原則の例外ではなく、`packages/ui` skeleton の review surface を作るための最小初期化である。
   - business wording や page 文脈を持つ component は含めない。domain を持つ component は D10 の app-local Storybook 対象に寄せる。
   - `Select` などインタラクティブ primitive は Storybook で状態確認し、corporate-site 本体で使う場合は ADR-0008 に従って island 化を明示する。
 - **D10 app-local 初期掲載 component / 対応表成果物 (2026-06-18 決定): a') story 初期対象は 3 component、対応表は page section と subcomponent の両方**
@@ -601,13 +601,13 @@ sequenceDiagram
 
 ## 上位資料からの変更点
 
-本 spec で PRD / Design Doc / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。
+本 spec で Design Doc Why / What / landscape / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。
 
-### PRD への影響
+### Design Doc Why / What への影響
 
-| 対象節 | 変更内容 | 理由                                         |
-| ------ | -------- | -------------------------------------------- |
-| なし   | -        | PRD の Phase 1 スコープと Non Goals の範囲内 |
+| 対象節 | 変更内容 | 理由                                                           |
+| ------ | -------- | -------------------------------------------------------------- |
+| なし   | -        | Design Doc Why / What の Phase 1 スコープと Non Goals の範囲内 |
 
 ### Design Doc への影響
 

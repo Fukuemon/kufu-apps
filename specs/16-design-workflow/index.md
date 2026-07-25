@@ -36,27 +36,27 @@
 
 ## 上位文書整合
 
-正本 ([PRD](../../PRD.md) / [Design Doc](../../design/DesignDoc.md) / [feature doc](../../design/features/) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
+正本 ([Design Doc `## Why / What`](../../design/DesignDoc.md#why--what) / [Design Doc landscape](../../design/DesignDoc.md) / [feature doc](../../design/features/) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
 
-- PRD 更新要否: 不要
+- Design Doc Why / What 更新要否: 不要
 - Design Doc 更新要否: 不要
 - ADR 起票要否: 不要 (ADR-0004 が本ブランチで作成済み・状態=提案)
 
 > **正本ハンドオフ済み**: durable な設計成果は ADR-0004 / context/design-workflow.md が正本。整合チェックの結果は全件 継承 / 補足 で **変更提案ゼロ → `spec-sync` 不要**。
 
-| 上位文書    | 節 / 該当箇所                                                | 整合方針 (継承 / 補足 / 変更提案) |
-| ----------- | ------------------------------------------------------------ | --------------------------------- |
-| PRD         | Phase 1 スコープ (corporate-site + `packages/ui` skeleton)   | 継承                              |
-| Design Doc  | feature 単位設計は `design/features/` を正本                 | 継承                              |
-| feature doc | `design/features/corporate-site/` (IA=#11、reference 実素材) | 補足 (back-propagation 先)        |
-| context     | `context/design-workflow.md` (本 issue が新規作成、運用正本) | 補足 (spec が参照)                |
-| ADR-0004    | デザイン制作ワークフロー3段構成 (提案)                       | 継承 (spec が決定経緯を参照)      |
+| 上位文書    | 節 / 該当箇所                                                           | 整合方針 (継承 / 補足 / 変更提案) |
+| ----------- | ----------------------------------------------------------------------- | --------------------------------- |
+| Design Doc  | Why / What → Phase 1 スコープ (corporate-site + `packages/ui` skeleton) | 継承                              |
+| Design Doc  | feature 単位設計は `design/features/` を正本                            | 継承                              |
+| feature doc | `design/features/corporate-site/` (IA=#11、reference 実素材)            | 補足 (back-propagation 先)        |
+| context     | `context/design-workflow.md` (本 issue が新規作成、運用正本)            | 補足 (spec が参照)                |
+| ADR-0004    | デザイン制作ワークフロー3段構成 (提案)                                  | 継承 (spec が決定経緯を参照)      |
 
-> 矛盾を検出した場合は `spec-sync` で PRD / Design Doc / feature doc / context / ADR への back-propagation を提案する。本 spec では矛盾なし。
+> 矛盾を検出した場合は `spec-sync` で Design Doc Why / What / Design Doc landscape / feature doc / context / ADR への back-propagation を提案する。本 spec では矛盾なし。
 
 ## 関連資料
 
-- `PRD.md`: Phase 1 スコープ (corporate-site / `packages/ui` skeleton)
+- `design/DesignDoc.md` `## Why / What`: Phase 1 スコープ (corporate-site / `packages/ui` skeleton)
 - `design/DesignDoc.md`: feature 単位設計は `design/features/` を正本とする landscape
 - 意思決定 正本: [adr/0004-design-production-workflow.md](../../adr/0004-design-production-workflow.md)
 - 運用ワークフロー 正本: [context/design-workflow.md](../../context/design-workflow.md)
@@ -332,9 +332,9 @@ corporate-site の 1 ページパイロットを phase 順に分割する。
 
 ## 上位資料からの変更点
 
-本 spec で PRD / Design Doc / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。本 issue は durable 成果を本ブランチで反映済み (正本ハンドオフ完了)。
+本 spec で Design Doc Why / What / landscape / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。本 issue は durable 成果を本ブランチで反映済み (正本ハンドオフ完了)。
 
-### PRD への影響
+### Design Doc Why / What への影響
 
 | 対象節 | 変更内容 | 理由                            |
 | ------ | -------- | ------------------------------- |

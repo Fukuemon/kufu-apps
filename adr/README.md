@@ -5,10 +5,10 @@
 ## 命名規約
 
 - ファイル名: `adr/NNNN-<title>.md`
-- 例:
-  - `adr/0001-lp-framework-astro.md`
-  - `adr/0002-package-boundary.md`
-  - `adr/0003-cms-api-adoption.md`
+- 例 (実在 ADR):
+  - [`adr/0001-terraform-infra-repository-boundary.md`](0001-terraform-infra-repository-boundary.md)
+  - [`adr/0007-design-token-architecture.md`](0007-design-token-architecture.md)
+  - [`adr/0009-corporate-site-contact-form-backend.md`](0009-corporate-site-contact-form-backend.md)
 
 ## ADR にする判断
 

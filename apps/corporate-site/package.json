@@ -7,6 +7,7 @@
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview --host 127.0.0.1 --port 4321",
     "lint": "oxlint --type-aware --config .oxlintrc.json astro.config.mjs vitest.config.ts",
+    "token:check": "node scripts/check-token-usage.mjs",
     "test": "vitest run --config vitest.config.ts --passWithNoTests",
     "typecheck": "ASTRO_TELEMETRY_DISABLED=1 astro check",
     "e2e:serve": "pnpm build && pnpm preview",
@@ -15,13 +16,19 @@
     "storybook:build": "storybook build"
   },
   "dependencies": {
+    "@astrojs/react": "^6.0.0",
     "@kufu/config": "workspace:*",
     "@kufu/ui": "workspace:*",
-    "astro": "^6.3.1"
+    "astro": "^6.3.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "sharp": "^0.35.2"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@storybook-astro/framework": "^1.5.0",
+    "@storybook/addon-docs": "10.4.6",
+    "@storybook/react": "10.4.6",
     "@tailwindcss/vite": "^4.3.1",
     "storybook": "^10.4.6",
     "tailwindcss": "^4.3.1",

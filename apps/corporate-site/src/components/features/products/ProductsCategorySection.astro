@@ -1,0 +1,93 @@
+---
+import { getCollection } from "astro:content";
+
+import SectionHeading from "../../common/SectionHeading.astro";
+import FeaturedCategoryCarousel from "./FeaturedCategoryCarousel.astro";
+
+const productCategories = (await getCollection("productCategories")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const categoryMakers = await getCollection("categoryMakers");
+const makerCountsByCategoryId = Object.fromEntries(
+  categoryMakers.map((entry) => [entry.data.categoryId, entry.data.makers.length]),
+);
+
+// 画像を持つカテゴリのみカルーセルに載せる (画像がなければ表示しない方針)
+const carouselCategories = productCategories.filter(
+  (category) => category.data.featuredImage,
+);
+
+// 索引リストは連番のカテゴリを列数で等分する (カテゴリ数の増減に追従する)
+const columnCount = 3;
+const columnSize = Math.ceil(productCategories.length / columnCount);
+const categoryColumns = Array.from({ length: columnCount }, (_, index) =>
+  productCategories.slice(index * columnSize, (index + 1) * columnSize),
+);
+---
+
+<section
+  id="products"
+  class="products-catalog reveal-section border-b border-border bg-muted"
+  data-testid="home-section-products"
+>
+  <div class="mx-auto grid w-full max-w-360 gap-14 px-5 py-14 sm:px-8 md:gap-16 md:py-20 lg:px-14">
+    <div class="grid gap-8">
+      <SectionHeading
+        number="02"
+        eyebrow="PRODUCTS & MAKERS / 取扱製品・取扱メーカー"
+        title="取扱製品カテゴリ"
+        description={"減速機や軸受などの駆動・伝動部品から、空圧・油圧、工具、測定機器、工場設備まで。\n調達のご相談に応える領域を18のカテゴリに整理しています。"}
+      />
+    </div>
+
+    <div class="grid gap-8">
+      <FeaturedCategoryCarousel
+        categories={carouselCategories}
+        makerCountsByCategoryId={makerCountsByCategoryId}
+      />
+
+      <div class="catalog-board border border-border bg-card p-4 md:p-7">
+        <ol
+          class="grid list-none gap-7 md:grid-cols-3 md:gap-12"
+          data-testid="products-category-list"
+        >
+          {
+            categoryColumns.map((column) => (
+              <li>
+                <ol class="grid list-none">
+                  {column.map((category) => (
+                    <li class="border-t border-border last:border-b">
+                      <a
+                        class="catalog-row group grid min-h-11 grid-cols-[4.5rem_1fr_auto] items-center gap-3 py-3 hover:text-primary"
+                        href={`/products#${category.id}`}
+                      >
+                        <span class="font-mono text-[0.6875rem] font-medium tracking-[0.16em] text-primary">
+                          {String(category.data.order).padStart(2, "0")}
+                        </span>
+                        <span class="font-serif text-[0.9375rem] font-semibold leading-normal">
+                          {category.data.name}
+                        </span>
+                        <span class="text-right text-[0.71875rem] text-muted-foreground">
+                          {makerCountsByCategoryId[category.id] ?? 0}社
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <a
+        class="products-summary-cta grid min-h-16 grid-cols-[1fr_auto] items-center gap-6 px-7 py-[1.375rem] text-[0.875rem] font-medium"
+        href="/products"
+        data-testid="home-link-products"
+      >
+        <span>各カテゴリの取扱メーカー一覧は、取扱製品ページに掲載しています。</span>
+        <span class="font-semibold">取扱製品ページへ →</span>
+      </a>
+    </div>
+  </div>
+</section>

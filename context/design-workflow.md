@@ -49,7 +49,7 @@ Claude Design の出力品質は依頼文に強く依存する（ベストプラ
 #### 依頼文テンプレ（goal / layout / content / audience を1段落で）
 
 - **goal**: 何の画面/セクションを何のために作るか
-- **layout**: 視覚構造（セクション順・グリッド・nav 形式）。IA は [#11](https://github.com/Fukuemon/kufu-apps/issues/11) / [design/features/](../design/features/)
+- **layout**: 視覚構造（セクション順・グリッド・nav 形式）。IA の正本は feature doc（例: [corporate-site のページ構成](../design/features/corporate-site/DesignDoc_corporate-site.md#ページ構成-ia)）
 - **content**: ドメインと **実コンテンツ素材**（company-profile / manufacturers の実テキスト。ダミー回避）
 - **audience**: 誰向けか（例: 取引先・採用候補）
 - **制約**: `packages/ui` トークン踏襲、Astro 静的・最小 island・性能予算、レスポンシブ（desktop / mobile）
