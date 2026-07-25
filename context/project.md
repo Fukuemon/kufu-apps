@@ -1,6 +1,6 @@
 # Project Profile
 
-> 最終更新: 2026-06-18
+> 最終更新: 2026-07-04
 
 Kufu Monorepo 固有の値 (リポジトリ / 命名 / コマンド / 対象ドメイン / トラッカー / 正本パス) を集約する **唯一の正本**。`.rulesync/rules/CLAUDE.md` と `spec-*` / `dev-commands` 等の skill は、固有値をハードコードせず本ファイルを読む。
 
@@ -47,13 +47,14 @@ $(ghq root)/github.com/Fukuemon/
 | コーポレートサイトのみ    | `pnpm dev:corporate`                         |
 | ビルド                    | `pnpm build`                                 |
 | Lint / typecheck          | `pnpm lint` / `pnpm typecheck`               |
-| Format (確認)             | `pnpm format:check`                          |
+| Format (適用 / 確認)      | `pnpm format` / `pnpm format:check`          |
 | Unit test                 | `pnpm test`                                  |
 | E2E (既定 corporate-site) | `pnpm e2e`                                   |
 | Storybook (all dev)       | `pnpm storybook`                             |
 | Storybook (ui)            | `pnpm storybook:ui`                          |
 | Storybook (corporate)     | `pnpm storybook:corporate`                   |
 | Storybook build           | `pnpm storybook:build`                       |
+| Storybook Pages artifact  | `pnpm storybook:pages`                       |
 | 健全性検査                | `pnpm knip` / `pnpm depcruise`               |
 | 依存追加                  | `pnpm --filter @kufu/<module> add <package>` |
 
@@ -92,7 +93,7 @@ Issue / PR のラベル体系の **唯一の正本**。`workflow-git` skill は�
 
 `spec-*` skill が参照するパス。`Spec Workflow Contract` はこの表を読む。
 
-- PRD: `PRD.md`
+- PRD: `design/DesignDoc.md` の `## Why / What` 節 (独立ファイルなし)
 - Design Doc (landscape): `design/DesignDoc.md`
 - feature doc dir: `design/features/<feature>/`
 - feature doc: `design/features/<feature>/DesignDoc_<feature>.md`
@@ -107,7 +108,7 @@ Issue / PR のラベル体系の **唯一の正本**。`workflow-git` skill は�
 
 ## Templates
 
-- PRD: `templates/prd/template.md`
+- PRD: `templates/prd/template.md` (本プロジェクトでは未使用)
 - Design Doc: `templates/design-doc/template.md`
 - context: `templates/context/<topic>.md`
 - spec core: `templates/specs/template.md`

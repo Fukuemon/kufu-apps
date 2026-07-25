@@ -1,0 +1,59 @@
+---
+import { Image } from "astro:assets";
+
+import ContactCtaLink from "../../common/ContactCtaLink.astro";
+import productsImage from "../../../assets/corporate-products-supply.png";
+---
+
+<section class="relative overflow-hidden bg-background">
+  <div class="relative z-1 mx-auto grid w-full max-w-360 gap-10 px-5 py-12 sm:px-8 md:gap-16 md:py-16 lg:px-14">
+    <div class="grid gap-10 lg:min-h-[28rem] lg:grid-cols-[38.125rem_1fr] lg:items-center">
+      <div class="reveal-section grid gap-5">
+        <nav class="flex gap-2 font-mono text-[0.6875rem] tracking-[0.12em] text-muted-foreground" aria-label="パンくず">
+          <a href="/">トップ</a>
+          <span>/</span>
+          <span class="text-primary">取扱製品</span>
+        </nav>
+        <p class="font-mono text-xs font-medium tracking-[0.22em] text-primary">
+          PRODUCTS &amp; MAKERS
+        </p>
+        <h1 class="max-w-152 font-serif text-[2.5rem] font-semibold leading-[1.22] md:text-5xl">
+          製造現場に必要な製品を、確かなメーカー網で。
+        </h1>
+        <p class="max-w-148 text-base leading-[1.85] text-muted-foreground">
+          駆動・伝動、空圧・油圧、工具、測定、搬送、工場設備まで。全18カテゴリ・延べ約320社の取扱メーカーから、製品の選定と調達に応えます。
+        </p>
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <ContactCtaLink href="/contact" size="lg" data-testid="products-link-contact">
+            製品について相談する
+            <span class="font-mono text-xs" aria-hidden="true">→</span>
+          </ContactCtaLink>
+          <a class="text-[0.9375rem] font-medium" href="#products-category-list">
+            カテゴリ一覧を見る
+          </a>
+        </div>
+      </div>
+      <div class="products-hero-media reveal-section relative min-h-[26.25rem] overflow-hidden border border-border bg-kufu-gray-800">
+        <Image
+          src={productsImage}
+          alt="機械工具・関連機器"
+          width={784}
+          height={502}
+          widths={[392, 784, 1176]}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          format="webp"
+          loading="eager"
+          fetchpriority="high"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+        <div class="products-hero-media-overlay absolute inset-0 bg-photo-overlay" aria-hidden="true"></div>
+        <div class="products-hero-media-caption absolute bottom-6 left-6 bg-card-overlay px-4 py-3">
+          <p class="text-sm font-semibold">機械工具・関連機器</p>
+          <p class="mt-1 font-mono text-[0.6875rem] tracking-[0.1em] text-muted-foreground">
+            駆動・伝動 / 工具・測定 / 搬送 / 工場設備
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

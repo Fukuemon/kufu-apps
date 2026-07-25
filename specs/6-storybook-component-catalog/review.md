@@ -30,7 +30,7 @@ Reviewer: multi-agent-review + spec-review rubric (fresh-context CLI agents: cla
 ### 単一エージェントのみ (未合意)
 
 - [high x1, by cursor] `specs/6-storybook-component-catalog/index.md:157` — app-local Storybook が `.astro` Presentation component を対象にするが、Storybook framework / builder の前提が未定義。
-- [high x1, by cursor] `specs/6-storybook-component-catalog/index.md:152` — GenericComponents 11 件を `packages/ui` 初期 catalog に置く例外理由が、PRD / Design Doc の「複数 consumer」原則に対して明示不足。
+- [high x1, by cursor] `specs/6-storybook-component-catalog/index.md:152` — GenericComponents 11 件を `packages/ui` 初期 catalog に置く例外理由が、Design Doc Why / What / landscape の「複数 consumer」原則に対して明示不足。
 - [medium x1, by cursor] `specs/6-storybook-component-catalog/index.md:264` — app-local Storybook の必須 component 一覧が候補一覧、ファイル構成例、story 命名表で揃っていない。
 - [medium x1, by cursor] `specs/6-storybook-component-catalog/index.md:112` — `.pen` component と実装 component の対応表が成果物として必須化されていない。
 - [medium x1, by cursor] `specs/6-storybook-component-catalog/index.md:259` — `Select` などインタラクティブ primitive の Astro / island 利用境界が未定義。
@@ -73,7 +73,7 @@ Reviewer: spec-review (fresh-context, subagent=codex exec)
 
 ### 観点別評価
 
-- 上位文書整合: PASS — spec `## 上位文書整合` が PRD / Design Doc / feature doc / context / ADR-0004 / ADR-0007 / ADR-0008 との整合方針を明示し、`GenericComponents` 初期 catalog も `## 解決済みの論点` D9 で例外理由を限定している。
+- 上位文書整合: PASS — spec `## 上位文書整合` が Design Doc Why / What / landscape / feature doc / context / ADR-0004 / ADR-0007 / ADR-0008 との整合方針を明示し、`GenericComponents` 初期 catalog も `## 解決済みの論点` D9 で例外理由を限定している。
 - 未解決論点: PASS — spec `## 設計時の論点` は D1〜D10 の決定欄が埋まり、`## 未確定事項` は「なし。D1〜D10 は解決済み。」として下流 phase が進められる状態。
 - 実装対象明示: PASS — spec `## 実装対象` が `corporate-site`, `ui`, `config`, `e2e`, `core` を `context/project.md` の対象ドメインと一致する形で列挙し、責務も分離している。
 - template 必須節: PASS — spec は `## メタ情報` から `## 備考` まで rubric の必須節を一通り持ち、Interface / Content / Performance / Security / Error / Fallback / Test / Flow / Sequence / 実装分割も存在する。

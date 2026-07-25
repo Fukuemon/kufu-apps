@@ -110,7 +110,7 @@ apps/corporate-site/src/
 
 - 各 feature が表示する content / 静的データの定義
 - 旧 Container が抱えていた fixture / static data の集約先
-- 将来 CMS / API へ差し替えるときの seam (境界)
+- CMS / API へ差し替えるときの seam (境界)
 
 禁止:
 
@@ -187,7 +187,7 @@ content 層の実装方式は content の性質で選び分ける (ハイブリ�
 判断ルール:
 
 - 「このページ専用の固定文言」は plain `content/<feature>.ts` を既定にする。
-- 「複数件を並べる / 将来 CMS が所有する」同形データは Content Collection 候補とする。
+- 「複数件を並べる / CMS 化後は CMS が所有する」同形データは Content Collection 候補とする。
 - Content Collection は実体が必要になった feature だけで `src/content.config.ts` に loader を定義し、全面採用しない。CMS 化時は loader を差し替える。
 - 規約は先に決め、Content Collection の実体は対象 feature を実装する段階で追加する (空 collection を先に作らない)。
 

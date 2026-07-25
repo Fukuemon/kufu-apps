@@ -1,6 +1,6 @@
 # Feature 設計: コーポレートサイト (apps/corporate-site)
 
-> 最終更新: 2026-06-17 / Status: 設計済 (Phase 1 skeleton) / IA 確定済 (#11 を集約、#17 で 3 route 統合構成へ再確定 — [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)) / デザイントークン体系確定 (#13 — [ADR-0007](../../../adr/0007-design-token-architecture.md)) / 問い合わせフォーム仕様確定 (#14 — [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md))
+> 最終更新: 2026-07-15 / Status: 設計確定・実装中 / IA 確定済 (#11 を集約、#17 で 3 route 統合構成へ再確定 — [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)) / デザイントークン体系確定 (#13 — [ADR-0007](../../../adr/0007-design-token-architecture.md)) / 問い合わせフォーム仕様確定 (#14 — [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md))
 
 Phase 1 の主対象。Astro によるコーポレートサイトを高いパフォーマンスと保守性で公開する。全体像は [design/DesignDoc.md](../../DesignDoc.md)、横断規約は [context/](../../../context/) を参照する。
 
@@ -8,8 +8,7 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 
 | 項目           | 値                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 関連 PRD 要求  | [PRD.md](../../../PRD.md) 「コーポレートサイト要求」「Phase 1 スコープ」                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| 関連 DesignDoc | [DesignDoc.md](../../DesignDoc.md) Goal / モジュール責務                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 関連 DesignDoc | [DesignDoc.md](../../DesignDoc.md) Why/What (コーポレートサイト関連要求・スコープ) / Goal / モジュール責務                                                                                                                                                                                                                                                                                                                                                                                                             |
 | 関連 context   | [architecture.md](../../../context/architecture.md), [testing.md](../../../context/testing.md), [infrastructure.md](../../../context/infrastructure.md)                                                                                                                                                                                                                                                                                                                                                                |
 | 関連 ADR       | [ADR-0002](../../../adr/0002-monorepo-scaffold-create-command-policy.md), [ADR-0003](../../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md), [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md) (3 route IA), [ADR-0007](../../../adr/0007-design-token-architecture.md) (デザイントークン体系), [ADR-0008](../../../adr/0008-astro-react-island-policy.md) (React island / shadcn 消費ポリシー), [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md) (問い合わせ送信 backend) |
 | 関連 spec      | [specs/3-monorepo-foundation/](../../../specs/3-monorepo-foundation/), [specs/11-corporate-site-ia/](../../../specs/11-corporate-site-ia/) (旧 5p IA 決定経緯), [specs/17-corporate-site-ia/](../../../specs/17-corporate-site-ia/) (3 route IA 決定経緯), [specs/13-design-system-foundation/](../../../specs/13-design-system-foundation/) (デザイントークン決定経緯), [specs/14-contact-form/](../../../specs/14-contact-form/) (問い合わせフォーム決定経緯)                                                        |
@@ -69,6 +68,8 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 - 旧 P2 (事業内容 `/services`) / 旧 P4 (会社情報 `/company`) は LP 内 section に統合し、単独 route は設けない。直接導線は LP 内アンカーで提供する。
 - コンテナ幅・横余白は全ページ 1440px・横 padding 56 に統一する。実装は単一 max-width + 共通 padding に正規化する (#17 D6)。
 - `.pen` 正本は 3 画面の desktop に加えてモバイル variant を含める。hover / focus / form error 等の状態系はデザイン正本に含めず、実装時に `@kufu/ui` 規約で判断する (#17 D7)。
+- P3 のカテゴリ・メーカー検索は `q` query parameter を唯一の状態正本とする。初期表示・再読込・共有 URL から検索条件を復元し、入力中は履歴を増やさない。空文字では `q` を削除する。JavaScript 実行前の HTML には 18 カテゴリと全メーカーを保持する。
+- reveal アニメーションは progressive enhancement とし、JavaScript が無効または `IntersectionObserver` が利用できない環境では全コンテンツを初期表示する。アニメーションのために HTML-first の可読性を損なわない。
 
 情報項目 → 配置マッピング (コンテンツ正本: [reference/](reference/)):
 
@@ -206,25 +207,24 @@ API 契約:
 
 トークン (CSS 変数と値) の正本は `packages/ui` の stylesheet であり、**本 doc には値を複製しない** (二重管理防止)。参照先:
 
-| 参照対象                                              | 正本                                                                                                        |
-| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| CSS 変数の定義 (primitive + semantic)                 | `packages/ui/src/styles/tokens.css`                                                                         |
-| font-face 登録                                        | `packages/ui/src/styles/fonts.css`                                                                          |
-| 全量エントリ (React app 用)                           | `packages/ui/src/styles/globals.css` (= `@kufu/ui/styles.css`)                                              |
-| 体系 (2 層構造 / shadcn 語彙 / inverse スコープ)      | [ADR-0007](../../../adr/0007-design-token-architecture.md)                                                  |
-| 旧 `.pen` 比喩名 → 新 semantic 名の移行対応 (27 変数) | [spec #13](../../../specs/13-design-system-foundation/index.md) Content / Data 設計の決定時スナップショット |
+| 参照対象                                         | 正本                                                           |
+| ------------------------------------------------ | -------------------------------------------------------------- |
+| CSS 変数の定義 (primitive + semantic)            | `packages/ui/src/styles/tokens.css`                            |
+| font-face 登録                                   | `packages/ui/src/styles/fonts.css`                             |
+| 全量エントリ (React app 用)                      | `packages/ui/src/styles/globals.css` (= `@kufu/ui/styles.css`) |
+| 体系 (2 層構造 / shadcn 語彙 / inverse スコープ) | [ADR-0007](../../../adr/0007-design-token-architecture.md)     |
 
-- Pencil variables の rename (spec #13 実装分割 P2) 完了後は **Pencil 変数名 = CSS 変数名の 1:1** となり、対応表そのものが不要になる (移行対応は spec に履歴として残る)。
+- 旧 `.pen` 比喩名 → 新 semantic 名の移行対応 (27 変数) は決定経緯の記録であり、[spec #13](../../../specs/13-design-system-foundation/index.md) に履歴として残る (正本ではない)。Pencil variables の rename (spec #13 実装分割 P2) 完了後は **Pencil 変数名 = CSS 変数名の 1:1** となり、対応表は参照不要になる。
 - CSS トークンを持たない (doc 管理の) ガイドのみ以下に置く:
   - **spacing**: CSS トークンなし。4px グリッド + 推奨リズム 12 / 16 / 24 / 32 / 48 / 80 (= Tailwind `3/4/6/8/12/20`)。`.pen` の `space-*` はこの写像として扱い fork 判定の対象外 ([design-workflow §6](../../../context/design-workflow.md))
-  - **radius**: shadcn `--radius` に一本化、基準値 `0rem` (`.pen` 実測で全面直角)
+  - **radius**: shadcn `--radius` に一本化し、基準値は `tokens.css` の 4px。Button 8px / Tag 4px など component 固有値は `.pen` と `@kufu/ui` の対応する component variant で管理する
   - **type scale**: Tailwind 標準。見出し階層との対応は次節「トーン & マナー / ブランド指針」
 
 ### トーン & マナー / ブランド指針
 
 本節をブランド表現の**正本**とする (決定経緯: [spec #13](../../../specs/13-design-system-foundation/index.md) 論点 D7)。現状の consumer は corporate-site のみであり、cms 等の consumer が増えた時点で platform 級の置き場へ昇格する。
 
-- **デザイン言語**: 工業的・直角。radius 0 (角丸なし)、1px の細罫線 (`--border`) で面を区切る。寒色グレー基調 + teal アクセント
+- **デザイン言語**: 工業的な直線構成を基調に、基準 4px の控えめな角丸と 1px の細罫線 (`--border`) で面を区切る。寒色グレー基調 + teal アクセント
 - **書体の役割分担**:
   - `--font-serif` (Noto Serif JP / weight 600) — 見出し・経営理念・ブランド名。信頼感の中核
   - `--font-sans` (Noto Sans JP) — 本文・リード・UI テキスト
@@ -235,7 +235,7 @@ API 契約:
   - カード見出し: serif 20px / 本文: sans 13.5〜17px / 1.7〜1.85 行間
 - **装飾の語彙**: 大型ウォーターマーク数字 (`--ghost-foreground`、140px mono)、写真への色被せ (`--photo-overlay` multiply + 彩度調整)、写真上のキャプションパネル (`--card-overlay`)
 - **面の構成**: ライト面は `--background` と `--muted` の交互で section のリズムを作る。フッター・強い CTA 帯はダーク面 (inverse スコープ) に切り替え、アクセント文字は `--primary-soft` を使う
-- **余白**: 4px グリッド。推奨リズム 12 / 16 / 24 / 32 / 48 / 80 (Tailwind `3/4/6/8/12/20`)。section 縦 padding 80 / 横 56 (コンテナ幅 1440 — #17 D6)
+- **余白**: 前節「デザイントークン」の spacing ガイド (4px グリッド + 推奨リズム) に従う。section 縦 padding 80 / 横 56 (コンテナ幅 1440 — #17 D6)
 - **アクセントの使い所**: CTA ボタン (`--primary` 塗り + 白文字)・eyebrow・理念の強調語のみ。面積を絞り信頼感を優先する
 
 ## 主要シナリオ / フロー
@@ -324,8 +324,7 @@ sequenceDiagram
 
 | 対象資料  | 変更種別 | 内容                                                                                                                                                                                                                                                                                   |
 | --------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| PRD       | 継承     | 「コーポレートサイト要求」「Phase 1 スコープ」を実現方針へ落とし込み                                                                                                                                                                                                                   |
-| DesignDoc | 継承     | Goal / モジュール責務 (`apps/corporate-site`) を具体化                                                                                                                                                                                                                                 |
+| DesignDoc | 継承     | Why/What (コーポレートサイト関連要求・スコープ)、Goal / モジュール責務 (`apps/corporate-site`) を実現方針へ具体化                                                                                                                                                                      |
 | spec #11  | 集約     | IA (サイトマップ / section 構成 / 配置マッピング / 回遊フロー) の正本を spec から本 doc へ移管。spec は論点・決定経緯・受け入れ・実装分割を保持                                                                                                                                        |
 | spec #13  | 追加     | デザイントークン節 (正本への参照ハブ + spacing / radius / type scale ガイド) とトーン & マナー / ブランド指針を新設。トークンの値の正本は `tokens.css`、体系は [ADR-0007](../../../adr/0007-design-token-architecture.md)、移行対応は spec #13 スナップショット (値の二重管理はしない) |
 | spec #17  | 変更     | IA を 5 ページ構成から 3 route 統合構成へ変更 ([ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md))。幅統一 (1440px/56)・モバイル variant 方針・18 カテゴリ単一データソースを追記。本 doc を以後の正本とし、spec #17 は決定経緯のスナップショットを保持                     |

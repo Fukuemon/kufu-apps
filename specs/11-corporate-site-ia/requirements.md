@@ -32,7 +32,7 @@
 - issue #3 で `apps/corporate-site` の Astro skeleton は成立済み。次の本命 #10 (本体実装) に入る前に、記載内容 (情報設計) の構成方針を先に固めたい。
 - いきなり実装に入ると、ページ / section / コンテンツの粒度が場当たり的になり、`apps/corporate-site` の一貫性 (Decision Priority「一貫性」) を担保できない。
 - 提供された企業情報 (有限会社フクウラ: 機械工具・省力化機器の見積/販売 + 各種加工) を素材に、**何のページを・どの優先順位で・どんな section で構成するか** を確定する。
-- 関連: [PRD.md](../../PRD.md) 「コーポレートサイト要求」、[design/features/corporate-site/DesignDoc_corporate-site.md](../../design/features/corporate-site/DesignDoc_corporate-site.md) 「データ / コンテンツモデル」。
+- 関連: [Design Doc `## Why / What`](../../design/DesignDoc.md#why--what) 「コーポレートサイト要求」、[design/features/corporate-site/DesignDoc_corporate-site.md](../../design/features/corporate-site/DesignDoc_corporate-site.md) 「データ / コンテンツモデル」。
 
 ## 想定ユーザー/ステークホルダー
 
@@ -134,7 +134,7 @@
 
 ### 非機能(性能/可用性/セキュリティ/保守)
 
-- 性能最優先 (PRD プロダクト原則)。各ページは Astro 静的生成を基本とし、不要な React island を増やさない。
+- 性能最優先 (Design Doc Why / What のプロダクト原則)。各ページは Astro 静的生成を基本とし、不要な React island を増やさない。
 - 地図埋め込み等の外部 widget は性能予算を踏まえて導入可否を判断する (E2)。
 - 情報設計は section 単位で更新しやすい粒度に保つ (将来 CMS 化を見据える)。
 

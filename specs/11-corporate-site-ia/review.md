@@ -7,7 +7,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 ### 観点別評価
 
-- 上位文書整合: PASS — `## 上位ドキュメント確認` の整合テーブルは PRD (Phase 1 / コーポレートサイト要求)、Design Doc (モジュール責務 / Open Questions「具体的なページ構成」)、feature doc、context (colocation→`packages/ui` 昇格 / E2E 主要導線 / Cloudflare CDN)、ADR-0003 (Phase 1 は corporate-site のみ) のいずれとも矛盾なし。back-propagation も相互反映済。新規 ADR 不要の判断も妥当。
+- 上位文書整合: PASS — `## 上位ドキュメント確認` の整合テーブルは Design Doc Why / What (Phase 1 / コーポレートサイト要求)、Design Doc landscape (モジュール責務 / Open Questions「具体的なページ構成」)、feature doc、context (colocation→`packages/ui` 昇格 / E2E 主要導線 / Cloudflare CDN)、ADR-0003 (Phase 1 は corporate-site のみ) のいずれとも矛盾なし。back-propagation も相互反映済。新規 ADR 不要の判断も妥当。
 - 未解決論点: PASS — Q1〜Q5 は決定付きで「解決済みの論点」へ移動済。D1〜D3 は決定欄あり (残課題管理)。`## 未確定事項` は「なし」。下流 (図) は確定済構成のみに基づく。
 - 実装対象明示: PASS — target は正規一覧と一致。責務境界が読め、app/package 間の直接依存なし。
 - template 必須節: NEEDS_WORK — `## レビュー` 欠落、`## 上位資料からの変更点` の節名逸脱 + 反映先別分割なし、`### 設計時の論点` がトップレベル `## 論点一覧` に置換。
@@ -17,7 +17,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 ### 指摘 (NEEDS_WORK)
 
 - `specs/11-corporate-site-ia/index.md` (セクション構成) — template 必須節 `## レビュー` (spec-review 結果テーブル) が存在しない。追加が必要。
-- `specs/11-corporate-site-ia/index.md:383` — `## 既存資料からの変更点` は template の必須節 `## 上位資料からの変更点` と節名が異なり、PRD / Design Doc / feature doc / context / ADR の反映先別サブテーブル分割もない。
+- `specs/11-corporate-site-ia/index.md:383` — `## 既存資料からの変更点` は template の必須節 `## 上位資料からの変更点` と節名が異なり、Design Doc Why / What / landscape / feature doc / context / ADR の反映先別サブテーブル分割もない。
 - `specs/11-corporate-site-ia/index.md:120` — `## 論点一覧` がトップレベルに置かれており、template の `### 設計時の論点` (`## 要件の解釈` 配下) と所在が一致しない (内容自体は存在)。
 - `specs/11-corporate-site-ia/index.md:243` / `:288` — 配置マッピング見出しと V1 テスト観点が `企業情報.md` を参照。spec 自身 (line 3 / 225 / 251-252) が正本は committed の `company-profile.md` / `manufacturers.md` で `.ai-out/` は正本にしないと宣言しており内部不整合。`company-profile.md` / `manufacturers.md` へ修正すべき。
 - `specs/11-corporate-site-ia/index.md:404` — `## 備考` が本文調達元候補として `.ai-out/企業情報/パンフレット/1-6.jpg` を #10 に提示しているが、`.ai-out/*` は gitignore 対象 (未追跡)。spec が「正本にしない」としたスクラッチを下流調達元に指しており source-of-truth 方針と矛盾。
@@ -36,7 +36,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 ### 観点別評価
 
-- 上位文書整合: PASS — `## 上位文書整合` テーブルは埋まっており、PRD (Phase 1 / コーポレートサイト要求)、Design Doc (モジュール責務 / Open Questions「具体的なページ構成」)、feature doc、context (architecture colocation→`packages/ui` 昇格 / testing E2E / infrastructure Cloudflare CDN)、ADR-0003 と矛盾なし。Design Doc / feature doc への back-propagation も現物で反映確認済。新規 ADR 不要の判断も妥当。
+- 上位文書整合: PASS — `## 上位文書整合` テーブルは埋まっており、Design Doc Why / What (Phase 1 / コーポレートサイト要求)、Design Doc landscape (モジュール責務 / Open Questions「具体的なページ構成」)、feature doc、context (architecture colocation→`packages/ui` 昇格 / testing E2E / infrastructure Cloudflare CDN)、ADR-0003 と矛盾なし。Design Doc / feature doc への back-propagation も現物で反映確認済。新規 ADR 不要の判断も妥当。
 - 未解決論点: PASS — Q1〜Q5 は決定付きで「解決済みの論点」へ移動済。D1〜D3 は決定欄あり (残課題管理)。`## 未確定事項` は「なし」。下流 (図 / 分割) は確定済構成のみに基づく。
 - 実装対象明示: PASS — target は正規一覧と一致。corporate-site ◯ / ui △ / e2e △ の責務境界が読め、app/package 間の直接依存なし。
 - template 必須節: PASS — minimal core 全必須節が存在。前回 NEEDS_WORK の指摘 1 (`## レビュー` 欠落) / 2 (節名・反映先別分割) / 3 (`## 設計時の論点` 改名) はいずれも反映済。

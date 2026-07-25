@@ -15,31 +15,31 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                               |
-| --- | --------------------------- | ---------- | ---------- | ------------------------------------------------------------------ |
-| 1   | 起票                        | 完了       | 2026-06-01 | issue #13 (2026-06-11 に #17 D5 引き継ぎコメント追加)              |
-| 2   | 下書き                      | 完了       | 2026-06-13 | spec-draft で scaffold、レビュー 3 巡の指摘反映で確定              |
-| 3   | 上位文書突合                | 完了       | 2026-06-12 | PRD / Design Doc / feature doc / context / ADR と突合済み          |
-| 4   | 論点整理                    | 完了       | 2026-06-12 | D1〜D7 を seed                                                     |
-| 5   | 論点解決                    | 完了       | 2026-06-12 | D1〜D7 全件解決。暫定割当 / radius は `.pen` 実測で確定            |
-| 6   | Interface / Routing 設計    | 完了       | 2026-06-12 | D5 決定 (3 entry 配信) を Interface 設計に反映済み                 |
-| 7   | Content / Data 設計         | 完了       | 2026-06-12 | D1 / D2 決定 (2 層構造 + 27 変数マッピング表) を反映済み           |
-| 8   | Performance / Security 設計 | 完了       | 2026-06-12 | D3 決定 (フォント読み込み戦略) を反映済み                          |
-| 9   | Test / Metrics 設計         | 完了       | 2026-06-12 | テスト観点 / 計測指標を定義済み (検査の仕組み化は実装側)           |
-| 10  | 実装分割                    | 完了       | 2026-06-13 | P1 を 2 prompt 化 (ui / corporate-site)。P2=Pencil MCP、P3=sync 済 |
-| 11  | レビュー済                  | レビュー済 | 2026-06-13 | prompts 生成後の最終レビュー PASS                                  |
+| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                                       |
+| --- | --------------------------- | ---------- | ---------- | -------------------------------------------------------------------------- |
+| 1   | 起票                        | 完了       | 2026-06-01 | issue #13 (2026-06-11 に #17 D5 引き継ぎコメント追加)                      |
+| 2   | 下書き                      | 完了       | 2026-06-13 | spec-draft で scaffold、レビュー 3 巡の指摘反映で確定                      |
+| 3   | 上位文書突合                | 完了       | 2026-06-12 | Design Doc Why / What / landscape / feature doc / context / ADR と突合済み |
+| 4   | 論点整理                    | 完了       | 2026-06-12 | D1〜D7 を seed                                                             |
+| 5   | 論点解決                    | 完了       | 2026-06-12 | D1〜D7 全件解決。暫定割当 / radius は `.pen` 実測で確定                    |
+| 6   | Interface / Routing 設計    | 完了       | 2026-06-12 | D5 決定 (3 entry 配信) を Interface 設計に反映済み                         |
+| 7   | Content / Data 設計         | 完了       | 2026-06-12 | D1 / D2 決定 (2 層構造 + 27 変数マッピング表) を反映済み                   |
+| 8   | Performance / Security 設計 | 完了       | 2026-06-12 | D3 決定 (フォント読み込み戦略) を反映済み                                  |
+| 9   | Test / Metrics 設計         | 完了       | 2026-06-12 | テスト観点 / 計測指標を定義済み (検査の仕組み化は実装側)                   |
+| 10  | 実装分割                    | 完了       | 2026-06-13 | P1 を 2 prompt 化 (ui / corporate-site)。P2=Pencil MCP、P3=sync 済         |
+| 11  | レビュー済                  | レビュー済 | 2026-06-13 | prompts 生成後の最終レビュー PASS                                          |
 
 ## 上位文書整合
 
-正本 ([PRD](../../PRD.md) / [Design Doc](../../design/DesignDoc.md) / [feature doc](../../design/features/) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
+正本 ([Design Doc `## Why / What`](../../design/DesignDoc.md#why--what) / [Design Doc landscape](../../design/DesignDoc.md) / [feature doc](../../design/features/) / [context](../../context/) / ADR) のどの節と、どう整合させたかを記録する。
 
-- PRD 更新要否: 不要
+- Design Doc Why / What 更新要否: 不要
 - Design Doc 更新要否: 不要 (モジュール責務の枠内で詳細化)
 - ADR 起票要否: 要 (ADR-0007 デザイントークン体系を新規起票 — D7 決定)
 
 | 上位文書    | 節 / 該当箇所                                                                                                         | 整合方針 (継承 / 補足 / 変更提案)                                                                                                         |
 | ----------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| PRD         | プロダクト原則「共通化は利用実績に基づく」/ Phase 1 スコープ (`packages/ui` skeleton)                                 | 継承 (トークン定義は skeleton の範囲。過剰な汎用 UI 整備はしない)                                                                         |
+| Design Doc  | Why / What → プロダクト原則「共通化は利用実績に基づく」/ Phase 1 スコープ (`packages/ui` skeleton)                    | 継承 (トークン定義は skeleton の範囲。過剰な汎用 UI 整備はしない)                                                                         |
 | Design Doc  | モジュール責務 → `packages/ui` / Non Goals (過剰抽象化の禁止)                                                         | 補足 (skeleton に design token / font / shared stylesheet の正本責務を具体化)                                                             |
 | feature doc | [corporate-site](../../design/features/corporate-site/DesignDoc_corporate-site.md) → 新節「デザイントークン対応表」   | 変更提案 (spec #17 から引き継ぎ: `.pen` 変数 ↔ CSS 変数の 1:1 対応表を追加)                                                               |
 | context     | [design-workflow.md](../../context/design-workflow.md) §1 大原則 / §3 Phase B / §4 正本 path / §5 / §6 トークンガード | 継承 + 変更提案 (一方向原則は維持。D5 / D4 により `globals.css` 参照箇所の全数更新と §6 fork 判定の更新が必要 — 「context への影響」参照) |
@@ -48,12 +48,12 @@
 | ADR-0006    | [corporate-site-three-route-ia](../../adr/0006-corporate-site-three-route-ia.md)                                      | 継承 (3 route IA / `index.pen` デザイン正本を前提とする)                                                                                  |
 | ADR-0007    | [design-token-architecture](../../adr/0007-design-token-architecture.md) (本 spec から起票)                           | 反映済 (D1 / D2 / D5 の決定を ADR 化。2026-06-13 起票)                                                                                    |
 
-> 矛盾を検出した場合は `spec-sync` で PRD / Design Doc / feature doc / context / ADR への back-propagation を提案する。
+> 矛盾を検出した場合は `spec-sync` で Design Doc Why / What / Design Doc landscape / feature doc / context / ADR への back-propagation を提案する。
 > 正本ハンドオフは 2026-06-13 の `spec-sync` で完了。durable 成果の正本は feature doc (対応表 / ブランド指針)・architecture.md (昇格境界)・design-workflow.md (正本 path / ガード)・ADR-0007 (体系の決定) に移り、本 spec の該当節は決定時スナップショットである。
 
 ## 関連資料
 
-- `PRD.md`: プロダクト原則 / Phase 1 スコープ / コーポレートサイト要求
+- `design/DesignDoc.md` `## Why / What`: プロダクト原則 / Phase 1 スコープ / コーポレートサイト要求
 - `design/DesignDoc.md`: モジュール責務 (`packages/ui`) / Non Goals
 - 関連 issue / ticket:
   - [#13](https://github.com/Fukuemon/kufu-apps/issues/13) (本 issue) — Refs #3 / #11 / #6、Blocks #10
@@ -70,7 +70,7 @@
   - 現行 Pencil variables のトークン名 (`paper` / `ink` / `card-overlay` / `photo-tone` 等) は比喩的で意図が読み取りにくく、`globals.css` 側も `--kufu-color-*` 独自系と shadcn semantic 系 (`--primary` 等) が未整理に併存している。命名体系を再設計し、`.pen` ↔ CSS の対応を一意にする。
   - #10 (corporate-site 本体実装) と #6 (Storybook) の前提として、トークン・配色・タイポを先に確定しないと実装が場当たり的になり、Decision Priority「一貫性」を担保できない。
 - Phase 1 のどの完成条件に関わるか
-  - 「`packages/ui` の skeleton が将来拡張の入口として配置され、Phase 2 の実装対象と区別されている」(PRD Phase 1 完成条件) — skeleton に design token 正本の責務を確立する。
+  - 「`packages/ui` の skeleton が将来拡張の入口として配置され、Phase 2 の実装対象と区別されている」(Design Doc Why / What の Phase 1 完成条件) — skeleton に design token 正本の責務を確立する。
 - コーポレートサイト / 業務アプリ / 共通 package のどれに影響するか
   - 直接の実装対象は `packages/ui` (トークン正本)。consumer として `apps/corporate-site` (#10 で consume)、将来の `apps/cms` にも影響する。
 
@@ -91,7 +91,7 @@
 
 - corporate-site 本体のページ実装 (#10 のスコープ)
 - Storybook の整備 (#6 のスコープ)
-- `packages/ui` への shadcn/ui コンポーネント本格追加 (複数 consumer が出た時点で判断。PRD「汎用 UI ライブラリの過剰な整備」スコープアウト)
+- `packages/ui` への shadcn/ui コンポーネント本格追加 (複数 consumer が出た時点で判断。Design Doc Why / What「汎用 UI ライブラリの過剰な整備」スコープアウト)
 - ダークモード (`.dark` テーマ) の本格対応 (現サイトはダーク面 section を持つがテーマ切替はない。トークン設計上の扱いのみ決める)
 - IA / ページ構成の変更 (#17 で確定済み。ADR-0006)
 
@@ -159,6 +159,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 - **D4 spacing / radius / shadow / breakpoint (2026-06-12 決定): b) 実績ベースの最小定義**
   - **spacing**: 独自トークンを新設しない。4px グリッド + 推奨リズム 6 段 (12/16/24/32/48/80 = Tailwind `3/4/6/8/12/20`) をガイドとして文書化する。`.pen` の `space-*` 変数は Tailwind 標準スケールに写像できるため 1:1 トークンは不要 (Pencil 側は variables として維持してよいが、CSS 側に対応トークンは作らない)
   - **radius**: shadcn の `--radius` (基準値 + 派生スケール) に一本化し、`--kufu-radius-sm/md/lg` は削除する。基準値は `.pen` 実測で確定済み: 全要素で cornerRadius 未使用 (直角デザイン) のため `--radius: 0rem` を基準値とする (角丸が必要になったら #10 以降で再評価)
+  - **2026-07-15 追記**: 本項は 2026-06-12 時点の決定スナップショット。#6 の `.pen` 更新と #10 の実装実績を受け、現在の基準値は4pxへ改訂した。現行正本は `tokens.css` / ADR-0007 / corporate-site feature docを参照する
   - **shadow / breakpoint**: Tailwind 標準を既定とし、独自トークンは作らない。コンテナ幅 1440px / 横 padding 56 は feature doc 確定済み (#17 D6) のレイアウト規約であり、トークン化しない。実需が出たら #10 以降で昇格する
 - **D5 参照経路 (2026-06-12 決定): b) トークン部分を分離した 3 entry 構成**
   - `@kufu/ui/tokens.css` (新設): primitive + semantic CSS 変数のみ。フレームワーク非依存
@@ -178,7 +179,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - 従来の colocation 第一原則 (architecture.md) は変えず、デザインシステム資産 (トークン / フォント / stylesheet) を例外として明示する位置づけ
 
 - **D7 ブランド指針の置き場と ADR (2026-06-12 決定): a) feature doc + ADR 起票**
-  - トーン & マナー / ブランド表現指針は `DesignDoc_corporate-site.md` に新節として文書化する (現時点の consumer は corporate-site のみ。PRD「共通化は利用実績に基づく」に従い、cms 等の consumer が増えた時点で platform 級の置き場へ昇格する)
+  - トーン & マナー / ブランド表現指針は `DesignDoc_corporate-site.md` に新節として文書化する (現時点の consumer は corporate-site のみ。Design Doc Why / What「共通化は利用実績に基づく」に従い、cms 等の consumer が増えた時点で platform 級の置き場へ昇格する)
   - トークン命名体系・正本構造の決定 (D1 2 層構造 / D2 shadcn 上書き + inverse スコープ / D5 3 entry 配信) は `adr/0007-design-token-architecture.md` として新規起票する (`spec-sync` で実施)
   - 指針には D3 で決めた見出し階層と type scale の対応ガイド (serif = 見出し / sans = 本文 等) を含める
 
@@ -404,9 +405,9 @@ sequenceDiagram
 
 ## 上位資料からの変更点
 
-本 spec で PRD / Design Doc / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。
+本 spec で Design Doc Why / What / landscape / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。`spec-track` / `spec-sync` で更新する。
 
-### PRD への影響
+### Design Doc Why / What への影響
 
 | 対象節 | 変更内容 | 理由 |
 | ------ | -------- | ---- |
@@ -473,6 +474,7 @@ sequenceDiagram
 | 2026-06-13 | Claude | ユーザー指摘で feature doc を「値の対応表」から「参照ハブ」へ変更 (値の正本は tokens.css に一意化、doc には複製しない)。spacing / radius / type scale の doc 管理ガイドのみ feature doc に残す                                       |
 | 2026-06-13 | Claude | `spec-prompts` 実行: P1 実装プロンプト 2 件 (P1_01_ui / P1_02_corporate-site) を生成。P2 は Pencil MCP 作業、P3 は sync 済のため対象外                                                                                               |
 | 2026-06-13 | Codex  | prompts 生成後の最終レビューを実施し PASS を記録。spec ステータスを `Completed`、レビュー済フェーズを `レビュー済` に更新                                                                                                            |
+| 2026-07-15 | Codex  | #6 の `.pen` 更新と #10 の実装実績に合わせ、radius 基準値を4pxへ改訂。durable な正本は `tokens.css` / ADR-0007 / corporate-site feature docへ同期し、本specのD4は決定時スナップショットとして維持                                    |
 
 ## 備考
 

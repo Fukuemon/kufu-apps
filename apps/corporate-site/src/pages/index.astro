@@ -1,21 +1,20 @@
 ---
-import '../styles/globals.css';
-const pageTitle = 'Kufu Corporate Site';
+import BaseLayout from "../components/common/BaseLayout.astro";
+import BusinessSection from "../components/features/business/BusinessSection.astro";
+import CompanySection from "../components/features/company/CompanySection.astro";
+import ConsultationSection from "../components/features/consultation/ConsultationSection.astro";
+import Hero from "../components/features/hero/Hero.astro";
+import ProductsCategorySection from "../components/features/products/ProductsCategorySection.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle}</title>
-	</head>
-	<body>
-		<main>
-			<h1>{pageTitle}</h1>
-			<p>Astro skeleton for the Kufu marketing site.</p>
-		</main>
-	</body>
-</html>
+<BaseLayout
+  title="有限会社フクウラ"
+  description="有限会社フクウラは、機械工具・省力化機器・伝動機器・各種加工の相談に対応します。"
+  footerVariant="full"
+>
+  <Hero />
+  <ConsultationSection />
+  <BusinessSection />
+  <ProductsCategorySection />
+  <CompanySection />
+</BaseLayout>

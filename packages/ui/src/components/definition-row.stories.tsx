@@ -35,3 +35,16 @@ export const MultipleRows: Story = {
     </>
   ),
 };
+
+export const Compact: Story = {
+  render: () => (
+    <>
+      <DefinitionRow layout="compact" term="Status">
+        Ready
+      </DefinitionRow>
+      <DefinitionRow layout="compact" term="Owner">
+        Shared UI
+      </DefinitionRow>
+    </>
+  ),
+};

@@ -18,7 +18,7 @@ const {
 } = Astro.props;
 const HeadingTag = `h${level}` as const;
 const rootClass = [
-  "grid gap-4.5 w-[min(100%,47.5rem)] text-foreground",
+  "grid gap-4.5 w-[min(100%,53.75rem)] text-foreground",
   align === "center" ? "justify-items-center mx-auto text-center" : "",
 ].join(" ");
 ---
@@ -41,13 +41,13 @@ const rootClass = [
     ) : null
   }
   <HeadingTag
-    class="font-serif text-[clamp(2rem,6vw,2.625rem)] font-semibold leading-[1.45]"
+    class="font-serif text-[clamp(2rem,5vw,2.625rem)] font-semibold leading-[1.45]"
   >
     {title}
   </HeadingTag>
   {
     description ? (
-      <p class="max-w-155 text-[0.9375rem] leading-[1.75] text-muted-foreground">
+      <p class="max-w-180 whitespace-pre-line text-[0.9375rem] leading-[1.75] text-muted-foreground">
         {description}
       </p>
     ) : null

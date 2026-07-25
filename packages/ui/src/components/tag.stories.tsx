@@ -25,3 +25,14 @@ export const Variants: Story = {
     </div>
   ),
 };
+
+export const Compact: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Tag size="sm">必須</Tag>
+      <Tag size="sm" variant="secondary">
+        任意
+      </Tag>
+    </div>
+  ),
+};

@@ -22,7 +22,7 @@
 
 ## Related PRD
 
-- [PRD.md](../../PRD.md)
+- [project profile の Source of Truth](../../context/project.md#source-of-truth-正本ドキュメントのパス契約) で定義された PRD。統合モードでは本 doc の Why / What 節
 
 ## Why / What
 

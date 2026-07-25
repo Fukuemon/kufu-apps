@@ -60,7 +60,7 @@
   --ghost-foreground: color-mix(in srgb, var(--kufu-gray-900) 5%, transparent);
 
   /* radius */
-  --radius: 0rem;
+  --radius: 0.25rem;
 
   /* reserved shadcn tokens */
   --accent: oklch(0.97 0 0);
