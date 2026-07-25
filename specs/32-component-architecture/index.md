@@ -17,19 +17,19 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                             |
-| --- | --------------------------- | ---------- | ---------- | ---------------------------------------------------------------- |
-| 1   | 起票                        | 完了       | 2026-07-25 | issue #32 (spec-requirement で起票、要求論点 7 件解決済み)       |
-| 2   | 下書き                      | 完了       | 2026-07-25 | scaffold で index.md 初版生成。実装突合: 対象 (既存実装への増分) |
-| 3   | 上位文書突合                | 完了       | 2026-07-25 | 変更提案あり (component-design.md ほか)。sync でハンドオフ予定   |
-| 4   | 論点整理                    | レビュー済 | 2026-07-25 | D1〜D11 抽出 + 実装突合ゲート 4 件 (clarify 冒頭 + Rv 指摘①)     |
-| 5   | 論点解決                    | レビュー済 | 2026-07-25 | D1〜D11 + 突合①〜④ 全件解決。spec-review PASS (指摘 2 件対応済)  |
-| 6   | Interface / Routing 設計    | 未着手     |            | 本 spec では「規約 (ディレクトリ / 公開面) の設計」として扱う    |
-| 7   | Content / Data 設計         | 未着手     |            | ハードコード基準 (content collections / data / 定数化) を扱う    |
-| 8   | Performance / Security 設計 | 未着手     |            | CSS payload / island 方針への影響確認                            |
-| 9   | Test / Metrics 設計         | 未着手     |            | depcruise / knip による規約の機械検査設計                        |
-| 10  | 実装分割                    | 未着手     |            | 実施 issue への移行手順 (段階的移動 / depcruise 検証) を含む     |
-| 11  | レビュー済                  | 未着手     |            |                                                                  |
+| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                               |
+| --- | --------------------------- | ---------- | ---------- | ------------------------------------------------------------------ |
+| 1   | 起票                        | 完了       | 2026-07-25 | issue #32 (spec-requirement で起票、要求論点 7 件解決済み)         |
+| 2   | 下書き                      | 完了       | 2026-07-25 | scaffold で index.md 初版生成。実装突合: 対象 (既存実装への増分)   |
+| 3   | 上位文書突合                | 完了       | 2026-07-25 | 変更提案あり (component-design.md ほか)。sync でハンドオフ予定     |
+| 4   | 論点整理                    | レビュー済 | 2026-07-25 | D1〜D11 抽出 + 実装突合ゲート 4 件 (clarify 冒頭 + Rv 指摘①)       |
+| 5   | 論点解決                    | レビュー済 | 2026-07-25 | D1〜D11 + 突合①〜④ 全件解決。spec-review PASS (指摘 2 件対応済)    |
+| 6   | Interface / Routing 設計    | 完了       | 2026-07-25 | 規約 (ディレクトリ / 公開面) 設計は D8〜D10 で確定、diagram で図化 |
+| 7   | Content / Data 設計         | 完了       | 2026-07-25 | ハードコード基準は D7 で確定 (機能仕様 Content/Assets に反映)      |
+| 8   | Performance / Security 設計 | 完了       | 2026-07-25 | CSS payload / island 方針は現状維持を確認 (D4〜D6 / styles 構成図) |
+| 9   | Test / Metrics 設計         | 完了       | 2026-07-25 | depcruise 境界ルール案は D10 で確定 (実装は実施 issue)             |
+| 10  | 実装分割                    | 未着手     |            | 実施 issue への移行手順 (段階的移動 / depcruise 検証) を含む       |
+| 11  | レビュー済                  | 未着手     |            |                                                                    |
 
 ## 上位文書整合
 
@@ -311,18 +311,100 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 ## フロー / シーケンス
 
-(diagram phase で生成。sections 再編の移行先マップ / globals.css entry 構成図を予定)
+本 issue はランタイム挙動を変えない文書設計 issue のため、ユーザー (開発者 / AI エージェント) 操作起点の判断フローと、決定した構造の対応図を描く。runtime の sequence diagram は対象なし。
 
 ### Flowchart (ユーザー操作起点)
 
+開発者 / AI エージェントが component を追加・変更するときの置き場判断フロー (D4 / D7 / D8〜D10 の決定を反映):
+
 ```mermaid
 flowchart TD
+    Start["component を追加・変更する"] --> Q1{"複数 app / feature で\n再利用が明確?"}
+    Q1 -->|"はい"| UI["packages/ui に置く\n(shadcn source ownership / ADR-0010)"]
+    Q1 -->|"いいえ"| Q2{"複数 route で共有する?"}
+    Q2 -->|"はい"| Common["components/common/ に置く"]
+    Q2 -->|"いいえ"| Section["sections/&lt;route&gt;/&lt;section&gt;/ に置く\n公開は index.ts 再輸出のみ (D9/D10)"]
+    Section --> Q3{"視覚 variant /\n状態分岐を持つ?"}
+    Q3 -->|"はい"| Cva["cva で variants を定義 (D4)"]
+    Q3 -->|"いいえ"| Utility["Tailwind utility 直書き (D4)"]
+    Cva --> Q4{"文言・リスト・繰り返し値がある?"}
+    Utility --> Q4
+    Q4 -->|"文言・リスト"| Content["content 層へ (plain ts / Collections) (D7)"]
+    Q4 -->|"繰り返し値"| Const["定数化 (content 層 or section 内 constants) (D7)"]
+    Q4 -->|"機能的文言のみ"| Inline["直書き許容 (aria-label / alt 等) (D7)"]
+    Content --> Story["story 追加: title はディレクトリと 1:1\nvariant 全列挙 + edge 必須 (D1/D2)"]
+    Const --> Story
+    Inline --> Story
+    Story --> Check["pnpm knip && pnpm depcruise で境界検査 (D10)"]
 ```
 
 ### Sequence
 
+runtime のシステム間相互作用に変更がないため対象なし (問い合わせフォーム等の既存 sequence は [#14 の feature doc 反映分](../../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様) を正本とする)。
+
+### 移行先マップ (D8 / D9 の component 単位詳細)
+
 ```mermaid
-sequenceDiagram
+flowchart LR
+    subgraph Before["現行 components/features/"]
+        hero["hero/ Hero"]
+        business["business/ BusinessSection + BusinessFeatureRow"]
+        services["services/ ServicePillar"]
+        company["company/ CompanySection"]
+        consultation["consultation/ ConsultationSection"]
+        products["products/ 7 component (14 files)"]
+        contact["contact/ ContactSection + ContactInfoRow"]
+    end
+    subgraph After["再編後 components/sections/"]
+        home_hero["home/hero/"]
+        home_business["home/business/"]
+        home_services["home/services/"]
+        home_company["home/company/"]
+        home_consultation["home/consultation/"]
+        p_hero["products/hero/ ProductsHero"]
+        p_category["products/category/ ProductsCategorySection +\nFeaturedCategoryCard + FeaturedCategoryCarousel +\nProductsCategoryAccordionList"]
+        p_detail["products/detail/ ProductsDetailSection +\nProductsSidebarNav"]
+        c_contact["contact/contact/ ContactSection + ContactInfoRow"]
+    end
+    hero --> home_hero
+    business --> home_business
+    services --> home_services
+    company --> home_company
+    consultation --> home_consultation
+    products --> p_hero
+    products --> p_category
+    products --> p_detail
+    contact --> c_contact
+```
+
+- `components/common/` (BaseLayout / SiteHeader / SiteFooter / SectionHeading / ContactCtaLink) は現行のまま移動なし
+- 各 section dir に `index.ts` を新設し、Section component (hero は `Hero`) のみ再輸出する (D9)
+
+### styles entry 構成 (D5 / D6 / 突合④)
+
+```mermaid
+flowchart TD
+    subgraph UIPkg["packages/ui (@kufu/ui)"]
+        tokens["tokens.css\nCSS 変数の実体 + motion トークン (D5)"]
+        theme["theme.css\n@theme inline 写像 + @source './src/components' (突合④)"]
+        fonts["fonts.css\nfont-face"]
+        styles["styles.css (React app 全量 entry)"]
+    end
+    subgraph App["apps/corporate-site/src/styles/"]
+        globals["globals.css\nentry: @import のみ"]
+        base["base.css\n@layer base (:root / document-level)"]
+        components["components.css\n@layer components (移行受け皿 → 削減目標)"]
+        animations["animations.css\n@keyframes (site 固有演出)"]
+        utilities["utilities.css\n@utility 拡張"]
+    end
+    globals --> tokens
+    globals --> theme
+    globals --> base
+    globals --> components
+    globals --> animations
+    globals --> utilities
+    styles --> theme
+    BaseLayout["common/BaseLayout.astro"] -->|"?url preload (突合③)"| fonts
 ```
 
 ## 実装分割
@@ -395,6 +477,7 @@ sequenceDiagram
 | 2026-07-25 | spec-lifecycle | scaffold で index.md 初版生成。設計論点 D1〜D11 を初期抽出                                    |
 | 2026-07-25 | spec-lifecycle | clarify: 実装突合ゲート 3 件を決着、D1〜D11 全件をユーザー対話で解決                          |
 | 2026-07-25 | spec-lifecycle | レビュー指摘対応: 突合④ (@source を theme.css へ移動) を追加決定、ADR 起票要否の stale を修正 |
+| 2026-07-25 | spec-lifecycle | diagram: 置き場判断フロー / 移行先マップ (component 単位) / styles entry 構成を図化           |
 
 ## 備考
 
