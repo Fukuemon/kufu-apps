@@ -37,3 +37,13 @@ Verdict: PASS
 - prompts 自己完結性 / 正本境界: N/A (prompts 未生成 / sync 未実行段階)。
 
 参考指摘 (non-blocking): D6 の「4 ファイル + 移行受け皿」の数え方が一読で曖昧 (entry 含め実質 5 ファイル)。sync で component-design.md へ反映する際に表記を確定する。
+
+## Review 2026-07-25 (track gate / diagram + track 累積)
+
+Verdict: PASS
+
+- 全観点 PASS (prompts / 正本境界は N/A)。図 3 点は実装・決定内容 (D1〜D11 / 突合①〜④) と突合済みで矛盾なし。変更点テーブルに反映漏れ・二重追記なし。
+- 非 blocking 参考指摘:
+  1. 未確定事項の「突合ゲート 3 件」が stale (4 件) → **修正済**
+  2. Flowchart で common 配置の component が cva 判定 / story 追加へ流れない → sync 反映時に図の経路を補完
+  3. 突合③ (fonts `?url`) が ADR-0007「更新」節に未記録 → sync で ADR-0007 更新に含めるか検討
