@@ -79,7 +79,7 @@
   - `apps/corporate-site/src/`
   - `apps/corporate-site/package.json`
   - `package.json`
-  - `context/project.md`
+  - `context/project.yml`
 
 ## 前提条件
 

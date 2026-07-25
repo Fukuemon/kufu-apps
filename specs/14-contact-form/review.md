@@ -9,7 +9,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 - 上位文書整合: PASS — `## 上位文書整合` (index.md:42-51) が Design Doc Why / What / Design Doc landscape / feature doc / context / ADR-0008 / ADR-0009 と整合。Design Doc Why / What の連絡導線 / Phase1 スコープ、Design Doc landscape のモジュール責務、architecture.md の Runtime Boundary、infrastructure.md の Workers 依存・Security と矛盾なし。既存 ADR を覆さず ADR-0009 を新規ハンドオフ。
 - 未解決論点: PASS — D1〜D7 すべて「確定」(index.md:125-131)、`## 未確定事項` は「なし」(index.md:149)。下流 (Flowchart / Sequence / API / testid) は確定論点のみ参照。
-- 実装対象明示: PASS — target が project.md の対象ドメイン (project.md:58) と一致 (index.md:155-162)、責務境界が読め、ui は `@kufu/ui` 公開入口経由で越境なし (index.md:176,199 / architecture.md:22-23)。
+- 実装対象明示: PASS — target が project.yml の対象ドメイン (project.yml:58) と一致 (index.md:155-162)、責務境界が読め、ui は `@kufu/ui` 公開入口経由で越境なし (index.md:176,199 / architecture.md:22-23)。
 - template 必須節: PASS — template.md の全必須節が存在 (メタ情報〜備考、欠落なし)。
 - EARS acceptance: PASS — `## 要件の解釈` に WHEN/IF/WHERE/THE SYSTEM SHALL を複数 (index.md:112-117)、data-testid 一覧 (index.md:402-414) / Error ケース表 (index.md:265-269) で観測可能。
 - prompts 自己完結性: N/A — `prompts/` 未生成 (実装分割 未着手, index.md:31)。
@@ -88,7 +88,7 @@ Reviewer: spec-review (fresh-context, subagent=Plan)
 
 - 上位文書整合: PASS — Design Doc Why / What (性能原則 / Phase1 完成条件) / architecture (Runtime Boundary / secret) / feature doc (P6 双方向) / ADR-0009 と整合。
 - 未解決論点: PASS — D1〜D13 全件「確定」、未確定事項なし。下流 (図 / API / testid) は確定決定に基づく。
-- 実装対象明示: PASS — target が project.md と一致、越境なし。
+- 実装対象明示: PASS — target が project.yml と一致、越境なし。
 - template 必須節: PASS — 欠落なし。
 - EARS acceptance: PASS — EARS 6 件が testid / E2E fixture で観測可能。
 - prompts 自己完結性: N/A — prompts 未生成。

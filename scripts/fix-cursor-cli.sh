@@ -15,36 +15,15 @@ CLI_JSON="$ROOT/.cursor/cli.json"
 
 [ -f "$CLI_JSON" ] || { echo "no $CLI_JSON; skip"; exit 0; }
 
-python3 - "$CLI_JSON" <<'PY'
-import json
-import os
-import sys
-import tempfile
+tmp="$(mktemp)"
+# - drop unrecognized top-level keys (version, editor)
+# - guarantee permissions.deny is an array (cursor-agent requires it)
+jq '
+  del(.version, .editor)
+  | .permissions = (.permissions // {})
+  | .permissions.allow = (.permissions.allow // [])
+  | .permissions.deny  = (.permissions.deny  // [])
+' "$CLI_JSON" > "$tmp"
 
-cli_json = sys.argv[1]
-with open(cli_json, "r", encoding="utf-8") as f:
-    data = json.load(f)
-
-data.pop("version", None)
-data.pop("editor", None)
-
-permissions = data.get("permissions")
-if not isinstance(permissions, dict):
-    permissions = {}
-
-allow = permissions.get("allow")
-deny = permissions.get("deny")
-permissions["allow"] = allow if isinstance(allow, list) else []
-permissions["deny"] = deny if isinstance(deny, list) else []
-data["permissions"] = permissions
-
-fd, tmp_path = tempfile.mkstemp(prefix="cursor-cli-", suffix=".json", dir=os.path.dirname(cli_json))
-os.close(fd)
-with open(tmp_path, "w", encoding="utf-8") as f:
-    json.dump(data, f, ensure_ascii=False, indent=2)
-    f.write("\n")
-
-os.replace(tmp_path, cli_json)
-PY
-
+mv "$tmp" "$CLI_JSON"
 echo "normalized $CLI_JSON for cursor-agent"
