@@ -1,10 +1,12 @@
 # Design Production Workflow
 
-> 最終更新: 2026-06-13
+> 最終更新: 2026-07-25
+>
+> **⚠️ 改訂予定 (2026-07-25, #31)**: [ADR-0012](../adr/0012-design-source-of-truth-implementation.md) により **デザイン正本は実装 (コード + Storybook) に変更、Pencil / `.pen` 工程 (phase B) は廃止** が確定した (ADR-0004 は置換)。本書の `.pen` 正本前提の記述 (§1 正本 / §2 フロー / §4 配置規約ほか) は別 issue で全面改訂するまで旧運用の記録として読むこと。
 
 デザイン制作（方向性 → UI 確定 → 実装）の **プラットフォーム共通ワークフロー** を定める横断契約。
 
-- ツール選定の意思決定根拠 → [ADR-0004](../adr/0004-design-production-workflow.md)
+- ツール選定の意思決定根拠 → [ADR-0012](../adr/0012-design-source-of-truth-implementation.md)（旧: [ADR-0004](../adr/0004-design-production-workflow.md)、置換済み）
 - デザインシステムの _中身_（トークン）の正本 → `packages/ui/src/styles/tokens.css`（体系は [ADR-0007](../adr/0007-design-token-architecture.md)、参照ハブと doc 管理ガイドは [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md)。決定経緯: [#13](https://github.com/Fukuemon/kufu-apps/issues/13)）
 - 本書は _どう作るか_（プロセス・ディレクトリ・拡張方針）の運用正本。
 
