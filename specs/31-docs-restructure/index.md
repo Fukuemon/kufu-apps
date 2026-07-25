@@ -25,8 +25,8 @@
 | 4   | 論点整理                    | 完了       | 2026-07-25 | D1〜D6 を抽出                                                              |
 | 5   | 論点解決                    | レビュー済 | 2026-07-25 | D1〜D6 全件解決。未決定ゼロ (D6: Future Work 一元化 + C4 L1/L2 内容再設計) |
 | 6   | Interface / Routing 設計    | 完了       | 2026-07-25 | 対象外で確定 (文書運用 issue のため。clarify 全件解決時に判定)             |
-| 7   | Content / Data 設計         | 未着手     |            | 文書構成 (どの文書に何を置くか) の設計として扱う                           |
-| 8   | Performance / Security 設計 | 未着手     |            | 対象外 (文書運用 issue のため)                                             |
+| 7   | Content / Data 設計         | 完了       | 2026-07-25 | 文書構成は D1/D3/D6 で確定。diagram で清算フロー・検査・C4 再設計案を図化  |
+| 8   | Performance / Security 設計 | 完了       | 2026-07-25 | 対象外で確定 (文書運用 issue のため)                                       |
 | 9   | Test / Metrics 設計         | 未着手     |            | 受け入れ基準 (EARS) の検証方法として扱う                                   |
 | 10  | 実装分割                    | 未着手     |            | `prompts` phase で生成                                                     |
 | 11  | レビュー済                  | 未着手     |            |                                                                            |
@@ -234,18 +234,71 @@ EARS 風受け入れ基準 (requirements.md より):
 
 ## フロー / シーケンス
 
-(phase: diagram で生成。文書の正本境界と情報フローを Mermaid 図に落とす)
+### Flowchart (ユーザー操作起点): specs 清算 / closeout フロー
 
-### Flowchart (ユーザー操作起点)
+残存 9 dir の一括清算と、今後の issue close 時の closeout 運用は同じフローに乗る (D1 / D3)。
 
 ```mermaid
 flowchart TD
+    Start["開発者 / AI エージェント: 清算開始 (issue close 前 or 一括清算)"] --> Pick["対象 spec dir を選ぶ"]
+    Pick --> Check{"durable 成果は design / context / ADR に sync 済みか"}
+    Check -->|"未 sync"| Sync["sync 実行 (design 側へ正本ハンドオフ)"]
+    Sync --> Check
+    Check -->|"sync 済み"| Delete["spec dir を削除して commit"]
+    Delete --> More{"残りの対象 dir はあるか"}
+    More -->|"あり"| Pick
+    More -->|"なし"| Verify["検査スクリプト実行"]
+    Verify -->|"残存なし"| Done["完了 (issue close 可)"]
+    Verify -->|"残存あり"| Pick
 ```
 
-### Sequence
+- IF 基準 (EARS): 清算手順が文書化される前に Delete へ進むことは禁止 (D3)
+- 一括清算では 9 dir を順に Pick する。今後の closeout では close 対象 issue の 1 dir のみ
+
+### Sequence: 検査スクリプト (closed issue × specs/ 照合)
 
 ```mermaid
 sequenceDiagram
+    actor Dev as 開発者 / AI エージェント
+    participant Script as 検査スクリプト
+    participant FS as specs/
+    participant GH as GitHub
+
+    Dev->>Script: 実行 (手動。将来は CI [#12] へ常設化)
+    Script->>FS: spec ディレクトリ一覧を取得 (issue-id を抽出)
+    Script->>GH: 各 issue の state を照会 (gh CLI)
+    GH-->>Script: OPEN / CLOSED
+    alt CLOSED issue の spec dir が残存
+        Script-->>Dev: 違反一覧を出力し失敗 (exit 1)
+        Dev->>Dev: 清算フロー (上図) へ
+    else 残存なし
+        Script-->>Dev: OK (exit 0)
+    end
+```
+
+### C4 再設計案 (D6。DesignDoc への反映は sync / 別 issue)
+
+L1 (System Context) — 利用者視点に絞る。開発者 / GitHub / docs workflow は載せない:
+
+```mermaid
+flowchart LR
+    Visitor["訪問者 (調達 / 保全 / 購買担当者・見込み顧客)"] -->|"閲覧・問い合わせ"| Site["Kufu コーポレートサイト"]
+    Operator["内容更新者"] -->|"掲載内容の更新・確認"| Site
+    Site -->|"配信"| CF["Cloudflare Pages / CDN"]
+    Site -->|"問い合わせ通知"| Resend["Resend (メール送信)"]
+```
+
+L2 (Container) — 実在の実行単位とデータの流れのみ。未実装 `apps/cms` と正本ドキュメント群は載せない:
+
+```mermaid
+flowchart TD
+    Visitor["訪問者"] --> Corp["apps/corporate-site (Astro 静的生成)"]
+    Corp --> CF["Cloudflare Pages / CDN (配信)"]
+    Corp --> Fn["Pages Functions /api/contact (ADR-0009)"]
+    Fn --> Resend["Resend (問い合わせメール通知)"]
+    UI["packages/ui (デザイントークン / 共有 UI)"] --> Corp
+    Config["packages/config (共有設定)"] --> Corp
+    E2E["e2e + playwright.config.ts (公開前検証)"] --> Corp
 ```
 
 ## 実装分割
@@ -319,6 +372,7 @@ sequenceDiagram
 | 2026-07-25 | spec-lifecycle (clarify) | D5 解決: 新 ADR で 0004 を supersede、フローは Claude Design → 実装直結 (正本 = コード + Storybook)            |
 | 2026-07-25 | spec-lifecycle (clarify) | D6 解決: 将来計画は Future Work 節へ一元化、C4 は L1/L2 維持で内容再設計 (要求決定 #4 を更新)。全論点解決      |
 | 2026-07-25 | spec-review 対応         | gate レビュー指摘 3 件対応: feature doc 整合行 (D5 起因) を 2 テーブルへ追記、Content/Data の placeholder 是正 |
+| 2026-07-25 | spec-lifecycle (diagram) | 清算 / closeout フロー図・検査スクリプトシーケンス・C4 L1/L2 再設計案 (D6) を生成                              |
 
 ## 備考
 
