@@ -17,7 +17,7 @@ pnpm install
 
 ## Commands
 
-正本は [context/project.md](context/project.md) の Quick Commands。主要コマンドのみ抜粋:
+正本は [context/project.yml](context/project.yml) の Quick Commands。主要コマンドのみ抜粋:
 
 | コマンド                       | 内容                     |
 | ------------------------------ | ------------------------ |

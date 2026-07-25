@@ -54,7 +54,7 @@ corporate-site の問い合わせ送信を **Cloudflare Pages Functions (Workers
 
 ### 影響範囲
 
-<!-- 対象モジュールは context/project.md の対象ドメインから選ぶ。固有名を直書きしない。 -->
+<!-- 対象モジュールは context/project.yml の対象ドメインから選ぶ。固有名を直書きしない。 -->
 
 - 対象モジュール / package: `corporate-site` (フォーム island + `/api/contact` Functions), `e2e` (問い合わせ導線の検証)
 - infra: Cloudflare Pages の Functions 併用 / 必要 secret / SPF・DKIM ([infrastructure.md](../context/infrastructure.md) Infrastructure Contract 経由で `kufu-infra` へ)

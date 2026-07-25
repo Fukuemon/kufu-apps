@@ -228,7 +228,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 ## 実装対象
 
-正規 target は `context/project.md` の対象ドメイン一覧を正本とする。
+正規 target は `context/project.yml` の対象ドメイン一覧を正本とする。
 
 | モジュール       | 実装有無 | 主な責務                                                            |
 | ---------------- | :------: | ------------------------------------------------------------------- |
@@ -338,7 +338,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 ## Interface 設計
 
-> 決定時スナップショット。script / quality gate の正本は [context/project.md](../../context/project.md) と [context/engineering.md](../../context/engineering.md)、component 設計の正本は [context/component-design.md](../../context/component-design.md) とする。
+> 決定時スナップショット。script / quality gate の正本は [context/project.yml](../../context/project.yml) と [context/engineering.md](../../context/engineering.md)、component 設計の正本は [context/component-design.md](../../context/component-design.md) とする。
 
 ### UI / API / Event Interface
 
@@ -440,7 +440,7 @@ apps/corporate-site/src/
 
 ## Content / Data 設計
 
-> 決定時スナップショット。component 配置・Storybook 対象の正本は [context/component-design.md](../../context/component-design.md)、root command の正本は [context/project.md](../../context/project.md) とする。
+> 決定時スナップショット。component 配置・Storybook 対象の正本は [context/component-design.md](../../context/component-design.md)、root command の正本は [context/project.yml](../../context/project.yml) とする。
 
 ### 保存・管理するデータ
 
@@ -629,7 +629,7 @@ sequenceDiagram
 | `context/engineering.md` / Repository Quality Gate                     | 反映済: Storybook build を dedicated CI quality gate として扱う方針を追加 <!-- source: spec-resolve D6 -->                                                                                                                                      | Storybook を production build に混ぜず、PR で catalog 破損を検出するため                |
 | `context/toolchain.md` / 標準スタック                                  | 反映済: UI catalog の備考に `packages/ui` と app-local Storybook の入口を明記 <!-- source: spec-resolve D8 -->                                                                                                                                  | app-local Storybook も Storybook Astro framework で扱うため                             |
 | `packages/ui/README.md`                                                | 反映済: `packages/ui` Storybook の起動方法・story 追加手順・review checklist へのリンクを追加 <!-- source: spec-resolve D5 -->                                                                                                                  | `packages/ui` を触る開発者が手順へ到達しやすくするため                                  |
-| `context/project.md` / Quick Commands                                  | 反映済: `pnpm storybook:ui` / `pnpm storybook:corporate` / `pnpm storybook:build` を追加 <!-- source: spec-resolve D1 / D3 / D6 -->                                                                                                             | root から Storybook に辿れる導線を正本化するため                                        |
+| `context/project.yml` / Quick Commands                                 | 反映済: `pnpm storybook:ui` / `pnpm storybook:corporate` / `pnpm storybook:build` を追加 <!-- source: spec-resolve D1 / D3 / D6 -->                                                                                                             | root から Storybook に辿れる導線を正本化するため                                        |
 | `context/architecture.md` / デザインシステム資産の正本と昇格境界       | 反映済: issue #6 では GenericComponents 相当を初期 shared component として扱う <!-- source: spec-resolve D2 -->                                                                                                                                 | Storybook catalog と `packages/ui` の初期 shared component 範囲を明確にするため         |
 | `context/architecture.md` / Package Boundary                           | 反映済: 詳細な component 設計は `context/component-design.md` に委譲する方針を追加 <!-- source: spec-resolve D3 / D4 / D7 -->                                                                                                                   | architecture.md に詳細を抱え込まず、境界規約と component 設計規約を分けるため           |
 | `context/component-design.md` / 新規                                   | 反映済: BCD Design 基準の命名、content 層 → section assembly → presentation の責務分割、domain feature 配置、Storybook 対象の横断規約を追加 <!-- source: spec-resolve D7 -->                                                                    | component 設計 (ディレクトリ構成・命名規則・責務) を横断 context として長期参照するため |

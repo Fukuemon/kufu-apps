@@ -18,7 +18,7 @@
 
 | ファイル                                   | 内容                                                                               |
 | ------------------------------------------ | ---------------------------------------------------------------------------------- |
-| [project.md](project.md)                   | repository 固有値: path, command, naming, tracker, source-of-truth                 |
+| [project.yml](project.yml)                 | repository 固有値: path, command, naming, tracker, source-of-truth                 |
 | [architecture.md](architecture.md)         | codebase architecture: package / runtime boundary, 依存方向                        |
 | [component-design.md](component-design.md) | component design: ディレクトリ構成, 命名, Container / Presentation, Storybook 対象 |
 | [toolchain.md](toolchain.md)               | toolchain 一覧, build 構成, scaffold policy                                        |

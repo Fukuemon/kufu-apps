@@ -84,7 +84,7 @@
 - 正本:
   - `context/component-design.md`
   - `context/engineering.md`
-  - `context/project.md`
+  - `context/project.yml`
 
 ## 前提条件
 

@@ -94,18 +94,17 @@ if has_exact_line "## スコープ"; then
   fi
 fi
 
-KUFU_MONOREPO_TOPICS=(
+SPEC_DESIGN_TOPICS=(
   "### Performance"
   "### Routing / URL State"
   "### Content / Assets"
   "### UI Reuse"
-  "### React Compiler"
   "### Testing"
 )
 
-for topic in "${KUFU_MONOREPO_TOPICS[@]}"; do
+for topic in "${SPEC_DESIGN_TOPICS[@]}"; do
   if ! section_has_exact_line "## 機能仕様" "$topic"; then
-    ERRORS+=("Kufu Monorepo 固有論点の節がありません: $topic")
+    ERRORS+=("機能仕様の設計論点の節がありません: $topic")
   fi
 done
 
