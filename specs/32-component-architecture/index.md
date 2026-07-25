@@ -37,19 +37,19 @@
 
 - Design Doc Why / What 更新要否: 不要 (継承。ガードレール「Unnecessary Client JS Count」「Direct UI Duplication Count」の枠内)
 - Design Doc 更新要否: 不要 (継承。モジュール責務は変えず、component 規約の詳細化のみ)
-- ADR 起票要否: 判断中 (features → sections 再編 + index.ts 公開規約はアーキ判断として ADR 候補。D8 で確定)
+- ADR 起票要否: 要 (D11 で確定。「corporate-site の sections 再編と section 公開面規約」を新規 1 本、sync phase で起票。あわせて ADR-0007 に `@source` の theme.css 移動を「更新」として追記)
 
-| 上位文書    | 節 / 該当箇所                                                      | 整合方針 (継承 / 補足 / 変更提案)                                                              |
-| ----------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| Design Doc  | Why / What → ガードレール / 設計上の重要ポイント                   | 継承 (性能最優先・最小 island を損なわない)                                                    |
-| context     | component-design.md → ディレクトリ構成 / 責務分割 / Storybook 対象 | **変更提案** (features → sections 改名、autodocs 規約、cva 集約、index.ts 公開規約の追記)      |
-| context     | component-design.md → スタイリング節                               | **変更提案** (globals.css レイヤ分割、アニメーション共通ユーティリティ / keyframes トークン化) |
-| context     | architecture.md → Package Boundary                                 | 補足 (section の内部非公開を depcruise ルール案として詳細化。境界の考え方自体は継承)           |
-| feature doc | corporate-site → 設計方針 / component-map.md                       | **変更提案** (sections 再編の移行先マップ、products 再構成など corporate-site 固有規約)        |
-| ADR-0007    | デザイントークン 2 層構造 / lean app-local Tailwind entry          | 継承 (globals.css 分割は「entry は import のみ」への詳細化。トークン体系は変えない)            |
-| ADR-0008    | Astro static rendering / island 境界                               | 継承 (再編で island 方針は変えない)                                                            |
-| ADR-0010    | shadcn primitive 基盤は Base UI                                    | 継承 (packages/ui の component source 方針は変えない)                                          |
-| project.yml | forbidden (UI 独自実装 / トークン直書き) / decision_priority       | 継承 (ハードコード基準は forbidden の詳細化)                                                   |
+| 上位文書    | 節 / 該当箇所                                                      | 整合方針 (継承 / 補足 / 変更提案)                                                                |
+| ----------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| Design Doc  | Why / What → ガードレール / 設計上の重要ポイント                   | 継承 (性能最優先・最小 island を損なわない)                                                      |
+| context     | component-design.md → ディレクトリ構成 / 責務分割 / Storybook 対象 | **変更提案** (features → sections 改名、autodocs 規約、cva 集約、index.ts 公開規約の追記)        |
+| context     | component-design.md → スタイリング節                               | **変更提案** (globals.css レイヤ分割、アニメーション共通ユーティリティ / keyframes トークン化)   |
+| context     | architecture.md → Package Boundary                                 | 補足 (section の内部非公開を depcruise ルール案として詳細化。境界の考え方自体は継承)             |
+| feature doc | corporate-site → 設計方針 / component-map.md                       | **変更提案** (sections 再編の移行先マップ、products 再構成など corporate-site 固有規約)          |
+| ADR-0007    | デザイントークン 2 層構造 / lean app-local Tailwind entry          | **変更提案** (トークン体系は変えないが、`@source` の theme.css 移動を「更新」として追記 — 突合④) |
+| ADR-0008    | Astro static rendering / island 境界                               | 継承 (再編で island 方針は変えない)                                                              |
+| ADR-0010    | shadcn primitive 基盤は Base UI                                    | 継承 (packages/ui の component source 方針は変えない)                                            |
+| project.yml | forbidden (UI 独自実装 / トークン直書き) / decision_priority       | 継承 (ハードコード基準は forbidden の詳細化)                                                     |
 
 > 変更提案は本 issue の成果物そのものであり、sync phase の正本ハンドオフで context / feature doc / ADR へ反映する。それまで design 側を書き換えない。
 
@@ -76,11 +76,12 @@
 
 spec × 現行実装 × ADR × context の突合で検出した食い違いと、ユーザーが確認した正:
 
-| #   | 食い違い                                                                                                     | 正 (ユーザー決定)                                                                    |
-| --- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| 1   | `globals.css:5-799` に約 105 クラスセレクタの生 CSS + @keyframes 2 件 (規約は Tailwind utility / lean entry) | **規約を正とする**。実装側の乖離として扱い、D4 (cva 集約) / D6 (分割) で解消設計する |
-| 2   | section assembly の story 6 件が存在 (規約は「原則 story 対象にしない」)                                     | **保留**。D1〜D3 のカタログ規約検討に「section story を含めるか」を含めて決める      |
-| 3   | fonts.css を `BaseLayout.astro:8` の `?url` 参照で読み込み (ADR-0007 記載は import 経路)                     | **記録のみ**。意図的な最適化とみなし、D6 の entry 設計で現状経路を前提に含める       |
+| #   | 食い違い                                                                                                                                                                 | 正 (ユーザー決定)                                                                                                                                                                                                                                                                                   |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `globals.css:5-799` に約 105 クラスセレクタの生 CSS + @keyframes 2 件 (規約は Tailwind utility / lean entry)                                                             | **規約を正とする**。実装側の乖離として扱い、D4 (cva 集約) / D6 (分割) で解消設計する                                                                                                                                                                                                                |
+| 2   | section assembly の story 6 件が存在 (規約は「原則 story 対象にしない」)                                                                                                 | **保留**。D1〜D3 のカタログ規約検討に「section story を含めるか」を含めて決める                                                                                                                                                                                                                     |
+| 3   | fonts.css を `BaseLayout.astro:8` の `?url` 参照で読み込み (ADR-0007 記載は import 経路)                                                                                 | **記録のみ**。意図的な最適化とみなし、D6 の entry 設計で現状経路を前提に含める                                                                                                                                                                                                                      |
+| 4   | `globals.css:7-8` に `@source` 2 行 (規約は「app-local `@source` は置かない」)。目的は `@kufu/ui` の workspace ソース走査で、規約が想定した app 自身の走査指定とは異なる | **規約を正とし、`@source` は `@kufu/ui/theme.css` へ移動** (2026-07-25, レビュー指摘① 対応)。`@source` のパスは記述ファイル基準の相対解決のため theme.css 側で ui 自身の src を指せば全 consumer が自動で ui の class を生成できる。app entry は import のみに戻す。動作検証は実施 issue へ引き継ぐ |
 
 ## スコープ
 
@@ -184,7 +185,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - duration / easing の motion トークンは `@kufu/ui/tokens.css` に定義する (「トークンは常に ui」の既存昇格境界と整合)
   - site 固有演出の keyframes (`scroll-cue` / `section-rise` 等) は app-local (`src/styles/animations.css`) に置き、複数 app での再利用が明確になったら `@kufu/ui` へ昇格する (業務ルール 3: 過剰一般化しない)
 - **D6 (2026-07-25, ユーザー): src/styles/ は 4 ファイル + 移行受け皿 (案 A)**。
-  - `globals.css` = entry (@import + @source のみ)、`base.css` (@layer base: document-level / :root)、`components.css` (@layer components: 既存生 CSS の受け皿。D4 の cva / utility 移行で逐次削減し、最終的に削除を目標)、`animations.css` (@keyframes)、`utilities.css` (@utility 拡張)
+  - `globals.css` = entry (@import のみ。現行の `@source` 2 行は `@kufu/ui/theme.css` へ移動 — 突合④)、`base.css` (@layer base: document-level / :root)、`components.css` (@layer components: 既存生 CSS の受け皿。D4 の cva / utility 移行で逐次削減し、最終的に削除を目標)、`animations.css` (@keyframes)、`utilities.css` (@utility 拡張)
   - tokens 層は既存どおり `@kufu/ui/tokens.css` の import で賄う (app 内に tokens ファイルを作らない)
   - fonts は現行の `BaseLayout.astro` の `?url` 参照経路を維持する (突合③)
   - ADR-0007 の「entry は import / base に絞る」への詳細化であり、4 entry 配信 (ui 側) は変更しない
@@ -369,27 +370,30 @@ sequenceDiagram
 | `component-design.md` Storybook 対象節       | title 階層規約 (ディレクトリ 1:1)、variant 全列挙 + edge 必須、autodocs グローバル適用、Section story の公認を改訂 <!-- source: clarify D1-D3/突合② -->                 | D1〜D3 / 突合② 決定            |
 | `component-design.md` スタイリング節         | cva 適用基準 (variant を持つ component のみ)、styles/ 4 ファイル + 移行受け皿の構成、motion トークン (ui) / keyframes (app) の境界を改訂 <!-- source: clarify D4-D6 --> | D4〜D6 決定                    |
 | `component-design.md` Content 層の選び分け節 | ハードコード基準 3 区分 (文言 content 化 / 繰り返し値の定数化 / スタイル値トークンのみ) + 機能的文言の許容を追記 <!-- source: clarify D7 -->                            | D7 決定                        |
+| `component-design.md` スタイリング節         | `@source` の記述を「app entry に置かず `@kufu/ui/theme.css` が自身の src を指す」へ改訂 <!-- source: clarify 突合④ -->                                                  | レビュー指摘① / 突合④ 決定     |
 
 ### ADR の新規 / 更新
 
 | ADR ID          | 変更内容                                                                                                         | 理由                                                       |
 | --------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | 新規 (番号未定) | 「corporate-site の sections 再編と section 公開面規約」を起票 (D8〜D10 の判断経緯) <!-- source: clarify D11 --> | D11 決定。issue close 後も再編の判断経緯を長期参照するため |
+| ADR-0007        | 「更新」節に `@source` の theme.css 移動 (app entry は import のみ) を追記 <!-- source: clarify 突合④ -->        | レビュー指摘① / 突合④ 決定。lean entry 原則の維持          |
 
 ## レビュー
 
 `spec-review` (fresh-context evaluator) の最新結果。完全な記録は `review.md` を参照。
 
-| 日付 | 結果 (PASS / NEEDS_WORK) | 指摘要点 | 対応 |
-| ---- | ------------------------ | -------- | ---- |
-|      |                          |          |      |
+| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                                  | 対応                                                                                         |
+| ---------- | ------------------------ | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| 2026-07-25 | NEEDS_WORK               | ① D6 の `@source` が ADR-0007 / component-design.md と矛盾し未記録 ② ADR 起票要否が stale | 対応済 (① 突合④として theme.css 移動を決定・影響表へ追記 ② 「要 (D11)」へ更新)。再レビューへ |
 
 ## 変更履歴
 
-| 日付       | 変更者         | 変更内容                                                             |
-| ---------- | -------------- | -------------------------------------------------------------------- |
-| 2026-07-25 | spec-lifecycle | scaffold で index.md 初版生成。設計論点 D1〜D11 を初期抽出           |
-| 2026-07-25 | spec-lifecycle | clarify: 実装突合ゲート 3 件を決着、D1〜D11 全件をユーザー対話で解決 |
+| 日付       | 変更者         | 変更内容                                                                                      |
+| ---------- | -------------- | --------------------------------------------------------------------------------------------- |
+| 2026-07-25 | spec-lifecycle | scaffold で index.md 初版生成。設計論点 D1〜D11 を初期抽出                                    |
+| 2026-07-25 | spec-lifecycle | clarify: 実装突合ゲート 3 件を決着、D1〜D11 全件をユーザー対話で解決                          |
+| 2026-07-25 | spec-lifecycle | レビュー指摘対応: 突合④ (@source を theme.css へ移動) を追加決定、ADR 起票要否の stale を修正 |
 
 ## 備考
 
