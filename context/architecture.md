@@ -39,7 +39,7 @@ colocation 第一原則の適用を資産種別ごとに定める (本テーブ�
 
 デザインシステム資産 (トークン / フォント / stylesheet) は colocation 原則の例外であり、最初から `packages/ui` を正本とする。UI コンポーネント / utility は従来の複数 consumer ルールに従う。
 
-issue #6 の初期 Storybook catalog では、Pencil の `GenericComponents` 相当を shared component 候補として `packages/ui` に置く。corporate-site 固有 component は `apps/corporate-site` 内に colocation し、app-local Storybook で確認する。
+汎用性の高い component は shared component 候補として `packages/ui` に置き、shared catalog の Storybook に掲載する。corporate-site 固有 component は `apps/corporate-site` 内に colocation し、app-local Storybook で確認する。
 
 ## Runtime Boundary
 
