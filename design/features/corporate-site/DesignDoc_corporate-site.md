@@ -1,6 +1,6 @@
 # Feature 設計: コーポレートサイト (apps/corporate-site)
 
-> 最終更新: 2026-07-25 / Status: 設計確定・実装中 / IA 確定済 (#11 を集約、#17 で 3 route 統合構成へ再確定 — [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)) / デザイントークン体系確定 (#13 — [ADR-0007](../../../adr/0007-design-token-architecture.md)) / 問い合わせフォーム仕様確定 (#14 — [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md)) / sections 再編・公開面規約確定 (#32 — [ADR-0011](../../../adr/0011-corporate-site-sections-architecture.md))
+> 最終更新: 2026-07-26 / Status: 設計確定・実装中 / IA 確定済 (#11 を集約、#17 で 3 route 統合構成へ再確定 — [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)) / デザイントークン体系確定 (#13 — [ADR-0007](../../../adr/0007-design-token-architecture.md)) / 問い合わせフォーム仕様確定 (#14 — [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md)) / sections 再編・公開面規約確定 (#32 — [ADR-0011](../../../adr/0011-corporate-site-sections-architecture.md))
 
 Phase 1 の主対象。Astro によるコーポレートサイトを高いパフォーマンスと保守性で公開する。全体像は [design/DesignDoc.md](../../DesignDoc.md)、横断規約は [context/](../../../context/) を参照する。
 
@@ -43,7 +43,7 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 - 第一原則は colocation とし、app や section 内で閉じる UI はローカルに置く。
 - 共通 UI は利用箇所が複数 app / section にまたがる時点で `packages/ui` へ移す ([architecture.md](../../../context/architecture.md))。
 - Phase 1 では `packages/ui` の skeleton を置くが、コーポレートサイト内で閉じる UI は引き続き `apps/corporate-site` に置く。
-- component は `components/sections/<route>/<section>/` に route 層でグルーピングし、各 section の公開面は `index.ts` 再輸出のみとする (#32 — [ADR-0011](../../../adr/0011-corporate-site-sections-architecture.md))。route / section の実マップは [component-map.md](component-map.md) を正本とする。
+- component は `components/sections/<section>/` の 1 階層フラット構成に置き、各 section の公開面は `index.ts` 再輸出のみとする (#32 — [ADR-0011](../../../adr/0011-corporate-site-sections-architecture.md))。section 名はドメインで付け、ページ対応は [component-map.md](component-map.md) の表を正本とする (ディレクトリ構造には持たせない)。
 - `src/styles/` はレイヤ別に分割し `globals.css` は `@import` のみの entry とする: `base.css` / `components.css` (既存生 CSS の移行受け皿。cva / utility 移行で逐次削減し削除目標) / `animations.css` (site 固有演出の keyframes) / `utilities.css`。横断のスタイル規約 (cva 基準 / motion トークン境界) は [component-design.md](../../../context/component-design.md) を正本とする。
 - E2E はコーポレートサイトの表示、主要導線、問い合わせ導線を優先し、実行入口は root `playwright.config.ts` と `e2e/` 配下に置く ([testing.md](../../../context/testing.md))。
 

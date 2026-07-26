@@ -37,7 +37,7 @@ pages → sections (index.ts) → common → @kufu/ui
 - pages から section 内部ファイルへの直接 import は禁止 (各 section の `index.ts` 経由のみ許可)。
 - section 間の import は index 経由でも禁止。共有が必要になった部品は `common/` (app 内) または `packages/ui` (複数 app) へ昇格する。
 - 同 section 内 (story 含む) の直接参照は自由 (story の colocation を維持)。
-- 本境界は dependency-cruiser のルールとして機械検査する (ルール実装は実施 issue 側)。
+- **検査手段**: dependency-cruiser と oxlint はいずれも `.astro` を解析対象にしないため、本境界は app 配下の独自スクリプト (`apps/corporate-site/scripts/`) で検査する。`check-token-usage.mjs` (トークン直書きガード) と同方式で、ripgrep により `.astro` の import を走査する。dependency-cruiser は引き続き `.ts` / `.js` 層の package 境界・循環・未宣言依存を担当する。
 
 ### デザインシステム資産の正本と昇格境界
 

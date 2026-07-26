@@ -42,7 +42,7 @@ Astro の file-based routing は `src/pages/` に置く。Next.js App Router の
 
 ## ディレクトリ構成
 
-区切りの概念は **section** とし、**route 層でグルーピング**する (`components/sections/<route>/<section>/`)。ページとの対応が物理構造で一意になる。旧 `components/features/<feature>/` 構成は本規約で置換した (決定経緯: issue #32 / [ADR-0011](../adr/0011-corporate-site-sections-architecture.md))。
+区切りの概念は **section** とし、`components/sections/<section>/` の **1 階層フラット**に置く。route 層は設けない (構造をページ構成から独立させ、IA 変更でディレクトリ移動が起きないようにするため)。旧 `components/features/<feature>/` 構成は本規約で置換した (決定経緯: issue #32 / [ADR-0011](../adr/0011-corporate-site-sections-architecture.md))。
 
 ```text
 apps/<app>/src/
@@ -50,13 +50,12 @@ apps/<app>/src/
 │   └── <feature>.ts
 ├── components/
 │   ├── sections/
-│   │   └── <route>/               # route 単位 (home / products / contact ...)
-│   │       └── <section>/         # section 単位
-│   │           ├── index.ts               # 公開面 (Section component のみ再輸出)
-│   │           ├── <Feature>Section.astro # section assembly (content → presentation)
-│   │           ├── <Component>.astro      # presentation (props only / story 対象)
-│   │           └── <Component>.stories.ts
-│   └── common/                    # route 横断の site component
+│   │   └── <section>/             # section 単位 (1 階層。route 層は作らない)
+│   │       ├── index.ts               # 公開面 (Section component のみ再輸出)
+│   │       ├── <Feature>Section.astro # section assembly (content → presentation)
+│   │       ├── <Component>.astro      # presentation (props only / story 対象)
+│   │       └── <Component>.stories.ts
+│   └── common/                    # 複数 section / route が共有する site component
 │       └── <Component>/
 │           ├── <Component>.astro
 │           └── <Component>.stories.ts
@@ -65,29 +64,32 @@ apps/<app>/src/
 ```
 
 - section 内部は **フラット + `index.ts`**: 公開面は `index.ts` のみ (Section component だけを再輸出)。内部 component と story は section dir 直下に並べる。`internal/` サブディレクトリは作らない (1 component 1 ディレクトリを強制しない方針を継承)。
-- **section の内部非公開**: pages からは `index.ts` 経由の import のみ許可。section 間の import は index 経由でも禁止し、共有が必要になった部品は `common/` (app 内) または `packages/ui` (複数 app) へ昇格する。依存方向は `pages → sections (index) → common → @kufu/ui` の一方向 ([architecture.md](architecture.md) の depcruise 検査対象)。
+- 階層は常に 1 段なので、**section の起点は必ず `sections/<section>/index.ts`** になる。
+- **section の内部非公開**: pages からは `index.ts` 経由の import のみ許可。section 間の import は index 経由でも禁止し、共有が必要になった部品は `common/` (app 内) または `packages/ui` (複数 app) へ昇格する。依存方向は `pages → sections (index) → common → @kufu/ui` の一方向 ([architecture.md](architecture.md) の検査対象)。
+- **section 名はドメインで付ける**。1 ドメインが複数 section を持つ場合は接頭辞で表す (`products-category` / `products-detail`)。route 名を section 名にしない。
 - presentation component に `Presentation` suffix は付けない。`<Component>.astro` がそのまま presentation であり、story 対象。
-- 複数 route をまたいで使う site component (`SectionHeading` など) は `components/common/<Component>/` に置く。
+- 複数 section をまたいで使う site component (`SectionHeading` など) は `components/common/<Component>/` に置く。
 
-corporate-site の例 (route / section の実マップは [component-map.md](../design/features/corporate-site/component-map.md) を正本とする):
+corporate-site の例 (section とページ対応の実マップは [component-map.md](../design/features/corporate-site/component-map.md) を正本とする):
 
 ```text
 apps/corporate-site/src/components/
 ├── sections/
-│   ├── home/
-│   │   ├── hero/
-│   │   ├── business/
-│   │   │   ├── index.ts
-│   │   │   ├── BusinessSection.astro
-│   │   │   ├── BusinessFeatureRow.astro
-│   │   │   └── BusinessFeatureRow.stories.ts
-│   │   ├── services/ company/ consultation/
-│   ├── products/
-│   │   ├── hero/ category/ detail/
+│   ├── hero/
+│   ├── business/
+│   │   ├── index.ts
+│   │   ├── BusinessSection.astro
+│   │   ├── BusinessFeatureRow.astro
+│   │   └── BusinessFeatureRow.stories.ts
+│   ├── company/
+│   ├── consultation/
+│   ├── products-category/
+│   ├── products-detail/
 │   └── contact/
-│       └── contact/
 └── common/
-    └── SectionHeading/
+    ├── BaseLayout.astro
+    ├── SectionHeading/
+    └── ...
 ```
 
 ## 責務分割
@@ -264,7 +266,7 @@ Storybook は **component catalog** として運用する (探しやすさ / ド
 
 - **autodocs 全面採用**: `.storybook/preview` の `tags: ['autodocs']` で全 story に適用し、例外は story 側で `!autodocs` を指定する。
 - **title はディレクトリと 1:1**: title は物理配置から機械的に決める。分類の判断を story 作成時にしない。
-  - app-local: `Sections/<Route>/<Section>/<Component>` / `Common/<Component>`
+  - app-local: `Sections/<Section>/<Component>` / `Common/<Component>`
   - packages/ui: `UI/<Component>`
 - **バリエーション網羅**: presentation component は cva variants の全組み合わせを args で列挙する story と、edge state (長文 / 空データ / 最小構成) の story を必須にする。
 
