@@ -286,7 +286,9 @@ sequenceDiagram
     end
 ```
 
-### C4 再設計案 (D6。DesignDoc への差し替えは本 issue の実装フェーズ)
+### C4 再設計案 (D6。**決定時スナップショット**)
+
+> 確定版は [design/DesignDoc.md](../../design/DesignDoc.md) のアーキテクチャ概観。実装時に、未実装の問い合わせ backend (Pages Functions / Resend) を図から外して Future Work へ移した ([ADR-0013](../../adr/0013-designdoc-present-facts-only.md) の更新節)。下図はその判断前の案。
 
 L1 (System Context) — 利用者視点に絞る。開発者 / GitHub / docs workflow は載せない:
 

@@ -83,7 +83,7 @@ depends_on: [P1_02_core_specs_cleanup.md]
 
 1. `design/features/corporate-site/index.pen` を削除する (中身は読まない)
 2. `design/features/corporate-site/assets/` (画像 4 点) を削除する。**削除前に、`apps/corporate-site/src/assets/` に同名ファイルが存在することを `ls` で確認する** (D7 の前提)
-3. `design/features/corporate-site/ia-exploration-single-lp.prompt.md` は A0 依頼文であり **削除しない** (新フローでも `.prompt.md` は commit 対象)
+3. `design/features/corporate-site/ia-exploration-single-lp.prompt.md` と `component-map.md` も削除する (D8。前者は却下された単一 LP 案の依頼文でトークン値も現行体系と食い違う、後者は `.pen` → 実装の対応表で参照先を失う)
 4. `pnpm build` を実行し、画像 import が壊れていないことを確認する
 5. diff レビューを回し、指摘を対応する
 
@@ -139,7 +139,6 @@ depends_on: [P1_02_core_specs_cleanup.md]
 - specs の清算 (P1_02 の範囲)
 - `packages/ui` のトークン体系の変更 (ADR-0007 のまま不変)
 - `apps/corporate-site/src/assets/` の変更 (存続確認のみ)
-- `ia-exploration-single-lp.prompt.md` の削除 (新フローでも commit 対象)
 - 共有プロセス層 (`.rulesync/` 配下の `design-prompt` skill 等) の改修 (sdd-template 側の課題)
 
 ## 設計仕様
@@ -189,7 +188,7 @@ spec `## テスト / 評価方針` および受け入れ基準より:
 - [ ] 転記先の無い durable 情報が無いことを確認した (あれば転記先を確認して反映した)
 - [ ] `apps/corporate-site/src/assets/` に同名画像が存在することを確認した上で design 側 `assets/` を削除した
 - [ ] `index.pen` を削除した (中身は読んでいない)
-- [ ] `ia-exploration-single-lp.prompt.md` を削除していない
+- [ ] `ia-exploration-single-lp.prompt.md` と `component-map.md` を削除した (D8)
 - [ ] 各文書の最終更新日 / 変更履歴を更新した
 - [ ] 各ステップで diff レビューを実施し、指摘を対応した
 - [ ] `## 検証コマンド` がすべてパスする (特に `pnpm build`)

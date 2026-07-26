@@ -82,7 +82,7 @@ Claude Design の出力品質は依頼文に強く依存する (密な単一段�
 
 | 用途                      | 置き場所                                       | Git           | 備考                                                                                                                                                                                |
 | ------------------------- | ---------------------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Claude Design 依頼文      | `design/features/<feature>/<screen>.prompt.md` | commit        | A0 の依頼文。再現性のため残す                                                                                                                                                       |
+| Claude Design 依頼文      | `design/features/<feature>/<screen>.prompt.md` | commit        | A0 の依頼文。採用した方向のものを再現性のため残す (却下された方向案の依頼文は残さない)                                                                                              |
 | Claude Design 仮置き      | `design/.staging/`                             | **gitignore** | phase A の使い捨て HTML。commit しない                                                                                                                                              |
 | feature 設計 home         | `design/features/<feature>/DesignDoc_*.md`     | commit        | IA / 設計方針 / ブランド指針の正本                                                                                                                                                  |
 | コンテンツ正本            | `design/features/<feature>/reference/`         | commit        | 掲載コンテンツの一次情報                                                                                                                                                            |
@@ -113,6 +113,7 @@ shadcn/ui は **コードを自分の repo に copy して所有する** モデ�
 
 - チームが既に Figma 主体、または非エンジニアを含む共同デザインレビューが必要な場合のみ **Figma + Figma MCP Server** を採用してよい。
 - その場合も **正本は `packages/ui` と実装**。Figma frame リンクから MCP 経由で実装へハンドオフし、design 判断は feature doc へ反映する。
+- Figma 由来のトークンを使う場合も `tokens.css` へ 1:1 でマッピングし、トークンの二重管理を作らない。
 
 ## 8. 運用上の注意
 

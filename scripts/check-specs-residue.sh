@@ -13,6 +13,9 @@ REPO="${SPECS_CHECK_REPO:-Fukuemon/kufu-apps}"
 
 command -v gh >/dev/null || { echo "gh CLI が必要です" >&2; exit 2; }
 
+errfile="$(mktemp)"
+trap 'rm -f "$errfile"' EXIT
+
 residue=()
 unresolved=()
 for dir in "$SPECS_DIR"/*/; do
@@ -23,10 +26,16 @@ for dir in "$SPECS_DIR"/*/; do
     ''|*[!0-9]*) echo "skip: $name (issue 番号を抽出できない)"; continue ;;
   esac
 
-  if err="$(gh issue view "$issue" --repo "$REPO" --json state --jq .state 2>&1)"; then
-    [ "$err" = CLOSED ] && residue+=("$name (issue #$issue: CLOSED)")
+  # stderr を state に混ぜると gh の通知混入で CLOSED を取りこぼすため、別ファイルへ分ける
+  if state="$(gh issue view "$issue" --repo "$REPO" --json state --jq .state 2>"$errfile")"; then
+    case "$state" in
+      CLOSED) residue+=("$name (issue #$issue: CLOSED)") ;;
+      OPEN) ;;
+      # 想定外の値を「OPEN でない」と黙認すると残存を見逃すため、検査不能として扱う
+      *) unresolved+=("$name (issue #$issue): 想定外の state [$state]") ;;
+    esac
   else
-    unresolved+=("$name (issue #$issue): $err")
+    unresolved+=("$name (issue #$issue): $(tr '\n' ' ' < "$errfile")")
   fi
 done
 
@@ -40,7 +49,7 @@ fi
 if [ ${#residue[@]} -gt 0 ]; then
   echo "closed issue の spec が残存しています (closeout 未実施):"
   printf '  - %s\n' "${residue[@]}"
-  echo "清算手順: specs/README.md の closeout 清算手順"
+  echo "清算手順: specs/README.md の「closeout (issue close 時の清算)」"
   exit 1
 fi
 

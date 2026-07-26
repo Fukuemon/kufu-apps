@@ -58,13 +58,13 @@ Primary Jobs To Be Done:
 
 成功条件:
 
-| #   | 成功条件                                          | 測定方法                                                                     | 満たすべき水準                                     |
-| --- | ------------------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------- |
-| 1   | コーポレートサイトを公開可能な状態で build できる | `pnpm build`                                                                 | 成功率 100%                                        |
-| 2   | 訪問者が取扱領域と問い合わせ先へ到達できる        | `/`, `/products`, `/contact` の Playwright E2E                               | 主要 route と問い合わせ導線を E2E で通す           |
-| 3   | Astro の静的生成と最小 island 方針を守る          | client directive / React island の review、必要時の bundle / Lighthouse 確認 | 表示専用 UI の不要な island 追加 0 件              |
-| 4   | コンテンツ正本と掲載箇所が追跡できる              | `design/features/corporate-site/reference/` と feature doc の対応確認        | 会社概要・取扱製品・メーカー情報の正本リンクを維持 |
-| 5   | AI / 開発者が責務境界を参照できる                 | design / ADR / context / AGENTS の整合確認                                   | 実装前 spec と関連正本リンクを保持                 |
+| #   | 成功条件                                          | 測定方法                                                                     | 満たすべき水準                                                         |
+| --- | ------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| 1   | コーポレートサイトを公開可能な状態で build できる | `pnpm build`                                                                 | 成功率 100%                                                            |
+| 2   | 訪問者が取扱領域と問い合わせ先へ到達できる        | `/`, `/products`, `/contact` の Playwright E2E                               | 主要 route と問い合わせ導線を E2E で通す                               |
+| 3   | Astro の静的生成と最小 island 方針を守る          | client directive / React island の review、必要時の bundle / Lighthouse 確認 | 表示専用 UI の不要な island 追加 0 件                                  |
+| 4   | コンテンツ正本と掲載箇所が追跡できる              | `design/features/corporate-site/reference/` と feature doc の対応確認        | 会社概要・取扱製品・メーカー情報の正本リンクを維持                     |
+| 5   | AI / 開発者が責務境界を参照できる                 | design / ADR / context / AGENTS の整合確認                                   | 実装前に design / feature doc / ADR / context の正本リンクを確認できる |
 
 定性アウトカム:
 
@@ -100,15 +100,15 @@ Package Boundary Violation Count は repository quality gate (`pnpm depcruise` /
 
 ## Related ADRs
 
-| ADR                                                                    | 決定                                                         | 関連ドキュメント                                                                                                                                                                             |
-| ---------------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md)         | Cloudflare の Terraform は別 repo (`kufu-infra`) で管理する  | [context/infrastructure.md](../context/infrastructure.md)                                                                                                                                    |
-| [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md)     | app scaffold は公式 create command を優先する                | [context/toolchain.md](../context/toolchain.md)                                                                                                                                              |
-| [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) | app 実装対象は `apps/corporate-site` のみ。`apps/cms` は後続 | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md), [features/cms/DesignDoc_cms.md](features/cms/DesignDoc_cms.md)                   |
-| [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md)         | 問い合わせ送信は Cloudflare Pages Functions を中継する       | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様), [context/infrastructure.md](../context/infrastructure.md) |
-| [ADR-0011](../adr/0011-specs-closeout-enforcement.md)                  | specs は存続させ closeout (close 時削除) を徹底する          | `CLAUDE.md` Spec Workflow Contract                                                                                                                                                           |
-| [ADR-0012](../adr/0012-design-source-of-truth-implementation.md)       | デザイン正本は実装 (コード + Storybook)。ADR-0004 を置換     | [context/design-workflow.md](../context/design-workflow.md)                                                                                                                                  |
-| [ADR-0013](../adr/0013-designdoc-present-facts-only.md)                | 本 doc は現状事実のみ記載、将来計画は Future Work 節へ一元化 | 本 doc                                                                                                                                                                                       |
+| ADR                                                                    | 決定                                                                                                             | 関連ドキュメント                                                                                                                                                                             |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md)         | Cloudflare の Terraform は別 repo (`kufu-infra`) で管理する                                                      | [context/infrastructure.md](../context/infrastructure.md)                                                                                                                                    |
+| [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md)     | app scaffold は公式 create command を優先する                                                                    | [context/toolchain.md](../context/toolchain.md)                                                                                                                                              |
+| [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) | app 実装対象は `apps/corporate-site` のみ。`apps/cms` は後続                                                     | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md), [features/cms/DesignDoc_cms.md](features/cms/DesignDoc_cms.md)                   |
+| [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md)         | 問い合わせ送信は Cloudflare Pages Functions を中継する (仕様決定済み・未実装。[Future Work](#未実装の計画) 参照) | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様), [context/infrastructure.md](../context/infrastructure.md) |
+| [ADR-0011](../adr/0011-specs-closeout-enforcement.md)                  | specs は存続させ closeout (close 時削除) を徹底する                                                              | `CLAUDE.md` Spec Workflow Contract                                                                                                                                                           |
+| [ADR-0012](../adr/0012-design-source-of-truth-implementation.md)       | デザイン正本は実装 (コード + Storybook)。ADR-0004 を置換                                                         | [context/design-workflow.md](../context/design-workflow.md)                                                                                                                                  |
+| [ADR-0013](../adr/0013-designdoc-present-facts-only.md)                | 本 doc は現状事実のみ記載、将来計画は Future Work 節へ一元化                                                     | 本 doc                                                                                                                                                                                       |
 
 ## Project Profile
 
@@ -203,6 +203,10 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 | ------------------ | ---------------------------------------------------------------------------------------------------------- | ----------------------------------- |
 | コーポレートサイト | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md) | 実装中                              |
 | CMS / React アプリ | [features/cms/DesignDoc_cms.md](features/cms/DesignDoc_cms.md)                                             | 構想のみ ([未決事項](#未決事項) #4) |
+
+### 判断 (Why)
+
+確定した技術判断・却下した代替案は [adr/](../adr/) を正本とする。上の Related ADRs 表は landscape に影響する分の抜粋。
 
 ### Engineering Context (How: 横断規約)
 
