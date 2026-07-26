@@ -17,7 +17,8 @@
     "storybook:build": "pnpm --filter @kufu/ui storybook:build && pnpm --filter @kufu/corporate-site storybook:build",
     "storybook:pages": "pnpm storybook:build && node scripts/build-storybook-pages.mjs",
     "knip": "knip",
-    "depcruise": "dependency-cruiser ."
+    "depcruise": "dependency-cruiser .",
+    "check:specs": "bash scripts/check-specs-residue.sh"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
