@@ -162,3 +162,15 @@ Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
 - **blocking (事実誤り)**: P5 が `SiteFooter` の到達不能な三項を「1 箇所のみ」と断定していたが、実際は 2 箇所 (`SiteFooter.astro:39` の grid-cols class と `:53` の `isFull ? (<nav>…) : null`) → 両方を列挙し、それぞれの整理方法を明記
 - **should fix**: P3 の variant 表が `SectionHeading` の `level?: 1 | 2 | 3` と `BusinessFeatureRow` の `imageLoading?: "eager" | "lazy"` の扱いを欠いていた → 「variant 網羅の対象外とする Props」として理由つきで明記 (level は見出しタグの意味論的指定、imageLoading は描画結果に影響しない)
 - **should fix**: P5 の frontmatter `target: corporate-site` と実作業 (ステップ 1 は packages/ui) の乖離 → P4 と同じ形式で「変更する repo 領域」に注記
+
+## Review 2026-07-27 (prompts gate / 6 回目)
+
+Verdict: NEEDS_WORK → blocking 対応済み
+
+構造面 (必須 10 セクション / frontmatter / アンチパターンブロック / 探索誘発の不在) と、5 回目までの指摘の反映はすべて実ファイルで確認された。今回の指摘への対応:
+
+- **blocking (実装すると表示が退行)**: P4 が `@media (prefers-reduced-motion: reduce)` を `base.css` (先頭側) に置く指示だったが、現行 `globals.css` ではこのブロックは**末尾**にあり、`.scroll-cue-icon` の `animation` や `.business-row-copy::after` の `transition` を同一詳細度で上書きしている。先頭に移すとカスケードが反転し、`prefers-reduced-motion` でアニメーションが止まらなくなる。しかも出力バイト数は不変で E2E も通るため検出できない → **`components.css` の末尾に置く**指示へ変更し、カスケード順の保持を完了条件・テスト観点・検証手順 (OS の視差効果削減を有効にした目視確認) に追加
+- **should fix**: 冒頭の `border-radius` 規則が要素 / class / 属性 / id の混在セレクタリストで、prompt の分類基準では行き先が決まらず「1 文字も書き換えない」と矛盾していた → 「セレクタリストを分割せず `base.css` にそのまま置く」と明記
+- **minor**: spec の変更履歴に 5 回目対応の行が無い → 次の記録時にまとめて反映 (レビュー表と本ファイルには記録済み)
+
+以降のレビュー往復はユーザー判断により打ち切り、prompts phase をここで完了とする。

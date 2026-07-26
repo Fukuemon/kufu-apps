@@ -59,16 +59,21 @@ depends_on: []
 
 `apps/corporate-site/src/styles/` を次の 4 ファイル構成にする:
 
-| ファイル         | 内容                                                                                                                           |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `globals.css`    | entry。`@import "tailwindcss"` + `@kufu/ui/tokens.css` + `@kufu/ui/theme.css` + 下記 3 ファイルの `@import` のみ               |
-| `base.css`       | `:root` のカスタムプロパティ、要素セレクタ (`button` / `input` / `a` 等) への base スタイル、`@media (prefers-reduced-motion)` |
-| `components.css` | クラスセレクタ群 (`.products-catalog` 等) と、それらに紐づく `@media` ブロック。P5 の移行受け皿                                |
-| `animations.css` | `@keyframes scroll-cue` / `@keyframes section-rise`                                                                            |
+| ファイル         | 内容 (現行 `globals.css` の該当箇所)                                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `globals.css`    | entry。`@import "tailwindcss"` + `@kufu/ui/tokens.css` + `@kufu/ui/theme.css` + 下記 3 ファイルの `@import` のみ          |
+| `base.css`       | `:root` のカスタムプロパティと、その直後の `border-radius` 規則 (クラス規則が始まる直前まで)                              |
+| `components.css` | クラスセレクタ群と、それらに紐づく `@media` ブロック。**末尾の `@media (prefers-reduced-motion: reduce)` もここに含める** |
+| `animations.css` | `@keyframes scroll-cue` / `@keyframes section-rise`                                                                       |
 
 **`utilities.css` は作らない**。現行 `globals.css` に `@utility` は 1 件も無く、空ファイルは dead code になる (絶対ルールの「dead code を残さない」)。P5 以降で `@utility` が必要になった時点で追加する。
 
 **`@layer` は付けない**。現行 CSS は素のセレクタで書かれており、`@layer components` で包むと Tailwind utility との優先順位が変わって表示が壊れるため。分割は `@import` によるファイル移動のみとし、セレクタと宣言は 1 文字も書き換えない (cva 化・削減は P5 の責務)。
+
+**カスケード順を必ず保つこと**。CSS は同一詳細度なら後勝ちのため、分割後に `@import` された結果の連結順が現行 `globals.css` の記述順と完全に一致していなければならない。特に次の 2 点に注意する:
+
+- `@media (prefers-reduced-motion: reduce)` ブロックは現行ファイルの **末尾** にあり、`.scroll-cue-icon` の `animation` や `.business-row-copy::after` の `transition` を同一詳細度で上書きしている。これを `base.css` (先頭側) に置くと上書きが効かなくなり、`prefers-reduced-motion` でアニメーションが止まらなくなる。**必ず `components.css` の末尾に置く**
+- 冒頭の `border-radius` 規則は要素 (`button` / `input` …)・class (`.products-control-btn` …)・属性 (`[data-testid=…]`)・id (`#products-category-groups`) が 1 つのセレクタリストに混在している。**セレクタリストを分割せず、そのまま `base.css` に置く** (分割すると「1 文字も書き換えない」に反する)
 
 `@import` の順序は現行 `globals.css` の記述順を保つ (base → components → animations)。
 
@@ -77,7 +82,8 @@ depends_on: []
 1. `## 検証コマンド` がすべてパスすることを確認
 2. CSS 出力の等価性を確認する: `pnpm --filter @kufu/corporate-site build` を再実行し、`apps/corporate-site/dist/_astro/*.css` の合計バイト数が **ステップ 0 で控えた値**と同じか小さいことを確認する (`@layer` を付けない前提なので、出力は基本的に同一になるはず)
 3. `pnpm e2e` で DOM 構造とテキストが分割前と等価であることを確認する (E2E は視覚回帰を検出しないため、`/` `/products` `/contact` を desktop / mobile viewport で目視比較する)
-4. 変更をコミットする (commit message に `Refs #32` を含める)
+4. **カスケード順を確認する**: OS の「視差効果を減らす」を有効にした状態で `/` を開き、スクロールキューと section の出現アニメーションが停止することを確認する。`@media (prefers-reduced-motion: reduce)` が末尾に置かれていないと停止しない。この退行はバイト数比較でも E2E でも検出できないため、必ず目視で確認する
+5. 変更をコミットする (commit message に `Refs #32` を含める)
 
 ## 実装コンテキスト
 
@@ -141,6 +147,7 @@ spec の D5 / D6 / 突合③④ より抜粋:
 - 出力 CSS が分割前と同じか小さいか (`dist/_astro/*.css` の合計バイト数で比較)
 - `@kufu/ui` の component が使う class が出力に含まれるか (`@source` 移動の検証)
 - DOM 構造とテキストが分割前と等価か (既存 E2E)。見た目は 3 route を目視比較する
+- カスケード順が保たれているか: `prefers-reduced-motion: reduce` 有効時にアニメーションが停止するか (バイト数比較・E2E では検出できない退行)
 
 ## 検証コマンド
 
@@ -160,6 +167,8 @@ spec の D5 / D6 / 突合③④ より抜粋:
 - [ ] CSS のセレクタと宣言を 1 文字も書き換えていない (`@layer` も付けていない)
 - [ ] `utilities.css` を作っていない (空ファイルにしない)
 - [ ] 出力 CSS の合計バイト数が分割前と同じか小さい
+- [ ] 分割後の連結順が分割前の `globals.css` の記述順と完全に一致している (特に `@media (prefers-reduced-motion: reduce)` が最後に来る)
+- [ ] `prefers-reduced-motion: reduce` 有効時にアニメーションが停止することを目視確認した
 - [ ] 各ステップで diff レビューを実施し、指摘を対応した
 - [ ] `## 検証コマンド` がすべてパスする
 - [ ] 変更を `Refs #32` 付きでコミットした

@@ -36,7 +36,7 @@
 | 8   | Performance / Security 設計 | レビュー済 | 2026-07-25 | CSS payload / island 方針は現状維持を確認 (D4〜D6 / styles 構成図)            |
 | 9   | Test / Metrics 設計         | レビュー済 | 2026-07-26 | 検査手段を独自スクリプトへ変更 (D10 / D14)。実装後の検証観点も追加            |
 | 10  | 実装分割                    | レビュー済 | 2026-07-26 | P1〜P6 を定義し着手可能と確認。prompts: **差分修正モード**                    |
-| 12  | prompts 生成                | 進行中     | 2026-07-27 | P1〜P6 を生成。prompts gate のレビュー指摘に対応中                            |
+| 12  | prompts 生成                | 完了       | 2026-07-27 | P1〜P6 を生成し gate レビュー 6 回分の指摘を反映。実装は次セッションで着手    |
 | 11  | レビュー済                  | 完了       | 2026-07-26 | spec-review PASS (4 回目)。prompts 生成 → 実装へ                              |
 
 ## 上位文書整合
@@ -609,6 +609,7 @@ flowchart TD
 | 2026-07-27 | NEEDS_WORK               | (prompts gate 3 回目) feature doc の styles 記述が未追従 / D14・D15 判定とメタ情報の更新が実ファイルに未適用 / P3 の variant 対象が未列挙                                                                                          | 全件対応。再レビューへ                                                                       |
 | 2026-07-27 | NEEDS_WORK               | (prompts gate 4 回目) 変更履歴と feature doc メタが未適用 (置換失敗の再発) / SiteFooter の variant 見落とし / P3・P5 の実行順矛盾 / P4 の計測順序                                                                                  | 全件対応 (行指定で適用し実ファイルを確認)。再レビューへ                                      |
 | 2026-07-27 | NEEDS_WORK               | (prompts gate 5 回目) SiteFooter の到達不能三項が 2 箇所 (1 箇所と誤記) / SectionHeading の level と imageLoading の扱いが未記載 / P5 の target 注記                                                                               | 全件対応。再レビューへ                                                                       |
+| 2026-07-27 | NEEDS_WORK               | (prompts gate 6 回目) P4 の reduced-motion ブロック配置でカスケードが反転し表示が退行する / 混在セレクタリストの行き先が未定義                                                                                                     | blocking を対応し prompts phase 完了。以降の往復は打ち切り                                   |
 
 ## 変更履歴
 
@@ -627,6 +628,7 @@ flowchart TD
 | 2026-07-26 | spec-lifecycle | 4 回目レビュー PASS。D14 に pre-commit への `pnpm lint` 配線を追加 (lint がどの gate からも走らない実態が判明したため)                                                                                                               |
 | 2026-07-27 | spec-lifecycle | prompts: P1〜P6 の実装 prompt を差分修正モードで生成 (絶対ガード 10 セクション + frontmatter を自己検証済み)                                                                                                                         |
 | 2026-07-27 | spec-lifecycle | prompts gate 1〜4 回目のレビュー対応。styles 分割を 4 ファイル / `@layer` なしへ統一 (spec / context / feature doc / prompt)、cva と variant の対象 component を確定、D14 / D15 の反映先を ADR-0011 / context へ移動、メタ情報を同期 |
+| 2026-07-27 | spec-lifecycle | prompts gate 5〜6 回目対応。SiteFooter の dead code 2 箇所・variant 対象外 Props を明記し、P4 のカスケード順保持 (reduced-motion を components.css 末尾へ) を指示に追加                                                              |
 
 ## 備考
 
