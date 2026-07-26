@@ -21,7 +21,7 @@
 - **C4 図は L1 / L2 の階層分けを維持し、内容を次の基準で再設計する** (1 枚への統合はしない):
   - L1 (System Context): 利用者視点に絞る。訪問者・内容更新者 → コーポレートサイト → 外部サービス (Cloudflare / Resend) のみ。開発者・GitHub・docs workflow は載せない。記法は `C4Context` をやめ素直な flowchart にする。
   - L2 (Container): 実在の実行単位とデータの流れのみ。`apps/corporate-site` / Pages Functions / `packages/ui` / `packages/config` / `e2e` / 外部サービス。未実装の `apps/cms` (点線) と正本ドキュメント群のノードは載せない (cms は Future Work 節、docs は「詳細の所在」節へ)。
-- DesignDoc 本体の書き換えは本判断を根拠に **issue #31 で実施する** (2026-07-26 に文書再編成の実施まで #31 のスコープへ拡大)。再設計図の具体案は #31 の設計成果として作成済み。
+- DesignDoc 本体の書き換えは本判断を根拠に **issue #31 で実施済み** (2026-07-26)。
 
 ## 代替案
 
@@ -56,7 +56,7 @@
 
 ## 関連ドキュメント
 
-- `design/DesignDoc.md`: 書き換え対象 (issue #31 で実施)
+- `design/DesignDoc.md`: 書き換え済み (issue #31 / 2026-07-26)
 - [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md): 将来計画 (cms 後続化) の根拠リンク先
 - `specs/31-docs-restructure/`: 決定経緯・C4 再設計図案 (issue #31 の書き換え完了後、close 時に削除)
 
