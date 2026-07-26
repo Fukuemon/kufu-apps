@@ -79,5 +79,5 @@
 ## 関連ドキュメント
 
 - `design/DesignDoc.md`: Phase 1 のコーポレートサイトと将来拡張の前提 (Why/What 節)、Cloudflare 前提の infra / deployment 設計
-- `specs/...`: infra 変更が必要な個別機能 spec
+- infra 変更が必要な個別機能の issue
 - infra repo: `$(ghq root)/github.com/Fukuemon/kufu-infra`

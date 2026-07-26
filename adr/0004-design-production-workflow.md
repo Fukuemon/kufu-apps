@@ -2,7 +2,9 @@
 
 ## 状態
 
-提案
+置換 ([ADR-0012](0012-design-source-of-truth-implementation.md) により置換。2026-07-25。デザイン正本は実装 (コード + Storybook) とし、Pencil / `.pen` 工程を廃止)
+
+> 以下の本文は決定当時の記録であり、現行の運用ではない。現行のデザイン制作フローは [ADR-0012](0012-design-source-of-truth-implementation.md) と [context/design-workflow.md](../context/design-workflow.md) を参照する。
 
 ## 決定日
 
@@ -91,7 +93,7 @@
 - 3ツール運用のため学習・セットアップ（特に Pencil MCP）の初期コストが発生する。
 - トークン正本を `packages/ui` に一元化する制約をツール側に守らせる運用規律が必要。
 - `.pen` → コードは一方向のため、実装後にコードを直接変更すると `.pen` と drift する。`.pen` をデザイン正本として扱い、デザイン変更は `.pen` 起点で行う運用規律でカバーする。
-- `.pen` は幾何ツリーで意味論を持たず、レスポンシブ / 状態 / 動的データ / 実コンテンツも表現しにくい。実装時に `@kufu/ui` への写像と spec/feature doc での補完が必須（緩和策は context/design-workflow.md §8）。
+- `.pen` は幾何ツリーで意味論を持たず、レスポンシブ / 状態 / 動的データ / 実コンテンツも表現しにくい。実装時に `@kufu/ui` への写像と spec/feature doc での補完が必須（緩和策は現行 context/design-workflow.md §3 Phase C。ADR-0012 により旧 §8 の課題表は廃止）。
 - `.pen`(JSON) の座標差分は PR で読みづらく、レビューはレンダリング/スクショ依存になる。`.pen` をトークン源泉にしない（一方向 `packages/ui` → Pencil）governance が必要。
 
 ### 影響範囲
