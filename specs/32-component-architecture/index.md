@@ -206,7 +206,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 | D11   | 本 sync の反映先割り付けそのもの (メタ決定。spec で閉じる)                         |
 | 突合① | context/component-design.md (スタイリング節。cva / styles 分割で解消する設計)      |
 | 突合② | context/component-design.md (Storybook 対象節: Section story を公認)               |
-| 突合③ | spec で閉じる (現状経路の追認。実装変更なし)                                       |
+| 突合③ | ADR-0007 更新節 (fonts の読み込み経路の記述訂正)。実装変更なし                     |
 | 突合④ | ADR-0007 更新節 + context/component-design.md (スタイリング節)                     |
 | D12   | ADR-0011 (削除判断と復帰条件) + component-map.md (削除予定の記載)                  |
 | D13   | context/component-design.md (ディレクトリ構成節) + component-map.md (配置列)       |
@@ -572,6 +572,7 @@ flowchart TD
 | [ADR-0011](../../adr/0011-corporate-site-sections-architecture.md) | 「corporate-site の component を section 単位のフラット構成へ再編し、公開面を index.ts + 独自検査で固定する」を起票 (D8〜D10 の判断経緯と突合⑤⑥) <!-- source: clarify D11 (2026-07-26 再決定を反映) --> **反映済** | D11 決定。issue close 後も再編の判断経緯を長期参照するため                                    |
 | ADR-0007                                                           | 「更新」節に `@source` の theme.css 移動 (app entry は import のみ) を追記 <!-- source: clarify 突合④ -->                                                                                                          | レビュー指摘① / 突合④ 決定。lean entry 原則の維持                                             |
 | ADR-0007                                                           | 「更新」節に motion トークン (duration / easing) の tokens.css 追加を追記 <!-- source: track -->                                                                                                                   | D5 決定。「実績ベースの最小定義」(独自トークン最小) に対する新トークン層のため ADR 側にも記録 |
+| ADR-0007                                                           | 「更新」節に fonts の読み込み経路 (BaseLayout の `?url`) の記述訂正を追記 <!-- source: 2026-07-26 レビュー指摘 -->                                                                                                 | 突合③ の正本側での決着。spec 削除後も誤記が残らないようにする                                 |
 
 ## レビュー
 
