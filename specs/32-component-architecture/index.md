@@ -16,7 +16,7 @@
 - Issue: `#32`
 - ステータス: `In Progress`
 - 作成日: 2026-07-25
-- 更新日: 2026-07-26
+- 更新日: 2026-07-27
 - Branch: `feature/32`
 - Owner: Fukuemon
 
@@ -36,6 +36,7 @@
 | 8   | Performance / Security 設計 | レビュー済 | 2026-07-25 | CSS payload / island 方針は現状維持を確認 (D4〜D6 / styles 構成図)            |
 | 9   | Test / Metrics 設計         | レビュー済 | 2026-07-26 | 検査手段を独自スクリプトへ変更 (D10 / D14)。実装後の検証観点も追加            |
 | 10  | 実装分割                    | レビュー済 | 2026-07-26 | P1〜P6 を定義し着手可能と確認。prompts: **差分修正モード**                    |
+| 12  | prompts 生成                | 進行中     | 2026-07-27 | P1〜P6 を生成。prompts gate のレビュー指摘に対応中                            |
 | 11  | レビュー済                  | 完了       | 2026-07-26 | spec-review PASS (4 回目)。prompts 生成 → 実装へ                              |
 
 ## 上位文書整合
@@ -210,8 +211,8 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 | 突合④ | ADR-0007 更新節 + context/component-design.md (スタイリング節)                     |
 | D12   | ADR-0011 (削除判断と復帰条件) + component-map.md (削除予定の記載)                  |
 | D13   | context/component-design.md (ディレクトリ構成節) + component-map.md (配置列)       |
-| D14   | spec で閉じる (実装の wiring 判断。結果は package.json / スクリプトが正)           |
-| D15   | spec で閉じる (依存経路の作業判断。結果は packages/ui の export が正)              |
+| D14   | ADR-0011 決定 5 (配線先と hooks を触らない理由) — 反映済                           |
+| D15   | context/component-design.md スタイリング節 (cva は `@kufu/ui/lib` 経由) — 反映済   |
 | 突合⑤ | ADR-0011 (route 層でなくフラットにした判断根拠として記録)                          |
 | 突合⑥ | ADR-0011 (検査手段の選択根拠として記録) + context/architecture.md (検査方法の記述) |
 | 突合⑦ | spec で閉じる (`.dependency-cruiser.cjs` の旧 app 名バグ修正。コードが正)          |
@@ -533,7 +534,7 @@ flowchart TD
 | `P2_01_corporate-site_sections_migration.md`       | 2     | `corporate-site` | P4     | P1     | features → sections 移動と index.ts 公開面 (D8/D9/D13)     |
 | `P3_01_corporate-site_storybook_catalog.md`        | 3     | `corporate-site` | -      | P2     | autodocs / title 階層 / variant 網羅 (D1〜D3, 突合②)       |
 | `P4_01_ui_styles_layering.md`                      | 4     | `ui`             | P2     | なし   | @source 移動 / motion トークン / styles 分割 (D5/D6/突合④) |
-| `P5_01_corporate-site_cva_consolidation.md`        | 5     | `corporate-site` | -      | P4     | cva 再輸出と集約、components.css 削減 (D4/D7/D15)          |
+| `P5_01_corporate-site_cva_consolidation.md`        | 5     | `corporate-site` | -      | P2, P4 | cva 再輸出と集約、components.css 削減 (D4/D7/D15)          |
 | `P6_01_corporate-site_boundary_check.md`           | 6     | `corporate-site` | -      | P2     | 境界検査スクリプトと gate 配線 (D10/D14/突合⑥⑦)            |
 
 実行順序: P1 → P2 (P4 は P1/P2 と独立に開始可) → P3 / P6 (P2 完了後) → P5 (P2 と P4 の両方が完了後)
@@ -558,11 +559,11 @@ flowchart TD
 
 ### feature doc への影響
 
-| 対象 doc / 節                                          | 変更内容                                                                                                                                         | 理由                                                                           |
-| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `component-map.md` / DesignDoc_corporate-site 設計方針 | sections のフラット構成と section → component / 使用ページの対応表を追記 <!-- source: clarify D8 (2026-07-26 再決定を反映) -->                   | D8 再決定。構造を IA から独立させ、ページ対応は表で持つ                        |
-| `component-map.md`                                     | products の products-category / products-detail 2 分割と各 section の公開面、削除 component (D12) を追記 <!-- source: clarify D9/D12 -->         | D9 / D12 決定。起点 (index.ts) が一意になる                                    |
-| DesignDoc_corporate-site 設計方針                      | `src/styles/` の分割ファイル構成 (entry + base / components 受け皿 / animations / utilities) の corporate-site 適用を追記 <!-- source: track --> | D6 の app 固有適用形。横断規約 (context) と固有構成 (feature doc) の分置 (D11) |
+| 対象 doc / 節                                          | 変更内容                                                                                                                                                                                            | 理由                                                                           |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `component-map.md` / DesignDoc_corporate-site 設計方針 | sections のフラット構成と section → component / 使用ページの対応表を追記 <!-- source: clarify D8 (2026-07-26 再決定を反映) -->                                                                      | D8 再決定。構造を IA から独立させ、ページ対応は表で持つ                        |
+| `component-map.md`                                     | products の products-category / products-detail 2 分割と各 section の公開面、削除 component (D12) を追記 <!-- source: clarify D9/D12 -->                                                            | D9 / D12 決定。起点 (index.ts) が一意になる                                    |
+| DesignDoc_corporate-site 設計方針                      | `src/styles/` の 4 ファイル構成 (entry + base / components 受け皿 / animations) の corporate-site 適用を追記。`utilities.css` は作らず `@layer` も付けない <!-- source: track (2026-07-27 訂正) --> | D6 の app 固有適用形。横断規約 (context) と固有構成 (feature doc) の分置 (D11) |
 
 ### context への影響
 

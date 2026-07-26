@@ -86,7 +86,7 @@ cva 化の過程で見つかった次のものを是正する。**cva 化の対�
 3. `pnpm e2e` で DOM 構造とテキストが変更前と等価であることを確認する
 4. 見た目の等価性を確認する (E2E は視覚回帰を検出しないため):
    - `SectionHeading` / `BusinessFeatureRow` は `pnpm --filter @kufu/corporate-site storybook` で既存 story の各 variant を cva 化前後で目視比較する
-   - `ContactCtaLink` は story を持たないため、`pnpm --filter @kufu/corporate-site dev` で `/` (hero / sm)、`/products` (hero / lg) を開き、CTA リンクの見た目を目視比較する
+   - `ContactCtaLink` は story を持たないため、`pnpm --filter @kufu/corporate-site dev` で `/` (`size="hero"` の Hero 内 CTA と `size="sm"` の SiteHeader 内 CTA) と `/products` (`size="lg"` の 2 箇所) を開き、3 variant すべての見た目を目視比較する
 5. 変更をコミットする (commit message に `Refs #32` を含める)
 
 ## 実装コンテキスト
@@ -101,9 +101,9 @@ cva 化の過程で見つかった次のものを是正する。**cva 化の対�
 
 ## 前提条件
 
-- 完了しているべき phase / 依存 prompt: `P4_01_ui_styles_layering.md`
+- 完了しているべき phase / 依存 prompt: `P2_01_corporate-site_sections_migration.md` と `P4_01_ui_styles_layering.md` の両方
 - 完了後に着手可能になる後続 prompt: なし
-- 必要な repo 状態: `src/styles/` のレイヤ分割が完了していること
+- 必要な repo 状態: sections 構成への移行 (P2) と `src/styles/` の分割 (P4) がともに完了していること
 
 ## 不明点ハンドリング
 

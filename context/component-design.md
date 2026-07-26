@@ -1,6 +1,6 @@
 # Component Design
 
-> 最終更新: 2026-07-26
+> 最終更新: 2026-07-27
 
 Kufu Monorepo の frontend component 設計規約。本 doc を component のディレクトリ構成、命名、責務分割、Storybook 対象の横断正本とする。決定経緯は [spec #6](../specs/6-storybook-component-catalog/index.md) D3 / D4 / D7、sections 再編・公開面・カタログ / スタイル規約は issue #32 ([ADR-0011](../adr/0011-corporate-site-sections-architecture.md))。
 

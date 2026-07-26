@@ -69,10 +69,17 @@ depends_on: [P2_01_corporate-site_sections_migration.md]
 
 ### ステップ 3: バリエーション網羅を補完する
 
-presentation component (Section assembly 以外) の story に、次を追加する:
+**variant を持つ presentation component は次の 3 つだけ** (探索不要):
 
-1. variant を持つ component は、その全組み合わせを args で列挙した story
-2. edge state の story (長文 / 空データ / 最小構成のうち、その component で意味を持つもの)
+| component (P2 移行後のパス)                  | variant 軸 (Props)                 | 現在の story                  |
+| -------------------------------------------- | ---------------------------------- | ----------------------------- |
+| `common/SectionHeading.astro`                | `align?: "start" \| "center"`      | あり                          |
+| `common/ContactCtaLink.astro`                | `size?: "sm" \| "hero" \| "lg"`    | **なし → 新設する**           |
+| `sections/business/BusinessFeatureRow.astro` | `mediaPosition: "left" \| "right"` | あり (MediaRight / MediaLeft) |
+
+1. 上表の 3 component に、variant の全組み合わせを args で列挙した story を用意する (`ContactCtaLink` は story ファイル自体を新設する)
+2. すべての presentation component に edge state の story を追加する (長文 / 空データ / 最小構成のうち、その component で意味を持つもの)。データ表示のみで variant を持たない component (`FeaturedCategoryCard` / `ProductsSidebarNav` 等) は edge state のみでよい
+3. `BaseLayout.astro` は layout であり presentation component ではないため story を作らない
 
 Section story は「ページ文脈での確認入口」として代表ケースのみでよい (網羅対象外)。fixture は story 内に閉じ、本番 content / secret / 外部 API call を持ち込まない。
 
@@ -114,12 +121,14 @@ Section story は「ページ文脈での確認入口」として代表ケース
 
 - autodocs のグローバル適用の確認 (既に設定済みのため通常は変更不要)
 - 全 story の title 階層の是正
-- presentation component の variant 全列挙 story と edge state story の追加
+- 上表 3 component の variant 全列挙 story の追加 (`ContactCtaLink` は story 新設)
+- presentation component への edge state story の追加
 
 ### 実装しない範囲
 
 - Storybook play 関数による interaction テスト (#33 testing-strategy の責務)
 - component 実装の変更 (props 追加 / variant 追加は行わない。既存 variant を story で列挙するだけ)
+- `BaseLayout.astro` の story 作成 (layout であり presentation component ではない)
 - MDX 概要ページの新規作成 (D3 により必須としない)
 - cva 化 (P5 の責務)
 
@@ -153,7 +162,8 @@ spec の D1〜D3 / 突合② より抜粋:
 - [ ] 全ステップを順序通りに実行した
 - [ ] 両 Storybook の preview で autodocs がグローバル適用されていることを確認した (既存設定の追認。変更不要)
 - [ ] 全 story の title がディレクトリ構造と 1:1 になっている
-- [ ] presentation component に variant 全列挙 story と edge state story がある
+- [ ] 上表 3 component に variant 全列挙 story がある (`ContactCtaLink` の story を新設した)
+- [ ] presentation component に edge state story がある
 - [ ] Section story の fixture が story 内に閉じている
 - [ ] 各ステップで diff レビューを実施し、指摘を対応した
 - [ ] `## 検証コマンド` がすべてパスする

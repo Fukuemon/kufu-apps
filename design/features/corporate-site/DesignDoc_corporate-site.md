@@ -44,7 +44,7 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 - 共通 UI は利用箇所が複数 app / section にまたがる時点で `packages/ui` へ移す ([architecture.md](../../../context/architecture.md))。
 - Phase 1 では `packages/ui` の skeleton を置くが、コーポレートサイト内で閉じる UI は引き続き `apps/corporate-site` に置く。
 - component は `components/sections/<section>/` の 1 階層フラット構成に置き、各 section の公開面は `index.ts` 再輸出のみとする (#32 — [ADR-0011](../../../adr/0011-corporate-site-sections-architecture.md))。section 名はドメインで付け、ページ対応は [component-map.md](component-map.md) の表を正本とする (ディレクトリ構造には持たせない)。
-- `src/styles/` はレイヤ別に分割し `globals.css` は `@import` のみの entry とする: `base.css` / `components.css` (既存生 CSS の移行受け皿。cva / utility 移行で逐次削減し削除目標) / `animations.css` (site 固有演出の keyframes) / `utilities.css`。横断のスタイル規約 (cva 基準 / motion トークン境界) は [component-design.md](../../../context/component-design.md) を正本とする。
+- `src/styles/` は 4 ファイルに分割し `globals.css` は `@import` のみの entry とする: `base.css` (`:root` と要素セレクタの base) / `components.css` (クラスセレクタ群。cva / utility 移行で逐次削減し削除目標) / `animations.css` (site 固有演出の keyframes)。`utilities.css` は `@utility` が必要になるまで作らず、既存 CSS を `@layer` で包まない (優先順位が変わるため)。横断のスタイル規約 (cva 基準 / motion トークン境界) は [component-design.md](../../../context/component-design.md) を正本とする。
 - E2E はコーポレートサイトの表示、主要導線、問い合わせ導線を優先し、実行入口は root `playwright.config.ts` と `e2e/` 配下に置く ([testing.md](../../../context/testing.md))。
 
 ### データ / コンテンツモデル

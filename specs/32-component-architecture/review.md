@@ -126,3 +126,16 @@ Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
 - **blocking**: メタ情報の同期漏れ (4 回目 PASS と prompts gate の記録が review.md に無い) → 本ファイルに追記
 - **blocking**: D14 / D15 の反映先判定が「spec で閉じる」のまま → ADR-0011 決定 5 / `context/component-design.md` へ反映済みの判定に更新し、変更点テーブルにも行を追加
 - should fix: prompt 表の P5 依存が stale、P5 の variant 表の Markdown 崩れ → 修正
+
+## Review 2026-07-27 (prompts gate / 3 回目)
+
+Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
+
+前回の 4 ファイル / `@layer` なし方針が feature doc に届いておらず、判定・メタ情報の更新も一部が実ファイルに反映されていなかった (置換失敗の取りこぼし)。
+
+- **blocking**: `DesignDoc_corporate-site.md` の styles 記述が `utilities.css` を含む 4 種列挙のまま → 4 ファイル構成 + `utilities.css` を作らない / `@layer` なしへ追従
+- **blocking**: D14 / D15 の反映先判定が「spec で閉じる」のまま (前回の更新が実際には適用されていなかった) → ADR-0011 決定 5 / `context/component-design.md` を指す判定へ更新
+- **blocking**: メタ情報未同期 (spec の更新日、prompts phase 行、変更履歴、`context/component-design.md` の最終更新日) → すべて 2026-07-27 へ同期し、設計フェーズ状況に prompts 行を追加
+- **should fix**: prompt 表と P5 の前提条件の依存が P4 のみ → `P2 / P4` へ統一
+- **should fix**: P5 の目視確認ページの variant 表記が実装と相違 (`/products` に `hero` は無い) → `/` は hero + sm、`/products` は lg × 2 と訂正
+- **should fix**: P3 の variant 網羅対象が未列挙 → 対象 3 component を variant 軸と現在の story 有無つきで表にし、`ContactCtaLink` の story 新設を明示。`BaseLayout` は layout のため対象外と明記
