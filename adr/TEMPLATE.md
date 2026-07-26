@@ -39,4 +39,4 @@ YYYY-MM-DD
 ## 関連ドキュメント
 
 - `design/DesignDoc.md`:
-- `specs/...`:
+- issue: #N (決定経緯)

@@ -1,6 +1,6 @@
 # Codebase Architecture
 
-> 最終更新: 2026-06-18
+> 最終更新: 2026-07-26
 
 Kufu Monorepo の package / runtime boundary と依存方向。全体像 (system landscape, モジュール責務) は [design/DesignDoc.md](../design/DesignDoc.md) を正本とし、本書はコードベースの境界規約を扱う。
 
@@ -28,7 +28,7 @@ apps/cms ─────┼─→ packages/ui ─→ packages/config
 
 ### デザインシステム資産の正本と昇格境界
 
-colocation 第一原則の適用を資産種別ごとに定める (本テーブルを正本とする。決定経緯: [spec #13](../specs/13-design-system-foundation/index.md) D6 / [ADR-0007](../adr/0007-design-token-architecture.md))。
+colocation 第一原則の適用を資産種別ごとに定める (本テーブルを正本とする。決定経緯: [issue #13](https://github.com/Fukuemon/kufu-apps/issues/13) / [ADR-0007](../adr/0007-design-token-architecture.md))。
 
 | 資産種別                     | 正本                              | 昇格条件                                      |
 | ---------------------------- | --------------------------------- | --------------------------------------------- |
@@ -39,7 +39,7 @@ colocation 第一原則の適用を資産種別ごとに定める (本テーブ�
 
 デザインシステム資産 (トークン / フォント / stylesheet) は colocation 原則の例外であり、最初から `packages/ui` を正本とする。UI コンポーネント / utility は従来の複数 consumer ルールに従う。
 
-issue #6 の初期 Storybook catalog では、Pencil の `GenericComponents` 相当を shared component 候補として `packages/ui` に置く。corporate-site 固有 component は `apps/corporate-site` 内に colocation し、app-local Storybook で確認する。
+汎用性の高い component は shared component 候補として `packages/ui` に置き、shared catalog の Storybook に掲載する。corporate-site 固有 component は `apps/corporate-site` 内に colocation し、app-local Storybook で確認する。
 
 ## Runtime Boundary
 
@@ -53,7 +53,7 @@ Astro は React/shadcn コンポーネントもビルド時に静的 HTML へ描
 
 - **表示専用 UI** (Button-as-link / Card / Badge / Tag / section 等) は `@kufu/ui` の shadcn コンポーネントを `.astro` 内で **`client:*` なし**で使う (JS ゼロ)。`.astro` で再実装せず `@kufu/ui` を単一正本に保つ。
 - **`@astrojs/react` は導入してよい** (island が無ければランタイムは出荷されない)。
-- **`client:*` island はインタラクションに限定**: モバイルナビ開閉、問い合わせフォーム、Radix インタラクティブ primitive (Dialog / Dropdown / Popover / Tooltip / Accordion / Tabs / Select 等)。
+- **`client:*` island はインタラクションに限定**: 問い合わせフォーム、Radix インタラクティブ primitive (Dialog / Dropdown / Popover / Tooltip / Accordion / Tabs / Select 等)。モバイルナビ開閉のように素の script で足りるものは `.astro` + 最小 script で実装し island 化しない ([ADR-0008](../adr/0008-astro-react-island-policy.md) 決定 3 の更新)。
 - island の既定ディレクティブは `client:visible` / `client:idle`。`client:load` は above-the-fold で即時操作が要る時のみ。
 - **ハードルール**: インタラクティブ Radix primitive を `client:*` なしで静的描画しない (見た目だけ出て動かないため必ず island 化)。
 - `client:*` 総数は [design/DesignDoc.md](../design/DesignDoc.md) の Why/What 節にあるガードレール「Unnecessary Client JS Count」で監視する。

@@ -1,6 +1,6 @@
 # Engineering Conventions
 
-> 最終更新: 2026-06-18
+> 最終更新: 2026-07-26
 
 shared config / root task / repository quality gate の境界規約。toolchain 一覧は [toolchain.md](toolchain.md)。
 
@@ -18,6 +18,7 @@ shared config / root task / repository quality gate の境界規約。toolchain 
 
 - workspace task は root script から `turbo run` で束ねる。
 - `dev`、`dev:corporate`、`build`、`lint`、`typecheck`、`test` は `turbo run` を使う。
+- `typecheck` の実体は各 workspace が持ち root は集約のみ (corporate-site は `astro check`、packages は `tsc --noEmit`)。TypeScript project references は workspace が増えるまで導入しない。
 - `format`、`e2e`、`knip`、`depcruise` は root 管理ツールとして直実行する。
 - `e2e`、`knip`、`dependency-cruiser` は package task ではなく repository task として扱う。
 - Storybook 起動導線は root から対象 package / app へ委譲する: `storybook` は shared / app-local を並列起動し、`storybook:ui` は `packages/ui`、`storybook:corporate` は `apps/corporate-site` を対象にする。
@@ -53,6 +54,15 @@ sequenceDiagram
         Git-->>Dev: 失敗内容 (修正してから再 commit)
     end
 ```
+
+## Docs Closeout Gate (手動)
+
+`pnpm check:specs` は close 済み issue の spec ディレクトリが `specs/` に残っていないかを検査する。closeout (issue close 時の spec 削除) の実施を担保する gate であり、判断根拠は [ADR-0011](../adr/0011-specs-closeout-enforcement.md)。
+
+- 実行タイミング: **issue close 直後** と、文書整理の PR。close 前に実行しても対象 issue はまだ OPEN で、その spec の消し忘れは検出できない
+- `gh` CLI で issue state を照会するため、オフライン時・commit 速度への影響を避けて **lefthook には組み込まない**
+- CI への常設化は CI パイプライン方針 (issue #12) へ委譲する
+- 残存を検出したら [specs/README.md](../specs/README.md) の清算手順に従う
 
 ## Repository Analysis Contract
 

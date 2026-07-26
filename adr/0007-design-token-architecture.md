@@ -24,7 +24,7 @@
    - **追加した独自 semantic (`--primary-soft` 等) を `bg-*` 等のユーティリティで使うには `@theme inline` への追加マッピングが必要** (生 CSS の `var()` 直書きなら不要)。ユーティリティ提供は #10 の実需に応じて行う。
 3. **ダーク面は inverse スコープ**: `.dark` テーマでなく、semantic 変数を上書きするラッパー class (案: `.surface-inverse`) で section 単位のダーク面を表現する。class 内で `--background` / `--foreground` 等を上書きすると、**そのスコープ内の shadcn コンポーネントもカスケードで自動的にダーク面の見た目へ再テーマされる** (`.dark` と同じ機構)。名前を保って値だけ差し替える設計の利点。
 4. **3 entry 配信**: `@kufu/ui/tokens.css` (CSS 変数のみ) / `@kufu/ui/fonts.css` (fontsource font-face) / `@kufu/ui/styles.css` (全量エントリ = `globals.css`。tokens + fonts + Tailwind theme + shadcn 層) に分離する。Astro (corporate-site) は `tokens.css` + `fonts.css` のみ、React app (将来の cms) は `styles.css` を import する。**(2026-06-22 改訂 — 下記「更新」参照)** corporate-site は全量 `styles.css` は取り込まないまま、app-local に lean な Tailwind v4 entry を立てて utility を使えるようにした。不採用にしたのは tw-animate-css / shadcn 層を含む「全量エントリの混入」であり、lean Tailwind 自体ではない。
-5. **実績ベースの最小定義**: type scale / spacing / shadow / breakpoint は独自トークンを作らず Tailwind 標準を使う (spacing は 4px グリッド + 推奨リズム 12/16/24/32/48/80 をガイド文書化)。radius は shadcn `--radius` に一本化する。基準値は `0.25rem` (4px) とし、Button 8px / Tag 4px など component 固有値は `.pen` と `@kufu/ui` の対応する component variant で管理する。
+5. **実績ベースの最小定義**: type scale / spacing / shadow / breakpoint は独自トークンを作らず Tailwind 標準を使う (spacing は 4px グリッド + 推奨リズム 12/16/24/32/48/80 をガイド文書化)。radius は shadcn `--radius` に一本化する。基準値は `0.25rem` (4px) とし、Button 8px / Tag 4px など component 固有値は `@kufu/ui` の component variant で管理する (当初は `.pen` との 二重管理だったが、[ADR-0012](0012-design-source-of-truth-implementation.md) で `.pen` を廃止)。
 
 ## 代替案
 
@@ -50,20 +50,26 @@
 
 ### 影響範囲
 
-- `packages/ui` への影響: `globals.css` の再設計 (tokens.css / fonts.css 分離)、fontsource 依存追加、旧トークン / TS export の削除 (実装は spec #13 の実装分割)
+- `packages/ui` への影響: `globals.css` の再設計 (tokens.css / fonts.css 分離)、fontsource 依存追加、旧トークン / TS export の削除 (実装は issue #13 の実装分割)
 - `apps/corporate-site` への影響: import を `tokens.css` + `fonts.css` へ移行、`--kufu-font-body` → `--font-sans` 置換 (本実装は #10)
-- `design/features/corporate-site/index.pen` への影響: variables の semantic 名への rename と再取り込み
+- `design/features/corporate-site/index.pen` への影響: variables の semantic 名への rename と再取り込み (決定時の想定。`.pen` は [ADR-0012](0012-design-source-of-truth-implementation.md) で廃止したため本項は不要になった)
 - `e2e` への影響: なし (トークンガード検査の仕組み化は実装側で検討)
 
 ## 更新
 
-### 2026-07-15: radius 基準値を 4px へ改訂 (spec #10)
+### 2026-07-26: `.pen` 廃止に伴う参照の整理 (issue #31)
+
+- **背景**: 本 ADR は `.pen` (Pencil) をデザイン正本とする前提で、トークンの一方向同期 (`packages/ui` → Pencil) と variables の rename を定めていた。
+- **決定**: [ADR-0012](0012-design-source-of-truth-implementation.md) によりデザイン正本は実装 (コード + Storybook) となり `.pen` は廃止された。本 ADR の 2 層構造・3 entry 配信・semantic 語彙は有効なまま、`.pen` 同期に関する記述は歴史的経緯として読む。
+- **影響**: トークン正本は引き続き `packages/ui/src/styles/tokens.css`。消費側は実装のみとなり、デザインツールへの同期は不要になった。
+
+### 2026-07-15: radius 基準値を 4px へ改訂 (issue #10)
 
 - **背景**: 2026-06-12 時点の `.pen` は全面直角だったが、その後の #6 で Button 8px / Tag 4px がデザイン正本へ追加され、#10 の実装でも主要面に4pxの控えめな角丸を採用した。`tokens.css` が0pxのまま app側で値を上書きすると、トークン正本が分裂する。
 - **決定**: `tokens.css` の `--radius` を4pxへ変更し、app側の同名上書きを削除する。4pxを共通基準とし、Button 8pxなどの例外はcomponent variantが所有する。
 - **影響**: `--radius-*` 派生値を使う共有UIにも新しい基準値が適用される。corporate-siteの現行表示は維持される。
 
-### 2026-06-22: corporate-site に lean app-local Tailwind v4 を採用 (spec #6)
+### 2026-06-22: corporate-site に lean app-local Tailwind v4 を採用 (issue #6)
 
 - **背景**: corporate-site の component が scoped `<style>` + `var(--token)` で書かれ、Tailwind を使う `packages/ui` (shadcn) とスタイル記法が分裂していた。決定 2 / 5 で「utility 提供は #10 の実需に応じて」「spacing / type scale は Tailwind 標準を使う」としていた前提を、Storybook catalog の component (#6) を Tailwind へ統一する形で具体化する。
 - **決定**: corporate-site に **lean な Tailwind v4 entry** を立てる。`apps/corporate-site/src/styles/globals.css` で `@import "tailwindcss"` + `@kufu/ui/tokens.css` + `@kufu/ui/fonts.css` を読み込み、token → utility の `@theme inline` 写像は新設の **`@kufu/ui/theme.css`** に一元化し (4 entry 目)、`styles.css` (全量) と corporate-site の lean entry の双方が `@import` する。app 固有なのは document-level base。Tailwind の走査は Vite plugin の module graph に任せ、app-local `@source` は置かない。Tailwind v4 は **`@tailwindcss/vite`** で適用し、Astro は `astro.config.mjs` の `vite.plugins` に設定する。Storybook は `@storybook-astro/framework` が Astro config の Vite plugin を自動ロードする。PostCSS config は使わない。Vite 8 の rolldown resolver が `tsconfigPaths` 欠落で落ちるため、`astro.config.mjs` の `vite.resolve.tsconfigPaths` を `true` にする。
@@ -73,7 +79,7 @@
 
 ## 関連チケット / PR
 
-- issue #13 (デザインシステム基盤。決定経緯: [specs/13-design-system-foundation/](../specs/13-design-system-foundation/index.md) 論点 D1〜D7)
+- [issue #13](https://github.com/Fukuemon/kufu-apps/issues/13): デザインシステム基盤の決定経緯
 - issue #17 (論点 D5 で `.pen` パレット昇格を #13 へ移管した経緯)
 - issue #10 (corporate-site 本体実装。本トークン体系を consume)
 - issue #6 (Storybook。本トークン体系を前提とする)

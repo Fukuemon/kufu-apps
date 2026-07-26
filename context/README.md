@@ -1,6 +1,6 @@
 # Engineering Context Library
 
-> 最終更新: 2026-07-04
+> 最終更新: 2026-07-26
 
 `context/` は **技術スタック別のコード規約・コードベースアーキテクチャ・運用契約** を集約する永続ナレッジ層である。Feature を問わず横断する "How" を置き、Design Doc / spec から参照する。
 
@@ -25,7 +25,7 @@
 | [engineering.md](engineering.md)           | root task boundary, shared config boundary, repository quality gate                |
 | [testing.md](testing.md)                   | E2E runtime contract, unit test 規約                                               |
 | [infrastructure.md](infrastructure.md)     | infra / deployment / environment / operations / security 契約                      |
-| [design-workflow.md](design-workflow.md)   | デザイン制作の段階別ツール運用 (Claude Design → Pencil.dev → AI Agent)             |
+| [design-workflow.md](design-workflow.md)   | デザイン制作の運用 (Claude Design → 実装。正本は実装 + Storybook)                  |
 
 ## Producer / Consumer 契約
 
