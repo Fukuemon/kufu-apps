@@ -608,6 +608,7 @@ flowchart TD
 | 2026-07-27 | NEEDS_WORK               | (prompts gate 2 回目) 前回対応が完了条件にしか入っておらず本文・spec・context が未追従。P5 の目視確認が ContactCtaLink の story 不在で達成不能。メタ同期漏れ / D14・D15 の判定 stale                                               | 全件対応。再レビューへ                                                                       |
 | 2026-07-27 | NEEDS_WORK               | (prompts gate 3 回目) feature doc の styles 記述が未追従 / D14・D15 判定とメタ情報の更新が実ファイルに未適用 / P3 の variant 対象が未列挙                                                                                          | 全件対応。再レビューへ                                                                       |
 | 2026-07-27 | NEEDS_WORK               | (prompts gate 4 回目) 変更履歴と feature doc メタが未適用 (置換失敗の再発) / SiteFooter の variant 見落とし / P3・P5 の実行順矛盾 / P4 の計測順序                                                                                  | 全件対応 (行指定で適用し実ファイルを確認)。再レビューへ                                      |
+| 2026-07-27 | NEEDS_WORK               | (prompts gate 5 回目) SiteFooter の到達不能三項が 2 箇所 (1 箇所と誤記) / SectionHeading の level と imageLoading の扱いが未記載 / P5 の target 注記                                                                               | 全件対応。再レビューへ                                                                       |
 
 ## 変更履歴
 

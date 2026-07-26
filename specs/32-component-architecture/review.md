@@ -152,3 +152,13 @@ Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
 - **should fix**: P3 (ContactCtaLink の story 新設) と P5 (story が無い前提で実ページ確認) が実行順によって矛盾 → P5 を「story があれば story、無ければ実ページ」の条件付きに変更
 - **should fix**: P4 の CSS ベースライン計測がステップ最終にあり分割後には実行できない → ステップ 0 (前提確認) へ移動
 - **should fix**: P4 の `target: ui` と実作業の主体 (corporate-site) の乖離 → 「変更する repo 領域」に命名規則上の制約と実際の主体を明記
+
+## Review 2026-07-27 (prompts gate / 5 回目)
+
+Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
+
+前回 blocking / should fix の反映はすべて実ファイルで確認された。新たに検出された 3 件に対応:
+
+- **blocking (事実誤り)**: P5 が `SiteFooter` の到達不能な三項を「1 箇所のみ」と断定していたが、実際は 2 箇所 (`SiteFooter.astro:39` の grid-cols class と `:53` の `isFull ? (<nav>…) : null`) → 両方を列挙し、それぞれの整理方法を明記
+- **should fix**: P3 の variant 表が `SectionHeading` の `level?: 1 | 2 | 3` と `BusinessFeatureRow` の `imageLoading?: "eager" | "lazy"` の扱いを欠いていた → 「variant 網羅の対象外とする Props」として理由つきで明記 (level は見出しタグの意味論的指定、imageLoading は描画結果に影響しない)
+- **should fix**: P5 の frontmatter `target: corporate-site` と実作業 (ステップ 1 は packages/ui) の乖離 → P4 と同じ形式で「変更する repo 領域」に注記

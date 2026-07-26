@@ -78,6 +78,11 @@ depends_on: [P2_01_corporate-site_sections_migration.md]
 | `common/SiteFooter.astro`                    | `variant?: "full" \| "compact"`    | あり (Compact / Full を網羅済み。追加不要) |
 | `sections/business/BusinessFeatureRow.astro` | `mediaPosition: "left" \| "right"` | あり (MediaRight / MediaLeft)              |
 
+**variant 網羅の対象外とする Props** (視覚 variant ではないため、全組み合わせ story を作らない):
+
+- `SectionHeading.astro` の `level?: 1 | 2 | 3`: 見出しタグ (h1/h2/h3) を切り替える意味論的な指定で、見た目の variant ではない
+- `BusinessFeatureRow.astro` の `imageLoading?: "eager" | "lazy"`: 画像の読み込み方の指定で、描画結果は変わらない
+
 1. 上表の 4 component に、variant の全組み合わせを args で列挙した story を用意する (`ContactCtaLink` は story ファイル自体を新設する。`SiteFooter` は既に網羅済みのため title 修正のみ)
 2. すべての presentation component に edge state の story を追加する (長文 / 空データ / 最小構成のうち、その component で意味を持つもの)。データ表示のみで variant を持たない component (`FeaturedCategoryCard` / `ProductsSidebarNav` 等) は edge state のみでよい
 3. `BaseLayout.astro` は layout であり presentation component ではないため story を作らない

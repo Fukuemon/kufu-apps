@@ -65,7 +65,9 @@ depends_on:
 
 1. 上表の 3 component で `@kufu/ui/lib` の `cva` を使い variants を定義し、frontmatter の条件付き class 組み立てを置換する
 2. 次の component は条件分岐を持つが **cva 化しない**:
-   - `common/SiteFooter.astro`: `variant?: "full" | "compact"` を持つが、class 文字列ではなく **markup 構造ごと三項演算子で分岐**しており cva (class 変種の管理) では表現できない。なお full ブランチ内の `isFull ? "md:grid-cols-[1fr_1.2fr_1fr]" : "md:grid-cols-[1fr_1fr]"` は `isFull` が常に true で到達不能なため、この 1 箇所のみ三項を除去して固定 class にする (絶対ルールの「dead code を残さない」)
+   - `common/SiteFooter.astro`: `variant?: "full" | "compact"` を持つが、class 文字列ではなく **markup 構造ごと三項演算子で分岐** (`!isFull ? (...) : (...)`) しており、cva (class 変種の管理) では表現できない。ただし **`!isFull` の else 側 (= `isFull` が常に true) の内部にある 2 箇所の三項は到達不能**なので、dead code として整理する (絶対ルールの「dead code を残さない」):
+     - `isFull ? "md:grid-cols-[1fr_1.2fr_1fr]" : "md:grid-cols-[1fr_1fr]"` → 固定 class にする
+     - `isFull ? (<nav>…</nav>) : null` → 三項を外して `<nav>` を直接置く
    - `common/BaseLayout.astro` / `SiteHeader.astro` / `sections/products-category/FeaturedCategoryCard.astro` / `sections/products-detail/ProductsDetailSection.astro` / `sections/company/CompanySection.astro`: 視覚 variant ではなく表示有無・データ有無の分岐のため対象外 (D4 の「variant を持つ component のみ」)
 3. `components.css` にある当該 component 由来のクラスセレクタを、cva の variant または Tailwind utility へ移す
 4. 移し終えたクラスセレクタを `components.css` から削除する
@@ -117,7 +119,7 @@ cva 化の過程で見つかった次のものを是正する。**cva 化の対�
 
 ### 変更する repo 領域
 
-`packages/ui/src/lib/` (cva 再輸出) と `apps/corporate-site/src/` (component / styles / content)
+`packages/ui/src/lib/` (cva 再輸出) と `apps/corporate-site/src/` (component / styles / content)。frontmatter の `target` は命名規則上 1 つしか書けないため `corporate-site` としているが、ステップ 1 は `packages/ui` 側の変更である (spec の実装分割表では P5 を `ui` + `corporate-site` としている)
 
 ### 実装する範囲
 
@@ -173,7 +175,7 @@ spec の D4 / D7 / D15 / 突合① より抜粋:
 - [ ] 対象外と明記した component に cva を持ち込んでいない (`SiteFooter` は cva 化せず、到達不能な三項の除去のみ)
 - [ ] DOM 構造とテキストが変更前と等価である (E2E パス)
 - [ ] `SectionHeading` / `BusinessFeatureRow` の見た目を story で、`ContactCtaLink` の見た目を story または実ページで目視確認した
-- [ ] `SiteFooter` の到達不能な三項 (full ブランチ内の `isFull ? ... : ...`) を固定 class に整理した
+- [ ] `SiteFooter` の到達不能な三項 2 箇所 (grid-cols の class / `<nav>` の描画) を整理した
 - [ ] 各ステップで diff レビューを実施し、指摘を対応した
 - [ ] `## 検証コマンド` がすべてパスする
 - [ ] 変更を `Refs #32` 付きでコミットした
