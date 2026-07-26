@@ -1,6 +1,6 @@
 # AI Agents Registry
 
-> 最終更新: 2026-06-16
+> 最終更新: 2026-07-26
 
 非対話で呼び出せる CLI エージェント (Codex / Claude / Cursor 等) の **唯一の正本**。`agent-orchestrate` / `multi-agent-review` skill は、CLI 名・モデル・flag をハードコードせず本ファイルを読む。スキーマの説明は `agent-orchestrate/references/agent-registry-schema.md` を参照する。
 
@@ -8,6 +8,7 @@
 記入ガイド:
 - 各エージェントは 1 つの `### <id>` ブロックで定義する。
 - `invocation` はプロンプトを `$PROMPT` プレースホルダで受ける **非対話** コマンド。実行前に各 CLI の `--help` で flag を確定し、確認できたら `verified: yes` にする。
+- CLI は **PATH 上のコマンド名で書く**。個人 PC の絶対パス (`/Users/<name>/...` 等) を埋め込まない (CLAUDE.md の Security)。インストール先が PATH に無い場合は各自の shell 設定で通す。
 - `limit_patterns` は exit code か stdout/stderr に現れる文字列。token/rate 上限を検知するために使う。
 - 値を変えたら先頭の「最終更新」を更新する。
 -->
@@ -27,8 +28,8 @@
 
 - `enabled`: yes
 - `model`: (CLI 既定)
-- `invocation`: `/Users/fuku079/.local/bin/claude -p "$PROMPT" --output-format text`
-- `verified`: yes <!-- 2026-06-16 `claude --help` を確認し、`claude -p` は非対話で起動して auth check (`Not logged in`) まで到達 -->
+- `invocation`: `claude -p "$PROMPT" --output-format text`
+- `verified`: yes <!-- 2026-07-26 PATH 上の `claude -p` で非対話起動を確認 (#31 のレビュー実行時) -->
 - `limit_patterns`: `usage limit`, `rate limit`, `429`
 - `auth_note`: ログイン済み or `ANTHROPIC_API_KEY`
 - `timeout`: 600
@@ -37,8 +38,8 @@
 
 - `enabled`: yes
 - `model`: (CLI 既定)
-- `invocation`: `/Applications/Codex.app/Contents/Resources/codex exec "$PROMPT"`
-- `verified`: yes <!-- 2026-06-16 `codex exec --help` と `codex exec` の非対話起動を確認 -->
+- `invocation`: `codex exec "$PROMPT"`
+- `verified`: yes <!-- 2026-07-26 PATH 上の `codex exec` で非対話起動を確認 (#31 のレビュー実行時。旧 invocation の /Applications/Codex.app パスは実在せず exit 127 だった) -->
 - `limit_patterns`: `rate limit`, `quota`, `usage limit`, `429`
 - `auth_note`: `codex login` 済み or API key
 - `timeout`: 600
@@ -47,8 +48,8 @@
 
 - `enabled`: yes
 - `model`: `composer-2.5`
-- `invocation`: `/Users/fuku079/.local/bin/agent --print -f --model composer-2.5 --output-format text "$PROMPT"`
-- `verified`: yes <!-- 2026-06-16 `scripts/fix-cursor-cli.sh` 実行後に `agent --help` と `agent --print -f` の非対話起動を確認 -->
+- `invocation`: `agent --print -f --model composer-2.5 --output-format text "$PROMPT"`
+- `verified`: yes <!-- 2026-07-26 `scripts/fix-cursor-cli.sh` 実行後、PATH 上の `agent --print -f` で非対話起動を確認 (#31 のレビュー実行時) -->
 - `limit_patterns`: `rate limit`, `usage limit`, `quota`, `429`
 - `auth_note`: `cursor` / `agent` CLI でログイン済み
 - `timeout`: 600
