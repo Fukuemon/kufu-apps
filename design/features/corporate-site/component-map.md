@@ -39,11 +39,11 @@ section assembly は page 文脈を保持する。実装では content 層 (`con
 
 ## CorporateSiteComponents
 
-app-local Storybook の variant 網羅対象は presentation component (`<Component>.astro`、`Presentation` suffix なし)。component とその story は section dir 直下 (横断 component は `common/<Component>/`) に並べる。Storybook title はディレクトリと 1:1 (`Sections/<Section>/<Component>` / `Common/<Component>`)。
+app-local Storybook の variant 網羅対象は presentation component (`<Component>.astro`、`Presentation` suffix なし)。component とその story は section dir 直下 (横断 component は `common/` 直下) にフラットに並べる。Storybook title はディレクトリと 1:1 (`Sections/<Section>/<Component>` / `Common/<Component>`)。
 
 | `.pen` component               | 実装 presentation            | 配置 (sections 再編後)                                           | Storybook 階層                                        |
 | ------------------------------ | ---------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------- |
-| `SectionHeading`               | `SectionHeading.astro`       | `apps/corporate-site/src/components/common/SectionHeading/`      | `Common/SectionHeading`                               |
+| `SectionHeading`               | `SectionHeading.astro`       | `apps/corporate-site/src/components/common/`                     | `Common/SectionHeading`                               |
 | `FeaturedCategoryCard`         | `FeaturedCategoryCard.astro` | `apps/corporate-site/src/components/sections/products-category/` | `Sections/ProductsCategory/FeaturedCategoryCard`      |
 | `BusinessFeatureRowMediaRight` | `BusinessFeatureRow.astro`   | `apps/corporate-site/src/components/sections/business/`          | `Sections/Business/BusinessFeatureRow` (`MediaRight`) |
 | `BusinessFeatureRowMediaLeft`  | `BusinessFeatureRow.astro`   | `apps/corporate-site/src/components/sections/business/`          | `Sections/Business/BusinessFeatureRow` (`MediaLeft`)  |

@@ -68,3 +68,15 @@ D8 (route 層 → フラット) / D10 (depcruise → 独自スクリプト) の�
 
 - component-map.md の section → component 対応は実 import と一致 (レビュアーが実装ファイルで検証)
 - section 間 import は現状ゼロで、D10 の依存方向規約は現行実装と両立する
+
+## Review 2026-07-26 (2 回目 / 指摘対応後)
+
+Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
+
+blocking だった指摘 3 (source-references.ts) は論点テーブル / 解決済み / 実装分割 / 図の 4 箇所すべてで訂正済みと確認され、同種の事実誤認も他に検出されなかった。残った指摘への対応:
+
+- **A. `common/` の配置が spec 決定 (移動なし = フラット) と context 正本 (`common/<Component>/`) で矛盾** → D13 として決定を記録し、**フラットを正**として context / component-map を追従 (実装は `packages/ui` も含めフラットで統一されているため移動は発生しない)
+- **B. 実装対象テーブルの責務欄が「(設計のみ)」のまま** → スコープ拡大に追従して修正
+- **C-1. `context/design-workflow.md` の最終更新日が未同期** → 2026-07-26 へ更新
+- **C-2. spec 内に残る「実施 issue へ引き継ぐ」系 stale 3 箇所** (突合④の動作検証 / props 変更 / Security 節) → 修正
+- **C-3. 未確定事項の内訳の件数 stale** → D1〜D12 + 突合 7 件へ修正

@@ -88,7 +88,7 @@ spec × 現行実装 × ADR × context の突合で検出した食い違いと�
 | 1   | `globals.css:5-799` に約 105 クラスセレクタの生 CSS + @keyframes 2 件 (規約は Tailwind utility / lean entry)                                                                                                                                                                | **規約を正とする**。実装側の乖離として扱い、D4 (cva 集約) / D6 (分割) で解消設計する                                                                                                                                                                                                                |
 | 2   | section assembly の story 6 件が存在 (規約は「原則 story 対象にしない」)                                                                                                                                                                                                    | **保留**。D1〜D3 のカタログ規約検討に「section story を含めるか」を含めて決める                                                                                                                                                                                                                     |
 | 3   | fonts.css を `BaseLayout.astro:8` の `?url` 参照で読み込み (ADR-0007 記載は import 経路)                                                                                                                                                                                    | **記録のみ**。意図的な最適化とみなし、D6 の entry 設計で現状経路を前提に含める                                                                                                                                                                                                                      |
-| 4   | `globals.css:7-8` に `@source` 2 行 (規約は「app-local `@source` は置かない」)。目的は `@kufu/ui` の workspace ソース走査で、規約が想定した app 自身の走査指定とは異なる                                                                                                    | **規約を正とし、`@source` は `@kufu/ui/theme.css` へ移動** (2026-07-25, レビュー指摘① 対応)。`@source` のパスは記述ファイル基準の相対解決のため theme.css 側で ui 自身の src を指せば全 consumer が自動で ui の class を生成できる。app entry は import のみに戻す。動作検証は実施 issue へ引き継ぐ |
+| 4   | `globals.css:7-8` に `@source` 2 行 (規約は「app-local `@source` は置かない」)。目的は `@kufu/ui` の workspace ソース走査で、規約が想定した app 自身の走査指定とは異なる                                                                                                    | **規約を正とし、`@source` は `@kufu/ui/theme.css` へ移動** (2026-07-25, レビュー指摘① 対応)。`@source` のパスは記述ファイル基準の相対解決のため theme.css 側で ui 自身の src を指せば全 consumer が自動で ui の class を生成できる。app entry は import のみに戻す。動作検証は本 issue の P4 で行う |
 | 5   | `pages/index.astro` (`/`) が `ProductsCategorySection` を import しており、products ドメインの section が home route の構成要素になっている。また `ProductsHero` は `/products` の独立 section でなく `ProductsDetailSection` の内部 component                              | **実装を正とする** (2026-07-26)。route 単位のグルーピング (D8 初回決定) が成立しない実態のため、**D8 を再オープンして案 E (フラット) へ再決定**。D9 の products 3 分割も 2 section へ修正                                                                                                           |
 | 6   | D10 が前提にした dependency-cruiser は `.astro` を解析対象にしていない (cruise 対象 82 modules に `.astro` ゼロ、`no-orphans` の除外に `\.astro$`)。oxlint も `.astro` 非対応で、corporate-site の `lint` は `astro.config.mjs` と `vitest.config.ts` の 2 ファイルのみ対象 | **実装 (基盤の制約) を正とする** (2026-07-26)。**D10 を再オープンし、検査手段を独自スクリプトへ再決定**。既存 `scripts/check-token-usage.mjs` が同方式の前例                                                                                                                                        |
 | 7   | `.dependency-cruiser.cjs` の `lp-site-no-cross-app-imports` ルールが旧 app 名 `apps/lp-site/` を指しており、現行の `apps/corporate-site/` に一致せず無効化している                                                                                                          | **実装の不具合として修正対象に含める** (2026-07-26)。app 間直接依存の禁止 (architecture.md) が現状検査されていないため、実装スコープで `corporate-site` へ修正                                                                                                                                      |
@@ -181,6 +181,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 | D10 | 公開面の機械検査: index.ts 経由 import のみ許可するルール案 (story ファイル・pages からの参照経路の扱い、検査手段)                                         | pages → sections は index 経由のみ、story は同 section 内直接参照を許可                     | **再決定 (2026-07-26)**: 境界の定義は初回どおり。検査手段は depcruise が `.astro` 非対応のため独自スクリプトへ変更。「解決済みの論点」D10 参照 |
 | D11 | 規約の置き場と ADR 要否: 各決定の反映先 (context/component-design.md / feature doc / component-map.md) の割り付け、sections 再編を ADR として残すか        | 横断規約は component-design.md 改訂、corporate-site 固有は feature doc、再編判断は ADR 起票 | 決定 (2026-07-25): 案 A context + feature doc + 新規 ADR 1 本。「解決済みの論点」D11 参照                                                      |
 | D12 | 未使用 component の扱い: `ServicePillar` / `ContactInfoRow` (story からのみ参照され実ページで未使用)                                                       | 削除 / 現状維持 / 活用先を作る                                                              | 決定 (2026-07-26): **削除する** (story も同時削除)。「解決済みの論点」D12 参照                                                                 |
+| D13 | `common/` の配置形式: 規約は `common/<Component>/` (1 component 1 ディレクトリ) だが実装はフラット                                                         | ディレクトリ化する / フラットを正とする                                                     | 決定 (2026-07-26): **フラットを正とし context / component-map を追従**。「解決済みの論点」D13 参照                                             |
 
 ## 解決済みの論点
 
@@ -206,6 +207,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 | 突合③ | spec で閉じる (現状経路の追認。実装変更なし)                                       |
 | 突合④ | ADR-0007 更新節 + context/component-design.md (スタイリング節)                     |
 | D12   | ADR-0011 (削除判断と復帰条件) + component-map.md (削除予定の記載)                  |
+| D13   | context/component-design.md (ディレクトリ構成節) + component-map.md (配置列)       |
 | 突合⑤ | ADR-0011 (route 層でなくフラットにした判断根拠として記録)                          |
 | 突合⑥ | ADR-0011 (検査手段の選択根拠として記録) + context/architecture.md (検査方法の記述) |
 | 突合⑦ | spec で閉じる (`.dependency-cruiser.cjs` の旧 app 名バグ修正。コードが正)          |
@@ -237,6 +239,10 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - 削除対象: `ServicePillar.astro` + story、`ContactInfoRow.astro` + story (いずれも story からのみ参照され、実ページから未使用)
   - 削除しないもの: `content/services.ts` (`Hero.astro` が使用)、`content/contact.ts` (`SiteFooter.astro` が使用)。ファイル名が似ているため取り違えに注意
   - **`content/source-references.ts` は削除対象外** (2026-07-26 レビューで訂正)。当初「被参照ゼロ」と記録したが誤りで、`content/` 配下の 5 ファイル (`business.ts` / `company.ts` / `contact.ts` / `hero.ts` / `services.ts`) と `content-data.test.ts` が `companyProfileSource` 等を import している。調査時に `components/` と `pages/` のみを走査し、content 層内の相互参照を見落としていた
+- **D13 (2026-07-26): `common/` はフラット配置を正とする**。
+  - context 規約は `common/<Component>/<Component>.astro` (1 component 1 ディレクトリ) だったが、実装は `common/` 直下のフラット配置で、`packages/ui` も同様にフラットである
+  - D8 で「common は現行のまま移動なし」と決めており、section 内をフラットにした方針とも一貫するため、**実装を正として context / component-map を追従**させた (移動は発生しない)
+  - `common/` は公開面を絞る対象ではないため `index.ts` は置かない (sections との違い)
 - **D1 (2026-07-25, ユーザー): Storybook title はディレクトリと 1:1 対応 (案 A)**。
   - app-local: `Sections/<Section>/<Component>` (例: `Sections/Business/BusinessFeatureRow`) と `Common/<Component>`。packages/ui: `UI/<Component>` (D8 再決定に伴い route 層を除いた)
   - title はファイルの物理配置から機械的に決まる。分類の判断を story 作成時にしない
@@ -276,20 +282,20 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 (決定できない項目を理由とともに残す。1 件でも残っていれば下流 phase は止める)
 
-- なし (D1〜D11 + 実装突合ゲート 4 件、2026-07-25 に全件解決)
+- なし (D1〜D12 + 実装突合ゲート 7 件。2026-07-25 に D1〜D11 と突合①〜④、2026-07-26 に D8 / D10 の再決定・D12・突合⑤〜⑦ を解決)
 
 ## 実装対象
 
 正規 target は `context/project.yml` の対象ドメイン一覧を正本とする。
 
-| モジュール       | 実装有無 | 主な責務                                                                       |
-| ---------------- | :------: | ------------------------------------------------------------------------------ |
-| `corporate-site` |    ◯     | sections 再編・globals.css 分割・ハードコード基準の適用対象 (設計のみ)         |
-| `cms`            |    -     | 将来 app。共通規約の過剰一般化をしない線引きの参照先                           |
-| `ui`             |    ◯     | Storybook カタログ規約・アニメーション / keyframes トークンの置き場 (設計のみ) |
-| `config`         |    -     |                                                                                |
-| `e2e`            |    -     | (play テスト / E2E は #33 側)                                                  |
-| `core`           |    -     |                                                                                |
+| モジュール       | 実装有無 | 主な責務                                                                      |
+| ---------------- | :------: | ----------------------------------------------------------------------------- |
+| `corporate-site` |    ◯     | sections 再編・styles 分割・cva 集約・境界検査の対象 (規約決定と実装の両方)   |
+| `cms`            |    -     | 将来 app。共通規約の過剰一般化をしない線引きの参照先                          |
+| `ui`             |    ◯     | Storybook カタログ規約の対象。実装は motion トークン追加と `@source` 移動のみ |
+| `config`         |    -     |                                                                               |
+| `e2e`            |    -     | (play テスト / E2E は #33 側)                                                 |
+| `core`           |    -     |                                                                               |
 
 ## 機能仕様
 
@@ -335,7 +341,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 ### Props / Request / Response
 
-- 対象外 (個別 component の props 変更は実施 issue 側)
+- 対象外 (再編で props を変えない。変更が要る場合は移行後の別 issue)
 
 ## Content / Data 設計
 
@@ -356,7 +362,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 ### Security / Privacy
 
-- 対象外 (文書設計 issue のため。secret / 認証情報の扱いに変更なし)
+- 対象外 (構成の再編であり、secret / 認証情報・外部通信の扱いに変更はない)
 
 ## Error / Fallback 設計
 
@@ -544,6 +550,7 @@ flowchart TD
 | `component-design.md` スタイリング節         | cva 適用基準 (variant を持つ component のみ)、styles/ 4 ファイル + 移行受け皿の構成、motion トークン (ui) / keyframes (app) の境界を改訂 <!-- source: clarify D4-D6 --> | D4〜D6 決定                          |
 | `component-design.md` Content 層の選び分け節 | ハードコード基準 3 区分 (文言 content 化 / 繰り返し値の定数化 / スタイル値トークンのみ) + 機能的文言の許容を追記 <!-- source: clarify D7 -->                            | D7 決定                              |
 | `design-workflow.md` Phase C                 | 実装配置を `src/components/features/<feature>/` → `src/components/sections/<section>/` へ改訂 <!-- source: 2026-07-26 レビュー指摘 -->                                  | D8 再決定への追従 (context 間の整合) |
+| `component-design.md` ディレクトリ構成節     | `common/` の配置を `common/<Component>/` からフラットへ改訂 <!-- source: clarify D13 -->                                                                                | D13 決定 (実装実態への追従)          |
 | `component-design.md` スタイリング節         | `@source` の記述を「app entry に置かず `@kufu/ui/theme.css` が自身の src を指す」へ改訂 <!-- source: clarify 突合④ -->                                                  | レビュー指摘① / 突合④ 決定           |
 
 ### ADR の新規 / 更新
@@ -564,6 +571,7 @@ flowchart TD
 | 2026-07-25 | PASS                     | blocking なし。参考: D6「4 ファイル」の数え方が曖昧 → sync の反映時に表記確定                                                                                                                                                      | clarify gate 通過                                                                            |
 | 2026-07-25 | PASS                     | (track gate) blocking なし。参考: ① 突合件数 stale ② Flowchart の common 経路 ③ 突合③ の ADR 記録要否                                                                                                                              | ① 修正済。②③ は sync で対応                                                                  |
 | 2026-07-26 | NEEDS_WORK               | (再決定レビュー) blocking: D12 の `source-references.ts` は被参照ゼロでなく 6 ファイルから使用。他 6 件: design-workflow の旧構成 / depcruise 前提の stale 記述 / component-map の完了形記述 / メタ情報同期 / 拡張子 / README 追従 | 全件対応済 (D12 から除外ほか)。再レビューへ                                                  |
+| 2026-07-26 | NEEDS_WORK               | (2 回目) blocking なし。A: common の配置が spec 決定と context で矛盾 / B: 実装対象テーブルが「設計のみ」のまま / C: メタ同期と stale 記述 3 種                                                                                    | 全件対応済 (A は D13 として決定を記録)。再レビューへ                                         |
 
 ## 変更履歴
 
@@ -577,6 +585,7 @@ flowchart TD
 | 2026-07-25 | spec-lifecycle | sync: context 2 本 / feature doc 2 本を改訂、ADR-0011 起票 + ADR-0007 更新、impact-index 追加。spec を決定時スナップショットへ降格                                |
 | 2026-07-26 | spec-lifecycle | ユーザー指摘を受け import 実態と検査基盤を再調査。突合⑤〜⑦ を追加し、**D8 を案 E (フラット) へ、D10 の検査手段を独自スクリプトへ再決定**。D12 (未使用削除) を追加 |
 | 2026-07-26 | spec-lifecycle | スコープを実装込みに拡大。実装分割 P1〜P6 と実装側の受け入れ基準・テスト観点を追加                                                                                |
+| 2026-07-26 | spec-lifecycle | 再決定レビュー 2 回分の指摘に対応。D12 から source-references.ts を除外、D13 (common はフラット) を追加、stale 記述とメタ情報を同期                               |
 
 ## 備考
 

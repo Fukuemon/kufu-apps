@@ -56,9 +56,8 @@ apps/<app>/src/
 │   │       ├── <Component>.astro      # presentation (props only / story 対象)
 │   │       └── <Component>.stories.ts
 │   └── common/                    # 複数 section / route が共有する site component
-│       └── <Component>/
-│           ├── <Component>.astro
-│           └── <Component>.stories.ts
+│       ├── <Component>.astro      # フラットに並べる (1 component 1 ディレクトリにしない)
+│       └── <Component>.stories.ts
 └── pages/
     └── <route>.astro              # routing + page assembly
 ```
@@ -68,7 +67,7 @@ apps/<app>/src/
 - **section の内部非公開**: pages からは `index.ts` 経由の import のみ許可。section 間の import は index 経由でも禁止し、共有が必要になった部品は `common/` (app 内) または `packages/ui` (複数 app) へ昇格する。依存方向は `pages → sections (index) → common → @kufu/ui` の一方向 ([architecture.md](architecture.md) の検査対象)。
 - **section 名はドメインで付ける**。1 ドメインが複数 section を持つ場合は接頭辞で表す (`products-category` / `products-detail`)。route 名を section 名にしない。
 - presentation component に `Presentation` suffix は付けない。`<Component>.astro` がそのまま presentation であり、story 対象。
-- 複数 section をまたいで使う site component (`SectionHeading` など) は `components/common/<Component>/` に置く。
+- 複数 section をまたいで使う site component (`SectionHeading` など) は `components/common/` 直下にフラットに置く (section 内と同じく 1 component 1 ディレクトリを強制しない)。`common/` は公開面を絞らないため `index.ts` を置かない。
 
 corporate-site の例 (section とページ対応の実マップは [component-map.md](../design/features/corporate-site/component-map.md) を正本とする):
 
@@ -88,8 +87,11 @@ apps/corporate-site/src/components/
 │   └── contact/
 └── common/
     ├── BaseLayout.astro
-    ├── SectionHeading/
-    └── ...
+    ├── ContactCtaLink.astro
+    ├── SectionHeading.astro
+    ├── SectionHeading.stories.ts
+    ├── SiteFooter.astro
+    └── SiteHeader.astro
 ```
 
 ## 責務分割
