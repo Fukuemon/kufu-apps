@@ -85,7 +85,7 @@ Claude Design の出力品質は依頼文に強く依存する（ベストプラ
 ### Phase C — 実装（Claude Code / Codex）＝ 本実装
 
 - Claude Code が **`.pen`（構造化 JSON）+ デザイン** を参照し、layout / styling / 構造を抽出して実装する。
-- 出力は **Astro 中心**（`src/pages/*.astro` + `src/components/features/<feature>/`）。`@kufu/ui` のトークン/コンポを参照する。インタラクションが要る所だけ React island（`client:*`）にする。
+- 出力は **Astro 中心**（`src/pages/*.astro` + `src/components/sections/<section>/`。配置規約は [component-design.md](component-design.md)）。`@kufu/ui` のトークン/コンポを参照する。インタラクションが要る所だけ React island（`client:*`）にする。
 - 性能方針（静的生成・最小 island）は [architecture.md](architecture.md) / [toolchain.md](toolchain.md) に従い、E2E/テストを整える。
 - durable な設計判断（IA / レイアウト / フロー）は [design/features/](../design/features/) と `packages/ui` トークンへ back-propagate する。
 

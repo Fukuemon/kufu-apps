@@ -2,7 +2,7 @@
 
 ## 状態
 
-提案
+承認
 
 ## 決定日
 
@@ -24,6 +24,7 @@
 3. **products は使用実態に沿って 2 section に分割する**: `products-category` (`/` に載る取扱製品セクション) と `products-detail` (`/products` の詳細)。`ProductsHero` は `products-detail` の内部 component として扱う。
 4. **依存方向を `pages → sections (index.ts) → common → @kufu/ui` の一方向に固定する**: pages から section 内部への直接 import 禁止、section 間 import は index 経由でも禁止 (共有は common / `packages/ui` へ昇格)。同 section 内の直接参照 (story 含む) は自由。
 5. **境界の機械検査は独自スクリプトで行う**: `.astro` を解析できる既存ツールが無いため、`apps/corporate-site/scripts/check-token-usage.mjs` (ripgrep で `.astro` を走査するトークンガード) と同方式の検査スクリプトを追加し、quality gate に組み込む。
+6. **再編に伴い、実ページから未使用の component は削除する**: `ServicePillar` / `ContactInfoRow` は #6 の catalog 整備で作られたが #10 の本実装で使われず、story からのみ参照される状態だった。使われない component を新構成へ移送すると「カタログにあるが実ページにない」ものが恒久化し、section の公開面規約 (どの Section が起点か) も曖昧になるため、story ごと削除する。`.pen` 側の対応要素は残るため、再実装が必要になった時点で [component-map.md](../design/features/corporate-site/component-map.md) から復帰させる。
 
 ## 代替案
 
@@ -32,6 +33,7 @@
 - **現行の切り方を維持して改名のみ**: 移行差分は最小だが、`products` に 2 つの Section component が同居したままで、起点が読めない元の課題が解決しない。不採用。
 - **`internal/` サブディレクトリを常に強制**: 公開面が物理的にも明示されるが、2〜3 ファイルの section では過剰。`index.ts` + 検査で同じ保証が得られるため不採用。
 - **section 間依存を index 経由で許可**: 柔軟だが依存グラフが網目化し「どの section が起点か」が再び曖昧になる。不採用。
+- **未使用 component を新構成へそのまま移送する**: catalog 資産として残せるが、実ページに存在しない component が恒久化し、どの Section が起点かの判断を濁す。`.pen` と git 履歴から復元できるため、不採用。
 - **eslint + eslint-plugin-astro で境界検査**: 汎用ルール資産に乗れるが、現状 eslint は未導入で oxlint との二重運用と toolchain 方針の見直しが発生する。同種のガードが独自スクリプトで既に運用されている前例に合わせ、不採用。
 
 ## 影響

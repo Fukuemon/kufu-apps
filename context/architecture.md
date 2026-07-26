@@ -1,6 +1,6 @@
 # Codebase Architecture
 
-> 最終更新: 2026-07-25
+> 最終更新: 2026-07-26
 
 Kufu Monorepo の package / runtime boundary と依存方向。全体像 (system landscape, モジュール責務) は [design/DesignDoc.md](../design/DesignDoc.md) を正本とし、本書はコードベースの境界規約を扱う。
 

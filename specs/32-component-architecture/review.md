@@ -47,3 +47,24 @@ Verdict: PASS
   1. 未確定事項の「突合ゲート 3 件」が stale (4 件) → **修正済**
   2. Flowchart で common 配置の component が cva 判定 / story 追加へ流れない → sync 反映時に図の経路を補完
   3. 突合③ (fonts `?url`) が ADR-0007「更新」節に未記録 → sync で ADR-0007 更新に含めるか検討
+
+## Review 2026-07-26 (再決定 + スコープ拡大)
+
+Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
+
+D8 (route 層 → フラット) / D10 (depcruise → 独自スクリプト) の再決定、D12 追加、スコープ拡大 (実装込み) の一貫性を検証。
+
+### 指摘と対応
+
+1. `context/design-workflow.md:88` の Phase C が旧構成 (`components/features/`) のまま → **修正**。`components/sections/<section>/` へ改訂し、context への影響テーブルにも行を追加
+2. spec 内に depcruise 前提 / 「設計のみ」/「実施 issue へ引き継ぐ」の stale 記述が残存 (機能仕様・User Flow・Testing・Fallback) → **修正**
+3. **(blocking)** D12 の `content/source-references.ts` を「被参照ゼロ」としたのは事実誤認。実際は `content/` の 5 ファイル + `content-data.test.ts` が import している → **D12 の削除対象から除外**。調査時に `components/` と `pages/` のみを走査し content 層内の相互参照を見落としていた旨も spec に記録
+4. `component-map.md` が未実施の削除を完了形で記述 → **「削除予定」へ修正**。D12 の durable 記録先を「spec で閉じる」から ADR-0011 (削除判断と復帰条件を追記) へ変更
+5. メタ情報の同期漏れ (context 2 本の最終更新日、変更点テーブルの「全行 2026-07-25 反映済」、ADR-0011 の状態) → **修正**。ADR-0011 は実装まで本 issue で行う決定に合わせて「承認」へ
+6. 突合⑦ / P6 の対象ファイル名が `.dependency-cruiser.js` (実体は `.cjs`) → **修正**
+7. `apps/corporate-site/README.md` の構成記述が P2 の追従対象に未記載 → **P2 に追加**
+
+### 参考 (検証済み・問題なし)
+
+- component-map.md の section → component 対応は実 import と一致 (レビュアーが実装ファイルで検証)
+- section 間 import は現状ゼロで、D10 の依存方向規約は現行実装と両立する

@@ -47,10 +47,10 @@ app-local Storybook の variant 網羅対象は presentation component (`<Compon
 | `FeaturedCategoryCard`         | `FeaturedCategoryCard.astro` | `apps/corporate-site/src/components/sections/products-category/` | `Sections/ProductsCategory/FeaturedCategoryCard`      |
 | `BusinessFeatureRowMediaRight` | `BusinessFeatureRow.astro`   | `apps/corporate-site/src/components/sections/business/`          | `Sections/Business/BusinessFeatureRow` (`MediaRight`) |
 | `BusinessFeatureRowMediaLeft`  | `BusinessFeatureRow.astro`   | `apps/corporate-site/src/components/sections/business/`          | `Sections/Business/BusinessFeatureRow` (`MediaLeft`)  |
-| `ServicePillar`                | (削除)                       | —                                                                | —                                                     |
-| `ContactInfoRow`               | (削除)                       | —                                                                | —                                                     |
+| `ServicePillar`                | (削除予定)                   | —                                                                | —                                                     |
+| `ContactInfoRow`               | (削除予定)                   | —                                                                | —                                                     |
 
-> `ServicePillar` / `ContactInfoRow` は #6 の catalog 整備で作られたが #10 の本実装で使われず、story からのみ参照される状態だった。#32 で削除した (決定経緯: spec の D12)。`.pen` 側に対応要素が残る場合、再実装が必要になった時点でこの表に復帰させる。
+> `ServicePillar` / `ContactInfoRow` は #6 の catalog 整備で作られたが #10 の本実装で使われず、story からのみ参照される状態になっている。#32 で削除する (判断根拠: [ADR-0011](../../../adr/0011-corporate-site-sections-architecture.md) の「未使用 component の扱い」)。`.pen` 側に対応要素が残るため、再実装が必要になった時点でこの表に復帰させる。
 
 ## Content (data layer)
 
