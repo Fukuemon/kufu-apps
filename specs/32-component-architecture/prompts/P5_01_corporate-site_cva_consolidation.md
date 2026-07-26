@@ -57,11 +57,11 @@ depends_on:
 
 対象 component と variant 軸は次のとおり (探索不要。これ以外は対象外):
 
-| component (P2 移行後のパス)                  | variant 軸             |
-| -------------------------------------------- | ---------------------- | --------- | ----- |
-| `common/SectionHeading.astro`                | `align?: "start"       | "center"` |
-| `common/ContactCtaLink.astro`                | `size?: "sm"           | "hero"    | "lg"` |
-| `sections/business/BusinessFeatureRow.astro` | `mediaPosition: "left" | "right"`  |
+| component (P2 移行後のパス)                  | variant 軸 (Props)                 |
+| -------------------------------------------- | ---------------------------------- |
+| `common/SectionHeading.astro`                | `align?: "start" \| "center"`      |
+| `common/ContactCtaLink.astro`                | `size?: "sm" \| "hero" \| "lg"`    |
+| `sections/business/BusinessFeatureRow.astro` | `mediaPosition: "left" \| "right"` |
 
 1. 上表の 3 component で `@kufu/ui/lib` の `cva` を使い variants を定義し、frontmatter の条件付き class 組み立てを置換する
 2. `common/BaseLayout.astro` / `SiteHeader.astro` / `SiteFooter.astro` / `sections/products-category/FeaturedCategoryCard.astro` / `sections/products-detail/ProductsDetailSection.astro` / `sections/company/CompanySection.astro` の条件分岐は、視覚 variant ではなく表示有無・データ有無の分岐のため **cva 化しない** (D4 の「variant を持つ component のみ」)
@@ -83,8 +83,11 @@ cva 化の過程で見つかった次のものを是正する。**cva 化の対�
 
 1. `## 検証コマンド` がすべてパスすることを確認
 2. `components.css` に残ったクラスセレクタがあれば、なぜ残したかを spec の `## 上位資料からの変更点` に記録するかコメントで理由を残す
-3. `pnpm e2e` で DOM 構造とテキストが変更前と等価であることを確認する (E2E は視覚回帰を検出しないため、cva 化した 3 component については `pnpm --filter @kufu/corporate-site storybook` で該当 story を目視比較する)
-4. 変更をコミットする (commit message に `Refs #32` を含める)
+3. `pnpm e2e` で DOM 構造とテキストが変更前と等価であることを確認する
+4. 見た目の等価性を確認する (E2E は視覚回帰を検出しないため):
+   - `SectionHeading` / `BusinessFeatureRow` は `pnpm --filter @kufu/corporate-site storybook` で既存 story の各 variant を cva 化前後で目視比較する
+   - `ContactCtaLink` は story を持たないため、`pnpm --filter @kufu/corporate-site dev` で `/` (hero / sm)、`/products` (hero / lg) を開き、CTA リンクの見た目を目視比較する
+5. 変更をコミットする (commit message に `Refs #32` を含める)
 
 ## 実装コンテキスト
 
@@ -142,7 +145,8 @@ spec の D4 / D7 / D15 / 突合① より抜粋:
 ## テスト観点
 
 - cva 化後に build / typecheck / Storybook build が通るか
-- DOM 構造とテキストが変更前と等価か (既存 E2E)。見た目の等価性は cva 化した 3 component の story を目視で確認する
+- DOM 構造とテキストが変更前と等価か (既存 E2E)
+- 見た目が等価か: `SectionHeading` / `BusinessFeatureRow` は story、`ContactCtaLink` は実ページ (`/` と `/products` の CTA) で目視確認する
 - `components.css` から削除したクラスが他所で参照されていないか (build で検出)
 - トークンガード (`token:check`) が通るか (raw hex / 色の arbitrary value を持ち込んでいないか)
 - 未宣言依存が発生していないか (depcruise)
@@ -165,7 +169,8 @@ spec の D4 / D7 / D15 / 突合① より抜粋:
 - [ ] corporate-site の package.json に `class-variance-authority` を追加していない
 - [ ] 上表 3 component が cva 化され、対応するクラスセレクタが `components.css` から消えている
 - [ ] 対象外と明記した component に cva を持ち込んでいない
-- [ ] DOM 構造とテキストが変更前と等価である (E2E パス) / cva 化した 3 component の見た目を story で目視確認した
+- [ ] DOM 構造とテキストが変更前と等価である (E2E パス)
+- [ ] `SectionHeading` / `BusinessFeatureRow` の見た目を story で、`ContactCtaLink` の見た目を実ページで目視確認した
 - [ ] 各ステップで diff レビューを実施し、指摘を対応した
 - [ ] `## 検証コマンド` がすべてパスする
 - [ ] 変更を `Refs #32` 付きでコミットした

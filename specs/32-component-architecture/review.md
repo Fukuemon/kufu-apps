@@ -93,3 +93,36 @@ Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
 - **4. D13 が件数記述に未反映** → D1〜D15 へ修正
 - **5. `@source` 移送の粒度が未記録** (実装は 2 行だが移送対象は components のみ) → D6 / ADR-0007 / context に「`src/lib` 分は移送せず削除」と明記。theme.css の実体パスと相対パス (`../components`) も訂正
 - **6〜8. 軽微** (スクリプトの app 相対表記、requirements の業務ルール 4 の stale、component-design の例の story 欠落) → 修正
+
+## Review 2026-07-26 (4 回目 / 3 回目指摘対応後)
+
+Verdict: PASS
+
+全観点 PASS。P1〜P6 の着手可否も実装ファイルとの突合で確認された (移行先マップが実 import と一致、cva の依存経路と検査の組み込み先が確定)。
+
+参考指摘 (non-blocking): D14 の根拠文にある「CI からも自動で走る」は事実と相違 (CI は Storybook 公開ワークフローのみで lint job が無い) → **対応**: lint がどの gate からも走らない実態を踏まえ、`lefthook.yml` の pre-commit に `pnpm lint` を追加する方針を D14 に追記した。
+
+## Review 2026-07-27 (prompts gate / 1 回目)
+
+Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
+
+blocking 4 件:
+
+1. P5 の `depends_on` に P2 が欠けていた (sections 構成が前提) → `[P2_01, P4_01]` へ修正
+2. P3 の「autodocs を追加する」が不要作業 (両 preview に設定済み、個別 story の tags も 0 件) → 追認ステップへ書き換え
+3. P5 の「条件付き class の箇所を特定する」が探索誘発 → cva 対象 3 component を variant 軸つきで列挙し、対象外 component も明示
+4. P4 の分割仕様が実態と不一致 (`@utility` / `@layer` は 0 件) → 4 ファイル構成 + `@layer` を付けない方針へ変更
+
+should fix: E2E が視覚回帰を検出しない点の明記、CSS サイズ比較手順、index.ts の export / import 形式の確定、`format:check` の追加、「変更する repo 領域」の追加、D14 / D15 の反映先を ADR-0011 / context へ移動。
+
+## Review 2026-07-27 (prompts gate / 2 回目)
+
+Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
+
+前回対応が完了条件にしか反映されておらず、本文・spec・context が追従していなかった。
+
+- **blocking**: P4 のステップ 3 の表と設計仕様引用が 5 ファイル + `@layer` のまま (完了条件と矛盾) → ステップ本文・引用・spec の D6・styles 構成図・`context/component-design.md` をすべて 4 ファイル / `@layer` なしへ統一し、理由も本文に明記
+- **blocking**: P5 の「3 component の見た目を story で目視比較」が `ContactCtaLink` に story が無いため達成不能 → `SectionHeading` / `BusinessFeatureRow` は story、`ContactCtaLink` は実ページ (`/` と `/products` の CTA) で確認する形に変更
+- **blocking**: メタ情報の同期漏れ (4 回目 PASS と prompts gate の記録が review.md に無い) → 本ファイルに追記
+- **blocking**: D14 / D15 の反映先判定が「spec で閉じる」のまま → ADR-0011 決定 5 / `context/component-design.md` へ反映済みの判定に更新し、変更点テーブルにも行を追加
+- should fix: prompt 表の P5 依存が stale、P5 の variant 表の Markdown 崩れ → 修正

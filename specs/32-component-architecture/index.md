@@ -277,7 +277,8 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - duration / easing の motion トークンは `@kufu/ui/tokens.css` に定義する (「トークンは常に ui」の既存昇格境界と整合)
   - site 固有演出の keyframes (`scroll-cue` / `section-rise` 等) は app-local (`src/styles/animations.css`) に置き、複数 app での再利用が明確になったら `@kufu/ui` へ昇格する (業務ルール 3: 過剰一般化しない)
 - **D6 (2026-07-25, ユーザー): src/styles/ は 4 ファイル + 移行受け皿 (案 A)**。
-  - `globals.css` = entry (@import のみ。現行の `@source` 2 行のうち `packages/ui/src/components` 分を `@kufu/ui/theme.css` へ移動 — 突合④。`packages/ui/src/lib` 分は `utils.ts` (cn のみ) で class 文字列を持たないため移送せず削除する)、`base.css` (@layer base: document-level / :root)、`components.css` (@layer components: 既存生 CSS の受け皿。D4 の cva / utility 移行で逐次削減し、最終的に削除を目標)、`animations.css` (@keyframes)、`utilities.css` (@utility 拡張)
+  - `globals.css` = entry (@import のみ。現行の `@source` 2 行のうち `packages/ui/src/components` 分を `@kufu/ui/theme.css` へ移動 — 突合④。`packages/ui/src/lib` 分は `utils.ts` (cn のみ) で class 文字列を持たないため移送せず削除する)、`base.css` (`:root` と要素セレクタの base スタイル)、`components.css` (クラスセレクタ群。D4 の cva / utility 移行で逐次削減し、最終的に削除を目標)、`animations.css` (@keyframes)
+  - **`utilities.css` は作らない / `@layer` は付けない** (2026-07-27 訂正)。現行 `globals.css` に `@utility` と `@layer` は 1 件も無く、空ファイルは dead code になる。また素のセレクタを `@layer components` で包むと Tailwind utility との優先順位が変わって表示が壊れるため、分割はファイル移動のみとする
   - tokens 層は既存どおり `@kufu/ui/tokens.css` の import で賄う (app 内に tokens ファイルを作らない)
   - fonts は現行の `BaseLayout.astro` の `?url` 参照経路を維持する (突合③)
   - ADR-0007 の「entry は import / base に絞る」への詳細化であり、4 entry 配信 (ui 側) は変更しない
@@ -490,17 +491,15 @@ flowchart TD
     end
     subgraph App["apps/corporate-site/src/styles/"]
         globals["globals.css\nentry: @import のみ"]
-        base["base.css\n@layer base (:root / document-level)"]
-        components["components.css\n@layer components (移行受け皿 → 削減目標)"]
+        base["base.css\n:root / 要素セレクタの base"]
+        components["components.css\nクラスセレクタ群 (移行受け皿 → 削減目標)"]
         animations["animations.css\n@keyframes (site 固有演出)"]
-        utilities["utilities.css\n@utility 拡張"]
     end
     globals --> tokens
     globals --> theme
     globals --> base
     globals --> components
     globals --> animations
-    globals --> utilities
     styles --> theme
     BaseLayout["common/BaseLayout.astro"] -->|"?url preload (突合③)"| fonts
 ```
@@ -567,17 +566,19 @@ flowchart TD
 
 ### context への影響
 
-| 対象 doc / 節                                | 変更内容                                                                                                                                                                | 理由                                 |
-| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `component-design.md` ディレクトリ構成節     | `components/features/<feature>/` → `components/sections/<section>/` (1 階層フラット) へ改訂 <!-- source: clarify D8 (2026-07-26 再決定を反映) -->                       | D8 再決定 (フラット構成)             |
-| `component-design.md` ディレクトリ構成節     | section 標準構成 (フラット + `index.ts` 公開面、internal/ なし) を追記 <!-- source: clarify D9 -->                                                                      | D9 決定                              |
-| `architecture.md` Package Boundary 節        | app 内依存方向 `pages → sections (index) → common → @kufu/ui` と独自スクリプトによる検査方針を追記 <!-- source: clarify D10 (2026-07-26 再決定を反映) -->               | D10 再決定 (検査手段の変更)          |
-| `component-design.md` Storybook 対象節       | title 階層規約 (ディレクトリ 1:1)、variant 全列挙 + edge 必須、autodocs グローバル適用、Section story の公認を改訂 <!-- source: clarify D1-D3/突合② -->                 | D1〜D3 / 突合② 決定                  |
-| `component-design.md` スタイリング節         | cva 適用基準 (variant を持つ component のみ)、styles/ 4 ファイル + 移行受け皿の構成、motion トークン (ui) / keyframes (app) の境界を改訂 <!-- source: clarify D4-D6 --> | D4〜D6 決定                          |
-| `component-design.md` Content 層の選び分け節 | ハードコード基準 3 区分 (文言 content 化 / 繰り返し値の定数化 / スタイル値トークンのみ) + 機能的文言の許容を追記 <!-- source: clarify D7 -->                            | D7 決定                              |
-| `design-workflow.md` Phase C                 | 実装配置を `src/components/features/<feature>/` → `src/components/sections/<section>/` へ改訂 <!-- source: 2026-07-26 レビュー指摘 -->                                  | D8 再決定への追従 (context 間の整合) |
-| `component-design.md` ディレクトリ構成節     | `common/` の配置を `common/<Component>/` からフラットへ改訂 <!-- source: clarify D13 -->                                                                                | D13 決定 (実装実態への追従)          |
-| `component-design.md` スタイリング節         | `@source` の記述を「app entry に置かず `@kufu/ui/theme.css` が自身の src を指す」へ改訂 <!-- source: clarify 突合④ -->                                                  | レビュー指摘① / 突合④ 決定           |
+| 対象 doc / 節                                | 変更内容                                                                                                                                                                | 理由                                   |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| `component-design.md` ディレクトリ構成節     | `components/features/<feature>/` → `components/sections/<section>/` (1 階層フラット) へ改訂 <!-- source: clarify D8 (2026-07-26 再決定を反映) -->                       | D8 再決定 (フラット構成)               |
+| `component-design.md` ディレクトリ構成節     | section 標準構成 (フラット + `index.ts` 公開面、internal/ なし) を追記 <!-- source: clarify D9 -->                                                                      | D9 決定                                |
+| `architecture.md` Package Boundary 節        | app 内依存方向 `pages → sections (index) → common → @kufu/ui` と独自スクリプトによる検査方針を追記 <!-- source: clarify D10 (2026-07-26 再決定を反映) -->               | D10 再決定 (検査手段の変更)            |
+| `component-design.md` Storybook 対象節       | title 階層規約 (ディレクトリ 1:1)、variant 全列挙 + edge 必須、autodocs グローバル適用、Section story の公認を改訂 <!-- source: clarify D1-D3/突合② -->                 | D1〜D3 / 突合② 決定                    |
+| `component-design.md` スタイリング節         | cva 適用基準 (variant を持つ component のみ)、styles/ 4 ファイル + 移行受け皿の構成、motion トークン (ui) / keyframes (app) の境界を改訂 <!-- source: clarify D4-D6 --> | D4〜D6 決定                            |
+| `component-design.md` スタイリング節         | cva の入手経路 (`@kufu/ui/lib` 経由。app に直接依存を追加しない) を追記 <!-- source: clarify D15 -->                                                                    | D15 決定                               |
+| `component-design.md` スタイリング節         | styles 分割を 4 ファイル + `@layer` なしへ訂正 <!-- source: 2026-07-27 prompts レビュー -->                                                                             | 実態 (@layer / @utility 0 件) への追従 |
+| `component-design.md` Content 層の選び分け節 | ハードコード基準 3 区分 (文言 content 化 / 繰り返し値の定数化 / スタイル値トークンのみ) + 機能的文言の許容を追記 <!-- source: clarify D7 -->                            | D7 決定                                |
+| `design-workflow.md` Phase C                 | 実装配置を `src/components/features/<feature>/` → `src/components/sections/<section>/` へ改訂 <!-- source: 2026-07-26 レビュー指摘 -->                                  | D8 再決定への追従 (context 間の整合)   |
+| `component-design.md` ディレクトリ構成節     | `common/` の配置を `common/<Component>/` からフラットへ改訂 <!-- source: clarify D13 -->                                                                                | D13 決定 (実装実態への追従)            |
+| `component-design.md` スタイリング節         | `@source` の記述を「app entry に置かず `@kufu/ui/theme.css` が自身の src を指す」へ改訂 <!-- source: clarify 突合④ -->                                                  | レビュー指摘① / 突合④ 決定             |
 
 ### ADR の新規 / 更新
 
@@ -586,6 +587,7 @@ flowchart TD
 | [ADR-0011](../../adr/0011-corporate-site-sections-architecture.md) | 「corporate-site の component を section 単位のフラット構成へ再編し、公開面を index.ts + 独自検査で固定する」を起票 (D8〜D10 の判断経緯と突合⑤⑥) <!-- source: clarify D11 (2026-07-26 再決定を反映) --> **反映済** | D11 決定。issue close 後も再編の判断経緯を長期参照するため                                    |
 | ADR-0007                                                           | 「更新」節に `@source` の theme.css 移動 (app entry は import のみ) を追記 <!-- source: clarify 突合④ -->                                                                                                          | レビュー指摘① / 突合④ 決定。lean entry 原則の維持                                             |
 | ADR-0007                                                           | 「更新」節に motion トークン (duration / easing) の tokens.css 追加を追記 <!-- source: track -->                                                                                                                   | D5 決定。「実績ベースの最小定義」(独自トークン最小) に対する新トークン層のため ADR 側にも記録 |
+| [ADR-0011](../../adr/0011-corporate-site-sections-architecture.md) | 決定 5 に検査の配線先 (app `lint` + lefthook pre-commit) と hooks を触らない理由を追記 <!-- source: clarify D14 --> **反映済**                                                                                     | D14 決定。spec 削除後も配線の根拠を残す                                                       |
 | ADR-0007                                                           | 「更新」節に fonts の読み込み経路 (BaseLayout の `?url`) の記述訂正を追記 <!-- source: 2026-07-26 レビュー指摘 -->                                                                                                 | 突合③ の正本側での決着。spec 削除後も誤記が残らないようにする                                 |
 
 ## レビュー
@@ -599,6 +601,10 @@ flowchart TD
 | 2026-07-25 | PASS                     | (track gate) blocking なし。参考: ① 突合件数 stale ② Flowchart の common 経路 ③ 突合③ の ADR 記録要否                                                                                                                              | ① 修正済。②③ は sync で対応                                                                  |
 | 2026-07-26 | NEEDS_WORK               | (再決定レビュー) blocking: D12 の `source-references.ts` は被参照ゼロでなく 6 ファイルから使用。他 6 件: design-workflow の旧構成 / depcruise 前提の stale 記述 / component-map の完了形記述 / メタ情報同期 / 拡張子 / README 追従 | 全件対応済 (D12 から除外ほか)。再レビューへ                                                  |
 | 2026-07-26 | NEEDS_WORK               | (2 回目) blocking なし。A: common の配置が spec 決定と context で矛盾 / B: 実装対象テーブルが「設計のみ」のまま / C: メタ同期と stale 記述 3 種                                                                                    | 全件対応済 (A は D13 として決定を記録)。再レビューへ                                         |
+| 2026-07-26 | NEEDS_WORK               | (3 回目) 実装着手を妨げる 2 件: `pnpm check` が実在しない / cva が app 依存に無い。他: ADR-0007 の記述誤り、`@source` 移送粒度、件数 stale                                                                                         | D14 / D15 として決定を追加し全件対応。再レビューへ                                           |
+| 2026-07-26 | PASS                     | (4 回目) 全観点 PASS。P1〜P6 の着手可否も実装ファイルと突合して確認。参考: D14 の「CI からも走る」が事実と相違                                                                                                                     | 参考指摘に対応し、pre-commit への lint 配線も D14 に追加                                     |
+| 2026-07-27 | NEEDS_WORK               | (prompts gate 1 回目) P5 の依存欠落 / autodocs は既設 / cva 対象の探索誘発 / P4 の分割仕様が実態と不一致                                                                                                                           | 全件対応。再レビューへ                                                                       |
+| 2026-07-27 | NEEDS_WORK               | (prompts gate 2 回目) 前回対応が完了条件にしか入っておらず本文・spec・context が未追従。P5 の目視確認が ContactCtaLink の story 不在で達成不能。メタ同期漏れ / D14・D15 の判定 stale                                               | 全件対応。再レビューへ                                                                       |
 
 ## 変更履歴
 

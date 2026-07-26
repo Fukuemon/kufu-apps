@@ -54,19 +54,22 @@ depends_on: []
 2. 追加したトークンを Tailwind utility として使う必要がある場合のみ、`theme.css` に `@theme inline` 写像を追加する
 3. 値は現行 `globals.css` の `@keyframes` / transition 実装で使われている実績値から採る (新しい値を発明しない)
 
-### ステップ 3: src/styles/ をレイヤ分割する (D6)
+### ステップ 3: src/styles/ を役割別に分割する (D6)
 
-`apps/corporate-site/src/styles/` を次の構成にする:
+`apps/corporate-site/src/styles/` を次の 4 ファイル構成にする:
 
-| ファイル         | 内容                                                                                                             |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `globals.css`    | entry。`@import "tailwindcss"` + `@kufu/ui/tokens.css` + `@kufu/ui/theme.css` + 下記 4 ファイルの `@import` のみ |
-| `base.css`       | `@layer base`: `:root` のカスタムプロパティと document-level の base スタイル                                    |
-| `components.css` | `@layer components`: 既存の生 CSS (クラスセレクタ群) の移行受け皿                                                |
-| `animations.css` | `@keyframes` 定義 (site 固有演出)                                                                                |
-| `utilities.css`  | `@utility` 拡張                                                                                                  |
+| ファイル         | 内容                                                                                                                           |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `globals.css`    | entry。`@import "tailwindcss"` + `@kufu/ui/tokens.css` + `@kufu/ui/theme.css` + 下記 3 ファイルの `@import` のみ               |
+| `base.css`       | `:root` のカスタムプロパティ、要素セレクタ (`button` / `input` / `a` 等) への base スタイル、`@media (prefers-reduced-motion)` |
+| `components.css` | クラスセレクタ群 (`.products-catalog` 等) と、それらに紐づく `@media` ブロック。P5 の移行受け皿                                |
+| `animations.css` | `@keyframes scroll-cue` / `@keyframes section-rise`                                                                            |
 
-現行 `globals.css` (799 行) の内容を、上記の分類に従って機械的に振り分ける。**この段階では CSS の中身を書き換えない** (cva 化・削減は P5 の責務)。
+**`utilities.css` は作らない**。現行 `globals.css` に `@utility` は 1 件も無く、空ファイルは dead code になる (絶対ルールの「dead code を残さない」)。P5 以降で `@utility` が必要になった時点で追加する。
+
+**`@layer` は付けない**。現行 CSS は素のセレクタで書かれており、`@layer components` で包むと Tailwind utility との優先順位が変わって表示が壊れるため。分割は `@import` によるファイル移動のみとし、セレクタと宣言は 1 文字も書き換えない (cva 化・削減は P5 の責務)。
+
+`@import` の順序は現行 `globals.css` の記述順を保つ (base → components → animations)。
 
 ### ステップ最終: 最終確認
 
@@ -125,7 +128,11 @@ spec の D5 / D6 / 突合③④ より抜粋:
 
 > **D5: motion トークンは `@kufu/ui`、keyframes は app-local**。duration / easing の motion トークンは `@kufu/ui/tokens.css` に定義する (「トークンは常に ui」の既存昇格境界と整合)。site 固有演出の keyframes は app-local (`src/styles/animations.css`) に置き、複数 app での再利用が明確になったら `@kufu/ui` へ昇格する。
 >
-> **D6: src/styles/ は 4 ファイル + 移行受け皿**。`globals.css` = entry (@import のみ。現行の `@source` 2 行のうち `packages/ui/src/components` 分を `@kufu/ui/theme.css` へ移動。`packages/ui/src/lib` 分は `utils.ts` (cn のみ) で class 文字列を持たないため移送せず削除する)、`base.css` (@layer base)、`components.css` (@layer components: 既存生 CSS の受け皿)、`animations.css` (@keyframes)、`utilities.css` (@utility 拡張)。tokens 層は既存どおり `@kufu/ui/tokens.css` の import で賄う。fonts は現行の `BaseLayout.astro` の `?url` 参照経路を維持する。
+> **D6: src/styles/ は 4 ファイル構成**。`globals.css` = entry (@import のみ。現行の `@source` 2 行のうち `packages/ui/src/components` 分を `@kufu/ui/theme.css` へ移動。`packages/ui/src/lib` 分は `utils.ts` (cn のみ) で class 文字列を持たないため移送せず削除する)、`base.css` (`:root` と要素セレクタの base スタイル)、`components.css` (クラスセレクタ群。cva / utility 移行の受け皿)、`animations.css` (@keyframes)。
+>
+> **`utilities.css` は作らない / `@layer` は付けない** (2026-07-27 訂正)。現行 `globals.css` に `@utility` と `@layer` は 1 件も無く、空ファイルは dead code になる。また素のセレクタを `@layer components` で包むと Tailwind utility との優先順位が変わって表示が壊れるため、分割はファイル移動のみとする。
+>
+> tokens 層は既存どおり `@kufu/ui/tokens.css` の import で賄う。fonts は現行の `BaseLayout.astro` の `?url` 参照経路を維持する。
 >
 > **突合④**: `@source` のパスは記述ファイル基準の相対解決のため theme.css 側で ui 自身の src を指せば全 consumer が自動で ui の class を生成できる。
 
