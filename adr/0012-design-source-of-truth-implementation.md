@@ -28,7 +28,7 @@
 
   確認・レビューは Storybook と実画面で行う。Pencil (旧 phase B) と import 工程は廃止する。
 
-- `design/features/corporate-site/index.pen` の実削除と、`context/design-workflow.md` の全面改訂は本判断を根拠に **issue #31 で実施する** (2026-07-26 にスコープ拡大。改訂方針: `.pen` 正本前提の §1 正本 / §2 フロー / §4 配置規約を上表のフローに書き換える)。
+- `design/features/corporate-site/index.pen` の実削除と、`context/design-workflow.md` の全面改訂は本判断を根拠に **issue #31 で実施済み** (2026-07-26)。`.pen` 正本前提の §1 正本 / §2 フロー / §4 配置規約を上表のフローへ書き換えた。
 - **画像アセットの置き場を `apps/corporate-site/src/assets/` に一本化する** (2026-07-26 追記)。`design/features/corporate-site/assets/` は `.pen` の付随アセットであると同時に「design source」として二重管理されていたが、両者は現状バイト完全一致であり、正本 = 実装の原則に照らして design 側の重複コピーを削除する。issue #10 で定めた「design source / 配信用コピー」の二重管理ルールは本 ADR に吸収し廃止する。
 - デザイントークンの正本は従来どおり `packages/ui` ([ADR-0007](0007-design-token-architecture.md))。本 ADR はトークン体系を変更しない。
 
@@ -62,13 +62,13 @@
 
 - 対象 app / package: `apps/corporate-site` (実装正本) / `packages/ui` (トークン正本、変更なし)
 - spec 更新要否: 要 (issue #31 の spec に決定経緯を記録済み)
-- AI 向け設定更新要否: 要。context/design-workflow.md の改訂は issue #31 で実施。`design-prompt` skill (共有プロセス層) の Pencil 言及の見直しは sdd-template 側の課題として扱う
+- AI 向け設定更新要否: 要。context/design-workflow.md の改訂は issue #31 で実施済み。`design-prompt` skill (共有プロセス層) の Pencil 言及の見直しは sdd-template 側の課題として扱う
 
 ## 関連ドキュメント
 
 - [ADR-0004](0004-design-production-workflow.md): 本 ADR により置換
 - [ADR-0007](0007-design-token-architecture.md): トークン正本 (変更なし)
-- `context/design-workflow.md`: 改訂対象 (issue #31 で実施)
-- `context/component-design.md`: `.pen` を design 正本として扱う記述の改訂対象 (issue #31 で実施)
-- `design/features/corporate-site/DesignDoc_corporate-site.md`: `index.pen` 正本参照の改訂対象 (issue #31 で実施)
+- `context/design-workflow.md`: 改訂済み (issue #31 / 2026-07-26)
+- `context/component-design.md`: 改訂済み (issue #31 / 2026-07-26)
+- `design/features/corporate-site/DesignDoc_corporate-site.md`: `index.pen` 正本参照を改訂済み (issue #31 / 2026-07-26)
 - `specs/31-docs-restructure/`: 決定経緯 (issue close 時に削除)

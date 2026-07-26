@@ -59,7 +59,7 @@ sequenceDiagram
 
 `pnpm check:specs` は close 済み issue の spec ディレクトリが `specs/` に残っていないかを検査する。closeout (issue close 時の spec 削除) の実施を担保する gate であり、判断根拠は [ADR-0011](../adr/0011-specs-closeout-enforcement.md)。
 
-- 実行タイミング: closeout 時 (issue close 前) と、文書整理の PR
+- 実行タイミング: **issue close 直後** と、文書整理の PR。close 前に実行しても対象 issue はまだ OPEN で、その spec の消し忘れは検出できない
 - `gh` CLI で issue state を照会するため、オフライン時・commit 速度への影響を避けて **lefthook には組み込まない**
 - CI への常設化は CI パイプライン方針 (issue #12) へ委譲する
 - 残存を検出したら [specs/README.md](../specs/README.md) の清算手順に従う
