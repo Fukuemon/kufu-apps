@@ -7,7 +7,7 @@
 ## メタ情報
 
 - Issue: `#31`
-- ステータス: `In Progress`
+- ステータス: `Review`
 - 作成日: 2026-07-25
 - 更新日: 2026-07-26
 - Branch: `feature/31`
@@ -27,9 +27,9 @@
 | 6   | Interface / Routing 設計    | 完了       | 2026-07-25 | 対象外で確定 (文書運用 issue のため。clarify 全件解決時に判定)                      |
 | 7   | Content / Data 設計         | 完了       | 2026-07-25 | 文書構成は D1/D3/D6 で確定。diagram で清算フロー・検査・C4 再設計案を図化           |
 | 8   | Performance / Security 設計 | 完了       | 2026-07-25 | 対象外で確定 (文書運用 issue のため)                                                |
-| 9   | Test / Metrics 設計         | 完了       | 2026-07-25 | テスト観点 = EARS 5 件の成果物充足 + 整合検証で確定 (計測指標は対象外)              |
+| 9   | Test / Metrics 設計         | 完了       | 2026-07-25 | テスト観点 = EARS 7 件の成果物充足 + 整合検証で確定 (計測指標は対象外)              |
 | 10  | 実装分割                    | 完了       | 2026-07-26 | prompts: 差分修正モード。P1×2 (specs 清算系) / P2×2 (文書再編成系、並列可)          |
-| 11  | レビュー済                  | 進行中     | 2026-07-26 | 最終 gate レビュー実施中                                                            |
+| 11  | レビュー済                  | レビュー済 | 2026-07-26 | 最終 gate PASS (指摘 5 件対応後の再判定)。実装フェーズへ                            |
 
 ## 上位文書整合
 
@@ -48,6 +48,7 @@
 | Design Doc       | モジュール責務 `specs` 行                                                                               | 継承 (specs 存続のため変更不要)                                               |
 | CLAUDE.md (契約) | Spec Workflow Contract (正本境界 / closeout)                                                            | 継承 + 補足 (closeout 契約は現行のまま。徹底する運用 / 検査を追加)            |
 | context          | design-workflow.md (§1 正本 / §2 フロー / §4 配置規約の `.pen` 前提)                                    | 変更提案 (Pencil 削除に伴う改訂)                                              |
+| context          | component-design.md (`.pen` を design 正本として扱う記述)                                               | 変更提案 (D5 / ADR-0012 に伴う改訂。正本 = 実装 + Storybook へ)               |
 | feature doc      | corporate-site → デザイン正本 = `index.pen` の参照記述 (概要 / デザイントークン / コンポーネント節ほか) | 変更提案 (D5 に伴う `.pen` 正本参照の改訂。正本 = コード + Storybook へ)      |
 | ADR-0003 / 0004  | phase 分割 / design workflow (Pencil 中核採用)                                                          | 変更提案 → 反映済 (0004 は ADR-0012 で置換。将来計画の集約先として 0003 参照) |
 
@@ -57,7 +58,8 @@
 
 - `design/DesignDoc.md`: ## アーキテクチャ概観 / ## 詳細の所在 / ## Open Questions / Future Work
 - `CLAUDE.md`: Spec Workflow Contract (正本境界 / closeout)
-- `adr/0003` (Phase 1 分割) / `adr/0004` (design workflow) / `context/design-workflow.md`
+- 本 issue で起票した ADR: [ADR-0011](../../adr/0011-specs-closeout-enforcement.md) / [ADR-0012](../../adr/0012-design-source-of-truth-implementation.md) / [ADR-0013](../../adr/0013-designdoc-present-facts-only.md)
+- `adr/0003` (Phase 1 分割) / `adr/0004` (design workflow — ADR-0012 により置換済み) / `context/design-workflow.md` / `context/component-design.md`
 - 関連 issue / ticket: [#31](https://github.com/Fukuemon/kufu-apps/issues/31)
 
 ## 背景
@@ -173,7 +175,7 @@ EARS 風受け入れ基準 (requirements.md より):
 
 ### Content / Assets
 
-- 文書の配置と正本境界の再設計そのものが本 issue の対象 (D3 / D6)
+- 文書の配置と正本境界の再設計そのものが本 issue の対象 (D3 / D5 / D6 / D7)。画像アセットの置き場は `apps/corporate-site/src/assets/` に一本化する (D7)
 
 ### UI Reuse
 
@@ -181,7 +183,7 @@ EARS 風受け入れ基準 (requirements.md より):
 
 ### Testing
 
-- 受け入れ基準 (EARS 5 件: WHEN 4 + IF 1) の充足を最終 gate の spec-review で検証する
+- 受け入れ基準 (EARS 7 件: WHEN 5 + IF 2) の充足を最終 gate の spec-review で検証する
 
 ## Interface 設計
 
@@ -232,7 +234,7 @@ EARS 風受け入れ基準 (requirements.md より):
 
 ### テスト観点
 
-- EARS 受け入れ基準 5 件 (WHEN 4 + IF 1) が成果物 (ADR / 改訂方針文書 / 清算完了) で充足されているか
+- EARS 受け入れ基準 7 件 (WHEN 5 + IF 2) が成果物 (ADR / 改訂済み文書 / 清算完了 / 削除完了) で充足されているか
 - 上位文書整合テーブルの変更提案が sync で反映され、上位文書間に矛盾が残っていないか
 
 ### 計測指標
@@ -314,15 +316,16 @@ flowchart TD
 
 生成モード: **差分修正モード** (既存文書の書き換えが主。検査スクリプトのみ新規ファイル追加)。
 
-| Phase | 対象   | prompt                                  | 概要                                                                        | 依存  | 並列  |
-| ----- | ------ | --------------------------------------- | --------------------------------------------------------------------------- | ----- | ----- |
-| P1    | `core` | `P1_01_core_specs_residue_check.md`     | 検査スクリプト新規作成 + コマンド登録 + engineering.md 追記                 | なし  | -     |
-| P1    | `core` | `P1_02_core_specs_cleanup.md`           | 清算手順文書化 → sync 判定 → 参照元リンク是正 → 9 dir 削除 → 検証           | P1_01 | -     |
-| P2    | `core` | `P2_01_core_designdoc_rewrite.md`       | DesignDoc の現状事実化 + C4 L1/L2 差し替え                                  | P1_02 | P2_02 |
-| P2    | `core` | `P2_02_core_design_workflow_rewrite.md` | design-workflow / feature doc / component-design 改訂 + `.pen`・assets 削除 | P1_02 | P2_01 |
+| Phase | 対象   | prompt                                  | 概要                                                                        | 依存  | 並列      |
+| ----- | ------ | --------------------------------------- | --------------------------------------------------------------------------- | ----- | --------- |
+| P1    | `core` | `P1_01_core_specs_residue_check.md`     | 検査スクリプト新規作成 + コマンド登録 + engineering.md 追記                 | なし  | -         |
+| P1    | `core` | `P1_02_core_specs_cleanup.md`           | 清算手順文書化 → sync 判定 → 参照元リンク是正 → 9 dir 削除 → 検証           | P1_01 | -         |
+| P2    | `core` | `P2_01_core_designdoc_rewrite.md`       | DesignDoc の現状事実化 + C4 L1/L2 差し替え                                  | なし  | 全 prompt |
+| P2    | `core` | `P2_02_core_design_workflow_rewrite.md` | design-workflow / feature doc / component-design 改訂 + `.pen`・assets 削除 | P1_02 | P2_01     |
 
 - P1 は順次実行 (検査スクリプトを先に用意し、清算の検証手段として使う)
-- P2 の 2 本は編集対象ファイルが重複しないため並列可
+- P2_01 は編集対象が `design/DesignDoc.md` のみで他 prompt と重複しないため、P1 を待たず並列実行できる (phase 番号は作業のまとまりを示すもので、実依存は `depends_on` が正)
+- P2_02 は P1_02 のリンク是正対象 (feature doc / component-design.md) を編集するため P1_02 の後
 
 ### prompts 生成方針
 
@@ -357,10 +360,11 @@ flowchart TD
 
 ### context への影響
 
-| 対象 doc / 節                                          | 変更内容                                                                                                 | 理由                                                                                                                               |
-| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| engineering.md (quality gate) / project.yml (commands) | specs 残存検査スクリプト (closed issue × `specs/` 照合) の追加とコマンド登録。CI 常設化は #12 に委譲     | D3 決定 (source: clarify)。**方針 = ADR-0011 に記録済。スクリプト実装とコマンド登録・engineering.md 追記は実装フェーズ (prompts)** |
-| design-workflow.md (§1 正本 / §2 フロー / §4 配置規約) | Pencil (phase B) と `.pen` 正本の記述を廃し、Claude Design → 実装直結 + 正本 = コード + Storybook に改訂 | D5 決定 (source: clarify)。**反映済: 冒頭に ADR-0012 による改訂予定の注記を追加。全面改訂は本 issue の実装フェーズ**               |
+| 対象 doc / 節                                             | 変更内容                                                                                                 | 理由                                                                                                                               |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| engineering.md (quality gate) / project.yml (commands)    | specs 残存検査スクリプト (closed issue × `specs/` 照合) の追加とコマンド登録。CI 常設化は #12 に委譲     | D3 決定 (source: clarify)。**方針 = ADR-0011 に記録済。スクリプト実装とコマンド登録・engineering.md 追記は実装フェーズ (prompts)** |
+| design-workflow.md (§1 正本 / §2 フロー / §4 配置規約)    | Pencil (phase B) と `.pen` 正本の記述を廃し、Claude Design → 実装直結 + 正本 = コード + Storybook に改訂 | D5 決定 (source: clarify)。**反映済: 冒頭に ADR-0012 による改訂予定の注記を追加。全面改訂は本 issue の実装フェーズ**               |
+| component-design.md (`.pen` を design 正本として扱う記述) | `.pen` / Pencil 前提の記述を廃し、正本 = 実装 (コード + Storybook) の記述に改訂                          | D5 決定 (source: 最終 gate レビューで検出・補完)                                                                                   |
 
 ### ADR の新規 / 更新
 
@@ -375,11 +379,13 @@ flowchart TD
 
 `spec-review` (fresh-context evaluator) の最新結果。完全な記録は `review.md` を参照。
 
-| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                                                   | 対応                                                                |
-| ---------- | ------------------------ | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| 2026-07-25 | NEEDS_WORK               | D5 と矛盾する feature doc (`.pen` 正本記述) が上位文書整合・影響テーブルから漏れ (+軽微: placeholder 残存) | 3 件対応済 (feature doc 行を 2 テーブルへ追記、placeholder 是正)    |
-| 2026-07-25 | PASS                     | 再判定: 指摘 3 件の対応を確認。全観点 PASS (prompts / 正本境界は N/A)                                      | —                                                                   |
-| 2026-07-25 | PASS                     | track gate 累積 (diagram + track): 図 4 点の構文・D6 整合・変更点テーブル反映漏れなし。軽微 2 件           | EARS 件数表記を 5 件に統一済。清算手順文書化の明示は prompts で対応 |
+| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                                                         | 対応                                                                |
+| ---------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| 2026-07-25 | NEEDS_WORK               | D5 と矛盾する feature doc (`.pen` 正本記述) が上位文書整合・影響テーブルから漏れ (+軽微: placeholder 残存)       | 3 件対応済 (feature doc 行を 2 テーブルへ追記、placeholder 是正)    |
+| 2026-07-25 | PASS                     | 再判定: 指摘 3 件の対応を確認。全観点 PASS (prompts / 正本境界は N/A)                                            | —                                                                   |
+| 2026-07-25 | PASS                     | track gate 累積 (diagram + track): 図 4 点の構文・D6 整合・変更点テーブル反映漏れなし。軽微 2 件                 | EARS 件数表記を 5 件に統一済。清算手順文書化の明示は prompts で対応 |
+| 2026-07-26 | NEEDS_WORK               | 最終 gate 累積 (sync + スコープ拡大 + prompts): component-design.md の整合漏れ、EARS 件数表記のずれ (+軽微 3 件) | 5 件すべて対応済                                                    |
+| 2026-07-26 | PASS                     | 最終 gate 再判定: 指摘 5 件の対応を確認。全観点 PASS                                                             | —                                                                   |
 
 ## 変更履歴
 
@@ -398,6 +404,7 @@ flowchart TD
 | 2026-07-25 | spec-lifecycle (sync)    | ADR-0011/0012/0013 起票、ADR-0004 を置換、DesignDoc Related ADRs 追記、context/feature doc へ注記、impact-index 追加、sdd-template#7 起票                                                               |
 | 2026-07-26 | spec-lifecycle (clarify) | スコープ拡大: 大規模な文書再編成 (DesignDoc / design-workflow / feature doc の書き換え、index.pen 削除) を本 issue で実施。EARS を実施完了ベースに更新し、ADR / 注記の「別 issue」記述を #31 実施へ統一 |
 | 2026-07-26 | spec-lifecycle (prompts) | 実装 prompt 4 本を生成 (差分修正モード)。生成中に D7 (design 側画像アセットの扱い) を検出・解決し ADR-0012 へ追記                                                                                       |
+| 2026-07-26 | spec-review 対応         | 最終 gate 指摘 5 件対応: component-design.md の整合行追加 (spec 2 表 + ADR-0012)、EARS 件数を 7 件に統一、関連資料に ADR 追記、Content/Assets の論点参照更新、P2_01 の depends_on を解消                |
 
 ## 備考
 
