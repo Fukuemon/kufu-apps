@@ -22,7 +22,7 @@
   - `/products` — 取扱製品。18 カテゴリ詳細 (INDEX パネル + 全メーカー一覧)
   - `/contact` — お問い合わせ。連絡先 + 問い合わせフォーム (機能は #14)
 - `/services` と `/company` の単独 route は設けない。事業内容・会社情報への直接導線は LP 内アンカーで提供する。
-- IA の正本は引き続き feature doc「ページ構成 (IA)」とし、デザイン正本は `design/features/corporate-site/index.pen` とする (**2026-07-26 更新**: デザイン正本は実装 + Storybook に変更され `.pen` は廃止された。[ADR-0012](0012-design-source-of-truth-implementation.md))。
+- IA の正本は引き続き feature doc「ページ構成 (IA)」とし、デザイン正本は実装 (コード + Storybook) とする (**2026-07-26 更新**: 決定時は `design/features/corporate-site/index.pen` を正本としたが、[ADR-0012](0012-design-source-of-truth-implementation.md) で実装へ移管し `.pen` は廃止した)。
 - 決定経緯 (論点・根拠・受け入れ基準) は [issue #17](https://github.com/Fukuemon/kufu-apps/issues/17) が保持する。
 
 ## 代替案
@@ -69,7 +69,7 @@
 ### 良い影響
 
 - 実装 (#10) の対象が 3 route に絞られ、制作・保守・E2E のコストが下がる。
-- `.pen` デザイン正本 (3 画面 + 再利用コンポーネント 6 種) と実装が 1:1 で対応する。
+- 3 route の IA と実装 (+ Storybook) が 1:1 で対応する (決定時は `.pen` を正本とした。[ADR-0012](0012-design-source-of-truth-implementation.md) で正本を実装へ移管)。
 - #16 design-workflow の A→B パイロット検証を兼ねた、実プロト根拠のある IA 決定として残る。
 
 ### 悪い影響 / トレードオフ

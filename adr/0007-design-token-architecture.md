@@ -52,7 +52,7 @@
 
 - `packages/ui` への影響: `globals.css` の再設計 (tokens.css / fonts.css 分離)、fontsource 依存追加、旧トークン / TS export の削除 (実装は issue #13 の実装分割)
 - `apps/corporate-site` への影響: import を `tokens.css` + `fonts.css` へ移行、`--kufu-font-body` → `--font-sans` 置換 (本実装は #10)
-- `design/features/corporate-site/index.pen` への影響: variables の semantic 名への rename と再取り込み
+- `design/features/corporate-site/index.pen` への影響: variables の semantic 名への rename と再取り込み (決定時の想定。`.pen` は [ADR-0012](0012-design-source-of-truth-implementation.md) で廃止したため本項は不要になった)
 - `e2e` への影響: なし (トークンガード検査の仕組み化は実装側で検討)
 
 ## 更新

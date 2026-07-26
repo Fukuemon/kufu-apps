@@ -6,10 +6,10 @@
 
 ## 一覧
 
-| Feature            | 文書                                                                                     | Phase   | 状態                                            |
-| ------------------ | ---------------------------------------------------------------------------------------- | ------- | ----------------------------------------------- |
-| コーポレートサイト | [corporate-site/DesignDoc_corporate-site.md](corporate-site/DesignDoc_corporate-site.md) | Phase 1 | 設計確定 (IA / トークン / フォーム仕様)・実装中 |
-| CMS / React アプリ | [cms/DesignDoc_cms.md](cms/DesignDoc_cms.md)                                             | Phase 2 | 標準候補のみ (未着手)                           |
+| Feature            | 文書                                                                                     | Phase                                           | 状態 |
+| ------------------ | ---------------------------------------------------------------------------------------- | ----------------------------------------------- | ---- |
+| コーポレートサイト | [corporate-site/DesignDoc_corporate-site.md](corporate-site/DesignDoc_corporate-site.md) | 設計確定 (IA / トークン / フォーム仕様)・実装中 |
+| CMS / React アプリ | [cms/DesignDoc_cms.md](cms/DesignDoc_cms.md)                                             | 標準候補のみ (未着手)                           |
 
 各 feature は `design/features/<feature>/` ディレクトリに集約する。design doc は `DesignDoc_<feature>.md`、付随するコンテンツ正本は `<feature>/reference/` に置く (例: [corporate-site/reference/](corporate-site/reference/))。
 

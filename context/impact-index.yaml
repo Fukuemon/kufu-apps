@@ -31,9 +31,11 @@ features:
       - "adr/0012-design-source-of-truth-implementation.md"
       - "adr/0013-designdoc-present-facts-only.md"
       - "context/design-workflow.md"
+      - "design/DesignDoc.md"
+      - "specs/README.md"
     source_refs:
       - "specs/31-docs-restructure/index.md (作業中のみ。issue #31 close 時に削除)"
-    coverage: "partial" # DesignDoc / design-workflow の本文書き換えは別 issue で実施予定
+    coverage: "full"
 
   - name: "<feature 名 (例: contact-form)>"
     keywords: ["<検索の手掛かり>", "<API 名>", "<画面名>"]
