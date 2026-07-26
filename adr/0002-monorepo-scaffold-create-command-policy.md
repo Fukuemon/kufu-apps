@@ -76,5 +76,4 @@
 ## 関連ドキュメント
 
 - `design/DesignDoc.md`: Phase 1 foundation の範囲 (Why/What 節)、monorepo 構成と toolchain 方針
-- `specs/3-monorepo-foundation/index.md`: issue #3 の詳細設計
-- `specs/3-monorepo-foundation/prompts/`: 実装 prompt 群
+- [issue #3](https://github.com/Fukuemon/kufu-apps/issues/3): monorepo 基盤の詳細設計と実装の記録

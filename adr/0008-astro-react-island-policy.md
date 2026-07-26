@@ -19,7 +19,7 @@
 
 1. **表示専用 UI は shadcn(React) を静的描画で直接使う**: Button (link/submit) / Card / Badge / Tag / section 等、クライアント状態を持たない UI は `@kufu/ui` の shadcn コンポーネントを `.astro` 内で **`client:*` なし**で使う。ビルド時に HTML へ焼かれ JS はゼロ。`.astro` 版を別実装せず `@kufu/ui` を単一コンポーネント正本に保つ (二重実装の回避)。
 2. **`@astrojs/react` は導入してよい**: integration の導入自体はランタイムコストを持たない (island が無ければ JS は出荷されない)。最初の島が必要になる前でも、静的描画のために導入してよい。
-3. **`client:*` island は本物のインタラクションに限定する**: モバイルナビ開閉、問い合わせフォーム (#14)、および Radix のインタラクティブ primitive (Dialog / DropdownMenu / Popover / Tooltip / Accordion / Tabs / Select 等) のみ island 化する。
+3. **`client:*` island は本物のインタラクションに限定する**: モバイルナビ開閉、問い合わせフォーム (#14)、および Radix のインタラクティブ primitive (Dialog / DropdownMenu / Popover / Tooltip / Accordion / Tabs / Select 等) のみ island 化する (改訂あり: 下記 `## 更新`)。
 4. **island の既定ディレクティブは遅延系**: `client:visible` または `client:idle` を既定とし、above-the-fold で即時操作が必要な箇所のみ `client:load` を使う。
 5. **ハードルール (正しさ)**: インタラクティブ Radix primitive を `client:*` なしで静的描画しない。静的描画では見た目だけ出て動作しないため、必ず island 化する。
 6. **予算管理**: `client:*` の総数を [Design Doc](../design/DesignDoc.md) のガードレール「Unnecessary Client JS Count」で監視し、増加時は island 化の妥当性をレビューする。
@@ -48,7 +48,7 @@
 
 - `apps/corporate-site` への影響: `@astrojs/react` 導入、表示専用は静的描画、island は遅延ディレクティブ既定 (実装は #10 / フォームは #14)
 - `packages/ui` への影響: shadcn コンポーネントが Astro 静的描画でも成立すること (SSR セーフ) を前提に整備する
-- `e2e` への影響: island の主要導線 (モバイルナビ / フォーム) を検証対象にする (#10 / #14 で検討)
+- `e2e` への影響: island の主要導線 (問い合わせフォーム) と、script で動く導線 (モバイルナビ開閉) を検証対象にする (#10 / #14 で検討)
 
 ## 関連チケット / PR
 
@@ -57,3 +57,11 @@
 - issue #6 (Storybook。shadcn コンポーネント整備)
 - [ADR-0007](0007-design-token-architecture.md) (デザイントークン体系。二重管理回避の方針を共有)
 - [context/architecture.md](../context/architecture.md) Runtime Boundary (本 ADR を参照)
+
+## 更新
+
+### 2026-07-26: モバイルナビ開閉を island の例から除外 (issue #31)
+
+- **背景**: 決定 3 はモバイルナビ開閉を island 化の代表例として挙げていたが、実装 (`apps/corporate-site/src/components/common/SiteHeader.astro`) は `.astro` + 最小 script で開閉・`aria-expanded`・Escape・選択後 close を扱っており、記述と実態が食い違っていた。
+- **決定**: **素の script で足りる開閉トグルは island 化しない**。決定 3 の島の例からモバイルナビ開閉を外し、全ページ共通 header に React ランタイムを載せない。
+- **影響**: 決定 3 の island 対象は問い合わせフォームと Radix インタラクティブ primitive に限られる。`context/architecture.md` の「shadcn 消費と React island の境界」も同じ基準に揃えた。

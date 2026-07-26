@@ -50,20 +50,20 @@
 
 ### 影響範囲
 
-- `packages/ui` への影響: `globals.css` の再設計 (tokens.css / fonts.css 分離)、fontsource 依存追加、旧トークン / TS export の削除 (実装は spec #13 の実装分割)
+- `packages/ui` への影響: `globals.css` の再設計 (tokens.css / fonts.css 分離)、fontsource 依存追加、旧トークン / TS export の削除 (実装は issue #13 の実装分割)
 - `apps/corporate-site` への影響: import を `tokens.css` + `fonts.css` へ移行、`--kufu-font-body` → `--font-sans` 置換 (本実装は #10)
 - `design/features/corporate-site/index.pen` への影響: variables の semantic 名への rename と再取り込み
 - `e2e` への影響: なし (トークンガード検査の仕組み化は実装側で検討)
 
 ## 更新
 
-### 2026-07-15: radius 基準値を 4px へ改訂 (spec #10)
+### 2026-07-15: radius 基準値を 4px へ改訂 (issue #10)
 
 - **背景**: 2026-06-12 時点の `.pen` は全面直角だったが、その後の #6 で Button 8px / Tag 4px がデザイン正本へ追加され、#10 の実装でも主要面に4pxの控えめな角丸を採用した。`tokens.css` が0pxのまま app側で値を上書きすると、トークン正本が分裂する。
 - **決定**: `tokens.css` の `--radius` を4pxへ変更し、app側の同名上書きを削除する。4pxを共通基準とし、Button 8pxなどの例外はcomponent variantが所有する。
 - **影響**: `--radius-*` 派生値を使う共有UIにも新しい基準値が適用される。corporate-siteの現行表示は維持される。
 
-### 2026-06-22: corporate-site に lean app-local Tailwind v4 を採用 (spec #6)
+### 2026-06-22: corporate-site に lean app-local Tailwind v4 を採用 (issue #6)
 
 - **背景**: corporate-site の component が scoped `<style>` + `var(--token)` で書かれ、Tailwind を使う `packages/ui` (shadcn) とスタイル記法が分裂していた。決定 2 / 5 で「utility 提供は #10 の実需に応じて」「spacing / type scale は Tailwind 標準を使う」としていた前提を、Storybook catalog の component (#6) を Tailwind へ統一する形で具体化する。
 - **決定**: corporate-site に **lean な Tailwind v4 entry** を立てる。`apps/corporate-site/src/styles/globals.css` で `@import "tailwindcss"` + `@kufu/ui/tokens.css` + `@kufu/ui/fonts.css` を読み込み、token → utility の `@theme inline` 写像は新設の **`@kufu/ui/theme.css`** に一元化し (4 entry 目)、`styles.css` (全量) と corporate-site の lean entry の双方が `@import` する。app 固有なのは document-level base。Tailwind の走査は Vite plugin の module graph に任せ、app-local `@source` は置かない。Tailwind v4 は **`@tailwindcss/vite`** で適用し、Astro は `astro.config.mjs` の `vite.plugins` に設定する。Storybook は `@storybook-astro/framework` が Astro config の Vite plugin を自動ロードする。PostCSS config は使わない。Vite 8 の rolldown resolver が `tsconfigPaths` 欠落で落ちるため、`astro.config.mjs` の `vite.resolve.tsconfigPaths` を `true` にする。
@@ -73,7 +73,7 @@
 
 ## 関連チケット / PR
 
-- issue #13 (デザインシステム基盤。決定経緯: [specs/13-design-system-foundation/](../specs/13-design-system-foundation/index.md) 論点 D1〜D7)
+- [issue #13](https://github.com/Fukuemon/kufu-apps/issues/13): デザインシステム基盤の決定経緯
 - issue #17 (論点 D5 で `.pen` パレット昇格を #13 へ移管した経緯)
 - issue #10 (corporate-site 本体実装。本トークン体系を consume)
 - issue #6 (Storybook。本トークン体系を前提とする)

@@ -156,7 +156,7 @@ shadcn/ui は **コードを自分の repo に copy して所有する** モデ�
 
 - 実装コードが `@kufu/ui` トークンを参照しているか確認する。独自値を検出したら正本へ寄せる。
 - `.pen` が `packages/ui` を fork していないか（`tokens.css` に無い独自トークンを抱えていないか）確認する。fork を検出したら差し戻す。
-- **spacing 例外**: `.pen` の `space-*` 変数は CSS トークンを持たず、Tailwind 標準スケールへの写像（4px グリッド、対応は feature doc のデザイントークン節のガイド）として扱う。fork 判定の対象外（[ADR-0007](../adr/0007-design-token-architecture.md) / spec #13 D4）。
+- **spacing 例外**: `.pen` の `space-*` 変数は CSS トークンを持たず、Tailwind 標準スケールへの写像（4px グリッド、対応は feature doc のデザイントークン節のガイド）として扱う。fork 判定の対象外（[ADR-0007](../adr/0007-design-token-architecture.md) / issue #13 D4）。
 
 ## 7. Figma fallback
 

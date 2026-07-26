@@ -1,27 +1,27 @@
 # Toolchain
 
-> 最終更新: 2026-05-31
+> 最終更新: 2026-07-26
 
 Kufu Monorepo で採用する標準 toolchain。採否の根拠は [adr/](../adr/) を参照する。
 
 ## 標準スタック
 
-| 区分                         | ツール                 | 備考                                                             |
-| ---------------------------- | ---------------------- | ---------------------------------------------------------------- |
-| Package manager              | pnpm workspace         |                                                                  |
-| Task runner                  | Turborepo              | root script から `turbo run` で束ねる                            |
-| コーポレートサイト framework | Astro                  | Phase 1 主対象                                                   |
-| CMS app candidate            | Hono + Inertia + React | Phase 2 以降の候補 (ADR/spec で採否)                             |
-| Bundler                      | Rolldown               | 採用候補として先行固定                                           |
-| Language                     | TypeScript             |                                                                  |
-| Linter                       | oxlint                 |                                                                  |
-| Formatter                    | oxfmt                  | config をほぼ持たず root script を正本にする                     |
-| Unit test                    | Vitest                 |                                                                  |
-| UI catalog                   | Storybook              | `packages/ui` と app-local Presentation component の review 入口 |
-| E2E                          | Playwright             | root 管理 ([testing.md](testing.md))                             |
-| Dead code detection          | knip                   | root 管理 ([engineering.md](engineering.md))                     |
-| Dependency analysis          | dependency-cruiser     | root 管理 ([engineering.md](engineering.md))                     |
-| Library build                | tsdown                 |                                                                  |
+| 区分                         | ツール                 | 備考                                                                                                                   |
+| ---------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Package manager              | pnpm workspace         |                                                                                                                        |
+| Task runner                  | Turborepo              | root script から `turbo run` で束ねる                                                                                  |
+| コーポレートサイト framework | Astro                  | Phase 1 主対象                                                                                                         |
+| CMS app candidate            | Hono + Inertia + React | Phase 2 以降の候補 (ADR/spec で採否)                                                                                   |
+| Bundler                      | Rolldown               | 採用候補として先行固定                                                                                                 |
+| Language                     | TypeScript             |                                                                                                                        |
+| Linter                       | oxlint                 | TS を含む workspace は `oxlint-tsgolint` の type-aware 実行を使う。eslint は oxlint で不足が確認された場合のみ段階併用 |
+| Formatter                    | oxfmt                  | config をほぼ持たず root script を正本にする。prettier は入れない                                                      |
+| Unit test                    | Vitest                 |                                                                                                                        |
+| UI catalog                   | Storybook              | `packages/ui` と app-local Presentation component の review 入口                                                       |
+| E2E                          | Playwright             | root 管理 ([testing.md](testing.md))                                                                                   |
+| Dead code detection          | knip                   | root 管理 ([engineering.md](engineering.md))                                                                           |
+| Dependency analysis          | dependency-cruiser     | root 管理 ([engineering.md](engineering.md))                                                                           |
+| Library build                | tsdown                 |                                                                                                                        |
 
 ## 先行固定の方針
 
