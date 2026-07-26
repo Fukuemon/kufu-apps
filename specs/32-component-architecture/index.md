@@ -29,7 +29,7 @@
 | 1   | 起票                        | 完了       | 2026-07-25 | issue #32 (spec-requirement で起票、要求論点 7 件解決済み)                    |
 | 2   | 下書き                      | 完了       | 2026-07-25 | scaffold で index.md 初版生成。実装突合: 対象 (既存実装への増分)              |
 | 3   | 上位文書突合                | 完了       | 2026-07-25 | 変更提案あり。**sync で全件ハンドオフ済** (context 2 / feature doc 2 / ADR 2) |
-| 4   | 論点整理                    | 進行中     | 2026-07-26 | D1〜D12 + 実装突合ゲート 7 件 (⑤〜⑦ は 2026-07-26 追加)                       |
+| 4   | 論点整理                    | 進行中     | 2026-07-26 | D1〜D15 + 実装突合ゲート 7 件 (⑤〜⑦ と D12〜D15 は 2026-07-26 追加)           |
 | 5   | 論点解決                    | 進行中     | 2026-07-26 | D8 / D10 を再決定 (案 E / 独自スクリプト)、D12 追加。再レビュー待ち           |
 | 6   | Interface / Routing 設計    | 進行中     | 2026-07-26 | D8 再決定に伴い section 構成を 1 階層へ修正                                   |
 | 7   | Content / Data 設計         | レビュー済 | 2026-07-25 | ハードコード基準は D7 で確定 (機能仕様 Content/Assets に反映)                 |
@@ -117,7 +117,7 @@ spec × 現行実装 × ADR × context の突合で検出した食い違いと�
 - `src/styles/` のレイヤ別分割と `globals.css` の entry 化、`@source` の `@kufu/ui/theme.css` への移動 (D6 / 突合④)
 - cva 集約と motion トークン化 (D4 / D5)
 - Storybook の title 階層・autodocs グローバル適用・variant 網羅への追従 (D1〜D3)
-- section 境界の検査スクリプト追加と `pnpm check` への組み込み、`.dependency-cruiser.cjs` の旧 app 名ルール修正 (D10 / 突合⑦)
+- section 境界の検査スクリプト追加と app `lint` への合流 (D10 / D14)、`.dependency-cruiser.cjs` の旧 app 名ルール修正 (突合⑦)
 
 ### やらないこと
 
@@ -139,7 +139,7 @@ spec × 現行実装 × ADR × context の突合で検出した食い違いと�
 - コンポーネント区切り・スタイル分離・globals.css 分割・ハードコード基準が context / ADR に明文化される
 - sections 分割基準と section 内部の標準構成が明文化され、products のような大きい section でも起点が一意に分かる
 - **規約どおりに実装が移行され**、既存ページの表示を壊さずに build / typecheck / test / Storybook build が通る
-- **境界違反が機械検査で検出できる**状態になる (検査スクリプトが `pnpm check` 系に組み込まれている)
+- **境界違反が機械検査で検出できる**状態になる (検査スクリプトが corporate-site の `lint` に組み込まれ、`pnpm lint` で走る)
 
 ### 対象ユーザー / 操作主体
 
@@ -182,6 +182,8 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 | D11 | 規約の置き場と ADR 要否: 各決定の反映先 (context/component-design.md / feature doc / component-map.md) の割り付け、sections 再編を ADR として残すか        | 横断規約は component-design.md 改訂、corporate-site 固有は feature doc、再編判断は ADR 起票 | 決定 (2026-07-25): 案 A context + feature doc + 新規 ADR 1 本。「解決済みの論点」D11 参照                                                      |
 | D12 | 未使用 component の扱い: `ServicePillar` / `ContactInfoRow` (story からのみ参照され実ページで未使用)                                                       | 削除 / 現状維持 / 活用先を作る                                                              | 決定 (2026-07-26): **削除する** (story も同時削除)。「解決済みの論点」D12 参照                                                                 |
 | D13 | `common/` の配置形式: 規約は `common/<Component>/` (1 component 1 ディレクトリ) だが実装はフラット                                                         | ディレクトリ化する / フラットを正とする                                                     | 決定 (2026-07-26): **フラットを正とし context / component-map を追従**。「解決済みの論点」D13 参照                                             |
+| D14 | 境界検査スクリプトの組み込み先: `pnpm check` は実在せず、既存の `token:check` もどの gate からも呼ばれていない                                             | app の lint に合流 / root に check 新設 / lefthook に直接追加                               | 決定 (2026-07-26): **app の `lint` に合流**。「解決済みの論点」D14 参照                                                                        |
+| D15 | corporate-site から cva を使う経路: cva は `packages/ui` の依存で corporate-site には無く、`@kufu/ui` も再輸出していない                                   | ui から再輸出 / app に直接追加 / cva を使わない                                             | 決定 (2026-07-26): **`@kufu/ui/lib` から再輸出**。「解決済みの論点」D15 参照                                                                   |
 
 ## 解決済みの論点
 
@@ -208,6 +210,8 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 | 突合④ | ADR-0007 更新節 + context/component-design.md (スタイリング節)                     |
 | D12   | ADR-0011 (削除判断と復帰条件) + component-map.md (削除予定の記載)                  |
 | D13   | context/component-design.md (ディレクトリ構成節) + component-map.md (配置列)       |
+| D14   | spec で閉じる (実装の wiring 判断。結果は package.json / スクリプトが正)           |
+| D15   | spec で閉じる (依存経路の作業判断。結果は packages/ui の export が正)              |
 | 突合⑤ | ADR-0011 (route 層でなくフラットにした判断根拠として記録)                          |
 | 突合⑥ | ADR-0011 (検査手段の選択根拠として記録) + context/architecture.md (検査方法の記述) |
 | 突合⑦ | spec で閉じる (`.dependency-cruiser.cjs` の旧 app 名バグ修正。コードが正)          |
@@ -243,6 +247,14 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - context 規約は `common/<Component>/<Component>.astro` (1 component 1 ディレクトリ) だったが、実装は `common/` 直下のフラット配置で、`packages/ui` も同様にフラットである
   - D8 で「common は現行のまま移動なし」と決めており、section 内をフラットにした方針とも一貫するため、**実装を正として context / component-map を追従**させた (移動は発生しない)
   - `common/` は公開面を絞る対象ではないため `index.ts` は置かない (sections との違い)
+- **D14 (2026-07-26, ユーザー): 境界検査は corporate-site の `lint` script に合流させる**。
+  - `apps/corporate-site/package.json` の `lint` を `oxlint ... && node scripts/check-token-usage.mjs && node scripts/check-section-boundary.mjs` に拡張する
+  - turbo の `lint` task 経由で root `pnpm lint` からも CI からも自動で走る。どの gate からも呼ばれていなかった既存の `token:check` も同時に配線される (`token:check` script 自体は個別実行用に残す)
+  - `hooks/` 配下は sdd-template から配布される共有 hook (「汎用に保つ」方針) のため、プロジェクト固有検査は追加しない
+- **D15 (2026-07-26, ユーザー): cva は `@kufu/ui/lib` から再輸出して使う**。
+  - `packages/ui/src/lib/` は既に `cn` を提供しており、同じ入口に cva を再輸出する (`packages/ui/src/lib/index.ts`)
+  - corporate-site に `class-variance-authority` を直接追加しない。app が増えても共有ユーティリティの入口が 1 つに保たれる
+  - `.dependency-cruiser.cjs` の未宣言依存禁止ルールにも抵触しない
 - **D1 (2026-07-25, ユーザー): Storybook title はディレクトリと 1:1 対応 (案 A)**。
   - app-local: `Sections/<Section>/<Component>` (例: `Sections/Business/BusinessFeatureRow`) と `Common/<Component>`。packages/ui: `UI/<Component>` (D8 再決定に伴い route 層を除いた)
   - title はファイルの物理配置から機械的に決まる。分類の判断を story 作成時にしない
@@ -264,7 +276,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - duration / easing の motion トークンは `@kufu/ui/tokens.css` に定義する (「トークンは常に ui」の既存昇格境界と整合)
   - site 固有演出の keyframes (`scroll-cue` / `section-rise` 等) は app-local (`src/styles/animations.css`) に置き、複数 app での再利用が明確になったら `@kufu/ui` へ昇格する (業務ルール 3: 過剰一般化しない)
 - **D6 (2026-07-25, ユーザー): src/styles/ は 4 ファイル + 移行受け皿 (案 A)**。
-  - `globals.css` = entry (@import のみ。現行の `@source` 2 行は `@kufu/ui/theme.css` へ移動 — 突合④)、`base.css` (@layer base: document-level / :root)、`components.css` (@layer components: 既存生 CSS の受け皿。D4 の cva / utility 移行で逐次削減し、最終的に削除を目標)、`animations.css` (@keyframes)、`utilities.css` (@utility 拡張)
+  - `globals.css` = entry (@import のみ。現行の `@source` 2 行のうち `packages/ui/src/components` 分を `@kufu/ui/theme.css` へ移動 — 突合④。`packages/ui/src/lib` 分は `utils.ts` (cn のみ) で class 文字列を持たないため移送せず削除する)、`base.css` (@layer base: document-level / :root)、`components.css` (@layer components: 既存生 CSS の受け皿。D4 の cva / utility 移行で逐次削減し、最終的に削除を目標)、`animations.css` (@keyframes)、`utilities.css` (@utility 拡張)
   - tokens 層は既存どおり `@kufu/ui/tokens.css` の import で賄う (app 内に tokens ファイルを作らない)
   - fonts は現行の `BaseLayout.astro` の `?url` 参照経路を維持する (突合③)
   - ADR-0007 の「entry は import / base に絞る」への詳細化であり、4 entry 配信 (ui 側) は変更しない
@@ -282,7 +294,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 (決定できない項目を理由とともに残す。1 件でも残っていれば下流 phase は止める)
 
-- なし (D1〜D12 + 実装突合ゲート 7 件。2026-07-25 に D1〜D11 と突合①〜④、2026-07-26 に D8 / D10 の再決定・D12・突合⑤〜⑦ を解決)
+- なし (D1〜D15 + 実装突合ゲート 7 件。2026-07-25 に D1〜D11 と突合①〜④、2026-07-26 に D8 / D10 の再決定・D12〜D15・突合⑤〜⑦ を解決)
 
 ## 実装対象
 
@@ -471,7 +483,7 @@ flowchart LR
 flowchart TD
     subgraph UIPkg["packages/ui (@kufu/ui)"]
         tokens["tokens.css\nCSS 変数の実体 + motion トークン (D5)"]
-        theme["theme.css\n@theme inline 写像 + @source './src/components' (突合④)"]
+        theme["theme.css (src/styles/)\n@theme inline 写像 + @source '../components' (突合④)"]
         fonts["fonts.css\nfont-face"]
         styles["styles.css (React app 全量 entry)"]
     end
@@ -504,8 +516,8 @@ flowchart TD
 | P2    | `corporate-site`        | `features/` → `sections/` の移動、`index.ts` 公開面の新設、pages / 内部 import の追従、`apps/corporate-site/README.md` の構成記述追従 (D8 / D9) | P1                 |
 | P3    | `corporate-site`        | Storybook title の階層追従、autodocs のグローバル適用、variant 網羅の補完 (D1〜D3)                                                              | P2                 |
 | P4    | `ui` + `corporate-site` | `@source` の theme.css 移動、motion トークン追加、`src/styles/` のレイヤ分割 (D5 / D6 / 突合④)                                                  | なし (P2 と並列可) |
-| P5    | `corporate-site`        | cva 集約と `components.css` 受け皿の削減 (D4)                                                                                                   | P4                 |
-| P6    | `corporate-site` + root | 境界検査スクリプト追加 + `pnpm check` 組み込み、`.dependency-cruiser.cjs` の旧 app 名修正 (D10 / 突合⑦)                                         | P2                 |
+| P5    | `ui` + `corporate-site` | `@kufu/ui/lib` からの cva 再輸出 (D15) と cva 集約、`components.css` 受け皿の削減 (D4)                                                          | P4                 |
+| P6    | `corporate-site` + root | 境界検査スクリプト追加 + app `lint` への合流 (D14)、`.dependency-cruiser.cjs` の旧 app 名修正 (突合⑦)                                           | P2                 |
 
 ### prompts 生成方針
 

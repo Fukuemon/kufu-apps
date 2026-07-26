@@ -80,3 +80,16 @@ blocking だった指摘 3 (source-references.ts) は論点テーブル / 解決
 - **C-1. `context/design-workflow.md` の最終更新日が未同期** → 2026-07-26 へ更新
 - **C-2. spec 内に残る「実施 issue へ引き継ぐ」系 stale 3 箇所** (突合④の動作検証 / props 変更 / Security 節) → 修正
 - **C-3. 未確定事項の内訳の件数 stale** → D1〜D12 + 突合 7 件へ修正
+
+## Review 2026-07-26 (3 回目 / 2 回目指摘対応後)
+
+Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
+
+前回指摘 A〜C はすべて解消と確認された。今回は **実装着手可否** の観点で 2 件の blocker が出た。
+
+- **1. `pnpm check` が実在しない** (root package.json に script なし、`token:check` もどの gate からも未配線) → **D14 として決定**: 境界検査は corporate-site の `lint` script に合流させる。turbo の `lint` task 経由で root `pnpm lint` / CI から自動実行され、未配線だった `token:check` も同時に救済される。共有 hook (`hooks/`) には追加しない
+- **2. cva が corporate-site の依存に無い** (`packages/ui` の依存で、`@kufu/ui` も再輸出していない) → **D15 として決定**: `packages/ui/src/lib/` (既に `cn` を提供) から cva を再輸出し、app に依存を増やさない
+- **3. 正本 (ADR-0007) に残る誤り** (fonts の読み込み経路、「実施 issue」表記) → ADR-0007 の更新節で修正
+- **4. D13 が件数記述に未反映** → D1〜D15 へ修正
+- **5. `@source` 移送の粒度が未記録** (実装は 2 行だが移送対象は components のみ) → D6 / ADR-0007 / context に「`src/lib` 分は移送せず削除」と明記。theme.css の実体パスと相対パス (`../components`) も訂正
+- **6〜8. 軽微** (スクリプトの app 相対表記、requirements の業務ルール 4 の stale、component-design の例の story 欠落) → 修正

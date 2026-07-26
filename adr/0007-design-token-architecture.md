@@ -60,8 +60,8 @@
 ### 2026-07-25: `@source` を theme.css へ移動し、motion トークンを追加 (issue #32)
 
 - **背景**: corporate-site の `globals.css` に `packages/ui` の component ソースを走査させる `@source` 2 行が入り、「app-local `@source` は置かない」(2026-06-22 更新) と字面上矛盾していた。禁止の意図は app 自身の走査の手動指定であり、workspace package の走査指定は Tailwind v4 の検出仕様 (node_modules / .gitignore を走査しない) 上必要である。また、アニメーション設計 (issue #32 D5) で duration / easing のトークン化が決まった。
-- **決定**: ① `@source` は **`@kufu/ui/theme.css` が自身の `src/components` を相対パスで指す**形に移動し、app entry (`globals.css`) は `@import` のみに戻す。theme.css を import する全 consumer (corporate-site / 将来の cms) が自動で ui の class を生成できる。② duration / easing の **motion トークンを `tokens.css` に追加**する (「実績ベースの最小定義」への追加トークン層。site 固有演出の keyframes は app-local に置き、値のみトークン参照)。
-- **影響**: `packages/ui/theme.css` に `@source` 追加、corporate-site `globals.css` から `@source` 削除 (動作検証含め実施 issue)。app の `src/styles/` レイヤ分割の規約は [context/component-design.md](../context/component-design.md) が正本。
+- **決定**: ① `@source` は **`@kufu/ui/theme.css` (実体 `packages/ui/src/styles/theme.css`) が自身の component ソースを `@source "../components"` で指す**形に移動し、app entry (`globals.css`) は `@import` のみに戻す。app entry にあった `packages/ui/src/lib` 向けの `@source` は、`utils.ts` が class 文字列を持たないため移送せず削除する。theme.css を import する全 consumer (corporate-site / 将来の cms) が自動で ui の class を生成できる。② duration / easing の **motion トークンを `tokens.css` に追加**する (「実績ベースの最小定義」への追加トークン層。site 固有演出の keyframes は app-local に置き、値のみトークン参照)。
+- **影響**: `packages/ui/src/styles/theme.css` に `@source` 追加、corporate-site `globals.css` から `@source` 2 行を削除 (動作検証を含め issue #32 のスコープ内で実施)。app の `src/styles/` レイヤ分割の規約は [context/component-design.md](../context/component-design.md) が正本。
 
 ### 2026-07-15: radius 基準値を 4px へ改訂 (spec #10)
 

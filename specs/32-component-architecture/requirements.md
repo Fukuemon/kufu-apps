@@ -70,7 +70,7 @@ corporate-site / packages/ui のコンポーネント設計とディレクトリ
 | 1   | 既存の forbidden (app 配下 UI 独自実装禁止 / トークン直書き禁止) と矛盾する方針を出さない | project.yml の禁止事項が上位          | 変える場合は project.yml 側も更新                 |
 | 2   | decision_priority 1 位 (パフォーマンス / 最小 island) を損なう方針を採らない              | Astro 静的生成が前提                  |                                                   |
 | 3   | 構成規約は corporate-site 固有事情と将来 app (cms) 共通規約を区別して書く                 | Phase 2 以降の app に過剰一般化しない | 置き場 (context か feature doc か) も決定に含める |
-| 4   | `pnpm knip && pnpm depcruise` で検証可能な規約を優先する                                  | 機械検査できる規約は drift しない     | depcruise ルール化は実施 issue 側                 |
+| 4   | 機械検査できる規約を優先する                                                              | 機械検査できる規約は drift しない     | 検査手段と実装は本 issue 内 (D10 / D14)           |
 
 ## 受け入れ基準 (EARS 風)
 

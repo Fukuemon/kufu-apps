@@ -91,7 +91,9 @@ apps/corporate-site/src/components/
     ├── SectionHeading.astro
     ├── SectionHeading.stories.ts
     ├── SiteFooter.astro
-    └── SiteHeader.astro
+    ├── SiteFooter.stories.ts
+    ├── SiteHeader.astro
+    └── SiteHeader.stories.ts
 ```
 
 ## 責務分割
@@ -202,7 +204,7 @@ content 層の実装方式は content の性質で選び分ける (ハイブリ�
 corporate-site の Astro component は **Tailwind utility** でスタイルする (scoped `<style>` + 生 CSS は原則使わない)。`packages/ui` (shadcn) とスタイル記法を揃え、token ガバナンスを保つため。
 
 - 値の正本は `@kufu/ui/tokens.css`。色・フォントは semantic token の utility (`text-foreground` / `bg-secondary` / `text-muted-foreground` / `border-border` / `font-mono` / `font-serif` など) を使う。
-- corporate-site は全量 `@kufu/ui/styles.css` を取り込まず、app-local の lean な Tailwind v4 entry (`src/styles/globals.css`) を持つ ([ADR-0007](../adr/0007-design-token-architecture.md) の「更新」)。token → utility の `@theme` 写像は `@kufu/ui/theme.css` に一元化し、`styles.css` と app entry の双方が import する。Tailwind の走査は Vite plugin の module graph に任せ、app 自身のソースへの app-local `@source` は置かない。workspace package (`packages/ui`) のソース走査は `@kufu/ui/theme.css` が自身の `src/components` を `@source` で指す (app entry に書かない。issue #32 突合④)。
+- corporate-site は全量 `@kufu/ui/styles.css` を取り込まず、app-local の lean な Tailwind v4 entry (`src/styles/globals.css`) を持つ ([ADR-0007](../adr/0007-design-token-architecture.md) の「更新」)。token → utility の `@theme` 写像は `@kufu/ui/theme.css` に一元化し、`styles.css` と app entry の双方が import する。Tailwind の走査は Vite plugin の module graph に任せ、app 自身のソースへの app-local `@source` は置かない。workspace package (`packages/ui`) のソース走査は `@kufu/ui/theme.css` (実体は `packages/ui/src/styles/theme.css`) が自身の component ソースを `@source "../components"` で指す (app entry に書かない。issue #32 突合④)。
 - app の `src/styles/` はレイヤ別に分割し、`globals.css` は `@import` のみの entry とする: `base.css` (@layer base: document-level / `:root`) / `components.css` (@layer components: 既存生 CSS の移行受け皿。cva / utility 移行で逐次削減し最終的に削除を目標) / `animations.css` (@keyframes) / `utilities.css` (@utility 拡張)。
 - **cva への集約**: 視覚 variant / 状態分岐を持つ component は cva で variants を定義し、frontmatter の条件付き class 組み立てを置換する (shadcn/ui パターンと整合)。variant のない固定 class の component は Tailwind utility 直書きのままでよい。
 - **アニメーション**: duration / easing の motion トークンは `@kufu/ui/tokens.css` に置く (トークンは常に ui)。site 固有演出の keyframes は app-local (`src/styles/animations.css`) に置き、複数 app での再利用が明確になったら `@kufu/ui` へ昇格する。
