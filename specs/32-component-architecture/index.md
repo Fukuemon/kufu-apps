@@ -526,6 +526,19 @@ flowchart TD
 - 分割は上記 P1〜P6 に対応させる。P4 は P2 と並列実行できるため `depends_on` を実依存で記述する
 - 各 prompt に「移動元 → 移動先」の具体パスを列挙し、探索を不要にする
 
+### 生成済み prompt (2026-07-26)
+
+| ファイル                                           | phase | target           | 並列可 | 依存先 | 概要                                                       |
+| -------------------------------------------------- | ----- | ---------------- | ------ | ------ | ---------------------------------------------------------- |
+| `P1_01_corporate-site_remove_unused_components.md` | 1     | `corporate-site` | -      | なし   | 未使用 component 4 ファイルの削除 (D12)                    |
+| `P2_01_corporate-site_sections_migration.md`       | 2     | `corporate-site` | P4     | P1     | features → sections 移動と index.ts 公開面 (D8/D9/D13)     |
+| `P3_01_corporate-site_storybook_catalog.md`        | 3     | `corporate-site` | -      | P2     | autodocs / title 階層 / variant 網羅 (D1〜D3, 突合②)       |
+| `P4_01_ui_styles_layering.md`                      | 4     | `ui`             | P2     | なし   | @source 移動 / motion トークン / styles 分割 (D5/D6/突合④) |
+| `P5_01_corporate-site_cva_consolidation.md`        | 5     | `corporate-site` | -      | P4     | cva 再輸出と集約、components.css 削減 (D4/D7/D15)          |
+| `P6_01_corporate-site_boundary_check.md`           | 6     | `corporate-site` | -      | P2     | 境界検査スクリプトと gate 配線 (D10/D14/突合⑥⑦)            |
+
+実行順序: P1 → P2 (P4 は P1/P2 と独立に開始可) → P3 / P6 (P2 完了後) / P5 (P4 完了後)
+
 ## 上位資料からの変更点
 
 本 spec で PRD / Design Doc / feature doc / context / 既存 ADR から変更・追加した内容を、反映先別に記録する。track / sync phase で更新する。
