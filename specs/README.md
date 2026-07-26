@@ -57,6 +57,8 @@ spec は issue 単位の作業文書であり、**issue close 時に削除する
 
 手順 1〜3 を終えるまで削除しない。
 
+issue を close すると、手順 4 の削除 PR は [`.github/workflows/spec-closeout.yml`](../.github/workflows/spec-closeout.yml) が自動で起票する。**その PR をマージするかどうかが削除の判断**であり、手順 1〜3 の確認は PR 本文のチェックリストで行う。close する PR に spec 削除を含めた場合は起票されない。
+
 ## 関連 Skills
 
 - `spec-requirement`: 要求の整理と issue 起票
