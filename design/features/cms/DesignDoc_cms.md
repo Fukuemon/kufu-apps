@@ -1,6 +1,6 @@
 # Feature 設計: CMS / React アプリ候補 (apps/cms)
 
-> 最終更新: 2026-07-05 / Status: 暫定標準候補 (Phase 2 以降, 未着手)
+> 最終更新: 2026-07-26 / Status: 暫定標準候補 (Phase 2 以降, 未着手)
 
 コーポレートサイト掲載投稿を管理する Phase 2 以降の app 候補。Phase 1 では実装せず、React app の暫定標準候補と採用判断の条件だけを置く ([ADR-0003](../../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md))。実装着手時は spec / ADR で採否、バージョン、互換性、運用責務を再確認して確定する。
 
@@ -8,7 +8,7 @@
 
 | 項目           | 値                                                                                                                                                          |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 関連 DesignDoc | [DesignDoc.md](../../DesignDoc.md) Why/What (CMS / React アプリ要求・フェーズ展望) / モジュール責務 (`apps/cms`)                                            |
+| 関連 DesignDoc | [DesignDoc.md](../../DesignDoc.md) Open Questions / Future Work (`apps/cms` は未実装の計画。立ち上げ判断は未決事項 #4)                                      |
 | 関連 context   | [architecture.md](../../../context/architecture.md), [toolchain.md](../../../context/toolchain.md), [infrastructure.md](../../../context/infrastructure.md) |
 | 関連 ADR       | [ADR-0003](../../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md)                                                                                |
 | 関連 spec      | (未起票)                                                                                                                                                    |
@@ -81,7 +81,7 @@
 
 ## 上位資料からの変更点
 
-| 対象資料  | 変更種別 | 内容                                                                                                                 |
-| --------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
-| DesignDoc | 継承     | 「CMS / React アプリ要求」を Phase 2 以降の候補として保持、モジュール責務 (`apps/cms` = Phase 2 以降の app) を具体化 |
-| ADR       | 継承     | ADR-0003 「Phase 1 はコーポレートサイトのみ」を前提に候補のみ記載                                                    |
+| 対象資料  | 変更種別 | 内容                                                                                  |
+| --------- | -------- | ------------------------------------------------------------------------------------- |
+| DesignDoc | 継承     | `apps/cms` を Future Work の「未実装の計画」として保持 (モジュール責務表には載せない) |
+| ADR       | 継承     | ADR-0003 「app 実装対象は corporate-site のみ」を前提に候補のみ記載                   |
