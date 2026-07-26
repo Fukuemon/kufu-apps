@@ -54,3 +54,36 @@ Verdict: PASS
 
 1. 「EARS 4 件」表記の不統一 → 5 件 (WHEN 4 + IF 1) に統一済み (typo 相当の自動修正)
 2. 清算フロー図で「手順文書化」が注記のみ → prompts 生成時に清算手順文書化を先行タスクとして明示する (持ち越し)
+
+## Review 2026-07-26 (最終 gate: sync + スコープ拡大 + prompts の累積)
+
+Verdict: NEEDS_WORK → 指摘 5 件対応後、再判定で **PASS**
+
+### 観点別評価
+
+- 上位文書整合: NEEDS_WORK — `context/component-design.md` (`.pen` を design 正本として扱う記述 5 箇所) が上位文書整合テーブル・context 影響テーブル・ADR-0012 の関連ドキュメントから欠落
+- template 必須節: NEEDS_WORK — スコープ拡大で EARS が 7 件 (WHEN 5 + IF 2) になったが、3 箇所が旧値「5 件」のまま
+- 未解決論点 / 実装対象明示 / EARS acceptance / prompts 自己完結性 / 正本境界: PASS
+  - prompts 4 本すべてが命名規約・frontmatter・必須 10 セクション・antipatterns 注入を充足
+  - EARS 7 件が prompts の完了条件と 1 対 1 に対応
+  - D1〜D7 全行に反映先判定あり (D2 のみ「spec で閉じる」、他は ADR へ)
+
+### 軽微
+
+- 関連資料節に新規 ADR-0011/0012/0013 が未掲載
+- Content / Assets 節の論点参照が D3 / D6 のまま (D5 / D7 が加わっている)
+- P2_01 の `depends_on: [P1_02]` が過剰 (`design/DesignDoc.md` は P1_02 のリンク是正対象外)
+
+### 対応 (全件)
+
+1. `context/component-design.md` の行を spec 2 テーブル + ADR-0012 の関連ドキュメントへ追加
+2. EARS 件数表記 3 箇所を 7 件 (WHEN 5 + IF 2) に統一
+3. 関連資料節に ADR-0011/0012/0013 と ADR-0004 置換済みの旨を追記
+4. Content / Assets 節の論点参照を D3 / D5 / D6 / D7 に更新し、画像アセット一本化を明記
+5. P2_01 の `depends_on` を空にして並列可に変更 (実装分割表・前提条件・検証コマンドも同期)
+
+## Review 2026-07-26 (最終 gate 再判定)
+
+Verdict: PASS
+
+指摘 5 件すべての対応を確認。全観点 PASS。未解決の指摘なし。実装フェーズ (prompt 実行) へ進める状態。

@@ -3,7 +3,7 @@ phase: 2
 seq: 1
 target: core
 issue: 31
-depends_on: [P1_02_core_specs_cleanup.md]
+depends_on: []
 ---
 
 # DesignDoc の現状事実化と C4 図 (L1/L2) の差し替え
@@ -91,10 +91,10 @@ depends_on: [P1_02_core_specs_cleanup.md]
 
 ## 前提条件
 
-- 完了しているべき依存 prompt: `P1_02_core_specs_cleanup.md` (spec への参照リンク是正が済んでいること)
+- 完了しているべき依存 prompt: なし (`design/DesignDoc.md` は P1_02 のリンク是正対象に含まれないため実依存なし)
 - 完了後に着手可能になる後続 prompt: なし
 - 必要な repo 状態: ADR-0013 が存在すること (sync phase で作成済み)
-- 並列実行: `P2_02_core_design_workflow_rewrite.md` と並列可 (編集対象ファイルが重複しない)
+- 並列実行: `P1_*` / `P2_02_core_design_workflow_rewrite.md` のいずれとも並列可 (編集対象ファイルが重複しない)
 
 ## 不明点ハンドリング
 
@@ -183,7 +183,7 @@ spec `## テスト / 評価方針` および受け入れ基準より:
 
 - `pnpm format:check`
 - `pnpm knip && pnpm depcruise` (健全性検査)
-- `pnpm check:specs` (P1 で追加。清算後は exit 0)
+  (`pnpm check:specs` は P1_01 で追加されるコマンドのため、本 prompt では検証対象外)
 
 ## 完了条件
 

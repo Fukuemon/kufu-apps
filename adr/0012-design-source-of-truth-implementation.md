@@ -69,5 +69,6 @@
 - [ADR-0004](0004-design-production-workflow.md): 本 ADR により置換
 - [ADR-0007](0007-design-token-architecture.md): トークン正本 (変更なし)
 - `context/design-workflow.md`: 改訂対象 (issue #31 で実施)
+- `context/component-design.md`: `.pen` を design 正本として扱う記述の改訂対象 (issue #31 で実施)
 - `design/features/corporate-site/DesignDoc_corporate-site.md`: `index.pen` 正本参照の改訂対象 (issue #31 で実施)
 - `specs/31-docs-restructure/`: 決定経緯 (issue close 時に削除)
