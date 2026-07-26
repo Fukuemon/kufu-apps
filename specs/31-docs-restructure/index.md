@@ -132,6 +132,7 @@ EARS 風受け入れ基準 (requirements.md より):
 - **D5: 新 ADR で ADR-0004 を supersede し、デザインフローは「Claude Design → 実装直結」とする** (2026-07-25, ユーザー)。新 ADR「デザイン正本を実装 (コード + Storybook) とする」を起票し、0004 は superseded に更新。フローは A0 依頼文 (.prompt.md, commit) → A: Claude Design で発散 (使い捨て) → C: 採用案を参照し直接実装 → 確認は Storybook + 実画面。Pencil (phase B) と `.pen` 中間正本を廃止。`index.pen` の実削除と context/design-workflow.md の書き換えは、改訂方針を示した上で本 issue の実装フェーズで実施する (2026-07-26 スコープ拡大)。**反映先: ADR ([ADR-0012](../../adr/0012-design-source-of-truth-implementation.md) — 反映済、ADR-0004 は置換) + context / feature doc へ注記追加済**
 - **D6: 将来計画は DesignDoc の Open Questions / Future Work 節に一元化し、C4 図は L1/L2 の階層を維持して内容を再設計する** (2026-07-25, ユーザー。要求決定 #3/#4 の詳細化。#4 の「1 枚統合」は撤回し requirements.md を更新)。他の全節から Phase 語彙・将来記述を排除し「今の事実」のみにする (根拠は ADR-0003 へリンク)。L1 = 利用者視点に絞る: 訪問者・内容更新者 → コーポレートサイト → 外部サービス (Cloudflare / Resend)。開発者・GitHub・docs workflow は除外し、記法は C4Context → flowchart。L2 = 実在の実行単位とデータの流れのみ: corporate-site / Pages Functions / packages (ui・config) / e2e / 外部サービス。未実装 `apps/cms` (点線) と正本ドキュメント群のノードは除外 (cms は Future Work 節、docs は「詳細の所在」節へ)。図の具体化は diagram phase で行う。**反映先: ADR ([ADR-0013](../../adr/0013-designdoc-present-facts-only.md) — 反映済)。DesignDoc 本文の書き換えは本 issue の実装フェーズ**
 - **D7: `design/features/corporate-site/assets/` (画像 4 点) も削除し、`apps/corporate-site/src/assets/` を唯一の置き場とする** (2026-07-26, ユーザー。prompts phase で検出した論点)。両者は現状バイト完全一致 (SHA 一致 4/4) で、design 側は重複コピーにすぎない。spec #10 D6 の「design 側 = design source / app 側 = 配信用コピー」という二重管理ルールは、ADR-0012 (正本 = 実装) に吸収されたものとして廃止する。**反映先: ADR ([ADR-0012](../../adr/0012-design-source-of-truth-implementation.md) へ追記)**
+- **D8: `component-map.md` と `ia-exploration-single-lp.prompt.md` も削除する** (2026-07-26, ユーザー。実装中に検出した論点)。`component-map.md` は `.pen` → 実装の対応表であり、`.pen` 廃止後は実装 + Storybook と重複する drift 源になる。`ia-exploration-single-lp.prompt.md` は却下された「単一 LP 案」の A0 依頼文で、IA は 3 route に確定済み (ADR-0006) の上、運用メモのトークン値が ADR-0007 の現行体系と食い違っており誤情報になっていた。**反映先: 両ファイルを削除し、参照元 (spec #32 requirements) を是正**
 
 ## 未確定事項
 
@@ -354,17 +355,17 @@ flowchart TD
 
 ### feature doc への影響
 
-| 対象 doc / 節                                                                                              | 変更内容                                                                                           | 理由                                                                                                                                    |
-| ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| corporate-site → DesignDoc_corporate-site.md の `index.pen` 正本参照 (デザイン正本リンク・`.pen` 運用記述) | 「デザイン正本 = index.pen」記述を「正本 = 実装 (コード + Storybook)」へ改訂し、`index.pen` を削除 | D5 決定 (source: clarify)。**反映済: 冒頭に ADR-0012 による正本変更の注記を追加。全面改訂と `index.pen` 削除は本 issue の実装フェーズ** |
+| 対象 doc / 節                                                                                              | 変更内容                                                                                           | 理由                                                                                                                                                           |
+| ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| corporate-site → DesignDoc_corporate-site.md の `index.pen` 正本参照 (デザイン正本リンク・`.pen` 運用記述) | 「デザイン正本 = index.pen」記述を「正本 = 実装 (コード + Storybook)」へ改訂し、`index.pen` を削除 | D5 決定 (source: clarify)。**反映済 (2026-07-26): `.pen` 参照 6 箇所を改訂し暫定注記を削除。`index.pen` / design assets / component-map.md / A0 依頼文を削除** |
 
 ### context への影響
 
-| 対象 doc / 節                                             | 変更内容                                                                                                 | 理由                                                                                                                               |
-| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| engineering.md (quality gate) / project.yml (commands)    | specs 残存検査スクリプト (closed issue × `specs/` 照合) の追加とコマンド登録。CI 常設化は #12 に委譲     | D3 決定 (source: clarify)。**方針 = ADR-0011 に記録済。スクリプト実装とコマンド登録・engineering.md 追記は実装フェーズ (prompts)** |
-| design-workflow.md (§1 正本 / §2 フロー / §4 配置規約)    | Pencil (phase B) と `.pen` 正本の記述を廃し、Claude Design → 実装直結 + 正本 = コード + Storybook に改訂 | D5 決定 (source: clarify)。**反映済: 冒頭に ADR-0012 による改訂予定の注記を追加。全面改訂は本 issue の実装フェーズ**               |
-| component-design.md (`.pen` を design 正本として扱う記述) | `.pen` / Pencil 前提の記述を廃し、正本 = 実装 (コード + Storybook) の記述に改訂                          | D5 決定 (source: 最終 gate レビューで検出・補完)                                                                                   |
+| 対象 doc / 節                                             | 変更内容                                                                                                 | 理由                                                                                                                                                |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| engineering.md (quality gate) / project.yml (commands)    | specs 残存検査スクリプト (closed issue × `specs/` 照合) の追加とコマンド登録。CI 常設化は #12 に委譲     | D3 決定 (source: clarify)。**反映済 (2026-07-26): `scripts/check-specs-residue.sh` + `pnpm check:specs` + engineering.md の Docs Closeout Gate 節** |
+| design-workflow.md (§1 正本 / §2 フロー / §4 配置規約)    | Pencil (phase B) と `.pen` 正本の記述を廃し、Claude Design → 実装直結 + 正本 = コード + Storybook に改訂 | D5 決定 (source: clarify)。**反映済 (2026-07-26): 全面改訂 (Pencil / `.pen` 前提を除去し A0→A→C の 3 段フローへ。§5〜§8 の知見は保全)**             |
+| component-design.md (`.pen` を design 正本として扱う記述) | `.pen` / Pencil 前提の記述を廃し、正本 = 実装 (コード + Storybook) の記述に改訂                          | D5 決定。**反映済 (2026-07-26): 「デザイン正本との関係」節へ改訂**                                                                                  |
 
 ### ADR の新規 / 更新
 
@@ -403,6 +404,7 @@ flowchart TD
 | 2026-07-25 | spec-review (track gate) | 累積レビュー PASS。軽微指摘: EARS 件数表記を 5 件に統一 (対応済)、清算手順文書化の明示は prompts へ持ち越し                                                                                             |
 | 2026-07-25 | spec-lifecycle (sync)    | ADR-0011/0012/0013 起票、ADR-0004 を置換、DesignDoc Related ADRs 追記、context/feature doc へ注記、impact-index 追加、sdd-template#7 起票                                                               |
 | 2026-07-26 | spec-lifecycle (clarify) | スコープ拡大: 大規模な文書再編成 (DesignDoc / design-workflow / feature doc の書き換え、index.pen 削除) を本 issue で実施。EARS を実施完了ベースに更新し、ADR / 注記の「別 issue」記述を #31 実施へ統一 |
+| 2026-07-26 | 実装 (P1_01〜P2_02)      | 検査スクリプト追加 / spec 9 dir 清算 / DesignDoc 現状事実化 + C4 再設計 / design-workflow 改訂 + `.pen`・assets・component-map・A0 依頼文の削除。D8 を実装中に検出・解決                                |
 | 2026-07-26 | spec-lifecycle (prompts) | 実装 prompt 4 本を生成 (差分修正モード)。生成中に D7 (design 側画像アセットの扱い) を検出・解決し ADR-0012 へ追記                                                                                       |
 | 2026-07-26 | spec-review 対応         | 最終 gate 指摘 5 件対応: component-design.md の整合行追加 (spec 2 表 + ADR-0012)、EARS 件数を 7 件に統一、関連資料に ADR 追記、Content/Assets の論点参照更新、P2_01 の depends_on を解消                |
 

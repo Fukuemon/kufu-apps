@@ -270,21 +270,20 @@ app-local Storybook は feature-local presentation component の review 入口�
 - section assembly / content 層は原則 story 対象にしない。
 - 本番 secret、実送信、external API call を伴う story を作らない。
 
-## Design Artifact との関係
+## デザイン正本との関係
 
-`.pen` は design 正本、code / Storybook は実装正本である。
+デザイン正本は実装 (コード + Storybook) である ([ADR-0012](../adr/0012-design-source-of-truth-implementation.md))。中間デザインファイルを介さず、Claude Design のプロトを参照して直接実装する ([design-workflow.md](design-workflow.md))。
 
-- `.pen` の page section は page 文脈を保持する。
-- `.pen` の reusable component は `GenericComponents` / `CorporateSiteComponents` のように分類する。
-- `GenericComponents` は `packages/ui` への shared component 候補。
-- feature 固有 component は app-local presentation (+ 必要なら content 層 / section assembly) へ写像する。
-- `.pen` と実装 component が 1:1 にならない場合は、spec / PR に分割・統合理由を残す。
+- page section は page 文脈を保持し、Storybook の対象にしない。
+- 複数 app / feature をまたぐ再利用が明確な component は `packages/ui` の shared catalog へ昇格する。
+- feature 固有 component は app-local presentation (+ 必要なら content 層 / section assembly) に置く。
+- プロトの構造をそのまま持ち込まず、`@kufu/ui` コンポ + セマンティック HTML へ写像する。
 
 ## 参照
 
 - [issue #6](https://github.com/Fukuemon/kufu-apps/issues/6): Storybook / component catalog / Container-Presentation の決定経緯
 - [architecture.md](architecture.md): package boundary / runtime boundary
 - [engineering.md](engineering.md): Storybook quality gate / root task boundary
-- [design-workflow.md](design-workflow.md): `.pen` と実装正本の境界
+- [design-workflow.md](design-workflow.md): デザイン制作フローと正本境界
 - [BCD Design](https://zenn.dev/misuken/articles/203b9dd3afbf1c)
 - [Functional cohesion / colocation](https://zenn.dev/coji/articles/react-router-v7-functional-cohesion-colocation)

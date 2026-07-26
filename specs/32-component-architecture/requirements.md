@@ -91,7 +91,7 @@ corporate-site / packages/ui のコンポーネント設計とディレクトリ
 ## 関連 Design Doc 節
 
 - `design/DesignDoc.md` ## モジュール責務、## 設計上の重要ポイント
-- `design/features/corporate-site/DesignDoc_corporate-site.md` / `component-map.md`
+- `design/features/corporate-site/DesignDoc_corporate-site.md` / `context/component-design.md` (component-map.md は #31 で削除。配置は実装 + Storybook が正本)
 - `adr/0006-corporate-site-three-route-ia.md` / `adr/0007-design-token-architecture.md` / `adr/0008-astro-react-island-policy.md` / `adr/0010-shadcn-base-ui-primitive-policy.md`
 - `context/design-workflow.md` §6 (トークン正本ガード)
 

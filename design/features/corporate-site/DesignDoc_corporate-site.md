@@ -1,20 +1,18 @@
 # Feature 設計: コーポレートサイト (apps/corporate-site)
 
 > 最終更新: 2026-07-26 / Status: 設計確定・実装中 / IA 確定済 (#11 を集約、#17 で 3 route 統合構成へ再確定 — [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)) / デザイントークン体系確定 (#13 — [ADR-0007](../../../adr/0007-design-token-architecture.md)) / 問い合わせフォーム仕様確定 (#14 — [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md))
->
-> **⚠️ デザイン正本の変更 (2026-07-25, #31)**: [ADR-0012](../../../adr/0012-design-source-of-truth-implementation.md) により **デザイン正本は実装 (コード + Storybook) に変更、`index.pen` は廃止**。本 doc 内の「デザイン正本 = index.pen」記述の改訂と `index.pen` 削除は issue #31 で実施する。改訂までの間、当該記述は旧運用の記録として読むこと。
 
 Phase 1 の主対象。Astro によるコーポレートサイトを高いパフォーマンスと保守性で公開する。全体像は [design/DesignDoc.md](../../DesignDoc.md)、横断規約は [context/](../../../context/) を参照する。
 
 ## メタ
 
-| 項目           | 値                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 関連 DesignDoc | [DesignDoc.md](../../DesignDoc.md) Why/What (コーポレートサイト関連要求・スコープ) / Goal / モジュール責務                                                                                                                                                                                                                                                                                                                                                                                                             |
-| 関連 context   | [architecture.md](../../../context/architecture.md), [testing.md](../../../context/testing.md), [infrastructure.md](../../../context/infrastructure.md)                                                                                                                                                                                                                                                                                                                                                                |
-| 関連 ADR       | [ADR-0002](../../../adr/0002-monorepo-scaffold-create-command-policy.md), [ADR-0003](../../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md), [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md) (3 route IA), [ADR-0007](../../../adr/0007-design-token-architecture.md) (デザイントークン体系), [ADR-0008](../../../adr/0008-astro-react-island-policy.md) (React island / shadcn 消費ポリシー), [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md) (問い合わせ送信 backend) |
-| 関連 issue     | [#3](https://github.com/Fukuemon/kufu-apps/issues/3) monorepo 基盤 / [#11](https://github.com/Fukuemon/kufu-apps/issues/11) 旧 5p IA / [#17](https://github.com/Fukuemon/kufu-apps/issues/17) 3 route IA / [#13](https://github.com/Fukuemon/kufu-apps/issues/13) デザイントークン / [#14](https://github.com/Fukuemon/kufu-apps/issues/14) 問い合わせフォーム                                                                                                                                                         |
-| 対象モジュール | `corporate-site`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 項目           | 値                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 関連 DesignDoc | [DesignDoc.md](../../DesignDoc.md) Why/What (コーポレートサイト関連要求・スコープ) / Goal / モジュール責務                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 関連 context   | [architecture.md](../../../context/architecture.md), [testing.md](../../../context/testing.md), [infrastructure.md](../../../context/infrastructure.md)                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| 関連 ADR       | [ADR-0002](../../../adr/0002-monorepo-scaffold-create-command-policy.md), [ADR-0003](../../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md), [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md) (3 route IA), [ADR-0007](../../../adr/0007-design-token-architecture.md) (デザイントークン体系), [ADR-0008](../../../adr/0008-astro-react-island-policy.md) (React island / shadcn 消費ポリシー), [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md) (問い合わせ送信 backend), [ADR-0012](../../../adr/0012-design-source-of-truth-implementation.md) (デザイン正本 = 実装 + Storybook) |
+| 関連 issue     | [#3](https://github.com/Fukuemon/kufu-apps/issues/3) monorepo 基盤 / [#11](https://github.com/Fukuemon/kufu-apps/issues/11) 旧 5p IA / [#17](https://github.com/Fukuemon/kufu-apps/issues/17) 3 route IA / [#13](https://github.com/Fukuemon/kufu-apps/issues/13) デザイントークン / [#14](https://github.com/Fukuemon/kufu-apps/issues/14) 問い合わせフォーム                                                                                                                                                                                                                                                                   |
+| 対象モジュール | `corporate-site`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ## 背景・要件解釈
 
@@ -57,7 +55,7 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 
 情報設計 (IA) の正本は本 feature doc。確定済のページ / section 構成・配置マッピング・回遊フローはここに集約する。変更経緯は [issue #11](https://github.com/Fukuemon/kufu-apps/issues/11) (旧 5 ページ IA) と [issue #17](https://github.com/Fukuemon/kufu-apps/issues/17) (3 route 統合構成への変更) が持つ。構造変更の決定根拠は [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)。
 
-サイトマップ (**3 route 統合構成** + 全ページ共通レイアウト G。#17 / ADR-0006 で 5 ページ構成から変更。デザイン正本: [index.pen](index.pen)):
+サイトマップ (**3 route 統合構成** + 全ページ共通レイアウト G。#17 / ADR-0006 で 5 ページ構成から変更):
 
 | ID  | ページ       | route       | 主な section                                                                                   | 優先 | 担う成功条件                          |
 | --- | ------------ | ----------- | ---------------------------------------------------------------------------------------------- | ---- | ------------------------------------- |
@@ -68,7 +66,7 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 
 - 旧 P2 (事業内容 `/services`) / 旧 P4 (会社情報 `/company`) は LP 内 section に統合し、単独 route は設けない。直接導線は LP 内アンカーで提供する。
 - コンテナ幅・横余白は全ページ 1440px・横 padding 56 に統一する。実装は単一 max-width + 共通 padding に正規化する (#17 D6)。
-- `.pen` 正本は 3 画面の desktop に加えてモバイル variant を含める。hover / focus / form error 等の状態系はデザイン正本に含めず、実装時に `@kufu/ui` 規約で判断する (#17 D7)。
+- 3 route それぞれに desktop / モバイルの表示を用意する。hover / focus / form error 等の状態系は `@kufu/ui` 規約に従って実装し、Storybook で確認する (#17 D7)。
 - P3 のカテゴリ・メーカー検索は `q` query parameter を唯一の状態正本とする。初期表示・再読込・共有 URL から検索条件を復元し、入力中は履歴を増やさない。空文字では `q` を削除する。JavaScript 実行前の HTML には 18 カテゴリと全メーカーを保持する。
 - reveal アニメーションは progressive enhancement とし、JavaScript が無効または `IntersectionObserver` が利用できない環境では全コンテンツを初期表示する。アニメーションのために HTML-first の可読性を損なわない。
 
@@ -87,7 +85,7 @@ Phase 1 の主対象。Astro によるコーポレートサイトを高いパフ
 
 - 会社概要の一次情報 (社名 / 所在地 / 代表 / 連絡先) は LP 会社情報 section を正本とし、フッター等は参照に留める (BR3)。
 - アクセス / 地図・沿革・代表挨拶は LP 会社情報 section 内とし、未確定分は placeholder で公開可能な状態を保つ (E1 / E2)。
-- グローバルナビ (LP 内 section アンカー + 取扱製品 / お問い合わせ) と全ページ共通の問い合わせ CTA で、全ページから問い合わせ導線 (P6) に到達可能にする (BR2)。ナビ項目の詳細はデザイン正本 ([index.pen](index.pen) Site Header) に従う。
+- グローバルナビ (LP 内 section アンカー + 取扱製品 / お問い合わせ) と全ページ共通の問い合わせ CTA で、全ページから問い合わせ導線 (P6) に到達可能にする (BR2)。ナビ項目の詳細は実装 (`SiteHeader.astro`) を正本とする。
 
 #### 問い合わせフォーム仕様
 
@@ -216,8 +214,8 @@ API 契約:
 | 体系 (2 層構造 / shadcn 語彙 / inverse スコープ) | [ADR-0007](../../../adr/0007-design-token-architecture.md)     |
 
 - CSS トークンを持たない (doc 管理の) ガイドのみ以下に置く:
-  - **spacing**: CSS トークンなし。4px グリッド + 推奨リズム 12 / 16 / 24 / 32 / 48 / 80 (= Tailwind `3/4/6/8/12/20`)。`.pen` の `space-*` はこの写像として扱い fork 判定の対象外 ([design-workflow §6](../../../context/design-workflow.md))
-  - **radius**: shadcn `--radius` に一本化し、基準値は `tokens.css` の 4px。Button 8px / Tag 4px など component 固有値は `.pen` と `@kufu/ui` の対応する component variant で管理する
+  - **spacing**: CSS トークンなし。4px グリッド + 推奨リズム 12 / 16 / 24 / 32 / 48 / 80 (= Tailwind `3/4/6/8/12/20`)。`space-*` はこの写像として扱い fork 判定の対象外 ([design-workflow §6](../../../context/design-workflow.md))
+  - **radius**: shadcn `--radius` に一本化し、基準値は `tokens.css` の 4px。Button 8px / Tag 4px など component 固有値は `@kufu/ui` の component variant で管理する
   - **type scale**: Tailwind 標準。見出し階層との対応は次節「トーン & マナー / ブランド指針」
 
 ### トーン & マナー / ブランド指針
@@ -331,3 +329,4 @@ sequenceDiagram
 | [#13](https://github.com/Fukuemon/kufu-apps/issues/13) | 追加     | デザイントークン節 (正本への参照ハブ + spacing / radius / type scale ガイド) とトーン & マナー / ブランド指針を新設。値の正本は `tokens.css`、体系は [ADR-0007](../../../adr/0007-design-token-architecture.md) |
 | [#17](https://github.com/Fukuemon/kufu-apps/issues/17) | 変更     | IA を 5 ページ構成から 3 route 統合構成へ変更 ([ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md))。幅統一 (1440px/56)・モバイル variant 方針・18 カテゴリ単一データソースを追記                    |
 | [#14](https://github.com/Fukuemon/kufu-apps/issues/14) | 集約     | 問い合わせフォーム仕様 (入力項目 / validation / flowchart / sequence / API 契約 / error code / test 境界) の正本を本 doc へ移管                                                                                 |
+| [#31](https://github.com/Fukuemon/kufu-apps/issues/31) | 変更     | デザイン正本を `index.pen` から実装 (コード + Storybook) へ変更し、`.pen` 参照を削除 ([ADR-0012](../../../adr/0012-design-source-of-truth-implementation.md))                                                   |
