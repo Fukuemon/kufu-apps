@@ -29,14 +29,14 @@
 | 1   | 起票                        | 完了       | 2026-07-25 | issue #32 (spec-requirement で起票、要求論点 7 件解決済み)                    |
 | 2   | 下書き                      | 完了       | 2026-07-25 | scaffold で index.md 初版生成。実装突合: 対象 (既存実装への増分)              |
 | 3   | 上位文書突合                | 完了       | 2026-07-25 | 変更提案あり。**sync で全件ハンドオフ済** (context 2 / feature doc 2 / ADR 2) |
-| 4   | 論点整理                    | 進行中     | 2026-07-26 | D1〜D15 + 実装突合ゲート 7 件 (⑤〜⑦ と D12〜D15 は 2026-07-26 追加)           |
-| 5   | 論点解決                    | 進行中     | 2026-07-26 | D8 / D10 を再決定 (案 E / 独自スクリプト)、D12 追加。再レビュー待ち           |
-| 6   | Interface / Routing 設計    | 進行中     | 2026-07-26 | D8 再決定に伴い section 構成を 1 階層へ修正                                   |
+| 4   | 論点整理                    | レビュー済 | 2026-07-26 | D1〜D15 + 実装突合ゲート 7 件 (⑤〜⑦ と D12〜D15 は 2026-07-26 追加)           |
+| 5   | 論点解決                    | レビュー済 | 2026-07-26 | D8 / D10 再決定 + D12〜D15 追加。spec-review PASS (4 回目)                    |
+| 6   | Interface / Routing 設計    | レビュー済 | 2026-07-26 | D8 再決定に伴い section 構成を 1 階層へ修正                                   |
 | 7   | Content / Data 設計         | レビュー済 | 2026-07-25 | ハードコード基準は D7 で確定 (機能仕様 Content/Assets に反映)                 |
 | 8   | Performance / Security 設計 | レビュー済 | 2026-07-25 | CSS payload / island 方針は現状維持を確認 (D4〜D6 / styles 構成図)            |
-| 9   | Test / Metrics 設計         | 進行中     | 2026-07-26 | 検査手段を独自スクリプトへ変更 (D10 再決定)。実装後の検証観点も追加           |
-| 10  | 実装分割                    | 進行中     | 2026-07-26 | スコープ拡大により P1〜P6 を定義。prompts: **差分修正モード**                 |
-| 11  | レビュー済                  | 未着手     |            | 再決定分の spec-review 待ち                                                   |
+| 9   | Test / Metrics 設計         | レビュー済 | 2026-07-26 | 検査手段を独自スクリプトへ変更 (D10 / D14)。実装後の検証観点も追加            |
+| 10  | 実装分割                    | レビュー済 | 2026-07-26 | P1〜P6 を定義し着手可能と確認。prompts: **差分修正モード**                    |
+| 11  | レビュー済                  | 完了       | 2026-07-26 | spec-review PASS (4 回目)。prompts 生成 → 実装へ                              |
 
 ## 上位文書整合
 
@@ -117,7 +117,7 @@ spec × 現行実装 × ADR × context の突合で検出した食い違いと�
 - `src/styles/` のレイヤ別分割と `globals.css` の entry 化、`@source` の `@kufu/ui/theme.css` への移動 (D6 / 突合④)
 - cva 集約と motion トークン化 (D4 / D5)
 - Storybook の title 階層・autodocs グローバル適用・variant 網羅への追従 (D1〜D3)
-- section 境界の検査スクリプト追加と app `lint` への合流 (D10 / D14)、`.dependency-cruiser.cjs` の旧 app 名ルール修正 (突合⑦)
+- section 境界の検査スクリプト追加、app `lint` への合流と pre-commit 配線 (D10 / D14)、`.dependency-cruiser.cjs` の旧 app 名ルール修正 (突合⑦)
 
 ### やらないこと
 
@@ -139,7 +139,7 @@ spec × 現行実装 × ADR × context の突合で検出した食い違いと�
 - コンポーネント区切り・スタイル分離・globals.css 分割・ハードコード基準が context / ADR に明文化される
 - sections 分割基準と section 内部の標準構成が明文化され、products のような大きい section でも起点が一意に分かる
 - **規約どおりに実装が移行され**、既存ページの表示を壊さずに build / typecheck / test / Storybook build が通る
-- **境界違反が機械検査で検出できる**状態になる (検査スクリプトが corporate-site の `lint` に組み込まれ、`pnpm lint` で走る)
+- **境界違反が機械検査で検出できる**状態になる (検査スクリプトが corporate-site の `lint` に組み込まれ、`pnpm lint` と pre-commit hook で走る)
 
 ### 対象ユーザー / 操作主体
 
@@ -249,8 +249,9 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - `common/` は公開面を絞る対象ではないため `index.ts` は置かない (sections との違い)
 - **D14 (2026-07-26, ユーザー): 境界検査は corporate-site の `lint` script に合流させる**。
   - `apps/corporate-site/package.json` の `lint` を `oxlint ... && node scripts/check-token-usage.mjs && node scripts/check-section-boundary.mjs` に拡張する
-  - turbo の `lint` task 経由で root `pnpm lint` からも CI からも自動で走る。どの gate からも呼ばれていなかった既存の `token:check` も同時に配線される (`token:check` script 自体は個別実行用に残す)
-  - `hooks/` 配下は sdd-template から配布される共有 hook (「汎用に保つ」方針) のため、プロジェクト固有検査は追加しない
+  - turbo の `lint` task 経由で root `pnpm lint` から実行される。どの gate からも呼ばれていなかった既存の `token:check` も同時に配線される (`token:check` script 自体は個別実行用に残す)
+  - **あわせて `lefthook.yml` の `pre-commit` に `pnpm lint` を追加する** (2026-07-26 追記)。現状の pre-commit は protected-branch / format / repo-analysis (depcruise + knip) のみで lint を含まず、CI にも lint job が無いため、lint に入れるだけでは手動実行でしか走らないことが判明したため。corporate-site の lint は oxlint 2 ファイル + ガードスクリプト 2 本で軽量なので commit ごとの実行に耐える
+  - `hooks/` 配下は sdd-template から配布される共有 hook (「汎用に保つ」方針) のため、プロジェクト固有検査は追加しない。`lefthook.yml` は消費 repo 側で管理するファイルなのでここに追加してよい
 - **D15 (2026-07-26, ユーザー): cva は `@kufu/ui/lib` から再輸出して使う**。
   - `packages/ui/src/lib/` は既に `cn` を提供しており、同じ入口に cva を再輸出する (`packages/ui/src/lib/index.ts`)
   - corporate-site に `class-variance-authority` を直接追加しない。app が増えても共有ユーティリティの入口が 1 つに保たれる
@@ -510,14 +511,14 @@ flowchart TD
 
 実装は「壊れたら即検出できる順序」で分割する。各段階の完了時に `pnpm typecheck` / `pnpm build` を通す。
 
-| Phase | 対象                    | 概要                                                                                                                                            | 依存               |
-| ----- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| P1    | `corporate-site`        | 未使用 component の削除 (D12)。`ServicePillar.astro` + story、`ContactInfoRow.astro` + story の 4 ファイル。content 層は削除しない              | なし               |
-| P2    | `corporate-site`        | `features/` → `sections/` の移動、`index.ts` 公開面の新設、pages / 内部 import の追従、`apps/corporate-site/README.md` の構成記述追従 (D8 / D9) | P1                 |
-| P3    | `corporate-site`        | Storybook title の階層追従、autodocs のグローバル適用、variant 網羅の補完 (D1〜D3)                                                              | P2                 |
-| P4    | `ui` + `corporate-site` | `@source` の theme.css 移動、motion トークン追加、`src/styles/` のレイヤ分割 (D5 / D6 / 突合④)                                                  | なし (P2 と並列可) |
-| P5    | `ui` + `corporate-site` | `@kufu/ui/lib` からの cva 再輸出 (D15) と cva 集約、`components.css` 受け皿の削減 (D4)                                                          | P4                 |
-| P6    | `corporate-site` + root | 境界検査スクリプト追加 + app `lint` への合流 (D14)、`.dependency-cruiser.cjs` の旧 app 名修正 (突合⑦)                                           | P2                 |
+| Phase | 対象                    | 概要                                                                                                                                                    | 依存               |
+| ----- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| P1    | `corporate-site`        | 未使用 component の削除 (D12)。`ServicePillar.astro` + story、`ContactInfoRow.astro` + story の 4 ファイル。content 層は削除しない                      | なし               |
+| P2    | `corporate-site`        | `features/` → `sections/` の移動、`index.ts` 公開面の新設、pages / 内部 import の追従、`apps/corporate-site/README.md` の構成記述追従 (D8 / D9)         | P1                 |
+| P3    | `corporate-site`        | Storybook title の階層追従、autodocs のグローバル適用、variant 網羅の補完 (D1〜D3)                                                                      | P2                 |
+| P4    | `ui` + `corporate-site` | `@source` の theme.css 移動、motion トークン追加、`src/styles/` のレイヤ分割 (D5 / D6 / 突合④)                                                          | なし (P2 と並列可) |
+| P5    | `ui` + `corporate-site` | `@kufu/ui/lib` からの cva 再輸出 (D15) と cva 集約、`components.css` 受け皿の削減 (D4)                                                                  | P4                 |
+| P6    | `corporate-site` + root | 境界検査スクリプト追加 + app `lint` への合流 + `lefthook.yml` pre-commit への `pnpm lint` 追加 (D14)、`.dependency-cruiser.cjs` の旧 app 名修正 (突合⑦) | P2                 |
 
 ### prompts 生成方針
 
