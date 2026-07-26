@@ -23,7 +23,7 @@
   - `/contact` — お問い合わせ。連絡先 + 問い合わせフォーム (機能は #14)
 - `/services` と `/company` の単独 route は設けない。事業内容・会社情報への直接導線は LP 内アンカーで提供する。
 - IA の正本は引き続き feature doc「ページ構成 (IA)」とし、デザイン正本は `design/features/corporate-site/index.pen` とする。
-- 決定経緯 (論点・根拠・受け入れ基準) は [specs/17-corporate-site-ia/](../specs/17-corporate-site-ia/index.md) が保持する。
+- 決定経緯 (論点・根拠・受け入れ基準) は [issue #17](https://github.com/Fukuemon/kufu-apps/issues/17) が保持する。
 
 ## 代替案
 
@@ -85,7 +85,7 @@
 
 ## 関連チケット / PR
 
-- issue #17 (IA 再評価。決定経緯: [specs/17-corporate-site-ia/](../specs/17-corporate-site-ia/index.md))
+- [issue #17](https://github.com/Fukuemon/kufu-apps/issues/17): IA 再評価の決定経緯
 - issue #11 (旧 5 ページ IA の決定経緯)
 - issue #16 (design-workflow 定義。本決定がその A→B パイロット)
 - issue #10 (本体実装。本 IA を引き継ぐ)

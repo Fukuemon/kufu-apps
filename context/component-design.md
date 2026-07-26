@@ -1,8 +1,8 @@
 # Component Design
 
-> 最終更新: 2026-06-18
+> 最終更新: 2026-07-26
 
-Kufu Monorepo の frontend component 設計規約。本 doc を component のディレクトリ構成、命名、責務分割、Storybook 対象の横断正本とする。決定経緯は [spec #6](../specs/6-storybook-component-catalog/index.md) D3 / D4 / D7。
+Kufu Monorepo の frontend component 設計規約。本 doc を component のディレクトリ構成、命名、責務分割、Storybook 対象の横断正本とする。決定経緯は [issue #6](https://github.com/Fukuemon/kufu-apps/issues/6)。
 
 ## 原則
 
@@ -282,7 +282,7 @@ app-local Storybook は feature-local presentation component の review 入口�
 
 ## 参照
 
-- [spec #6](../specs/6-storybook-component-catalog/index.md): Storybook / component catalog / Container-Presentation の決定経緯
+- [issue #6](https://github.com/Fukuemon/kufu-apps/issues/6): Storybook / component catalog / Container-Presentation の決定経緯
 - [architecture.md](architecture.md): package boundary / runtime boundary
 - [engineering.md](engineering.md): Storybook quality gate / root task boundary
 - [design-workflow.md](design-workflow.md): `.pen` と実装正本の境界

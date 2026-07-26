@@ -90,5 +90,4 @@
 ## 関連ドキュメント
 
 - `design/DesignDoc.md`: Phase 1 / Phase 2 の境界と CMS app の位置づけ (Why/What 節)、monorepo の app / package 責務境界
-- `specs/3-monorepo-foundation/index.md`: issue #3 の実装対象と後続論点
-- `specs/3-monorepo-foundation/prompts/`: `apps/base` 前提を外した prompt 群
+- [issue #3](https://github.com/Fukuemon/kufu-apps/issues/3): monorepo 基盤の実装対象と後続論点

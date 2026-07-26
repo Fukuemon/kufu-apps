@@ -68,4 +68,4 @@
 - [ADR-0008](0008-astro-react-island-policy.md): React component の Astro static rendering / island 境界
 - [context/component-design.md](../context/component-design.md): shared primitive / shared pattern の配置
 - [context/engineering.md](../context/engineering.md): Storybook review / quality gate
-- spec #6: [specs/6-storybook-component-catalog/](../specs/6-storybook-component-catalog/index.md)
+- [issue #6](https://github.com/Fukuemon/kufu-apps/issues/6): Storybook / component catalog の決定経緯
