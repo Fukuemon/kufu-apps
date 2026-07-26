@@ -105,6 +105,10 @@ depends_on: [P2_01_corporate-site_sections_migration.md]
 
 ## タスク境界
 
+### 変更する repo 領域
+
+`apps/corporate-site/scripts/` と `apps/corporate-site/package.json`、リポジトリルートの `lefthook.yml` と `.dependency-cruiser.cjs`
+
 ### 実装する範囲
 
 - `check-section-boundary.mjs` の新規作成
@@ -144,6 +148,7 @@ spec の D10 / D14 / 突合⑥ より抜粋:
 - `pnpm --filter @kufu/corporate-site lint`
 - `pnpm depcruise`
 - `pnpm knip`
+- `pnpm format:check`
 
 ## 完了条件
 

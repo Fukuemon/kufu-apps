@@ -71,8 +71,10 @@ depends_on: []
 ### ステップ最終: 最終確認
 
 1. `## 検証コマンド` がすべてパスすることを確認
-2. build 出力の CSS サイズが分割前と比べて増えていないことを確認する
-3. `pnpm e2e` で表示が分割前と等価であることを確認
+2. CSS 出力の等価性を確認する:
+   - 分割前に `pnpm --filter @kufu/corporate-site build` を実行し、`apps/corporate-site/dist/_astro/*.css` の合計バイト数を控える
+   - 分割後に同じコマンドを実行し、合計バイト数が分割前と同じか小さいことを確認する (`@layer` を付けない前提なので、出力は基本的に同一になるはず)
+3. `pnpm e2e` で DOM 構造とテキストが分割前と等価であることを確認する (E2E は視覚回帰を検出しないため、`/` `/products` `/contact` を desktop / mobile viewport で目視比較する)
 4. 変更をコミットする (commit message に `Refs #32` を含める)
 
 ## 実装コンテキスト
@@ -98,12 +100,17 @@ depends_on: []
 
 ## タスク境界
 
+### 変更する repo 領域
+
+`packages/ui/src/styles/` (theme.css / tokens.css) と `apps/corporate-site/src/styles/`、`apps/corporate-site/README.md` の styles 節
+
 ### 実装する範囲
 
 - `packages/ui/src/styles/theme.css` への `@source` 追加
 - `apps/corporate-site/src/styles/globals.css` からの `@source` 2 行削除
 - `packages/ui/src/styles/tokens.css` への motion トークン追加
-- `apps/corporate-site/src/styles/` の 5 ファイル構成への分割
+- `apps/corporate-site/src/styles/` の 4 ファイル構成への分割
+- `apps/corporate-site/README.md` の styles に関する記述の追従 (`globals.css` のコード例、`@source` / `fonts.css` の記述)
 
 ### 実装しない範囲
 
@@ -125,9 +132,9 @@ spec の D5 / D6 / 突合③④ より抜粋:
 ## テスト観点
 
 - 分割後に build / Storybook build が通るか
-- 出力 CSS が分割前と比べて増えていないか (build 結果のサイズ比較)
+- 出力 CSS が分割前と同じか小さいか (`dist/_astro/*.css` の合計バイト数で比較)
 - `@kufu/ui` の component が使う class が出力に含まれるか (`@source` 移動の検証)
-- 表示が分割前と等価か (既存 E2E)
+- DOM 構造とテキストが分割前と等価か (既存 E2E)。見た目は 3 route を目視比較する
 
 ## 検証コマンド
 
@@ -136,15 +143,17 @@ spec の D5 / D6 / 突合③④ より抜粋:
 - `pnpm --filter @kufu/corporate-site storybook:build`
 - `pnpm --filter @kufu/ui build`
 - `pnpm e2e`
+- `pnpm format:check`
 
 ## 完了条件
 
 - [ ] 全ステップを順序通りに実行した
 - [ ] `theme.css` に `@source "../components"` があり、app entry から `@source` が消えている
 - [ ] motion トークンが `tokens.css` に追加されている
-- [ ] `src/styles/` が 5 ファイル構成になり、`globals.css` は `@import` のみになっている
-- [ ] CSS の中身を書き換えていない (移動のみ)
-- [ ] 出力 CSS のサイズが分割前から増えていない
+- [ ] `src/styles/` が 4 ファイル構成 (globals / base / components / animations) になり、`globals.css` は `@import` のみになっている
+- [ ] CSS のセレクタと宣言を 1 文字も書き換えていない (`@layer` も付けていない)
+- [ ] `utilities.css` を作っていない (空ファイルにしない)
+- [ ] 出力 CSS の合計バイト数が分割前と同じか小さい
 - [ ] 各ステップで diff レビューを実施し、指摘を対応した
 - [ ] `## 検証コマンド` がすべてパスする
 - [ ] 変更を `Refs #32` 付きでコミットした

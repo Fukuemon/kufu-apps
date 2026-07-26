@@ -74,6 +74,22 @@ depends_on: [P1_01_corporate-site_remove_unused_components.md]
 
 内部 component (`BusinessFeatureRow` / `FeaturedCategoryCard` / `FeaturedCategoryCarousel` / `ProductsHero` / `ProductsSidebarNav` / `ProductsCategoryAccordionList`) は再輸出しない。
 
+**export / import の形式**(P6 の検査スクリプト仕様と噛み合うため、下記で固定する):
+
+```ts
+// apps/corporate-site/src/components/sections/hero/index.ts
+export { default as Hero } from "./Hero.astro";
+```
+
+```astro
+---
+// apps/corporate-site/src/pages/index.astro — ディレクトリ指定で index.ts を解決させる
+import { Hero } from "../components/sections/hero";
+---
+```
+
+名前付き export とし、pages 側は**ディレクトリ指定**で import する (`.../hero/index.ts` と明示しない)。
+
 ### ステップ 3: import 経路を追従させる
 
 1. `pages/index.astro` / `pages/products.astro` / `pages/contact.astro` の import を、各 section の `index.ts` 経由に書き換える
@@ -90,7 +106,7 @@ depends_on: [P1_01_corporate-site_remove_unused_components.md]
 ### ステップ最終: 最終確認
 
 1. `## 検証コマンド` がすべてパスすることを確認
-2. `pnpm e2e` で `/` `/products` `/contact` の表示が再編前と等価であることを確認
+2. `pnpm e2e` で `/` `/products` `/contact` の DOM 構造とテキストが再編前と等価であることを確認 (本 phase は import 経路の変更のみで見た目に影響しない)
 3. 変更をコミットする (commit message に `Refs #32` を含める)
 
 ## 実装コンテキスト
@@ -116,6 +132,10 @@ depends_on: [P1_01_corporate-site_remove_unused_components.md]
 - 質問するときは: 止まっている作業単位 / 判断が必要な論点 / 選択肢 を整理する
 
 ## タスク境界
+
+### 変更する repo 領域
+
+`apps/corporate-site/src/components/`、`apps/corporate-site/src/pages/`、`apps/corporate-site/README.md`
 
 ### 実装する範囲
 
@@ -160,6 +180,8 @@ spec の D8 / D9 / D13 より抜粋:
 - `pnpm --filter @kufu/corporate-site test`
 - `pnpm --filter @kufu/corporate-site storybook:build`
 - `pnpm e2e`
+- `pnpm format:check`
+- `pnpm knip && pnpm depcruise`
 
 ## 完了条件
 

@@ -3,7 +3,8 @@ phase: 5
 seq: 1
 target: corporate-site
 issue: 32
-depends_on: [P4_01_ui_styles_layering.md]
+depends_on:
+  [P2_01_corporate-site_sections_migration.md, P4_01_ui_styles_layering.md]
 ---
 
 # cva 集約と components.css 受け皿の削減 (D4 / D7 / D15)
@@ -39,8 +40,9 @@ depends_on: [P4_01_ui_styles_layering.md]
 
 ### ステップ 0: 前提確認
 
-1. `P4_01` が完了し、`src/styles/` が 5 ファイル構成になっていることを確認する
-2. 現在のブランチが `feature/32` であることを確認する
+1. `P2_01` が完了し、`components/sections/<section>/` 構成になっていることを確認する
+2. `P4_01` が完了し、`src/styles/` がレイヤ分割済みであることを確認する
+3. 現在のブランチが `feature/32` であることを確認する
 
 ### ステップ 1: @kufu/ui から cva を再輸出する (D15)
 
@@ -53,8 +55,16 @@ depends_on: [P4_01_ui_styles_layering.md]
 
 対象は **視覚 variant / 状態分岐を持つ component のみ**。variant のない固定 class の component は Tailwind utility 直書きのまま残す。
 
-1. 各 section / common の component について、frontmatter で条件付きに class 文字列を組み立てている箇所を特定する
-2. 該当する component で `@kufu/ui/lib` の `cva` を使い variants を定義し、条件分岐を置換する
+対象 component と variant 軸は次のとおり (探索不要。これ以外は対象外):
+
+| component (P2 移行後のパス)                  | variant 軸             |
+| -------------------------------------------- | ---------------------- | --------- | ----- |
+| `common/SectionHeading.astro`                | `align?: "start"       | "center"` |
+| `common/ContactCtaLink.astro`                | `size?: "sm"           | "hero"    | "lg"` |
+| `sections/business/BusinessFeatureRow.astro` | `mediaPosition: "left" | "right"`  |
+
+1. 上表の 3 component で `@kufu/ui/lib` の `cva` を使い variants を定義し、frontmatter の条件付き class 組み立てを置換する
+2. `common/BaseLayout.astro` / `SiteHeader.astro` / `SiteFooter.astro` / `sections/products-category/FeaturedCategoryCard.astro` / `sections/products-detail/ProductsDetailSection.astro` / `sections/company/CompanySection.astro` の条件分岐は、視覚 variant ではなく表示有無・データ有無の分岐のため **cva 化しない** (D4 の「variant を持つ component のみ」)
 3. `components.css` にある当該 component 由来のクラスセレクタを、cva の variant または Tailwind utility へ移す
 4. 移し終えたクラスセレクタを `components.css` から削除する
 5. component 単位で `## 検証コマンド` を実行し、表示が変わらないことを確認する
@@ -73,7 +83,7 @@ cva 化の過程で見つかった次のものを是正する。**cva 化の対�
 
 1. `## 検証コマンド` がすべてパスすることを確認
 2. `components.css` に残ったクラスセレクタがあれば、なぜ残したかを spec の `## 上位資料からの変更点` に記録するかコメントで理由を残す
-3. `pnpm e2e` で表示が変更前と等価であることを確認
+3. `pnpm e2e` で DOM 構造とテキストが変更前と等価であることを確認する (E2E は視覚回帰を検出しないため、cva 化した 3 component については `pnpm --filter @kufu/corporate-site storybook` で該当 story を目視比較する)
 4. 変更をコミットする (commit message に `Refs #32` を含める)
 
 ## 実装コンテキスト
@@ -99,6 +109,10 @@ cva 化の過程で見つかった次のものを是正する。**cva 化の対�
 - 質問するときは: 止まっている作業単位 / 判断が必要な論点 / 選択肢 を整理する
 
 ## タスク境界
+
+### 変更する repo 領域
+
+`packages/ui/src/lib/` (cva 再輸出) と `apps/corporate-site/src/` (component / styles / content)
 
 ### 実装する範囲
 
@@ -128,7 +142,7 @@ spec の D4 / D7 / D15 / 突合① より抜粋:
 ## テスト観点
 
 - cva 化後に build / typecheck / Storybook build が通るか
-- 表示が変更前と等価か (既存 E2E)
+- DOM 構造とテキストが変更前と等価か (既存 E2E)。見た目の等価性は cva 化した 3 component の story を目視で確認する
 - `components.css` から削除したクラスが他所で参照されていないか (build で検出)
 - トークンガード (`token:check`) が通るか (raw hex / 色の arbitrary value を持ち込んでいないか)
 - 未宣言依存が発生していないか (depcruise)
@@ -141,6 +155,7 @@ spec の D4 / D7 / D15 / 突合① より抜粋:
 - `pnpm --filter @kufu/corporate-site storybook:build`
 - `pnpm --filter @kufu/corporate-site token:check`
 - `pnpm depcruise`
+- `pnpm format:check`
 - `pnpm e2e`
 
 ## 完了条件
@@ -148,9 +163,9 @@ spec の D4 / D7 / D15 / 突合① より抜粋:
 - [ ] 全ステップを順序通りに実行した
 - [ ] `@kufu/ui/lib` から cva が再輸出されている
 - [ ] corporate-site の package.json に `class-variance-authority` を追加していない
-- [ ] variant を持つ component が cva 化され、対応するクラスセレクタが `components.css` から消えている
-- [ ] variant を持たない component に cva を持ち込んでいない
-- [ ] 表示が変更前と等価である (E2E パス)
+- [ ] 上表 3 component が cva 化され、対応するクラスセレクタが `components.css` から消えている
+- [ ] 対象外と明記した component に cva を持ち込んでいない
+- [ ] DOM 構造とテキストが変更前と等価である (E2E パス) / cva 化した 3 component の見た目を story で目視確認した
 - [ ] 各ステップで diff レビューを実施し、指摘を対応した
 - [ ] `## 検証コマンド` がすべてパスする
 - [ ] 変更を `Refs #32` 付きでコミットした

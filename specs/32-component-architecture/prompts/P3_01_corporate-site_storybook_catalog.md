@@ -42,13 +42,12 @@ depends_on: [P2_01_corporate-site_sections_migration.md]
 1. `P2_01` が完了し、`components/sections/<section>/` 構成になっていることを確認する
 2. 現在のブランチが `feature/32` であることを確認する
 
-### ステップ 1: autodocs をグローバル適用する
+### ステップ 1: autodocs のグローバル適用を確認する
 
-1. `apps/corporate-site/.storybook/preview.ts` に `tags: ["autodocs"]` を追加する (グローバル適用)
-2. `packages/ui/.storybook/preview.ts` にも同様に追加する
-3. 個別 story 側の `tags: ["autodocs"]` 指定が重複していれば削除する (グローバルに集約)
-4. `## 検証コマンド` の Storybook build を実行する
-5. diff レビューを回し、指摘を対応してから次へ
+`apps/corporate-site/.storybook/preview.ts` と `packages/ui/.storybook/preview.ts` は既に `tags: ["autodocs"]` を持ち、個別 story 側に `tags:` 指定は無い (D3 の決定内容を既に満たしている)。
+
+1. 上記 2 ファイルの `tags: ["autodocs"]` が残っていることを確認する (変更不要)
+2. 満たしていれば何も変更せず次のステップへ進む。仮に欠けていた場合のみ追加する
 
 ### ステップ 2: title 階層をディレクトリと 1:1 にする
 
@@ -107,9 +106,13 @@ Section story は「ページ文脈での確認入口」として代表ケース
 
 ## タスク境界
 
+### 変更する repo 領域
+
+`apps/corporate-site/src/components/` と `packages/ui/src/components/` の story ファイル (preview 設定は確認のみ)
+
 ### 実装する範囲
 
-- autodocs のグローバル適用 (corporate-site / packages/ui の preview)
+- autodocs のグローバル適用の確認 (既に設定済みのため通常は変更不要)
 - 全 story の title 階層の是正
 - presentation component の variant 全列挙 story と edge state story の追加
 
@@ -143,11 +146,12 @@ spec の D1〜D3 / 突合② より抜粋:
 - `pnpm --filter @kufu/corporate-site storybook:build`
 - `pnpm --filter @kufu/ui storybook:build`
 - `pnpm --filter @kufu/corporate-site typecheck`
+- `pnpm format:check`
 
 ## 完了条件
 
 - [ ] 全ステップを順序通りに実行した
-- [ ] autodocs が両 Storybook の preview でグローバル適用されている
+- [ ] 両 Storybook の preview で autodocs がグローバル適用されていることを確認した (既存設定の追認。変更不要)
 - [ ] 全 story の title がディレクトリ構造と 1:1 になっている
 - [ ] presentation component に variant 全列挙 story と edge state story がある
 - [ ] Section story の fixture が story 内に閉じている

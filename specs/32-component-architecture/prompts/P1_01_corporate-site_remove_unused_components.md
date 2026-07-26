@@ -83,6 +83,10 @@ depends_on: []
 
 ## タスク境界
 
+### 変更する repo 領域
+
+`apps/corporate-site/src/components/features/` のみ
+
 ### 実装する範囲
 
 - `ServicePillar.astro` + story、`ContactInfoRow.astro` + story の削除
@@ -119,6 +123,8 @@ ADR-0011 決定 6 より:
 - `pnpm --filter @kufu/corporate-site build`
 - `pnpm --filter @kufu/corporate-site test`
 - `pnpm --filter @kufu/corporate-site storybook:build`
+- `pnpm format:check`
+- `pnpm knip && pnpm depcruise`
 
 ## 完了条件
 

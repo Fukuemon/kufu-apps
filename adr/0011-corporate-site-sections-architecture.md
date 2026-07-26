@@ -23,7 +23,7 @@
 2. **section 内部はフラット + `index.ts` 公開面**: section dir 直下に `index.ts` (Section component のみ再輸出) + Section assembly + presentation + story を並べる。`internal/` サブディレクトリは作らない。階層は常に 1 段なので「section の起点は必ず `sections/<section>/index.ts`」という単一規約になる。
 3. **products は使用実態に沿って 2 section に分割する**: `products-category` (`/` に載る取扱製品セクション) と `products-detail` (`/products` の詳細)。`ProductsHero` は `products-detail` の内部 component として扱う。
 4. **依存方向を `pages → sections (index.ts) → common → @kufu/ui` の一方向に固定する**: pages から section 内部への直接 import 禁止、section 間 import は index 経由でも禁止 (共有は common / `packages/ui` へ昇格)。同 section 内の直接参照 (story 含む) は自由。
-5. **境界の機械検査は独自スクリプトで行う**: `.astro` を解析できる既存ツールが無いため、`apps/corporate-site/scripts/check-token-usage.mjs` (ripgrep で `.astro` を走査するトークンガード) と同方式の検査スクリプトを追加し、quality gate に組み込む。
+5. **境界の機械検査は独自スクリプトで行う**: `.astro` を解析できる既存ツールが無いため、`apps/corporate-site/scripts/check-token-usage.mjs` (ripgrep で `.astro` を走査するトークンガード) と同方式の検査スクリプトを追加する。配線先は **app の `lint` script** とし、あわせて `lefthook.yml` の `pre-commit` に `pnpm lint` を追加する (現状 pre-commit は format / protected-branch / depcruise+knip のみで lint を含まず、CI にも lint job が無いため、script に足すだけでは自動実行されない)。sdd-template から配布される `hooks/` 配下は汎用に保つ方針のため、プロジェクト固有検査を入れない。
 6. **再編に伴い、実ページから未使用の component は削除する**: `ServicePillar` / `ContactInfoRow` は #6 の catalog 整備で作られたが #10 の本実装で使われず、story からのみ参照される状態だった。使われない component を新構成へ移送すると「カタログにあるが実ページにない」ものが恒久化し、section の公開面規約 (どの Section が起点か) も曖昧になるため、story ごと削除する。`.pen` 側の対応要素は残るため、再実装が必要になった時点で [component-map.md](../design/features/corporate-site/component-map.md) から復帰させる。
 
 ## 代替案

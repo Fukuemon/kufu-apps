@@ -517,7 +517,7 @@ flowchart TD
 | P2    | `corporate-site`        | `features/` → `sections/` の移動、`index.ts` 公開面の新設、pages / 内部 import の追従、`apps/corporate-site/README.md` の構成記述追従 (D8 / D9)         | P1                 |
 | P3    | `corporate-site`        | Storybook title の階層追従、autodocs のグローバル適用、variant 網羅の補完 (D1〜D3)                                                                      | P2                 |
 | P4    | `ui` + `corporate-site` | `@source` の theme.css 移動、motion トークン追加、`src/styles/` のレイヤ分割 (D5 / D6 / 突合④)                                                          | なし (P2 と並列可) |
-| P5    | `ui` + `corporate-site` | `@kufu/ui/lib` からの cva 再輸出 (D15) と cva 集約、`components.css` 受け皿の削減 (D4)                                                                  | P4                 |
+| P5    | `ui` + `corporate-site` | `@kufu/ui/lib` からの cva 再輸出 (D15) と cva 集約、`components.css` 受け皿の削減 (D4)                                                                  | P2 / P4            |
 | P6    | `corporate-site` + root | 境界検査スクリプト追加 + app `lint` への合流 + `lefthook.yml` pre-commit への `pnpm lint` 追加 (D14)、`.dependency-cruiser.cjs` の旧 app 名修正 (突合⑦) | P2                 |
 
 ### prompts 生成方針
@@ -537,7 +537,7 @@ flowchart TD
 | `P5_01_corporate-site_cva_consolidation.md`        | 5     | `corporate-site` | -      | P4     | cva 再輸出と集約、components.css 削減 (D4/D7/D15)          |
 | `P6_01_corporate-site_boundary_check.md`           | 6     | `corporate-site` | -      | P2     | 境界検査スクリプトと gate 配線 (D10/D14/突合⑥⑦)            |
 
-実行順序: P1 → P2 (P4 は P1/P2 と独立に開始可) → P3 / P6 (P2 完了後) / P5 (P4 完了後)
+実行順序: P1 → P2 (P4 は P1/P2 と独立に開始可) → P3 / P6 (P2 完了後) → P5 (P2 と P4 の両方が完了後)
 
 ## 上位資料からの変更点
 
