@@ -64,7 +64,9 @@ depends_on:
 | `sections/business/BusinessFeatureRow.astro` | `mediaPosition: "left" \| "right"` |
 
 1. 上表の 3 component で `@kufu/ui/lib` の `cva` を使い variants を定義し、frontmatter の条件付き class 組み立てを置換する
-2. `common/BaseLayout.astro` / `SiteHeader.astro` / `SiteFooter.astro` / `sections/products-category/FeaturedCategoryCard.astro` / `sections/products-detail/ProductsDetailSection.astro` / `sections/company/CompanySection.astro` の条件分岐は、視覚 variant ではなく表示有無・データ有無の分岐のため **cva 化しない** (D4 の「variant を持つ component のみ」)
+2. 次の component は条件分岐を持つが **cva 化しない**:
+   - `common/SiteFooter.astro`: `variant?: "full" | "compact"` を持つが、class 文字列ではなく **markup 構造ごと三項演算子で分岐**しており cva (class 変種の管理) では表現できない。なお full ブランチ内の `isFull ? "md:grid-cols-[1fr_1.2fr_1fr]" : "md:grid-cols-[1fr_1fr]"` は `isFull` が常に true で到達不能なため、この 1 箇所のみ三項を除去して固定 class にする (絶対ルールの「dead code を残さない」)
+   - `common/BaseLayout.astro` / `SiteHeader.astro` / `sections/products-category/FeaturedCategoryCard.astro` / `sections/products-detail/ProductsDetailSection.astro` / `sections/company/CompanySection.astro`: 視覚 variant ではなく表示有無・データ有無の分岐のため対象外 (D4 の「variant を持つ component のみ」)
 3. `components.css` にある当該 component 由来のクラスセレクタを、cva の variant または Tailwind utility へ移す
 4. 移し終えたクラスセレクタを `components.css` から削除する
 5. component 単位で `## 検証コマンド` を実行し、表示が変わらないことを確認する
@@ -86,7 +88,7 @@ cva 化の過程で見つかった次のものを是正する。**cva 化の対�
 3. `pnpm e2e` で DOM 構造とテキストが変更前と等価であることを確認する
 4. 見た目の等価性を確認する (E2E は視覚回帰を検出しないため):
    - `SectionHeading` / `BusinessFeatureRow` は `pnpm --filter @kufu/corporate-site storybook` で既存 story の各 variant を cva 化前後で目視比較する
-   - `ContactCtaLink` は story を持たないため、`pnpm --filter @kufu/corporate-site dev` で `/` (`size="hero"` の Hero 内 CTA と `size="sm"` の SiteHeader 内 CTA) と `/products` (`size="lg"` の 2 箇所) を開き、3 variant すべての見た目を目視比較する
+   - `ContactCtaLink` は P3 が先行していれば新設 story で、していなければ `pnpm --filter @kufu/corporate-site dev` で `/` (`size="hero"` の Hero 内 CTA と `size="sm"` の SiteHeader 内 CTA) と `/products` (`size="lg"` の 2 箇所) を開いて 3 variant すべての見た目を目視比較する (P3 と P5 は実行順が固定されていないため、どちらでも成立する形にしている)
 5. 変更をコミットする (commit message に `Refs #32` を含める)
 
 ## 実装コンテキスト
@@ -168,9 +170,10 @@ spec の D4 / D7 / D15 / 突合① より抜粋:
 - [ ] `@kufu/ui/lib` から cva が再輸出されている
 - [ ] corporate-site の package.json に `class-variance-authority` を追加していない
 - [ ] 上表 3 component が cva 化され、対応するクラスセレクタが `components.css` から消えている
-- [ ] 対象外と明記した component に cva を持ち込んでいない
+- [ ] 対象外と明記した component に cva を持ち込んでいない (`SiteFooter` は cva 化せず、到達不能な三項の除去のみ)
 - [ ] DOM 構造とテキストが変更前と等価である (E2E パス)
-- [ ] `SectionHeading` / `BusinessFeatureRow` の見た目を story で、`ContactCtaLink` の見た目を実ページで目視確認した
+- [ ] `SectionHeading` / `BusinessFeatureRow` の見た目を story で、`ContactCtaLink` の見た目を story または実ページで目視確認した
+- [ ] `SiteFooter` の到達不能な三項 (full ブランチ内の `isFull ? ... : ...`) を固定 class に整理した
 - [ ] 各ステップで diff レビューを実施し、指摘を対応した
 - [ ] `## 検証コマンド` がすべてパスする
 - [ ] 変更を `Refs #32` 付きでコミットした

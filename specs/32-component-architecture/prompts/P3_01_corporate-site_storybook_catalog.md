@@ -69,15 +69,16 @@ depends_on: [P2_01_corporate-site_sections_migration.md]
 
 ### ステップ 3: バリエーション網羅を補完する
 
-**variant を持つ presentation component は次の 3 つだけ** (探索不要):
+**variant を持つ presentation component は次の 4 つ** (探索不要):
 
-| component (P2 移行後のパス)                  | variant 軸 (Props)                 | 現在の story                  |
-| -------------------------------------------- | ---------------------------------- | ----------------------------- |
-| `common/SectionHeading.astro`                | `align?: "start" \| "center"`      | あり                          |
-| `common/ContactCtaLink.astro`                | `size?: "sm" \| "hero" \| "lg"`    | **なし → 新設する**           |
-| `sections/business/BusinessFeatureRow.astro` | `mediaPosition: "left" \| "right"` | あり (MediaRight / MediaLeft) |
+| component (P2 移行後のパス)                  | variant 軸 (Props)                 | 現在の story                               |
+| -------------------------------------------- | ---------------------------------- | ------------------------------------------ |
+| `common/SectionHeading.astro`                | `align?: "start" \| "center"`      | あり                                       |
+| `common/ContactCtaLink.astro`                | `size?: "sm" \| "hero" \| "lg"`    | **なし → 新設する**                        |
+| `common/SiteFooter.astro`                    | `variant?: "full" \| "compact"`    | あり (Compact / Full を網羅済み。追加不要) |
+| `sections/business/BusinessFeatureRow.astro` | `mediaPosition: "left" \| "right"` | あり (MediaRight / MediaLeft)              |
 
-1. 上表の 3 component に、variant の全組み合わせを args で列挙した story を用意する (`ContactCtaLink` は story ファイル自体を新設する)
+1. 上表の 4 component に、variant の全組み合わせを args で列挙した story を用意する (`ContactCtaLink` は story ファイル自体を新設する。`SiteFooter` は既に網羅済みのため title 修正のみ)
 2. すべての presentation component に edge state の story を追加する (長文 / 空データ / 最小構成のうち、その component で意味を持つもの)。データ表示のみで variant を持たない component (`FeaturedCategoryCard` / `ProductsSidebarNav` 等) は edge state のみでよい
 3. `BaseLayout.astro` は layout であり presentation component ではないため story を作らない
 
@@ -121,7 +122,7 @@ Section story は「ページ文脈での確認入口」として代表ケース
 
 - autodocs のグローバル適用の確認 (既に設定済みのため通常は変更不要)
 - 全 story の title 階層の是正
-- 上表 3 component の variant 全列挙 story の追加 (`ContactCtaLink` は story 新設)
+- 上表 4 component の variant 全列挙 story の追加 (`ContactCtaLink` は story 新設)
 - presentation component への edge state story の追加
 
 ### 実装しない範囲
@@ -162,7 +163,7 @@ spec の D1〜D3 / 突合② より抜粋:
 - [ ] 全ステップを順序通りに実行した
 - [ ] 両 Storybook の preview で autodocs がグローバル適用されていることを確認した (既存設定の追認。変更不要)
 - [ ] 全 story の title がディレクトリ構造と 1:1 になっている
-- [ ] 上表 3 component に variant 全列挙 story がある (`ContactCtaLink` の story を新設した)
+- [ ] 上表 4 component に variant 全列挙 story がある (`ContactCtaLink` の story を新設した)
 - [ ] presentation component に edge state story がある
 - [ ] Section story の fixture が story 内に閉じている
 - [ ] 各ステップで diff レビューを実施し、指摘を対応した

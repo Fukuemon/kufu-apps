@@ -1,6 +1,6 @@
 # Feature 設計: コーポレートサイト (apps/corporate-site)
 
-> 最終更新: 2026-07-26 / Status: 設計確定・実装中 / IA 確定済 (#11 を集約、#17 で 3 route 統合構成へ再確定 — [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)) / デザイントークン体系確定 (#13 — [ADR-0007](../../../adr/0007-design-token-architecture.md)) / 問い合わせフォーム仕様確定 (#14 — [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md)) / sections 再編・公開面規約確定 (#32 — [ADR-0011](../../../adr/0011-corporate-site-sections-architecture.md))
+> 最終更新: 2026-07-27 / Status: 設計確定・実装中 / IA 確定済 (#11 を集約、#17 で 3 route 統合構成へ再確定 — [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)) / デザイントークン体系確定 (#13 — [ADR-0007](../../../adr/0007-design-token-architecture.md)) / 問い合わせフォーム仕様確定 (#14 — [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md)) / sections 再編・公開面規約確定 (#32 — [ADR-0011](../../../adr/0011-corporate-site-sections-architecture.md))
 
 Phase 1 の主対象。Astro によるコーポレートサイトを高いパフォーマンスと保守性で公開する。全体像は [design/DesignDoc.md](../../DesignDoc.md)、横断規約は [context/](../../../context/) を参照する。
 

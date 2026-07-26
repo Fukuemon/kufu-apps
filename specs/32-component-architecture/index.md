@@ -607,20 +607,25 @@ flowchart TD
 | 2026-07-27 | NEEDS_WORK               | (prompts gate 1 回目) P5 の依存欠落 / autodocs は既設 / cva 対象の探索誘発 / P4 の分割仕様が実態と不一致                                                                                                                           | 全件対応。再レビューへ                                                                       |
 | 2026-07-27 | NEEDS_WORK               | (prompts gate 2 回目) 前回対応が完了条件にしか入っておらず本文・spec・context が未追従。P5 の目視確認が ContactCtaLink の story 不在で達成不能。メタ同期漏れ / D14・D15 の判定 stale                                               | 全件対応。再レビューへ                                                                       |
 | 2026-07-27 | NEEDS_WORK               | (prompts gate 3 回目) feature doc の styles 記述が未追従 / D14・D15 判定とメタ情報の更新が実ファイルに未適用 / P3 の variant 対象が未列挙                                                                                          | 全件対応。再レビューへ                                                                       |
+| 2026-07-27 | NEEDS_WORK               | (prompts gate 4 回目) 変更履歴と feature doc メタが未適用 (置換失敗の再発) / SiteFooter の variant 見落とし / P3・P5 の実行順矛盾 / P4 の計測順序                                                                                  | 全件対応 (行指定で適用し実ファイルを確認)。再レビューへ                                      |
 
 ## 変更履歴
 
-| 日付       | 変更者         | 変更内容                                                                                                                                                          |
-| ---------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-07-25 | spec-lifecycle | scaffold で index.md 初版生成。設計論点 D1〜D11 を初期抽出                                                                                                        |
-| 2026-07-25 | spec-lifecycle | clarify: 実装突合ゲート 3 件を決着、D1〜D11 全件をユーザー対話で解決                                                                                              |
-| 2026-07-25 | spec-lifecycle | レビュー指摘対応: 突合④ (@source を theme.css へ移動) を追加決定、ADR 起票要否の stale を修正                                                                     |
-| 2026-07-25 | spec-lifecycle | diagram: 置き場判断フロー / 移行先マップ (component 単位) / styles entry 構成を図化                                                                               |
-| 2026-07-25 | spec-lifecycle | track: 未追記差分 2 件を反映 (feature doc への styles 構成適用 / ADR-0007 への motion トークン追記)                                                               |
-| 2026-07-25 | spec-lifecycle | sync: context 2 本 / feature doc 2 本を改訂、ADR-0011 起票 + ADR-0007 更新、impact-index 追加。spec を決定時スナップショットへ降格                                |
-| 2026-07-26 | spec-lifecycle | ユーザー指摘を受け import 実態と検査基盤を再調査。突合⑤〜⑦ を追加し、**D8 を案 E (フラット) へ、D10 の検査手段を独自スクリプトへ再決定**。D12 (未使用削除) を追加 |
-| 2026-07-26 | spec-lifecycle | スコープを実装込みに拡大。実装分割 P1〜P6 と実装側の受け入れ基準・テスト観点を追加                                                                                |
-| 2026-07-26 | spec-lifecycle | 再決定レビュー 2 回分の指摘に対応。D12 から source-references.ts を除外、D13 (common はフラット) を追加、stale 記述とメタ情報を同期                               |
+| 日付       | 変更者         | 変更内容                                                                                                                                                                                                                             |
+| ---------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2026-07-25 | spec-lifecycle | scaffold で index.md 初版生成。設計論点 D1〜D11 を初期抽出                                                                                                                                                                           |
+| 2026-07-25 | spec-lifecycle | clarify: 実装突合ゲート 3 件を決着、D1〜D11 全件をユーザー対話で解決                                                                                                                                                                 |
+| 2026-07-25 | spec-lifecycle | レビュー指摘対応: 突合④ (@source を theme.css へ移動) を追加決定、ADR 起票要否の stale を修正                                                                                                                                        |
+| 2026-07-25 | spec-lifecycle | diagram: 置き場判断フロー / 移行先マップ (component 単位) / styles entry 構成を図化                                                                                                                                                  |
+| 2026-07-25 | spec-lifecycle | track: 未追記差分 2 件を反映 (feature doc への styles 構成適用 / ADR-0007 への motion トークン追記)                                                                                                                                  |
+| 2026-07-25 | spec-lifecycle | sync: context 2 本 / feature doc 2 本を改訂、ADR-0011 起票 + ADR-0007 更新、impact-index 追加。spec を決定時スナップショットへ降格                                                                                                   |
+| 2026-07-26 | spec-lifecycle | ユーザー指摘を受け import 実態と検査基盤を再調査。突合⑤〜⑦ を追加し、**D8 を案 E (フラット) へ、D10 の検査手段を独自スクリプトへ再決定**。D12 (未使用削除) を追加                                                                    |
+| 2026-07-26 | spec-lifecycle | スコープを実装込みに拡大。実装分割 P1〜P6 と実装側の受け入れ基準・テスト観点を追加                                                                                                                                                   |
+| 2026-07-26 | spec-lifecycle | 再決定レビュー 2 回分の指摘に対応。D12 から source-references.ts を除外、D13 (common はフラット) を追加、stale 記述とメタ情報を同期                                                                                                  |
+| 2026-07-26 | spec-lifecycle | 3 回目レビュー対応。D14 (境界検査は app lint に合流) / D15 (cva は @kufu/ui から再輸出) を追加し、`@source` 移送粒度と ADR-0007 の記述誤りを訂正                                                                                     |
+| 2026-07-26 | spec-lifecycle | 4 回目レビュー PASS。D14 に pre-commit への `pnpm lint` 配線を追加 (lint がどの gate からも走らない実態が判明したため)                                                                                                               |
+| 2026-07-27 | spec-lifecycle | prompts: P1〜P6 の実装 prompt を差分修正モードで生成 (絶対ガード 10 セクション + frontmatter を自己検証済み)                                                                                                                         |
+| 2026-07-27 | spec-lifecycle | prompts gate 1〜4 回目のレビュー対応。styles 分割を 4 ファイル / `@layer` なしへ統一 (spec / context / feature doc / prompt)、cva と variant の対象 component を確定、D14 / D15 の反映先を ADR-0011 / context へ移動、メタ情報を同期 |
 
 ## 備考
 

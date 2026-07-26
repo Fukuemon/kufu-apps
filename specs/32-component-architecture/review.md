@@ -139,3 +139,16 @@ Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
 - **should fix**: prompt 表と P5 の前提条件の依存が P4 のみ → `P2 / P4` へ統一
 - **should fix**: P5 の目視確認ページの variant 表記が実装と相違 (`/products` に `hero` は無い) → `/` は hero + sm、`/products` は lg × 2 と訂正
 - **should fix**: P3 の variant 網羅対象が未列挙 → 対象 3 component を variant 軸と現在の story 有無つきで表にし、`ContactCtaLink` の story 新設を明示。`BaseLayout` は layout のため対象外と明記
+
+## Review 2026-07-27 (prompts gate / 4 回目)
+
+Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
+
+前回の対応のうち、spec の変更履歴と feature doc のメタ情報が**実ファイルに適用されていなかった** (置換失敗の再発。今回は行番号指定で確実に適用し、適用後の実ファイルを確認した)。
+
+- **blocking**: spec `## 変更履歴` に 2026-07-26 後半以降 (D14 / D15 追加、4 回目 PASS、prompts 生成、prompts gate 対応) が 1 行も無い → 4 行を追加
+- **blocking**: `DesignDoc_corporate-site.md` の最終更新が 2026-07-26 のまま (本文は 2026-07-27 に訂正済み) → 同期
+- **blocking (事実誤り)**: P5 / P3 が `common/SiteFooter.astro` の `variant?: "full" | "compact"` を見落としていた → P3 の variant 表に SiteFooter を追加 (story は Compact / Full を網羅済みのため追加不要)、P5 には「markup 構造ごと三項で分岐するため cva では表現できない」という正確な除外理由を記載。あわせて full ブランチ内の到達不能な三項 (`isFull ? ... : ...`) を dead code として整理する指示を追加
+- **should fix**: P3 (ContactCtaLink の story 新設) と P5 (story が無い前提で実ページ確認) が実行順によって矛盾 → P5 を「story があれば story、無ければ実ページ」の条件付きに変更
+- **should fix**: P4 の CSS ベースライン計測がステップ最終にあり分割後には実行できない → ステップ 0 (前提確認) へ移動
+- **should fix**: P4 の `target: ui` と実作業の主体 (corporate-site) の乖離 → 「変更する repo 領域」に命名規則上の制約と実際の主体を明記

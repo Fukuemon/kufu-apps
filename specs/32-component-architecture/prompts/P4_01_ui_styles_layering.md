@@ -37,9 +37,10 @@ depends_on: []
 
 ## 作業ステップ (この順序で実行する)
 
-### ステップ 0: 前提確認
+### ステップ 0: 前提確認とベースライン計測
 
-現在のブランチが `feature/32` であることを確認する。本 prompt は P2 と並列実行できる (変更ファイルが衝突しない)。
+1. 現在のブランチが `feature/32` であることを確認する。本 prompt は P2 と並列実行できる (変更ファイルが衝突しない)
+2. **変更前**に `pnpm --filter @kufu/corporate-site build` を実行し、`apps/corporate-site/dist/_astro/*.css` の合計バイト数を控える (ステップ最終の比較基準にする)
 
 ### ステップ 1: @source を theme.css へ移す (突合④)
 
@@ -74,9 +75,7 @@ depends_on: []
 ### ステップ最終: 最終確認
 
 1. `## 検証コマンド` がすべてパスすることを確認
-2. CSS 出力の等価性を確認する:
-   - 分割前に `pnpm --filter @kufu/corporate-site build` を実行し、`apps/corporate-site/dist/_astro/*.css` の合計バイト数を控える
-   - 分割後に同じコマンドを実行し、合計バイト数が分割前と同じか小さいことを確認する (`@layer` を付けない前提なので、出力は基本的に同一になるはず)
+2. CSS 出力の等価性を確認する: `pnpm --filter @kufu/corporate-site build` を再実行し、`apps/corporate-site/dist/_astro/*.css` の合計バイト数が **ステップ 0 で控えた値**と同じか小さいことを確認する (`@layer` を付けない前提なので、出力は基本的に同一になるはず)
 3. `pnpm e2e` で DOM 構造とテキストが分割前と等価であることを確認する (E2E は視覚回帰を検出しないため、`/` `/products` `/contact` を desktop / mobile viewport で目視比較する)
 4. 変更をコミットする (commit message に `Refs #32` を含める)
 
@@ -105,7 +104,7 @@ depends_on: []
 
 ### 変更する repo 領域
 
-`packages/ui/src/styles/` (theme.css / tokens.css) と `apps/corporate-site/src/styles/`、`apps/corporate-site/README.md` の styles 節
+`packages/ui/src/styles/` (theme.css / tokens.css) と `apps/corporate-site/src/styles/`、`apps/corporate-site/README.md` の styles 節。frontmatter の `target` は命名規則上 1 つしか書けないため `ui` としているが、**作業量の主体は `corporate-site` 側**である (spec の実装分割表では P4 を `ui` + `corporate-site` としている)
 
 ### 実装する範囲
 
