@@ -1,6 +1,6 @@
 # Engineering Conventions
 
-> 最終更新: 2026-06-18
+> 最終更新: 2026-07-26
 
 shared config / root task / repository quality gate の境界規約。toolchain 一覧は [toolchain.md](toolchain.md)。
 
@@ -53,6 +53,15 @@ sequenceDiagram
         Git-->>Dev: 失敗内容 (修正してから再 commit)
     end
 ```
+
+## Docs Closeout Gate (手動)
+
+`pnpm check:specs` は close 済み issue の spec ディレクトリが `specs/` に残っていないかを検査する。closeout (issue close 時の spec 削除) の実施を担保する gate であり、判断根拠は [ADR-0011](../adr/0011-specs-closeout-enforcement.md)。
+
+- 実行タイミング: closeout 時 (issue close 前) と、文書整理の PR
+- `gh` CLI で issue state を照会するため、オフライン時・commit 速度への影響を避けて **lefthook には組み込まない**
+- CI への常設化は CI パイプライン方針 (issue #12) へ委譲する
+- 残存を検出したら [specs/README.md](../specs/README.md) の清算手順に従う
 
 ## Repository Analysis Contract
 
