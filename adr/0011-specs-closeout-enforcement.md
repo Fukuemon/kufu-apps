@@ -58,7 +58,7 @@
 ## 関連ドキュメント
 
 - `design/DesignDoc.md`: モジュール責務 `specs` 行 (変更なし・継承)
-- `specs/31-docs-restructure/`: 決定経緯 (issue close 時に削除)
+- [issue #31](https://github.com/Fukuemon/kufu-apps/issues/31): 決定経緯
 - `CLAUDE.md` Spec Workflow Contract: 正本境界 / closeout (現行契約のまま)
 - issue #12: CI パイプライン方針 (検査の常設化の委譲先)
 

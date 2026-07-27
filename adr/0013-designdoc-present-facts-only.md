@@ -58,7 +58,7 @@
 
 - `design/DesignDoc.md`: 書き換え済み (issue #31 / 2026-07-26)
 - [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md): 将来計画 (cms 後続化) の根拠リンク先
-- `specs/31-docs-restructure/`: 決定経緯・C4 再設計図案 (issue #31 の書き換え完了後、close 時に削除)
+- [issue #31](https://github.com/Fukuemon/kufu-apps/issues/31): 決定経緯・C4 再設計の判断 (図の確定版は `design/DesignDoc.md`)
 
 ## 更新
 

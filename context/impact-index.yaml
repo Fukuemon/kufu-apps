@@ -34,7 +34,7 @@ features:
       - "design/DesignDoc.md"
       - "specs/README.md"
     source_refs:
-      - "specs/31-docs-restructure/index.md (作業中のみ。issue #31 close 時に削除)"
+      - "https://github.com/Fukuemon/kufu-apps/issues/31 (決定経緯)"
     coverage: "full"
 
   - name: "<feature 名 (例: contact-form)>"

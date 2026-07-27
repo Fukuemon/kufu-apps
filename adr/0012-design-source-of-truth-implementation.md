@@ -71,4 +71,4 @@
 - `context/design-workflow.md`: 改訂済み (issue #31 / 2026-07-26)
 - `context/component-design.md`: 改訂済み (issue #31 / 2026-07-26)
 - `design/features/corporate-site/DesignDoc_corporate-site.md`: `index.pen` 正本参照を改訂済み (issue #31 / 2026-07-26)
-- `specs/31-docs-restructure/`: 決定経緯 (issue close 時に削除)
+- [issue #31](https://github.com/Fukuemon/kufu-apps/issues/31): 決定経緯
