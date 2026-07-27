@@ -32,8 +32,41 @@ features:
     read: # このエントリを触るとき最初に読むファイル (小さく保つ)
       - "context/component-design.md"
       - "context/architecture.md"
-      - "design/features/corporate-site/component-map.md"
+      - "design/features/corporate-site/DesignDoc_corporate-site.md"
     source_refs: # 必要時のみ読む (初回は読まない)
-      - "adr/0011-corporate-site-sections-architecture.md"
+      - "adr/0014-corporate-site-sections-architecture.md"
       - "adr/0007-design-token-architecture.md"
+      - "https://github.com/Fukuemon/kufu-apps/issues/32 (決定経緯)"
     coverage: "full"
+
+  - name: "docs-operation"
+    keywords:
+      [
+        "specs",
+        "closeout",
+        "spec 削除",
+        "ドキュメント運用",
+        "正本境界",
+        "デザイン正本",
+        "DesignDoc 記述方針",
+        "C4 図",
+      ]
+    read:
+      - "adr/0011-specs-closeout-enforcement.md"
+      - "adr/0012-design-source-of-truth-implementation.md"
+      - "adr/0013-designdoc-present-facts-only.md"
+      - "context/design-workflow.md"
+      - "design/DesignDoc.md"
+      - "specs/README.md"
+    source_refs:
+      - "https://github.com/Fukuemon/kufu-apps/issues/31 (決定経緯)"
+    coverage: "full"
+
+  - name: "<feature 名 (例: contact-form)>"
+    keywords: ["<検索の手掛かり>", "<API 名>", "<画面名>"]
+    read: # このエントリを触るとき最初に読むファイル (小さく保つ)
+      - "<context/<topic>.md の該当ファイル>"
+      - "<design/features/<feature>/DesignDoc_<feature>.md>"
+    source_refs: # 必要時のみ読む (初回は読まない)
+      - "<adr/NNNN-*.md>"
+    coverage: "<full / partial>" # partial = context 未整備の印 (context-harvest で補完する)

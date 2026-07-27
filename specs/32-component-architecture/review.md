@@ -59,8 +59,8 @@ D8 (route 層 → フラット) / D10 (depcruise → 独自スクリプト) の�
 1. `context/design-workflow.md:88` の Phase C が旧構成 (`components/features/`) のまま → **修正**。`components/sections/<section>/` へ改訂し、context への影響テーブルにも行を追加
 2. spec 内に depcruise 前提 / 「設計のみ」/「実施 issue へ引き継ぐ」の stale 記述が残存 (機能仕様・User Flow・Testing・Fallback) → **修正**
 3. **(blocking)** D12 の `content/source-references.ts` を「被参照ゼロ」としたのは事実誤認。実際は `content/` の 5 ファイル + `content-data.test.ts` が import している → **D12 の削除対象から除外**。調査時に `components/` と `pages/` のみを走査し content 層内の相互参照を見落としていた旨も spec に記録
-4. `component-map.md` が未実施の削除を完了形で記述 → **「削除予定」へ修正**。D12 の durable 記録先を「spec で閉じる」から ADR-0011 (削除判断と復帰条件を追記) へ変更
-5. メタ情報の同期漏れ (context 2 本の最終更新日、変更点テーブルの「全行 2026-07-25 反映済」、ADR-0011 の状態) → **修正**。ADR-0011 は実装まで本 issue で行う決定に合わせて「承認」へ
+4. `component-map.md` が未実施の削除を完了形で記述 → **「削除予定」へ修正**。D12 の durable 記録先を「spec で閉じる」から ADR-0014 (削除判断と復帰条件を追記) へ変更
+5. メタ情報の同期漏れ (context 2 本の最終更新日、変更点テーブルの「全行 2026-07-25 反映済」、ADR-0014 の状態) → **修正**。ADR-0014 は実装まで本 issue で行う決定に合わせて「承認」へ
 6. 突合⑦ / P6 の対象ファイル名が `.dependency-cruiser.js` (実体は `.cjs`) → **修正**
 7. `apps/corporate-site/README.md` の構成記述が P2 の追従対象に未記載 → **P2 に追加**
 
@@ -113,7 +113,7 @@ blocking 4 件:
 3. P5 の「条件付き class の箇所を特定する」が探索誘発 → cva 対象 3 component を variant 軸つきで列挙し、対象外 component も明示
 4. P4 の分割仕様が実態と不一致 (`@utility` / `@layer` は 0 件) → 4 ファイル構成 + `@layer` を付けない方針へ変更
 
-should fix: E2E が視覚回帰を検出しない点の明記、CSS サイズ比較手順、index.ts の export / import 形式の確定、`format:check` の追加、「変更する repo 領域」の追加、D14 / D15 の反映先を ADR-0011 / context へ移動。
+should fix: E2E が視覚回帰を検出しない点の明記、CSS サイズ比較手順、index.ts の export / import 形式の確定、`format:check` の追加、「変更する repo 領域」の追加、D14 / D15 の反映先を ADR-0014 / context へ移動。
 
 ## Review 2026-07-27 (prompts gate / 2 回目)
 
@@ -124,7 +124,7 @@ Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
 - **blocking**: P4 のステップ 3 の表と設計仕様引用が 5 ファイル + `@layer` のまま (完了条件と矛盾) → ステップ本文・引用・spec の D6・styles 構成図・`context/component-design.md` をすべて 4 ファイル / `@layer` なしへ統一し、理由も本文に明記
 - **blocking**: P5 の「3 component の見た目を story で目視比較」が `ContactCtaLink` に story が無いため達成不能 → `SectionHeading` / `BusinessFeatureRow` は story、`ContactCtaLink` は実ページ (`/` と `/products` の CTA) で確認する形に変更
 - **blocking**: メタ情報の同期漏れ (4 回目 PASS と prompts gate の記録が review.md に無い) → 本ファイルに追記
-- **blocking**: D14 / D15 の反映先判定が「spec で閉じる」のまま → ADR-0011 決定 5 / `context/component-design.md` へ反映済みの判定に更新し、変更点テーブルにも行を追加
+- **blocking**: D14 / D15 の反映先判定が「spec で閉じる」のまま → ADR-0014 決定 5 / `context/component-design.md` へ反映済みの判定に更新し、変更点テーブルにも行を追加
 - should fix: prompt 表の P5 依存が stale、P5 の variant 表の Markdown 崩れ → 修正
 
 ## Review 2026-07-27 (prompts gate / 3 回目)
@@ -134,7 +134,7 @@ Verdict: NEEDS_WORK → 対応済み (再レビュー待ち)
 前回の 4 ファイル / `@layer` なし方針が feature doc に届いておらず、判定・メタ情報の更新も一部が実ファイルに反映されていなかった (置換失敗の取りこぼし)。
 
 - **blocking**: `DesignDoc_corporate-site.md` の styles 記述が `utilities.css` を含む 4 種列挙のまま → 4 ファイル構成 + `utilities.css` を作らない / `@layer` なしへ追従
-- **blocking**: D14 / D15 の反映先判定が「spec で閉じる」のまま (前回の更新が実際には適用されていなかった) → ADR-0011 決定 5 / `context/component-design.md` を指す判定へ更新
+- **blocking**: D14 / D15 の反映先判定が「spec で閉じる」のまま (前回の更新が実際には適用されていなかった) → ADR-0014 決定 5 / `context/component-design.md` を指す判定へ更新
 - **blocking**: メタ情報未同期 (spec の更新日、prompts phase 行、変更履歴、`context/component-design.md` の最終更新日) → すべて 2026-07-27 へ同期し、設計フェーズ状況に prompts 行を追加
 - **should fix**: prompt 表と P5 の前提条件の依存が P4 のみ → `P2 / P4` へ統一
 - **should fix**: P5 の目視確認ページの variant 表記が実装と相違 (`/products` に `hero` は無い) → `/` は hero + sm、`/products` は lg × 2 と訂正

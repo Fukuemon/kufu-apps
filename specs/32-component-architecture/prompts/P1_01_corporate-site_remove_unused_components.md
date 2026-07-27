@@ -67,7 +67,7 @@ depends_on: []
 - 参照する path:
   - `apps/corporate-site/src/components/features/services/`
   - `apps/corporate-site/src/components/features/contact/`
-- 規約の正本: `context/component-design.md`、判断根拠: `adr/0011-corporate-site-sections-architecture.md` (決定 6)
+- 規約の正本: `context/component-design.md`、判断根拠: `adr/0014-corporate-site-sections-architecture.md` (決定 6)
 
 ## 前提条件
 
@@ -108,9 +108,9 @@ spec の D12 より抜粋:
 > - 削除しないもの: `content/services.ts` (`Hero.astro` が使用)、`content/contact.ts` (`SiteFooter.astro` が使用)。ファイル名が似ているため取り違えに注意
 > - **`content/source-references.ts` は削除対象外**。`content/` 配下の 5 ファイル (`business.ts` / `company.ts` / `contact.ts` / `hero.ts` / `services.ts`) と `content-data.test.ts` が `companyProfileSource` 等を import している
 
-ADR-0011 決定 6 より:
+ADR-0014 決定 6 より:
 
-> 使われない component を新構成へ移送すると「カタログにあるが実ページにない」ものが恒久化し、section の公開面規約 (どの Section が起点か) も曖昧になるため、story ごと削除する。`.pen` 側の対応要素は残るため、再実装が必要になった時点で component-map.md から復帰させる。
+> 使われない component を新構成へ移送すると「カタログにあるが実ページにない」ものが恒久化し、section の公開面規約 (どの Section が起点か) も曖昧になるため、story ごと削除する。再実装が必要になった時点で feature doc の section 構成表へ追加する。
 
 ## テスト観点
 

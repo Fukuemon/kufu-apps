@@ -6,8 +6,8 @@
 >
 > - 横断規約 (ディレクトリ / 公開面 / Storybook / スタイル / ハードコード基準): [context/component-design.md](../../context/component-design.md)
 > - app 内依存方向: [context/architecture.md](../../context/architecture.md)
-> - corporate-site の section マップ: [component-map.md](../../design/features/corporate-site/component-map.md) と [feature doc](../../design/features/corporate-site/DesignDoc_corporate-site.md)
-> - 再編のアーキ判断: [ADR-0011](../../adr/0011-corporate-site-sections-architecture.md) / トークン層の更新: [ADR-0007](../../adr/0007-design-token-architecture.md)
+> - corporate-site の section マップ: [feature doc の section 構成](../../design/features/corporate-site/DesignDoc_corporate-site.md#section-構成-実装の配置) (旧 component-map.md は issue #31 で削除)
+> - 再編のアーキ判断: [ADR-0014](../../adr/0014-corporate-site-sections-architecture.md) / トークン層の更新: [ADR-0007](../../adr/0007-design-token-architecture.md)
 >
 > 本 spec 内の規約記述は **決定時スナップショット** であり、以後の更新は上記正本側で行う。要求レベルの決定 7 件は [requirements.md](requirements.md) 決定事項を参照。
 
@@ -45,7 +45,7 @@
 
 - Design Doc Why / What 更新要否: 不要 (継承。ガードレール「Unnecessary Client JS Count」「Direct UI Duplication Count」の枠内)
 - Design Doc 更新要否: 不要 (継承。モジュール責務は変えず、component 規約の詳細化のみ)
-- ADR 起票要否: 要 → **反映済 (2026-07-25 sync)**。新規 [ADR-0011](../../adr/0011-corporate-site-sections-architecture.md) を起票し、[ADR-0007](../../adr/0007-design-token-architecture.md) に「更新」節 (`@source` の theme.css 移動 / motion トークン追加) を追記した
+- ADR 起票要否: 要 → **反映済 (2026-07-25 sync)**。新規 [ADR-0014](../../adr/0014-corporate-site-sections-architecture.md) を起票し、[ADR-0007](../../adr/0007-design-token-architecture.md) に「更新」節 (`@source` の theme.css 移動 / motion トークン追加) を追記した
 
 | 上位文書    | 節 / 該当箇所                                                      | 整合方針 (継承 / 補足 / 変更提案)                                                                |
 | ----------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
@@ -53,7 +53,7 @@
 | context     | component-design.md → ディレクトリ構成 / 責務分割 / Storybook 対象 | **変更提案** (features → sections 改名、autodocs 規約、cva 集約、index.ts 公開規約の追記)        |
 | context     | component-design.md → スタイリング節                               | **変更提案** (globals.css レイヤ分割、アニメーション共通ユーティリティ / keyframes トークン化)   |
 | context     | architecture.md → Package Boundary                                 | 補足 (section の内部非公開と app 内依存方向を追加。境界の考え方自体は継承)                       |
-| feature doc | corporate-site → 設計方針 / component-map.md                       | **変更提案** (sections 再編の移行先マップ、products 再構成など corporate-site 固有規約)          |
+| feature doc | corporate-site → 設計方針 / section 構成                           | **変更提案** (sections 再編の移行先マップ、products 再構成など corporate-site 固有規約)          |
 | ADR-0007    | デザイントークン 2 層構造 / lean app-local Tailwind entry          | **変更提案** (トークン体系は変えないが、`@source` の theme.css 移動を「更新」として追記 — 突合④) |
 | ADR-0008    | Astro static rendering / island 境界                               | 継承 (再編で island 方針は変えない)                                                              |
 | ADR-0010    | shadcn primitive 基盤は Base UI                                    | 継承 (packages/ui の component source 方針は変えない)                                            |
@@ -64,7 +64,7 @@
 ## 関連資料
 
 - `design/DesignDoc.md`: ## モジュール責務 / ## 設計上の重要ポイント
-- `design/features/corporate-site/DesignDoc_corporate-site.md` / `component-map.md`
+- `design/features/corporate-site/DesignDoc_corporate-site.md` (section 構成の正本)
 - `context/component-design.md` (現行規約の正本) / `context/architecture.md` / `context/design-workflow.md` §6
 - `adr/0006` (3 route IA) / `adr/0007` (トークン) / `adr/0008` (island) / `adr/0010` (Base UI)
 - 関連 issue: #32 (本 issue) / #33 (testing-strategy: Storybook play テストは対象外としてそちらへ移管) / #6 (Storybook catalog 決定経緯) / #10 (corporate-site 実装)
@@ -180,9 +180,9 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 | D8  | sections 移行先マップ: 現 7 features (business / company / consultation / contact / hero / products / services) のページ対応再編と common への振り分け     | route (`/` `/products` `/contact`) 対応で再グルーピング                                     | **再決定 (2026-07-26): 案 E フラット 7 section**。初回決定 (案 A route 層) は import 実態と矛盾したため撤回。「解決済みの論点」D8 参照         |
 | D9  | section 標準構成: section 内部の標準ファイル構成 (エントリーポイント `index.ts` / Section component / 内部 component) と products 14 ファイルの再構成案    | `index.ts` 再輸出 + `<Feature>Section.astro` を起点とする構成                               | 決定 (2026-07-25): フラット + index.ts。products の分割は D8 再決定に伴い 2 section へ修正。「解決済みの論点」D9 参照                          |
 | D10 | 公開面の機械検査: index.ts 経由 import のみ許可するルール案 (story ファイル・pages からの参照経路の扱い、検査手段)                                         | pages → sections は index 経由のみ、story は同 section 内直接参照を許可                     | **再決定 (2026-07-26)**: 境界の定義は初回どおり。検査手段は depcruise が `.astro` 非対応のため独自スクリプトへ変更。「解決済みの論点」D10 参照 |
-| D11 | 規約の置き場と ADR 要否: 各決定の反映先 (context/component-design.md / feature doc / component-map.md) の割り付け、sections 再編を ADR として残すか        | 横断規約は component-design.md 改訂、corporate-site 固有は feature doc、再編判断は ADR 起票 | 決定 (2026-07-25): 案 A context + feature doc + 新規 ADR 1 本。「解決済みの論点」D11 参照                                                      |
+| D11 | 規約の置き場と ADR 要否: 各決定の反映先 (context/component-design.md / feature doc) の割り付け、sections 再編を ADR として残すか        | 横断規約は component-design.md 改訂、corporate-site 固有は feature doc、再編判断は ADR 起票 | 決定 (2026-07-25): 案 A context + feature doc + 新規 ADR 1 本。「解決済みの論点」D11 参照                                                      |
 | D12 | 未使用 component の扱い: `ServicePillar` / `ContactInfoRow` (story からのみ参照され実ページで未使用)                                                       | 削除 / 現状維持 / 活用先を作る                                                              | 決定 (2026-07-26): **削除する** (story も同時削除)。「解決済みの論点」D12 参照                                                                 |
-| D13 | `common/` の配置形式: 規約は `common/<Component>/` (1 component 1 ディレクトリ) だが実装はフラット                                                         | ディレクトリ化する / フラットを正とする                                                     | 決定 (2026-07-26): **フラットを正とし context / component-map を追従**。「解決済みの論点」D13 参照                                             |
+| D13 | `common/` の配置形式: 規約は `common/<Component>/` (1 component 1 ディレクトリ) だが実装はフラット                                                         | ディレクトリ化する / フラットを正とする                                                     | 決定 (2026-07-26): **フラットを正とし context / feature doc を追従**。「解決済みの論点」D13 参照                                             |
 | D14 | 境界検査スクリプトの組み込み先: `pnpm check` は実在せず、既存の `token:check` もどの gate からも呼ばれていない                                             | app の lint に合流 / root に check 新設 / lefthook に直接追加                               | 決定 (2026-07-26): **app の `lint` に合流**。「解決済みの論点」D14 参照                                                                        |
 | D15 | corporate-site から cva を使う経路: cva は `packages/ui` の依存で corporate-site には無く、`@kufu/ui` も再輸出していない                                   | ui から再輸出 / app に直接追加 / cva を使わない                                             | 決定 (2026-07-26): **`@kufu/ui/lib` から再輸出**。「解決済みの論点」D15 参照                                                                   |
 
@@ -194,27 +194,27 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
 
 | 論点  | 反映先 (以後の正本)                                                                |
 | ----- | ---------------------------------------------------------------------------------- |
-| D1    | context/component-design.md (Storybook 対象節) + component-map.md (title 列)       |
+| D1    | context/component-design.md (Storybook 対象節)                                     |
 | D2    | context/component-design.md (Storybook 対象節)                                     |
 | D3    | context/component-design.md (Storybook 対象節)                                     |
 | D4    | context/component-design.md (スタイリング節)                                       |
 | D5    | context/component-design.md (スタイリング節) + ADR-0007 更新節                     |
 | D6    | context/component-design.md (スタイリング節) + feature doc 設計方針 (app 固有適用) |
 | D7    | context/component-design.md (ハードコード基準節)                                   |
-| D8    | ADR-0011 + context/component-design.md (ディレクトリ構成節) + component-map.md     |
-| D9    | ADR-0011 + context/component-design.md (ディレクトリ構成節) + component-map.md     |
-| D10   | ADR-0011 + context/architecture.md (App 内依存方向節)                              |
+| D8    | ADR-0014 + context/component-design.md (ディレクトリ構成節) + feature doc          |
+| D9    | ADR-0014 + context/component-design.md (ディレクトリ構成節) + feature doc          |
+| D10   | ADR-0014 + context/architecture.md (App 内依存方向節)                              |
 | D11   | 本 sync の反映先割り付けそのもの (メタ決定。spec で閉じる)                         |
 | 突合① | context/component-design.md (スタイリング節。cva / styles 分割で解消する設計)      |
 | 突合② | context/component-design.md (Storybook 対象節: Section story を公認)               |
 | 突合③ | ADR-0007 更新節 (fonts の読み込み経路の記述訂正)。実装変更なし                     |
 | 突合④ | ADR-0007 更新節 + context/component-design.md (スタイリング節)                     |
-| D12   | ADR-0011 (削除判断と復帰条件) + component-map.md (削除予定の記載)                  |
-| D13   | context/component-design.md (ディレクトリ構成節) + component-map.md (配置列)       |
-| D14   | ADR-0011 決定 5 (配線先と hooks を触らない理由) — 反映済                           |
+| D12   | ADR-0014 (削除判断と復帰条件)                                                      |
+| D13   | context/component-design.md (ディレクトリ構成節)                                   |
+| D14   | ADR-0014 決定 5 (配線先と hooks を触らない理由) — 反映済                           |
 | D15   | context/component-design.md スタイリング節 (cva は `@kufu/ui/lib` 経由) — 反映済   |
-| 突合⑤ | ADR-0011 (route 層でなくフラットにした判断根拠として記録)                          |
-| 突合⑥ | ADR-0011 (検査手段の選択根拠として記録) + context/architecture.md (検査方法の記述) |
+| 突合⑤ | ADR-0014 (route 層でなくフラットにした判断根拠として記録)                          |
+| 突合⑥ | ADR-0014 (検査手段の選択根拠として記録) + context/architecture.md (検査方法の記述) |
 | 突合⑦ | spec で閉じる (`.dependency-cruiser.cjs` の旧 app 名バグ修正。コードが正)          |
 
 - **D8 再決定 (2026-07-26, ユーザー): sections は 1 階層のフラット構成にする (案 E)**。`components/sections/<section>/` とし、route 層は設けない。
@@ -229,7 +229,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
     - `sections/contact/` ← `ContactSection.astro` (→ `/contact`)
     - `common/` ← 現行のまま (BaseLayout / SiteHeader / SiteFooter / SectionHeading / ContactCtaLink)。移動なし
     - `services/` は D12 により削除 (未使用)
-  - ドメインのまとまりはディレクトリ名の接頭辞 (`products-*`) で表す。ページ対応は `component-map.md` の表が正本
+  - ドメインのまとまりはディレクトリ名の接頭辞 (`products-*`) で表す。ページ対応は feature doc の section 構成表が正本
 - **D9 (2026-07-25, ユーザー / 2026-07-26 に D8 再決定へ追従): section 内部はフラット + index.ts**。
   - 標準構成: `sections/<section>/` 直下に `index.ts` (公開面。Section component のみ再輸出) + Section component + 内部 component + story をフラットに並べる。`internal/` サブディレクトリは作らない (現行規約「1 component 1 ディレクトリを強制しない」を継承)
   - 階層は常に 1 段。「section の起点は必ず `sections/<section>/index.ts`」という単一規約になる
@@ -246,7 +246,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - **`content/source-references.ts` は削除対象外** (2026-07-26 レビューで訂正)。当初「被参照ゼロ」と記録したが誤りで、`content/` 配下の 5 ファイル (`business.ts` / `company.ts` / `contact.ts` / `hero.ts` / `services.ts`) と `content-data.test.ts` が `companyProfileSource` 等を import している。調査時に `components/` と `pages/` のみを走査し、content 層内の相互参照を見落としていた
 - **D13 (2026-07-26): `common/` はフラット配置を正とする**。
   - context 規約は `common/<Component>/<Component>.astro` (1 component 1 ディレクトリ) だったが、実装は `common/` 直下のフラット配置で、`packages/ui` も同様にフラットである
-  - D8 で「common は現行のまま移動なし」と決めており、section 内をフラットにした方針とも一貫するため、**実装を正として context / component-map を追従**させた (移動は発生しない)
+  - D8 で「common は現行のまま移動なし」と決めており、section 内をフラットにした方針とも一貫するため、**実装を正として context / feature doc を追従**させた (移動は発生しない)
   - `common/` は公開面を絞る対象ではないため `index.ts` は置かない (sections との違い)
 - **D14 (2026-07-26, ユーザー): 境界検査は corporate-site の `lint` script に合流させる**。
   - `apps/corporate-site/package.json` の `lint` を `oxlint ... && node scripts/check-token-usage.mjs && node scripts/check-section-boundary.mjs` に拡張する
@@ -290,7 +290,7 @@ EARS 風で振る舞いを記述する (`<who>` `<trigger>` 時、システム�
   - 許容する直書き: aria-label / alt / sr-only 等の機能的文言と、単一箇所でのみ使う一時値。ただし同じ値が 2 箇所以上に現れたら定数化する
 - **D11 (2026-07-25, ユーザー): 規約は context + feature doc + 新規 ADR 1 本 (案 A)**。
   - 横断規約 (ディレクトリ / 公開面 / Storybook / スタイル / ハードコード基準): `component-design.md` / `architecture.md` の改訂
-  - corporate-site 固有 (移行先マップ / products 3 分割): feature doc + `component-map.md`
+  - corporate-site 固有 (移行先マップ / products 分割): feature doc の section 構成表
   - 新規 ADR 1 本: 「corporate-site の sections 再編と section 公開面規約」(D8〜D10 の判断経緯。ADR-0007/0008/0010 は継承で supersede なし)。起票は sync phase で行う
 
 ## 未確定事項
@@ -561,8 +561,8 @@ flowchart TD
 
 | 対象 doc / 節                                          | 変更内容                                                                                                                                                                                            | 理由                                                                           |
 | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `component-map.md` / DesignDoc_corporate-site 設計方針 | sections のフラット構成と section → component / 使用ページの対応表を追記 <!-- source: clarify D8 (2026-07-26 再決定を反映) -->                                                                      | D8 再決定。構造を IA から独立させ、ページ対応は表で持つ                        |
-| `component-map.md`                                     | products の products-category / products-detail 2 分割と各 section の公開面、削除 component (D12) を追記 <!-- source: clarify D9/D12 -->                                                            | D9 / D12 決定。起点 (index.ts) が一意になる                                    |
+| DesignDoc_corporate-site 設計方針 / section 構成       | sections のフラット構成と section → component / 使用ページの対応表を追記 <!-- source: clarify D8 (2026-07-26 再決定を反映) -->                                                                      | D8 再決定。構造を IA から独立させ、ページ対応は表で持つ                        |
+| DesignDoc_corporate-site section 構成                  | products の products-category / products-detail 2 分割と各 section の公開面を追記 <!-- source: clarify D9/D12 -->                                                            | D9 / D12 決定。起点 (index.ts) が一意になる                                    |
 | DesignDoc_corporate-site 設計方針                      | `src/styles/` の 4 ファイル構成 (entry + base / components 受け皿 / animations) の corporate-site 適用を追記。`utilities.css` は作らず `@layer` も付けない <!-- source: track (2026-07-27 訂正) --> | D6 の app 固有適用形。横断規約 (context) と固有構成 (feature doc) の分置 (D11) |
 
 ### context への影響
@@ -585,10 +585,10 @@ flowchart TD
 
 | ADR ID                                                             | 変更内容                                                                                                                                                                                                           | 理由                                                                                          |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
-| [ADR-0011](../../adr/0011-corporate-site-sections-architecture.md) | 「corporate-site の component を section 単位のフラット構成へ再編し、公開面を index.ts + 独自検査で固定する」を起票 (D8〜D10 の判断経緯と突合⑤⑥) <!-- source: clarify D11 (2026-07-26 再決定を反映) --> **反映済** | D11 決定。issue close 後も再編の判断経緯を長期参照するため                                    |
+| [ADR-0014](../../adr/0014-corporate-site-sections-architecture.md) | 「corporate-site の component を section 単位のフラット構成へ再編し、公開面を index.ts + 独自検査で固定する」を起票 (D8〜D10 の判断経緯と突合⑤⑥) <!-- source: clarify D11 (2026-07-26 再決定を反映) --> **反映済** | D11 決定。issue close 後も再編の判断経緯を長期参照するため                                    |
 | ADR-0007                                                           | 「更新」節に `@source` の theme.css 移動 (app entry は import のみ) を追記 <!-- source: clarify 突合④ -->                                                                                                          | レビュー指摘① / 突合④ 決定。lean entry 原則の維持                                             |
 | ADR-0007                                                           | 「更新」節に motion トークン (duration / easing) の tokens.css 追加を追記 <!-- source: track -->                                                                                                                   | D5 決定。「実績ベースの最小定義」(独自トークン最小) に対する新トークン層のため ADR 側にも記録 |
-| [ADR-0011](../../adr/0011-corporate-site-sections-architecture.md) | 決定 5 に検査の配線先 (app `lint` + lefthook pre-commit) と hooks を触らない理由を追記 <!-- source: clarify D14 --> **反映済**                                                                                     | D14 決定。spec 削除後も配線の根拠を残す                                                       |
+| [ADR-0014](../../adr/0014-corporate-site-sections-architecture.md) | 決定 5 に検査の配線先 (app `lint` + lefthook pre-commit) と hooks を触らない理由を追記 <!-- source: clarify D14 --> **反映済**                                                                                     | D14 決定。spec 削除後も配線の根拠を残す                                                       |
 | ADR-0007                                                           | 「更新」節に fonts の読み込み経路 (BaseLayout の `?url`) の記述訂正を追記 <!-- source: 2026-07-26 レビュー指摘 -->                                                                                                 | 突合③ の正本側での決着。spec 削除後も誤記が残らないようにする                                 |
 
 ## レビュー
@@ -620,14 +620,14 @@ flowchart TD
 | 2026-07-25 | spec-lifecycle | レビュー指摘対応: 突合④ (@source を theme.css へ移動) を追加決定、ADR 起票要否の stale を修正                                                                                                                                        |
 | 2026-07-25 | spec-lifecycle | diagram: 置き場判断フロー / 移行先マップ (component 単位) / styles entry 構成を図化                                                                                                                                                  |
 | 2026-07-25 | spec-lifecycle | track: 未追記差分 2 件を反映 (feature doc への styles 構成適用 / ADR-0007 への motion トークン追記)                                                                                                                                  |
-| 2026-07-25 | spec-lifecycle | sync: context 2 本 / feature doc 2 本を改訂、ADR-0011 起票 + ADR-0007 更新、impact-index 追加。spec を決定時スナップショットへ降格                                                                                                   |
+| 2026-07-25 | spec-lifecycle | sync: context 2 本 / feature doc 2 本を改訂、ADR-0014 起票 + ADR-0007 更新、impact-index 追加。spec を決定時スナップショットへ降格                                                                                                   |
 | 2026-07-26 | spec-lifecycle | ユーザー指摘を受け import 実態と検査基盤を再調査。突合⑤〜⑦ を追加し、**D8 を案 E (フラット) へ、D10 の検査手段を独自スクリプトへ再決定**。D12 (未使用削除) を追加                                                                    |
 | 2026-07-26 | spec-lifecycle | スコープを実装込みに拡大。実装分割 P1〜P6 と実装側の受け入れ基準・テスト観点を追加                                                                                                                                                   |
 | 2026-07-26 | spec-lifecycle | 再決定レビュー 2 回分の指摘に対応。D12 から source-references.ts を除外、D13 (common はフラット) を追加、stale 記述とメタ情報を同期                                                                                                  |
 | 2026-07-26 | spec-lifecycle | 3 回目レビュー対応。D14 (境界検査は app lint に合流) / D15 (cva は @kufu/ui から再輸出) を追加し、`@source` 移送粒度と ADR-0007 の記述誤りを訂正                                                                                     |
 | 2026-07-26 | spec-lifecycle | 4 回目レビュー PASS。D14 に pre-commit への `pnpm lint` 配線を追加 (lint がどの gate からも走らない実態が判明したため)                                                                                                               |
 | 2026-07-27 | spec-lifecycle | prompts: P1〜P6 の実装 prompt を差分修正モードで生成 (絶対ガード 10 セクション + frontmatter を自己検証済み)                                                                                                                         |
-| 2026-07-27 | spec-lifecycle | prompts gate 1〜4 回目のレビュー対応。styles 分割を 4 ファイル / `@layer` なしへ統一 (spec / context / feature doc / prompt)、cva と variant の対象 component を確定、D14 / D15 の反映先を ADR-0011 / context へ移動、メタ情報を同期 |
+| 2026-07-27 | spec-lifecycle | prompts gate 1〜4 回目のレビュー対応。styles 分割を 4 ファイル / `@layer` なしへ統一 (spec / context / feature doc / prompt)、cva と variant の対象 component を確定、D14 / D15 の反映先を ADR-0014 / context へ移動、メタ情報を同期 |
 | 2026-07-27 | spec-lifecycle | prompts gate 5〜6 回目対応。SiteFooter の dead code 2 箇所・variant 対象外 Props を明記し、P4 のカスケード順保持 (reduced-motion を components.css 末尾へ) を指示に追加                                                              |
 
 ## 備考

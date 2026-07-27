@@ -2,7 +2,7 @@
 
 > 最終更新: 2026-07-27
 
-Kufu Monorepo の frontend component 設計規約。本 doc を component のディレクトリ構成、命名、責務分割、Storybook 対象の横断正本とする。決定経緯は [spec #6](../specs/6-storybook-component-catalog/index.md) D3 / D4 / D7、sections 再編・公開面・カタログ / スタイル規約は issue #32 ([ADR-0011](../adr/0011-corporate-site-sections-architecture.md))。
+Kufu Monorepo の frontend component 設計規約。本 doc を component のディレクトリ構成、命名、責務分割、Storybook 対象の横断正本とする。決定経緯は [issue #6](https://github.com/Fukuemon/kufu-apps/issues/6)、sections 再編・公開面・カタログ / スタイル規約は [issue #32](https://github.com/Fukuemon/kufu-apps/issues/32) ([ADR-0014](../adr/0014-corporate-site-sections-architecture.md))。
 
 ## 原則
 
@@ -42,7 +42,7 @@ Astro の file-based routing は `src/pages/` に置く。Next.js App Router の
 
 ## ディレクトリ構成
 
-区切りの概念は **section** とし、`components/sections/<section>/` の **1 階層フラット**に置く。route 層は設けない (構造をページ構成から独立させ、IA 変更でディレクトリ移動が起きないようにするため)。旧 `components/features/<feature>/` 構成は本規約で置換した (決定経緯: issue #32 / [ADR-0011](../adr/0011-corporate-site-sections-architecture.md))。
+区切りの概念は **section** とし、`components/sections/<section>/` の **1 階層フラット**に置く。route 層は設けない (構造をページ構成から独立させ、IA 変更でディレクトリ移動が起きないようにするため)。旧 `components/features/<feature>/` 構成は本規約で置換した (決定経緯: issue #32 / [ADR-0014](../adr/0014-corporate-site-sections-architecture.md))。
 
 ```text
 apps/<app>/src/
@@ -69,7 +69,7 @@ apps/<app>/src/
 - presentation component に `Presentation` suffix は付けない。`<Component>.astro` がそのまま presentation であり、story 対象。
 - 複数 section をまたいで使う site component (`SectionHeading` など) は `components/common/` 直下にフラットに置く (section 内と同じく 1 component 1 ディレクトリを強制しない)。`common/` は公開面を絞らないため `index.ts` を置かない。
 
-corporate-site の例 (section とページ対応の実マップは [component-map.md](../design/features/corporate-site/component-map.md) を正本とする):
+corporate-site の例 (section とページ対応の実マップは [feature doc の section 構成](../design/features/corporate-site/DesignDoc_corporate-site.md#section-構成-実装の配置) を正本とする):
 
 ```text
 apps/corporate-site/src/components/
@@ -292,21 +292,20 @@ app-local Storybook は section-local presentation component の review 入口�
 - **section assembly の story も公認する**: Section story は「ページ文脈での確認入口」としてカタログに含める。fixture は story 内に限定し、網羅は代表ケースのみでよい (variant 網羅の主対象は presentation component)。
 - 本番 secret、実送信、external API call を伴う story を作らない。
 
-## Design Artifact との関係
+## デザイン正本との関係
 
-`.pen` は design 正本、code / Storybook は実装正本である。
+デザイン正本は実装 (コード + Storybook) である ([ADR-0012](../adr/0012-design-source-of-truth-implementation.md))。中間デザインファイルを介さず、Claude Design のプロトを参照して直接実装する ([design-workflow.md](design-workflow.md))。
 
-- `.pen` の page section は page 文脈を保持する。
-- `.pen` の reusable component は `GenericComponents` / `CorporateSiteComponents` のように分類する。
-- `GenericComponents` は `packages/ui` への shared component 候補。
-- feature 固有 component は app-local presentation (+ 必要なら content 層 / section assembly) へ写像する。
-- `.pen` と実装 component が 1:1 にならない場合は、spec / PR に分割・統合理由を残す。
+- page section は page 文脈を保持し、Storybook の対象にしない。
+- 複数 app / feature をまたぐ再利用が明確な component は `packages/ui` の shared catalog へ昇格する。
+- feature 固有 component は app-local presentation (+ 必要なら content 層 / section assembly) に置く。
+- プロトの構造をそのまま持ち込まず、`@kufu/ui` コンポ + セマンティック HTML へ写像する。
 
 ## 参照
 
-- [spec #6](../specs/6-storybook-component-catalog/index.md): Storybook / component catalog / Container-Presentation の決定経緯
+- [issue #6](https://github.com/Fukuemon/kufu-apps/issues/6): Storybook / component catalog / Container-Presentation の決定経緯
 - [architecture.md](architecture.md): package boundary / runtime boundary
 - [engineering.md](engineering.md): Storybook quality gate / root task boundary
-- [design-workflow.md](design-workflow.md): `.pen` と実装正本の境界
+- [design-workflow.md](design-workflow.md): デザイン制作フローと正本境界
 - [BCD Design](https://zenn.dev/misuken/articles/203b9dd3afbf1c)
 - [Functional cohesion / colocation](https://zenn.dev/coji/articles/react-router-v7-functional-cohesion-colocation)

@@ -117,7 +117,7 @@ import { Hero } from "../components/sections/hero";
   - `apps/corporate-site/src/pages/` (index / products / contact)
   - `apps/corporate-site/README.md`
 - 規約の正本: `context/component-design.md` (ディレクトリ構成節)
-- section とページ対応の正本: `design/features/corporate-site/component-map.md`
+- section とページ対応の正本: `design/features/corporate-site/DesignDoc_corporate-site.md` の「section 構成 (実装の配置)」節
 
 ## 前提条件
 

@@ -103,7 +103,7 @@ Section story は「ページ文脈での確認入口」として代表ケース
   - `apps/corporate-site/src/components/` (sections / common の story)
   - `packages/ui/.storybook/` と `packages/ui/src/components/` の story
 - 規約の正本: `context/component-design.md` (Storybook 対象節)
-- title の対応表: `design/features/corporate-site/component-map.md`
+- section とページ対応: `design/features/corporate-site/DesignDoc_corporate-site.md` の「section 構成 (実装の配置)」節
 
 ## 前提条件
 
