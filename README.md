@@ -68,7 +68,7 @@ pnpm install
 | Decision                 | [adr/](adr/)                               | 長期参照する意思決定                                                      |
 | Issue 作業文書           | [specs/](specs/)                           | Issue / 機能単位の要求・設計・テスト観点                                  |
 
-AI エージェント向けの操作契約は [AGENTS.md](AGENTS.md)。`AGENTS.md` / `CLAUDE.md` / `.codex/` / `.claude/` / `.cursor/` は生成物のため直接編集せず、`.rulesync/` を正本として更新する。
+AI エージェント向けの操作契約 (`AGENTS.md` / `CLAUDE.md` / `.codex/` / `.claude/` / `.cursor/`) は sdd-template が定め、symlink で接続する。本リポジトリでは追跡しないため、clone しただけの状態では存在しない。接続は sdd-template 側で `bash scripts/link.sh <このリポジトリ>`、確認は `bash scripts/doctor.sh`。
 
 ## Workflow
 
