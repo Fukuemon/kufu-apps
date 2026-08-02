@@ -44,7 +44,7 @@
 
 同一テーマを再設計する場合も、新しい issue で別 spec を起こす。
 
-テンプレートは [templates/specs/template.md](../templates/specs/template.md) を使う (`spec-lifecycle` の scaffold phase が自動でコピーする)。必須節は `hooks/spec/validate_document.sh` が、レビュー観点は `spec-review` が検査する。
+テンプレートは `templates/specs/template.md` を使う (`spec-lifecycle` の scaffold phase が自動でコピーする)。必須節は `hooks/spec/validate_document.sh` が、レビュー観点は `spec-review` が検査する。
 
 ## closeout (issue close 時の清算)
 
