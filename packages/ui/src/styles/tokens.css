@@ -79,6 +79,18 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* motion (役割ベースのセマンティック定義。値 1:1 の数値トークンは作らない) */
+  --kufu-motion-fast: 0.2s; /* hover / focus 等の micro interaction */
+  --kufu-motion-medium: 0.35s; /* 要素単位の強調 */
+  --kufu-motion-slow: 0.7s; /* section reveal */
+  --kufu-motion-drift: 0.9s; /* 大きい要素のゆったりした transform */
+  --kufu-motion-glide: 1.2s; /* carousel 等の移動 */
+  --kufu-motion-cue: 1.8s; /* ループ演出 */
+  --kufu-motion-stagger: 0.12s; /* 段差 delay */
+  --kufu-ease: ease;
+  --kufu-ease-out: ease-out;
+  --kufu-ease-in-out: ease-in-out;
 }
 
 /* section-level inverse surface */

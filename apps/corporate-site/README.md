@@ -8,21 +8,28 @@ This app consumes design tokens and fonts from `@kufu/ui`, and runs its own lean
 Tailwind v4 entry (it does NOT import the full `@kufu/ui/styles.css`, which carries
 React/shadcn-only layers — see [ADR-0007](../../adr/0007-design-token-architecture.md)).
 
-`src/styles/globals.css`:
+`src/styles/` is split by role; `globals.css` is an import-only entry:
 
 ```css
 @import "tailwindcss";
 @import "@kufu/ui/tokens.css"; /* token values (source of truth) */
-@import "@kufu/ui/fonts.css";
 @import "@kufu/ui/theme.css"; /* shared @theme: token -> utility mapping */
+@import "./base.css"; /* :root custom props + element-level base styles */
+@import "./components.css"; /* class selectors (being migrated to cva/utilities) */
+@import "./animations.css"; /* site-specific @keyframes */
 ```
+
+Fonts are loaded via `?url` preload in `BaseLayout.astro` (not imported here).
+Motion timing uses the semantic tokens from `@kufu/ui/tokens.css`
+(`--kufu-motion-*` / `--kufu-ease*`); do not hard-code durations/easings.
 
 The `@theme` (token → utility) mapping lives once in `@kufu/ui/theme.css` and is
 shared by `@kufu/ui/styles.css` and this app's entry. This app keeps a local CSS
 entry so it can define document-level base styles without importing
 React/shadcn-only layers. Tailwind's Vite plugin discovers Astro pages,
 components, and Storybook stories through Vite's module graph; no app-local
-`@source` directive is needed.
+`@source` directive is needed — `@kufu/ui/theme.css` points `@source` at its own
+component sources so every consumer generates the classes `@kufu/ui` uses.
 
 Tailwind v4 is applied with `@tailwindcss/vite` in `astro.config.mjs`.
 `@storybook-astro/framework` auto-loads the Astro Vite plugin for Storybook;
