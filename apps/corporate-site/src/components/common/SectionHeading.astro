@@ -1,4 +1,6 @@
 ---
+import { cva } from "@kufu/ui/lib";
+
 export interface Props {
   number?: string;
   eyebrow?: string;
@@ -17,10 +19,22 @@ const {
   align = "start",
 } = Astro.props;
 const HeadingTag = `h${level}` as const;
-const rootClass = [
+
+const sectionHeadingVariants = cva(
   "grid gap-4.5 w-[min(100%,53.75rem)] text-foreground",
-  align === "center" ? "justify-items-center mx-auto text-center" : "",
-].join(" ");
+  {
+    variants: {
+      align: {
+        start: "",
+        center: "justify-items-center mx-auto text-center",
+      },
+    },
+    defaultVariants: {
+      align: "start",
+    },
+  },
+);
+const rootClass = sectionHeadingVariants({ align });
 ---
 
 <div class={rootClass}>
