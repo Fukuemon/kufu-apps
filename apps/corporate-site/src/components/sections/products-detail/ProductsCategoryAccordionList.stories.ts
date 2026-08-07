@@ -47,7 +47,7 @@ const categoryGroups = [
 ];
 
 const meta = {
-  title: "Products/ProductsCategoryAccordionList",
+  title: "Sections/ProductsDetail/ProductsCategoryAccordionList",
   component: ProductsCategoryAccordionList,
 };
 
@@ -56,5 +56,22 @@ export default meta;
 export const Default = {
   args: {
     categoryGroups,
+  },
+};
+
+export const EmptyMakers = {
+  args: {
+    categoryGroups: [
+      {
+        eyebrow: "CATEGORY 99",
+        title: "掲載メーカー準備中",
+        items: [
+          {
+            category: category("placeholder-category", 99, "準備中カテゴリ"),
+            makers: makers("placeholder-category", []),
+          },
+        ],
+      },
+    ],
   },
 };

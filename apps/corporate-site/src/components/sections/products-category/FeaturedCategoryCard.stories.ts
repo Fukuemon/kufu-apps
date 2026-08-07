@@ -1,7 +1,7 @@
 import FeaturedCategoryCard from "./FeaturedCategoryCard.astro";
 
 const meta = {
-  title: "Products/FeaturedCategoryCard",
+  title: "Sections/ProductsCategory/FeaturedCategoryCard",
   component: FeaturedCategoryCard,
 };
 
@@ -19,5 +19,13 @@ export const WithoutCount = {
   args: {
     category: "CATEGORY 02",
     title: "搬送・省力化機器",
+  },
+};
+
+export const LongTitle = {
+  args: {
+    category: "CATEGORY 18",
+    count: "102社",
+    title: "空圧・油圧・真空機器と関連する周辺制御機器および配管部材一式",
   },
 };

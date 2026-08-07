@@ -1,7 +1,7 @@
 import ContactSection from "./ContactSection.astro";
 
 const meta = {
-  title: "Corporate Site/Features/ContactSection",
+  title: "Sections/Contact/ContactSection",
   component: ContactSection,
 };
 

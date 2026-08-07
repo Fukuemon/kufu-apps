@@ -1,7 +1,7 @@
 import ConsultationSection from "./ConsultationSection.astro";
 
 const meta = {
-  title: "Corporate Site/Features/ConsultationSection",
+  title: "Sections/Consultation/ConsultationSection",
   component: ConsultationSection,
 };
 

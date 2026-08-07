@@ -1,7 +1,7 @@
 import ProductsHero from "./ProductsHero.astro";
 
 const meta = {
-  title: "Products/ProductsHero",
+  title: "Sections/ProductsDetail/ProductsHero",
   component: ProductsHero,
 };
 

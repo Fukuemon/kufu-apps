@@ -1,7 +1,7 @@
 import BusinessSection from "./BusinessSection.astro";
 
 const meta = {
-  title: "Corporate Site/Features/BusinessSection",
+  title: "Sections/Business/BusinessSection",
   component: BusinessSection,
 };
 

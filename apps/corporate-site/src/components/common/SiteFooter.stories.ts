@@ -1,7 +1,7 @@
 import SiteFooter from "./SiteFooter.astro";
 
 const meta = {
-  title: "Corporate Site/Common/SiteFooter",
+  title: "Common/SiteFooter",
   component: SiteFooter,
 };
 

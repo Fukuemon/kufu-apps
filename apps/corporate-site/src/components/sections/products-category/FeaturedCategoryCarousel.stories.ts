@@ -20,7 +20,7 @@ const categories = [
 ] as const;
 
 const meta = {
-  title: "Products/FeaturedCategoryCarousel",
+  title: "Sections/ProductsCategory/FeaturedCategoryCarousel",
   component: FeaturedCategoryCarousel,
 };
 
@@ -30,5 +30,12 @@ export const Default = {
   args: {
     categories,
     makerCountsByCategoryId: { "drive-reducers": 17 },
+  },
+};
+
+export const Empty = {
+  args: {
+    categories: [],
+    makerCountsByCategoryId: {},
   },
 };

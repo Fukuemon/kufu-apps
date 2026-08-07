@@ -1,7 +1,7 @@
 import ProductsDetailSection from "./ProductsDetailSection.astro";
 
 const meta = {
-  title: "Corporate Site/Features/ProductsDetailSection",
+  title: "Sections/ProductsDetail/ProductsDetailSection",
   component: ProductsDetailSection,
 };
 

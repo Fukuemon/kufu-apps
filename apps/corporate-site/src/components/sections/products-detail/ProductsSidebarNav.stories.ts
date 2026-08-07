@@ -27,7 +27,7 @@ const categoryGroups = [
 ];
 
 const meta = {
-  title: "Products/ProductsSidebarNav",
+  title: "Sections/ProductsDetail/ProductsSidebarNav",
   component: ProductsSidebarNav,
 };
 
@@ -37,5 +37,26 @@ export const Default = {
   args: {
     categoryGroups,
     makerCountById: { "drive-reducers": 17, "bearings-linear-motion": 19 },
+  },
+};
+
+export const LongNames = {
+  args: {
+    categoryGroups: [
+      {
+        eyebrow: "CATEGORY 17–18",
+        title: "空圧・油圧・真空とその他周辺機器",
+        items: [
+          {
+            category: category(
+              "pneumatic-hydraulic-vacuum",
+              17,
+              "空圧・油圧・真空機器と関連する周辺制御機器一式",
+            ),
+          },
+        ],
+      },
+    ],
+    makerCountById: { "pneumatic-hydraulic-vacuum": 102 },
   },
 };

@@ -1,7 +1,7 @@
 import Hero from "./Hero.astro";
 
 const meta = {
-  title: "Corporate Site/Features/Hero",
+  title: "Sections/Hero/Hero",
   component: Hero,
 };
 
