@@ -47,15 +47,15 @@ module.exports = {
       },
     },
     {
-      name: "lp-site-no-cross-app-imports",
+      name: "corporate-site-no-cross-app-imports",
       severity: "error",
       comment:
         "Apps should depend on shared packages, not on other apps' internals.",
       from: {
-        path: "^apps/lp-site/",
+        path: "^apps/corporate-site/",
       },
       to: {
-        path: "^apps/(?!lp-site/)",
+        path: "^apps/(?!corporate-site/)",
       },
     },
   ],

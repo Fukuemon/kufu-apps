@@ -1,0 +1,37 @@
+# root `pnpm lint` を CI の必須 gate として実行する。
+# pre-commit の lint は --no-verify や hook 未導入環境で素通しになるため、
+# 必須 gate は本 workflow が担う (ADR-0014 決定 5)。
+# `on:` にはブランチ名を直書きせず (repo 規約)、push は job 側の if で
+# default branch のみに絞る (PR ブランチへの push は pull_request 側が拾う)。
+name: Lint
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: lint-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
