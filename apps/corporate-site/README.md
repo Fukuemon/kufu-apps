@@ -36,7 +36,7 @@ Keep Astro-local markup and UI composition in `apps/corporate-site`.
 Component design rules are defined in [../../context/component-design.md](../../context/component-design.md).
 
 - Route entries live in `src/pages/`.
-- Feature components live in `src/components/features/<feature>/`, where `<feature>` is a content domain (`business`, `products`, `contact`, `services`) — not the app name. Cross-feature site components live in `src/components/common/`.
+- Section components live in `src/components/sections/<section>/` (one flat level; `<section>` is a domain name such as `business`, `products-category`, `products-detail`, `contact`). Each section exposes only its Section component through `index.ts`; pages import via the directory path (`../components/sections/hero`). Cross-section site components live flat in `src/components/common/`.
 - Presentation components use `<Component>.astro` (no `Presentation` suffix) and are the primary app-local Storybook target.
 - Data/logic belongs in the content layer (`src/content/<feature>.ts`, or an Astro Content Collection for homogeneous entry sets); a `<Feature>Section.astro` assembles content into presentation. Both are added when the page body is implemented.
 - Style components with Tailwind utilities backed by `@kufu/ui` tokens (`text-foreground`, `bg-secondary`, `font-mono`, …) — no raw hex / color arbitrary values. Avoid scoped `<style>` blocks.

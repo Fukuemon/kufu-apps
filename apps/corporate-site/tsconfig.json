@@ -1,5 +1,9 @@
 {
   "extends": "@kufu/config/tsconfig/astro",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler"
+  },
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist"]
 }
