@@ -16,6 +16,7 @@ depends_on: [P2_01_corporate-site_sections_migration.md]
 - 別 app / package を追加探索せず、この prompt 内の情報だけで判断する
 - 各作業ステップに含まれる検証 / レビュー手順をスキップしない
 - **完了条件のタスク化**: 作業開始前に「完了条件」セクションの各項目を todo として登録し、各ステップ完了時に状態を更新すること。タスク化せずに作業を開始することは禁止
+- 副作用操作は issue の status ラベル更新と `Refs #32` 付き commit のみ承認済み。push / PR 作成は都度確認する
 
 ### 実装アンチパターンの回避 (必守)
 
@@ -65,11 +66,24 @@ depends_on: [P2_01_corporate-site_sections_migration.md]
 | `sections/contact/ContactSection.stories.ts`           | `Sections/Contact/ContactSection`           |
 | `common/<Component>.stories.ts`                        | `Common/<Component>`                        |
 
-`packages/ui` 側の story は `UI/<Component>` に揃える。
+`<Section>` 部は section ディレクトリ名 (kebab-case) を **PascalCase 化** したものとする (`products-category` → `ProductsCategory`、`products-detail` → `ProductsDetail`)。他の変換 (スペース区切り等) は使わない。
+
+`packages/ui` 側の story は `UI/<Component>` に揃える (対象は下記「packages/ui 側の対象」の全列挙)。
 
 ### ステップ 3: バリエーション網羅を補完する
 
-**variant を持つ presentation component は次の 4 つ** (探索不要):
+対象はすべて本 prompt 内で列挙する (探索不要)。
+
+**corporate-site 側の全 component の分類** (P2 移行後のパス。この一覧が完全であり、ここに無いものは対象外):
+
+| 分類                                   | component                                                                                                                                                                                                                                                                            | story の扱い                                                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| section assembly (代表 story のみ)     | `sections/hero/Hero`、`sections/business/BusinessSection`、`sections/company/CompanySection`、`sections/consultation/ConsultationSection`、`sections/products-category/ProductsCategorySection`、`sections/products-detail/ProductsDetailSection`、`sections/contact/ContactSection` | 既存の代表 story を維持 (網羅不要。title 修正のみ)                |
+| presentation (variant + edge 必須)     | `sections/business/BusinessFeatureRow`、`common/SectionHeading`、`common/ContactCtaLink`、`common/SiteFooter`                                                                                                                                                                        | 下表の variant 全列挙 + edge state                                |
+| presentation (variant なし。edge 必須) | `sections/products-category/FeaturedCategoryCarousel`、`sections/products-category/FeaturedCategoryCard`、`sections/products-detail/ProductsHero`、`sections/products-detail/ProductsSidebarNav`、`sections/products-detail/ProductsCategoryAccordionList`、`common/SiteHeader`      | edge state story (長文 / 空データ / 最小構成のうち意味を持つもの) |
+| story 対象外                           | `common/BaseLayout` (layout であり presentation ではない)                                                                                                                                                                                                                            | 作らない                                                          |
+
+**variant を持つ presentation component は次の 4 つ**:
 
 | component (P2 移行後のパス)                  | variant 軸 (Props)                 | 現在の story                               |
 | -------------------------------------------- | ---------------------------------- | ------------------------------------------ |
@@ -84,10 +98,32 @@ depends_on: [P2_01_corporate-site_sections_migration.md]
 - `BusinessFeatureRow.astro` の `imageLoading?: "eager" | "lazy"`: 画像の読み込み方の指定で、描画結果は変わらない
 
 1. 上表の 4 component に、variant の全組み合わせを args で列挙した story を用意する (`ContactCtaLink` は story ファイル自体を新設する。`SiteFooter` は既に網羅済みのため title 修正のみ)
-2. すべての presentation component に edge state の story を追加する (長文 / 空データ / 最小構成のうち、その component で意味を持つもの)。データ表示のみで variant を持たない component (`FeaturedCategoryCard` / `ProductsSidebarNav` 等) は edge state のみでよい
+2. 分類表の presentation 10 component (variant あり 4 + variant なし 6) すべてに edge state の story を追加する (長文 / 空データ / 最小構成のうち、その component で意味を持つもの)。variant なしの 6 component は edge state のみでよい
 3. `BaseLayout.astro` は layout であり presentation component ではないため story を作らない
 
 Section story は「ページ文脈での確認入口」として代表ケースのみでよい (網羅対象外)。fixture は story 内に閉じ、本番 content / secret / 外部 API call を持ち込まない。
+
+### ステップ 4: packages/ui 側のカタログを揃える
+
+**packages/ui 側の対象** (この一覧が完全であり、探索不要。`packages/ui/src/components/` 直下):
+
+| component ファイル   | 現在の story                | 作業                                                                   |
+| -------------------- | --------------------------- | ---------------------------------------------------------------------- |
+| `button.tsx`         | あり (`button.stories.tsx`) | title を `UI/Button` に確認・是正し、cva variants の全組み合わせを補完 |
+| `definition-row.tsx` | あり                        | 同上 (`UI/DefinitionRow`)                                              |
+| `form-field.tsx`     | あり                        | 同上 (`UI/FormField`)                                                  |
+| `separator.tsx`      | あり                        | 同上 (`UI/Separator`)                                                  |
+| `tag.tsx`            | あり                        | 同上 (`UI/Tag`)                                                        |
+| `badge.tsx`          | **なし → 新設**             | default + cva variants 全列挙 + edge state                             |
+| `input.tsx`          | **なし → 新設**             | 同上                                                                   |
+| `label.tsx`          | **なし → 新設**             | 同上                                                                   |
+| `link-button.tsx`    | **なし → 新設**             | 同上                                                                   |
+| `select.tsx`         | **なし → 新設**             | 同上                                                                   |
+| `textarea.tsx`       | **なし → 新設**             | 同上                                                                   |
+
+- variant 軸は各 component ファイル内の cva 定義 (または Props の視覚 variant) から**読み取って**全列挙する (上記ファイル以外を探索しない)。variant を持たないものは default + edge state のみでよい
+- 既存 story の 5 component にも edge state story (長文 / 空データ / 最小構成のうち意味を持つもの) が無ければ追加する (D2 は app-local / packages/ui の両カタログに適用する)
+- 規約の根拠: `context/component-design.md`「packages/ui」節の「shared component は default story を必須にする」+ カタログ共通規約 (D2)。story 新設は component 実装の変更を伴わない (再編ではないため「packages/ui 側 component の再編はしない」のスコープ境界に抵触しない)
 
 ### ステップ最終: 最終確認
 
@@ -108,7 +144,7 @@ Section story は「ページ文脈での確認入口」として代表ケース
 ## 前提条件
 
 - 完了しているべき phase / 依存 prompt: `P2_01_corporate-site_sections_migration.md`
-- 完了後に着手可能になる後続 prompt: なし (P3 は他の phase をブロックしない)
+- 完了後に着手可能になる後続 prompt: `P5_01_corporate-site_cva_consolidation.md` の前提の 1 つ (P5 は P2 / P3 / P4 完了後)
 - 必要な repo 状態: sections 構成への移行が完了していること
 
 ## 不明点ハンドリング
@@ -121,14 +157,15 @@ Section story は「ページ文脈での確認入口」として代表ケース
 
 ### 変更する repo 領域
 
-`apps/corporate-site/src/components/` と `packages/ui/src/components/` の story ファイル (preview 設定は確認のみ)
+`apps/corporate-site/src/components/` と `packages/ui/src/components/` の story ファイル (preview 設定は確認のみ)。frontmatter の `target` は命名規則上 1 つしか書けないため `corporate-site` としているが、`packages/ui` 側の story も変更対象である (spec の実装分割表では P3 を `corporate-site` + `ui` としている)
 
 ### 実装する範囲
 
 - autodocs のグローバル適用の確認 (既に設定済みのため通常は変更不要)
-- 全 story の title 階層の是正
+- 全 story の title 階層の是正 (corporate-site + packages/ui)
 - 上表 4 component の variant 全列挙 story の追加 (`ContactCtaLink` は story 新設)
-- presentation component への edge state story の追加
+- presentation component への edge state story の追加 (対象は分類表の presentation 10 component = variant あり 4 + variant なし 6)
+- packages/ui の story 補完 (既存 5 story の variant 網羅 + 不足 6 component の story 新設)
 
 ### 実装しない範囲
 
@@ -167,9 +204,10 @@ spec の D1〜D3 / 突合② より抜粋:
 
 - [ ] 全ステップを順序通りに実行した
 - [ ] 両 Storybook の preview で autodocs がグローバル適用されていることを確認した (既存設定の追認。変更不要)
-- [ ] 全 story の title がディレクトリ構造と 1:1 になっている
+- [ ] 全 story の title がディレクトリ構造と 1:1 になっている (kebab-case → PascalCase 変換規則に従う)
 - [ ] 上表 4 component に variant 全列挙 story がある (`ContactCtaLink` の story を新設した)
-- [ ] presentation component に edge state story がある
+- [ ] 分類表の presentation component 10 件すべてに edge state story がある
+- [ ] packages/ui の 11 component すべてに story があり、cva variants が全列挙されている
 - [ ] Section story の fixture が story 内に閉じている
 - [ ] 各ステップで diff レビューを実施し、指摘を対応した
 - [ ] `## 検証コマンド` がすべてパスする

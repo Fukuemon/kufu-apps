@@ -4,7 +4,11 @@ seq: 1
 target: corporate-site
 issue: 32
 depends_on:
-  [P2_01_corporate-site_sections_migration.md, P4_01_ui_styles_layering.md]
+  [
+    P2_01_corporate-site_sections_migration.md,
+    P3_01_corporate-site_storybook_catalog.md,
+    P4_01_ui_styles_layering.md,
+  ]
 ---
 
 # cva 集約と components.css 受け皿の削減 (D4 / D7 / D15)
@@ -17,6 +21,7 @@ depends_on:
 - 別 app / package を追加探索せず、この prompt 内の情報だけで判断する
 - 各作業ステップに含まれる検証 / レビュー手順をスキップしない
 - **完了条件のタスク化**: 作業開始前に「完了条件」セクションの各項目を todo として登録し、各ステップ完了時に状態を更新すること。タスク化せずに作業を開始することは禁止
+- 副作用操作は issue の status ラベル更新と `Refs #32` 付き commit のみ承認済み。push / PR 作成は都度確認する
 
 ### 実装アンチパターンの回避 (必守)
 
@@ -41,8 +46,9 @@ depends_on:
 ### ステップ 0: 前提確認
 
 1. `P2_01` が完了し、`components/sections/<section>/` 構成になっていることを確認する
-2. `P4_01` が完了し、`src/styles/` がレイヤ分割済みであることを確認する
-3. 現在のブランチが `feature/32` であることを確認する
+2. `P3_01` が完了し、`ContactCtaLink` の story が新設済みであることを確認する (cva 化前後の目視比較に使う)
+3. `P4_01` が完了し、`src/styles/` が役割別分割済みであることを確認する
+4. 現在のブランチが `feature/32` であることを確認する
 
 ### ステップ 1: @kufu/ui から cva を再輸出する (D15)
 
@@ -76,7 +82,7 @@ depends_on:
 
 ### ステップ 3: ハードコード基準を適用する (D7)
 
-cva 化の過程で見つかった次のものを是正する。**cva 化の対象外 component には手を入れない** (スコープ厳守)。
+cva 化の過程で見つかった次のものを是正する。**cva 化の対象外 component には手を入れない** (スコープ厳守)。D7 の codebase 全域への適用は「基準の明文化 (context 反映済)」までが本 issue であり、全域のコード是正は違反を見つけた変更の中で逐次行う (spec の D7 参照)。
 
 1. component 内に直書きされた文言・リスト → content 層へ移す
 2. 2 箇所以上に現れる繰り返し値 (数値 / URL / 閾値) → 定数化する (content 由来なら content 層、表示ロジック由来なら section 内 constants)
@@ -86,11 +92,11 @@ cva 化の過程で見つかった次のものを是正する。**cva 化の対�
 ### ステップ最終: 最終確認
 
 1. `## 検証コマンド` がすべてパスすることを確認
-2. `components.css` に残ったクラスセレクタがあれば、なぜ残したかを spec の `## 上位資料からの変更点` に記録するかコメントで理由を残す
+2. `components.css` に**対象 3 component 由来のセレクタが 0 件**であることを確認する。他 component 由来の残存セレクタは残してよいが、残存の一覧と理由を **PR 説明に記録する (PR 未作成の段階では該当 commit の message 本文に記録し、PR 作成時に転記する — push / PR 作成自体は承認範囲外のため行わない)** (spec へは書き戻さない — spec は決定時スナップショットであり、P5 の変更領域にも含まれない。規約に関わる判断が出た場合のみ context / ADR 側へ反映する)
 3. `pnpm e2e` で DOM 構造とテキストが変更前と等価であることを確認する
 4. 見た目の等価性を確認する (E2E は視覚回帰を検出しないため):
    - `SectionHeading` / `BusinessFeatureRow` は `pnpm --filter @kufu/corporate-site storybook` で既存 story の各 variant を cva 化前後で目視比較する
-   - `ContactCtaLink` は P3 が先行していれば新設 story で、していなければ `pnpm --filter @kufu/corporate-site dev` で `/` (`size="hero"` の Hero 内 CTA と `size="sm"` の SiteHeader 内 CTA) と `/products` (`size="lg"` の 2 箇所) を開いて 3 variant すべての見た目を目視比較する (P3 と P5 は実行順が固定されていないため、どちらでも成立する形にしている)
+   - `ContactCtaLink` は P3 で新設した story の 3 variant (`sm` / `hero` / `lg`) を cva 化前後で目視比較する (P3 は本 prompt の依存に含まれる)
 5. 変更をコミットする (commit message に `Refs #32` を含める)
 
 ## 実装コンテキスト
@@ -105,9 +111,9 @@ cva 化の過程で見つかった次のものを是正する。**cva 化の対�
 
 ## 前提条件
 
-- 完了しているべき phase / 依存 prompt: `P2_01_corporate-site_sections_migration.md` と `P4_01_ui_styles_layering.md` の両方
-- 完了後に着手可能になる後続 prompt: なし
-- 必要な repo 状態: sections 構成への移行 (P2) と `src/styles/` の分割 (P4) がともに完了していること
+- 完了しているべき phase / 依存 prompt: `P2_01` / `P3_01` / `P4_01` のすべて (P3 は `ContactCtaLink` story の新設が目視比較の前提になるため — 2026-08-07 に依存へ昇格)
+- 完了後に着手可能になる後続 prompt: `P6_01_corporate-site_boundary_check.md` の前提の 1 つ (P6 は P2 / P3 / P5 完了後)
+- 必要な repo 状態: sections 構成への移行 (P2)・story 追従 (P3)・`src/styles/` の分割 (P4) がすべて完了していること
 
 ## 不明点ハンドリング
 
@@ -171,10 +177,11 @@ spec の D4 / D7 / D15 / 突合① より抜粋:
 - [ ] 全ステップを順序通りに実行した
 - [ ] `@kufu/ui/lib` から cva が再輸出されている
 - [ ] corporate-site の package.json に `class-variance-authority` を追加していない
-- [ ] 上表 3 component が cva 化され、対応するクラスセレクタが `components.css` から消えている
+- [ ] 上表 3 component が cva 化され、`components.css` に対象 3 component 由来のセレクタが 0 件になっている
+- [ ] `components.css` の残存セレクタの一覧と残置理由を PR 説明に記録した (spec へは書き戻していない)
 - [ ] 対象外と明記した component に cva を持ち込んでいない (`SiteFooter` は cva 化せず、到達不能な三項の除去のみ)
 - [ ] DOM 構造とテキストが変更前と等価である (E2E パス)
-- [ ] `SectionHeading` / `BusinessFeatureRow` の見た目を story で、`ContactCtaLink` の見た目を story または実ページで目視確認した
+- [ ] `SectionHeading` / `BusinessFeatureRow` の見た目を story で、`ContactCtaLink` の見た目を story または実ページで目視確認し、実施内容 (component × variant) を PR 説明に記録した
 - [ ] `SiteFooter` の到達不能な三項 2 箇所 (grid-cols の class / `<nav>` の描画) を整理した
 - [ ] 各ステップで diff レビューを実施し、指摘を対応した
 - [ ] `## 検証コマンド` がすべてパスする

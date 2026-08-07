@@ -16,6 +16,7 @@ depends_on: [P1_01_corporate-site_remove_unused_components.md]
 - 別 app / package を追加探索せず、この prompt 内の情報だけで判断する
 - 各作業ステップに含まれる検証 / レビュー手順をスキップしない
 - **完了条件のタスク化**: 作業開始前に「完了条件」セクションの各項目を todo として登録し、各ステップ完了時に状態を更新すること。タスク化せずに作業を開始することは禁止
+- 副作用操作は issue の status ラベル更新と `Refs #32` 付き commit のみ承認済み。push / PR 作成は都度確認する
 
 ### 実装アンチパターンの回避 (必守)
 
@@ -88,7 +89,7 @@ import { Hero } from "../components/sections/hero";
 ---
 ```
 
-名前付き export とし、pages 側は**ディレクトリ指定**で import する (`.../hero/index.ts` と明示しない)。
+名前付き export とし、pages 側は**ディレクトリ指定**で import する。`.../hero/index` / `.../hero/index.ts` のような明示 index import は書かない (P6 の検査スクリプトはディレクトリ指定のみを正とし、明示 index import も**違反として検出する** — 形式を 1 つに固定して検査を単純に保つため)。
 
 ### ステップ 3: import 経路を追従させる
 
@@ -122,7 +123,7 @@ import { Hero } from "../components/sections/hero";
 ## 前提条件
 
 - 完了しているべき phase / 依存 prompt: `P1_01_corporate-site_remove_unused_components.md`
-- 完了後に着手可能になる後続 prompt: `P3_01_corporate-site_storybook_catalog.md` / `P6_01_corporate-site_boundary_check.md`
+- 完了後に着手可能になる後続 prompt: `P3_01_corporate-site_storybook_catalog.md` / `P4_01_ui_styles_layering.md` (両者は並列実行可)
 - 必要な repo 状態: 未使用 component が削除済みであること
 
 ## 不明点ハンドリング

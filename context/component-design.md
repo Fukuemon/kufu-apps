@@ -1,8 +1,8 @@
 # Component Design
 
-> 最終更新: 2026-07-27
+> 最終更新: 2026-08-07
 
-Kufu Monorepo の frontend component 設計規約。本 doc を component のディレクトリ構成、命名、責務分割、Storybook 対象の横断正本とする。決定経緯は [issue #6](https://github.com/Fukuemon/kufu-apps/issues/6)、sections 再編・公開面・カタログ / スタイル規約は [issue #32](https://github.com/Fukuemon/kufu-apps/issues/32) ([ADR-0014](../adr/0014-corporate-site-sections-architecture.md))。
+Kufu Monorepo の frontend component 設計規約。本 doc を component のディレクトリ構成、命名、責務分割、Storybook 対象の横断正本とする。sections 再編・公開面・カタログ / スタイル規約の決定経緯は [ADR-0014](../adr/0014-corporate-site-sections-architecture.md) を正とする。
 
 ## 原則
 
@@ -42,7 +42,7 @@ Astro の file-based routing は `src/pages/` に置く。Next.js App Router の
 
 ## ディレクトリ構成
 
-区切りの概念は **section** とし、`components/sections/<section>/` の **1 階層フラット**に置く。route 層は設けない (構造をページ構成から独立させ、IA 変更でディレクトリ移動が起きないようにするため)。旧 `components/features/<feature>/` 構成は本規約で置換した (決定経緯: issue #32 / [ADR-0014](../adr/0014-corporate-site-sections-architecture.md))。
+区切りの概念は **section** とし、`components/sections/<section>/` の **1 階層フラット**に置く。route 層は設けない (構造をページ構成から独立させ、IA 変更でディレクトリ移動が起きないようにするため)。旧 `components/features/<feature>/` 構成は本規約で置換した (決定経緯: [ADR-0014](../adr/0014-corporate-site-sections-architecture.md))。
 
 ```text
 apps/<app>/src/
@@ -64,7 +64,7 @@ apps/<app>/src/
 
 - section 内部は **フラット + `index.ts`**: 公開面は `index.ts` のみ (Section component だけを再輸出)。内部 component と story は section dir 直下に並べる。`internal/` サブディレクトリは作らない (1 component 1 ディレクトリを強制しない方針を継承)。
 - 階層は常に 1 段なので、**section の起点は必ず `sections/<section>/index.ts`** になる。
-- **section の内部非公開**: pages からは `index.ts` 経由の import のみ許可。section 間の import は index 経由でも禁止し、共有が必要になった部品は `common/` (app 内) または `packages/ui` (複数 app) へ昇格する。依存方向は `pages → sections (index) → common → @kufu/ui` の一方向 ([architecture.md](architecture.md) の検査対象)。
+- **section の内部非公開**: pages からは `index.ts` 経由の import のみ許可 (**ディレクトリ指定の named import** で書き、明示 `index` path は書かない)。section 間の import は index 経由でも禁止し、共有が必要になった部品は `common/` (app 内) または `packages/ui` (複数 app) へ昇格する。依存方向は `pages → sections (index) → common → @kufu/ui` の一方向 ([architecture.md](architecture.md) の検査対象)。
 - **section 名はドメインで付ける**。1 ドメインが複数 section を持つ場合は接頭辞で表す (`products-category` / `products-detail`)。route 名を section 名にしない。
 - presentation component に `Presentation` suffix は付けない。`<Component>.astro` がそのまま presentation であり、story 対象。
 - 複数 section をまたいで使う site component (`SectionHeading` など) は `components/common/` 直下にフラットに置く (section 内と同じく 1 component 1 ディレクトリを強制しない)。`common/` は公開面を絞らないため `index.ts` を置かない。
@@ -191,7 +191,7 @@ content 層の実装方式は content の性質で選び分ける (ハイブリ�
 
 ### ハードコード基準
 
-実装内の直書きは次の 3 区分で判断する (決定経緯: issue #32 D7):
+実装内の直書きは次の 3 区分で判断する:
 
 1. **文言・リスト**: content 層へ (上記の選び分けに従う)。component 内への content 直書きは禁止 (story fixture は除く)。
 2. **繰り返し値** (数値 / URL / 閾値): 定数化する。content 由来なら content 層、表示ロジック由来なら section 内 constants に置く。
@@ -204,11 +204,11 @@ content 層の実装方式は content の性質で選び分ける (ハイブリ�
 corporate-site の Astro component は **Tailwind utility** でスタイルする (scoped `<style>` + 生 CSS は原則使わない)。`packages/ui` (shadcn) とスタイル記法を揃え、token ガバナンスを保つため。
 
 - 値の正本は `@kufu/ui/tokens.css`。色・フォントは semantic token の utility (`text-foreground` / `bg-secondary` / `text-muted-foreground` / `border-border` / `font-mono` / `font-serif` など) を使う。
-- corporate-site は全量 `@kufu/ui/styles.css` を取り込まず、app-local の lean な Tailwind v4 entry (`src/styles/globals.css`) を持つ ([ADR-0007](../adr/0007-design-token-architecture.md) の「更新」)。token → utility の `@theme` 写像は `@kufu/ui/theme.css` に一元化し、`styles.css` と app entry の双方が import する。Tailwind の走査は Vite plugin の module graph に任せ、app 自身のソースへの app-local `@source` は置かない。workspace package (`packages/ui`) のソース走査は `@kufu/ui/theme.css` (実体は `packages/ui/src/styles/theme.css`) が自身の component ソースを `@source "../components"` で指す (app entry に書かない。issue #32 突合④)。
+- corporate-site は全量 `@kufu/ui/styles.css` を取り込まず、app-local の lean な Tailwind v4 entry (`src/styles/globals.css`) を持つ ([ADR-0007](../adr/0007-design-token-architecture.md) の「更新」)。token → utility の `@theme` 写像は `@kufu/ui/theme.css` に一元化し、`styles.css` と app entry の双方が import する。Tailwind の走査は Vite plugin の module graph に任せ、app 自身のソースへの app-local `@source` は置かない。workspace package (`packages/ui`) のソース走査は `@kufu/ui/theme.css` (実体は `packages/ui/src/styles/theme.css`) が自身の component ソースを `@source "../components"` で指す (app entry に書かない。[ADR-0007](../adr/0007-design-token-architecture.md) の更新節)。
 - app の `src/styles/` は役割別に分割し、`globals.css` は `@import` のみの entry とする: `base.css` (`:root` のカスタムプロパティと要素セレクタへの base スタイル) / `components.css` (クラスセレクタ群。cva / utility への移行で逐次削減し最終的に削除を目標) / `animations.css` (`@keyframes`)。
 - 分割は **ファイル移動のみ**とし、`@layer` で包まない。素のセレクタで書かれた既存 CSS を `@layer components` に入れると Tailwind utility との優先順位が変わり表示が壊れるため。`@utility` 拡張が必要になった時点で `utilities.css` を追加する (使う前に空ファイルを作らない)。
-- **cva への集約**: 視覚 variant / 状態分岐を持つ component は cva で variants を定義し、frontmatter の条件付き class 組み立てを置換する (shadcn/ui パターンと整合)。variant のない固定 class の component は Tailwind utility 直書きのままでよい。cva は **`@kufu/ui/lib` 経由で使う** (`cn` と同じ入口)。app 側の package.json に `class-variance-authority` を直接追加しない (共有ユーティリティの入口を 1 つに保つため)。
-- **アニメーション**: duration / easing の motion トークンは `@kufu/ui/tokens.css` に置く (トークンは常に ui)。site 固有演出の keyframes は app-local (`src/styles/animations.css`) に置き、複数 app での再利用が明確になったら `@kufu/ui` へ昇格する。
+- **cva への集約**: **class 差分で表現できる**視覚 variant / 状態分岐を持つ component は cva で variants を定義し、frontmatter の条件付き class 組み立てを置換する (shadcn/ui パターンと整合)。markup 構造ごと分岐する視覚 variant (例: `SiteFooter` の `full` / `compact`) は cva の対象外とし、条件分岐のまま保つ (story の variant 網羅対象には含める)。variant のない固定 class の component は Tailwind utility 直書きのままでよい。cva は **`@kufu/ui/lib` 経由で使う** (`cn` と同じ入口)。app 側の package.json に `class-variance-authority` を直接追加しない (共有ユーティリティの入口を 1 つに保つため)。
+- **アニメーション**: duration / easing の motion トークンは `@kufu/ui/tokens.css` に置く (トークンは常に ui)。トークンは役割ベースのセマンティック定義 (`--kufu-motion-fast` 等) とし、値 1:1 の数値トークンは作らない。site 固有演出の keyframes は app-local (`src/styles/animations.css`) に置き、複数 app での再利用が明確になったら `@kufu/ui` へ昇格する。
 - token ガード (design-workflow §6): raw hex / 色の arbitrary value (`text-[#fff]` 等) を直書きしない。semantic token utility を参照する。サイズ・余白の arbitrary value (`min-h-95` で表せない `text-[8.75rem]` 等) は可。
 - spacing は Tailwind スケール (0.25rem グリッド) の canonical 表記を優先する (`gap-4.5` > `gap-[1.125rem]`)。スケールに無い font-size / line-height / letter-spacing は arbitrary value でよい。
 - 条件付き class (variant / align / media position) は frontmatter で class 文字列を組み立てて渡す。
@@ -232,7 +232,7 @@ corporate-site の Astro component は **Tailwind utility** でスタイルす�
 | ---------------------- | ------------------------------------------ | ---------------------------------------- |
 | `Base`                 | shared primitive                           | `Button`, `Card`                         |
 | `Case + Base`          | shared action / state primitive            | `SearchButton`, `FeaturedTag`            |
-| `Domain + Base`        | domain を表示する component                | `ProductCard`, `ContactInfoRow`          |
+| `Domain + Base`        | domain を表示する component                | `ProductCard`, `BusinessFeatureRow`      |
 | `Domain + Base + Case` | domain に対する操作 / 状態を持つ component | `ProductSearchForm`, `ContactSendButton` |
 
 ### 判断ルール
@@ -240,7 +240,7 @@ corporate-site の Astro component は **Tailwind utility** でスタイルす�
 - Base だけで意味が通り、app / feature に依存しないものは `packages/ui` 候補。
 - Domain を持つものは原則 app / feature 配下に置く。
 - `Header`, `Footer`, `Navigation` など site 概念に依存するものは `SiteHeader` / `SiteFooter` / `SiteNavigation` のように Domain を付ける。
-- 抽象度の高い `Tag`, `Category`, `Information`, `Summary` などは、必要なら `ProductCategoryList` / `ContactInfoRow` のように対象と表現 UI を明示する。
+- 抽象度の高い `Tag`, `Category`, `Information`, `Summary` などは、必要なら `ProductCategoryList` / `ProductsSidebarNav` のように対象と表現 UI を明示する。
 - 複数形だけの component 名を避ける。リストは `ProductList` / `ManufacturerList` のように `List` を Base として使う。
 - 派生や条件は後置の `With` / `For` / `By` を使って明示してよい。ただし乱用せず、先に Domain / Base / Case で表現できないか確認する。
 
@@ -265,7 +265,7 @@ feature は `Domain + Case` を基本に切る。ただし corporate-site のよ
 
 ## Storybook 対象
 
-Storybook は **component catalog** として運用する (探しやすさ / ドキュメント性 / バリエーション網羅。決定経緯: issue #32 D1〜D3)。
+Storybook は **component catalog** として運用する (探しやすさ / ドキュメント性 / バリエーション網羅)。
 
 ### カタログ共通規約
 
@@ -273,7 +273,8 @@ Storybook は **component catalog** として運用する (探しやすさ / ド
 - **title はディレクトリと 1:1**: title は物理配置から機械的に決める。分類の判断を story 作成時にしない。
   - app-local: `Sections/<Section>/<Component>` / `Common/<Component>`
   - packages/ui: `UI/<Component>`
-- **バリエーション網羅**: presentation component は cva variants の全組み合わせを args で列挙する story と、edge state (長文 / 空データ / 最小構成) の story を必須にする。
+  - `<Section>` は section ディレクトリ名 (kebab-case) を PascalCase 化したもの (`products-category` → `ProductsCategory`)。他の変換規則は使わない。
+- **バリエーション網羅**: presentation component は視覚 variant (cva variants または markup 分岐の視覚 variant) の全組み合わせを args で列挙する story と、edge state (長文 / 空データ / 最小構成) の story を必須にする。
 
 ### packages/ui
 
@@ -296,14 +297,13 @@ app-local Storybook は section-local presentation component の review 入口�
 
 デザイン正本は実装 (コード + Storybook) である ([ADR-0012](../adr/0012-design-source-of-truth-implementation.md))。中間デザインファイルを介さず、Claude Design のプロトを参照して直接実装する ([design-workflow.md](design-workflow.md))。
 
-- page section は page 文脈を保持し、Storybook の対象にしない。
+- section assembly (page section) の story は「ページ文脈での確認入口」として代表ケースのみ公認する (上記 Storybook 対象節と同一規約)。page-level sample を `packages/ui` の shared catalog へ載せない。
 - 複数 app / feature をまたぐ再利用が明確な component は `packages/ui` の shared catalog へ昇格する。
 - feature 固有 component は app-local presentation (+ 必要なら content 層 / section assembly) に置く。
 - プロトの構造をそのまま持ち込まず、`@kufu/ui` コンポ + セマンティック HTML へ写像する。
 
 ## 参照
 
-- [issue #6](https://github.com/Fukuemon/kufu-apps/issues/6): Storybook / component catalog / Container-Presentation の決定経緯
 - [architecture.md](architecture.md): package boundary / runtime boundary
 - [engineering.md](engineering.md): Storybook quality gate / root task boundary
 - [design-workflow.md](design-workflow.md): デザイン制作フローと正本境界
