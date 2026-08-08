@@ -5,7 +5,7 @@
 デザイン制作 (方向性探索 → 実装) の **プラットフォーム共通ワークフロー** を定める横断契約。
 
 - ツール選定の意思決定根拠 → [ADR-0012](../adr/0012-design-source-of-truth-implementation.md) (旧 [ADR-0004](../adr/0004-design-production-workflow.md) を置換)
-- デザインシステムの _中身_ (トークン) の正本 → `packages/ui/src/styles/tokens.css` (体系は [ADR-0007](../adr/0007-design-token-architecture.md)、参照ハブは [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md)。決定経緯: [issue #13](https://github.com/Fukuemon/kufu-apps/issues/13))
+- デザインシステムの _中身_ (トークン) の正本 → `packages/ui/src/styles/tokens.css` (体系は [ADR-0007](../adr/0007-design-token-architecture.md)、参照ハブは [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md))
 - 本書は _どう作るか_ (プロセス・ディレクトリ・拡張方針) の運用正本。
 
 ## 1. 大原則
@@ -69,7 +69,7 @@ Claude Design の出力品質は依頼文に強く依存する (密な単一段�
 ### Phase C: 実装 (Claude Code / Codex)
 
 - 採用案の HTML とデザイン意図を参照し、layout / styling / 構造を実装へ写像する。参照元は使い捨てであり、成果物であるコードが以後の正本になる。
-- 出力は **Astro 中心** (`src/pages/*.astro` + `src/components/features/<feature>/`)。`@kufu/ui` のトークン/コンポを参照する。インタラクションが要る所だけ React island (`client:*`) にする (境界は [ADR-0008](../adr/0008-astro-react-island-policy.md))。
+- 出力は **Astro 中心** (`src/pages/*.astro` + `src/components/sections/<section>/`。配置規約は [component-design.md](component-design.md))。`@kufu/ui` のトークン/コンポを参照する。インタラクションが要る所だけ React island (`client:*`) にする (境界は [ADR-0008](../adr/0008-astro-react-island-policy.md))。
 - **状態系 (hover / focus / error / empty)、データ量違い・検索/フィルタ結果などの動的データ、レスポンシブは実装時に必ず補完する。** プロト HTML に無くても省略しない。
 - 実データ (company-profile / manufacturers) で表示検証する。ダミーテキスト前提のレイアウト破綻を防ぐ。
 - プロト HTML の素朴な div 配置をそのまま持ち込まず、`@kufu/ui` コンポ + セマンティック HTML へ **写像**する (a11y 崩れの防止)。
@@ -106,7 +106,7 @@ shadcn/ui は **コードを自分の repo に copy して所有する** モデ�
 ## 6. トークン正本ガード (バリデーション)
 
 - 実装コードが `@kufu/ui` トークンを参照しているか確認する。独自値 (raw hex / arbitrary value) を検出したら正本へ寄せる。
-- **spacing 例外**: `space-*` は CSS トークンを持たず、Tailwind 標準スケールへの写像 (4px グリッド、対応は feature doc のデザイントークン節のガイド) として扱う ([ADR-0007](../adr/0007-design-token-architecture.md) / [issue #13](https://github.com/Fukuemon/kufu-apps/issues/13))。
+- **spacing 例外**: `space-*` は CSS トークンを持たず、Tailwind 標準スケールへの写像 (4px グリッド、対応は feature doc のデザイントークン節のガイド) として扱う ([ADR-0007](../adr/0007-design-token-architecture.md))。
 - PR では [PULL_REQUEST_TEMPLATE](../.github/PULL_REQUEST_TEMPLATE.md) の Design Guard チェックリストで確認する。
 
 ## 7. Figma fallback

@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Button } from "./button.js";
-import { LinkButton } from "./link-button.js";
 
 const meta = {
-  title: "Primitives/Button",
+  title: "UI/Button",
   component: Button,
   args: {
     children: "Button",
@@ -37,23 +36,31 @@ export const Disabled: Story = {
   },
 };
 
-export const LinkButtonDefault: Story = {
-  render: () => <LinkButton href="#">Link button</LinkButton>,
-};
-
-export const LinkButtonVariants: Story = {
+export const Sizes: Story = {
   render: () => (
-    <div className="flex flex-wrap gap-3">
-      <LinkButton href="#">Default link</LinkButton>
-      <LinkButton href="#" variant="secondary">
-        Secondary link
-      </LinkButton>
-      <LinkButton href="#" variant="outline">
-        Outline link
-      </LinkButton>
-      <LinkButton href="#" disabled>
-        Disabled link
-      </LinkButton>
+    <div className="flex flex-wrap items-center gap-3">
+      <Button size="xs">xs</Button>
+      <Button size="sm">sm</Button>
+      <Button size="default">default</Button>
+      <Button size="lg">lg</Button>
+      <Button size="icon-xs" aria-label="icon-xs">
+        ×
+      </Button>
+      <Button size="icon-sm" aria-label="icon-sm">
+        ×
+      </Button>
+      <Button size="icon" aria-label="icon">
+        ×
+      </Button>
+      <Button size="icon-lg" aria-label="icon-lg">
+        ×
+      </Button>
     </div>
   ),
+};
+
+export const LongLabel: Story = {
+  args: {
+    children: "図面が固まっていない段階の加工・部品調達の相談をする",
+  },
 };

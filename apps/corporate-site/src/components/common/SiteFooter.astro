@@ -18,26 +18,25 @@ const isFull = variant === "full";
     !isFull ? (
       <div class="mx-auto grid w-full max-w-360 gap-6 px-5 py-7 sm:px-8 md:grid-cols-[1fr_auto] md:items-center lg:px-14">
         <div class="grid gap-1.5">
-          <p class="font-serif text-[1.375rem] font-semibold">有限会社フクウラ</p>
+          <p class="font-serif text-[1.375rem] font-semibold">
+            {companyProfile.name}
+          </p>
           <p class="text-[0.8125rem] leading-normal text-kufu-gray-200">
-            機械工具と関連機器 / 販売・加工
+            {companyProfile.tagline}
           </p>
         </div>
         <div class="grid gap-1.5 md:justify-items-end">
           <p class="font-mono text-xs tracking-[0.14em] text-kufu-gray-200">
-            TEL 079-492-6465
+            TEL {contactInfo.tel}
           </p>
           <p class="text-[0.8125rem] text-kufu-gray-200">
-            兵庫県加古郡稲美町国安973番地の10
+            {companyProfile.streetAddress}
           </p>
         </div>
       </div>
     ) : (
   <div
-    class:list={[
-      "mx-auto grid w-full max-w-360 gap-10 px-5 py-12 sm:px-8 md:py-16 lg:px-14",
-      isFull ? "md:grid-cols-[1fr_1.2fr_1fr]" : "md:grid-cols-[1fr_1fr]",
-    ]}
+    class="mx-auto grid w-full max-w-360 gap-10 px-5 py-12 sm:px-8 md:grid-cols-[1fr_1.2fr_1fr] md:py-16 lg:px-14"
   >
     <div class="grid gap-4">
       <p class="font-serif text-2xl font-semibold">{companyProfile.name}</p>
@@ -49,37 +48,33 @@ const isFull = variant === "full";
       </p>
     </div>
 
-    {
-      isFull ? (
-        <nav class="grid gap-3" aria-label="フッターナビゲーション">
-          <p class="font-mono text-[0.625rem] font-normal tracking-[0.18em] text-kufu-gray-500">
-            SITEMAP
-          </p>
-          <a class="footer-link" href="/#business">
-            事業内容
-          </a>
-          <a class="footer-link" href="/products">
-            取扱製品
-          </a>
-          <a class="footer-link" href="/#company">
-            会社概要
-          </a>
-          <a class="footer-link" href="/contact">
-            お問い合わせ・お見積り
-          </a>
-        </nav>
-      ) : null
-    }
+    <nav class="grid gap-3" aria-label="フッターナビゲーション">
+      <p class="font-mono text-[0.625rem] font-normal tracking-[0.18em] text-kufu-gray-500">
+        SITEMAP
+      </p>
+      <a class="footer-link" href="/#business">
+        事業内容
+      </a>
+      <a class="footer-link" href="/products">
+        取扱製品
+      </a>
+      <a class="footer-link" href="/#company">
+        会社概要
+      </a>
+      <a class="footer-link" href="/contact">
+        お問い合わせ・お見積り
+      </a>
+    </nav>
 
     <div class="grid gap-3">
       <p class="font-mono text-[0.625rem] font-normal tracking-[0.18em] text-kufu-gray-500">
         CONTACT
       </p>
       <p class="text-sm leading-7 text-kufu-gray-200">
-        〒675-1114
+        {companyProfile.postalCode}
       </p>
       <p class="text-sm leading-7 text-kufu-gray-200">
-        兵庫県加古郡稲美町国安973番地の10
+        {companyProfile.streetAddress}
       </p>
       <a class="footer-link" href={`tel:${contactInfo.tel.replaceAll("-", "")}`}>
         TEL {contactInfo.tel}

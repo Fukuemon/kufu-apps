@@ -1,5 +1,8 @@
 /* Tailwind utility mapping for tokens.css. */
 
+/* consumer の Tailwind build に @kufu/ui component が使う class を生成させる */
+@source "../components";
+
 @theme inline {
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);

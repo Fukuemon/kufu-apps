@@ -1,6 +1,6 @@
 # Codebase Architecture
 
-> 最終更新: 2026-07-26
+> 最終更新: 2026-08-07
 
 Kufu Monorepo の package / runtime boundary と依存方向。全体像 (system landscape, モジュール責務) は [design/DesignDoc.md](../design/DesignDoc.md) を正本とし、本書はコードベースの境界規約を扱う。
 
@@ -26,9 +26,25 @@ apps/cms ─────┼─→ packages/ui ─→ packages/config
 - `packages/ui` → `packages/config` は許可。
 - 循環依存・未宣言依存・devDependency 流入は禁止 ([engineering.md](engineering.md) の repository quality gate で検査)。
 
+### App 内依存方向 (sections 公開面)
+
+app 内の component 依存は次の一方向に固定する (決定経緯: [ADR-0014](../adr/0014-corporate-site-sections-architecture.md)。ディレクトリ構成は [component-design.md](component-design.md) が正本):
+
+```text
+pages → sections (index.ts) → common → @kufu/ui
+```
+
+- pages から section 内部ファイルへの直接 import は禁止 (各 section の `index.ts` 経由のみ許可)。pages 側は **ディレクトリ指定の named import** (`.../sections/hero`) で書き、明示 `index` path (`.../hero/index` / `.../hero/index.ts`) は書かない (形式を 1 つに固定して検査を単純に保つ)。
+- section 間の import は index 経由でも禁止。共有が必要になった部品は `common/` (app 内) または `packages/ui` (複数 app) へ昇格する。
+- `common/` から `sections/` への逆依存は禁止 (依存方向の下半分も検査対象)。
+- 各 section の `index.ts` は Section component のみを再輸出する (公開面違反も検査対象)。
+- 同 section 内 (story 含む) の直接参照は自由 (story の colocation を維持)。
+- **検査手段**: dependency-cruiser と oxlint はいずれも `.astro` を解析対象にしないため、本境界は app 配下の独自スクリプト (`apps/corporate-site/scripts/check-section-boundary.mjs`) で検査する。`check-token-usage.mjs` (トークン直書きガード) と同方式で、ripgrep により import (静的 / 動的 / 再輸出) を走査する。検査は上記 4 点 (pages → 内部 / section 間 / common → sections / index.ts 公開面) を対象とし、対象拡張子・構文などの検査契約と既知の非検出範囲はスクリプトと fixture テストを正とする。dependency-cruiser は引き続き `.ts` / `.js` 層の package 境界・循環・未宣言依存を担当する。
+- **gate 配線**: 検査は corporate-site の `lint` script に合流し、root `pnpm lint`・lefthook pre-commit・CI workflow の 3 経路で走る。pre-commit は `--no-verify` で素通しできるため、**必須 gate は CI** (決定経緯: [ADR-0014](../adr/0014-corporate-site-sections-architecture.md) 決定 5)。
+
 ### デザインシステム資産の正本と昇格境界
 
-colocation 第一原則の適用を資産種別ごとに定める (本テーブルを正本とする。決定経緯: [issue #13](https://github.com/Fukuemon/kufu-apps/issues/13) / [ADR-0007](../adr/0007-design-token-architecture.md))。
+colocation 第一原則の適用を資産種別ごとに定める (本テーブルを正本とする。決定経緯: [ADR-0007](../adr/0007-design-token-architecture.md))。
 
 | 資産種別                     | 正本                              | 昇格条件                                      |
 | ---------------------------- | --------------------------------- | --------------------------------------------- |

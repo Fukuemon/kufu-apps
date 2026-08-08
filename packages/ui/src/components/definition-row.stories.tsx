@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DefinitionRow } from "./definition-row.js";
 
 const meta = {
-  title: "Patterns/DefinitionRow",
+  title: "UI/DefinitionRow",
   component: DefinitionRow,
   args: {
     term: "Label",
@@ -47,4 +47,12 @@ export const Compact: Story = {
       </DefinitionRow>
     </>
   ),
+};
+
+export const LongValue: Story = {
+  args: {
+    term: "事業内容",
+    children:
+      "産業機械部品の販売、精密機械加工、治具設計、省力化機器の提案など、値が長文になった場合の折り返しと行間を確認するための説明文をここに連ねている。",
+  },
 };

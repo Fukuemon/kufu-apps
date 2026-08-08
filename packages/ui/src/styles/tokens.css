@@ -1,13 +1,8 @@
 /*
- * Kufu design tokens — CSS 変数の正本 (ADR-0007)
- *
- * 2 層構造:
- *   - primitive 層 (--kufu-<hue>-<scale>): 値を持つ唯一の層
- *   - semantic 層 (shadcn 語彙 + kufu 追加役割): primitive を参照するのみ
- *
- * shadcn 変数の名前は契約 (bg-primary 等が var(--primary) を参照)。
- * 名前は改名・削除せず、値だけ primitive へ向け替える。未使用変数も温存する。
- * ダーク面は .dark テーマでなく .surface-inverse スコープで表現する。
+ * Kufu design tokens — CSS 変数の正本。
+ * 値を持つのは primitive 層のみ。semantic 層は primitive を参照するだけ。
+ * shadcn 変数名は契約: 改名・削除せず値だけ向け替える (未使用も温存)。
+ * ダーク面は .dark でなく .surface-inverse スコープ。
  */
 
 :root {
@@ -79,6 +74,18 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* motion */
+  --kufu-motion-fast: 0.2s;
+  --kufu-motion-medium: 0.35s;
+  --kufu-motion-slow: 0.7s;
+  --kufu-motion-drift: 0.9s; /* 大きい要素の緩やかな transform */
+  --kufu-motion-glide: 1.2s; /* carousel 等の移動 */
+  --kufu-motion-cue: 1.8s; /* ループ演出 */
+  --kufu-motion-stagger: 0.12s; /* 段差 delay */
+  --kufu-ease: ease;
+  --kufu-ease-out: ease-out;
+  --kufu-ease-in-out: ease-in-out;
 }
 
 /* section-level inverse surface */

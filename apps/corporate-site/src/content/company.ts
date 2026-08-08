@@ -1,12 +1,18 @@
 import { companyProfileSource } from "./source-references.js";
 
+const postalCode = "〒675-1114";
+const streetAddress = "兵庫県加古郡稲美町国安973番地の10";
+
 export const companyProfile = {
   sourceReferences: [companyProfileSource],
   name: "有限会社フクウラ",
+  tagline: "機械工具と関連機器 / 販売・加工",
+  postalCode,
+  streetAddress,
   founded: "1996年（平成8年）6月",
   capital: "300万円",
   representative: "代表取締役 福浦 崇志",
-  address: "〒675-1114 兵庫県加古郡稲美町国安973番地の10",
+  address: `${postalCode} ${streetAddress}`,
   philosophy: "「創意」と「誠意」で真心奉仕",
   rows: [
     ["会社名", "有限会社フクウラ"],
@@ -17,7 +23,7 @@ export const companyProfile = {
       "機械工具・関連機器の販売／各種機械加工・樹脂成型・板金溶接・ゴム製品加工",
     ],
     ["創立", "1996年（平成8年）6月"],
-    ["所在地", "〒675-1114 兵庫県加古郡稲美町国安973番地の10"],
+    ["所在地", `${postalCode} ${streetAddress}`],
     ["電話 / FAX", "TEL 079-492-6465 ／ FAX 079-492-6429"],
     ["E-mail", "fukuura@mist.ocn.ne.jp"],
   ],

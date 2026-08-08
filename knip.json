@@ -9,10 +9,16 @@
         "src/pages/**/*.astro",
         ".storybook/{main,preview}.ts",
         "src/**/*.stories.@(ts|tsx)",
-        "src/components/**/*.astro"
+        "src/components/**/*.astro",
+        "scripts/*.mjs"
       ],
-      "project": ["src/**/*.{astro,ts,css}", "public/**/*"],
-      "ignoreDependencies": ["sharp"]
+      "project": [
+        "src/**/*.{astro,ts,css}",
+        "scripts/**/*.{mjs,ts}",
+        "public/**/*"
+      ],
+      "ignoreDependencies": ["sharp"],
+      "ignore": ["scripts/__fixtures__/**"]
     },
     "packages/ui": {
       "project": ["src/**/*.{ts,tsx,css}", "components.json"],

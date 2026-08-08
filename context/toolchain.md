@@ -27,7 +27,7 @@ Kufu Monorepo で採用する標準 toolchain。採否の根拠は [adr/](../adr
 
 - **Rolldown**: 採用候補として先に固定し、`apps/cms` を実装する場合の build 構成で採否を確認する。
 - **React Compiler**: React app 導入時の標準として先に固定し、`packages/ui` と将来の `apps/cms` 実装時に適用する。React Compiler 非対応ライブラリ・実装の扱いは [DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md)。
-- **knip / dependency-cruiser**: issue #3 で実導入し、root script から実行できる状態まで整える。
+- **knip / dependency-cruiser**: 実導入済みで、root script から実行できる。
 
 ## Scaffold Policy
 
@@ -37,3 +37,7 @@ app の初期 scaffold は公式 `create` command を優先する ([ADR-0002](..
 - React app: `pnpm create vite ... --template react-ts`
 - 生成後に package 名 / root scripts / typecheck / E2E / shared config など monorepo の contract へ寄せる。
 - `Vite+` は導入せず、専用 issue / spec で再検討する。
+
+## 依存の固定 (pnpm overrides)
+
+- **vite `^7`**: Astro 6 が Vite 7 前提のため root の `pnpm.overrides` で固定している (app / package 側の `vite ^8` 宣言より優先される)。vite 8 が混ざると dev サーバーの plugin context が壊れる。Astro が Vite 8 対応した時点で外す。

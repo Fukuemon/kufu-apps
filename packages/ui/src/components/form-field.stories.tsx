@@ -12,7 +12,7 @@ import {
 import { Textarea } from "./textarea.js";
 
 const meta = {
-  title: "Patterns/FormField",
+  title: "UI/FormField",
   component: FormField,
   args: {
     label: "Field label",

@@ -6,6 +6,8 @@ pre-commit:
       run: hooks/format/run_oxfmt.sh
     repo-analysis:
       run: hooks/quality/validate_repo_analysis.sh
+    lint:
+      run: pnpm lint
 
 pre-push:
   commands:

@@ -34,21 +34,34 @@ corporate-site / packages/ui のコンポーネント設計とディレクトリ
 
 ## スコープ
 
-### やること (決定済み方針の詳細化と正本反映まで)
+> **2026-07-26 更新**: 当初は「方針決定と正本反映まで」で実装を別 issue へ送る計画だったが、ユーザー判断により **実装まで本 issue で行う** ことにした。
+
+### やること (方針決定 → 正本反映 → 実装)
+
+設計:
 
 - Storybook カタログの詳細設計 (autodocs 全面採用を前提としたタイトル階層・分類規約、バリエーション網羅基準)
 - cva variants への集約方針の詳細化 (アニメーションの共通ユーティリティ / keyframes トークン化の設計)
-- globals.css (799 行) のレイヤ別分割の設計 (@layer 単位のファイル構成、entry point 化、ADR-0007 との整合)
+- globals.css (799 行) の役割別分割の設計 (entry point 化、ADR-0007 との整合。**2026-07-27 訂正**: `@layer` は付けず 4 ファイル構成 — spec の D6 参照)
 - ハードコード基準の明文化 (文言は content collections / data へ、繰り返し値は定数化、スタイル値はトークン参照のみ)
-- features → sections 改名・ページ対応再編の設計 (現 7 features の移行先マップ、共有部品の common への振り分け)
-- section の index.ts 再輸出 + 内部非公開規約の設計 (depcruise での機械検査ルール案を含む)
+- features → sections 改名・再編の設計 (現 7 features の移行先マップ、共有部品の common への振り分け)
+- section の index.ts 再輸出 + 内部非公開規約の設計 (機械検査ルール案を含む)
 - 決定の context (codebase architecture) / ADR / feature doc への反映 (横断規約は context、corporate-site 固有は feature doc)
+
+実装 (2026-07-26 追加):
+
+- ディレクトリ移動と `index.ts` 公開面の新設、pages / 内部 import の追従
+- 未使用 component の削除 (content 層のファイルは削除しない — spec の D12 参照)
+- `src/styles/` の役割別分割と cva 集約、motion トークン化 (セマンティック統合トークンの定義と既存値の参照置換まで。近接値の統合による最大 50ms のタイミング差は許容 — spec の D5 参照)
+- Storybook の title 階層・autodocs 適用・variant 網羅への追従
+- section 境界の検査スクリプト追加と quality gate への組み込み (`lint` 合流・pre-commit・CI workflow)
 
 ### やらないこと
 
-- 個別コンポーネントのリファクタ・ディレクトリ移動の実施 (方針決定後に別 issue)
-- Storybook play テスト / E2E の方針決定 (draft-testing-strategy 側)
+- Storybook play テスト / E2E の方針決定・実装 (draft-testing-strategy 側)
 - デザイントークン体系自体の再設計 (ADR-0007 を覆す場合のみ派生 issue)
+- component の命名変更 (BCD 基準の見直し)
+- `packages/ui` 側 component の再編 (motion トークン追加と `@source` 移動を除く)
 
 ## 業務ルール
 
@@ -57,36 +70,46 @@ corporate-site / packages/ui のコンポーネント設計とディレクトリ
 | 1   | 既存の forbidden (app 配下 UI 独自実装禁止 / トークン直書き禁止) と矛盾する方針を出さない | project.yml の禁止事項が上位          | 変える場合は project.yml 側も更新                 |
 | 2   | decision_priority 1 位 (パフォーマンス / 最小 island) を損なう方針を採らない              | Astro 静的生成が前提                  |                                                   |
 | 3   | 構成規約は corporate-site 固有事情と将来 app (cms) 共通規約を区別して書く                 | Phase 2 以降の app に過剰一般化しない | 置き場 (context か feature doc か) も決定に含める |
-| 4   | `pnpm knip && pnpm depcruise` で検証可能な規約を優先する                                  | 機械検査できる規約は drift しない     | depcruise ルール化は実施 issue 側                 |
+| 4   | 機械検査できる規約を優先する                                                              | 機械検査できる規約は drift しない     | 検査手段と実装は本 issue 内 (D10 / D14)           |
 
 ## 受け入れ基準 (EARS 風)
 
+文書 (設計成果):
+
 - WHEN 本 issue が完了したとき、システム (文書群) は autodocs 全面採用を前提とした Storybook のカタログ構成規約 (階層・分類・バリエーション網羅基準) を保持している。
-- WHEN 本 issue が完了したとき、システムは cva variants への集約方針、globals.css のレイヤ別分割設計、ハードコード基準 (文言 content 化 / 値の定数化 / スタイル値トークンのみ) を保持している。
-- WHEN 本 issue が完了したとき、システムは features → sections 改名・ページ対応再編の移行先マップと、section の index.ts 再輸出 + 内部非公開規約 (products の再構成案を含む) を保持している。
+- WHEN 本 issue が完了したとき、システムは cva variants への集約方針、globals.css の役割別 4 ファイル分割設計 (`@layer` なし)、ハードコード基準 (文言 content 化 / 値の定数化 / スタイル値トークンのみ) を保持している。
+- WHEN 本 issue が完了したとき、システムは features → sections 改名・再編の移行先マップと、section の index.ts 再輸出 + 内部非公開規約を保持している。
 - IF 方針が既存 ADR (0007 トークン / 0008 island / 0010 primitive) と矛盾する場合、THEN 該当 ADR の supersede 案を提示するまで方針を確定しない。
-- IF 再構成が既存の import 経路を壊す場合、THEN 実施 issue に移行手順 (段階的移動 / depcruise 検証) を引き継ぐまで実施しない。
+
+実装 (2026-07-26 追加):
+
+- WHEN 本 issue が完了したとき、`apps/corporate-site/src/components/` は `sections/<section>/` + `common/` の構成であり、各 section は `index.ts` を公開面として持つ。
+- WHEN pages が section を参照するとき、システムは index.ts 経由の import のみを許可し、内部ファイルへの直接 import と section 間 import を検査スクリプトで検出する。
+- WHEN 実装が完了したとき、build / typecheck / test / Storybook build / 境界検査 / format 検査がすべて成功する。
+- WHEN 実装が完了したとき、境界検査は `pnpm lint`・pre-commit hook・CI workflow の 3 経路で実行される。
+- WHEN 実装が完了したとき、`/` `/products` `/contact` の表示は再編前と等価である。等価の判定は「既存 E2E (主要要素・文言の smoke) が通ること + 目視確認の実施記録 (route × viewport、および変更 component の variant。チェック項目は P4 / P5 の完了条件を正とし、記録の存在は P6 の統合検証で確認する)」で行う。DOM 全体の snapshot 比較・視覚回帰テストの自動化は #33 (testing-strategy) のスコープ。
+- IF 移行中に既存の import 経路が壊れた場合、THEN typecheck / build の失敗として検出し、修正するまで次の段階に進まない。
 
 ## 例外シナリオ
 
 | #   | シナリオ                                                          | 見せ方                     | 代替手段                                          |
 | --- | ----------------------------------------------------------------- | -------------------------- | ------------------------------------------------- |
-| 1   | feature 分割基準がどの軸でも一長一短で決めきれない                | 未決事項として比較表を残す | products のみ先行して構成規約を適用し他は現状維持 |
+| 1   | section 分割基準がどの軸でも一長一短で決めきれない                | 未決事項として比較表を残す | products のみ先行して構成規約を適用し他は現状維持 |
 | 2   | スタイル分離方針が Storybook カタログ構成と相互依存で確定できない | 依存関係を未決事項に明記   | カタログ構成を先に確定しスタイル分離を追従させる  |
 
 ## 決定事項(解決済み論点)
 
-要求レベルの論点は 2026-07-25 のヒアリングで全件解決済み。未決事項はゼロ。
+要求レベルの論点は 2026-07-25 のヒアリングで全件解決済み。未決事項はゼロ。#5 / #6 は 2026-07-26 に実装実態を踏まえて修正した (経緯は spec の D8 / D10)。
 
-| #   | 論点                         | 決定 (2026-07-25, ユーザー)                                                                                                            |
-| --- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | カタログ強化の具体像         | **autodocs 全面採用 + 分類整理** (タイトル階層規約、args/argTypes でバリエーション網羅)                                                |
-| 2   | アニメーション・スタイル分離 | **cva variants に集約**。アニメーションは共通ユーティリティ / keyframes のトークン化。shadcn/ui パターンと整合                         |
-| 3   | globals.css 分割の軸         | **レイヤ別に分割** (@layer tokens / base / components / utilities)。globals.css は import のみの entry point に                        |
-| 4   | ハードコード許容ライン       | **文言・リストは content collections (または data) へ、繰り返し値は定数化**。スタイル値は既存 forbidden どおりトークン参照のみ         |
-| 5   | 分割の軸                     | **ページ対応 + 共有は common**。区切りの概念は feature でなく **section** とし、`components/features/` → `components/sections/` に改名 |
-| 6   | エントリーポイント明示       | **index.ts 再輸出 + 内部非公開**。pages からは index 経由の import のみ許可 (depcruise で機械検査)                                     |
-| 7   | 規約の置き場                 | **横断規約は context、corporate-site 固有は feature doc** に分けて書く                                                                 |
+| #   | 論点                         | 決定 (2026-07-25, ユーザー)                                                                                                                                                                                                                                                                                                     |
+| --- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | カタログ強化の具体像         | **autodocs 全面採用 + 分類整理** (タイトル階層規約、args/argTypes でバリエーション網羅)                                                                                                                                                                                                                                         |
+| 2   | アニメーション・スタイル分離 | **cva variants に集約**。アニメーションは共通ユーティリティ / keyframes のトークン化。shadcn/ui パターンと整合                                                                                                                                                                                                                  |
+| 3   | globals.css 分割の軸         | **役割別に分割**し、globals.css は import のみの entry point に。<br>**2026-07-27 修正**: 当初の「@layer tokens / base / components / utilities」は実態 (@layer / @utility 0 件) と合わず表示退行リスクがあるため撤回し、**`@layer` なしの 4 ファイル構成** (globals / base / components / animations) に変更 (spec の D6 参照) |
+| 4   | ハードコード許容ライン       | **文言・リストは content collections (または data) へ、繰り返し値は定数化**。スタイル値は既存 forbidden どおりトークン参照のみ (対象は色・フォント等の token 対象値。サイズ・余白の arbitrary value の扱いは context の token ガード規則に従う)                                                                                 |
+| 5   | 分割の軸                     | 区切りの概念は feature でなく **section** とし、`components/features/` → `components/sections/` に改名。共有部品は common。<br>**2026-07-26 修正**: 当初の「ページ対応でグルーピング」は、`/` が products ドメインの section を含む実態と矛盾したため撤回し、**1 階層のフラット構成** に変更 (spec の D8 参照)                  |
+| 6   | エントリーポイント明示       | **index.ts 再輸出 + 内部非公開**。pages からは index 経由の import のみ許可。<br>**2026-07-26 修正**: 検査手段は depcruise が `.astro` 非対応のため **独自スクリプト** に変更 (spec の D10 参照)                                                                                                                                |
+| 7   | 規約の置き場                 | **横断規約は context、corporate-site 固有は feature doc** に分けて書く                                                                                                                                                                                                                                                          |
 
 ## 関連 Design Doc 節
 
@@ -97,11 +120,13 @@ corporate-site / packages/ui のコンポーネント設計とディレクトリ
 
 ## 権限要件 / バリデーション方針 / 監査・非機能
 
-- 対象外 (設計方針の検討 issue のため)
+- 対象外 (構成規約の決定と再編の実施であり、権限・認証・外部通信の変更を伴わないため)
 
 ## 変更履歴
 
-| 日付       | 変更者           | 変更内容                                                                                                        |
-| ---------- | ---------------- | --------------------------------------------------------------------------------------------------------------- |
-| 2026-07-25 | spec-requirement | draft-component-style-design と draft-feature-structure を統合、play テスト論点を draft-testing-strategy へ移管 |
-| 2026-07-25 | spec-requirement | 要求論点 7 件をユーザー対話で解決し決定事項に反映 (features → sections 再編を含む)                              |
+| 日付       | 変更者             | 変更内容                                                                                                                                                       |
+| ---------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-07-25 | spec-requirement   | draft-component-style-design と draft-feature-structure を統合、play テスト論点を draft-testing-strategy へ移管                                                |
+| 2026-07-25 | spec-requirement   | 要求論点 7 件をユーザー対話で解決し決定事項に反映 (features → sections 再編を含む)                                                                             |
+| 2026-07-26 | spec-lifecycle     | スコープを実装込みに拡大し、実装側の受け入れ基準を追加。決定事項 #5 / #6 を実装実態に合わせて修正                                                              |
+| 2026-08-07 | multi-agent-review | 決定事項 #3 を D6 確定版 (`@layer` なし 4 ファイル) へ同期、D12 との整合で content 削除をスコープから除外、表示等価の検証手段と CI gate を受け入れ基準に明文化 |

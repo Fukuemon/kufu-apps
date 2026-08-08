@@ -1,7 +1,7 @@
 import SiteHeader from "./SiteHeader.astro";
 
 const meta = {
-  title: "Corporate Site/Common/SiteHeader",
+  title: "Common/SiteHeader",
   component: SiteHeader,
 };
 

@@ -14,6 +14,31 @@
 # feature の追加・変更時にエントリを更新する。coverage: partial は未整備の印。
 
 features:
+  - name: "component-architecture"
+    keywords:
+      [
+        "sections",
+        "components/sections",
+        "index.ts 公開面",
+        "depcruise 境界",
+        "Storybook カタログ",
+        "autodocs",
+        "cva",
+        "globals.css",
+        "styles 分割",
+        "ハードコード基準",
+        "motion トークン",
+      ]
+    read: # このエントリを触るとき最初に読むファイル (小さく保つ)
+      - "context/component-design.md"
+      - "context/architecture.md"
+      - "design/features/corporate-site/DesignDoc_corporate-site.md"
+    source_refs: # 必要時のみ読む (初回は読まない)
+      - "adr/0014-corporate-site-sections-architecture.md"
+      - "adr/0007-design-token-architecture.md"
+      - "https://github.com/Fukuemon/kufu-apps/issues/32 (決定経緯)"
+    coverage: "full"
+
   - name: "docs-operation"
     keywords:
       [
@@ -42,7 +67,6 @@ features:
     read: # このエントリを触るとき最初に読むファイル (小さく保つ)
       - "<context/<topic>.md の該当ファイル>"
       - "<design/features/<feature>/DesignDoc_<feature>.md>"
-    source_refs: # 必要時のみ読む (初回は読まない)。spec は issue close 時に削除されるため、closeout で ADR / feature doc に差し替える
-      - "<specs/<issue-id>-<slug>/index.md (作業中のみ)>"
+    source_refs: # 必要時のみ読む (初回は読まない)
       - "<adr/NNNN-*.md>"
     coverage: "<full / partial>" # partial = context 未整備の印 (context-harvest で補完する)

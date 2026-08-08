@@ -47,15 +47,15 @@ module.exports = {
       },
     },
     {
-      name: "lp-site-no-cross-app-imports",
+      name: "corporate-site-no-cross-app-imports",
       severity: "error",
       comment:
         "Apps should depend on shared packages, not on other apps' internals.",
       from: {
-        path: "^apps/lp-site/",
+        path: "^apps/corporate-site/",
       },
       to: {
-        path: "^apps/(?!lp-site/)",
+        path: "^apps/(?!corporate-site/)",
       },
     },
   ],
@@ -64,7 +64,7 @@ module.exports = {
       path: "node_modules",
     },
     exclude: {
-      path: "(^|/)(node_modules|dist|coverage|storybook-static|\\.astro|\\.turbo|\\.pnpm-store)(/|$)",
+      path: "(^|/)(node_modules|dist|coverage|storybook-static|\\.astro|\\.turbo|\\.pnpm-store|__fixtures__)(/|$)",
     },
     includeOnly: "^((apps|packages)/|e2e/|playwright\\.config\\.ts$)",
     enhancedResolveOptions: {
