@@ -33,5 +33,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Install ripgrep
+        # check-token-usage.mjs が rg を必要とする (runner 標準には無い)
+        run: sudo apt-get install -y --no-install-recommends ripgrep
+
       - name: Lint
         run: pnpm lint
