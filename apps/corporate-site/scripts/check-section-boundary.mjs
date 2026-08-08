@@ -1,11 +1,5 @@
-// section 境界の検査 (context/architecture.md「App 内依存方向」の機械検査)。
-// 検出する違反は 4 方向:
-//   1. pages → section 内部 (ディレクトリ指定以外。明示 index import も違反)
-//   2. section 間 import (index 経由も違反)
-//   3. common → sections の逆依存
-//   4. sections/<section>/index.ts の公開面違反 (Section component 以外の再輸出)
-// 検査対象: 静的 import / 動的 import() / export ... from。相対パス指定のみを
-// 解決する (path alias は存在しない前提。導入時は本スクリプトを拡張する)。
+// section 境界の機械検査 (規約: context/architecture.md「App 内依存方向」)。
+// 相対パス指定のみを解決する (path alias 導入時は要拡張)。
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -19,7 +13,7 @@ const SOURCE_EXTENSIONS = new Set([
   ".mjs",
 ]);
 
-// sections/<section>/index.ts が再輸出してよい唯一のファイル (公開面 — D9)
+// 各 section の index.ts が再輸出してよい唯一のファイル
 export const SECTION_PUBLIC_FILES = {
   hero: "Hero.astro",
   business: "BusinessSection.astro",
@@ -43,7 +37,7 @@ function walk(dir, files = []) {
 }
 
 const IMPORT_PATTERNS = [
-  /\bfrom\s+["']([^"']+)["']/g, // 静的 import / export ... from (複数行 import も from 行で捕捉)
+  /\bfrom\s+["']([^"']+)["']/g, // 静的 import / export ... from
   /\bimport\(\s*["']([^"']+)["']\s*\)/g, // 動的 import
   /^import\s+["']([^"']+)["']/gm, // side-effect import
 ];
@@ -58,8 +52,6 @@ function importSpecifiers(source) {
   return specs;
 }
 
-// 相対 specifier を srcDir からの相対パス (posix 区切り) へ解決する。
-// パッケージ import (相対でないもの) は null を返し検査対象外とする。
 function resolveRelative(fromFile, spec, srcDir) {
   if (!spec.startsWith(".")) return null;
   const abs = path.resolve(path.dirname(fromFile), spec);
@@ -100,7 +92,6 @@ export function checkSectionBoundaries(
       const targetSection = sectionOf(target);
 
       if (isPage && targetSection) {
-        // ディレクトリ指定 (rest が空) のみ許可。個別ファイル・明示 index は違反
         if (targetSection.rest !== "") {
           violations.push(
             `${relFile}: pages から section 内部への直接 import (${spec})。` +
