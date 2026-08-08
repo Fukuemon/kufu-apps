@@ -1,416 +1,268 @@
 {
-  "../../node_modules/.pnpm/@mdx-js+react@3.1.1_@types+react@19.2.14_react@19.2.6/node_modules/@mdx-js/react/index.js": {
-    "file": "_astro/react-SK9dY5yD.js",
-    "name": "react",
-    "src": "../../node_modules/.pnpm/@mdx-js+react@3.1.1_@types+react@19.2.14_react@19.2.6/node_modules/@mdx-js/react/index.js",
-    "isDynamicEntry": true,
-    "imports": [
-      "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js"
-    ]
-  },
-  "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js": {
-    "file": "_astro/Color-KMSTOMOX-DVISt5e8.js",
+  "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_0f12322be64343a2b0c886557819be96/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js": {
+    "file": "_astro/Color-KMSTOMOX-Ckjg68s4.js",
     "name": "Color-KMSTOMOX",
-    "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js",
+    "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_0f12322be64343a2b0c886557819be96/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-BVpWp9h4.js",
-      "iframe.html",
-      "_chunk-S2IHWCOG-DH2oyU4_.js",
-      "_components-_0ja0SA9.js",
-      "_react-Cs_QX70J.js",
-      "_theming-y-h0tMk5.js"
+      "_DocsRenderer-JROSPFPF-wwrFj6qt.js",
+      "_iframe--Qurdu6Z.js",
+      "_index-GO7GDrc_.js",
+      "_preload-helper-PPVm8Dsz.js",
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "_client-DL5r4Q2I.js"
     ]
   },
-  "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js": {
-    "file": "_astro/DocsRenderer-JROSPFPF-BZfLPwVb.js",
-    "name": "DocsRenderer-JROSPFPF",
-    "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js",
+  "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js": {
+    "file": "_astro/react-18-CdpftTip.js",
+    "name": "react-18",
+    "src": "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_preload-helper-BwFaOC_f.js",
-      "_chunk-S2IHWCOG-DH2oyU4_.js",
-      "_components-_0ja0SA9.js",
-      "_react-18-e1mr5L9u.js",
-      "_client-Bgz0hsBt.js",
-      "_react-Cs_QX70J.js",
-      "_theming-y-h0tMk5.js"
-    ],
-    "dynamicImports": [
-      "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js",
-      "_components-_0ja0SA9.js",
-      "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js"
+      "_index-GO7GDrc_.js",
+      "_client-DL5r4Q2I.js"
     ]
   },
   "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js": {
-    "file": "_astro/WithTooltip-7X4HQR7L-Dg3TzY03.js",
+    "file": "_astro/WithTooltip-7X4HQR7L-BuylMdBB.js",
     "name": "WithTooltip-7X4HQR7L",
     "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_client-Bgz0hsBt.js",
-      "_react-Cs_QX70J.js",
-      "_chunk-242VQQM5-Susk5s9q.js",
-      "_chunk-3LY4VQVK-CMQlVsip.js",
-      "_theming-y-h0tMk5.js"
+      "_DocsRenderer-JROSPFPF-wwrFj6qt.js",
+      "_index-GO7GDrc_.js",
+      "_preload-helper-PPVm8Dsz.js",
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "_client-DL5r4Q2I.js"
     ]
   },
   "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js": {
-    "file": "_astro/formatter-L2YTDE3Q-rYFYxObz.js",
+    "file": "_astro/formatter-L2YTDE3Q-Bu3MX9d6.js",
     "name": "formatter-L2YTDE3Q",
     "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_chunk-3LY4VQVK-CMQlVsip.js"
+      "_DocsRenderer-JROSPFPF-wwrFj6qt.js",
+      "_preload-helper-PPVm8Dsz.js",
+      "_index-GO7GDrc_.js",
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "_client-DL5r4Q2I.js"
     ]
   },
   "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js": {
-    "file": "_astro/syntaxhighlighter-RTCFPKCB-DJ-ekX7l.js",
+    "file": "_astro/syntaxhighlighter-RTCFPKCB-BUs0LPnj.js",
     "name": "syntaxhighlighter-RTCFPKCB",
     "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js",
     "isDynamicEntry": true,
     "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_chunk-LITCR56V-yVolJugf.js",
-      "_react-Cs_QX70J.js",
-      "_chunk-242VQQM5-Susk5s9q.js",
-      "_chunk-3LY4VQVK-CMQlVsip.js",
-      "_theming-y-h0tMk5.js"
+      "_DocsRenderer-JROSPFPF-wwrFj6qt.js",
+      "_index-GO7GDrc_.js",
+      "_preload-helper-PPVm8Dsz.js",
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "_client-DL5r4Q2I.js"
     ]
   },
   "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/mocking-utils/mocker-runtime.js": {
     "file": "vite-inject-mocker-entry.js",
-    "name": "mocker-runtime",
+    "name": "vite-inject-mocker-entry",
     "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/mocking-utils/mocker-runtime.js",
     "isEntry": true,
     "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_preload-helper-BwFaOC_f.js"
+      "_preload-helper-PPVm8Dsz.js"
     ]
   },
-  "_chunk-242VQQM5-Susk5s9q.js": {
-    "file": "_astro/chunk-242VQQM5-Susk5s9q.js",
-    "name": "chunk-242VQQM5",
+  "_DocsRenderer-JROSPFPF-wwrFj6qt.js": {
+    "file": "_astro/DocsRenderer-JROSPFPF-wwrFj6qt.js",
+    "name": "DocsRenderer-JROSPFPF",
+    "isDynamicEntry": true,
     "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
-  },
-  "_chunk-3LY4VQVK-CMQlVsip.js": {
-    "file": "_astro/chunk-3LY4VQVK-CMQlVsip.js",
-    "name": "chunk-3LY4VQVK",
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
-  },
-  "_chunk-BVpWp9h4.js": {
-    "file": "_astro/chunk-BVpWp9h4.js",
-    "name": "chunk"
-  },
-  "_chunk-LITCR56V-yVolJugf.js": {
-    "file": "_astro/chunk-LITCR56V-yVolJugf.js",
-    "name": "chunk-LITCR56V",
-    "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_client-Bgz0hsBt.js",
-      "_react-Cs_QX70J.js",
-      "_theming-y-h0tMk5.js"
-    ]
-  },
-  "_chunk-S2IHWCOG-DH2oyU4_.js": {
-    "file": "_astro/chunk-S2IHWCOG-DH2oyU4_.js",
-    "name": "chunk-S2IHWCOG",
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
-  },
-  "_client-Bgz0hsBt.js": {
-    "file": "_astro/client-Bgz0hsBt.js",
-    "name": "client",
-    "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_react-Cs_QX70J.js"
-    ]
-  },
-  "_components-_0ja0SA9.js": {
-    "file": "_astro/components-_0ja0SA9.js",
-    "name": "components",
-    "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_preload-helper-BwFaOC_f.js",
-      "_client-Bgz0hsBt.js",
-      "_chunk-LITCR56V-yVolJugf.js",
-      "_react-Cs_QX70J.js",
-      "_chunk-242VQQM5-Susk5s9q.js",
-      "_chunk-3LY4VQVK-CMQlVsip.js",
-      "_theming-y-h0tMk5.js"
+      "_preload-helper-PPVm8Dsz.js",
+      "_index-GO7GDrc_.js",
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "_client-DL5r4Q2I.js"
     ],
     "dynamicImports": [
-      "_theming-y-h0tMk5.js",
+      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js",
       "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js",
       "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js",
-      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js"
+      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
+      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
+      "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_0f12322be64343a2b0c886557819be96/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js"
     ]
   },
-  "_preload-helper-BwFaOC_f.js": {
-    "file": "_astro/preload-helper-BwFaOC_f.js",
-    "name": "preload-helper",
+  "_client-DL5r4Q2I.js": {
+    "file": "_astro/client-DL5r4Q2I.js",
+    "name": "client",
     "imports": [
-      "_chunk-BVpWp9h4.js"
+      "_index-GO7GDrc_.js"
     ]
   },
-  "_react-18-e1mr5L9u.js": {
-    "file": "_astro/react-18-e1mr5L9u.js",
-    "name": "react-18",
-    "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_client-Bgz0hsBt.js",
-      "_react-Cs_QX70J.js"
-    ]
-  },
-  "_react-Cs_QX70J.js": {
-    "file": "_astro/react-Cs_QX70J.js",
-    "name": "react",
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
-  },
-  "_theming-y-h0tMk5.js": {
-    "file": "_astro/theming-y-h0tMk5.js",
-    "name": "theming",
-    "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_react-Cs_QX70J.js",
-      "_chunk-3LY4VQVK-CMQlVsip.js"
-    ]
-  },
-  "iframe.html": {
-    "file": "_astro/iframe-BLUXC_-g.js",
+  "_iframe--Qurdu6Z.js": {
+    "file": "_astro/iframe--Qurdu6Z.js",
     "name": "iframe",
-    "src": "iframe.html",
-    "isEntry": true,
     "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_preload-helper-BwFaOC_f.js",
-      "_react-Cs_QX70J.js"
+      "_preload-helper-PPVm8Dsz.js",
+      "_index-GO7GDrc_.js"
     ],
     "dynamicImports": [
+      "src/components/common/ContactCtaLink.stories.ts",
       "src/components/common/SectionHeading.stories.ts",
       "src/components/common/SiteFooter.stories.ts",
       "src/components/common/SiteHeader.stories.ts",
-      "src/components/features/business/BusinessFeatureRow.stories.ts",
-      "src/components/features/business/BusinessSection.stories.ts",
-      "src/components/features/company/CompanySection.stories.ts",
-      "src/components/features/consultation/ConsultationSection.stories.ts",
-      "src/components/features/contact/ContactInfoRow.stories.ts",
-      "src/components/features/contact/ContactSection.stories.ts",
-      "src/components/features/hero/Hero.stories.ts",
-      "src/components/features/products/FeaturedCategoryCard.stories.ts",
-      "src/components/features/products/FeaturedCategoryCarousel.stories.ts",
-      "src/components/features/products/ProductsCategoryAccordionList.stories.ts",
-      "src/components/features/products/ProductsCategorySection.stories.ts",
-      "src/components/features/products/ProductsDetailSection.stories.ts",
-      "src/components/features/products/ProductsHero.stories.ts",
-      "src/components/features/products/ProductsSidebarNav.stories.ts",
-      "src/components/features/services/ServicePillar.stories.ts",
-      "_react-18-e1mr5L9u.js",
-      "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_2f6c5920cfe4ed707dae4e2c1e8c2833/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js"
+      "src/components/sections/business/BusinessFeatureRow.stories.ts",
+      "src/components/sections/business/BusinessSection.stories.ts",
+      "src/components/sections/company/CompanySection.stories.ts",
+      "src/components/sections/consultation/ConsultationSection.stories.ts",
+      "src/components/sections/contact/ContactSection.stories.ts",
+      "src/components/sections/hero/Hero.stories.ts",
+      "src/components/sections/products-category/FeaturedCategoryCard.stories.ts",
+      "src/components/sections/products-category/FeaturedCategoryCarousel.stories.ts",
+      "src/components/sections/products-category/ProductsCategorySection.stories.ts",
+      "src/components/sections/products-detail/ProductsCategoryAccordionList.stories.ts",
+      "src/components/sections/products-detail/ProductsDetailSection.stories.ts",
+      "src/components/sections/products-detail/ProductsHero.stories.ts",
+      "src/components/sections/products-detail/ProductsSidebarNav.stories.ts",
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "_DocsRenderer-JROSPFPF-wwrFj6qt.js"
     ],
     "css": [
-      "_astro/iframe-BDPEx_r_.css"
+      "_astro/iframe-BEOkG3RM.css"
     ]
+  },
+  "_iframe-BEOkG3RM.css": {
+    "file": "_astro/iframe-BEOkG3RM.css",
+    "src": "_iframe-BEOkG3RM.css"
+  },
+  "_index-GO7GDrc_.js": {
+    "file": "_astro/index-GO7GDrc_.js",
+    "name": "index"
+  },
+  "_preload-helper-PPVm8Dsz.js": {
+    "file": "_astro/preload-helper-PPVm8Dsz.js",
+    "name": "preload-helper"
+  },
+  "src/components/common/ContactCtaLink.stories.ts": {
+    "file": "_astro/ContactCtaLink.stories-Dn_MnG7H.js",
+    "name": "ContactCtaLink.stories",
+    "src": "src/components/common/ContactCtaLink.stories.ts",
+    "isDynamicEntry": true
   },
   "src/components/common/SectionHeading.stories.ts": {
-    "file": "_astro/SectionHeading.stories-I0Asppr_.js",
+    "file": "_astro/SectionHeading.stories-BXyFLq1Y.js",
     "name": "SectionHeading.stories",
     "src": "src/components/common/SectionHeading.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "isDynamicEntry": true
   },
   "src/components/common/SiteFooter.stories.ts": {
-    "file": "_astro/SiteFooter.stories-BkW4w049.js",
+    "file": "_astro/SiteFooter.stories-CunJE4VZ.js",
     "name": "SiteFooter.stories",
     "src": "src/components/common/SiteFooter.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "isDynamicEntry": true
   },
   "src/components/common/SiteHeader.stories.ts": {
-    "file": "_astro/SiteHeader.stories-ByNNgIXU.js",
+    "file": "_astro/SiteHeader.stories-DLAvnC0i.js",
     "name": "SiteHeader.stories",
     "src": "src/components/common/SiteHeader.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "isDynamicEntry": true
   },
-  "src/components/features/business/BusinessFeatureRow.stories.ts": {
-    "file": "_astro/BusinessFeatureRow.stories-B2-vgd7N.js",
+  "src/components/sections/business/BusinessFeatureRow.stories.ts": {
+    "file": "_astro/BusinessFeatureRow.stories-D4wIXVa5.js",
     "name": "BusinessFeatureRow.stories",
-    "src": "src/components/features/business/BusinessFeatureRow.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/business/BusinessFeatureRow.stories.ts",
+    "isDynamicEntry": true
   },
-  "src/components/features/business/BusinessSection.stories.ts": {
-    "file": "_astro/BusinessSection.stories-5ClgLjH9.js",
+  "src/components/sections/business/BusinessSection.stories.ts": {
+    "file": "_astro/BusinessSection.stories-DJ2wQg1P.js",
     "name": "BusinessSection.stories",
-    "src": "src/components/features/business/BusinessSection.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/business/BusinessSection.stories.ts",
+    "isDynamicEntry": true
   },
-  "src/components/features/company/CompanySection.stories.ts": {
-    "file": "_astro/CompanySection.stories-BIJSYK0j.js",
+  "src/components/sections/company/CompanySection.stories.ts": {
+    "file": "_astro/CompanySection.stories-CGXYmb5a.js",
     "name": "CompanySection.stories",
-    "src": "src/components/features/company/CompanySection.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/company/CompanySection.stories.ts",
+    "isDynamicEntry": true
   },
-  "src/components/features/consultation/ConsultationSection.stories.ts": {
-    "file": "_astro/ConsultationSection.stories-CHeICBas.js",
+  "src/components/sections/consultation/ConsultationSection.stories.ts": {
+    "file": "_astro/ConsultationSection.stories-Dro9cWp2.js",
     "name": "ConsultationSection.stories",
-    "src": "src/components/features/consultation/ConsultationSection.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/consultation/ConsultationSection.stories.ts",
+    "isDynamicEntry": true
   },
-  "src/components/features/contact/ContactInfoRow.stories.ts": {
-    "file": "_astro/ContactInfoRow.stories-1H7M_Fwn.js",
-    "name": "ContactInfoRow.stories",
-    "src": "src/components/features/contact/ContactInfoRow.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
-  },
-  "src/components/features/contact/ContactSection.stories.ts": {
-    "file": "_astro/ContactSection.stories-BF6dzHMD.js",
+  "src/components/sections/contact/ContactSection.stories.ts": {
+    "file": "_astro/ContactSection.stories-CH_SfUdp.js",
     "name": "ContactSection.stories",
-    "src": "src/components/features/contact/ContactSection.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/contact/ContactSection.stories.ts",
+    "isDynamicEntry": true
   },
-  "src/components/features/hero/Hero.stories.ts": {
-    "file": "_astro/Hero.stories-BhlrEeie.js",
+  "src/components/sections/hero/Hero.stories.ts": {
+    "file": "_astro/Hero.stories-BUndxibR.js",
     "name": "Hero.stories",
-    "src": "src/components/features/hero/Hero.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/hero/Hero.stories.ts",
+    "isDynamicEntry": true
   },
-  "src/components/features/products/FeaturedCategoryCard.stories.ts": {
-    "file": "_astro/FeaturedCategoryCard.stories-mYRUvfpF.js",
+  "src/components/sections/products-category/FeaturedCategoryCard.stories.ts": {
+    "file": "_astro/FeaturedCategoryCard.stories-B7GXpIgi.js",
     "name": "FeaturedCategoryCard.stories",
-    "src": "src/components/features/products/FeaturedCategoryCard.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/products-category/FeaturedCategoryCard.stories.ts",
+    "isDynamicEntry": true
   },
-  "src/components/features/products/FeaturedCategoryCarousel.stories.ts": {
-    "file": "_astro/FeaturedCategoryCarousel.stories-CsutG6_b.js",
+  "src/components/sections/products-category/FeaturedCategoryCarousel.stories.ts": {
+    "file": "_astro/FeaturedCategoryCarousel.stories-Cp6eKZMn.js",
     "name": "FeaturedCategoryCarousel.stories",
-    "src": "src/components/features/products/FeaturedCategoryCarousel.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/products-category/FeaturedCategoryCarousel.stories.ts",
+    "isDynamicEntry": true
   },
-  "src/components/features/products/ProductsCategoryAccordionList.stories.ts": {
-    "file": "_astro/ProductsCategoryAccordionList.stories-BdRY3340.js",
-    "name": "ProductsCategoryAccordionList.stories",
-    "src": "src/components/features/products/ProductsCategoryAccordionList.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
-  },
-  "src/components/features/products/ProductsCategorySection.stories.ts": {
-    "file": "_astro/ProductsCategorySection.stories-BuR_oAU_.js",
+  "src/components/sections/products-category/ProductsCategorySection.stories.ts": {
+    "file": "_astro/ProductsCategorySection.stories-DmGZd-LC.js",
     "name": "ProductsCategorySection.stories",
-    "src": "src/components/features/products/ProductsCategorySection.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/products-category/ProductsCategorySection.stories.ts",
+    "isDynamicEntry": true
   },
-  "src/components/features/products/ProductsDetailSection.stories.ts": {
-    "file": "_astro/ProductsDetailSection.stories-BsxBBFgB.js",
+  "src/components/sections/products-detail/ProductsCategoryAccordionList.stories.ts": {
+    "file": "_astro/ProductsCategoryAccordionList.stories-CzGBpbei.js",
+    "name": "ProductsCategoryAccordionList.stories",
+    "src": "src/components/sections/products-detail/ProductsCategoryAccordionList.stories.ts",
+    "isDynamicEntry": true
+  },
+  "src/components/sections/products-detail/ProductsDetailSection.stories.ts": {
+    "file": "_astro/ProductsDetailSection.stories-Dc_0wWQd.js",
     "name": "ProductsDetailSection.stories",
-    "src": "src/components/features/products/ProductsDetailSection.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/products-detail/ProductsDetailSection.stories.ts",
+    "isDynamicEntry": true
   },
-  "src/components/features/products/ProductsHero.stories.ts": {
-    "file": "_astro/ProductsHero.stories-CRtMf5My.js",
+  "src/components/sections/products-detail/ProductsHero.stories.ts": {
+    "file": "_astro/ProductsHero.stories-C5P10ygW.js",
     "name": "ProductsHero.stories",
-    "src": "src/components/features/products/ProductsHero.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/products-detail/ProductsHero.stories.ts",
+    "isDynamicEntry": true
   },
-  "src/components/features/products/ProductsSidebarNav.stories.ts": {
-    "file": "_astro/ProductsSidebarNav.stories-CyEc5Cin.js",
+  "src/components/sections/products-detail/ProductsSidebarNav.stories.ts": {
+    "file": "_astro/ProductsSidebarNav.stories-axVdO7mc.js",
     "name": "ProductsSidebarNav.stories",
-    "src": "src/components/features/products/ProductsSidebarNav.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
-  },
-  "src/components/features/services/ServicePillar.stories.ts": {
-    "file": "_astro/ServicePillar.stories-C0FFqSu4.js",
-    "name": "ServicePillar.stories",
-    "src": "src/components/features/services/ServicePillar.stories.ts",
-    "isDynamicEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "src": "src/components/sections/products-detail/ProductsSidebarNav.stories.ts",
+    "isDynamicEntry": true
   },
   "virtual:astro-static-module/%40astrojs%2Freact%2Fclient.js": {
-    "file": "_astro/react/client_js-43e45681-C4ReM32W.js",
+    "file": "_astro/react/client_js-43e45681-Deol2ev7.js",
     "name": "react/client_js-43e45681",
     "src": "virtual:astro-static-module/%40astrojs%2Freact%2Fclient.js",
     "isEntry": true,
     "imports": [
-      "_chunk-BVpWp9h4.js",
-      "_client-Bgz0hsBt.js",
-      "_react-Cs_QX70J.js"
+      "_index-GO7GDrc_.js",
+      "_client-DL5r4Q2I.js"
     ]
   },
   "virtual:astro-static-module/astro%3Ascripts%2Fbefore-hydration.js": {
-    "file": "_astro/astro_scripts/before-hydration_js-37665b80-CxA7TBdV.js",
+    "file": "_astro/astro_scripts/before-hydration_js-37665b80-Higt3U9E.js",
     "name": "astro_scripts/before-hydration_js-37665b80",
     "src": "virtual:astro-static-module/astro%3Ascripts%2Fbefore-hydration.js",
-    "isEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "isEntry": true
   },
   "virtual:astro-static-module/astro%3Ascripts%2Fpage.js": {
-    "file": "_astro/astro_scripts/page_js-c45b4fb8-CxA7TBdV.js",
+    "file": "_astro/astro_scripts/page_js-c45b4fb8-Higt3U9E.js",
     "name": "astro_scripts/page_js-c45b4fb8",
     "src": "virtual:astro-static-module/astro%3Ascripts%2Fpage.js",
-    "isEntry": true,
-    "imports": [
-      "_chunk-BVpWp9h4.js"
-    ]
+    "isEntry": true
   }
 }
