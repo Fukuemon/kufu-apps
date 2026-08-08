@@ -1,10 +1,7 @@
 ---
 import "../../styles/globals.css";
-// フォント定義 (Noto Sans/Serif JP・Geist Mono の variable @font-face) は
-// 254 個の @font-face で約 240KB あり、render-blocking な critical CSS に含めると
-// FCP/LCP を大きく遅らせる。?url で独立した CSS アセットとして emit し、
-// preload→onload で stylesheet 化することで非ブロッキング読み込みにする。
-// variable + unicode-range のため実際の woff2 転送はページ上の字形分のみで軽量。
+// フォント CSS (~240KB の @font-face 群) は render-blocking を避けるため
+// ?url + preload→onload で非同期読み込みにする (woff2 転送は unicode-range で字形分のみ)
 import fontsHref from "@kufu/ui/fonts.css?url";
 
 import SiteFooter from "./SiteFooter.astro";

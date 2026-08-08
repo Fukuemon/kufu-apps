@@ -1,13 +1,8 @@
 /*
- * Kufu design tokens — CSS 変数の正本
- *
- * 2 層構造:
- *   - primitive 層 (--kufu-<hue>-<scale>): 値を持つ唯一の層
- *   - semantic 層 (shadcn 語彙 + kufu 追加役割): primitive を参照するのみ
- *
- * shadcn 変数の名前は契約 (bg-primary 等が var(--primary) を参照)。
- * 名前は改名・削除せず、値だけ primitive へ向け替える。未使用変数も温存する。
- * ダーク面は .dark テーマでなく .surface-inverse スコープで表現する。
+ * Kufu design tokens — CSS 変数の正本。
+ * 値を持つのは primitive 層のみ。semantic 層は primitive を参照するだけ。
+ * shadcn 変数名は契約: 改名・削除せず値だけ向け替える (未使用も温存)。
+ * ダーク面は .dark でなく .surface-inverse スコープ。
  */
 
 :root {
