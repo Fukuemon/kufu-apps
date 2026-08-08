@@ -8,7 +8,7 @@ export interface Props {
   "data-testid"?: string;
 }
 
-const { href, size = "lg", "data-testid": testId } = Astro.props;
+const { href, size, "data-testid": testId } = Astro.props;
 
 // 色/hover は全サイズ共通の base に固定し、size variant は外形寸法のみ持つ
 const contactCtaVariants = cva("h-auto bg-primary hover:bg-primary hover:opacity-90", {

@@ -25,7 +25,7 @@ if (result.status === 1) {
 }
 
 process.stderr.write(
-  result.stderr ??
+  result.stderr ||
     `${result.error ?? "ripgrep (rg) の実行に失敗した (未インストールの可能性)"}\n`,
 );
 process.exit(result.status ?? 1);

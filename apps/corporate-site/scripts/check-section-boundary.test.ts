@@ -16,7 +16,7 @@ const publicFiles = {
 };
 
 describe("check-section-boundary", () => {
-  it("正しい構成 (ディレクトリ指定 / 同一 section 内 / common / package import) では違反ゼロ", () => {
+  it("正しい構成 (ディレクトリ指定 / 同一 section 内 / common / package import / コメントアウトされた import) では違反ゼロ", () => {
     expect(checkSectionBoundaries(fixture("valid"), publicFiles)).toEqual([]);
   });
 
@@ -46,7 +46,17 @@ describe("check-section-boundary", () => {
     );
     // ④ index.ts の公開面違反
     expect(violations).toContainEqual(expect.stringContaining("公開面違反"));
+    // pages への逆流 import
+    expect(violations).toContainEqual(
+      expect.stringContaining("pages への逆流 import"),
+    );
+    // SECTION_PUBLIC_FILES 未登録 section の検出 (素通り防止)
+    expect(violations).toContainEqual(
+      expect.stringContaining(
+        "components/sections/gamma: SECTION_PUBLIC_FILES に未登録",
+      ),
+    );
 
-    expect(violations).toHaveLength(6);
+    expect(violations).toHaveLength(8);
   });
 });

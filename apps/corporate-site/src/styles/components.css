@@ -408,10 +408,6 @@
   color: var(--primary);
 }
 
-.products-nav-link.is-active {
-  color: var(--primary);
-}
-
 .products-nav-link {
   position: relative;
   padding-left: 0.625rem;
@@ -655,6 +651,7 @@
     scroll-behavior: auto;
   }
 
+  .hero-copy,
   .scroll-cue-icon,
   .consultation-case,
   .reveal-section,

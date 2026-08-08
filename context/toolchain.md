@@ -37,3 +37,7 @@ app の初期 scaffold は公式 `create` command を優先する ([ADR-0002](..
 - React app: `pnpm create vite ... --template react-ts`
 - 生成後に package 名 / root scripts / typecheck / E2E / shared config など monorepo の contract へ寄せる。
 - `Vite+` は導入せず、専用 issue / spec で再検討する。
+
+## 依存の固定 (pnpm overrides)
+
+- **vite `^7`**: Astro 6 が Vite 7 前提のため root の `pnpm.overrides` で固定している (app / package 側の `vite ^8` 宣言より優先される)。vite 8 が混ざると dev サーバーの plugin context が壊れる。Astro が Vite 8 対応した時点で外す。

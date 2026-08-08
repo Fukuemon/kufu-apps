@@ -31,7 +31,10 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install ripgrep # check-token-usage.mjs が使う (runner 標準に無い)
-        run: sudo apt-get install -y --no-install-recommends ripgrep
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ripgrep
 
       - name: Lint
         run: pnpm lint
+
+      - name: Test
+        run: pnpm test

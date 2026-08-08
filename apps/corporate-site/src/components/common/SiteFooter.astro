@@ -22,7 +22,7 @@ const isFull = variant === "full";
             {companyProfile.name}
           </p>
           <p class="text-[0.8125rem] leading-normal text-kufu-gray-200">
-            機械工具と関連機器 / 販売・加工
+            {companyProfile.tagline}
           </p>
         </div>
         <div class="grid gap-1.5 md:justify-items-end">
@@ -30,7 +30,7 @@ const isFull = variant === "full";
             TEL {contactInfo.tel}
           </p>
           <p class="text-[0.8125rem] text-kufu-gray-200">
-            {companyProfile.address.replace(/^〒[0-9-]+\s*/, "")}
+            {companyProfile.streetAddress}
           </p>
         </div>
       </div>
@@ -71,10 +71,10 @@ const isFull = variant === "full";
         CONTACT
       </p>
       <p class="text-sm leading-7 text-kufu-gray-200">
-        〒675-1114
+        {companyProfile.postalCode}
       </p>
       <p class="text-sm leading-7 text-kufu-gray-200">
-        兵庫県加古郡稲美町国安973番地の10
+        {companyProfile.streetAddress}
       </p>
       <a class="footer-link" href={`tel:${contactInfo.tel.replaceAll("-", "")}`}>
         TEL {contactInfo.tel}

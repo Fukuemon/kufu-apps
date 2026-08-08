@@ -43,9 +43,10 @@ const IMPORT_PATTERNS = [
 ];
 
 function importSpecifiers(source) {
+  const code = source.replace(/^\s*(\/\/|\*).*$/gm, ""); // 行コメントへの誤一致を防ぐ
   const specs = [];
   for (const pattern of IMPORT_PATTERNS) {
-    for (const match of source.matchAll(pattern)) {
+    for (const match of code.matchAll(pattern)) {
       specs.push(match[1]);
     }
   }
@@ -121,6 +122,14 @@ export function checkSectionBoundaries(
         continue;
       }
 
+      if ((fromSection || isCommon) && target.startsWith("pages/")) {
+        violations.push(
+          `${relFile}: pages への逆流 import (${spec})。` +
+            "依存方向は pages → sections → common → @kufu/ui の一方向",
+        );
+        continue;
+      }
+
       if (isSectionIndex && fromSection) {
         const allowed = sectionPublicFiles[fromSection.name];
         if (allowed !== undefined && spec !== `./${allowed}`) {
@@ -130,6 +139,32 @@ export function checkSectionBoundaries(
           );
         }
       }
+    }
+  }
+
+  // 対応表と実ディレクトリの同期漏れは公開面検査の素通りになるため違反にする
+  const sectionsDir = path.join(srcDir, "components", "sections");
+  let actualSections = [];
+  try {
+    actualSections = readdirSync(sectionsDir, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name);
+  } catch {
+    // sections が無い構成 (fixture 等) では突合しない
+  }
+  for (const name of actualSections) {
+    if (!(name in sectionPublicFiles)) {
+      violations.push(
+        `components/sections/${name}: SECTION_PUBLIC_FILES に未登録。` +
+          "公開面検査が素通りになるため、対応表へ公開ファイルを追加する",
+      );
+    }
+  }
+  for (const name of Object.keys(sectionPublicFiles)) {
+    if (actualSections.length > 0 && !actualSections.includes(name)) {
+      violations.push(
+        `SECTION_PUBLIC_FILES の "${name}" に対応する section ディレクトリが無い (対応表の残骸)`,
+      );
     }
   }
   return violations;
