@@ -33,12 +33,7 @@ export const businessContent = {
       title: "加工",
       description:
         "図面一枚、現物一個から。別作・特注の加工を一括して請け負う。",
-      items: [
-        "各種機械加工",
-        "樹脂成型加工",
-        "板金・溶接加工",
-        "各種ゴム製品加工",
-      ],
+      items: ["各種機械加工", "樹脂加工", "板金・溶接加工", "各種ゴム製品加工"],
       mediaLabel: "加工イメージ",
       mediaCaption: "加工相談の対応領域",
       mediaPosition: "left",

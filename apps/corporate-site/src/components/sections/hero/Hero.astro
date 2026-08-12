@@ -19,8 +19,7 @@ import { servicePillars } from "../../../content/services.js";
         {heroContent.eyebrow}
       </p>
       <h1 class="font-serif text-[2.5rem] font-semibold leading-[1.18] md:text-[4rem] md:leading-[1.16]">
-        <span class="block">機械工具の調達と、</span>
-        <span class="block">特注加工を一社で。</span>
+        {heroContent.titleLines.map((line) => <span class="block">{line}</span>)}
       </h1>
       <p class="max-w-[41.6875rem] text-[0.9375rem] leading-[1.95] text-muted-foreground md:text-base">
         {heroContent.lead.split("\n").map((line) => (

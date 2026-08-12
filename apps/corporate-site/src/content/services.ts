@@ -5,7 +5,7 @@ export const servicePillars = [
     sourceReferences: [companyProfileSource],
     number: "01",
     title: "見積もり・販売",
-    lead: "機械工具・駆動部品・省力化機器まで、必要な製品の見積もり・調達に対応。",
+    lead: "機械工具・駆動部品・省力化機器から、必要な製品の見積もり・調達に対応。",
   },
   {
     sourceReferences: [companyProfileSource],

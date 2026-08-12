@@ -25,7 +25,7 @@ describe("corporate site content data", () => {
     expect(categoryMakers).toHaveLength(18);
     expect(makerCategoryIds).toEqual(categoryIds);
     expect(categoryMakers.flatMap((category) => category.makers).length).toBe(
-      323,
+      319,
     );
   });
 
