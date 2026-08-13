@@ -1,4 +1,4 @@
-# UI テスト戦略の見直し (Storybook play テスト / E2E Page Object Pattern) 要求定義
+# UI テスト戦略の見直し (Storybook play テスト / E2E Page Object / VRT) 要求定義
 
 ## チケット情報
 
@@ -6,6 +6,8 @@
 - チケットID: #33
 - トラッカー: GitHub (Fukuemon/kufu-apps)
 - URL: https://github.com/Fukuemon/kufu-apps/issues/33
+- 統合した issue: #28 (research: visual regression testing を検討する) を 2026-08-13 に本 issue へ統合。
+  VRT を独立した検討 issue として持つと、play / E2E との責務境界を二重に決めることになるため
 
 ## 背景・目的
 
@@ -27,6 +29,7 @@ UI の自動テスト体制に次の課題感がある:
 
 - play テストの導入方針 (対象コンポーネントの基準) と、E2E との責務境界が明文化される
 - 現在の E2E 規模・成長見込みに対して POM を導入するか (するなら粒度)、しないなら代替の保守戦略 (locator 規約等) が明文化される
+- VRT が実際に動き、UI を変える作業 (`components.css` の colocation 移行、コンテンツ改修) の前後で意図しない視覚崩れを検出できる
 
 ## スコープ
 
@@ -37,12 +40,18 @@ UI の自動テスト体制に次の課題感がある:
 - locator 規約の決定 (`getByRole` 優先・`data-testid` 方針等。Page Object 内部にも適用)
 - E2E がカバーするユーザージャーニーの定義 (回遊・ナビゲーション・問い合わせフォーム・JS 無効時) と play との責務境界の明文化
 - VRT の導入設計 (2026-08-08 追加): 手段の比較決定 (候補: reg-suit + storycap — story 単位。#32 で整備した variant / edge story がそのまま対象セットになる / Playwright `toHaveScreenshot` — route × viewport 単位で既存 E2E 基盤に乗る / 両者の併用)、差分レポートの置き場、CI 連携、許容 diff 閾値
-- 決定の context / ADR への反映
+- **VRT の実装まで行い、実行可能な状態にする** (#28 統合により追加)
+  - 対象セットの確定: 3 route (`/` / `/products` / `/contact`) の page screenshot、Storybook の presentation component、desktop / mobile の 2 viewport
+  - snapshot の更新運用 (更新コマンド、baseline の置き場、レビュー時の差分の見せ方) の確立
+  - flake 要因 (フォント読み込み、画像、アニメーション、iframe 埋め込み地図) の洗い出しと抑止
+  - CI 実行時間の実測と、CI に乗せるかローカル運用に留めるかの判断
+- 決定の context / ADR への反映 (`context/testing.md` に VRT 節を追加する)
 
 ### やらないこと
 
-- play テスト・E2E テストコードの実装 (方針決定後に別 issue)
+- play テスト・E2E テストコードの実装 (方針決定後に別 issue)。**VRT は例外で本 issue で実装する**
 - Storybook のカタログ構成・コンポーネント設計の方針決定 (draft-component-architecture 側)
+- `components.css` の colocation 移行そのもの (本 issue で VRT を gate として整えたうえで、派生 issue が差分ゼロを完了条件に行う)
 - CI パイプラインの変更 (VRT の実行に必要な workflow 追加は例外としてスコープに含む)
 
 ## 業務ルール
@@ -58,6 +67,9 @@ UI の自動テスト体制に次の課題感がある:
 - WHEN 本 issue が完了したとき、システムは page 単位 Page Object の構成規約と根拠 (現規模の棚卸し結果) を ADR または context に保持している。
 - WHEN 本 issue が完了したとき、システムは locator / セレクタ規約と、E2E が担うユーザージャーニーの定義 (play との責務境界を含む) を保持している。
 - WHEN 本 issue が完了したとき、システムは VRT の手段・対象セット・許容 diff・CI 連携の決定を保持し、VRT が実行可能な状態になっている。
+- WHEN 開発者が VRT の実行コマンドを叩いたとき、システムは 3 route × 2 viewport と対象 story のスクリーンショットを撮影し、baseline との差分を判定する。
+- WHILE UI に変更がない間、システムは VRT を連続実行しても差分ゼロを返す (flake しない)。
+- WHEN 意図した UI 変更で差分が出たとき、システムは baseline を更新する手順を文書として提供する。
 - IF 検討中に E2E の欠落 (クリティカルパス未カバー) を発見した場合、THEN 本 issue で実装せず派生 issue として起票する。
 
 ## 例外シナリオ
@@ -66,6 +78,8 @@ UI の自動テスト体制に次の課題感がある:
 | --- | -------------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------ |
 | 1   | play テストが Astro コンポーネント (非 React) に適用しにくい         | 検討結果に制約として明記 | 対象を packages/ui (React) に限定し、Astro 側は E2E でカバー |
 | 2   | コンポーネント設計 (別 draft) が未確定で play 対象基準を決めきれない | 未決事項に依存関係を明記 | locator 規約と POM 是非のみ先行確定する                      |
+| 3   | VRT が環境差 (フォント / レンダリング) で恒常的に差分を出す          | CI を赤にせず原因を報告  | 撮影環境をコンテナ等に固定するか、対象を安定領域へ絞る       |
+| 4   | 地図 iframe / 外部画像で撮影が不安定になる                           | flake 要因として記録     | 該当要素をマスクして撮影する                                 |
 
 ## 決定事項(解決済み論点)
 
@@ -90,8 +104,9 @@ UI の自動テスト体制に次の課題感がある:
 
 ## 変更履歴
 
-| 日付 | 変更者 | 変更内容 |
-| 2026-08-08 | user 指示 | VRT の導入を決定事項 #4 として追加。#32 の受け皿 colocation 移行の前提 gate と位置づけ、手段比較・CI 連携をスコープへ追加 |
-| ---------- | ---------------- | --------------------------------------------------------------------------------------- |
-| 2026-07-25 | spec-requirement | draft-e2e-pom を改稿し、play テスト論点を draft-component-style-design から移管して統合 |
-| 2026-07-25 | spec-requirement | 要求論点 3 件をユーザー対話で解決し決定事項に反映 |
+| 日付       | 変更者           | 変更内容                                                                                                                      |
+| ---------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-13 | user 指示        | #28 (VRT 検討) を本 issue へ統合。VRT を検討だけでなく**実装まで**スコープに入れ、対象セット・snapshot 運用・flake 抑止を追加 |
+| 2026-08-08 | user 指示        | VRT の導入を決定事項 #4 として追加。#32 の受け皿 colocation 移行の前提 gate と位置づけ、手段比較・CI 連携をスコープへ追加     |
+| 2026-07-25 | spec-requirement | draft-e2e-pom を改稿し、play テスト論点を draft-component-style-design から移管して統合                                       |
+| 2026-07-25 | spec-requirement | 要求論点 3 件をユーザー対話で解決し決定事項に反映                                                                             |
