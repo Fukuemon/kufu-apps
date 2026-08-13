@@ -53,7 +53,7 @@
 
 ## 実装・運用への反映
 
-- 対象 app / package: `apps/corporate-site` (再編の実施も本決定と同時に行う)。`packages/ui` は `@source` 移動と motion トークン追加のみ
+- 対象 app / package: `apps/corporate-site` (再編の実施も本決定と同時に行う — PR #44 で実施済)。`packages/ui` は `@source` 移動と motion トークン追加のみ
 - spec 更新要否: 不要 (spec は issue close 時に削除される作業文書であり、決定経緯は本 ADR が正本)
 - AI 向け設定更新要否: 不要 (規約は [context/component-design.md](../context/component-design.md) / [context/architecture.md](../context/architecture.md) が正本で、AI 設定はそれを参照する)
 

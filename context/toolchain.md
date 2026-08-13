@@ -41,3 +41,4 @@ app の初期 scaffold は公式 `create` command を優先する ([ADR-0002](..
 ## 依存の固定 (pnpm overrides)
 
 - **vite `^7`**: Astro 6 が Vite 7 前提のため root の `pnpm.overrides` で固定している (app / package 側の `vite ^8` 宣言より優先される)。vite 8 が混ざると dev サーバーの plugin context が壊れる。Astro が Vite 8 対応した時点で外す。
+- **Node バージョン差に注意**: `.ts` の設定ファイル (`packages/config/vitest/base.ts` 等) の import は type stripping が既定有効な Node 23.6+ でのみ素で通る。CI の Node は 24 以上にする (22.12 では `ERR_UNKNOWN_FILE_EXTENSION`)。
