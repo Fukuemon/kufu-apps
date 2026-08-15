@@ -20,8 +20,8 @@
 | 3   | 上位文書突合                | 完了   | 2026-08-14 | 矛盾なし。context への追記は本 spec の計画的な更新             |
 | 4   | 論点整理                    | 完了   | 2026-08-14 | D1〜D9 を起票。clarify で 1 件ずつ確定                         |
 | 5   | 論点解決                    | 完了   | 2026-08-15 | D1〜D9 を確定。設計上の未決ゼロ (U1 は実装順序、U2 は運用判断) |
-| 6   | Interface / Routing 設計    | 未着手 |            |                                                                |
-| 7   | Content / Data 設計         | 未着手 |            |                                                                |
+| 6   | Interface / Routing 設計    | 進行中 | 2026-08-15 | clarify の確定内容を反映済。diagram / track phase で確定       |
+| 7   | Content / Data 設計         | 進行中 | 2026-08-15 | clarify の確定内容を反映済。diagram / track phase で確定       |
 | 8   | Performance / Security 設計 | 未着手 |            |                                                                |
 | 9   | Test / Metrics 設計         | 未着手 |            |                                                                |
 | 10  | 実装分割                    | 未着手 |            |                                                                |
@@ -128,18 +128,18 @@ EARS 風の振る舞い。観測手段が定義できるものだけを本 spec 
 
 要求定義の業務ルール #1 (判断は現規模の実測に基づく) に対応する棚卸し。論点の判断材料とする。
 
-| 対象                    | 実測値                                                           |
-| ----------------------- | ---------------------------------------------------------------- |
-| E2E ファイル数          | 1 (`e2e/corporate-site/smoke.spec.ts`)                           |
-| E2E テスト数            | 5                                                                |
-| E2E のセレクタ内訳      | `getByTestId` 24 / `getByText` 6 / `locator()` 5 / `getByRole` 3 |
-| `data-testid` 定義箇所  | 20                                                               |
-| stories 数              | 29 (`packages/ui` 11 / `apps/corporate-site` 17 / fixture 1)     |
-| `play` 関数を持つ story | 0                                                                |
-| React island            | **0** (`client:*` ディレクティブの使用箇所なし)                  |
-| CI に載っているもの     | `lint` / `test`                                                  |
-| CI に載っていないもの   | `typecheck` / `build` / `knip` / `depcruise` / `e2e`             |
-| lefthook pre-commit     | `protected-branch` / `format` / `repo-analysis` / `lint`         |
+| 対象                    | 実測値                                                                                         |
+| ----------------------- | ---------------------------------------------------------------------------------------------- |
+| E2E ファイル数          | 1 (`e2e/corporate-site/smoke.spec.ts`)                                                         |
+| E2E テスト数            | 5                                                                                              |
+| E2E のセレクタ内訳      | `getByTestId` 24 / `getByText` 6 / `locator()` 5 / `getByRole` 3                               |
+| `data-testid` 定義箇所  | 20                                                                                             |
+| stories 数              | 29 (`packages/ui` 11 / `apps/corporate-site` 17 / fixture 1)。**VRT 対象は fixture を除く 28** |
+| `play` 関数を持つ story | 0                                                                                              |
+| React island            | **0** (`client:*` ディレクティブの使用箇所なし)                                                |
+| CI に載っているもの     | `lint` / `test`                                                                                |
+| CI に載っていないもの   | `typecheck` / `build` / `knip` / `depcruise` / `e2e`                                           |
+| lefthook pre-commit     | `protected-branch` / `format` / `repo-analysis` / `lint`                                       |
 
 この実測から、要求定義の決定事項に**前提のずれ**が 2 件ある。D1 / D2 で扱う。
 
@@ -200,10 +200,10 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 ローカル検証で撮った baseline は破棄前提とし、正となる baseline は #47 完了後に CI 環境で撮り直す。
 出典: [plugin README](https://github.com/reg-viz/reg-suit/blob/master/packages/reg-publish-s3-plugin/README.md) / [issue #162](https://github.com/reg-viz/reg-suit/issues/162) / [R2 S3 API compatibility](https://developers.cloudflare.com/r2/api/s3/api/)
 
-| 系統                | 撮影対象                                 | 保管先                                                    |
-| ------------------- | ---------------------------------------- | --------------------------------------------------------- |
-| reg-suit + storycap | story (`packages/ui` 11 + セクション 17) | **#33: ローカル S3 互換 (Docker、破棄前提) → #47 後: R2** |
-| Playwright          | 3 route × 2 viewport                     | リポジトリ (Playwright 既定)                              |
+| 系統                | 撮影対象                                           | 保管先                                                    |
+| ------------------- | -------------------------------------------------- | --------------------------------------------------------- |
+| reg-suit + storycap | story 28 件 (`packages/ui` 11 + corporate-site 17) | **#33: ローカル S3 互換 (Docker、破棄前提) → #47 後: R2** |
+| Playwright          | 3 route × 2 viewport                               | リポジトリ (Playwright 既定)                              |
 
 - R2 の資格情報は secret として扱い、置き場は `context/infrastructure.md` に従う (#47 で確定)
 - Playwright 側の baseline は Git 管理されるため、差分が PR レビューに乗る
@@ -238,7 +238,7 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 | データ                  | 内容                        | 置き場                                                 |
 | ----------------------- | --------------------------- | ------------------------------------------------------ |
-| story の baseline 画像  | 29 story 相当               | #33: ローカル S3 互換 (Docker、破棄前提) → #47 後: R2  |
+| story の baseline 画像  | 28 story (fixture は除く)   | #33: ローカル S3 互換 (Docker、破棄前提) → #47 後: R2  |
 | route の baseline 画像  | 3 route × 2 viewport = 6 枚 | リポジトリ (Git 管理)                                  |
 | reg-suit の差分レポート | 差分画像と判定結果          | story の baseline と同じ保管先                         |
 | Playwright の差分成果物 | 差分画像                    | CI の artifact / ローカル出力 (リポジトリには残さない) |
@@ -328,7 +328,7 @@ sequenceDiagram
 | P1b   | `e2e` / `corporate-site` | Playwright `toHaveScreenshot` で 3 route × 2 viewport の baseline 確立     | D4        |
 | P2    | `core`                   | CI のジョブ構成整理と `.github/workflows/` 実装                            | D6〜D9    |
 | P3    | `e2e`                    | Page Object と locator 規約の骨組み                                        | D2 / D5   |
-| P4    | `ui` / `e2e` / `context` | 規約の `context/` 反映と ADR 起票                                          | P1a〜P3   |
+| P4    | `core`                   | 規約の `context/` への反映と ADR 起票                                      | P1a〜P3   |
 | P5    | `core` / `ui`            | #47 完了後: endpoint を R2 へ差し替え、story 側 VRT を CI へ載せる         | P1a / #47 |
 
 ### prompts 生成方針
@@ -359,7 +359,7 @@ sequenceDiagram
   - トレードオフ: 実行系と baseline が 2 系統になり保守コストが増える。route を story 化して 1 系統に寄せる案は、ページを story 化する実装コストと二重管理が発生するため却下した
   - **改訂 (2026-08-15)**: #33 の実装範囲は **ローカルの S3 互換ストレージ (Docker) を相手にした仕組み検証まで**とする。R2 バケットの作成・secret 管理・CI からの結線は #47 へ送る。`sdkOptions.endpoint` の差し替えだけでローカルから R2 へ移行できるため、パイプラインの構築を #47 の完了前に進められる
   - **実装順序の制約**: P1a (story 側) の CI 稼働は #47 の完了後。P1b (route 側) は baseline が Git 管理のため #47 に依存せず単独で完結する
-  - **検証済 (2026-08-15)**: `reg-publish-s3-plugin` は `sdkOptions` を `S3Client` のコンストラクタへ渡す設計のため R2 で動作する。代替保管先は不要と判断した。実装時に必要な設定は下記 3 点
+  - **追記 (2026-08-15)**: `reg-publish-s3-plugin` は `sdkOptions` を `S3Client` のコンストラクタへ渡す設計のため R2 で動作することを確認した。代替保管先は不要と判断した。実装時に必要な設定 3 点は `## 機能仕様` の `### Content / Assets` に記載している
 
 - **D3: VRT を `context/testing.md` の責務分担で、Unit test / E2E と並ぶ独立した第 3 種別として立てる。**
   - 根拠: D4 で story 系統 (reg-suit + storycap) と route 系統 (Playwright) の 2 つを持つため、E2E の一部として書くと Storybook 基盤側が収まらず、Storybook の gate として書くと Playwright 側が収まらない
@@ -450,11 +450,12 @@ sequenceDiagram
 
 ## レビュー
 
-| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                               | 対応                                                                          |
-| ---------- | ------------------------ | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| 2026-08-15 | NEEDS_WORK               | 1 回目。指摘 10 件 (上位文書からの委譲取りこぼし / D4・D8・D9 の未決扱い)              | 8 件反映。**指摘 4 (project.yml) と 8 (変更履歴) は置換が失敗し未反映だった** |
-| 2026-08-15 | NEEDS_WORK               | 2 回目。指摘 8 件 (ADR-0001 との衝突未記載 / D8 目標値の記述不整合 / 前回未反映分)     | 全 8 件反映済 (各置換を検証済み)                                              |
-| 2026-08-15 | NEEDS_WORK               | 3 回目。指摘 6 件 (確定内容が下流節へ未反映 / Phase 名の不整合 / review.md の追補漏れ) | 全 6 件反映済                                                                 |
+| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                                                     | 対応                                                                          |
+| ---------- | ------------------------ | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| 2026-08-15 | NEEDS_WORK               | 1 回目。指摘 10 件 (上位文書からの委譲取りこぼし / D4・D8・D9 の未決扱い)                                    | 8 件反映。**指摘 4 (project.yml) と 8 (変更履歴) は置換が失敗し未反映だった** |
+| 2026-08-15 | NEEDS_WORK               | 2 回目。指摘 8 件 (ADR-0001 との衝突未記載 / D8 目標値の記述不整合 / 前回未反映分)                           | 全 8 件反映済 (各置換を検証済み)                                              |
+| 2026-08-15 | NEEDS_WORK               | 3 回目。指摘 6 件 (確定内容が下流節へ未反映 / Phase 名の不整合 / review.md の追補漏れ)                       | 全 6 件反映済                                                                 |
+| 2026-08-15 | NEEDS_WORK               | 4 回目。指摘 5 件 (後日追記の語彙違反 / 参照方向 / story 枚数の不一致 / P4 の target / フェーズ状況の未同期) | 全 5 件反映済                                                                 |
 
 ## 変更履歴
 
@@ -470,6 +471,8 @@ sequenceDiagram
 | 2026-08-15 | spec-lifecycle | D4 / D8 を改訂。#33 の VRT はローカル S3 互換ストレージでの仕組み検証までとし、R2 結線と story 側の CI 稼働を #47 後の P5 へ分離 |
 | 2026-08-15 | spec-review    | clarify gate 3 回目 NEEDS_WORK (指摘 6 件)。上位文書整合 / 実装対象 / EARS は PASS                                               |
 | 2026-08-15 | spec-lifecycle | 3 回目の指摘 6 件に対応。確定内容を下流節へ反映し Phase 名と依存を整理、ADR-0001 との関係を現在形へ修正                          |
+| 2026-08-15 | spec-review    | clarify gate 4 回目 NEEDS_WORK (指摘 5 件)。5 観点が PASS、残るは template 必須節のみ                                            |
+| 2026-08-15 | spec-lifecycle | 4 回目の指摘 5 件に対応。後日追記の語彙を `追記` へ統一、VRT 対象 story を 28 件に統一、P4 の target を `core` へ                |
 
 ## 備考
 
