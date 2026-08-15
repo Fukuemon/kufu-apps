@@ -5,7 +5,7 @@
 - Issue: `#33`
 - ステータス: `In Progress`
 - 作成日: 2026-08-14
-- 更新日: 2026-08-14
+- 更新日: 2026-08-15
 - Branch: `feature/33`
 - Owner: Fukuemon
 
@@ -19,7 +19,7 @@
 | 2   | 下書き                      | 完了   | 2026-08-14 | template の必須節を充足                            |
 | 3   | 上位文書突合                | 完了   | 2026-08-14 | 矛盾なし。context への追記は本 spec の計画的な更新 |
 | 4   | 論点整理                    | 完了   | 2026-08-14 | D1〜D9 を起票。clarify で 1 件ずつ確定             |
-| 5   | 論点解決                    | 未着手 |            |                                                    |
+| 5   | 論点解決                    | 完了   | 2026-08-15 | D1〜D9 を確定。未決ゼロ                            |
 | 6   | Interface / Routing 設計    | 未着手 |            |                                                    |
 | 7   | Content / Data 設計         | 未着手 |            |                                                    |
 | 8   | Performance / Security 設計 | 未着手 |            |                                                    |
@@ -222,8 +222,8 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 ### Performance
 
-- CI 実行時間の目標値を D8 で決め、VRT の撮影枚数と E2E の CI 実行可否をその目標から逆算する
-- Turbo キャッシュの remote 化 (D9) は CI 実行時間に直接効くため、目標値とセットで判断する
+- CI 実行時間は D6 / D7 / D8 適用後に実測し、その値を見て remote cache の要否を判断する (D9)。目標値を先に置かず実測を先行させる
+- Turbo キャッシュの remote 化 (D9) は実測値が許容範囲を超えた場合にのみ検討する
 - テスト都合でプロダクションコードに待機処理や不要な island を追加しない (`decision_priority` 1 位を損なわない)
 
 ### Security / Privacy
@@ -306,17 +306,17 @@ sequenceDiagram
 
 ## 設計時の論点
 
-| #   | 論点                                                                            | 決定候補                                                                                      | 決定              |
-| --- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------- |
-| D1  | play テストの対象が現時点で `packages/ui` のみである事実をどう扱うか            | (a) `packages/ui` 限定で確定し island は #26 で追加 / (b) island 前提の基準だけ先に決めておく | **(a) 確定**      |
-| D2  | E2E 5 テストの規模で page 単位 Page Object を導入するか (要求では導入決定済み)  | (a) 決定どおり導入 / (b) locator 規約のみ先行し POM はジャーニー実装時 / (c) 粒度を下げる     | **(a) 確定**      |
-| D3  | VRT を `context/testing.md` の責務分担でどの種別に位置づけるか                  | (a) E2E の一部 / (b) 独立した第 3 種別 / (c) Storybook 側の gate                              | **(b) 確定**      |
-| D4  | VRT の手段                                                                      | (a) Playwright `toHaveScreenshot` / (b) reg-suit + storycap / (c) 併用                        | **(c) 併用 確定** |
-| D5  | locator 規約 (`getByRole` 優先か `data-testid` 優先か)。現状は testid が 24/38  | (a) `getByRole` 優先へ寄せる / (b) `data-testid` を正式規約にする / (c) 用途で使い分ける      | **(c) 確定**      |
-| D6  | `typecheck` / `build` / `knip` / `depcruise` をどこまで CI に載せるか (C-1)     | (a) 全部載せる / (b) pre-commit と重複させず CI のみ / (c) 現状維持                           | **(a) 確定**      |
-| D7  | E2E を CI で回すか (C-2)                                                        | (a) CI で回す / (b) Pages preview で手動 / (c) 主要導線のみ CI                                | **(a) 確定**      |
-| D8  | VRT を CI で回すか、ローカル運用に留めるか (C-3) と CI 実行時間の目標           | (a) CI / (b) ローカル / (c) PR ラベル等での opt-in                                            | 未決              |
-| D9  | Turbo キャッシュを remote 化するか (C-4) と required status checks の要否 (C-5) | 現状 remote 無効。required checks は private repo のため設定状況が未確認                      | 未決              |
+| #   | 論点                                                                            | 決定候補                                                                                      | 決定                    |
+| --- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------- |
+| D1  | play テストの対象が現時点で `packages/ui` のみである事実をどう扱うか            | (a) `packages/ui` 限定で確定し island は #26 で追加 / (b) island 前提の基準だけ先に決めておく | **(a) 確定**            |
+| D2  | E2E 5 テストの規模で page 単位 Page Object を導入するか (要求では導入決定済み)  | (a) 決定どおり導入 / (b) locator 規約のみ先行し POM はジャーニー実装時 / (c) 粒度を下げる     | **(a) 確定**            |
+| D3  | VRT を `context/testing.md` の責務分担でどの種別に位置づけるか                  | (a) E2E の一部 / (b) 独立した第 3 種別 / (c) Storybook 側の gate                              | **(b) 確定**            |
+| D4  | VRT の手段                                                                      | (a) Playwright `toHaveScreenshot` / (b) reg-suit + storycap / (c) 併用                        | **(c) 併用 確定**       |
+| D5  | locator 規約 (`getByRole` 優先か `data-testid` 優先か)。現状は testid が 24/38  | (a) `getByRole` 優先へ寄せる / (b) `data-testid` を正式規約にする / (c) 用途で使い分ける      | **(c) 確定**            |
+| D6  | `typecheck` / `build` / `knip` / `depcruise` をどこまで CI に載せるか (C-1)     | (a) 全部載せる / (b) pre-commit と重複させず CI のみ / (c) 現状維持                           | **(a) 確定**            |
+| D7  | E2E を CI で回すか (C-2)                                                        | (a) CI で回す / (b) Pages preview で手動 / (c) 主要導線のみ CI                                | **(a) 確定**            |
+| D8  | VRT を CI で回すか、ローカル運用に留めるか (C-3) と CI 実行時間の目標           | (a) CI / (b) ローカル / (c) PR ラベル等での opt-in                                            | **(a) 確定**            |
+| D9  | Turbo キャッシュを remote 化するか (C-4) と required status checks の要否 (C-5) | 現状 remote 無効。required checks は private repo のため設定状況が未確認                      | **実測後に判断 (確定)** |
 
 ## 解決済みの論点
 
@@ -350,6 +350,16 @@ sequenceDiagram
   - 根拠: 現在 5 テストと小さく、ジャーニー網羅で増やす前に土台を作れる。`context/` にある `127.0.0.1:4321` の bind 制約はローカル sandbox 固有で、Actions の runner には当てはまらない
   - トレードオフ: Playwright ブラウザの導入時間が加わる。Cloudflare Pages preview に対して回す案は、preview URL の取得と待機で構成が複雑になるため却下した
 
+- **D8: VRT の撮影と判定を CI 環境に一本化する。**
+  - 根拠: フォントのレンダリング差により、ローカル (macOS) と CI (Linux runner) で撮った画像は一致しない。baseline を撮る環境を 1 つに固定しなければ、例外シナリオ #3 の恒常的な差分が必ず起きる
+  - reg-suit の baseline 解決は CI の git 情報に依存するため、CI 一本化が想定運用にも合う
+  - トレードオフ: ローカルで事前確認できず、差分の確認が CI 実行待ちになる。Docker で環境を固定する案は、ローカルでも同じ画像を得られる利点があるが、Docker 依存と実行時間の増加を招くため今回は採らない
+
+- **D9: Turbo の remote cache と required status checks は、D6 / D7 適用後の CI 実行時間を実測してから判断する。**
+  - 根拠: 要求の業務ルール #1 (判断は現規模の実測に基づく) に従う。remote cache は Vercel のサービスかセルフホストが必要で、いずれも新しい依存になるため、必要性を実測で示してから入れる
+  - required status checks は private repo のため現状設定を `gh api` で取得できない (403)。ジョブ構成確定後に現状を確認してから設定する
+  - **実測の完了条件**: D6 / D7 を適用した CI が develop 向け PR で 1 回以上実行され、総実行時間が記録されていること
+
 - **D2: page 単位の Page Object を、要求の決定どおり導入する。**
   - 根拠: E2E は現在 1 ファイル 5 テストだが、本 spec でジャーニー網羅へ広げる方針 (要求の決定事項 #3) が確定しており、テストが増える前に型を用意する方が移行コストが小さい
   - 規模は 3 route に対応する 3 クラス程度に収まる
@@ -357,9 +367,12 @@ sequenceDiagram
 
 ## 未確定事項
 
-- D1〜D9 が未決。clarify phase で 1 件ずつ確定する
-- develop の branch protection の現在の設定 (required status checks の有無) が未確認。
-  private repo のため `gh api` が 403 を返す。D9 の判断前に Web UI 等で確認が必要
+未確定事項はゼロ。D1〜D9 はすべて確定した。
+
+実装フェーズで確認が必要な事項 (論点ではなく作業手順):
+
+- reg-suit の Cloudflare R2 向け publish plugin の対応状況 (S3 互換 API で動く前提だが未検証)
+- develop の branch protection の現在の設定。private repo のため `gh api` が 403 を返すため、Web UI 等で確認する (D9 の実測後)
 
 ## 上位資料からの変更点
 
