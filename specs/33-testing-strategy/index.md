@@ -22,8 +22,8 @@
 | 5   | 論点解決                    | 完了   | 2026-08-15 | D1〜D9 を確定。設計上の未決ゼロ (U1 は実装順序、U2 は運用判断) |
 | 6   | Interface / Routing 設計    | 進行中 | 2026-08-15 | clarify の確定内容を反映済。diagram / track phase で確定       |
 | 7   | Content / Data 設計         | 進行中 | 2026-08-15 | clarify の確定内容を反映済。diagram / track phase で確定       |
-| 8   | Performance / Security 設計 | 未着手 |            |                                                                |
-| 9   | Test / Metrics 設計         | 未着手 |            |                                                                |
+| 8   | Performance / Security 設計 | 進行中 | 2026-08-15 | clarify の確定内容を反映済。diagram / track phase で確定       |
+| 9   | Test / Metrics 設計         | 進行中 | 2026-08-15 | clarify の確定内容を反映済。diagram / track phase で確定       |
 | 10  | 実装分割                    | 未着手 |            |                                                                |
 | 11  | レビュー済                  | 未着手 |            |                                                                |
 
@@ -128,18 +128,19 @@ EARS 風の振る舞い。観測手段が定義できるものだけを本 spec 
 
 要求定義の業務ルール #1 (判断は現規模の実測に基づく) に対応する棚卸し。論点の判断材料とする。
 
-| 対象                    | 実測値                                                                                         |
-| ----------------------- | ---------------------------------------------------------------------------------------------- |
-| E2E ファイル数          | 1 (`e2e/corporate-site/smoke.spec.ts`)                                                         |
-| E2E テスト数            | 5                                                                                              |
-| E2E のセレクタ内訳      | `getByTestId` 24 / `getByText` 6 / `locator()` 5 / `getByRole` 3                               |
-| `data-testid` 定義箇所  | 20                                                                                             |
-| stories 数              | 29 (`packages/ui` 11 / `apps/corporate-site` 17 / fixture 1)。**VRT 対象は fixture を除く 28** |
-| `play` 関数を持つ story | 0                                                                                              |
-| React island            | **0** (`client:*` ディレクティブの使用箇所なし)                                                |
-| CI に載っているもの     | `lint` / `test`                                                                                |
-| CI に載っていないもの   | `typecheck` / `build` / `knip` / `depcruise` / `e2e`                                           |
-| lefthook pre-commit     | `protected-branch` / `format` / `repo-analysis` / `lint`                                       |
+| 対象                       | 実測値                                                                            |
+| -------------------------- | --------------------------------------------------------------------------------- |
+| E2E ファイル数             | 1 (`e2e/corporate-site/smoke.spec.ts`)                                            |
+| E2E テスト数               | 5                                                                                 |
+| E2E のセレクタ内訳         | `getByTestId` 24 / `getByText` 6 / `locator()` 5 / `getByRole` 3                  |
+| `data-testid` 定義箇所     | 20                                                                                |
+| story ファイル数           | 29 (`packages/ui` 11 / `apps/corporate-site` 17 / fixture 1)                      |
+| **story 数 (export 総数)** | **81** (`packages/ui` 47 / `apps/corporate-site` 34)。fixture は VRT 対象外       |
+| `play` 関数を持つ story    | 0                                                                                 |
+| React island               | **0** (`client:*` ディレクティブの使用箇所なし)                                   |
+| CI に載っているもの        | `lint` / `test`                                                                   |
+| CI に載っていないもの      | `typecheck` / `build` / `knip` / `depcruise` / `e2e`                              |
+| lefthook pre-commit        | `protected-branch` / `format` / `repo-analysis` (= `depcruise` + `knip`) / `lint` |
 
 この実測から、要求定義の決定事項に**前提のずれ**が 2 件ある。D1 / D2 で扱う。
 
@@ -200,10 +201,14 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 ローカル検証で撮った baseline は破棄前提とし、正となる baseline は #47 完了後に CI 環境で撮り直す。
 出典: [plugin README](https://github.com/reg-viz/reg-suit/blob/master/packages/reg-publish-s3-plugin/README.md) / [issue #162](https://github.com/reg-viz/reg-suit/issues/162) / [R2 S3 API compatibility](https://developers.cloudflare.com/r2/api/s3/api/)
 
-| 系統                | 撮影対象                                           | 保管先                                                    |
-| ------------------- | -------------------------------------------------- | --------------------------------------------------------- |
-| reg-suit + storycap | story 28 件 (`packages/ui` 11 + corporate-site 17) | **#33: ローカル S3 互換 (Docker、破棄前提) → #47 後: R2** |
-| Playwright          | 3 route × 2 viewport                               | リポジトリ (Playwright 既定)                              |
+| 系統                | 撮影対象                                                                    | 保管先                                                    |
+| ------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------- |
+| reg-suit + storycap | **81 story** (`packages/ui` 47 + corporate-site 34) × 既定 viewport = 81 枚 | **#33: ローカル S3 互換 (Docker、破棄前提) → #47 後: R2** |
+| Playwright          | 3 route × 2 viewport = 6 枚                                                 | リポジトリ (Playwright 既定)                              |
+
+**viewport の適用範囲**: 要求の「desktop / mobile の 2 viewport」は **route 側に適用する**。story 側は既定 viewport 1 種で撮る
+(コンポーネント単体の崩れは viewport 非依存であることが多く、81 story を 2 倍にすると実行時間と baseline 保守が見合わないため)。
+レスポンシブ挙動そのものを持つ story には個別に viewport 指定を追加できる余地を残す。
 
 - R2 の資格情報は secret として扱い、置き場は `context/infrastructure.md` に従う (#47 で確定)
 - Playwright 側の baseline は Git 管理されるため、差分が PR レビューに乗る
@@ -236,12 +241,12 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 ### 保存・管理するデータ
 
-| データ                  | 内容                        | 置き場                                                 |
-| ----------------------- | --------------------------- | ------------------------------------------------------ |
-| story の baseline 画像  | 28 story (fixture は除く)   | #33: ローカル S3 互換 (Docker、破棄前提) → #47 後: R2  |
-| route の baseline 画像  | 3 route × 2 viewport = 6 枚 | リポジトリ (Git 管理)                                  |
-| reg-suit の差分レポート | 差分画像と判定結果          | story の baseline と同じ保管先                         |
-| Playwright の差分成果物 | 差分画像                    | CI の artifact / ローカル出力 (リポジトリには残さない) |
+| データ                  | 内容                             | 置き場                                                 |
+| ----------------------- | -------------------------------- | ------------------------------------------------------ |
+| story の baseline 画像  | 81 枚 (81 story × 既定 viewport) | #33: ローカル S3 互換 (Docker、破棄前提) → #47 後: R2  |
+| route の baseline 画像  | 3 route × 2 viewport = 6 枚      | リポジトリ (Git 管理)                                  |
+| reg-suit の差分レポート | 差分画像と判定結果               | story の baseline と同じ保管先                         |
+| Playwright の差分成果物 | 差分画像                         | CI の artifact / ローカル出力 (リポジトリには残さない) |
 
 ### コンテンツ配置 / package / route
 
@@ -293,12 +298,12 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 ### 計測指標
 
-| 指標                     | 目的                                               |
-| ------------------------ | -------------------------------------------------- |
-| CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする |
-| VRT の撮影枚数           | 実行時間と保守コストの見積もり                     |
-| VRT の連続実行での差分数 | flake の有無 (目標: 0)                             |
-| E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                     |
+| 指標                     | 目的                                                                      |
+| ------------------------ | ------------------------------------------------------------------------- |
+| CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする                        |
+| VRT の撮影枚数           | 実行時間と保守コストの見積もり。初期値は story 81 枚 + route 6 枚 = 87 枚 |
+| VRT の連続実行での差分数 | flake の有無 (目標: 0)                                                    |
+| E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                                            |
 
 ## フロー / シーケンス
 
@@ -340,9 +345,12 @@ sequenceDiagram
 ## 設計時の論点
 
 設計フェーズへ持ち越す残課題は**なし**。D1〜D9 は clarify phase で全件確定し、`## 解決済みの論点` へ移した
+
 (検討した選択肢と却下理由も同節の子箇条書きに記録している)。
 
-実装順序の依存と実装後の運用判断は `## 未確定事項` の U1 / U2 で管理する。
+実装順序の依存と実装後の運用判断は `
+
+## 未確定事項` の U1 / U2 で管理する。
 
 ## 解決済みの論点
 
@@ -352,7 +360,7 @@ sequenceDiagram
   - トレードオフ / 却下した代替案: island 向け基準も今決める案は、#26 で対象が具体化してからの方が精度が出るため却下した。play の導入自体を #26 まで保留する案は、既存 11 コンポーネントの interaction が無検証のまま残るため却下した
 
 - **D4: story は reg-suit + storycap、3 route は Playwright `toHaveScreenshot` で撮る併用構成とする。**
-  - 根拠: ADR-0012 が「デザイン正本 = 実装 + Storybook」と定めており、story (`packages/ui` 11 + corporate-site セクション 17) が VRT の主対象として最も自然
+  - 根拠: ADR-0012 が「デザイン正本 = 実装 + Storybook」と定めており、story (`packages/ui` 47 + corporate-site 34 = 81 story) が VRT の主対象として最も自然
   - storycap は story しか撮れず、要求の受け入れ基準にある 3 route × 2 viewport を満たせないため、route 側は既存 Playwright 基盤で補う
   - baseline の保管先は route 側 (Playwright) が Git 管理、story 側 (reg-suit) が **Cloudflare R2**
   - R2 は Cloudflare リソースであり ADR-0001 の境界規約に関わるが、**#47 で infra を monorepo へ集約する方針が確定した**ため、R2 は #47 の Terraform 管理下で用意される (2026-08-15, ユーザー)
@@ -456,6 +464,7 @@ sequenceDiagram
 | 2026-08-15 | NEEDS_WORK               | 2 回目。指摘 8 件 (ADR-0001 との衝突未記載 / D8 目標値の記述不整合 / 前回未反映分)                           | 全 8 件反映済 (各置換を検証済み)                                              |
 | 2026-08-15 | NEEDS_WORK               | 3 回目。指摘 6 件 (確定内容が下流節へ未反映 / Phase 名の不整合 / review.md の追補漏れ)                       | 全 6 件反映済                                                                 |
 | 2026-08-15 | NEEDS_WORK               | 4 回目。指摘 5 件 (後日追記の語彙違反 / 参照方向 / story 枚数の不一致 / P4 の target / フェーズ状況の未同期) | 全 5 件反映済                                                                 |
+| 2026-08-15 | NEEDS_WORK               | 5 回目。指摘 2 件 (story ファイル数と story 数の混同 / フェーズ 8・9 の未同期) + 補足 2 件                   | 全件反映済                                                                    |
 
 ## 変更履歴
 
@@ -473,6 +482,8 @@ sequenceDiagram
 | 2026-08-15 | spec-lifecycle | 3 回目の指摘 6 件に対応。確定内容を下流節へ反映し Phase 名と依存を整理、ADR-0001 との関係を現在形へ修正                          |
 | 2026-08-15 | spec-review    | clarify gate 4 回目 NEEDS_WORK (指摘 5 件)。5 観点が PASS、残るは template 必須節のみ                                            |
 | 2026-08-15 | spec-lifecycle | 4 回目の指摘 5 件に対応。後日追記の語彙を `追記` へ統一、VRT 対象 story を 28 件に統一、P4 の target を `core` へ                |
+| 2026-08-15 | spec-review    | clarify gate 5 回目 NEEDS_WORK (指摘 2 件)。VRT 対象を 28 と誤認していたことが判明                                               |
+| 2026-08-15 | spec-lifecycle | 5 回目の指摘に対応。VRT 対象を実測の 81 story へ訂正し viewport の適用範囲を明記                                                 |
 
 ## 備考
 
