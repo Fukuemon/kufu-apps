@@ -311,19 +311,76 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 ## フロー / シーケンス
 
-(diagram phase で作成する。現時点では未作成)
+本 spec の「操作主体」は開発者・AI エージェント・CI であり、描く対象は **UI を変更してから CI で検証されるまでの流れ**である
+(`## 要件の解釈` の対象ユーザー / 操作主体)。アプリのエンドユーザー操作は本 spec の対象外。
 
 ### Flowchart (ユーザー操作起点)
 
 ```mermaid
 flowchart TD
+    Change["開発者が UI を変更する"] --> Commit["commit する"]
+    Commit --> Hook{"lefthook pre-commit<br/>format / lint / repo-analysis"}
+    Hook -->|失敗| FixLocal["ローカルで修正する"]
+    FixLocal --> Commit
+    Hook -->|成功| Push["push して PR を作成する"]
+    Push --> CI["CI がジョブを実行する"]
+    CI --> Static{"lint / test / typecheck / build<br/>knip / depcruise / e2e"}
+    Static -->|失敗| FixCI["修正して push する"]
+    FixCI --> CI
+    Static -->|成功| RunVRT["VRT を実行する<br/>story 81 枚 + route 6 枚"]
+    RunVRT --> Diff{"baseline との差分"}
+    Diff -->|"0 件"| Green["CI 成功"]
+    Diff -->|"1 件以上"| Judge{"差分の性質を判定する"}
+    Judge -->|"意図した UI 変更"| UpdateBase["baseline を更新して push する"]
+    UpdateBase --> CI
+    Judge -->|"意図しない視覚崩れ"| FixImpl["実装を修正して push する"]
+    FixImpl --> CI
+    Judge -->|"環境差による差分"| Escalate["マスク → 撮影環境の固定<br/>→ 閾値緩和 (D10)"]
+    Escalate --> CI
+    Green --> Merge["レビューして merge する"]
 ```
 
 ### Sequence
 
+baseline ストレージは 2 系統ある (D4)。story 側は S3 互換ストレージ (#33 はローカル Docker、#47 後は R2)、
+route 側はリポジトリ (Git 管理) で、下図の `Store` は前者を指す。
+
 ```mermaid
 sequenceDiagram
+    actor Dev as 開発者
+    participant Hook as lefthook
+    participant CI as CI
+    participant Runner as VRT ランナー
+    participant Store as baseline ストレージ
+
+    Dev->>Hook: commit
+    Hook-->>Dev: format / lint / repo-analysis の結果
+    Dev->>CI: push して PR を作成
+    CI->>CI: lint / test / typecheck / build / knip / depcruise / e2e
+    CI->>Runner: VRT を実行
+    Runner->>Store: baseline を取得
+    Store-->>Runner: 前回の snapshot
+    Runner->>Runner: 撮影して比較 (許容 diff 0)
+    alt 差分 0 件
+        Runner-->>CI: 成功
+        CI-->>Dev: PR チェックを緑にする
+    else 差分あり
+        Runner-->>CI: 失敗 + 差分画像
+        CI-->>Dev: PR チェックを赤にする
+        Dev->>Dev: 意図した変更か判定する
+        opt 意図した変更だった場合
+            Dev->>Store: baseline を更新する
+            Dev->>CI: 再実行させる
+        end
+    end
 ```
+
+図と機能仕様の整合:
+
+- 分岐「差分あり → 赤」は D12 (ブロッキング扱い) と `## 要件の解釈` の EARS 5 件目に対応する
+- 「許容 diff 0」は D10 に対応する
+- 環境差のエスカレーション順は `### Fallback` の 4 段と一致する
+- lefthook と CI の重複実行は D6 の「意図的な二重化」に対応する
 
 ## 実装分割
 
@@ -498,7 +555,9 @@ sequenceDiagram
 | 2026-08-15 | NEEDS_WORK               | 7 回目。指摘 2 件 (許容 diff の決定が spec 内に存在しない / Fallback が存在しない目標値を参照)                                    | 全 2 件反映済                                                                 |
 | 2026-08-15 | NEEDS_WORK               | 8 回目。指摘 2 件 (ジャーニー定義の欠落 / 差分レポート閲覧経路が未管理) + 補足 2 件                                               | 全件反映済                                                                    |
 | 2026-08-15 | NEEDS_WORK               | 9 回目。指摘 4 件 (Fallback が D12 の却下案を残す / requirements の例外シナリオ未改訂 / D11 の根拠の事実誤り / フェーズ 4 の日付) | 3 件反映済。requirements の改訂は 10 回目で実施                               |
+| 2026-08-15 | —                        | 10 回目の指摘は解消済み。**PASS を確認する再レビューは未実施**のまま、ユーザー判断で clarify gate を通過し diagram phase へ進んだ | ユーザー判断                                                                  |
 | 2026-08-15 | NEEDS_WORK               | 10 回目。指摘 2 件 (9 回目の requirements 改訂が未反映 / 実体のない改訂を反映済と記録)                                            | 全 2 件反映済 (本文を読み返して確認)                                          |
+| 2026-08-15 | —                        | 10 回目の指摘は解消済み。**PASS を確認する再レビューは未実施**のまま、ユーザー判断で clarify gate を通過し diagram phase へ進んだ | ユーザー判断                                                                  |
 
 ## 変更履歴
 
@@ -528,6 +587,7 @@ sequenceDiagram
 | 2026-08-15 | spec-lifecycle | 9 回目の指摘に対応。Fallback をエスカレーション順へ、D11 の根拠を実態へ修正                                                      |
 | 2026-08-15 | spec-review    | clarify gate 10 回目 NEEDS_WORK (指摘 2 件)。9 回目の requirements 改訂が実際には未反映だったことが判明                          |
 | 2026-08-15 | spec-lifecycle | requirements の例外シナリオ #3 を実際に改訂し、本文を読み返して spec との一致を確認                                              |
+| 2026-08-15 | spec-lifecycle | diagram: Flowchart と Sequence を生成。Mermaid のパースをブラウザで検証し 2 図とも OK を確認                                     |
 
 ## 備考
 
