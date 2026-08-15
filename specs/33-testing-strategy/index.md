@@ -289,12 +289,13 @@ sequenceDiagram
 
 (論点確定後に track / prompts phase で確定する。現時点は暫定)
 
-| Phase | 対象                     | 概要                                                 | 依存    |
-| ----- | ------------------------ | ---------------------------------------------------- | ------- |
-| P1    | `e2e` / `corporate-site` | VRT の導入 (手段実装・対象セット撮影・baseline 確立) | D3 / D4 |
-| P2    | `core`                   | CI のジョブ構成整理と `.github/workflows/` 実装      | D6〜D9  |
-| P3    | `e2e`                    | Page Object と locator 規約の骨組み                  | D2 / D5 |
-| P4    | `ui` / `e2e` / `context` | 規約の `context/` 反映と ADR 起票                    | P1〜P3  |
+| Phase | 対象                     | 概要                                                                   | 依存    |
+| ----- | ------------------------ | ---------------------------------------------------------------------- | ------- |
+| P1a   | `ui` / `corporate-site`  | storycap + reg-suit の導入、R2 連携、story の baseline 確立            | D4      |
+| P1b   | `e2e` / `corporate-site` | Playwright `toHaveScreenshot` で 3 route × 2 viewport の baseline 確立 | D4      |
+| P2    | `core`                   | CI のジョブ構成整理と `.github/workflows/` 実装                        | D6〜D9  |
+| P3    | `e2e`                    | Page Object と locator 規約の骨組み                                    | D2 / D5 |
+| P4    | `ui` / `e2e` / `context` | 規約の `context/` 反映と ADR 起票                                      | P1〜P3  |
 
 ### prompts 生成方針
 
@@ -358,11 +359,12 @@ sequenceDiagram
 
 ### context への影響
 
-| 対象 doc / 節                                    | 変更内容                                 | 理由                                       |
-| ------------------------------------------------ | ---------------------------------------- | ------------------------------------------ |
-| `context/testing.md` テスト責務の分担            | VRT の種別と責務を追加 (D3 の決定を反映) | 現在 Unit test / E2E の 2 種別しかない     |
-| `context/testing.md`                             | locator 規約と Page Object 規約を追加    | D2 / D5 の決定先                           |
-| `context/engineering.md` Repository Quality Gate | CI とローカル hook の責務分担を追加      | D6 / D7 の決定先。現在 pre-commit のみ記述 |
+| 対象 doc / 節                                    | 変更内容                                                          | 理由                                       |
+| ------------------------------------------------ | ----------------------------------------------------------------- | ------------------------------------------ |
+| `context/testing.md` テスト責務の分担            | VRT の種別と責務を追加 (D3 の決定を反映)                          | 現在 Unit test / E2E の 2 種別しかない     |
+| `context/testing.md`                             | locator 規約と Page Object 規約を追加                             | D2 / D5 の決定先                           |
+| `context/engineering.md` Repository Quality Gate | CI とローカル hook の責務分担を追加                               | D6 / D7 の決定先。現在 pre-commit のみ記述 |
+| `context/infrastructure.md` secret の置き場      | Cloudflare R2 の資格情報と VRT 用バケットを追加 (source: clarify) | D4 で baseline の保管先を R2 に決めたため  |
 
 ### ADR の新規 / 更新
 
