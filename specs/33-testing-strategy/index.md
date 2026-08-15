@@ -169,8 +169,15 @@ EARS 風の振る舞いは [requirements.md](requirements.md) の受け入れ基
 
 ### Content / Assets
 
-- VRT の baseline 画像を成果物として持つ。置き場と更新運用は D4 の手段選択に従って確定する
-- baseline はリポジトリに含めるか外部ストレージに置くかで運用が変わるため、D4 とセットで決める
+VRT の baseline は D4 の決定により **2 系統** を持つ。
+
+| 系統                | 撮影対象                                 | 保管先                       |
+| ------------------- | ---------------------------------------- | ---------------------------- |
+| reg-suit + storycap | story (`packages/ui` 11 + セクション 17) | Cloudflare R2 (S3 互換)      |
+| Playwright          | 3 route × 2 viewport                     | リポジトリ (Playwright 既定) |
+
+- R2 の資格情報は secret として扱い、置き場は `context/infrastructure.md` に従う
+- Playwright 側の baseline は Git 管理されるため、差分が PR レビューに乗る
 
 ### UI Reuse
 
@@ -220,7 +227,8 @@ EARS 風の振る舞いは [requirements.md](requirements.md) の受け入れ基
 ### Security / Privacy
 
 - VRT の baseline 画像に非公開情報を含めない。撮影対象は公開サイトの 3 route と Storybook に限る
-- CI で secret を扱う場合の置き場は `context/infrastructure.md` に従う。本 spec で新たな secret を増やさない
+- **Cloudflare R2 の資格情報という新しい secret が増える** (D4 の帰結)。置き場と権限の絞り方は `context/infrastructure.md` に従い、書き込み権限を VRT 用のバケットに限定する
+- R2 バケットを公開設定にしない。差分レポートの閲覧経路は実装フェーズで決める
 - Turbo の remote cache を採用する場合、キャッシュに含まれる成果物の公開範囲を D9 で確認する
 
 ## Error / Fallback 設計
@@ -295,21 +303,36 @@ sequenceDiagram
 
 ## 設計時の論点
 
-| #   | 論点                                                                            | 決定候補                                                                                      | 決定 |
-| --- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---- |
-| D1  | play テストの対象が現時点で `packages/ui` のみである事実をどう扱うか            | (a) `packages/ui` 限定で確定し island は #26 で追加 / (b) island 前提の基準だけ先に決めておく | 未決 |
-| D2  | E2E 5 テストの規模で page 単位 Page Object を導入するか (要求では導入決定済み)  | (a) 決定どおり導入 / (b) locator 規約のみ先行し POM はジャーニー実装時 / (c) 粒度を下げる     | 未決 |
-| D3  | VRT を `context/testing.md` の責務分担でどの種別に位置づけるか                  | (a) E2E の一部 / (b) 独立した第 3 種別 / (c) Storybook 側の gate                              | 未決 |
-| D4  | VRT の手段                                                                      | (a) Playwright `toHaveScreenshot` / (b) reg-suit + storycap / (c) 併用                        | 未決 |
-| D5  | locator 規約 (`getByRole` 優先か `data-testid` 優先か)。現状は testid が 24/38  | (a) `getByRole` 優先へ寄せる / (b) `data-testid` を正式規約にする / (c) 用途で使い分ける      | 未決 |
-| D6  | `typecheck` / `build` / `knip` / `depcruise` をどこまで CI に載せるか (C-1)     | (a) 全部載せる / (b) pre-commit と重複させず CI のみ / (c) 現状維持                           | 未決 |
-| D7  | E2E を CI で回すか (C-2)                                                        | (a) CI で回す / (b) Pages preview で手動 / (c) 主要導線のみ CI                                | 未決 |
-| D8  | VRT を CI で回すか、ローカル運用に留めるか (C-3) と CI 実行時間の目標           | (a) CI / (b) ローカル / (c) PR ラベル等での opt-in                                            | 未決 |
-| D9  | Turbo キャッシュを remote 化するか (C-4) と required status checks の要否 (C-5) | 現状 remote 無効。required checks は private repo のため設定状況が未確認                      | 未決 |
+| #   | 論点                                                                            | 決定候補                                                                                      | 決定              |
+| --- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------- |
+| D1  | play テストの対象が現時点で `packages/ui` のみである事実をどう扱うか            | (a) `packages/ui` 限定で確定し island は #26 で追加 / (b) island 前提の基準だけ先に決めておく | **(a) 確定**      |
+| D2  | E2E 5 テストの規模で page 単位 Page Object を導入するか (要求では導入決定済み)  | (a) 決定どおり導入 / (b) locator 規約のみ先行し POM はジャーニー実装時 / (c) 粒度を下げる     | **(a) 確定**      |
+| D3  | VRT を `context/testing.md` の責務分担でどの種別に位置づけるか                  | (a) E2E の一部 / (b) 独立した第 3 種別 / (c) Storybook 側の gate                              | 未決              |
+| D4  | VRT の手段                                                                      | (a) Playwright `toHaveScreenshot` / (b) reg-suit + storycap / (c) 併用                        | **(c) 併用 確定** |
+| D5  | locator 規約 (`getByRole` 優先か `data-testid` 優先か)。現状は testid が 24/38  | (a) `getByRole` 優先へ寄せる / (b) `data-testid` を正式規約にする / (c) 用途で使い分ける      | 未決              |
+| D6  | `typecheck` / `build` / `knip` / `depcruise` をどこまで CI に載せるか (C-1)     | (a) 全部載せる / (b) pre-commit と重複させず CI のみ / (c) 現状維持                           | 未決              |
+| D7  | E2E を CI で回すか (C-2)                                                        | (a) CI で回す / (b) Pages preview で手動 / (c) 主要導線のみ CI                                | 未決              |
+| D8  | VRT を CI で回すか、ローカル運用に留めるか (C-3) と CI 実行時間の目標           | (a) CI / (b) ローカル / (c) PR ラベル等での opt-in                                            | 未決              |
+| D9  | Turbo キャッシュを remote 化するか (C-4) と required status checks の要否 (C-5) | 現状 remote 無効。required checks は private repo のため設定状況が未確認                      | 未決              |
 
 ## 解決済みの論点
 
-(clarify phase で確定したものをここへ移す)
+- **D1: play テストの対象は `packages/ui` に限定し、React island 向けの基準は #26 で決める。**
+  - 根拠: `client:*` の使用箇所が 0 件で、corporate-site に island が存在しない。対象が無いものへ基準を先に書くと机上になり、#26 の実装時に作り直しになる
+  - 対象は `packages/ui` の 11 コンポーネント (button / input / select / textarea / form-field / label / tag / badge / separator / definition-row / link-button)
+  - トレードオフ / 却下した代替案: island 向け基準も今決める案は、#26 で対象が具体化してからの方が精度が出るため却下した。play の導入自体を #26 まで保留する案は、既存 11 コンポーネントの interaction が無検証のまま残るため却下した
+
+- **D4: story は reg-suit + storycap、3 route は Playwright `toHaveScreenshot` で撮る併用構成とする。**
+  - 根拠: ADR-0012 が「デザイン正本 = 実装 + Storybook」と定めており、story (`packages/ui` 11 + corporate-site セクション 17) が VRT の主対象として最も自然
+  - storycap は story しか撮れず、要求の受け入れ基準にある 3 route × 2 viewport を満たせないため、route 側は既存 Playwright 基盤で補う
+  - baseline の保管先は **Cloudflare R2 (S3 互換)**。既に Cloudflare を利用しており、アカウントを流用できる
+  - トレードオフ: 実行系と baseline が 2 系統になり保守コストが増える。route を story 化して 1 系統に寄せる案は、ページを story 化する実装コストと二重管理が発生するため却下した
+  - **未検証**: reg-suit の R2 向け publish plugin の対応状況は実装フェーズで検証する。S3 互換 API で動く前提だが確認していない
+
+- **D2: page 単位の Page Object を、要求の決定どおり導入する。**
+  - 根拠: E2E は現在 1 ファイル 5 テストだが、本 spec でジャーニー網羅へ広げる方針 (要求の決定事項 #3) が確定しており、テストが増える前に型を用意する方が移行コストが小さい
+  - 規模は 3 route に対応する 3 クラス程度に収まる
+  - トレードオフ / 却下した代替案: 現規模では過剰になり得る (要求の業務ルール #1) が、規約だけ先行させる案は、ジャーニー実装 issue が型のない状態で書き始めることになり、後から一括で書き換える手戻りが大きいため却下した
 
 ## 未確定事項
 
