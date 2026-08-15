@@ -185,7 +185,9 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 ### Testing
 
-- 種別ごとの責務境界は D3 で確定し、`context/testing.md` の責務分担テーブルへ反映する
+- 責務分担は Unit test / E2E / **VRT** の 3 種別とする (D3)。`context/testing.md` のテーブルへ反映する
+- locator は領域特定に `data-testid`、操作対象に `getByRole` を優先する (D5)。Page Object 内部にも同じ規約を適用する
+- play テストの対象は `packages/ui` の 11 コンポーネントに限る (D1)
 
 ## Interface 設計
 
@@ -308,11 +310,11 @@ sequenceDiagram
 | --- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------- |
 | D1  | play テストの対象が現時点で `packages/ui` のみである事実をどう扱うか            | (a) `packages/ui` 限定で確定し island は #26 で追加 / (b) island 前提の基準だけ先に決めておく | **(a) 確定**      |
 | D2  | E2E 5 テストの規模で page 単位 Page Object を導入するか (要求では導入決定済み)  | (a) 決定どおり導入 / (b) locator 規約のみ先行し POM はジャーニー実装時 / (c) 粒度を下げる     | **(a) 確定**      |
-| D3  | VRT を `context/testing.md` の責務分担でどの種別に位置づけるか                  | (a) E2E の一部 / (b) 独立した第 3 種別 / (c) Storybook 側の gate                              | 未決              |
+| D3  | VRT を `context/testing.md` の責務分担でどの種別に位置づけるか                  | (a) E2E の一部 / (b) 独立した第 3 種別 / (c) Storybook 側の gate                              | **(b) 確定**      |
 | D4  | VRT の手段                                                                      | (a) Playwright `toHaveScreenshot` / (b) reg-suit + storycap / (c) 併用                        | **(c) 併用 確定** |
-| D5  | locator 規約 (`getByRole` 優先か `data-testid` 優先か)。現状は testid が 24/38  | (a) `getByRole` 優先へ寄せる / (b) `data-testid` を正式規約にする / (c) 用途で使い分ける      | 未決              |
-| D6  | `typecheck` / `build` / `knip` / `depcruise` をどこまで CI に載せるか (C-1)     | (a) 全部載せる / (b) pre-commit と重複させず CI のみ / (c) 現状維持                           | 未決              |
-| D7  | E2E を CI で回すか (C-2)                                                        | (a) CI で回す / (b) Pages preview で手動 / (c) 主要導線のみ CI                                | 未決              |
+| D5  | locator 規約 (`getByRole` 優先か `data-testid` 優先か)。現状は testid が 24/38  | (a) `getByRole` 優先へ寄せる / (b) `data-testid` を正式規約にする / (c) 用途で使い分ける      | **(c) 確定**      |
+| D6  | `typecheck` / `build` / `knip` / `depcruise` をどこまで CI に載せるか (C-1)     | (a) 全部載せる / (b) pre-commit と重複させず CI のみ / (c) 現状維持                           | **(a) 確定**      |
+| D7  | E2E を CI で回すか (C-2)                                                        | (a) CI で回す / (b) Pages preview で手動 / (c) 主要導線のみ CI                                | **(a) 確定**      |
 | D8  | VRT を CI で回すか、ローカル運用に留めるか (C-3) と CI 実行時間の目標           | (a) CI / (b) ローカル / (c) PR ラベル等での opt-in                                            | 未決              |
 | D9  | Turbo キャッシュを remote 化するか (C-4) と required status checks の要否 (C-5) | 現状 remote 無効。required checks は private repo のため設定状況が未確認                      | 未決              |
 
@@ -329,6 +331,24 @@ sequenceDiagram
   - baseline の保管先は **Cloudflare R2 (S3 互換)**。既に Cloudflare を利用しており、アカウントを流用できる
   - トレードオフ: 実行系と baseline が 2 系統になり保守コストが増える。route を story 化して 1 系統に寄せる案は、ページを story 化する実装コストと二重管理が発生するため却下した
   - **未検証**: reg-suit の R2 向け publish plugin の対応状況は実装フェーズで検証する。S3 互換 API で動く前提だが確認していない
+
+- **D3: VRT を `context/testing.md` の責務分担で、Unit test / E2E と並ぶ独立した第 3 種別として立てる。**
+  - 根拠: D4 で story 系統 (reg-suit + storycap) と route 系統 (Playwright) の 2 つを持つため、E2E の一部として書くと Storybook 基盤側が収まらず、Storybook の gate として書くと Playwright 側が収まらない
+  - トレードオフ: 種別が 1 つ増えるが、2 系統を 1 つの責務として説明できる利点が上回る
+
+- **D5: locator は用途で使い分ける。領域の特定に `data-testid`、内部の操作対象に `getByRole` を優先する。**
+  - 根拠: セクションやページ領域は role では一意に決まりにくく、既に `home-section-hero` 等 20 箇所の testid 資産がある。一方でボタン・リンク・入力欄は role が最も安定する
+  - D2 で Page Object を導入するため、セレクタは Page Object 内に隠蔽され、規約違反が広がりにくい
+  - トレードオフ: `getByRole` 優先へ全面的に寄せる案は既存 24 箇所の書き換えが発生し、領域特定では逆に不安定になるため却下した。`data-testid` を正式規約にする案は、アクセシビリティ属性の崩れを検出できないため却下した
+
+- **D6: `typecheck` / `build` / `knip` / `depcruise` をすべて CI に載せる。**
+  - 根拠: `lint.yml` の「pre-commit は `--no-verify` で素通しできるため CI を必須 gate にする」という既存の設計思想に一貫する。ローカル hook との重複は意図的な二重化として許容する
+  - `typecheck` と `build` は pre-commit にも CI にも無く、現状どこでも自動検証されていない。ここが最大の穴であり本決定で塞ぐ
+  - トレードオフ: CI 時間が伸びる。Turbo キャッシュ (D9) で吸収できるかを実測する
+
+- **D7: E2E を CI で回す。**
+  - 根拠: 現在 5 テストと小さく、ジャーニー網羅で増やす前に土台を作れる。`context/` にある `127.0.0.1:4321` の bind 制約はローカル sandbox 固有で、Actions の runner には当てはまらない
+  - トレードオフ: Playwright ブラウザの導入時間が加わる。Cloudflare Pages preview に対して回す案は、preview URL の取得と待機で構成が複雑になるため却下した
 
 - **D2: page 単位の Page Object を、要求の決定どおり導入する。**
   - 根拠: E2E は現在 1 ファイル 5 テストだが、本 spec でジャーニー網羅へ広げる方針 (要求の決定事項 #3) が確定しており、テストが増える前に型を用意する方が移行コストが小さい
