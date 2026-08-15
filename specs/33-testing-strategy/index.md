@@ -33,23 +33,23 @@
 - Design Doc 更新要否: **要** (モジュール責務は継承だが、Future Work の「CI パイプライン」行が D6 / D7 の実装後に古くなる)
 - ADR 起票要否: 要 (VRT の手段選択と、CI とローカル hook の責務分担は選択肢を比較して決める判断のため)
 
-| 上位文書                     | 節 / 該当箇所                                       | 整合方針 (継承 / 補足 / 変更提案)                                                                                      |
-| ---------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| PRD (統合)                   | Non Goals (CMS / 認証 / 過剰な抽象化)               | 継承。本 spec はいずれにも触れない                                                                                     |
-| Design Doc                   | モジュール責務 → `e2e` は root 管理の公開前検証     | 継承                                                                                                                   |
-| Design Doc                   | 成功条件 #2 (3 route と問い合わせ導線を E2E で通す) | 補足。ジャーニー網羅と VRT を上乗せする                                                                                |
-| feature doc (corporate-site) | テスト観点 / 問い合わせ導線の route intercept 方針  | 継承。E2E fixture の分岐定義をジャーニー定義の入力に使う                                                               |
-| context/testing.md           | テスト責務の分担 (Unit test / E2E の 2 種別)        | 補足。VRT の位置づけを追加する (本 spec のスコープに含む計画更新)                                                      |
-| context/engineering.md       | Repository Quality Gate (pre-commit)                | 補足。CI との責務分担を追加する (同上)                                                                                 |
-| context/infrastructure.md    | Cloudflare Pages preview deployment                 | 継承。preview と CI E2E の分担判断に使う                                                                               |
-| ADR-0008                     | Astro / React island ポリシー                       | 継承。play 対象を React に限る根拠                                                                                     |
-| ADR-0012                     | デザイン正本 = 実装 + Storybook                     | 継承。VRT の対象セットを Storybook に置く根拠                                                                          |
-| ADR-0001                     | Terraform の infra code は別リポジトリで管理する    | **変更提案**。D4 の R2 調達が本 ADR と衝突する。supersede は #47 が主体で行い、本 spec は #47 の完了を実装の前提とする |
+| 上位文書                     | 節 / 該当箇所                                       | 整合方針 (継承 / 補足 / 変更提案)                                                                                  |
+| ---------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| PRD (統合)                   | Non Goals (CMS / 認証 / 過剰な抽象化)               | 継承。本 spec はいずれにも触れない                                                                                 |
+| Design Doc                   | モジュール責務 → `e2e` は root 管理の公開前検証     | 継承                                                                                                               |
+| Design Doc                   | 成功条件 #2 (3 route と問い合わせ導線を E2E で通す) | 補足。ジャーニー網羅と VRT を上乗せする                                                                            |
+| feature doc (corporate-site) | テスト観点 / 問い合わせ導線の route intercept 方針  | 継承。E2E fixture の分岐定義をジャーニー定義の入力に使う                                                           |
+| context/testing.md           | テスト責務の分担 (Unit test / E2E の 2 種別)        | 補足。VRT の位置づけを追加する (本 spec のスコープに含む計画更新)                                                  |
+| context/engineering.md       | Repository Quality Gate (pre-commit)                | 補足。CI との責務分担を追加する (同上)                                                                             |
+| context/infrastructure.md    | Cloudflare Pages preview deployment                 | 継承。preview と CI E2E の分担判断に使う                                                                           |
+| ADR-0008                     | Astro / React island ポリシー                       | 継承。play 対象を React に限る根拠                                                                                 |
+| ADR-0012                     | デザイン正本 = 実装 + Storybook                     | 継承。VRT の対象セットを Storybook に置く根拠                                                                      |
+| ADR-0001                     | Terraform の infra code は別リポジトリで管理する    | 継承。**本 spec は R2 を調達しない** (ローカル S3 互換で検証まで)。R2 の調達と ADR-0001 の supersede は #47 が行う |
 
 `context/testing.md` / `context/engineering.md` への追記は衝突ではなく、本 spec がスコープとして計画している更新であり sync phase で反映する。
 
-**ADR-0001 とは衝突がある。** 同 ADR は「Terraform 本体・state・apply workflow を monorepo に置かない」と定め、`context/infrastructure.md` も「infra 側の変更は Infrastructure Contract 経由で `kufu-infra` へ依頼する」を保持している。
-D4 で R2 を調達する設計はこれに反するが、**supersede の主体は #47** であり本 spec では行わない。本 spec は #47 の完了を P1a の前提として扱う。
+**ADR-0001 とは衝突しない。** 同 ADR は「Terraform 本体・state・apply workflow を monorepo に置かない」と定めるが、本 spec のスコープは D4 の改訂によりローカル S3 互換ストレージでの検証までとなり、**Cloudflare リソースを調達しない**。
+R2 の調達と ADR-0001 の supersede は #47 が行う。
 ADR-0001 が spec 側に課す「infra 変更が絡む spec では infra repo 側の対応有無を明記する」義務は、U1 (実装順序の依存) の記載で満たす。
 
 ## 関連資料
@@ -145,14 +145,14 @@ EARS 風の振る舞い。観測手段が定義できるものだけを本 spec 
 
 ## 実装対象
 
-| モジュール       | 実装有無 | 主な責務                                                         |
-| ---------------- | :------: | ---------------------------------------------------------------- |
-| `e2e`            |    ◯     | Page Object 構成、locator 規約、ジャーニー定義。VRT の実装先候補 |
-| `ui`             |    ◯     | play テストの対象。VRT の Storybook 側対象セット                 |
-| `corporate-site` |    ◯     | VRT の route 対象 (3 route × 2 viewport)                         |
-| `core`           |    ◯     | `.github/workflows/` と `lefthook.yml` の責務分担                |
-| `config`         |    -     | 変更しない                                                       |
-| `cms`            |    -     | 対象外 (未着手モジュール)                                        |
+| モジュール       | 実装有無 | 主な責務                                                              |
+| ---------------- | :------: | --------------------------------------------------------------------- |
+| `e2e`            |    ◯     | Page Object 構成、locator 規約、ジャーニー定義。route 側 VRT の実装先 |
+| `ui`             |    ◯     | play テストの対象。VRT の Storybook 側対象セット                      |
+| `corporate-site` |    ◯     | VRT の route 対象 (3 route × 2 viewport)                              |
+| `core`           |    ◯     | `.github/workflows/` と `lefthook.yml` の責務分担                     |
+| `config`         |    -     | 変更しない                                                            |
+| `cms`            |    -     | 対象外 (未着手モジュール)                                             |
 
 ## 機能仕様
 
@@ -200,12 +200,12 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 ローカル検証で撮った baseline は破棄前提とし、正となる baseline は #47 完了後に CI 環境で撮り直す。
 出典: [plugin README](https://github.com/reg-viz/reg-suit/blob/master/packages/reg-publish-s3-plugin/README.md) / [issue #162](https://github.com/reg-viz/reg-suit/issues/162) / [R2 S3 API compatibility](https://developers.cloudflare.com/r2/api/s3/api/)
 
-| 系統                | 撮影対象                                 | 保管先                       |
-| ------------------- | ---------------------------------------- | ---------------------------- |
-| reg-suit + storycap | story (`packages/ui` 11 + セクション 17) | Cloudflare R2 (S3 互換)      |
-| Playwright          | 3 route × 2 viewport                     | リポジトリ (Playwright 既定) |
+| 系統                | 撮影対象                                 | 保管先                                                    |
+| ------------------- | ---------------------------------------- | --------------------------------------------------------- |
+| reg-suit + storycap | story (`packages/ui` 11 + セクション 17) | **#33: ローカル S3 互換 (Docker、破棄前提) → #47 後: R2** |
+| Playwright          | 3 route × 2 viewport                     | リポジトリ (Playwright 既定)                              |
 
-- R2 の資格情報は secret として扱い、置き場は `context/infrastructure.md` に従う
+- R2 の資格情報は secret として扱い、置き場は `context/infrastructure.md` に従う (#47 で確定)
 - Playwright 側の baseline は Git 管理されるため、差分が PR レビューに乗る
 
 ### UI Reuse
@@ -224,7 +224,7 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 アプリの UI / API は変更しない。本 spec が定義するのは**開発者と CI に対する実行インターフェース**である。
 
-- VRT の実行コマンド (名称と引数は D4 の手段選択後に確定)
+- VRT の実行コマンド。story 側 (storycap + reg-suit) と route 側 (Playwright) の 2 系統を持つ
 - VRT の baseline 更新コマンド
 - CI の workflow トリガと job 名 (required status checks を設定する場合、job 名が契約になる)
 
@@ -236,10 +236,12 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 ### 保存・管理するデータ
 
-| データ            | 内容                              | 置き場                                       |
-| ----------------- | --------------------------------- | -------------------------------------------- |
-| VRT baseline 画像 | 3 route × 2 viewport と対象 story | D4 の手段選択後に確定                        |
-| VRT 差分レポート  | 実行ごとの差分画像と判定結果      | 成果物として保持しない候補も含めて D4 で確定 |
+| データ                  | 内容                        | 置き場                                                 |
+| ----------------------- | --------------------------- | ------------------------------------------------------ |
+| story の baseline 画像  | 29 story 相当               | #33: ローカル S3 互換 (Docker、破棄前提) → #47 後: R2  |
+| route の baseline 画像  | 3 route × 2 viewport = 6 枚 | リポジトリ (Git 管理)                                  |
+| reg-suit の差分レポート | 差分画像と判定結果          | story の baseline と同じ保管先                         |
+| Playwright の差分成果物 | 差分画像                    | CI の artifact / ローカル出力 (リポジトリには残さない) |
 
 ### コンテンツ配置 / package / route
 
@@ -291,12 +293,12 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 ### 計測指標
 
-| 指標                     | 目的                           |
-| ------------------------ | ------------------------------ |
-| CI の総実行時間          | D8 の目標値との対比            |
-| VRT の撮影枚数           | 実行時間と保守コストの見積もり |
-| VRT の連続実行での差分数 | flake の有無 (目標: 0)         |
-| E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化 |
+| 指標                     | 目的                                               |
+| ------------------------ | -------------------------------------------------- |
+| CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする |
+| VRT の撮影枚数           | 実行時間と保守コストの見積もり                     |
+| VRT の連続実行での差分数 | flake の有無 (目標: 0)                             |
+| E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                     |
 
 ## フロー / シーケンス
 
@@ -323,30 +325,24 @@ sequenceDiagram
 | Phase | 対象                     | 概要                                                                       | 依存      |
 | ----- | ------------------------ | -------------------------------------------------------------------------- | --------- |
 | P1a   | `ui` / `corporate-site`  | storycap + reg-suit の導入と、ローカル S3 互換ストレージでの差分判定の検証 | D4        |
-| P5    | `core` / `ui`            | #47 完了後: endpoint を R2 へ差し替え、story 側 VRT を CI へ載せる         | P1a / #47 |
 | P1b   | `e2e` / `corporate-site` | Playwright `toHaveScreenshot` で 3 route × 2 viewport の baseline 確立     | D4        |
 | P2    | `core`                   | CI のジョブ構成整理と `.github/workflows/` 実装                            | D6〜D9    |
 | P3    | `e2e`                    | Page Object と locator 規約の骨組み                                        | D2 / D5   |
-| P4    | `ui` / `e2e` / `context` | 規約の `context/` 反映と ADR 起票                                          | P1〜P3    |
+| P4    | `ui` / `e2e` / `context` | 規約の `context/` 反映と ADR 起票                                          | P1a〜P3   |
+| P5    | `core` / `ui`            | #47 完了後: endpoint を R2 へ差し替え、story 側 VRT を CI へ載せる         | P1a / #47 |
 
 ### prompts 生成方針
 
-- VRT (P1) と CI (P2) は対象ファイルが重ならないため並列実装できる
-- 規約の文書化 (P4) は実装の実測値を使うため、P1〜P3 の後に置く
+- VRT (P1a / P1b) と CI (P2) は対象ファイルが重ならないため並列実装できる
+- 規約の文書化 (P4) は実装の実測値を使うため、P1a〜P3 の後に置く
+- P5 は #47 の完了を待つため prompts では最後に置き、着手条件を明記する
 
 ## 設計時の論点
 
-| #   | 論点                                                                            | 決定候補                                                                                      | 決定                                                                         |
-| --- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| D1  | play テストの対象が現時点で `packages/ui` のみである事実をどう扱うか            | (a) `packages/ui` 限定で確定し island は #26 で追加 / (b) island 前提の基準だけ先に決めておく | **(a) 確定**                                                                 |
-| D2  | E2E 5 テストの規模で page 単位 Page Object を導入するか (要求では導入決定済み)  | (a) 決定どおり導入 / (b) locator 規約のみ先行し POM はジャーニー実装時 / (c) 粒度を下げる     | **(a) 確定**                                                                 |
-| D3  | VRT を `context/testing.md` の責務分担でどの種別に位置づけるか                  | (a) E2E の一部 / (b) 独立した第 3 種別 / (c) Storybook 側の gate                              | **(b) 確定**                                                                 |
-| D4  | VRT の手段                                                                      | (a) Playwright `toHaveScreenshot` / (b) reg-suit + storycap / (c) 併用                        | **(c) 併用 確定。baseline は Cloudflare R2 (#47 で Terraform 管理下に用意)** |
-| D5  | locator 規約 (`getByRole` 優先か `data-testid` 優先か)。現状は testid が 24/38  | (a) `getByRole` 優先へ寄せる / (b) `data-testid` を正式規約にする / (c) 用途で使い分ける      | **(c) 確定**                                                                 |
-| D6  | `typecheck` / `build` / `knip` / `depcruise` をどこまで CI に載せるか (C-1)     | (a) 全部載せる / (b) pre-commit と重複させず CI のみ / (c) 現状維持                           | **(a) 確定**                                                                 |
-| D7  | E2E を CI で回すか (C-2)                                                        | (a) CI で回す / (b) Pages preview で手動 / (c) 主要導線のみ CI                                | **(a) 確定**                                                                 |
-| D8  | VRT を CI で回すか、ローカル運用に留めるか (C-3)                                | (a) CI / (b) ローカル / (c) PR ラベル等での opt-in                                            | **(a) 確定**                                                                 |
-| D9  | Turbo キャッシュを remote 化するか (C-4) と required status checks の要否 (C-5) | 現状 remote 無効。required checks は private repo のため設定状況が未確認                      | **保留 (実測待ち。下記 未確定事項で管理)**                                   |
+設計フェーズへ持ち越す残課題は**なし**。D1〜D9 は clarify phase で全件確定し、`## 解決済みの論点` へ移した
+(検討した選択肢と却下理由も同節の子箇条書きに記録している)。
+
+実装順序の依存と実装後の運用判断は `## 未確定事項` の U1 / U2 で管理する。
 
 ## 解決済みの論点
 
@@ -446,18 +442,19 @@ sequenceDiagram
 
 ### ADR の新規 / 更新
 
-| ADR ID   | 変更内容                                               | 理由                                                                       |
-| -------- | ------------------------------------------------------ | -------------------------------------------------------------------------- |
-| 新規     | VRT の手段選択 (D4) と対象セットの決定                 | 候補を比較して決める判断のため                                             |
-| 新規     | CI とローカル hook の責務分担 (D6 / D7 / D9)           | 二重実行を許すかを含む運用方針の判断のため                                 |
-| ADR-0001 | **#47 側で supersede される** (本 spec では起票しない) | D4 の R2 調達が ADR-0001 と衝突するため。本 spec は #47 の完了を前提にする |
+| ADR ID   | 変更内容                                               | 理由                                                                                           |
+| -------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| 新規     | VRT の手段選択 (D4) と対象セットの決定                 | 候補を比較して決める判断のため                                                                 |
+| 新規     | CI とローカル hook の責務分担 (D6 / D7 / D9)           | 二重実行を許すかを含む運用方針の判断のため                                                     |
+| ADR-0001 | **#47 側で supersede される** (本 spec では起票しない) | 本 spec は R2 を調達しないため衝突しない。story 側 VRT の CI 稼働 (P5) が #47 の結論に依存する |
 
 ## レビュー
 
-| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                           | 対応                                                                          |
-| ---------- | ------------------------ | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| 2026-08-15 | NEEDS_WORK               | 1 回目。指摘 10 件 (上位文書からの委譲取りこぼし / D4・D8・D9 の未決扱い)          | 8 件反映。**指摘 4 (project.yml) と 8 (変更履歴) は置換が失敗し未反映だった** |
-| 2026-08-15 | NEEDS_WORK               | 2 回目。指摘 8 件 (ADR-0001 との衝突未記載 / D8 目標値の記述不整合 / 前回未反映分) | 全 8 件反映済 (各置換を検証済み)                                              |
+| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                               | 対応                                                                          |
+| ---------- | ------------------------ | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| 2026-08-15 | NEEDS_WORK               | 1 回目。指摘 10 件 (上位文書からの委譲取りこぼし / D4・D8・D9 の未決扱い)              | 8 件反映。**指摘 4 (project.yml) と 8 (変更履歴) は置換が失敗し未反映だった** |
+| 2026-08-15 | NEEDS_WORK               | 2 回目。指摘 8 件 (ADR-0001 との衝突未記載 / D8 目標値の記述不整合 / 前回未反映分)     | 全 8 件反映済 (各置換を検証済み)                                              |
+| 2026-08-15 | NEEDS_WORK               | 3 回目。指摘 6 件 (確定内容が下流節へ未反映 / Phase 名の不整合 / review.md の追補漏れ) | 全 6 件反映済                                                                 |
 
 ## 変更履歴
 
@@ -471,6 +468,8 @@ sequenceDiagram
 | 2026-08-15 | spec-review    | clarify gate 2 回目 NEEDS_WORK (指摘 8 件)。1 回目の指摘 4 / 8 が未反映だったことが判明                                          |
 | 2026-08-15 | spec-lifecycle | 2 回目の指摘 8 件に対応。ADR-0001 との衝突を明記、D8 の目標値の記述を統一、reg-suit の R2 対応を調査し必須設定 3 点を記録        |
 | 2026-08-15 | spec-lifecycle | D4 / D8 を改訂。#33 の VRT はローカル S3 互換ストレージでの仕組み検証までとし、R2 結線と story 側の CI 稼働を #47 後の P5 へ分離 |
+| 2026-08-15 | spec-review    | clarify gate 3 回目 NEEDS_WORK (指摘 6 件)。上位文書整合 / 実装対象 / EARS は PASS                                               |
+| 2026-08-15 | spec-lifecycle | 3 回目の指摘 6 件に対応。確定内容を下流節へ反映し Phase 名と依存を整理、ADR-0001 との関係を現在形へ修正                          |
 
 ## 備考
 
