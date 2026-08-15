@@ -120,7 +120,8 @@ EARS 風の振る舞い。観測手段が定義できるものだけを本 spec 
 - WHILE UI に変更がない間、システムは VRT を 2 回連続実行しても差分 0 件を返す。
 - IF 意図した UI 変更で差分が出た場合、THEN システムは baseline 更新コマンドで差分を 0 件に解消できる。
 - WHEN 開発者が意図的に 1 箇所のスタイルを変更したとき、システムは VRT で差分を 1 件以上検出する。
-- WHEN develop 向けの PR が作成されたとき、システムは `lint` / `test` / `typecheck` / `build` / `knip` / `depcruise` / `e2e` / VRT を実行し、各ジョブの成否を PR のチェック欄に返す。
+- WHEN develop 向けの PR が作成されたとき、システムは `lint` / `test` / `typecheck` / `build` / `knip` / `depcruise` / `e2e` / route の VRT を実行し、各ジョブの成否を PR のチェック欄に返す。
+- WHERE story 側の VRT は #47 完了後に CI へ載せる。#33 の時点ではローカルの S3 互換ストレージに対して実行し、差分判定が成立することを確認する。
 - IF いずれかのジョブが失敗した場合、THEN システムは失敗したジョブ名とログを PR から辿れる状態にする。
 
 ## 現状の実測 (2026-08-14)
@@ -192,6 +193,11 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 | 3   | `customDomain` と `endpoint` を併用しない | 併用すると差分レポートの URL が二重に組み立てられる既知の不具合がある (reg-suit issue #162)                                                                   |
 
 `sdkOptions.endpoint` には `https://<ACCOUNT_ID>.r2.cloudflarestorage.com` を指定する。
+
+**#33 の実装ではこの endpoint をローカルの S3 互換ストレージ (Docker で起動する RustFS 等) に向ける。**
+上記 3 点のうち `enableACL: false` と `region: auto` はローカル検証でも同じ設定で通るため、
+#47 完了後は endpoint と資格情報を差し替えるだけで R2 へ移行できる。
+ローカル検証で撮った baseline は破棄前提とし、正となる baseline は #47 完了後に CI 環境で撮り直す。
 出典: [plugin README](https://github.com/reg-viz/reg-suit/blob/master/packages/reg-publish-s3-plugin/README.md) / [issue #162](https://github.com/reg-viz/reg-suit/issues/162) / [R2 S3 API compatibility](https://developers.cloudflare.com/r2/api/s3/api/)
 
 | 系統                | 撮影対象                                 | 保管先                       |
@@ -314,13 +320,14 @@ sequenceDiagram
 
 (論点確定後に track / prompts phase で確定する。現時点は暫定)
 
-| Phase | 対象                     | 概要                                                                   | 依存     |
-| ----- | ------------------------ | ---------------------------------------------------------------------- | -------- |
-| P1a   | `ui` / `corporate-site`  | storycap + reg-suit の導入、R2 連携、story の baseline 確立            | D4 / #47 |
-| P1b   | `e2e` / `corporate-site` | Playwright `toHaveScreenshot` で 3 route × 2 viewport の baseline 確立 | D4       |
-| P2    | `core`                   | CI のジョブ構成整理と `.github/workflows/` 実装                        | D6〜D9   |
-| P3    | `e2e`                    | Page Object と locator 規約の骨組み                                    | D2 / D5  |
-| P4    | `ui` / `e2e` / `context` | 規約の `context/` 反映と ADR 起票                                      | P1〜P3   |
+| Phase | 対象                     | 概要                                                                       | 依存      |
+| ----- | ------------------------ | -------------------------------------------------------------------------- | --------- |
+| P1a   | `ui` / `corporate-site`  | storycap + reg-suit の導入と、ローカル S3 互換ストレージでの差分判定の検証 | D4        |
+| P5    | `core` / `ui`            | #47 完了後: endpoint を R2 へ差し替え、story 側 VRT を CI へ載せる         | P1a / #47 |
+| P1b   | `e2e` / `corporate-site` | Playwright `toHaveScreenshot` で 3 route × 2 viewport の baseline 確立     | D4        |
+| P2    | `core`                   | CI のジョブ構成整理と `.github/workflows/` 実装                            | D6〜D9    |
+| P3    | `e2e`                    | Page Object と locator 規約の骨組み                                        | D2 / D5   |
+| P4    | `ui` / `e2e` / `context` | 規約の `context/` 反映と ADR 起票                                          | P1〜P3    |
 
 ### prompts 生成方針
 
@@ -354,7 +361,8 @@ sequenceDiagram
   - baseline の保管先は route 側 (Playwright) が Git 管理、story 側 (reg-suit) が **Cloudflare R2**
   - R2 は Cloudflare リソースであり ADR-0001 の境界規約に関わるが、**#47 で infra を monorepo へ集約する方針が確定した**ため、R2 は #47 の Terraform 管理下で用意される (2026-08-15, ユーザー)
   - トレードオフ: 実行系と baseline が 2 系統になり保守コストが増える。route を story 化して 1 系統に寄せる案は、ページを story 化する実装コストと二重管理が発生するため却下した
-  - **実装順序の制約**: P1a (story 側) は R2 を必要とするため #47 の完了後に着手する。P1b (route 側) は baseline が Git 管理のため #47 に依存せず先行できる
+  - **改訂 (2026-08-15)**: #33 の実装範囲は **ローカルの S3 互換ストレージ (Docker) を相手にした仕組み検証まで**とする。R2 バケットの作成・secret 管理・CI からの結線は #47 へ送る。`sdkOptions.endpoint` の差し替えだけでローカルから R2 へ移行できるため、パイプラインの構築を #47 の完了前に進められる
+  - **実装順序の制約**: P1a (story 側) の CI 稼働は #47 の完了後。P1b (route 側) は baseline が Git 管理のため #47 に依存せず単独で完結する
   - **検証済 (2026-08-15)**: `reg-publish-s3-plugin` は `sdkOptions` を `S3Client` のコンストラクタへ渡す設計のため R2 で動作する。代替保管先は不要と判断した。実装時に必要な設定は下記 3 点
 
 - **D3: VRT を `context/testing.md` の責務分担で、Unit test / E2E と並ぶ独立した第 3 種別として立てる。**
@@ -376,7 +384,9 @@ sequenceDiagram
   - 根拠: 現在 5 テストと小さく、ジャーニー網羅で増やす前に土台を作れる。`context/` にある `127.0.0.1:4321` の bind 制約はローカル sandbox 固有で、Actions の runner には当てはまらない
   - トレードオフ: Playwright ブラウザの導入時間が加わる。Cloudflare Pages preview に対して回す案は、preview URL の取得と待機で構成が複雑になるため却下した
 
-- **D8: VRT の撮影と判定を CI 環境に一本化する。**
+- **D8: VRT の撮影と判定を CI 環境に一本化する。ただし story 側の CI 稼働は #47 完了後とする。**
+  - **改訂 (2026-08-15)**: story 側 (reg-suit) は永続ストレージを必要とし、それが #47 に依存するため、#33 の時点ではローカルの Docker S3 互換ストレージで仕組みを検証するに留める。**この段階のローカル baseline は破棄前提の検証用**であり、正となる baseline は #47 完了後に CI 環境で撮り直す
+  - route 側 (Playwright) は #33 の時点から CI 一本化を適用する
   - 根拠: フォントのレンダリング差により、ローカル (macOS) と CI (Linux runner) で撮った画像は一致しない。baseline を撮る環境を 1 つに固定しなければ、例外シナリオ #3 の恒常的な差分が必ず起きる
   - reg-suit の baseline 解決は CI の git 情報に依存するため、CI 一本化が想定運用にも合う
   - トレードオフ: ローカルで事前確認できず、差分の確認が CI 実行待ちになる。Docker で環境を固定する案は、ローカルでも同じ画像を得られる利点があるが、Docker 依存と実行時間の増加を招くため今回は採らない
@@ -397,12 +407,12 @@ sequenceDiagram
 
 残るのは **実装順序の依存と、実装後の運用判断** の 2 件で、いずれも設計をブロックしない。
 
-| #   | 事項                                         | 種別         | 決定者   | 解消時期                     | 影響                             |
-| --- | -------------------------------------------- | ------------ | -------- | ---------------------------- | -------------------------------- |
-| U1  | R2 バケットの用意                            | 実装順序依存 | #47      | #47 の完了時                 | P1a の着手時期。P1b は依存しない |
-| U2  | Turbo remote cache と required status checks | 運用判断     | ユーザー | D6 / D7 適用後の実測が出た後 | なし (実装後に判断すればよい)    |
+| #   | 事項                                         | 種別         | 決定者   | 解消時期                     | 影響                                                                  |
+| --- | -------------------------------------------- | ------------ | -------- | ---------------------------- | --------------------------------------------------------------------- |
+| U1  | R2 バケット / secret / CI 結線               | 実装順序依存 | #47      | #47 の完了時                 | story 側 VRT の **CI 稼働時期**。#33 のローカル検証はブロックされない |
+| U2  | Turbo remote cache と required status checks | 運用判断     | ユーザー | D6 / D7 適用後の実測が出た後 | なし (実装後に判断すればよい)                                         |
 
-- U1: #47 で infra を monorepo へ集約し、Terraform 管理下に R2 を用意する方針が確定した (2026-08-15, ユーザー)。**#33 の実装は #47 の完了後に P1a へ着手する**。P1b (Playwright による 3 route × 2 viewport) は baseline が Git 管理のため #47 に依存しない
+- U1: #47 で infra を monorepo へ集約し、Terraform 管理下に R2 を用意する (2026-08-15, ユーザー)。**#33 は R2 を待たず、ローカルの S3 互換ストレージで storycap + reg-suit のパイプラインを構築・検証するところまでを完了とする**。R2 への結線と story 側の CI 稼働は #47 の後
 - U2: 解消には develop の branch protection の現状確認が必要。private repo のため `gh api` が 403 を返すので Web UI 等で確認する
 
 ## 上位資料からの変更点
@@ -451,15 +461,16 @@ sequenceDiagram
 
 ## 変更履歴
 
-| 日付       | 変更者         | 変更内容                                                                                                                  |
-| ---------- | -------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| 2026-08-14 | spec-lifecycle | scaffold: index.md を作成。実測棚卸しと論点 D1〜D9 を起票                                                                 |
-| 2026-08-15 | spec-lifecycle | clarify: D1〜D9 を確定。play は `packages/ui` 限定、POM 導入、VRT は独立種別で reg-suit + Playwright の併用、CI に一本化  |
-| 2026-08-15 | spec-review    | clarify gate 1 回目 NEEDS_WORK (指摘 10 件)。記録は [review.md](review.md)                                                |
-| 2026-08-15 | spec-lifecycle | レビュー対応: `check:specs` の扱いを D6 に追記、EARS を spec 本体へ具体化、`## 備考` を追加。infra 集約を #47 へ切り出し  |
-| 2026-08-15 | spec-lifecycle | #47 で infra の monorepo 集約が確定。D4 の baseline を R2 で確定し、U1 を実装順序の依存として再分類                       |
-| 2026-08-15 | spec-review    | clarify gate 2 回目 NEEDS_WORK (指摘 8 件)。1 回目の指摘 4 / 8 が未反映だったことが判明                                   |
-| 2026-08-15 | spec-lifecycle | 2 回目の指摘 8 件に対応。ADR-0001 との衝突を明記、D8 の目標値の記述を統一、reg-suit の R2 対応を調査し必須設定 3 点を記録 |
+| 日付       | 変更者         | 変更内容                                                                                                                         |
+| ---------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-14 | spec-lifecycle | scaffold: index.md を作成。実測棚卸しと論点 D1〜D9 を起票                                                                        |
+| 2026-08-15 | spec-lifecycle | clarify: D1〜D9 を確定。play は `packages/ui` 限定、POM 導入、VRT は独立種別で reg-suit + Playwright の併用、CI に一本化         |
+| 2026-08-15 | spec-review    | clarify gate 1 回目 NEEDS_WORK (指摘 10 件)。記録は [review.md](review.md)                                                       |
+| 2026-08-15 | spec-lifecycle | レビュー対応: `check:specs` の扱いを D6 に追記、EARS を spec 本体へ具体化、`## 備考` を追加。infra 集約を #47 へ切り出し         |
+| 2026-08-15 | spec-lifecycle | #47 で infra の monorepo 集約が確定。D4 の baseline を R2 で確定し、U1 を実装順序の依存として再分類                              |
+| 2026-08-15 | spec-review    | clarify gate 2 回目 NEEDS_WORK (指摘 8 件)。1 回目の指摘 4 / 8 が未反映だったことが判明                                          |
+| 2026-08-15 | spec-lifecycle | 2 回目の指摘 8 件に対応。ADR-0001 との衝突を明記、D8 の目標値の記述を統一、reg-suit の R2 対応を調査し必須設定 3 点を記録        |
+| 2026-08-15 | spec-lifecycle | D4 / D8 を改訂。#33 の VRT はローカル S3 互換ストレージでの仕組み検証までとし、R2 結線と story 側の CI 稼働を #47 後の P5 へ分離 |
 
 ## 備考
 
