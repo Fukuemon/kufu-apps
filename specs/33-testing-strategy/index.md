@@ -497,34 +497,37 @@ sequenceDiagram
 | 2026-08-15 | NEEDS_WORK               | 6 回目。指摘 3 件 (設計時の論点節の markdown 破損 / 存在しない選択肢ラベルの参照 / D8・D9 の帰属誤り)                             | 全 3 件反映済                                                                 |
 | 2026-08-15 | NEEDS_WORK               | 7 回目。指摘 2 件 (許容 diff の決定が spec 内に存在しない / Fallback が存在しない目標値を参照)                                    | 全 2 件反映済                                                                 |
 | 2026-08-15 | NEEDS_WORK               | 8 回目。指摘 2 件 (ジャーニー定義の欠落 / 差分レポート閲覧経路が未管理) + 補足 2 件                                               | 全件反映済                                                                    |
-| 2026-08-15 | NEEDS_WORK               | 9 回目。指摘 4 件 (Fallback が D12 の却下案を残す / requirements の例外シナリオ未改訂 / D11 の根拠の事実誤り / フェーズ 4 の日付) | 全 4 件反映済                                                                 |
+| 2026-08-15 | NEEDS_WORK               | 9 回目。指摘 4 件 (Fallback が D12 の却下案を残す / requirements の例外シナリオ未改訂 / D11 の根拠の事実誤り / フェーズ 4 の日付) | 3 件反映済。requirements の改訂は 10 回目で実施                               |
+| 2026-08-15 | NEEDS_WORK               | 10 回目。指摘 2 件 (9 回目の requirements 改訂が未反映 / 実体のない改訂を反映済と記録)                                            | 全 2 件反映済 (本文を読み返して確認)                                          |
 
 ## 変更履歴
 
-| 日付       | 変更者         | 変更内容                                                                                                                          |
-| ---------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-08-14 | spec-lifecycle | scaffold: index.md を作成。実測棚卸しと論点 D1〜D9 を起票                                                                         |
-| 2026-08-15 | spec-lifecycle | clarify: D1〜D9 を確定。play は `packages/ui` 限定、POM 導入、VRT は独立種別で reg-suit + Playwright の併用、CI に一本化          |
-| 2026-08-15 | spec-review    | clarify gate 1 回目 NEEDS_WORK (指摘 10 件)。記録は [review.md](review.md)                                                        |
-| 2026-08-15 | spec-lifecycle | レビュー対応: `check:specs` の扱いを D6 に追記、EARS を spec 本体へ具体化、`## 備考` を追加。infra 集約を #47 へ切り出し          |
-| 2026-08-15 | spec-lifecycle | #47 で infra の monorepo 集約が確定。D4 の baseline を R2 で確定し、U1 を実装順序の依存として再分類                               |
-| 2026-08-15 | spec-review    | clarify gate 2 回目 NEEDS_WORK (指摘 8 件)。1 回目の指摘 4 / 8 が未反映だったことが判明                                           |
-| 2026-08-15 | spec-lifecycle | 2 回目の指摘 8 件に対応。ADR-0001 との衝突を明記、D8 の目標値の記述を統一、reg-suit の R2 対応を調査し必須設定 3 点を記録         |
-| 2026-08-15 | spec-lifecycle | D4 / D8 を改訂。#33 の VRT はローカル S3 互換ストレージでの仕組み検証までとし、R2 結線と story 側の CI 稼働を #47 後の P5 へ分離  |
-| 2026-08-15 | spec-review    | clarify gate 3 回目 NEEDS_WORK (指摘 6 件)。上位文書整合 / 実装対象 / EARS は PASS                                                |
-| 2026-08-15 | spec-lifecycle | 3 回目の指摘 6 件に対応。確定内容を下流節へ反映し Phase 名と依存を整理、ADR-0001 との関係を現在形へ修正                           |
-| 2026-08-15 | spec-review    | clarify gate 4 回目 NEEDS_WORK (指摘 5 件)。5 観点が PASS、残るは template 必須節のみ                                             |
-| 2026-08-15 | spec-lifecycle | 4 回目の指摘 5 件に対応。後日追記の語彙を `追記` へ統一、VRT 対象 story を 28 件に統一、P4 の target を `core` へ                 |
-| 2026-08-15 | spec-review    | clarify gate 5 回目 NEEDS_WORK (指摘 2 件)。VRT 対象を 28 と誤認していたことが判明                                                |
-| 2026-08-15 | spec-lifecycle | 5 回目の指摘に対応。VRT 対象を実測の 81 story へ訂正し viewport の適用範囲を明記                                                  |
-| 2026-08-15 | spec-review    | clarify gate 6 回目 NEEDS_WORK (指摘 3 件)。5 観点が PASS                                                                         |
-| 2026-08-15 | spec-lifecycle | 6 回目の指摘に対応。設計時の論点節をコードスパンなしで書き直し、参照の帰属を修正                                                  |
-| 2026-08-15 | spec-review    | clarify gate 7 回目 NEEDS_WORK (指摘 2 件)。template 必須節も PASS になり残るは未解決論点のみ                                     |
-| 2026-08-15 | spec-lifecycle | 7 回目の指摘に対応。許容 diff を D10 として確定 (0 許容から開始)、Fallback の発動条件を D9 と整合させた                           |
-| 2026-08-15 | spec-review    | clarify gate 8 回目 NEEDS_WORK (指摘 2 件)。5 観点が PASS                                                                         |
-| 2026-08-15 | spec-lifecycle | 8 回目の指摘に対応。ジャーニーを D11、VRT のブロッキング扱いを D12 として確定し、レポート閲覧経路を U1 へ統合                     |
-| 2026-08-15 | spec-review    | clarify gate 9 回目 NEEDS_WORK (指摘 4 件)。5 観点が PASS                                                                         |
-| 2026-08-15 | spec-lifecycle | 9 回目の指摘に対応。Fallback をエスカレーション順へ、requirements の例外シナリオ #3 を D12 に合わせて改訂、D11 の根拠を実態へ修正 |
+| 日付       | 変更者         | 変更内容                                                                                                                         |
+| ---------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-14 | spec-lifecycle | scaffold: index.md を作成。実測棚卸しと論点 D1〜D9 を起票                                                                        |
+| 2026-08-15 | spec-lifecycle | clarify: D1〜D9 を確定。play は `packages/ui` 限定、POM 導入、VRT は独立種別で reg-suit + Playwright の併用、CI に一本化         |
+| 2026-08-15 | spec-review    | clarify gate 1 回目 NEEDS_WORK (指摘 10 件)。記録は [review.md](review.md)                                                       |
+| 2026-08-15 | spec-lifecycle | レビュー対応: `check:specs` の扱いを D6 に追記、EARS を spec 本体へ具体化、`## 備考` を追加。infra 集約を #47 へ切り出し         |
+| 2026-08-15 | spec-lifecycle | #47 で infra の monorepo 集約が確定。D4 の baseline を R2 で確定し、U1 を実装順序の依存として再分類                              |
+| 2026-08-15 | spec-review    | clarify gate 2 回目 NEEDS_WORK (指摘 8 件)。1 回目の指摘 4 / 8 が未反映だったことが判明                                          |
+| 2026-08-15 | spec-lifecycle | 2 回目の指摘 8 件に対応。ADR-0001 との衝突を明記、D8 の目標値の記述を統一、reg-suit の R2 対応を調査し必須設定 3 点を記録        |
+| 2026-08-15 | spec-lifecycle | D4 / D8 を改訂。#33 の VRT はローカル S3 互換ストレージでの仕組み検証までとし、R2 結線と story 側の CI 稼働を #47 後の P5 へ分離 |
+| 2026-08-15 | spec-review    | clarify gate 3 回目 NEEDS_WORK (指摘 6 件)。上位文書整合 / 実装対象 / EARS は PASS                                               |
+| 2026-08-15 | spec-lifecycle | 3 回目の指摘 6 件に対応。確定内容を下流節へ反映し Phase 名と依存を整理、ADR-0001 との関係を現在形へ修正                          |
+| 2026-08-15 | spec-review    | clarify gate 4 回目 NEEDS_WORK (指摘 5 件)。5 観点が PASS、残るは template 必須節のみ                                            |
+| 2026-08-15 | spec-lifecycle | 4 回目の指摘 5 件に対応。後日追記の語彙を `追記` へ統一、VRT 対象 story を 28 件に統一、P4 の target を `core` へ                |
+| 2026-08-15 | spec-review    | clarify gate 5 回目 NEEDS_WORK (指摘 2 件)。VRT 対象を 28 と誤認していたことが判明                                               |
+| 2026-08-15 | spec-lifecycle | 5 回目の指摘に対応。VRT 対象を実測の 81 story へ訂正し viewport の適用範囲を明記                                                 |
+| 2026-08-15 | spec-review    | clarify gate 6 回目 NEEDS_WORK (指摘 3 件)。5 観点が PASS                                                                        |
+| 2026-08-15 | spec-lifecycle | 6 回目の指摘に対応。設計時の論点節をコードスパンなしで書き直し、参照の帰属を修正                                                 |
+| 2026-08-15 | spec-review    | clarify gate 7 回目 NEEDS_WORK (指摘 2 件)。template 必須節も PASS になり残るは未解決論点のみ                                    |
+| 2026-08-15 | spec-lifecycle | 7 回目の指摘に対応。許容 diff を D10 として確定 (0 許容から開始)、Fallback の発動条件を D9 と整合させた                          |
+| 2026-08-15 | spec-review    | clarify gate 8 回目 NEEDS_WORK (指摘 2 件)。5 観点が PASS                                                                        |
+| 2026-08-15 | spec-lifecycle | 8 回目の指摘に対応。ジャーニーを D11、VRT のブロッキング扱いを D12 として確定し、レポート閲覧経路を U1 へ統合                    |
+| 2026-08-15 | spec-review    | clarify gate 9 回目 NEEDS_WORK (指摘 4 件)。5 観点が PASS                                                                        |
+| 2026-08-15 | spec-lifecycle | 9 回目の指摘に対応。Fallback をエスカレーション順へ、D11 の根拠を実態へ修正                                                      |
+| 2026-08-15 | spec-review    | clarify gate 10 回目 NEEDS_WORK (指摘 2 件)。9 回目の requirements 改訂が実際には未反映だったことが判明                          |
+| 2026-08-15 | spec-lifecycle | requirements の例外シナリオ #3 を実際に改訂し、本文を読み返して spec との一致を確認                                              |
 
 ## 備考
 
