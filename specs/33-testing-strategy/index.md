@@ -13,24 +13,24 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態   | 最終更新   | 備考                                               |
-| --- | --------------------------- | ------ | ---------- | -------------------------------------------------- |
-| 1   | 起票                        | 完了   | 2026-08-14 | #28 / #12 を統合済み。実装突合: 対象               |
-| 2   | 下書き                      | 完了   | 2026-08-14 | template の必須節を充足                            |
-| 3   | 上位文書突合                | 完了   | 2026-08-14 | 矛盾なし。context への追記は本 spec の計画的な更新 |
-| 4   | 論点整理                    | 完了   | 2026-08-14 | D1〜D9 を起票。clarify で 1 件ずつ確定             |
-| 5   | 論点解決                    | 完了   | 2026-08-15 | D1〜D9 を確定。未決ゼロ                            |
-| 6   | Interface / Routing 設計    | 未着手 |            |                                                    |
-| 7   | Content / Data 設計         | 未着手 |            |                                                    |
-| 8   | Performance / Security 設計 | 未着手 |            |                                                    |
-| 9   | Test / Metrics 設計         | 未着手 |            |                                                    |
-| 10  | 実装分割                    | 未着手 |            |                                                    |
-| 11  | レビュー済                  | 未着手 |            |                                                    |
+| #   | フェーズ                    | 状態   | 最終更新   | 備考                                                   |
+| --- | --------------------------- | ------ | ---------- | ------------------------------------------------------ |
+| 1   | 起票                        | 完了   | 2026-08-14 | #28 / #12 を統合済み。実装突合: 対象                   |
+| 2   | 下書き                      | 完了   | 2026-08-14 | template の必須節を充足                                |
+| 3   | 上位文書突合                | 完了   | 2026-08-14 | 矛盾なし。context への追記は本 spec の計画的な更新     |
+| 4   | 論点整理                    | 完了   | 2026-08-14 | D1〜D9 を起票。clarify で 1 件ずつ確定                 |
+| 5   | 論点解決                    | 保留   | 2026-08-15 | D1-D3/D5-D8 確定。U1 (#47 待ち) / U2 (実測待ち) が未決 |
+| 6   | Interface / Routing 設計    | 未着手 |            |                                                        |
+| 7   | Content / Data 設計         | 未着手 |            |                                                        |
+| 8   | Performance / Security 設計 | 未着手 |            |                                                        |
+| 9   | Test / Metrics 設計         | 未着手 |            |                                                        |
+| 10  | 実装分割                    | 未着手 |            |                                                        |
+| 11  | レビュー済                  | 未着手 |            |                                                        |
 
 ## 上位文書整合
 
 - PRD 更新要否: 不要 (統合モード。`design/DesignDoc.md` の Why / What と衝突しない)
-- Design Doc 更新要否: 不要 (モジュール責務の `e2e` = root 管理を継承する)
+- Design Doc 更新要否: **要** (モジュール責務は継承だが、Future Work の「CI パイプライン」行が D6 / D7 の実装後に古くなる)
 - ADR 起票要否: 要 (VRT の手段選択と、CI とローカル hook の責務分担は選択肢を比較して決める判断のため)
 
 | 上位文書                     | 節 / 該当箇所                                       | 整合方針 (継承 / 補足 / 変更提案)                                 |
@@ -109,7 +109,15 @@ UI を変える作業の安全網が、現状は「要素の存在と文言を�
 - AI エージェント: 規約に従ってテストを実装する
 - CI (GitHub Actions): 決められたジョブを実行する
 
-EARS 風の振る舞いは [requirements.md](requirements.md) の受け入れ基準を正本とする。本 spec では重複させない。
+EARS 風の振る舞い。観測手段が定義できるものだけを本 spec の受け入れ基準とする
+(`requirements.md` の「文書群は…を保持している」型は観測手段が無いため、下記のとおり観測可能な形へ具体化した)。
+
+- WHEN 開発者が VRT の実行コマンドを実行したとき、システムは対象セットを撮影し baseline との差分件数を終了コードと標準出力で返す。
+- WHILE UI に変更がない間、システムは VRT を 2 回連続実行しても差分 0 件を返す。
+- IF 意図した UI 変更で差分が出た場合、THEN システムは baseline 更新コマンドで差分を 0 件に解消できる。
+- WHEN 開発者が意図的に 1 箇所のスタイルを変更したとき、システムは VRT で差分を 1 件以上検出する。
+- WHEN develop 向けの PR が作成されたとき、システムは `lint` / `test` / `typecheck` / `build` / `knip` / `depcruise` / `e2e` を実行し、各ジョブの成否を PR のチェック欄に返す。
+- IF いずれかのジョブが失敗した場合、THEN システムは失敗したジョブ名とログを PR から辿れる状態にする。
 
 ## 現状の実測 (2026-08-14)
 
@@ -222,7 +230,7 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 ### Performance
 
-- CI 実行時間は D6 / D7 / D8 適用後に実測し、その値を見て remote cache の要否を判断する (D9)。目標値を先に置かず実測を先行させる
+- CI 実行時間の目標値は置かない。D6 / D7 / D8 適用後に実測し、その値を見て remote cache の要否を判断する (D9)
 - Turbo キャッシュの remote 化 (D9) は実測値が許容範囲を超えた場合にのみ検討する
 - テスト都合でプロダクションコードに待機処理や不要な island を追加しない (`decision_priority` 1 位を損なわない)
 
@@ -306,17 +314,17 @@ sequenceDiagram
 
 ## 設計時の論点
 
-| #   | 論点                                                                            | 決定候補                                                                                      | 決定                    |
-| --- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------- |
-| D1  | play テストの対象が現時点で `packages/ui` のみである事実をどう扱うか            | (a) `packages/ui` 限定で確定し island は #26 で追加 / (b) island 前提の基準だけ先に決めておく | **(a) 確定**            |
-| D2  | E2E 5 テストの規模で page 単位 Page Object を導入するか (要求では導入決定済み)  | (a) 決定どおり導入 / (b) locator 規約のみ先行し POM はジャーニー実装時 / (c) 粒度を下げる     | **(a) 確定**            |
-| D3  | VRT を `context/testing.md` の責務分担でどの種別に位置づけるか                  | (a) E2E の一部 / (b) 独立した第 3 種別 / (c) Storybook 側の gate                              | **(b) 確定**            |
-| D4  | VRT の手段                                                                      | (a) Playwright `toHaveScreenshot` / (b) reg-suit + storycap / (c) 併用                        | **(c) 併用 確定**       |
-| D5  | locator 規約 (`getByRole` 優先か `data-testid` 優先か)。現状は testid が 24/38  | (a) `getByRole` 優先へ寄せる / (b) `data-testid` を正式規約にする / (c) 用途で使い分ける      | **(c) 確定**            |
-| D6  | `typecheck` / `build` / `knip` / `depcruise` をどこまで CI に載せるか (C-1)     | (a) 全部載せる / (b) pre-commit と重複させず CI のみ / (c) 現状維持                           | **(a) 確定**            |
-| D7  | E2E を CI で回すか (C-2)                                                        | (a) CI で回す / (b) Pages preview で手動 / (c) 主要導線のみ CI                                | **(a) 確定**            |
-| D8  | VRT を CI で回すか、ローカル運用に留めるか (C-3) と CI 実行時間の目標           | (a) CI / (b) ローカル / (c) PR ラベル等での opt-in                                            | **(a) 確定**            |
-| D9  | Turbo キャッシュを remote 化するか (C-4) と required status checks の要否 (C-5) | 現状 remote 無効。required checks は private repo のため設定状況が未確認                      | **実測後に判断 (確定)** |
+| #   | 論点                                                                            | 決定候補                                                                                      | 決定                                                                  |
+| --- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| D1  | play テストの対象が現時点で `packages/ui` のみである事実をどう扱うか            | (a) `packages/ui` 限定で確定し island は #26 で追加 / (b) island 前提の基準だけ先に決めておく | **(a) 確定**                                                          |
+| D2  | E2E 5 テストの規模で page 単位 Page Object を導入するか (要求では導入決定済み)  | (a) 決定どおり導入 / (b) locator 規約のみ先行し POM はジャーニー実装時 / (c) 粒度を下げる     | **(a) 確定**                                                          |
+| D3  | VRT を `context/testing.md` の責務分担でどの種別に位置づけるか                  | (a) E2E の一部 / (b) 独立した第 3 種別 / (c) Storybook 側の gate                              | **(b) 確定**                                                          |
+| D4  | VRT の手段                                                                      | (a) Playwright `toHaveScreenshot` / (b) reg-suit + storycap / (c) 併用                        | **(c) 併用 確定。ただし story 側の baseline 保管先は #47 待ちで保留** |
+| D5  | locator 規約 (`getByRole` 優先か `data-testid` 優先か)。現状は testid が 24/38  | (a) `getByRole` 優先へ寄せる / (b) `data-testid` を正式規約にする / (c) 用途で使い分ける      | **(c) 確定**                                                          |
+| D6  | `typecheck` / `build` / `knip` / `depcruise` をどこまで CI に載せるか (C-1)     | (a) 全部載せる / (b) pre-commit と重複させず CI のみ / (c) 現状維持                           | **(a) 確定**                                                          |
+| D7  | E2E を CI で回すか (C-2)                                                        | (a) CI で回す / (b) Pages preview で手動 / (c) 主要導線のみ CI                                | **(a) 確定**                                                          |
+| D8  | VRT を CI で回すか、ローカル運用に留めるか (C-3) と CI 実行時間の目標           | (a) CI / (b) ローカル / (c) PR ラベル等での opt-in                                            | **(a) 確定**                                                          |
+| D9  | Turbo キャッシュを remote 化するか (C-4) と required status checks の要否 (C-5) | 現状 remote 無効。required checks は private repo のため設定状況が未確認                      | **保留 (実測待ち。下記 未確定事項で管理)**                            |
 
 ## 解決済みの論点
 
@@ -328,9 +336,9 @@ sequenceDiagram
 - **D4: story は reg-suit + storycap、3 route は Playwright `toHaveScreenshot` で撮る併用構成とする。**
   - 根拠: ADR-0012 が「デザイン正本 = 実装 + Storybook」と定めており、story (`packages/ui` 11 + corporate-site セクション 17) が VRT の主対象として最も自然
   - storycap は story しか撮れず、要求の受け入れ基準にある 3 route × 2 viewport を満たせないため、route 側は既存 Playwright 基盤で補う
-  - baseline の保管先は **Cloudflare R2 (S3 互換)**。既に Cloudflare を利用しており、アカウントを流用できる
+  - route 側 (Playwright) の baseline は Git 管理で確定。**story 側 (reg-suit) の baseline 保管先は未確定** — 当初 Cloudflare R2 としたが、R2 は Cloudflare リソースであり `context/infrastructure.md` の Infrastructure Contract と ADR-0001 の境界規約に関わるため、#47 (infra を monorepo へ集約するか) の結論を待つ
   - トレードオフ: 実行系と baseline が 2 系統になり保守コストが増える。route を story 化して 1 系統に寄せる案は、ページを story 化する実装コストと二重管理が発生するため却下した
-  - **未検証**: reg-suit の R2 向け publish plugin の対応状況は実装フェーズで検証する。S3 互換 API で動く前提だが確認していない
+  - **この決定は P1b (route 側) のみ実装可能で、P1a (story 側) は #47 待ちでブロックされる**
 
 - **D3: VRT を `context/testing.md` の責務分担で、Unit test / E2E と並ぶ独立した第 3 種別として立てる。**
   - 根拠: D4 で story 系統 (reg-suit + storycap) と route 系統 (Playwright) の 2 つを持つため、E2E の一部として書くと Storybook 基盤側が収まらず、Storybook の gate として書くと Playwright 側が収まらない
@@ -344,6 +352,7 @@ sequenceDiagram
 - **D6: `typecheck` / `build` / `knip` / `depcruise` をすべて CI に載せる。**
   - 根拠: `lint.yml` の「pre-commit は `--no-verify` で素通しできるため CI を必須 gate にする」という既存の設計思想に一貫する。ローカル hook との重複は意図的な二重化として許容する
   - `typecheck` と `build` は pre-commit にも CI にも無く、現状どこでも自動検証されていない。ここが最大の穴であり本決定で塞ぐ
+  - **`pnpm check:specs` は対象外**。`spec-residue.yml` が既に CI で実行しており常設化は完了済みで、同 workflow は「別 PR で spec を清算する運用では無関係な PR が落ちる」ため意図的に PR ゲートから外している。この既存判断を維持する (`context/engineering.md` の「CI への常設化は CI パイプライン方針へ委譲する」は実態より古く、sync phase で更新する)
   - トレードオフ: CI 時間が伸びる。Turbo キャッシュ (D9) で吸収できるかを実測する
 
 - **D7: E2E を CI で回す。**
@@ -355,7 +364,7 @@ sequenceDiagram
   - reg-suit の baseline 解決は CI の git 情報に依存するため、CI 一本化が想定運用にも合う
   - トレードオフ: ローカルで事前確認できず、差分の確認が CI 実行待ちになる。Docker で環境を固定する案は、ローカルでも同じ画像を得られる利点があるが、Docker 依存と実行時間の増加を招くため今回は採らない
 
-- **D9: Turbo の remote cache と required status checks は、D6 / D7 適用後の CI 実行時間を実測してから判断する。**
+- **D9 (保留): Turbo の remote cache と required status checks は判断を保留し、D6 / D7 適用後の CI 実行時間の実測を待つ。**
   - 根拠: 要求の業務ルール #1 (判断は現規模の実測に基づく) に従う。remote cache は Vercel のサービスかセルフホストが必要で、いずれも新しい依存になるため、必要性を実測で示してから入れる
   - required status checks は private repo のため現状設定を `gh api` で取得できない (403)。ジョブ構成確定後に現状を確認してから設定する
   - **実測の完了条件**: D6 / D7 を適用した CI が develop 向け PR で 1 回以上実行され、総実行時間が記録されていること
@@ -367,12 +376,16 @@ sequenceDiagram
 
 ## 未確定事項
 
-未確定事項はゼロ。D1〜D9 はすべて確定した。
+D1 / D2 / D3 / D5 / D6 / D7 / D8 は確定済み。以下 2 件が未確定として残る。
 
-実装フェーズで確認が必要な事項 (論点ではなく作業手順):
+| #   | 未確定事項                                   | 決定者   | 期限                         | ブロックする対象                 |
+| --- | -------------------------------------------- | -------- | ---------------------------- | -------------------------------- |
+| U1  | story 側 (reg-suit) の baseline 保管先       | ユーザー | #47 の結論後                 | P1a (storycap + reg-suit の実装) |
+| U2  | Turbo remote cache と required status checks | ユーザー | D6 / D7 適用後の実測が出た後 | なし (実装後の運用判断)          |
 
-- reg-suit の Cloudflare R2 向け publish plugin の対応状況 (S3 互換 API で動く前提だが未検証)
-- develop の branch protection の現在の設定。private repo のため `gh api` が 403 を返すため、Web UI 等で確認する (D9 の実測後)
+- **U1 は #47 (infra を monorepo へ集約するか) に依存する。** R2 を使う前提を維持したまま結論を待つ判断 (2026-08-15, ユーザー)
+- U1 が解決するまで **P1a はブロックされるが、P1b (Playwright による 3 route × 2 viewport) は baseline が Git 管理のため実装可能**
+- U2 の解消には、develop の branch protection の現状確認が必要。private repo のため `gh api` が 403 を返すので Web UI 等で確認する
 
 ## 上位資料からの変更点
 
@@ -382,9 +395,10 @@ sequenceDiagram
 
 ### Design Doc への影響
 
-| 対象節         | 変更内容        | 理由                                |
-| -------------- | --------------- | ----------------------------------- |
-| モジュール責務 | 変更なし (継承) | `e2e` = root 管理の枠内に収まるため |
+| 対象節         | 変更内容                                                | 理由                                                                                                                  |
+| -------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| モジュール責務 | 変更なし (継承)                                         | `e2e` = root 管理の枠内に収まるため                                                                                   |
+| Future Work    | 「CI パイプライン」行を現状事実へ更新 (source: clarify) | D6 / D7 の実装後、「build / lint / test と docs closeout 検査の CI 常設化が未対応」という記述が事実として古くなるため |
 
 ### feature doc への影響
 
@@ -408,12 +422,19 @@ sequenceDiagram
 
 ## レビュー
 
-| 日付 | 結果 (PASS / NEEDS_WORK) | 指摘要点 | 対応 |
-| ---- | ------------------------ | -------- | ---- |
-| —    | 未実施                   | —        | —    |
+| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                                       | 対応                                                                     |
+| ---------- | ------------------------ | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| 2026-08-15 | NEEDS_WORK               | 指摘 10 件。上位文書からの委譲取りこぼし (check:specs / R2 の作成主体) / D4・D8・D9 の未決扱い | 全 10 件反映済。U1 / U2 は未確定事項として管理し、再レビューは U1 解決後 |
 
 ## 変更履歴
 
 | 日付       | 変更者         | 変更内容                                                  |
 | ---------- | -------------- | --------------------------------------------------------- |
 | 2026-08-14 | spec-lifecycle | scaffold: index.md を作成。実測棚卸しと論点 D1〜D9 を起票 |
+
+## 備考
+
+appendix (API / Database / Authorization / Screen spec / testid) はいずれも該当しないため取り込まない。
+
+- API endpoint / 永続データ層 / ロール権限 / 画面コンポーネントツリーを本 spec では扱わない
+- `data-testid` 一覧は D5 で locator 規約を決めるのみで、個別の testid 設計はジャーニー実装 issue の担当とする
