@@ -20,11 +20,11 @@
 | 3   | 上位文書突合                | 完了   | 2026-08-14 | 矛盾なし。context への追記は本 spec の計画的な更新              |
 | 4   | 論点整理                    | 完了   | 2026-08-15 | D1〜D9 を起票。D10〜D12 はレビュー対応で追加                    |
 | 5   | 論点解決                    | 完了   | 2026-08-15 | D1〜D12 を確定。設計上の未決ゼロ (U1 は実装順序、U2 は運用判断) |
-| 6   | Interface / Routing 設計    | 完了   | 2026-08-16 | diagram / track phase で確定済                                  |
-| 7   | Content / Data 設計         | 完了   | 2026-08-16 | diagram / track phase で確定済                                  |
-| 8   | Performance / Security 設計 | 完了   | 2026-08-16 | diagram / track phase で確定済                                  |
-| 9   | Test / Metrics 設計         | 完了   | 2026-08-16 | diagram / track phase で確定済                                  |
-| 10  | 実装分割                    | 未着手 |            |                                                                 |
+| 6   | Interface / Routing 設計    | 完了   | 2026-08-16 | diagram / track / sync phase で確定済                           |
+| 7   | Content / Data 設計         | 完了   | 2026-08-16 | diagram / track / sync phase で確定済                           |
+| 8   | Performance / Security 設計 | 完了   | 2026-08-16 | diagram / track / sync phase で確定済                           |
+| 9   | Test / Metrics 設計         | 完了   | 2026-08-16 | diagram / track / sync phase で確定済                           |
+| 10  | 実装分割                    | 完了   | 2026-08-16 | P1a〜P5 を記入。P4 は sync で消化済み                           |
 | 11  | レビュー済                  | 未着手 |            |                                                                 |
 
 ## 上位文書整合
@@ -39,16 +39,16 @@
 | Design Doc                   | モジュール責務 → `e2e` は root 管理の公開前検証     | 継承                                                                                                               |
 | Design Doc                   | 成功条件 #2 (3 route と問い合わせ導線を E2E で通す) | 補足。ジャーニー網羅と VRT を上乗せする                                                                            |
 | feature doc (corporate-site) | テスト観点 / 問い合わせ導線の route intercept 方針  | 継承。E2E fixture の分岐定義をジャーニー定義の入力に使う                                                           |
-| context/testing.md           | テスト責務の分担 (Unit test / E2E の 2 種別)        | 補足。VRT の位置づけを追加する (本 spec のスコープに含む計画更新)                                                  |
-| context/engineering.md       | Repository Quality Gate (pre-commit)                | 補足。CI との責務分担を追加する (同上)                                                                             |
+| context/testing.md           | テスト責務の分担                                    | **反映済**。sync で play / VRT を追加し 4 種別へ拡張した                                                           |
+| context/engineering.md       | Repository Quality Gate / Docs Closeout Gate        | **反映済**。CI とローカル hook の分担を追加し、closeout の CI 記述を実態へ更新した                                 |
 | context/infrastructure.md    | Cloudflare Pages preview deployment                 | 継承。preview と CI E2E の分担判断に使う                                                                           |
 | ADR-0008                     | Astro / React island ポリシー                       | 継承。play 対象を React に限る根拠                                                                                 |
 | ADR-0012                     | デザイン正本 = 実装 + Storybook                     | 継承。VRT の対象セットを Storybook に置く根拠                                                                      |
-| context/toolchain.md         | 標準 toolchain 表 (E2E / UI catalog / 静的解析)     | 補足。D4 の VRT ツールを追加する (本 spec のスコープに含む計画更新)                                                |
+| context/toolchain.md         | 標準スタック表                                      | **反映済**。VRT (story) / VRT (route) を追加した                                                                   |
 | ADR-0001                     | Terraform の infra code は別リポジトリで管理する    | 継承。**本 spec は R2 を調達しない** (ローカル S3 互換で検証まで)。R2 の調達と ADR-0001 の supersede は #47 が行う |
 | ADR-0015 / 0016 / 0017       | 本 spec で新規起票 (sync 反映済)                    | 以後この 3 本が D1〜D12 の判断の正本                                                                               |
 
-`context/testing.md` / `context/engineering.md` への追記は衝突ではなく、本 spec がスコープとして計画している更新であり sync phase で反映する。
+`context/testing.md` / `context/engineering.md` / `context/toolchain.md` への追記は衝突ではなく、本 spec がスコープとして計画した更新であり **sync phase で反映済**。
 
 **ADR-0001 とは衝突しない。** 同 ADR は「Terraform 本体・state・apply workflow を monorepo に置かない」と定めるが、本 spec のスコープは D4 の改訂によりローカル S3 互換ストレージでの検証までとなり、**Cloudflare リソースを調達しない**。
 R2 の調達と ADR-0001 の supersede は #47 が行う。
@@ -187,21 +187,12 @@ EARS 風の振る舞い。観測手段が定義できるものだけを本 spec 
 
 VRT の baseline は D4 の決定により **2 系統** を持つ。
 
-#### reg-suit を R2 に接続する際の必須設定 (2026-08-15 調査)
+#### reg-suit を S3 互換ストレージへ接続する際の設定
 
-| #   | 設定                                      | 理由                                                                                                                                                          |
-| --- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | `enableACL: false` を明示する             | plugin の既定は `enableACL: true` / `acl: public-read` だが、**R2 はオブジェクト ACL を未実装**で `x-amz-acl` 等が非対応。既定のままでは PutObject が失敗する |
-| 2   | `sdkOptions.region` に `auto` を指定      | R2 の region は `auto` が正 (空値と `us-east-1` がエイリアス)                                                                                                 |
-| 3   | `customDomain` と `endpoint` を併用しない | 併用すると差分レポートの URL が二重に組み立てられる既知の不具合がある (reg-suit issue #162)                                                                   |
-
-`sdkOptions.endpoint` には `https://<ACCOUNT_ID>.r2.cloudflarestorage.com` を指定する。
-
-**#33 の実装ではこの endpoint をローカルの S3 互換ストレージ (Docker で起動する RustFS 等) に向ける。**
-上記 3 点のうち `enableACL: false` と `region: auto` はローカル検証でも同じ設定で通るため、
-#47 完了後は endpoint と資格情報を差し替えるだけで R2 へ移行できる。
-ローカル検証で撮った baseline は破棄前提とし、正となる baseline は #47 完了後に CI 環境で撮り直す。
-出典: [plugin README](https://github.com/reg-viz/reg-suit/blob/master/packages/reg-publish-s3-plugin/README.md) / [issue #162](https://github.com/reg-viz/reg-suit/issues/162) / [R2 S3 API compatibility](https://developers.cloudflare.com/r2/api/s3/api/)
+> **正本は [ADR-0015](../../adr/0015-visual-regression-testing-policy.md) の「実装・運用への反映」。**
+> `enableACL: false` / `region: auto` / `customDomain` と `endpoint` を併用しない、の 3 点と出典をそこに移した。
+> #33 ではこの endpoint をローカルの S3 互換ストレージ (Docker) へ向け、#47 完了後は endpoint と資格情報を差し替えて R2 へ移行する。
+> ローカル検証で撮った baseline は破棄前提とし、正となる baseline は #47 完了後に CI 環境で撮り直す。
 
 | 系統                | 撮影対象                                                                    | 保管先                                                    |
 | ------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------- |
@@ -221,7 +212,11 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 ### Testing
 
-- 責務分担は Unit test / E2E / **VRT** の 3 種別とする (D3)。`context/testing.md` のテーブルへ反映する
+> **決定時スナップショット。** 以下は sync phase で正本へ移した。現在の正本は
+> [`context/testing.md`](../../context/testing.md) と [ADR-0017](../../adr/0017-ui-test-structure-policy.md) / [ADR-0015](../../adr/0015-visual-regression-testing-policy.md)。
+> 差異が生じた場合は正本側が正しい。
+
+- VRT を独立したテスト種別として立てる (D3)。sync 後の `context/testing.md` は play を含めて **Unit test / play / E2E / VRT の 4 種別**になっている
 - locator は領域特定に `data-testid`、操作対象に `getByRole` を優先する (D5)。Page Object 内部にも同じ規約を適用する
 - play テストの対象は `packages/ui` の 11 コンポーネントに限る (D1)
 
@@ -533,39 +528,37 @@ sequenceDiagram
 
 ### Design Doc への影響
 
-| 対象節         | 変更内容                                                | 理由                                                                                                                  |
-| -------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| モジュール責務 | 変更なし (継承)                                         | `e2e` = root 管理の枠内に収まるため                                                                                   |
-| Future Work    | 「CI パイプライン」行を現状事実へ更新 (source: clarify) | D6 / D7 の実装後、「build / lint / test と docs closeout 検査の CI 常設化が未対応」という記述が事実として古くなるため |
+| 対象節         | 変更内容                              | 状態                                                                     |
+| -------------- | ------------------------------------- | ------------------------------------------------------------------------ |
+| モジュール責務 | 変更なし (継承)                       | 対象外。`e2e` = root 管理の枠内に収まるため                              |
+| Future Work    | 「CI パイプライン」行を現状事実へ更新 | **反映済** (sync)。稼働中と未対応を書き分け、ADR-0016 を参照先に追加した |
 
 ### feature doc への影響
 
-| 対象 doc / 節                               | 変更内容                                                                                                                        | 理由                                                                                 |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `DesignDoc_corporate-site.md` ## テスト観点 | D11 の 3 ジャーニー (回遊 / ナビゲーション / JS 無効時) を追加し、問い合わせ送信は #26 実装後に追加する旨を明記 (source: track) | E2E が担うジャーニーは corporate-site 固有の導線であり、feature 側のテスト観点が正本 |
-| `DesignDoc_corporate-site.md` ## テスト観点 | VRT が 3 route × 2 viewport を撮ることを追加 (source: track)                                                                    | 既存のテスト観点は E2E の smoke のみで、視覚回帰の観点が無い                         |
+| 対象 doc / 節                               | 変更内容                                                   | 状態              |
+| ------------------------------------------- | ---------------------------------------------------------- | ----------------- |
+| `DesignDoc_corporate-site.md` ## テスト観点 | 「E2E が担うジャーニー」節を追加 (送信は #26 実装後) (D11) | **反映済** (sync) |
+| `DesignDoc_corporate-site.md` ## テスト観点 | 「視覚回帰 (VRT)」節を追加 (D4 / D10 / D12)                | **反映済** (sync) |
+| `DesignDoc_corporate-site.md` メタ          | 関連 ADR に ADR-0015 / ADR-0017 を追加                     | **反映済** (sync) |
 
 ### requirements への影響
 
-| 対象節          | 変更内容                                                                 | 理由                                                          |
-| --------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------- |
-| 例外シナリオ #3 | 「CI を赤にせず原因を報告」を「CI を失敗させ差分画像で原因を示す」へ改訂 | D12 で VRT をブロッキング扱いに確定したため (source: clarify) |
+| 対象節          | 変更内容                                                                 | 状態                                             |
+| --------------- | ------------------------------------------------------------------------ | ------------------------------------------------ |
+| 例外シナリオ #3 | 「CI を赤にせず原因を報告」を「CI を失敗させ差分画像で原因を示す」へ改訂 | **反映済**。D12 でブロッキング扱いに確定したため |
 
 ### context への影響
 
-| 対象 doc / 節                                       | 変更内容                                                                                                                  | 理由                                                              |
-| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `context/testing.md` テスト責務の分担               | VRT の種別と責務を追加 (D3 の決定を反映)                                                                                  | 現在 Unit test / E2E の 2 種別しかない                            |
-| `context/testing.md`                                | locator 規約と Page Object 規約を追加                                                                                     | D2 / D5 の決定先                                                  |
-| `context/testing.md` テスト責務の分担               | play テストの対象基準を追加 (`packages/ui` に限定、island は #26 で決める) (source: track)                                | D1 の決定先。現在 play に関する記述が無い                         |
-| `context/testing.md` VRT 節                         | 許容 diff の初期値 (0) と、差分時は CI を失敗させる扱いを追加 (source: track)                                             | D10 / D12 の決定先                                                |
-| `context/testing.md` テスト責務の分担               | E2E が担うジャーニーの範囲と play との責務境界を追加 (source: track)                                                      | D11 の決定先                                                      |
-| `context/engineering.md` Repository Quality Gate    | CI とローカル hook の責務分担を追加                                                                                       | D6 / D7 の決定先。現在 pre-commit のみ記述                        |
-| `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケットを追加 (source: clarify)                                                                    | D4 で baseline の保管先を R2 に決めたため。#47 の集約後に確定する |
-| `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を #47 の集約後の実態へ更新 (source: clarify)                                                           | ADR-0001 の supersede に伴い記述が古くなる                        |
-| `context/project.yml` の `commands`                 | VRT 実行コマンドと baseline 更新コマンドを追加 (source: clarify)                                                          | コマンド契約の正本。`meta.updated` も同期する                     |
-| `context/toolchain.md` 標準 toolchain 表            | VRT の採用ツール (storycap / reg-suit / Playwright screenshot) とローカル検証用の S3 互換ストレージを追加 (source: track) | 採用 toolchain の正本。D4 で新規ツールを採用したため              |
-| `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は CI パイプライン方針へ委譲する」を実態へ更新 (source: clarify)                                           | `spec-residue.yml` が既に CI で実行しており常設化は完了済み       |
+| 対象 doc / 節                                       | 変更内容                                                                       | 状態                                |
+| --------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------- |
+| `context/testing.md` テスト責務の分担               | play / VRT を追加し 4 種別へ拡張 (D1 / D3)                                     | **反映済** (sync)                   |
+| `context/testing.md`                                | play 対象・ジャーニー・Page Object と locator・VRT の各節 (D2 / D5 / D10〜D12) | **反映済** (sync)                   |
+| `context/engineering.md` Repository Quality Gate    | CI とローカル hook の分担を追加 (D6〜D9)                                       | **反映済** (sync)                   |
+| `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は委譲する」を実態へ更新                                        | **反映済** (sync)                   |
+| `context/toolchain.md` 標準スタック                 | VRT (story) / VRT (route) を追加 (D4)                                          | **反映済** (sync)                   |
+| `context/project.yml` の `commands`                 | VRT 実行コマンドと baseline 更新コマンド。`meta.updated` も同期                | 未反映 — コマンド名が確定する実装時 |
+| `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケット                                                 | 未反映 — #47 の完了時               |
+| `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を集約後の実態へ更新                                         | 未反映 — #47 の完了時               |
 
 ### 他 issue への引き継ぎ
 
@@ -601,14 +594,6 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | `design/DesignDoc.md`                                          | Future Work「CI パイプライン」行を現状事実へ更新                                   | D6 / D7             |
 | `design/features/corporate-site/DesignDoc_corporate-site.md`   | テスト観点へ「E2E が担うジャーニー」「視覚回帰 (VRT)」を追加                       | D11 / D4            |
 
-### 実装時 / #47 完了後に反映するもの
-
-| 反映先                                              | 内容                                     | 反映できる時期                 |
-| --------------------------------------------------- | ---------------------------------------- | ------------------------------ |
-| `context/project.yml` の `commands`                 | VRT 実行コマンドと baseline 更新コマンド | 実装でコマンド名が確定した時点 |
-| `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケット           | #47 で R2 が用意された時点     |
-| `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を集約後の実態へ更新   | #47 の完了時                   |
-
 ## レビュー
 
 | 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                                                                                  | 対応                                                                          |
@@ -624,6 +609,7 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | 2026-08-15 | NEEDS_WORK               | 9 回目。指摘 4 件 (Fallback が D12 の却下案を残す / requirements の例外シナリオ未改訂 / D11 の根拠の事実誤り / フェーズ 4 の日付)         | 3 件反映済。requirements の改訂は 10 回目で実施                               |
 | 2026-08-15 | —                        | 10 回目の指摘は解消済み。**PASS を確認する再レビューは未実施**のまま、ユーザー判断で clarify gate を通過し diagram phase へ進んだ         | ユーザー判断                                                                  |
 | 2026-08-16 | NEEDS_WORK               | track gate (diagram〜track 累積)。指摘 7 件 (図が #47 後の状態 / ジョブ順序の暗黙導入 / toolchain 反映漏れ / メタ同期 / レビュー表の重複) | 全 7 件反映済                                                                 |
+| 2026-08-16 | NEEDS_WORK               | track gate 2 回目 (diagram〜sync 累積)。指摘 7 件 (sync 後の spec 降格が不完全 / R2 設定知識の取りこぼし / メタ情報同期)                  | 全 7 件反映済                                                                 |
 | 2026-08-15 | NEEDS_WORK               | 10 回目。指摘 2 件 (9 回目の requirements 改訂が未反映 / 実体のない改訂を反映済と記録)                                                    | 全 2 件反映済 (本文を読み返して確認)                                          |
 
 ## 変更履歴
@@ -659,6 +645,8 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | 2026-08-16 | spec-review    | track gate NEEDS_WORK (指摘 7 件)。図が #33 ではなく #47 後の状態を描いていた                                                                                                                      |
 | 2026-08-16 | spec-lifecycle | track gate の指摘 7 件に対応。図を #33 時点と #47 後に分け、CI のジョブ順序の暗黙導入を解消。context/toolchain.md を反映先へ追加                                                                   |
 | 2026-08-16 | spec-lifecycle | sync: ADR-0015 / 0016 / 0017 を起票し、context 3 本と DesignDoc / feature doc へ反映。正本ハンドオフを記録                                                                                         |
+| 2026-08-16 | spec-review    | track gate 2 回目 NEEDS_WORK (指摘 7 件)。sync 後の spec 降格が不完全だった                                                                                                                        |
+| 2026-08-16 | spec-lifecycle | 指摘 7 件に対応。R2 の接続設定を ADR-0015 へ移し、spec の該当節を決定時スナップショットへ降格。反映済 / 未反映の状態列を各表へ追加し二重管理を解消。DesignDoc と feature doc のメタ情報を同期      |
 
 ## 備考
 

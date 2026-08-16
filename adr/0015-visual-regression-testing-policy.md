@@ -90,6 +90,20 @@
 - spec 更新要否: 要。VRT を伴う spec ではテスト観点に視覚回帰を含める
 - AI 向け設定更新要否: 不要 (規約は `context/testing.md` に反映済み)
 
+### reg-suit を S3 互換ストレージへ接続するときの必須設定
+
+`reg-publish-s3-plugin` は `sdkOptions` を `S3Client` のコンストラクタへ渡すため、S3 互換ストレージ (Cloudflare R2 / ローカルの検証用ストレージ) で動作する。ただし既定値のままでは失敗するため、次の 3 点を設定する (2026-08-16 調査)。
+
+| #   | 設定                                      | 理由                                                                                                                                                          |
+| --- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `enableACL: false` を明示する             | plugin の既定は `enableACL: true` / `acl: public-read` だが、**R2 はオブジェクト ACL を未実装**で `x-amz-acl` 等が非対応。既定のままでは PutObject が失敗する |
+| 2   | `sdkOptions.region` に `auto` を指定する  | R2 の region は `auto` が正 (空値と `us-east-1` がエイリアス)                                                                                                 |
+| 3   | `customDomain` と `endpoint` を併用しない | 併用すると差分レポートの URL が二重に組み立てられる既知の不具合がある ([reg-suit issue #162](https://github.com/reg-viz/reg-suit/issues/162))                 |
+
+`sdkOptions.endpoint` には R2 の場合 `https://<ACCOUNT_ID>.r2.cloudflarestorage.com` を指定する。ローカル検証では同じ項目を検証用ストレージのエンドポイントへ向け、`enableACL` と `region` は同じ値のまま使える。
+
+出典: [plugin README](https://github.com/reg-viz/reg-suit/blob/master/packages/reg-publish-s3-plugin/README.md) / [R2 の S3 API 互換性](https://developers.cloudflare.com/r2/api/s3/api/)
+
 ## 関連ドキュメント
 
 - `context/testing.md`: テスト責務の分担 (VRT の節)
