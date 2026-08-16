@@ -20,10 +20,10 @@
 | 3   | 上位文書突合                | 完了   | 2026-08-14 | 矛盾なし。context への追記は本 spec の計画的な更新              |
 | 4   | 論点整理                    | 完了   | 2026-08-15 | D1〜D9 を起票。D10〜D12 はレビュー対応で追加                    |
 | 5   | 論点解決                    | 完了   | 2026-08-15 | D1〜D12 を確定。設計上の未決ゼロ (U1 は実装順序、U2 は運用判断) |
-| 6   | Interface / Routing 設計    | 進行中 | 2026-08-15 | clarify の確定内容を反映済。diagram / track phase で確定        |
-| 7   | Content / Data 設計         | 進行中 | 2026-08-15 | clarify の確定内容を反映済。diagram / track phase で確定        |
-| 8   | Performance / Security 設計 | 進行中 | 2026-08-15 | clarify の確定内容を反映済。diagram / track phase で確定        |
-| 9   | Test / Metrics 設計         | 進行中 | 2026-08-15 | clarify の確定内容を反映済。diagram / track phase で確定        |
+| 6   | Interface / Routing 設計    | 完了   | 2026-08-16 | diagram / track phase で確定済                                  |
+| 7   | Content / Data 設計         | 完了   | 2026-08-16 | diagram / track phase で確定済                                  |
+| 8   | Performance / Security 設計 | 完了   | 2026-08-16 | diagram / track phase で確定済                                  |
+| 9   | Test / Metrics 設計         | 完了   | 2026-08-16 | diagram / track phase で確定済                                  |
 | 10  | 実装分割                    | 未着手 |            |                                                                 |
 | 11  | レビュー済                  | 未着手 |            |                                                                 |
 
@@ -44,6 +44,7 @@
 | context/infrastructure.md    | Cloudflare Pages preview deployment                 | 継承。preview と CI E2E の分担判断に使う                                                                           |
 | ADR-0008                     | Astro / React island ポリシー                       | 継承。play 対象を React に限る根拠                                                                                 |
 | ADR-0012                     | デザイン正本 = 実装 + Storybook                     | 継承。VRT の対象セットを Storybook に置く根拠                                                                      |
+| context/toolchain.md         | 標準 toolchain 表 (E2E / UI catalog / 静的解析)     | 補足。D4 の VRT ツールを追加する (本 spec のスコープに含む計画更新)                                                |
 | ADR-0001                     | Terraform の infra code は別リポジトリで管理する    | 継承。**本 spec は R2 を調達しない** (ローカル S3 互換で検証まで)。R2 の調達と ADR-0001 の supersede は #47 が行う |
 
 `context/testing.md` / `context/engineering.md` への追記は衝突ではなく、本 spec がスコープとして計画している更新であり sync phase で反映する。
@@ -311,82 +312,106 @@ VRT の baseline は D4 の決定により **2 系統** を持つ。
 
 ## フロー / シーケンス
 
-本 spec の「操作主体」は開発者・AI エージェント・CI であり、描く対象は **UI を変更してから CI で検証されるまでの流れ**である
+本 spec の「操作主体」は開発者・AI エージェント・CI であり、描く対象は **UI を変更してから検証されるまでの流れ**である
 (`## 要件の解釈` の対象ユーザー / 操作主体)。アプリのエンドユーザー操作は本 spec の対象外。
+
+**図は #33 完了時点の状態を描く。** D4 / D8 の改訂により story 側 VRT は #33 ではローカル実行 (Docker の S3 互換ストレージ) に留まり、
+CI に載るのは route 側 VRT だけである。story 側が CI に載るのは #47 完了後 (実装分割 P5) で、その状態は最後の図に分けて描く。
+
+CI 内のジョブ実行順序は D6〜D9 のいずれでも決めていないため、図では順序を持たせない。
 
 ### Flowchart (ユーザー操作起点)
 
 ```mermaid
 flowchart TD
-    Change["開発者が UI を変更する"] --> Commit["commit する"]
-    Commit --> Hook{"lefthook pre-commit<br/>format / lint / repo-analysis"}
+    Change["開発者が UI を変更する"] --> LocalVRT["ローカルで story VRT を実行する<br/>Docker の S3 互換ストレージ"]
+    LocalVRT --> LocalDiff{"story の差分"}
+    LocalDiff -->|"1 件以上"| JudgeLocal["差分の性質を判定して対応する"]
+    JudgeLocal --> Commit["commit する"]
+    LocalDiff -->|"0 件"| Commit
+    Commit --> Hook{"lefthook pre-commit<br/>protected-branch / format / lint / repo-analysis"}
     Hook -->|失敗| FixLocal["ローカルで修正する"]
     FixLocal --> Commit
     Hook -->|成功| Push["push して PR を作成する"]
-    Push --> CI["CI がジョブを実行する"]
-    CI --> Static{"lint / test / typecheck / build<br/>knip / depcruise / e2e"}
-    Static -->|失敗| FixCI["修正して push する"]
-    FixCI --> CI
-    Static -->|成功| RunVRT["VRT を実行する<br/>story 81 枚 + route 6 枚"]
-    RunVRT --> Diff{"baseline との差分"}
-    Diff -->|"0 件"| Green["CI 成功"]
-    Diff -->|"1 件以上"| Judge{"差分の性質を判定する"}
-    Judge -->|"意図した UI 変更"| UpdateBase["baseline を更新して push する"]
-    UpdateBase --> CI
-    Judge -->|"意図しない視覚崩れ"| FixImpl["実装を修正して push する"]
-    FixImpl --> CI
-    Judge -->|"環境差による差分"| Escalate["マスク → 撮影環境の固定<br/>→ 閾値緩和 (D10)"]
-    Escalate --> CI
-    Green --> Merge["レビューして merge する"]
+    Push --> Jobs{"CI が全ジョブを実行する<br/>lint / test / typecheck / build<br/>knip / depcruise / e2e / route VRT"}
+    Jobs -->|"全ジョブ成功"| Merge["レビューして merge する"]
+    Jobs -->|"route VRT 以外が失敗"| FixImpl["実装を修正して push する"]
+    FixImpl --> Jobs
+    Jobs -->|"route VRT が失敗"| JudgeDiff{"差分の性質"}
+    JudgeDiff -->|"意図した UI 変更"| UpdateBase["baseline を更新して commit する"]
+    UpdateBase --> Jobs
+    JudgeDiff -->|"意図しない視覚崩れ"| FixImpl
+    JudgeDiff -->|"環境差による差分"| Escalate["マスク → 撮影環境の固定<br/>→ 閾値緩和 (D10)"]
+    Escalate --> Jobs
 ```
 
-### Sequence
+### Sequence (#33 完了時点)
 
-baseline ストレージは 2 系統ある (D4)。story 側は S3 互換ストレージ (#33 はローカル Docker、#47 後は R2)、
-route 側はリポジトリ (Git 管理) で、下図の `Store` は前者を指す。
+route 側の baseline はリポジトリ (Git 管理)、story 側は開発者のローカルに立てた S3 互換ストレージにある (D4)。
 
 ```mermaid
 sequenceDiagram
     actor Dev as 開発者
-    participant Hook as lefthook
+    participant Local as ローカルストレージ
+    participant Repo as リポジトリ
     participant CI as CI
-    participant Runner as VRT ランナー
-    participant Store as baseline ストレージ
+    participant Runner as route VRT ランナー
 
-    Dev->>Hook: commit
-    Hook-->>Dev: format / lint / repo-analysis の結果
-    Dev->>CI: push して PR を作成
+    Dev->>Local: story VRT を実行し baseline と比較する
+    Local-->>Dev: 差分件数と差分画像
+    Dev->>Repo: commit して push する
+    Repo->>CI: PR を作成する
     CI->>CI: lint / test / typecheck / build / knip / depcruise / e2e
-    CI->>Runner: VRT を実行
-    Runner->>Store: baseline を取得
-    Store-->>Runner: 前回の snapshot
-    Runner->>Runner: 撮影して比較 (許容 diff 0)
+    CI->>Runner: route VRT を実行する
+    Runner->>Repo: baseline を取得する
+    Repo-->>Runner: 前回の snapshot
+    Runner->>Runner: 撮影して比較する (許容 diff 0)
     alt 差分 0 件
         Runner-->>CI: 成功
         CI-->>Dev: PR チェックを緑にする
     else 差分あり
         Runner-->>CI: 失敗 + 差分画像
         CI-->>Dev: PR チェックを赤にする
-        Dev->>Dev: 意図した変更か判定する
         opt 意図した変更だった場合
-            Dev->>Store: baseline を更新する
-            Dev->>CI: 再実行させる
+            Dev->>Repo: baseline を更新して push する
         end
     end
 ```
 
+### Sequence (#47 完了後 / 実装分割 P5)
+
+story 側の baseline が R2 へ移り、story VRT も CI で実行されるようになった状態。
+
+```mermaid
+sequenceDiagram
+    actor Dev as 開発者
+    participant Repo as リポジトリ
+    participant CI as CI
+    participant SRunner as story VRT ランナー
+    participant R2 as R2
+
+    Dev->>Repo: commit して push する
+    Repo->>CI: PR を作成する
+    CI->>SRunner: story VRT を実行する
+    SRunner->>R2: baseline を取得する
+    R2-->>SRunner: 前回の snapshot
+    SRunner->>SRunner: 撮影して比較する
+    SRunner->>R2: 差分レポートを publish する
+    SRunner-->>CI: 判定結果
+    CI-->>Dev: PR チェックと差分レポートの参照
+```
+
 図と機能仕様の整合:
 
-- 分岐「差分あり → 赤」は D12 (ブロッキング扱い) と `## 要件の解釈` の EARS 5 件目に対応する
+- 差分ありで PR チェックを赤にするのは D12 (ブロッキング扱い) と、受け入れ基準「いずれかのジョブが失敗した場合、失敗したジョブ名とログを PR から辿れる状態にする」に対応する
 - 「許容 diff 0」は D10 に対応する
 - 環境差のエスカレーション順は `### Fallback` の 4 段と一致する
 - lefthook と CI の重複実行は D6 の「意図的な二重化」に対応する
+- story 側が #33 では CI に載らないことは D8 の改訂と、受け入れ基準の WHERE 句「story 側の VRT は #47 完了後に CI へ載せる」に対応する
 
 ## 実装分割
 
 ### 実装タスク案
-
-(論点確定後に track / prompts phase で確定する。現時点は暫定)
 
 | Phase | 対象                     | 概要                                                                         | 依存          |
 | ----- | ------------------------ | ---------------------------------------------------------------------------- | ------------- |
@@ -527,18 +552,19 @@ sequenceDiagram
 
 ### context への影響
 
-| 対象 doc / 節                                       | 変更内容                                                                                   | 理由                                                              |
-| --------------------------------------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
-| `context/testing.md` テスト責務の分担               | VRT の種別と責務を追加 (D3 の決定を反映)                                                   | 現在 Unit test / E2E の 2 種別しかない                            |
-| `context/testing.md`                                | locator 規約と Page Object 規約を追加                                                      | D2 / D5 の決定先                                                  |
-| `context/testing.md` テスト責務の分担               | play テストの対象基準を追加 (`packages/ui` に限定、island は #26 で決める) (source: track) | D1 の決定先。現在 play に関する記述が無い                         |
-| `context/testing.md` VRT 節                         | 許容 diff の初期値 (0) と、差分時は CI を失敗させる扱いを追加 (source: track)              | D10 / D12 の決定先                                                |
-| `context/testing.md` テスト責務の分担               | E2E が担うジャーニーの範囲と play との責務境界を追加 (source: track)                       | D11 の決定先                                                      |
-| `context/engineering.md` Repository Quality Gate    | CI とローカル hook の責務分担を追加                                                        | D6 / D7 の決定先。現在 pre-commit のみ記述                        |
-| `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケットを追加 (source: clarify)                                     | D4 で baseline の保管先を R2 に決めたため。#47 の集約後に確定する |
-| `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を #47 の集約後の実態へ更新 (source: clarify)                            | ADR-0001 の supersede に伴い記述が古くなる                        |
-| `context/project.yml` の `commands`                 | VRT 実行コマンドと baseline 更新コマンドを追加 (source: clarify)                           | コマンド契約の正本。`meta.updated` も同期する                     |
-| `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は CI パイプライン方針へ委譲する」を実態へ更新 (source: clarify)            | `spec-residue.yml` が既に CI で実行しており常設化は完了済み       |
+| 対象 doc / 節                                       | 変更内容                                                                                                                  | 理由                                                              |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `context/testing.md` テスト責務の分担               | VRT の種別と責務を追加 (D3 の決定を反映)                                                                                  | 現在 Unit test / E2E の 2 種別しかない                            |
+| `context/testing.md`                                | locator 規約と Page Object 規約を追加                                                                                     | D2 / D5 の決定先                                                  |
+| `context/testing.md` テスト責務の分担               | play テストの対象基準を追加 (`packages/ui` に限定、island は #26 で決める) (source: track)                                | D1 の決定先。現在 play に関する記述が無い                         |
+| `context/testing.md` VRT 節                         | 許容 diff の初期値 (0) と、差分時は CI を失敗させる扱いを追加 (source: track)                                             | D10 / D12 の決定先                                                |
+| `context/testing.md` テスト責務の分担               | E2E が担うジャーニーの範囲と play との責務境界を追加 (source: track)                                                      | D11 の決定先                                                      |
+| `context/engineering.md` Repository Quality Gate    | CI とローカル hook の責務分担を追加                                                                                       | D6 / D7 の決定先。現在 pre-commit のみ記述                        |
+| `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケットを追加 (source: clarify)                                                                    | D4 で baseline の保管先を R2 に決めたため。#47 の集約後に確定する |
+| `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を #47 の集約後の実態へ更新 (source: clarify)                                                           | ADR-0001 の supersede に伴い記述が古くなる                        |
+| `context/project.yml` の `commands`                 | VRT 実行コマンドと baseline 更新コマンドを追加 (source: clarify)                                                          | コマンド契約の正本。`meta.updated` も同期する                     |
+| `context/toolchain.md` 標準 toolchain 表            | VRT の採用ツール (storycap / reg-suit / Playwright screenshot) とローカル検証用の S3 互換ストレージを追加 (source: track) | 採用 toolchain の正本。D4 で新規ツールを採用したため              |
+| `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は CI パイプライン方針へ委譲する」を実態へ更新 (source: clarify)                                           | `spec-residue.yml` が既に CI で実行しており常設化は完了済み       |
 
 ### 他 issue への引き継ぎ
 
@@ -560,20 +586,20 @@ sequenceDiagram
 
 ## レビュー
 
-| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                                                                          | 対応                                                                          |
-| ---------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| 2026-08-15 | NEEDS_WORK               | 1 回目。指摘 10 件 (上位文書からの委譲取りこぼし / D4・D8・D9 の未決扱い)                                                         | 8 件反映。**指摘 4 (project.yml) と 8 (変更履歴) は置換が失敗し未反映だった** |
-| 2026-08-15 | NEEDS_WORK               | 2 回目。指摘 8 件 (ADR-0001 との衝突未記載 / D8 目標値の記述不整合 / 前回未反映分)                                                | 全 8 件反映済 (各置換を検証済み)                                              |
-| 2026-08-15 | NEEDS_WORK               | 3 回目。指摘 6 件 (確定内容が下流節へ未反映 / Phase 名の不整合 / review.md の追補漏れ)                                            | 全 6 件反映済                                                                 |
-| 2026-08-15 | NEEDS_WORK               | 4 回目。指摘 5 件 (後日追記の語彙違反 / 参照方向 / story 枚数の不一致 / P4 の target / フェーズ状況の未同期)                      | 全 5 件反映済                                                                 |
-| 2026-08-15 | NEEDS_WORK               | 5 回目。指摘 2 件 (story ファイル数と story 数の混同 / フェーズ 8・9 の未同期) + 補足 2 件                                        | 全件反映済                                                                    |
-| 2026-08-15 | NEEDS_WORK               | 6 回目。指摘 3 件 (設計時の論点節の markdown 破損 / 存在しない選択肢ラベルの参照 / D8・D9 の帰属誤り)                             | 全 3 件反映済                                                                 |
-| 2026-08-15 | NEEDS_WORK               | 7 回目。指摘 2 件 (許容 diff の決定が spec 内に存在しない / Fallback が存在しない目標値を参照)                                    | 全 2 件反映済                                                                 |
-| 2026-08-15 | NEEDS_WORK               | 8 回目。指摘 2 件 (ジャーニー定義の欠落 / 差分レポート閲覧経路が未管理) + 補足 2 件                                               | 全件反映済                                                                    |
-| 2026-08-15 | NEEDS_WORK               | 9 回目。指摘 4 件 (Fallback が D12 の却下案を残す / requirements の例外シナリオ未改訂 / D11 の根拠の事実誤り / フェーズ 4 の日付) | 3 件反映済。requirements の改訂は 10 回目で実施                               |
-| 2026-08-15 | —                        | 10 回目の指摘は解消済み。**PASS を確認する再レビューは未実施**のまま、ユーザー判断で clarify gate を通過し diagram phase へ進んだ | ユーザー判断                                                                  |
-| 2026-08-15 | NEEDS_WORK               | 10 回目。指摘 2 件 (9 回目の requirements 改訂が未反映 / 実体のない改訂を反映済と記録)                                            | 全 2 件反映済 (本文を読み返して確認)                                          |
-| 2026-08-15 | —                        | 10 回目の指摘は解消済み。**PASS を確認する再レビューは未実施**のまま、ユーザー判断で clarify gate を通過し diagram phase へ進んだ | ユーザー判断                                                                  |
+| 日付       | 結果 (PASS / NEEDS_WORK) | 指摘要点                                                                                                                                  | 対応                                                                          |
+| ---------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| 2026-08-15 | NEEDS_WORK               | 1 回目。指摘 10 件 (上位文書からの委譲取りこぼし / D4・D8・D9 の未決扱い)                                                                 | 8 件反映。**指摘 4 (project.yml) と 8 (変更履歴) は置換が失敗し未反映だった** |
+| 2026-08-15 | NEEDS_WORK               | 2 回目。指摘 8 件 (ADR-0001 との衝突未記載 / D8 目標値の記述不整合 / 前回未反映分)                                                        | 全 8 件反映済 (各置換を検証済み)                                              |
+| 2026-08-15 | NEEDS_WORK               | 3 回目。指摘 6 件 (確定内容が下流節へ未反映 / Phase 名の不整合 / review.md の追補漏れ)                                                    | 全 6 件反映済                                                                 |
+| 2026-08-15 | NEEDS_WORK               | 4 回目。指摘 5 件 (後日追記の語彙違反 / 参照方向 / story 枚数の不一致 / P4 の target / フェーズ状況の未同期)                              | 全 5 件反映済                                                                 |
+| 2026-08-15 | NEEDS_WORK               | 5 回目。指摘 2 件 (story ファイル数と story 数の混同 / フェーズ 8・9 の未同期) + 補足 2 件                                                | 全件反映済                                                                    |
+| 2026-08-15 | NEEDS_WORK               | 6 回目。指摘 3 件 (設計時の論点節の markdown 破損 / 存在しない選択肢ラベルの参照 / D8・D9 の帰属誤り)                                     | 全 3 件反映済                                                                 |
+| 2026-08-15 | NEEDS_WORK               | 7 回目。指摘 2 件 (許容 diff の決定が spec 内に存在しない / Fallback が存在しない目標値を参照)                                            | 全 2 件反映済                                                                 |
+| 2026-08-15 | NEEDS_WORK               | 8 回目。指摘 2 件 (ジャーニー定義の欠落 / 差分レポート閲覧経路が未管理) + 補足 2 件                                                       | 全件反映済                                                                    |
+| 2026-08-15 | NEEDS_WORK               | 9 回目。指摘 4 件 (Fallback が D12 の却下案を残す / requirements の例外シナリオ未改訂 / D11 の根拠の事実誤り / フェーズ 4 の日付)         | 3 件反映済。requirements の改訂は 10 回目で実施                               |
+| 2026-08-15 | —                        | 10 回目の指摘は解消済み。**PASS を確認する再レビューは未実施**のまま、ユーザー判断で clarify gate を通過し diagram phase へ進んだ         | ユーザー判断                                                                  |
+| 2026-08-16 | NEEDS_WORK               | track gate (diagram〜track 累積)。指摘 7 件 (図が #47 後の状態 / ジョブ順序の暗黙導入 / toolchain 反映漏れ / メタ同期 / レビュー表の重複) | 全 7 件反映済                                                                 |
+| 2026-08-15 | NEEDS_WORK               | 10 回目。指摘 2 件 (9 回目の requirements 改訂が未反映 / 実体のない改訂を反映済と記録)                                                    | 全 2 件反映済 (本文を読み返して確認)                                          |
 
 ## 変更履歴
 
@@ -605,6 +631,8 @@ sequenceDiagram
 | 2026-08-15 | spec-lifecycle | requirements の例外シナリオ #3 を実際に改訂し、本文を読み返して spec との一致を確認                                                                                                                |
 | 2026-08-15 | spec-lifecycle | diagram: Flowchart と Sequence を生成。Mermaid のパースをブラウザで検証し 2 図とも OK を確認                                                                                                       |
 | 2026-08-16 | spec-lifecycle | track: 未記録だった反映先を追記。feature doc のテスト観点 (D11 / VRT)、context/testing.md の play 対象基準・許容 diff・ジャーニー境界、ADR に D8 / D10 / D12 を追加。他 issue への引き継ぎ表を新設 |
+| 2026-08-16 | spec-review    | track gate NEEDS_WORK (指摘 7 件)。図が #33 ではなく #47 後の状態を描いていた                                                                                                                      |
+| 2026-08-16 | spec-lifecycle | track gate の指摘 7 件に対応。図を #33 時点と #47 後に分け、CI のジョブ順序の暗黙導入を解消。context/toolchain.md を反映先へ追加                                                                   |
 
 ## 備考
 
