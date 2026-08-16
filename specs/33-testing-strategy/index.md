@@ -190,7 +190,7 @@ EARS 風の振る舞い。観測手段が定義できるものだけを本 spec 
 
 VRT の baseline は D4 の決定により **2 系統** を持つ。
 
-**Storybook は 2 インスタンスある (2026-08-16 確認)。** `pnpm storybook:build` は `@kufu/ui` と
+**追記 (2026-08-16)**: Storybook は 2 インスタンスある。`pnpm storybook:build` は `@kufu/ui` と
 `@kufu/corporate-site` を別々にビルドし、`scripts/build-storybook-pages.mjs` が `.storybook-pages/ui/` と
 `.storybook-pages/corporate-site/` へ別の静的サイトとして配置する。統合された 1 つの Storybook にはならないため、
 storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要がある。
@@ -615,11 +615,13 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | 2026-08-15 | NEEDS_WORK               | 6 回目。指摘 3 件 (設計時の論点節の markdown 破損 / 存在しない選択肢ラベルの参照 / D8・D9 の帰属誤り)                                     | 全 3 件反映済                                                                 |
 | 2026-08-15 | NEEDS_WORK               | 7 回目。指摘 2 件 (許容 diff の決定が spec 内に存在しない / Fallback が存在しない目標値を参照)                                            | 全 2 件反映済                                                                 |
 | 2026-08-15 | NEEDS_WORK               | 8 回目。指摘 2 件 (ジャーニー定義の欠落 / 差分レポート閲覧経路が未管理) + 補足 2 件                                                       | 全件反映済                                                                    |
+| 2026-08-15 | NEEDS_WORK               | 9 回目。指摘 4 件 (Fallback が D12 の却下案を残す / requirements の例外シナリオ #3 との矛盾 / D11 の根拠の事実誤り / フェーズ 4 の日付)   | 全 4 件反映済                                                                 |
 | 2026-08-15 | NEEDS_WORK               | 10 回目。指摘 2 件 (9 回目の requirements 改訂が未反映 / 実体のない改訂を反映済と記録)                                                    | 全 2 件反映済 (本文を読み返して確認)                                          |
 | 2026-08-15 | —                        | 10 回目の指摘は解消済み。**PASS を確認する再レビューは未実施**のまま、ユーザー判断で clarify gate を通過し diagram phase へ進んだ         | ユーザー判断                                                                  |
 | 2026-08-16 | NEEDS_WORK               | track gate (diagram〜track 累積)。指摘 7 件 (図が #47 後の状態 / ジョブ順序の暗黙導入 / toolchain 反映漏れ / メタ同期 / レビュー表の重複) | 全 7 件反映済                                                                 |
 | 2026-08-16 | NEEDS_WORK               | track gate 2 回目 (diagram〜sync 累積)。指摘 7 件 (sync 後の spec 降格が不完全 / R2 設定知識の取りこぼし / メタ情報同期)                  | 全 7 件反映済                                                                 |
 | 2026-08-16 | NEEDS_WORK               | track gate 3 回目。指摘 2 件 (review.md に 2 回目の記録が無い / レビュー表の時系列) + 補足 3 件。**正本境界を含む 5 観点が PASS**         | 全件反映済                                                                    |
+| 2026-08-16 | NEEDS_WORK               | track gate 4 回目。指摘 1 件 (レビュー表に 9 回目の行が無い) + 補足 3 件。**5 観点が PASS。実測値 11 項目を実ファイルと照合し全一致**     | 全件反映済                                                                    |
 
 ## 変更履歴
 
@@ -655,6 +657,8 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | 2026-08-16 | spec-lifecycle | 指摘 7 件に対応。R2 の接続設定を ADR-0015 へ移し、spec の該当節を決定時スナップショットへ降格。反映済 / 未反映の状態列を各表へ追加し二重管理を解消。DesignDoc と feature doc のメタ情報を同期      |
 | 2026-08-16 | spec-review    | track gate 3 回目 NEEDS_WORK (指摘 2 件 + 補足 3 件)。正本境界を含む 5 観点が PASS                                                                                                                 |
 | 2026-08-16 | spec-lifecycle | 3 回目の指摘に対応。review.md へ 2 回目・3 回目を追記し、レビュー表を時系列へ整えた。系統表へ正本リンクを付与し、Storybook が 2 インスタンスである事実を追記                                       |
+| 2026-08-16 | spec-review    | track gate 4 回目 NEEDS_WORK (指摘 1 件 + 補足 3 件)。5 観点が PASS。実測値 11 項目が実ファイルと全一致                                                                                            |
+| 2026-08-16 | spec-lifecycle | 4 回目の指摘に対応。レビュー表へ clarify gate 9 回目の行を追加し、Storybook の追記を固定語彙へ統一。#47 側に順序制約が残っていることを確認                                                         |
 
 ## 備考
 
