@@ -1,6 +1,6 @@
 # Engineering Conventions
 
-> 最終更新: 2026-07-26
+> 最終更新: 2026-08-16
 
 shared config / root task / repository quality gate の境界規約。toolchain 一覧は [toolchain.md](toolchain.md)。
 
@@ -28,6 +28,15 @@ shared config / root task / repository quality gate の境界規約。toolchain 
 ## Repository Quality Gate (pre-commit)
 
 Storybook build は CI / PR quality gate の対象とするが、pre-commit の必須 gate には含めない。ローカル commit 前の必須 gate は引き続き `depcruise` / `knip` とし、Storybook は PR で破損を検出する。
+
+### CI とローカル hook の分担
+
+正本は [ADR-0016](../adr/0016-ci-local-hook-responsibility.md)。
+
+- **CI を最後の砦とする。** pre-commit は `--no-verify` で迂回できるため、`typecheck` / `build` / `knip` / `depcruise` / `e2e` / VRT を CI に載せる。ローカル hook との重複は**意図的な二重化**として許容する。
+- ローカル hook は速いフィードバックを担い、CI は迂回不可能な gate を担う。同じ検査が両方で走ることを問題としない。
+- **CI 実行時間の目標値は置かない。** ジョブ追加後の実測値を記録し、その値を見て Turbo remote cache の要否と required status checks の設定を判断する。
+- VRT の撮影と判定は CI 環境に一本化する (ローカルと CI でフォントのレンダリングが異なるため。[ADR-0015](../adr/0015-visual-regression-testing-policy.md))。
 
 ```mermaid
 sequenceDiagram
@@ -61,7 +70,7 @@ sequenceDiagram
 
 - 実行タイミング: **issue close 直後** と、文書整理の PR。close 前に実行しても対象 issue はまだ OPEN で、その spec の消し忘れは検出できない
 - `gh` CLI で issue state を照会するため、オフライン時・commit 速度への影響を避けて **lefthook には組み込まない**
-- CI への常設化は CI パイプライン方針 (tracker で管理) へ委譲する
+- CI では `.github/workflows/spec-residue.yml` が同じ検査を実行する (default branch への push / 週次 cron / 手動)。**PR ゲートにはしない** — 別 PR で spec を清算する運用では、issue は閉じたが spec は残っている窓の間、無関係な PR が落ちるため
 - 残存を検出したら [specs/README.md](../specs/README.md) の清算手順に従う
 
 ## Repository Analysis Contract

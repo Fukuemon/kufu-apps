@@ -262,11 +262,11 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 
 ### 未実装の計画
 
-| 項目                   | 内容                                                                                                                                                           | 根拠 / 追跡先                                                                                                           |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| 問い合わせ送信 backend | Cloudflare Pages Functions (`/api/contact`) で送信を中継し、Resend でメール通知する。仕様は決定済み・実装は未着手                                              | [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md)                                                          |
-| `apps/cms`             | コーポレートサイト掲載投稿を管理する app 候補。責務・公開フロー・データモデル・app shell は未設計 (立ち上げ判断は[未決事項](#未決事項) #4)                     | [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) / [features/cms/](features/cms/DesignDoc_cms.md) |
-| CI パイプライン        | Storybook カタログ公開 (`.github/workflows/storybook-pages.yml`) は稼働中。build / lint / test と docs closeout 検査 (`pnpm check:specs`) の CI 常設化が未対応 | (tracker で管理)                                                                                                        |
+| 項目                   | 内容                                                                                                                                                                                                            | 根拠 / 追跡先                                                                                                           |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| 問い合わせ送信 backend | Cloudflare Pages Functions (`/api/contact`) で送信を中継し、Resend でメール通知する。仕様は決定済み・実装は未着手                                                                                               | [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md)                                                          |
+| `apps/cms`             | コーポレートサイト掲載投稿を管理する app 候補。責務・公開フロー・データモデル・app shell は未設計 (立ち上げ判断は[未決事項](#未決事項) #4)                                                                      | [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) / [features/cms/](features/cms/DesignDoc_cms.md) |
+| CI パイプライン        | `lint` / `test` (`lint.yml`)、docs closeout 検査 (`spec-residue.yml`)、Storybook カタログ公開 (`storybook-pages.yml`) は稼働中。`typecheck` / `build` / `knip` / `depcruise` / `e2e` / VRT の CI 常設化が未対応 | [ADR-0016](../adr/0016-ci-local-hook-responsibility.md) (tracker で管理)                                                |
 
 ### 未決事項
 

@@ -341,6 +341,26 @@ sequenceDiagram
 - 問い合わせ送信の Workers ロジックが Vitest で確認できること。
 - Astro ページに不要な React island や client directive が増えていないこと。
 
+### E2E が担うジャーニー
+
+route をまたぐ到達性を E2E で確認する。規約の正本は [testing.md](../../../context/testing.md) / [ADR-0017](../../../adr/0017-ui-test-structure-policy.md)。
+
+| ジャーニー     | 内容                                                                              |
+| -------------- | --------------------------------------------------------------------------------- |
+| 回遊           | `/` → `/products` → カテゴリ検索 (URL に検索条件が保持される) → `/contact` の到達 |
+| ナビゲーション | ヘッダー / フッターのリンクとモバイルナビの開閉から各 route へ到達できる          |
+| JS 無効時      | JS を無効にしても 3 route の主要コンテンツが表示され、問い合わせ先へ到達できる    |
+
+問い合わせフォームの送信ジャーニーは、フォームの実体が実装された時点で追加する。
+
+### 視覚回帰 (VRT)
+
+正本は [ADR-0015](../../../adr/0015-visual-regression-testing-policy.md)。
+
+- 3 route (`/` / `/products` / `/contact`) × desktop / mobile の 2 viewport を撮影し、baseline との差分を検出できること。
+- app-local Storybook の story も撮影対象に含めること。
+- 許容 diff は 0 (完全一致) を初期値とし、差分が出た場合は CI を失敗させること。
+
 ## 上位資料からの変更点
 
 | 対象資料                     | 変更種別 | 内容                                                                                                                                                                                                            |

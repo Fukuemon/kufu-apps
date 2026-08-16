@@ -1,6 +1,6 @@
 # Toolchain
 
-> 最終更新: 2026-07-26
+> 最終更新: 2026-08-16
 
 Kufu Monorepo で採用する標準 toolchain。採否の根拠は [adr/](../adr/) を参照する。
 
@@ -19,6 +19,8 @@ Kufu Monorepo で採用する標準 toolchain。採否の根拠は [adr/](../adr
 | Unit test                    | Vitest                 |                                                                                                                        |
 | UI catalog                   | Storybook              | `packages/ui` と app-local Presentation component の review 入口                                                       |
 | E2E                          | Playwright             | root 管理 ([testing.md](testing.md))                                                                                   |
+| VRT (story)                  | storycap + reg-suit    | Storybook の story を撮影・比較する ([ADR-0015](../adr/0015-visual-regression-testing-policy.md))                      |
+| VRT (route)                  | Playwright screenshot  | `toHaveScreenshot` で 3 route を撮影する。baseline は Git 管理                                                         |
 | Dead code detection          | knip                   | root 管理 ([engineering.md](engineering.md))                                                                           |
 | Dependency analysis          | dependency-cruiser     | root 管理 ([engineering.md](engineering.md))                                                                           |
 | Library build                | tsdown                 |                                                                                                                        |
