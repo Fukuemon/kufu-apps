@@ -4,7 +4,7 @@
 
 公開基盤・環境戦略・運用・セキュリティの契約を定める。Terraform の実体は別 repo `kufu-infra` で管理する。本書は **app 側が依存する contract** を定義する。
 
-- 根拠: [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md) — Terraform の正本を別 repo に置くと定めた決定
+- [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md) — Terraform の正本を別 repo に置くと定めた決定
 
 ## Infrastructure / Deployment
 
@@ -29,8 +29,8 @@ app 側から infra repo へ受け渡す contract:
 
 問い合わせフォームの送信は Cloudflare Pages Functions (Workers) を中継する。静的生成 (`output: "static"`) を維持しつつ、送信エンドポイントのみ Functions を併用する。
 
-- 根拠: [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md) — 問い合わせ送信 backend とスパム対策を定めた決定
-- 根拠: [feature doc の問い合わせフォーム仕様](../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様) — 入力項目 / validation / API 契約 / error code の正本
+- [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md) — 問い合わせ送信 backend とスパム対策を定めた決定
+- [feature doc の問い合わせフォーム仕様](../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様) — 入力項目 / validation / API 契約 / error code の正本
 
 - Workers 依存: 有 (送信エンドポイント `/api/contact`)
 - 必要な secret 名 (実値は repo に保存しない): Resend API key / メール宛先 / Cloudflare Turnstile secret key

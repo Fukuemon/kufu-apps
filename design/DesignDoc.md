@@ -9,7 +9,7 @@
 
 本 doc は **現状の事実のみ**を記載する。将来計画は [Open Questions / Future Work](#open-questions--future-work) 節に集約し、他の節には書かない。
 
-- 根拠: [ADR-0013](../adr/0013-designdoc-present-facts-only.md) — Design Doc に現状事実のみを記載し、将来計画を Future Work 節へ集約する決定
+- [ADR-0013](../adr/0013-designdoc-present-facts-only.md) — Design Doc に現状事実のみを記載し、将来計画を Future Work 節へ集約する決定
 
 ## 概要 (Summary)
 
@@ -116,7 +116,7 @@ Package Boundary Violation Count は repository quality gate (`pnpm depcruise` /
 
 - repository path、commands、branch pattern、対象ドメイン、Issue Tracker は `context/project.yml` を正本とする。
 - Cloudflare の Terraform は別 repo `kufu-infra` で管理する。
-  - 根拠: [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md) — infra code の正本を別リポジトリへ置くと定めた決定
+  - [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md) — infra code の正本を別リポジトリへ置くと定めた決定
 
 ## Goal
 
@@ -138,7 +138,7 @@ Kufu のコーポレートサイトを Astro で高いパフォーマンスと�
 - app: `apps/*` 配下の実行単位。
 - package: `packages/*` 配下の共有 UI、設定、ライブラリ。
 - spec: issue 単位で要求・論点・設計・テスト観点を整理する作業文書。issue close 時に削除する。
-  - 根拠: [ADR-0011](../adr/0011-specs-closeout-enforcement.md) — issue close 時に bot が spec 削除 PR を起票し、削除の可否は人が決めると定めた決定
+  - [ADR-0011](../adr/0011-specs-closeout-enforcement.md) — issue close 時に bot が spec 削除 PR を起票し、削除の可否は人が決めると定めた決定
 - feature doc: feature 単位の設計 (How) を残す永続文書。
 - context: 技術スタック規約・codebase architecture・運用契約を集約する永続ナレッジ層。
 - ADR: 長期参照する意思決定ログ。
@@ -152,9 +152,9 @@ Kufu Monorepo はコーポレートサイトの構築・運用を主目的とす
 - 文書上の正式名は `Kufu Monorepo` とする。
 - npm package prefix は `@kufu/*` とする。
 - app 実装対象は `apps/corporate-site` のみとする。
-  - 根拠: [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) — Phase 1 の対象を corporate-site のみとし、cms を後続へ回す決定
+  - [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) — Phase 1 の対象を corporate-site のみとし、cms を後続へ回す決定
 - UI はコーポレートサイト内 colocation を第一原則とし、複数 consumer が明確になったものを `packages/ui` へ移す。デザイントークンは最初から `packages/ui` を正本とする。
-  - 根拠: [ADR-0007](../adr/0007-design-token-architecture.md) — デザイントークンの正本を `packages/ui` に置く決定
+  - [ADR-0007](../adr/0007-design-token-architecture.md) — デザイントークンの正本を `packages/ui` に置く決定
 - TypeScript、lint、format、test 設定は `packages/config` に寄せる。
 - pnpm workspace と Turborepo を使い、app / package 単位でタスクを実行する。
 

@@ -11,14 +11,14 @@
 ## 背景
 
 - `apps/corporate-site` は純 Astro 静的 (`output: "static"`) で、現状 `@astrojs/react` を導入していない。一方 `packages/ui` は shadcn/ui (React + Radix) を基盤に持つ。
-  - 根拠: [ADR-0007](0007-design-token-architecture.md) — トークン体系に shadcn の semantic 語彙を採り、`packages/ui` を配信の正本とする
+  - [ADR-0007](0007-design-token-architecture.md) — トークン体系に shadcn の semantic 語彙を採り、`packages/ui` を配信の正本とする
 - corporate-site の UI を実装するにあたり、「shadcn(React) を `.astro` でどう消費するか」「どこから `client:*` (React island) にするか」が未確定だった。
 - 誤解されやすい点: Astro は React コンポーネントも **ビルド時に静的 HTML へ描画**し、`client:*` を付けない限りクライアント JS を一切出荷しない。パフォーマンスコストが発生するのは `client:*` を付けて island 化 (React ランタイム出荷 + ハイドレーション) した時だけである。
 - 既存方針は「React island は必要最小限」を定めるが、shadcn の具体的な消費パターンは明文化されていなかった。定めているのは次の 4 つである。
-  - 根拠: [context/architecture.md](../context/architecture.md) の Runtime Boundary — 「React island は必要最小限とし、配信する JavaScript 量を抑える」と定める
-  - 根拠: [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md) の設計方針 — React island をフォーム・動的 UI・外部 widget に限ると定める
-  - 根拠: [context/project.yml](../context/project.yml) の `forbidden` — 「不必要な React 化 (Astro で解決できるものを React island にしない)」を禁止事項に挙げる
-  - 根拠: [context/design-workflow.md](../context/design-workflow.md) の Phase C: 実装 (Claude Code / Codex) — インタラクションが要る所だけ island にすると定める
+  - [context/architecture.md](../context/architecture.md) の Runtime Boundary — 「React island は必要最小限とし、配信する JavaScript 量を抑える」と定める
+  - [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md) の設計方針 — React island をフォーム・動的 UI・外部 widget に限ると定める
+  - [context/project.yml](../context/project.yml) の `forbidden` — 「不必要な React 化 (Astro で解決できるものを React island にしない)」を禁止事項に挙げる
+  - [context/design-workflow.md](../context/design-workflow.md) の Phase C: 実装 (Claude Code / Codex) — インタラクションが要る所だけ island にすると定める
 
 ## 決定
 

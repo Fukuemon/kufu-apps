@@ -4,7 +4,7 @@
 
 コーポレートサイト掲載投稿を管理する Phase 2 以降の app 候補である。Phase 1 では実装せず、React app の暫定標準候補と採用判断の条件だけを置く。実装着手時は spec / ADR で採否、バージョン、互換性、運用責務を再確認して確定する。
 
-- 根拠: [ADR-0003](../../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) — Phase 1 の対象を corporate-site のみとし、cms を後続へ回す決定
+- [ADR-0003](../../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) — Phase 1 の対象を corporate-site のみとし、cms を後続へ回す決定
 
 ## メタ
 
@@ -51,7 +51,7 @@
 - 暫定候補は Phase 2 spec の入力であり、現時点の実装指示ではない。
 - 追加ライブラリ (axios など) は、標準 Web API / framework 機能 / TanStack Query で足りない理由を spec に書いた場合のみ採用する。
 - URL に表現できる状態は router 側へ寄せる。
-  - 根拠: [context/architecture.md](../../../context/architecture.md) の State Boundary (React app) — URL で表現できる状態を client state に持たないと定める
+  - [context/architecture.md](../../../context/architecture.md) の State Boundary (React app) — URL で表現できる状態を client state に持たないと定める
 
 ### データ / コンテンツモデル
 

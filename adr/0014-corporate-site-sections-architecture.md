@@ -44,7 +44,7 @@
 - 構造が route 構成から独立するため、IA 変更でディレクトリ移動が発生しない。
 - 公開面を機械検査でき、規約 drift を quality gate で検出できる。
 - Storybook の title 階層 (`Sections/<Section>/<Component>`) をディレクトリから機械的に決められる。
-  - 根拠: [context/component-design.md](../context/component-design.md) の Storybook 対象 — title 階層の付け方と story を置く対象を定める
+  - [context/component-design.md](../context/component-design.md) の Storybook 対象 — title 階層の付け方と story を置く対象を定める
 
 ### 悪い影響 / トレードオフ
 

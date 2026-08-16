@@ -11,14 +11,14 @@
 ## 背景
 
 - Cloudflare の infra code を Kufu Monorepo へ集約すると決めた。本 ADR はその上に立つ。集約後、どのリソースをどのツールで管理するかは未定である。
-  - 根拠: [ADR-0015](0015-terraform-monorepo-consolidation.md) — infra code を monorepo へ集約する決定。ディレクトリ構成と bootstrap の分離も定める
+  - [ADR-0015](0015-terraform-monorepo-consolidation.md) — infra code を monorepo へ集約する決定。ディレクトリ構成と bootstrap の分離も定める
 - Cloudflare はリソースごとのツール使い分けを許容する一方、**同じリソースを複数ツールから管理しないこと**を要件としている。ツールを 1 つに寄せる必要はないが、管轄の重複は排除する必要がある。
-  - 根拠: [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/) の「Manage some resources outside of Terraform」— Terraform 外で管理してよい条件と、同一リソースを二重管理しない要件を定める
+  - [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/) の「Manage some resources outside of Terraform」— Terraform 外で管理してよい条件と、同一リソースを二重管理しない要件を定める
 - 現状の Cloudflare 設定はすべて Dashboard 上にあり、コード管理されていない。`wrangler` の設定ファイルもリポジトリに存在しない (2026-08-16 時点)。
 - corporate-site は Astro の静的生成で、問い合わせフォームの送信のみ Pages Functions (Workers) を使う**設計である**。2026-08-16 時点で未実装のため (`apps/corporate-site/functions/` が存在しない)、本 ADR は実装されたときの管轄を先に定める。
-  - 根拠: [ADR-0009](0009-corporate-site-contact-form-backend.md) — 問い合わせフォームのバックエンド構成を定めた決定
+  - [ADR-0009](0009-corporate-site-contact-form-backend.md) — 問い合わせフォームのバックエンド構成を定めた決定
 - Pages Functions は runtime secret として Resend API key、メール宛先、Turnstile secret key を必要とする。
-  - 根拠: [context/infrastructure.md](../context/infrastructure.md) の Infrastructure Contract (app → infra) — app が要求する secret 名を列挙する。実値は repo に保存しないと定める
+  - [context/infrastructure.md](../context/infrastructure.md) の Infrastructure Contract (app → infra) — app が要求する secret 名を列挙する。実値は repo に保存しないと定める
 - VRT baseline (#33) は Cloudflare R2 に置くが、読み書きするのは GitHub Actions であり、S3 互換 API を使う。**アプリ (Worker) からの R2 binding は不要である。** Pages project が必要とする binding は決定時点で存在しない。
 - 別リポジトリへの分離を決めたとき、monorepo 同居の欠点として「Terraform apply 権限や Cloudflare credential を app 開発導線に近づけやすくなる」が挙げられた。集約後も残る懸念のため、管轄の分割はこの対処と整合させる必要がある。
 

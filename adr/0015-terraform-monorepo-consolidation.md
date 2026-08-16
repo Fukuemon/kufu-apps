@@ -11,7 +11,7 @@
 ## 背景
 
 - 2026-05-07 に、Cloudflare の infra code を Terraform で管理し、その正本を別リポジトリ `kufu-infra` へ置くと決めた。
-  - 根拠: [ADR-0001](0001-terraform-infra-repository-boundary.md) — infra code の正本を別リポジトリへ置くと定めた決定
+  - [ADR-0001](0001-terraform-infra-repository-boundary.md) — infra code の正本を別リポジトリへ置くと定めた決定
 - **2026-08-16 時点で `kufu-infra` は事実上空である。** `.tf` ファイルが 1 つも存在せず、中身は PRD / DesignDoc / ADR-0001 のコピーと AI 設定のみで、最終コミットは 2026-05-08 である。
 - 前提にした Terraform による infra 管理が始まっていない。現状は分離のコスト (別 repo の維持、Infrastructure Contract の同期) だけを払い、利益を受け取っていない。
 - Cloudflare の設定はすべて Dashboard 上にあり、コード管理されていない。この状態は、ADR-0001 が Dashboard 運用の欠点として退けたものと同じである。決定から 3 か月そのまま続いている。
@@ -31,9 +31,9 @@ ADR-0001 の判断が誤っていたのではない。**分離が成立する前
 - **Cloudflare の infra code を Kufu Monorepo へ集約する。** ADR-0001 を supersede する。
 - `kufu-infra` は **アーカイブする** (削除しない)。ADR-0001 のコピーと初期検討の履歴が残っており、判断の経緯を追える状態を保つ。read-only にすることで、誤って書き込みが再開されることを防ぐ。
 - ツールの分担 (どのリソースを Terraform が持ち、どれを Wrangler が持つか) は本 ADR の対象外とする。
-  - 根拠: [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md) — Cloudflare リソースの Terraform / Wrangler 管轄と credential の分離を定めた決定
+  - [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md) — Cloudflare リソースの Terraform / Wrangler 管轄と credential の分離を定めた決定
 - Infrastructure Contract は「app repo から infra repo への受け渡し」ではなくなる。同一 repo 内の規約として残す。
-  - 根拠: [context/infrastructure.md](../context/infrastructure.md) の Infrastructure Contract (app → infra) — app が infra へ要求する値と、その受け渡しの契約を定める
+  - [context/infrastructure.md](../context/infrastructure.md) の Infrastructure Contract (app → infra) — app が infra へ要求する値と、その受け渡しの契約を定める
 
 ### ディレクトリ構成
 
@@ -56,7 +56,7 @@ infra/
 - **repo ルート直下に置く。** `pnpm-workspace.yaml` の glob は `apps/*` と `packages/*` のみのため、workspace package として拾われない。`packages/infra/` は採らない。`packages/` は app から import される共有ライブラリの場所であり、infra はどこからも import されないためである。
 - **実行は root script から行う** (`pnpm infra:plan` など)。`package.json` を持たない root 直下のディレクトリを root script から動かす形は、既存の `e2e/` と同じである。
 - **ファイル命名は Cloudflare の推奨に従う。** `provider.tf` / `<subject>.tf` / `vars.tf` の 3 種で構成する。
-  - 根拠: [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/) の「Directory structure」— `provider.tf` / `<subject>.tf` / `vars.tf` の 3 種によるファイル分割を定める
+  - [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/) の「Directory structure」— `provider.tf` / `<subject>.tf` / `vars.tf` の 3 種によるファイル分割を定める
 - **bootstrap を別の root module にする。** state の置き場である R2 バケットを Terraform 自身が作るため、`infra/cloudflare/` だけでは初回が実行できない。`bootstrap/` の state はローカルに置き、commit しない。失った場合は `terraform import` で回復する。
 - **state の key に scope を含める。** `terraform.tfstate` ではなく `cloudflare/main/terraform.tfstate` とする。後から兄弟の state を足すときに、既存 state のリネームを避けられる。
 - **環境をディレクトリで分けない** (`envs/staging/` のような構成を採らない)。Cloudflare Terraform Best Practices の「Use separate environments」は、staging / QA / production を別アカウント + 別ドメインで分けるよう定めている。アカウント階層の共有リソース (Load Balancer の monitor / pool など) を同一アカウント内で分離できないためである。
@@ -67,14 +67,14 @@ infra/
 
 Terraform の一般的なベストプラクティスはこの 3 層を提示するが、Cloudflare Terraform Best Practices の「Avoid modules (or use them sparingly)」は「**モジュールは避ける (使うとしても控えめに)**」と定める。理由は 2 点である。共有モジュールの内部変更でリソースが同期を失うか再作成されること、Terraform core の外側のロジックがデバッグを難しくすることである。
 
-- 根拠: [Terraform Best Practices — Key Concepts](https://www.terraform-best-practices.com/key-concepts) — resource module / infrastructure module / composition の 3 層を提示する
+- [Terraform Best Practices — Key Concepts](https://www.terraform-best-practices.com/key-concepts) — resource module / infrastructure module / composition の 3 層を提示する
 
 Cloudflare 側を採る根拠は次の 3 点である。
 
 1. 3 層構成が効くのは同じ形が繰り返される場合 (複数アカウント、複数リージョン、複数環境) である。対象は 1 アカウント / 1 zone / 1 サイトで、括り出すべき重複が存在しない。
 2. 1〜2 リソースを包むモジュールは薄いラッパーにしかならず、変数と出力というインターフェースを増やすだけで重複を減らさない。
 3. プロジェクトの判断優先順位は、将来拡張性を最下位に置く。3 層化は将来拡張性への投資であり、上位の一貫性と開発体験を削る。
-   - 根拠: [context/project.yml](../context/project.yml) の `decision_priority` — パフォーマンス > 一貫性 > 開発体験 > 将来拡張性
+   - [context/project.yml](../context/project.yml) の `decision_priority` — パフォーマンス > 一貫性 > 開発体験 > 将来拡張性
 
 **モジュールを作る条件**: 同じ形が 2 箇所以上に実在し、かつリポジトリ内のローカルモジュールとして持てること。Cloudflare の警告は共有モジュールに最も強く当たり、同じ PR でしか変わらないローカルモジュールはリスクの質が異なる。条件を満たすまで作らない。
 
@@ -126,7 +126,7 @@ Cloudflare が推奨する `cf-terraforming` を使い、既存リソースを T
 
 5 行目が前提とする「Cloudflare を共有する別 app が存在しない」は、Phase 1 の対象範囲の決定に基づく。
 
-- 根拠: [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md) — Phase 1 の対象を corporate-site のみとし、cms を後続へ回す決定
+- [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md) — Phase 1 の対象を corporate-site のみとし、cms を後続へ回す決定
 
 ### 残る欠点: Wrangler 管轄の変更
 
@@ -136,7 +136,7 @@ Cloudflare が推奨する `cf-terraforming` を使い、既存リソースを T
 
 Pages Functions は 2026-08-16 時点で未実装である。`apps/corporate-site/functions/` が存在せず、issue #26 が open である。したがって自動 deploy された実績はなく、ここで述べるのは過去の記録ではなく構成上の帰結である。
 
-- 根拠: [ADR-0013](0013-designdoc-present-facts-only.md) — Design Doc は現状事実のみを記載し、将来計画を Future Work 節へ集約すると定めた決定。Pages Functions が未実装であることを同じく記録している
+- [ADR-0013](0013-designdoc-present-facts-only.md) — Design Doc は現状事実のみを記載し、将来計画を Future Work 節へ集約すると定めた決定。Pages Functions が未実装であることを同じく記録している
 
 別リポジトリの構成を維持したとしても、Pages Functions を実装すれば app repo への push を起点に Cloudflare Pages が自動 deploy する。Workers のコードは app 側にあるため、この欠点は repo をどう分けても解けない。
 

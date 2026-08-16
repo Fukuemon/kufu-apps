@@ -11,9 +11,9 @@
 ## 背景
 
 - `apps/corporate-site` は Astro 静的生成 (`output: "static"`) で Cloudflare Pages へ配信する前提である。動的サーバ処理は持たない。
-  - 根拠: [context/infrastructure.md](../context/infrastructure.md) の Infrastructure / Deployment — Cloudflare を公開基盤とし、Node.js 常駐サーバや専用 VM を前提にしないと定める
+  - [context/infrastructure.md](../context/infrastructure.md) の Infrastructure / Deployment — Cloudflare を公開基盤とし、Node.js 常駐サーバや専用 VM を前提にしないと定める
 - IA 設計で「お問い合わせページ (P6 `/contact`) に問い合わせフォームを設置する」と決定した。送信処理の方式は IA のスコープ外として #14 へ委譲された。
-  - 根拠: [issue #11](https://github.com/Fukuemon/kufu-apps/issues/11) — corporate-site の IA を確定した issue
+  - [issue #11](https://github.com/Fukuemon/kufu-apps/issues/11) — corporate-site の IA を確定した issue
 - フォーム送信を成立させるには、入力検証 / スパム判定 / メール通知を行う server 側処理が必要だが、静的配信のみの前提では置き場所が未確定だった。
 - 既存方針の制約: [context/architecture.md](../context/architecture.md) の Runtime Boundary は「ブラウザから直接第三者 API を叩く構成を標準にせず、必要に応じて Workers を中継点にする」「秘密情報を client bundle に含めない」と定める。context/infrastructure.md は Cloudflare Turnstile / Workers を bot 対策・API 中継の候補として挙げている。
 
@@ -21,7 +21,7 @@
 
 corporate-site の問い合わせ送信を **Cloudflare Pages Functions (Workers) 中継**で実装する。
 
-- 根拠: [issue #14](https://github.com/Fukuemon/kufu-apps/issues/14) — 送信方式を検討し本決定に至った issue
+- [issue #14](https://github.com/Fukuemon/kufu-apps/issues/14) — 送信方式を検討し本決定に至った issue
 
 1. **送信経路**: フォーム (React island) → 同一オリジンの `/api/contact` (Cloudflare Pages Functions = Workers) へ HTTP POST する。ブラウザから第三者 API を直接叩かない。
 2. **配信構成**: 静的生成 (`output: "static"`) を維持しつつ、送信エンドポイントのみ Pages Functions を併用する。Node.js 常駐サーバや専用 VM は引き続き持たない。

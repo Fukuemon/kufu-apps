@@ -33,7 +33,7 @@ IA、デザイントークン体系、問い合わせフォーム仕様、sectio
 
 - Astro で完結できるコーポレートサイト機能の React 化。
 - CMS 化。コンテンツ管理は未実装である。
-  - 根拠: [DesignDoc_cms.md](../cms/DesignDoc_cms.md) — cms の構想と、未設計として残している範囲
+  - [DesignDoc_cms.md](../cms/DesignDoc_cms.md) — cms の構想と、未設計として残している範囲
 
 ## 設計
 
@@ -41,33 +41,33 @@ IA、デザイントークン体系、問い合わせフォーム仕様、sectio
 
 - コーポレートサイトは Astro の `.astro` コンポーネントを基本にする。
 - React island はフォーム、動的 UI、外部 widget など必要な箇所に限定する。表示専用 UI は `@kufu/ui` の shadcn を静的描画 (`client:*` なし、JS ゼロ) で使う。
-  - 根拠: [ADR-0008](../../../adr/0008-astro-react-island-policy.md) — React island 化の境界と shadcn の消費ポリシーを定めた決定
+  - [ADR-0008](../../../adr/0008-astro-react-island-policy.md) — React island 化の境界と shadcn の消費ポリシーを定めた決定
 - 問い合わせフォームは最初の主要 React island である。送信は静的配信を維持しつつ Cloudflare Pages Functions (Workers) を中継する。機能仕様 (入力項目 / バリデーション / スパム対策 / 通知 / API 契約) の正本は本 doc である。
-  - 根拠: [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md) — 送信 backend に Pages Functions と Resend を選んだ決定
+  - [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md) — 送信 backend に Pages Functions と Resend を選んだ決定
 - コーポレートサイトの画像、フォント、スクリプトは性能予算を意識して管理する。
 - 第一原則は colocation とし、app や section 内で閉じる UI はローカルに置く。
 - 共通 UI の昇格は 2 段階とする。同一 app 内で複数 section / route にまたがるものは `components/common/` へ、**複数 app** にまたがる時点で `packages/ui` へ移す。
-  - 根拠: [context/architecture.md](../../../context/architecture.md) の App 内依存方向 (sections 公開面) — 共有部品を `common/` (app 内) と `packages/ui` (複数 app) のどちらへ昇格させるかを定める
-  - 根拠: [context/component-design.md](../../../context/component-design.md) のディレクトリ構成 — `common/` の置き場と、公開面を絞らない扱いを定める
+  - [context/architecture.md](../../../context/architecture.md) の App 内依存方向 (sections 公開面) — 共有部品を `common/` (app 内) と `packages/ui` (複数 app) のどちらへ昇格させるかを定める
+  - [context/component-design.md](../../../context/component-design.md) のディレクトリ構成 — `common/` の置き場と、公開面を絞らない扱いを定める
 - コーポレートサイト内で閉じる UI は `apps/corporate-site` に置く。
 - component は `components/sections/<section>/` の 1 階層フラット構成に置き、各 section の公開面は `index.ts` の再輸出のみとする。section 名はドメインで付ける。ページ対応はディレクトリ構造に持たせず、下記「section 構成」の表を正本とする。
-  - 根拠: [ADR-0014](../../../adr/0014-corporate-site-sections-architecture.md) — sections の再編と公開面規約を定めた決定
+  - [ADR-0014](../../../adr/0014-corporate-site-sections-architecture.md) — sections の再編と公開面規約を定めた決定
 - `src/styles/` は 4 ファイルに分割し `globals.css` は `@import` のみの entry とする: `base.css` (`:root` と要素セレクタの base) / `components.css` (クラスセレクタ群。cva / utility 移行で逐次削減し削除目標) / `animations.css` (site 固有演出の keyframes)。`utilities.css` は `@utility` が必要になるまで作らず、既存 CSS を `@layer` で包まない (優先順位が変わるため)。横断のスタイル規約 (cva 基準 / motion トークン境界) は context/component-design.md を正本とする。
 - E2E はコーポレートサイトの表示、主要導線、問い合わせ導線を優先し、実行入口は root `playwright.config.ts` と `e2e/` 配下に置く。
-  - 根拠: [context/testing.md](../../../context/testing.md) の E2E Runtime Contract — 実行入口と runtime 依存の扱いを定める
+  - [context/testing.md](../../../context/testing.md) の E2E Runtime Contract — 実行入口と runtime 依存の扱いを定める
 
 ### データ / コンテンツモデル
 
 - コーポレートサイトの静的コンテンツは、初期段階では `apps/corporate-site` 内に配置する。
 - 公開 asset は Cloudflare CDN 配信を前提に、キャッシュ戦略と更新単位を意識して配置する。
-  - 根拠: [context/infrastructure.md](../../../context/infrastructure.md) の Infrastructure / Deployment — Cloudflare CDN 配信とキャッシュの前提を定める
+  - [context/infrastructure.md](../../../context/infrastructure.md) の Infrastructure / Deployment — Cloudflare CDN 配信とキャッシュの前提を定める
 - 画像は `apps/corporate-site/src/assets/` に置き、Astro Image / import 経由で扱う。build の asset graph に載せ、width / height / lazy loading / format 最適化を効かせる。`public` への直配置は使わない。参照の追跡と最適化が効かないためである。
 
 #### ページ構成 (IA)
 
 情報設計 (IA) の正本は本 feature doc。確定済のページ / section 構成・配置マッピング・回遊フローはここに集約する。それ以前の変更経緯は git history が持つ。
 
-- 根拠: [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md) — 5 ページ構成から 3 route 統合構成へ変更した決定
+- [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md) — 5 ページ構成から 3 route 統合構成へ変更した決定
 
 サイトマップ (**3 route 統合構成** + 全ページ共通レイアウト G):
 
@@ -250,7 +250,7 @@ API 契約:
 
 - CSS トークンを持たない (doc 管理の) ガイドのみ以下に置く:
   - **spacing**: CSS トークンなし。4px グリッド + 推奨リズム 12 / 16 / 24 / 32 / 48 / 80 (= Tailwind `3/4/6/8/12/20`)。`space-*` はこの写像として扱い、fork 判定の対象外とする
-    - 根拠: [context/design-workflow.md](../../../context/design-workflow.md) の 6. トークン正本ガード (バリデーション) — 独自値の検出基準と spacing の例外を定める
+    - [context/design-workflow.md](../../../context/design-workflow.md) の 6. トークン正本ガード (バリデーション) — 独自値の検出基準と spacing の例外を定める
   - **radius**: shadcn `--radius` に一本化し、基準値は `tokens.css` の 4px。Button 8px / Tag 4px など component 固有値は `@kufu/ui` の component variant で管理する
   - **type scale**: Tailwind 標準。見出し階層との対応は次節「トーン & マナー / ブランド指針」
 

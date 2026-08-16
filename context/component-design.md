@@ -4,7 +4,7 @@
 
 Kufu Monorepo の frontend component 設計規約。本 doc を component のディレクトリ構成、命名、責務分割、Storybook 対象の横断正本とする。sections を 1 階層フラットへ再編し、公開面を `index.ts` の再輸出に限る決定の経緯は ADR に持たせる。カタログとスタイル規約も同様である。
 
-- 根拠: [ADR-0014](../adr/0014-corporate-site-sections-architecture.md) — sections の再編と公開面規約を定めた決定
+- [ADR-0014](../adr/0014-corporate-site-sections-architecture.md) — sections の再編と公開面規約を定めた決定
 
 ## 原則
 
@@ -67,7 +67,7 @@ apps/<app>/src/
 - section 内部は **フラット + `index.ts`**: 公開面は `index.ts` のみ (Section component だけを再輸出)。内部 component と story は section dir 直下に並べる。`internal/` サブディレクトリは作らない (1 component 1 ディレクトリを強制しない方針を継承)。
 - 階層は常に 1 段なので、**section の起点は必ず `sections/<section>/index.ts`** になる。
 - **section の内部非公開**: pages からは `index.ts` 経由の import のみ許可 (**ディレクトリ指定の named import** で書き、明示 `index` path は書かない)。section 間の import は index 経由でも禁止し、共有が必要になった部品は `common/` (app 内) または `packages/ui` (複数 app) へ昇格する。依存方向は `pages → sections (index) → common → @kufu/ui` の一方向とする。
-  - 根拠: [architecture.md](architecture.md) の App 内依存方向 (sections 公開面) — この一方向を検査対象として定める
+  - [architecture.md](architecture.md) の App 内依存方向 (sections 公開面) — この一方向を検査対象として定める
 - **section 名はドメインで付ける**。1 ドメインが複数 section を持つ場合は接頭辞で表す (`products-category` / `products-detail`)。route 名を section 名にしない。
 - presentation component に `Presentation` suffix は付けない。`<Component>.astro` がそのまま presentation であり、story 対象。
 - 複数 section をまたいで使う site component (`SectionHeading` など) は `components/common/` 直下にフラットに置く (section 内と同じく 1 component 1 ディレクトリを強制しない)。`common/` は公開面を絞らないため `index.ts` を置かない。
@@ -208,7 +208,7 @@ corporate-site の Astro component は **Tailwind utility** でスタイルす�
 
 - 値の正本は `@kufu/ui/tokens.css`。色・フォントは semantic token の utility (`text-foreground` / `bg-secondary` / `text-muted-foreground` / `border-border` / `font-mono` / `font-serif` など) を使う。
 - corporate-site は全量 `@kufu/ui/styles.css` を取り込まず、app-local の lean な Tailwind v4 entry (`src/styles/globals.css`) を持つ。token → utility の `@theme` 写像は `@kufu/ui/theme.css` に一元化し、`styles.css` と app entry の双方が import する。Tailwind の走査は Vite plugin の module graph に任せ、app 自身のソースへの app-local `@source` は置かない。workspace package (`packages/ui`) のソース走査は `@kufu/ui/theme.css` (実体は `packages/ui/src/styles/theme.css`) が自身の component ソースを `@source "../components"` で指す。app entry には書かない。
-  - 根拠: [ADR-0007](../adr/0007-design-token-architecture.md) の 2026-06-22: corporate-site に lean app-local Tailwind v4 を採用 (issue #6) と 2026-07-25: `@source` を theme.css へ移動し、motion トークンを追加 (issue #32) — app-local entry を持ち、`@theme` 写像と `packages/ui` のソース走査を `@kufu/ui/theme.css` へ一元化すると定めた決定
+  - [ADR-0007](../adr/0007-design-token-architecture.md) の 2026-06-22: corporate-site に lean app-local Tailwind v4 を採用 (issue #6) と 2026-07-25: `@source` を theme.css へ移動し、motion トークンを追加 (issue #32) — app-local entry を持ち、`@theme` 写像と `packages/ui` のソース走査を `@kufu/ui/theme.css` へ一元化すると定めた決定
 - app の `src/styles/` は役割別に分割し、`globals.css` は `@import` のみの entry とする: `base.css` (`:root` のカスタムプロパティと要素セレクタへの base スタイル) / `components.css` (クラスセレクタ群。cva / utility への移行で逐次削減し最終的に削除を目標) / `animations.css` (`@keyframes`)。
 - 分割は **ファイル移動のみ**とし、`@layer` で包まない。素のセレクタで書かれた既存 CSS を `@layer components` に入れると Tailwind utility との優先順位が変わり表示が壊れるため。`@utility` 拡張が必要になった時点で `utilities.css` を追加する (使う前に空ファイルを作らない)。
 - **cva への集約**: **class 差分で表現できる**視覚 variant / 状態分岐を持つ component は cva で variants を定義し、frontmatter の条件付き class 組み立てを置換する (shadcn/ui パターンと整合)。markup 構造ごと分岐する視覚 variant (例: `SiteFooter` の `full` / `compact`) は cva の対象外とし、条件分岐のまま保つ (story の variant 網羅対象には含める)。variant のない固定 class の component は Tailwind utility 直書きのままでよい。cva は **`@kufu/ui/lib` 経由で使う** (`cn` と同じ入口)。app 側の package.json に `class-variance-authority` を直接追加しない (共有ユーティリティの入口を 1 つに保つため)。
@@ -301,8 +301,8 @@ app-local Storybook は section-local presentation component の review 入口�
 
 デザイン正本は実装 (コード + Storybook) である。中間デザインファイルを介さず、Claude Design のプロトを参照して直接実装する。
 
-- 根拠: [ADR-0012](../adr/0012-design-source-of-truth-implementation.md) — デザイン正本を実装へ移した決定
-- 根拠: [design-workflow.md](design-workflow.md) の Phase C: 実装 (Claude Code / Codex) — プロトを参照して直接実装する手順と、その際の写像規則を定める
+- [ADR-0012](../adr/0012-design-source-of-truth-implementation.md) — デザイン正本を実装へ移した決定
+- [design-workflow.md](design-workflow.md) の Phase C: 実装 (Claude Code / Codex) — プロトを参照して直接実装する手順と、その際の写像規則を定める
 
 - section assembly (page section) の story は「ページ文脈での確認入口」として代表ケースのみ公認する (上記 Storybook 対象節と同一規約)。page-level sample を `packages/ui` の shared catalog へ載せない。
 - 複数 app / feature をまたぐ再利用が明確な component は `packages/ui` の shared catalog へ昇格する。

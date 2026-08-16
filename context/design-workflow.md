@@ -10,9 +10,9 @@
 ## 1. 大原則
 
 1. **デザインシステム正本は `packages/ui`** とする。中身は [`tokens.css`](../packages/ui/src/styles/tokens.css) が定義する CSS 変数 (トークン) とコンポーネントの 2 つで、トークンは 2 層構造 + 3 entry 配信で確定している。各ツールはこれを **消費** するだけで fork しない。新トークンが要る場合は先に `packages/ui` へレビュー経由で昇格する。
-   - 根拠: [ADR-0007](../adr/0007-design-token-architecture.md) — トークンの 2 層構造と 3 entry 配信、正本を `packages/ui` に置くと定めた決定
+   - [ADR-0007](../adr/0007-design-token-architecture.md) — トークンの 2 層構造と 3 entry 配信、正本を `packages/ui` に置くと定めた決定
 2. **デザイン正本は実装 (コード + Storybook) である。** 中間デザイン正本 (デザインファイル) を持たない。デザインの「今の姿」は実装と Storybook が示す。
-   - 根拠: [ADR-0012](../adr/0012-design-source-of-truth-implementation.md) — デザイン正本を実装へ移し、[ADR-0004](../adr/0004-design-production-workflow.md) を置換した決定
+   - [ADR-0012](../adr/0012-design-source-of-truth-implementation.md) — デザイン正本を実装へ移し、[ADR-0004](../adr/0004-design-production-workflow.md) を置換した決定
 3. **drift 最小**。中間正本を持たないことで二重更新が発生しない。durable な設計判断 (IA / レイアウト方針 / ブランド指針) は [design/features/](../design/features/) と `packages/ui` トークンへ back-propagate する。
 
 ## 2. 全体フロー
@@ -71,13 +71,13 @@ Claude Design の出力品質は依頼文に強く依存する (密な単一段�
 
 - 採用案の HTML とデザイン意図を参照し、layout / styling / 構造を実装へ写像する。参照元は使い捨てであり、成果物であるコードが以後の正本になる。
 - 出力は **Astro 中心** とし、`src/pages/*.astro` と `src/components/sections/<section>/` に置く。配置規約は [component-design.md](component-design.md) のディレクトリ構成を正本とする。`@kufu/ui` のトークンとコンポーネントを参照し、インタラクションが要る所だけ React island (`client:*`) にする。
-  - 根拠: [ADR-0008](../adr/0008-astro-react-island-policy.md) — React island 化の境界と shadcn の消費ポリシー
+  - [ADR-0008](../adr/0008-astro-react-island-policy.md) — React island 化の境界と shadcn の消費ポリシー
 - **状態系 (hover / focus / error / empty)、データ量違い・検索/フィルタ結果などの動的データ、レスポンシブは実装時に必ず補完する。** プロト HTML に無くても省略しない。
 - 実データ (company-profile / manufacturers) で表示検証する。ダミーテキスト前提のレイアウト破綻を防ぐ。
 - プロト HTML の素朴な div 配置をそのまま持ち込まず、`@kufu/ui` コンポ + セマンティック HTML へ **写像**する (a11y 崩れの防止)。
 - 性能方針 (静的生成・最小 island) に従い、E2E / テストを整える。
-  - 根拠: [architecture.md](architecture.md) の Runtime Boundary — 静的配信を基本とし `client:*` island を限定する原則
-  - 根拠: [toolchain.md](toolchain.md) — build / test / E2E に使うツールの選定
+  - [architecture.md](architecture.md) の Runtime Boundary — 静的配信を基本とし `client:*` island を限定する原則
+  - [toolchain.md](toolchain.md) — build / test / E2E に使うツールの選定
 - レビューは **Storybook と実画面** で行う。component は Storybook に story を置き、状態を確認できるようにする。story を置く対象の基準は component-design.md が定める。
 
 ## 4. ディレクトリ / ファイル規約

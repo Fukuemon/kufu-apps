@@ -25,13 +25,13 @@ apps/cms ─────┼─→ packages/ui ─→ packages/config
 - `apps/* → apps/*` (app 間直接依存) は禁止。
 - `packages/ui` → `packages/config` は許可。
 - 循環依存・未宣言依存・devDependency 流入は禁止する。
-  - 根拠: [engineering.md](engineering.md) の Repository Analysis Contract — dependency-cruiser / knip が検査する違反の種類を定める
+  - [engineering.md](engineering.md) の Repository Analysis Contract — dependency-cruiser / knip が検査する違反の種類を定める
 
 ### App 内依存方向 (sections 公開面)
 
 app 内の component 依存は次の一方向に固定する。ディレクトリ構成は component-design.md が正本である。
 
-- 根拠: [ADR-0014](../adr/0014-corporate-site-sections-architecture.md) — sections の再編と公開面規約を定めた決定
+- [ADR-0014](../adr/0014-corporate-site-sections-architecture.md) — sections の再編と公開面規約を定めた決定
 
 ```text
 pages → sections (index.ts) → common → @kufu/ui
@@ -49,7 +49,7 @@ pages → sections (index.ts) → common → @kufu/ui
 
 colocation 第一原則の適用を資産種別ごとに定める。本テーブルを正本とする。
 
-- 根拠: [ADR-0007](../adr/0007-design-token-architecture.md) — デザイントークン / フォント / stylesheet の正本を `packages/ui` に置くと定めた決定
+- [ADR-0007](../adr/0007-design-token-architecture.md) — デザイントークン / フォント / stylesheet の正本を `packages/ui` に置くと定めた決定
 
 | 資産種別                     | 正本                              | 昇格条件                                      |
 | ---------------------------- | --------------------------------- | --------------------------------------------- |
@@ -72,7 +72,7 @@ colocation 第一原則の適用を資産種別ごとに定める。本テーブ
 
 Astro は React/shadcn コンポーネントもビルド時に静的 HTML へ描画し、`client:*` を付けない限りクライアント JS を出荷しない。コストが発生するのは island 化 (`client:*`) した時だけである。
 
-- 根拠: [ADR-0008](../adr/0008-astro-react-island-policy.md) — React island 化の境界と shadcn の消費ポリシーを定めた決定。代替案の比較も含む
+- [ADR-0008](../adr/0008-astro-react-island-policy.md) — React island 化の境界と shadcn の消費ポリシーを定めた決定。代替案の比較も含む
 
 - **表示専用 UI** (Button-as-link / Card / Badge / Tag / section 等) は `@kufu/ui` の shadcn コンポーネントを `.astro` 内で **`client:*` なし**で使う (JS ゼロ)。`.astro` で再実装せず `@kufu/ui` を単一正本に保つ。
 - **`@astrojs/react` は導入してよい** (island が無ければランタイムは出荷されない)。
@@ -81,7 +81,7 @@ Astro は React/shadcn コンポーネントもビルド時に静的 HTML へ描
 - **ハードルール**: インタラクティブ Radix primitive を `client:*` なしで静的描画しない (見た目だけ出て動かないため必ず island 化)。
 - `client:*` 総数は、design/DesignDoc.md の Why/What 節にあるガードレール「Unnecessary Client JS Count」で監視する。
 - 秘密情報を client bundle に含めない。Cloudflare の secret 管理に置くべき値は repo に保存しない。
-  - 根拠: [infrastructure.md](infrastructure.md) の Security / Privacy — secret / token を client へ露出させない方針を定める
+  - [infrastructure.md](infrastructure.md) の Security / Privacy — secret / token を client へ露出させない方針を定める
 - 問い合わせフォームや外部 API 連携を追加する場合は、ブラウザから直接第三者 API を叩く構成を標準にせず、Workers を中継点にする (下記「Edge API / Error Contract」)。
 
 ### Edge API / Error Contract

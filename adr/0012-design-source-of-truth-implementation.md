@@ -31,7 +31,7 @@
 - `design/features/corporate-site/index.pen` の実削除と、`context/design-workflow.md` の全面改訂は本判断を根拠に **issue #31 で実施済み** (2026-07-26)。`.pen` 正本前提の §1 正本 / §2 フロー / §4 配置規約を上表のフローへ書き換えた。
 - **画像アセットの置き場を `apps/corporate-site/src/assets/` に一本化する** (2026-07-26 追記)。`design/features/corporate-site/assets/` は `.pen` の付随アセットであると同時に「design source」として二重管理されていたが、両者は現状バイト完全一致であり、正本 = 実装の原則に照らして design 側の重複コピーを削除する。issue #10 で定めた「design source / 配信用コピー」の二重管理ルールは本 ADR に吸収し廃止する。
 - デザイントークンの正本は従来どおり `packages/ui` である。本 ADR はトークン体系を変更しない。
-  - 根拠: [ADR-0007](0007-design-token-architecture.md) — トークンの 2 層構造と 3 entry 配信、正本を `packages/ui` に置くと定めた決定
+  - [ADR-0007](0007-design-token-architecture.md) — トークンの 2 層構造と 3 entry 配信、正本を `packages/ui` に置くと定めた決定
 
 ## 代替案
 

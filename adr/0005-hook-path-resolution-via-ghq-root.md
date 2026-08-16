@@ -41,7 +41,7 @@ hook コマンドは「① provider 非依存（単一ソース → 3プロバ�
 
 - 根拠:
   - **規約一貫性**: repo path の記法は既に ghq 前提で宣言済みである。hook を ghq ベースにするのは**新規依存の追加ではなく既存規約への一貫化**。
-    - 根拠: [context/project.yml](../context/project.yml) の `repos.convention` — `$(ghq root)/github.com/<owner>/<repo>` を repo path の記法と定める
+    - [context/project.yml](../context/project.yml) の `repos.convention` — `$(ghq root)/github.com/<owner>/<repo>` を repo path の記法と定める
   - **cwd 完全非依存**: `ghq root` は cwd に依存せず固定の管理ルートを返すため、`cd` でどこに逸れても、別 repo 内にいても、常に正しい repo root を解決する（本事故を構造的に排除）。
   - **provider 非依存**: 素のシェル置換なので claudecode / codexcli / cursor のいずれの runner でも同一に動く。単一ソースを維持。
   - **ghq 依存の実害が小さい**: これらの hook は **AI エージェントのローカル実行時のみ**発火する。CI は hook を走らせないため「非 ghq な CI 環境」は実害なし。
