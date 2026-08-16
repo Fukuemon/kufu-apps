@@ -109,7 +109,7 @@ ADR-0001 は monorepo 同居 (代替案 1) の Cons を 5 点挙げた。集約�
 
 Cons 3 のうち **Pages Functions (Workers) の変更は対処しない。** [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md) の分担により Pages Functions は Wrangler 管轄であり、push を起点とする deploy workflow で自動的に本番へ出る。`/api/contact` のコード変更は通常の PR に含まれ、apply workflow のような明示的な行為を挟まない。
 
-**ただしこれは集約によって悪化するものではない。** ADR-0001 の構成でも Pages Functions は app repo 側にあり、Cloudflare Pages の Git 連携で自動 deploy されていた ([context/infrastructure.md](../context/infrastructure.md) の Deployment Flow)。Workers のコードは app 側にあるため、この Cons は repo 境界では解けない。
+**ただしこれは集約によって悪化するものではない。** Pages Functions は 2026-08-16 時点で未実装であり (`apps/corporate-site/functions/` が存在せず、issue #26 が open。[ADR-0013](0013-designdoc-present-facts-only.md) が同じ事実を記録している)、自動 deploy された実績はない。ここで言えるのは構成上の帰結である。ADR-0001 の構成のままでも、Pages Functions を実装すれば app repo への push を起点に Cloudflare Pages が自動 deploy する ([context/infrastructure.md](../context/infrastructure.md) の Environment Strategy)。Workers のコードは app 側にあるため、この Cons は repo 境界では解けない。
 
 緩和は通常の PR レビューと自動テストに依存する。infra の権限分離とは別の問題として扱う。
 
@@ -208,20 +208,23 @@ CODEOWNERS を置く理由は 2 つある。境界を宣言として残すこと
 
 - 対象 app / package: `apps/corporate-site`、`e2e` (#33 の VRT)、GitHub Actions workflow、新設する Terraform ディレクトリ
 - spec 更新要否: 要。#47 の spec に、ディレクトリ配置、CODEOWNERS、apply workflow の分離を反映する
-- AI 向け設定更新要否: 要。承認後に更新する文書を次に網羅する。本節を唯一の一覧とし、他所に分散させない。
+- AI 向け設定更新要否: 要。**本 ADR に由来する更新**を次に網羅する。ADR-0016 に由来する更新は同 ADR の同名節を正本とする。
+- **更新時期は実装完了後である。** context と DesignDoc は現状事実を記述する文書であり、決定が承認されただけでは記述すべき事実が存在しない ([ADR-0013](0013-designdoc-present-facts-only.md) の原則を context にも適用する)。承認時点で行うのは ADR-0001 の状態変更だけである。
 
-| 対象                                                            | 更新内容                                                                                    |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| [context/architecture.md](../context/architecture.md)           | `infra/` のディレクトリ境界と依存規約                                                       |
-| [context/infrastructure.md](../context/infrastructure.md)       | Infrastructure Contract の位置づけ変更、ツール境界表、bootstrap 順序、state / secret の扱い |
-| [context/project.yml](../context/project.yml) の `repos.infra`  | `kufu-infra` の参照を、アーカイブ済みである旨へ変更する                                     |
-| [context/project.yml](../context/project.yml) の `repos.layout` | `infra/` を追加する                                                                         |
-| [context/project.yml](../context/project.yml) の `commands`     | `infra:plan` / `infra:apply` を追加する (`dev-commands` skill がここを正本として読む)       |
-| [context/project.yml](../context/project.yml) の `domains`      | `infra` を追加するか `core` に含めるかを決める (`domain:*` ラベルの体系に影響する)          |
-| [design/DesignDoc.md](../design/DesignDoc.md) の 105 / 116 行目 | ADR-0001 を infra repo 境界の正本とする記述を、本 ADR へ差し替える                          |
+| 対象                                                            | 更新内容                                                                                                                         |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| [context/architecture.md](../context/architecture.md)           | `infra/` のディレクトリ境界と依存規約                                                                                            |
+| [context/infrastructure.md](../context/infrastructure.md)       | Infrastructure Contract の位置づけ変更、ツール境界表、bootstrap 順序、state / secret の扱い                                      |
+| [context/project.yml](../context/project.yml) の `repos.infra`  | `kufu-infra` の参照を、アーカイブ済みである旨へ変更する                                                                          |
+| [context/project.yml](../context/project.yml) の `repos.layout` | `infra/` を追加する                                                                                                              |
+| [context/project.yml](../context/project.yml) の `commands`     | `infra:plan` / `infra:apply` を追加する (`dev-commands` skill がここを正本として読む)                                            |
+| [context/project.yml](../context/project.yml) の `domains`      | `infra` を追加するか `core` に含めるかを決める (`domain:*` ラベルの体系に影響する)                                               |
+| [design/DesignDoc.md](../design/DesignDoc.md) の 105 / 116 行目 | ADR-0001 を infra repo 境界の正本とする記述を、本 ADR へ差し替える                                                               |
+| [design/DesignDoc.md](../design/DesignDoc.md) の 251 行目       | 「Terraform は別 repo 管理とし、アプリ repo に本番基盤の apply 導線を持ち込まない」は本 ADR が覆す規範そのものである。書き換える |
+| [design/DesignDoc.md](../design/DesignDoc.md) の 280 行目       | Open Question #6「infra repo と app repo の変更を相互参照する review workflow」は集約により論点が消滅する。クローズする          |
 
 - ADR-0001 の状態は、本 ADR が承認された時点で「置換」へ変更する。提案の段階では変更しない
-- **図 ([design/diagrams/](../design/diagrams/)) は提案の段階で追加済みである。** 図は ADR 本文の一部であり、ADR と同時に存在すべきものだからである。これに対し context / DesignDoc は現状事実を記述する文書であり、実装が完了するまで更新しない ([ADR-0013](0013-designdoc-present-facts-only.md) の原則を context にも適用する)。差分が非対称に見えるのはこの理由による
+- **図 ([design/diagrams/](../design/diagrams/)) は提案の段階で追加済みである。** 図は ADR 本文の一部であり、ADR と同時に存在すべきものだからである。context / DesignDoc の更新が実装完了後であることとの差は、この理由による
 
 ## 関連ドキュメント
 
@@ -229,7 +232,7 @@ CODEOWNERS を置く理由は 2 つある。境界を宣言として残すこと
 - [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md): 集約後のツール分担 (本 ADR の前提の上に立つ)
 - [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md): Phase 1 の対象が corporate-site のみであること
 - [design/DesignDoc.md](../design/DesignDoc.md): 105 / 116 行目が ADR-0001 を infra repo 境界の正本として参照している (承認後に差し替える)
-- [context/infrastructure.md](../context/infrastructure.md): Infrastructure Contract / Deployment Flow
+- [context/infrastructure.md](../context/infrastructure.md): Infrastructure Contract / Environment Strategy
 - [ADR-0013](0013-designdoc-present-facts-only.md): 現状事実のみを記載する原則 (context の更新時期の根拠)
 - [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/): ディレクトリ構成 / モジュール回避 / 環境分割 / cf-terraforming の出典
 - [Terraform Best Practices — Key Concepts](https://www.terraform-best-practices.com/key-concepts): 3 層モジュール構成の出典 (本 ADR では採らない)

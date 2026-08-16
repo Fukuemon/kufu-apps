@@ -13,7 +13,7 @@
 - [ADR-0015](0015-terraform-monorepo-consolidation.md) が Cloudflare の infra code を Kufu Monorepo へ集約すると定める。本 ADR はその決定の上に立つ。集約後、どのリソースをどのツールで管理するかは未定である。
 - Cloudflare は、リソースごとに Terraform と別ツールを使い分けること自体を許容する一方、**同じリソースを複数ツールから管理しないこと**を要件としている ([Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/))。ツールを 1 つに寄せる必要はないが、管轄の重複は明示的に排除する必要がある。
 - 現状の Cloudflare 設定はすべて Dashboard 上にあり、コード管理されていない。`wrangler` の設定ファイルもリポジトリに存在しない (2026-08-16 時点)。
-- corporate-site は Astro の静的生成だが、問い合わせフォームの送信のみ Pages Functions (Workers) を使う ([ADR-0009](0009-corporate-site-contact-form-backend.md))。runtime secret として Resend API key、メール宛先、Turnstile secret key を必要とする ([context/infrastructure.md](../context/infrastructure.md) の Infrastructure Contract)。
+- corporate-site は Astro の静的生成で、問い合わせフォームの送信のみ Pages Functions (Workers) を使う**設計である** ([ADR-0009](0009-corporate-site-contact-form-backend.md))。2026-08-16 時点で未実装であり (`apps/corporate-site/functions/` が存在しない)、本 ADR は実装されたときの管轄を先に定める。runtime secret として Resend API key、メール宛先、Turnstile secret key を必要とする ([context/infrastructure.md](../context/infrastructure.md) の Infrastructure Contract)。
 - #33 の VRT baseline は Cloudflare R2 に置くが、読み書きするのは GitHub Actions であり、S3 互換 API を使う。**アプリ (Worker) からの R2 binding は不要である。** このため、Pages project が必要とする binding は本 ADR の決定時点で存在しない。
 - ADR-0001 は monorepo 同居の Cons として「Terraform apply 権限や Cloudflare credential を app 開発導線に近づけやすくなる」を挙げた。集約後もこの懸念は残るため、管轄の分割はこの懸念への対処と整合させる必要がある。
 
@@ -82,7 +82,7 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 - Cloudflare の内側は管轄で 2 つに分かれ、それぞれへ入る実線 (管理経路) は 1 本ずつである。同じリソースへ両方のツールから線が入らないことが、二重管理の不在を表す。
 - 破線は参照であり、管理ではない。`cloudflare_pages_domain` は Wrangler が作った project を名前で参照する。この向きが bootstrap の順序制約を生む。
 - VRT workflow を Cloudflare の外に置いたのは、R2 を消費するだけで管理しないためである。アプリ (Worker) から R2 への binding は存在しない。
-- **図が描くのは bootstrap 後の定常状態である。** 初回のみ必要な `infra/bootstrap/` と state 用 R2 バケットは載せていない。初回の順序は下記「bootstrap 順序の制約」を参照する。
+- **図が描くのは、本決定を実装した後の定常状態である。** 初回のみ必要な `infra/bootstrap/` と state 用 R2 バケットは載せていない (初回の順序は下記「bootstrap 順序の制約」を参照する)。また Pages Functions は未実装であり、実装されたときの管轄として描いている。
 
 ### 権限と実行経路
 
@@ -121,7 +121,7 @@ Cloudflare も credential を平文で保持せず `cf-vault` や Vault のよ�
 
 配信基盤は Cloudflare Pages を継続する。Workers Static Assets への移行は本決定の対象外とし、別 issue で検討する。
 
-deploy 経路を作り直す本作業は移行の契機になりうるが、Pages Functions を含む現行構成 (ADR-0009) の再設計を伴い、作業範囲が deploy 経路の再設計を大きく超える。移行の是非は、Pages と Workers のどちらが長期的に維持されるかという Cloudflare 側の方針に依存するため、本 ADR では判断しない。
+deploy 経路を作り直す本作業は移行の契機になりうるが、Pages Functions を含む決定済みの構成 (ADR-0009) の再設計を伴い、作業範囲が deploy 経路の再設計を大きく超える。移行の是非は、Pages と Workers のどちらが長期的に維持されるかという Cloudflare 側の方針に依存するため、本 ADR では判断しない。
 
 ## 代替案
 
@@ -188,6 +188,7 @@ deploy 経路を作り直す本作業は移行の契機になりうるが、Page
 
 - 対象 app / package: `apps/corporate-site`、`e2e` (#33 の VRT が R2 を参照する)、GitHub Actions workflow
 - spec 更新要否: 要。#47 の spec に、ツール別の作業分割と bootstrap 順序を反映する
+- 本節は**本 ADR に由来する更新**を扱う。集約そのものに由来する更新 (`repos.infra` / `repos.layout` / `commands` / `domains` / DesignDoc) は [ADR-0015](0015-terraform-monorepo-consolidation.md) の同名節を正本とする。更新時期は同 ADR に従い実装完了後である
 - AI 向け設定更新要否: 要。[context/infrastructure.md](../context/infrastructure.md) にツール境界表と bootstrap 手順を追加し、[context/architecture.md](../context/architecture.md) に Terraform と `wrangler.toml` の配置と依存規約を定める
 
 ## 関連ドキュメント
