@@ -5,7 +5,7 @@
 - Issue: `#33`
 - ステータス: `In Progress`
 - 作成日: 2026-08-14
-- 更新日: 2026-08-15
+- 更新日: 2026-08-16
 - Branch: `feature/33`
 - Owner: Fukuemon
 
@@ -514,7 +514,10 @@ sequenceDiagram
 
 ### feature doc への影響
 
-変更なし。corporate-site のテスト観点は継承し、本 spec 側で詳細化する。
+| 対象 doc / 節                               | 変更内容                                                                                                                        | 理由                                                                                 |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `DesignDoc_corporate-site.md` ## テスト観点 | D11 の 3 ジャーニー (回遊 / ナビゲーション / JS 無効時) を追加し、問い合わせ送信は #26 実装後に追加する旨を明記 (source: track) | E2E が担うジャーニーは corporate-site 固有の導線であり、feature 側のテスト観点が正本 |
+| `DesignDoc_corporate-site.md` ## テスト観点 | VRT が 3 route × 2 viewport を撮ることを追加 (source: track)                                                                    | 既存のテスト観点は E2E の smoke のみで、視覚回帰の観点が無い                         |
 
 ### requirements への影響
 
@@ -524,23 +527,36 @@ sequenceDiagram
 
 ### context への影響
 
-| 対象 doc / 節                                       | 変更内容                                                                        | 理由                                                              |
-| --------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `context/testing.md` テスト責務の分担               | VRT の種別と責務を追加 (D3 の決定を反映)                                        | 現在 Unit test / E2E の 2 種別しかない                            |
-| `context/testing.md`                                | locator 規約と Page Object 規約を追加                                           | D2 / D5 の決定先                                                  |
-| `context/engineering.md` Repository Quality Gate    | CI とローカル hook の責務分担を追加                                             | D6 / D7 の決定先。現在 pre-commit のみ記述                        |
-| `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケットを追加 (source: clarify)                          | D4 で baseline の保管先を R2 に決めたため。#47 の集約後に確定する |
-| `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を #47 の集約後の実態へ更新 (source: clarify)                 | ADR-0001 の supersede に伴い記述が古くなる                        |
-| `context/project.yml` の `commands`                 | VRT 実行コマンドと baseline 更新コマンドを追加 (source: clarify)                | コマンド契約の正本。`meta.updated` も同期する                     |
-| `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は CI パイプライン方針へ委譲する」を実態へ更新 (source: clarify) | `spec-residue.yml` が既に CI で実行しており常設化は完了済み       |
+| 対象 doc / 節                                       | 変更内容                                                                                   | 理由                                                              |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| `context/testing.md` テスト責務の分担               | VRT の種別と責務を追加 (D3 の決定を反映)                                                   | 現在 Unit test / E2E の 2 種別しかない                            |
+| `context/testing.md`                                | locator 規約と Page Object 規約を追加                                                      | D2 / D5 の決定先                                                  |
+| `context/testing.md` テスト責務の分担               | play テストの対象基準を追加 (`packages/ui` に限定、island は #26 で決める) (source: track) | D1 の決定先。現在 play に関する記述が無い                         |
+| `context/testing.md` VRT 節                         | 許容 diff の初期値 (0) と、差分時は CI を失敗させる扱いを追加 (source: track)              | D10 / D12 の決定先                                                |
+| `context/testing.md` テスト責務の分担               | E2E が担うジャーニーの範囲と play との責務境界を追加 (source: track)                       | D11 の決定先                                                      |
+| `context/engineering.md` Repository Quality Gate    | CI とローカル hook の責務分担を追加                                                        | D6 / D7 の決定先。現在 pre-commit のみ記述                        |
+| `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケットを追加 (source: clarify)                                     | D4 で baseline の保管先を R2 に決めたため。#47 の集約後に確定する |
+| `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を #47 の集約後の実態へ更新 (source: clarify)                            | ADR-0001 の supersede に伴い記述が古くなる                        |
+| `context/project.yml` の `commands`                 | VRT 実行コマンドと baseline 更新コマンドを追加 (source: clarify)                           | コマンド契約の正本。`meta.updated` も同期する                     |
+| `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は CI パイプライン方針へ委譲する」を実態へ更新 (source: clarify)            | `spec-residue.yml` が既に CI で実行しており常設化は完了済み       |
+
+### 他 issue への引き継ぎ
+
+上位資料への反映ではないが、本 spec の決定が他 issue に作業を残すもの。
+
+| 引き継ぎ先 | 内容                                                              | 根拠 |
+| ---------- | ----------------------------------------------------------------- | ---- |
+| #26        | React island 向けの play テスト対象基準を決める                   | D1   |
+| #26        | 問い合わせフォーム送信のジャーニーを E2E に追加する               | D11  |
+| #47        | R2 バケット / secret / CI 結線 / 差分レポートの閲覧経路を用意する | U1   |
 
 ### ADR の新規 / 更新
 
-| ADR ID   | 変更内容                                               | 理由                                                                                           |
-| -------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| 新規     | VRT の手段選択 (D4) と対象セットの決定                 | 候補を比較して決める判断のため                                                                 |
-| 新規     | CI とローカル hook の責務分担 (D6 / D7 / D9)           | 二重実行を許すかを含む運用方針の判断のため                                                     |
-| ADR-0001 | **#47 側で supersede される** (本 spec では起票しない) | 本 spec は R2 を調達しないため衝突しない。story 側 VRT の CI 稼働 (P5) が #47 の結論に依存する |
+| ADR ID   | 変更内容                                                                         | 理由                                                                                                      |
+| -------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| 新規     | VRT の手段選択 (D4)、対象セット、許容 diff (D10)、差分時のブロッキング扱い (D12) | いずれも候補を比較して決めた判断のため (source: track で D10 / D12 を追加)                                |
+| 新規     | CI とローカル hook の責務分担 (D6 / D7 / D8 / D9)                                | 二重実行を許すかと、VRT の撮影環境を CI に一本化する判断を含む運用方針のため (source: track で D8 を追加) |
+| ADR-0001 | **#47 側で supersede される** (本 spec では起票しない)                           | 本 spec は R2 を調達しないため衝突しない。story 側 VRT の CI 稼働 (P5) が #47 の結論に依存する            |
 
 ## レビュー
 
@@ -561,33 +577,34 @@ sequenceDiagram
 
 ## 変更履歴
 
-| 日付       | 変更者         | 変更内容                                                                                                                         |
-| ---------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-08-14 | spec-lifecycle | scaffold: index.md を作成。実測棚卸しと論点 D1〜D9 を起票                                                                        |
-| 2026-08-15 | spec-lifecycle | clarify: D1〜D9 を確定。play は `packages/ui` 限定、POM 導入、VRT は独立種別で reg-suit + Playwright の併用、CI に一本化         |
-| 2026-08-15 | spec-review    | clarify gate 1 回目 NEEDS_WORK (指摘 10 件)。記録は [review.md](review.md)                                                       |
-| 2026-08-15 | spec-lifecycle | レビュー対応: `check:specs` の扱いを D6 に追記、EARS を spec 本体へ具体化、`## 備考` を追加。infra 集約を #47 へ切り出し         |
-| 2026-08-15 | spec-lifecycle | #47 で infra の monorepo 集約が確定。D4 の baseline を R2 で確定し、U1 を実装順序の依存として再分類                              |
-| 2026-08-15 | spec-review    | clarify gate 2 回目 NEEDS_WORK (指摘 8 件)。1 回目の指摘 4 / 8 が未反映だったことが判明                                          |
-| 2026-08-15 | spec-lifecycle | 2 回目の指摘 8 件に対応。ADR-0001 との衝突を明記、D8 の目標値の記述を統一、reg-suit の R2 対応を調査し必須設定 3 点を記録        |
-| 2026-08-15 | spec-lifecycle | D4 / D8 を改訂。#33 の VRT はローカル S3 互換ストレージでの仕組み検証までとし、R2 結線と story 側の CI 稼働を #47 後の P5 へ分離 |
-| 2026-08-15 | spec-review    | clarify gate 3 回目 NEEDS_WORK (指摘 6 件)。上位文書整合 / 実装対象 / EARS は PASS                                               |
-| 2026-08-15 | spec-lifecycle | 3 回目の指摘 6 件に対応。確定内容を下流節へ反映し Phase 名と依存を整理、ADR-0001 との関係を現在形へ修正                          |
-| 2026-08-15 | spec-review    | clarify gate 4 回目 NEEDS_WORK (指摘 5 件)。5 観点が PASS、残るは template 必須節のみ                                            |
-| 2026-08-15 | spec-lifecycle | 4 回目の指摘 5 件に対応。後日追記の語彙を `追記` へ統一、VRT 対象 story を 28 件に統一、P4 の target を `core` へ                |
-| 2026-08-15 | spec-review    | clarify gate 5 回目 NEEDS_WORK (指摘 2 件)。VRT 対象を 28 と誤認していたことが判明                                               |
-| 2026-08-15 | spec-lifecycle | 5 回目の指摘に対応。VRT 対象を実測の 81 story へ訂正し viewport の適用範囲を明記                                                 |
-| 2026-08-15 | spec-review    | clarify gate 6 回目 NEEDS_WORK (指摘 3 件)。5 観点が PASS                                                                        |
-| 2026-08-15 | spec-lifecycle | 6 回目の指摘に対応。設計時の論点節をコードスパンなしで書き直し、参照の帰属を修正                                                 |
-| 2026-08-15 | spec-review    | clarify gate 7 回目 NEEDS_WORK (指摘 2 件)。template 必須節も PASS になり残るは未解決論点のみ                                    |
-| 2026-08-15 | spec-lifecycle | 7 回目の指摘に対応。許容 diff を D10 として確定 (0 許容から開始)、Fallback の発動条件を D9 と整合させた                          |
-| 2026-08-15 | spec-review    | clarify gate 8 回目 NEEDS_WORK (指摘 2 件)。5 観点が PASS                                                                        |
-| 2026-08-15 | spec-lifecycle | 8 回目の指摘に対応。ジャーニーを D11、VRT のブロッキング扱いを D12 として確定し、レポート閲覧経路を U1 へ統合                    |
-| 2026-08-15 | spec-review    | clarify gate 9 回目 NEEDS_WORK (指摘 4 件)。5 観点が PASS                                                                        |
-| 2026-08-15 | spec-lifecycle | 9 回目の指摘に対応。Fallback をエスカレーション順へ、D11 の根拠を実態へ修正                                                      |
-| 2026-08-15 | spec-review    | clarify gate 10 回目 NEEDS_WORK (指摘 2 件)。9 回目の requirements 改訂が実際には未反映だったことが判明                          |
-| 2026-08-15 | spec-lifecycle | requirements の例外シナリオ #3 を実際に改訂し、本文を読み返して spec との一致を確認                                              |
-| 2026-08-15 | spec-lifecycle | diagram: Flowchart と Sequence を生成。Mermaid のパースをブラウザで検証し 2 図とも OK を確認                                     |
+| 日付       | 変更者         | 変更内容                                                                                                                                                                                           |
+| ---------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-14 | spec-lifecycle | scaffold: index.md を作成。実測棚卸しと論点 D1〜D9 を起票                                                                                                                                          |
+| 2026-08-15 | spec-lifecycle | clarify: D1〜D9 を確定。play は `packages/ui` 限定、POM 導入、VRT は独立種別で reg-suit + Playwright の併用、CI に一本化                                                                           |
+| 2026-08-15 | spec-review    | clarify gate 1 回目 NEEDS_WORK (指摘 10 件)。記録は [review.md](review.md)                                                                                                                         |
+| 2026-08-15 | spec-lifecycle | レビュー対応: `check:specs` の扱いを D6 に追記、EARS を spec 本体へ具体化、`## 備考` を追加。infra 集約を #47 へ切り出し                                                                           |
+| 2026-08-15 | spec-lifecycle | #47 で infra の monorepo 集約が確定。D4 の baseline を R2 で確定し、U1 を実装順序の依存として再分類                                                                                                |
+| 2026-08-15 | spec-review    | clarify gate 2 回目 NEEDS_WORK (指摘 8 件)。1 回目の指摘 4 / 8 が未反映だったことが判明                                                                                                            |
+| 2026-08-15 | spec-lifecycle | 2 回目の指摘 8 件に対応。ADR-0001 との衝突を明記、D8 の目標値の記述を統一、reg-suit の R2 対応を調査し必須設定 3 点を記録                                                                          |
+| 2026-08-15 | spec-lifecycle | D4 / D8 を改訂。#33 の VRT はローカル S3 互換ストレージでの仕組み検証までとし、R2 結線と story 側の CI 稼働を #47 後の P5 へ分離                                                                   |
+| 2026-08-15 | spec-review    | clarify gate 3 回目 NEEDS_WORK (指摘 6 件)。上位文書整合 / 実装対象 / EARS は PASS                                                                                                                 |
+| 2026-08-15 | spec-lifecycle | 3 回目の指摘 6 件に対応。確定内容を下流節へ反映し Phase 名と依存を整理、ADR-0001 との関係を現在形へ修正                                                                                            |
+| 2026-08-15 | spec-review    | clarify gate 4 回目 NEEDS_WORK (指摘 5 件)。5 観点が PASS、残るは template 必須節のみ                                                                                                              |
+| 2026-08-15 | spec-lifecycle | 4 回目の指摘 5 件に対応。後日追記の語彙を `追記` へ統一、VRT 対象 story を 28 件に統一、P4 の target を `core` へ                                                                                  |
+| 2026-08-15 | spec-review    | clarify gate 5 回目 NEEDS_WORK (指摘 2 件)。VRT 対象を 28 と誤認していたことが判明                                                                                                                 |
+| 2026-08-15 | spec-lifecycle | 5 回目の指摘に対応。VRT 対象を実測の 81 story へ訂正し viewport の適用範囲を明記                                                                                                                   |
+| 2026-08-15 | spec-review    | clarify gate 6 回目 NEEDS_WORK (指摘 3 件)。5 観点が PASS                                                                                                                                          |
+| 2026-08-15 | spec-lifecycle | 6 回目の指摘に対応。設計時の論点節をコードスパンなしで書き直し、参照の帰属を修正                                                                                                                   |
+| 2026-08-15 | spec-review    | clarify gate 7 回目 NEEDS_WORK (指摘 2 件)。template 必須節も PASS になり残るは未解決論点のみ                                                                                                      |
+| 2026-08-15 | spec-lifecycle | 7 回目の指摘に対応。許容 diff を D10 として確定 (0 許容から開始)、Fallback の発動条件を D9 と整合させた                                                                                            |
+| 2026-08-15 | spec-review    | clarify gate 8 回目 NEEDS_WORK (指摘 2 件)。5 観点が PASS                                                                                                                                          |
+| 2026-08-15 | spec-lifecycle | 8 回目の指摘に対応。ジャーニーを D11、VRT のブロッキング扱いを D12 として確定し、レポート閲覧経路を U1 へ統合                                                                                      |
+| 2026-08-15 | spec-review    | clarify gate 9 回目 NEEDS_WORK (指摘 4 件)。5 観点が PASS                                                                                                                                          |
+| 2026-08-15 | spec-lifecycle | 9 回目の指摘に対応。Fallback をエスカレーション順へ、D11 の根拠を実態へ修正                                                                                                                        |
+| 2026-08-15 | spec-review    | clarify gate 10 回目 NEEDS_WORK (指摘 2 件)。9 回目の requirements 改訂が実際には未反映だったことが判明                                                                                            |
+| 2026-08-15 | spec-lifecycle | requirements の例外シナリオ #3 を実際に改訂し、本文を読み返して spec との一致を確認                                                                                                                |
+| 2026-08-15 | spec-lifecycle | diagram: Flowchart と Sequence を生成。Mermaid のパースをブラウザで検証し 2 図とも OK を確認                                                                                                       |
+| 2026-08-16 | spec-lifecycle | track: 未記録だった反映先を追記。feature doc のテスト観点 (D11 / VRT)、context/testing.md の play 対象基準・許容 diff・ジャーニー境界、ADR に D8 / D10 / D12 を追加。他 issue への引き継ぎ表を新設 |
 
 ## 備考
 
