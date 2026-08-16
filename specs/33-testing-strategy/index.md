@@ -13,20 +13,20 @@
 
 状態は `未着手 / 進行中 / 完了 / レビュー済 / 保留` のいずれか。保留の場合は理由を備考に残す。
 
-| #   | フェーズ                    | 状態 | 最終更新   | 備考                                                                                                         |
-| --- | --------------------------- | ---- | ---------- | ------------------------------------------------------------------------------------------------------------ |
-| 1   | 起票                        | 完了 | 2026-08-14 | #28 / #12 を統合済み。実装突合: 対象                                                                         |
-| 2   | 下書き                      | 完了 | 2026-08-14 | template の必須節を充足                                                                                      |
-| 3   | 上位文書突合                | 完了 | 2026-08-14 | 矛盾なし。context への追記は本 spec の計画的な更新                                                           |
-| 4   | 論点整理                    | 完了 | 2026-08-15 | D1〜D9 を起票。D10〜D12 はレビュー対応で追加                                                                 |
-| 5   | 論点解決                    | 完了 | 2026-08-15 | D1〜D12 を確定。設計上の未決ゼロ (U1 は実装順序、U2 は運用判断)                                              |
-| 6   | Interface / Routing 設計    | 完了 | 2026-08-16 | diagram / track / sync phase で確定済                                                                        |
-| 7   | Content / Data 設計         | 完了 | 2026-08-16 | diagram / track / sync phase で確定済                                                                        |
-| 8   | Performance / Security 設計 | 完了 | 2026-08-16 | diagram / track / sync phase で確定済                                                                        |
-| 9   | Test / Metrics 設計         | 完了 | 2026-08-16 | diagram / track / sync phase で確定済                                                                        |
-| 10  | 実装分割                    | 完了 | 2026-08-16 | P1a〜P5 を記入。P4 は sync で消化済み                                                                        |
-| 11  | レビュー済                  | 完了 | 2026-08-16 | track gate 5 回目で 5 観点 PASS。残る指摘は記録整合のみでユーザー判断で通過                                  |
-| 12  | prompts 生成                | 完了 | 2026-08-16 | prompts: 混在モード (P1_01 / P1_02 は新規実装、P2 / P3 は既存ファイルの差分修正、P5 は #47 完了後の差分修正) |
+| #   | フェーズ                    | 状態       | 最終更新   | 備考                                                                                                         |
+| --- | --------------------------- | ---------- | ---------- | ------------------------------------------------------------------------------------------------------------ |
+| 1   | 起票                        | 完了       | 2026-08-14 | #28 / #12 を統合済み。実装突合: 対象                                                                         |
+| 2   | 下書き                      | 完了       | 2026-08-14 | template の必須節を充足                                                                                      |
+| 3   | 上位文書突合                | 完了       | 2026-08-14 | 矛盾なし。context への追記は本 spec の計画的な更新                                                           |
+| 4   | 論点整理                    | 完了       | 2026-08-15 | D1〜D9 を起票。D10〜D12 はレビュー対応で追加                                                                 |
+| 5   | 論点解決                    | 完了       | 2026-08-15 | D1〜D12 を確定。設計上の未決ゼロ (U1 は実装順序、U2 は運用判断)                                              |
+| 6   | Interface / Routing 設計    | 完了       | 2026-08-16 | diagram / track / sync phase で確定済                                                                        |
+| 7   | Content / Data 設計         | 完了       | 2026-08-16 | diagram / track / sync phase で確定済                                                                        |
+| 8   | Performance / Security 設計 | 完了       | 2026-08-16 | diagram / track / sync phase で確定済                                                                        |
+| 9   | Test / Metrics 設計         | 完了       | 2026-08-16 | diagram / track / sync phase で確定済                                                                        |
+| 10  | 実装分割                    | 完了       | 2026-08-16 | P1a〜P5 を記入。P4 は sync で消化済み                                                                        |
+| 11  | レビュー済                  | 完了       | 2026-08-16 | track gate 5 回目で 5 観点 PASS。残る指摘は記録整合のみでユーザー判断で通過                                  |
+| 12  | prompts 生成                | レビュー済 | 2026-08-16 | prompts: 混在モード (P1_01 / P1_02 は新規実装、P2 / P3 は既存ファイルの差分修正、P5 は #47 完了後の差分修正) |
 
 ## 上位文書整合
 
@@ -419,14 +419,14 @@ sequenceDiagram
 
 ### 実装タスク案
 
-| Phase | 対象                     | 概要                                                                               | 依存          |
-| ----- | ------------------------ | ---------------------------------------------------------------------------------- | ------------- |
-| P1a   | `ui` / `corporate-site`  | storycap + reg-suit の導入と、ローカル S3 互換ストレージでの差分判定の検証         | D4            |
-| P1b   | `e2e` / `corporate-site` | Playwright `toHaveScreenshot` で 3 route × 2 viewport の baseline 確立             | D4            |
-| P2    | `core`                   | CI のジョブ構成整理と `.github/workflows/` 実装                                    | D6〜D9        |
-| P3    | `e2e`                    | Page Object と locator 規約の骨組み、D11 の 3 ジャーニーの定義を規約へ落とす       | D2 / D5 / D11 |
-| P4    | `core`                   | 規約の `context/` への反映と ADR 起票 (**sync phase で消化済み。prompt 化しない**) | P1a〜P3       |
-| P5    | `core` / `ui`            | #47 完了後: endpoint を R2 へ差し替え、story 側 VRT を CI へ載せる                 | P1a / #47     |
+| Phase | 対象                     | 概要                                                                               | 依存           |
+| ----- | ------------------------ | ---------------------------------------------------------------------------------- | -------------- |
+| P1a   | `ui` / `corporate-site`  | storycap + reg-suit の導入と、ローカル S3 互換ストレージでの差分判定の検証         | D4             |
+| P1b   | `e2e` / `corporate-site` | Playwright `toHaveScreenshot` で 3 route × 2 viewport の baseline 確立             | D4             |
+| P2    | `core`                   | CI のジョブ構成整理と `.github/workflows/` 実装                                    | D6〜D9         |
+| P3    | `e2e`                    | Page Object と locator 規約の骨組み、D11 の 3 ジャーニーの定義を規約へ落とす       | D2 / D5 / D11  |
+| P4    | `core`                   | 規約の `context/` への反映と ADR 起票 (**sync phase で消化済み。prompt 化しない**) | P1a〜P3        |
+| P5    | `core` / `ui`            | #47 完了後: endpoint を R2 へ差し替え、story 側 VRT を CI へ載せる                 | P1a / P2 / #47 |
 
 ### prompts 生成方針
 
@@ -639,6 +639,7 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | 2026-08-16 | —                        | 5 回目の指摘は解消済み。**PASS を確認する再レビューは未実施**のまま、ユーザー判断で track gate を通過し prompts phase へ進んだ (残る指摘は記録の整合のみで、設計は 5 観点が PASS) | ユーザー判断                                                                  |
 | 2026-08-16 | NEEDS_WORK               | prompts gate 1 回目。指摘 5 件 (命名規則 / seq 不一致 / EARS 抜粋の欠落 / 生成モード未記録 / 実装分割の食い違い) + 補足 3 件。**spec 本体は 6 観点すべて PASS**                   | 全件反映済                                                                    |
 | 2026-08-16 | NEEDS_WORK               | prompts gate 2 回目。指摘 1 件 (読み取り索引に testing / CI のエントリが無い) + 補足 3 件。**6 観点が PASS**                                                                      | 全件反映済                                                                    |
+| 2026-08-16 | **PASS**                 | prompts gate 3 回目。**7 観点すべて PASS。** 補足 4 件 (うち 3 件を反映、1 件は skill 側の記述揺れ)                                                                               | 補足 3 件を反映済                                                             |
 
 ## 変更履歴
 
@@ -687,6 +688,8 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | 2026-08-16 | spec-lifecycle | prompts gate の指摘に対応。P1a / P1b を `P1_01` / `P1_02` へ改名し、EARS の受け入れ基準を各 prompt へ抜粋。生成モードと prompts 一覧を spec へ記録し、P4 を prompt 化しない判断を実装分割へ反映       |
 | 2026-08-16 | spec-review    | prompts gate 2 回目 NEEDS_WORK (指摘 1 件 + 補足 3 件)。6 観点が PASS                                                                                                                                 |
 | 2026-08-16 | spec-lifecycle | `context/impact-index.yaml` へ `testing-strategy` / `ci-pipeline` のエントリを追加し、各 prompt の参照 path を索引に紐づけた                                                                          |
+| 2026-08-16 | spec-review    | **prompts gate 3 回目 PASS。** 全 phase gate を通過した                                                                                                                                               |
+| 2026-08-16 | spec-lifecycle | 補足に対応。索引の `ci-pipeline` へ `context/infrastructure.md` を追加し、P5 の依存列へ P2 を補い、P2 の EARS に派生である旨を注記                                                                    |
 
 ## 備考
 

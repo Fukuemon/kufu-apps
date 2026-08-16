@@ -191,7 +191,8 @@ spec からの抜粋。
 
 - WHEN develop 向けの PR が作成されたとき、システムは `lint` / `test` / `typecheck` / `build` / `knip` / `depcruise` / `e2e` / route の VRT を実行し、各ジョブの成否を PR のチェック欄に返す。
 - IF いずれかのジョブが失敗した場合、THEN システムは失敗したジョブ名とログを PR から辿れる状態にする。
-- WHERE story 側の VRT は #47 完了後に CI へ載せる。本 prompt の時点では CI に載せない。
+- WHERE story 側の VRT は #47 完了後に CI へ載せる。
+  (派生) 原文はここまでで、**本 prompt の時点では CI に載せない**というのは同句からの帰結である。
 
 ## テスト観点
 

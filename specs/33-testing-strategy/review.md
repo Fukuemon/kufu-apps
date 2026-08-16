@@ -400,3 +400,30 @@ prompt が参照 path を独自に列挙していたのは、索引が無いこ�
 `ci-pipeline` (read: `context/engineering.md` / `context/toolchain.md`、source_refs: ADR-0016 / 0015) の
 2 エントリを追加し、各 prompt の `## 実装コンテキスト` へ該当エントリを明記した。
 これは spec が削除された後も残る経路であり、正本境界の観点でも意味がある。
+
+## 2026-08-16 — prompts gate 3 回目 (prompts 5 本 + spec)
+
+**Verdict: PASS** (補足 4 件)
+
+**7 観点すべて PASS。** 上位文書整合 / 未解決論点 / 実装対象明示 / template 必須節 / EARS acceptance /
+prompts 自己完結性 / 正本境界のいずれも根拠付きで確認された。**#33 の全 phase gate を通過した。**
+
+前回の指摘 (読み取り索引の欠落) は解消が確認された。追加した 2 エントリは既存エントリと同じ
+`name` / `keywords` / `read` / `source_refs` / `coverage` 構成で、`read:` と `source_refs:` が指す 8 ファイルは
+すべて実在する。`context/project.yml` に `reading_index` キーが無いため `context/impact-index.yaml` が索引にあたり、
+手更新が正しい運用であることも確認された。
+
+**実測の再照合も通った。** prompt が列挙する path (`playwright.config.ts` / `turbo.json` / `lefthook.yml` /
+`scripts/build-storybook-pages.mjs` / `smoke.spec.ts` / `.github/workflows/` 4 本 / fixture ディレクトリ /
+story ファイル 11 + 17) がすべて実在し、story ファイル 29 という spec の実測とも一致した。
+資格情報の実値と個人 PC の絶対パスは 5 本とも検出されていない。
+
+| #    | 補足                                                                 | 対応           |
+| ---- | -------------------------------------------------------------------- | -------------- |
+| 補足 | P5 が参照する `context/infrastructure.md` が索引の経路に無い         | 反映済         |
+| 補足 | P2 の WHERE 句が spec 原文の派生だが区別が付かない                   | 反映済         |
+| 補足 | 実装タスク案の P5 依存列に P2 が落ちている (prompts 一覧とずれる)    | 反映済         |
+| 補足 | `prompt-rules.md` が scope を「ケバブケース」と書くが例は snake_case | skill 側の課題 |
+
+4 件目は本 spec の問題ではなく、skill の規則文と例が食い違っている記述揺れである。
+本 spec の prompts は例に従っているため違反ではない。`skill-feedback` の対象として残す。

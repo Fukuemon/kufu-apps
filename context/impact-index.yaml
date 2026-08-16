@@ -107,10 +107,14 @@ features:
         "typecheck",
         "knip",
         "depcruise",
+        "R2",
+        "secret",
+        "baseline 保管先",
       ]
     read:
       - "context/engineering.md"
       - "context/toolchain.md"
+      - "context/infrastructure.md"
     source_refs:
       - "adr/0016-ci-local-hook-responsibility.md"
       - "adr/0015-visual-regression-testing-policy.md"
