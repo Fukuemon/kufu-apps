@@ -18,9 +18,15 @@
 
 ### 判断を分ける事実
 
-ADR-0001 の判断自体が誤っていたのではない。**分離が成立する前提が満たされなかった**ことが問題である。別リポジトリの運用は、そこに変更を書き込む頻度と担当が存在して初めて機能する。現状の開発体制は 1 名で、対象は corporate-site 1 つ ([ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md)) であり、2 リポジトリにまたがる変更手順が着手の障壁として働いた。
+ADR-0001 の判断自体が誤っていたのではない。**分離が成立する前提が満たされなかった**ことが問題である。別リポジトリの運用は、そこに変更を書き込む頻度と担当が存在して初めて機能する。
+
+事実として確認できるのは、3 か月間 `.tf` が 1 つも書かれなかったこと、Cloudflare の設定が Dashboard 上に残り続けたこと、#33 が空の repo 待ちで止まっていることの 3 点である。
+
+**推定** (単一事例からの解釈であり、検証していない): 現状の開発体制は 1 名で、対象は corporate-site 1 つ ([ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md)) である。この規模に対して 2 リポジトリにまたがる変更手順が重く、着手の障壁として働いた可能性が高い。
 
 ## 決定
+
+> **承認順序**: 本 ADR と [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md) は**同時に承認する**。本 ADR が挙げる Cons 2 と Cons 3 の対処は ADR-0016 の credential 分担に依存しており、本 ADR だけを承認すると対処のない状態になる。
 
 - **Cloudflare の infra code を Kufu Monorepo へ集約する。** ADR-0001 を supersede する。
 - `kufu-infra` は **アーカイブする** (削除しない)。ADR-0001 のコピーと初期検討の履歴が残っており、判断の経緯を追える状態を保つ。read-only にすることで、誤って書き込みが再開されることを防ぐ。
@@ -91,13 +97,23 @@ Cloudflare が推奨する `cf-terraforming` を使い、既存リソースを T
 
 ADR-0001 は monorepo 同居 (代替案 1) の Cons を 5 点挙げた。集約後もこれらは消えないため、個別に対処を定める。
 
-| ADR-0001 の Cons                                                               | 対処                                                                                                                                                                                |
-| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| UI 変更と本番 infra 変更が同じ差分面に並び、レビュー観点が混ざる               | Terraform を `infra/` に限定し、差分の所在で判別できるようにする。加えて ADR-0016 の分担により、日常の deploy は Terraform を経由しないため、UI 変更の PR に infra 差分が混ざらない |
-| Terraform apply 権限や Cloudflare credential を app 開発導線に近づけやすくなる | ADR-0016 で credential を 2 系統に分ける。通常の CI は deploy scope に限定した token しか持たず、apply は手動起動 + environment protection rules を通す                             |
-| DNS、secret、Workers など本番影響の大きい変更が、通常の PR に埋もれやすい      | apply が自動実行されない。infra 差分が merge されても、apply workflow の手動起動という明示的な行為を経なければ本番へ反映されない                                                    |
-| どこまで触ってよいかの境界が曖昧になりやすい                                   | 本 ADR の「ディレクトリ構成」で境界を定める。実装後、その事実を [context/architecture.md](../context/architecture.md) に記述し、CLAUDE.md 系の生成物から参照させる                  |
-| 将来 Cloudflare 基盤を複数 app / repo で共有する場合、責務が過剰に広がる       | 現時点で Cloudflare を共有する別 app は存在しない ([ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md))。下記「見直しの条件」に該当したとき再検討する                   |
+| ADR-0001 の Cons                                                               | 対処                                                                                                                                                                                                                           |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| UI 変更と本番 infra 変更が同じ差分面に並び、レビュー観点が混ざる               | Terraform を `infra/` に限定し、差分の所在で判別できるようにする。加えて ADR-0016 の分担により、日常の deploy は Terraform を経由しないため、UI 変更の PR に infra 差分が混ざらない                                            |
+| Terraform apply 権限や Cloudflare credential を app 開発導線に近づけやすくなる | ADR-0016 で credential を 2 系統に分ける。通常の CI は deploy scope に限定した token しか持たず、apply は手動起動 + environment protection rules を通す                                                                        |
+| DNS、secret、Workers など本番影響の大きい変更が、通常の PR に埋もれやすい      | **Terraform 管轄 (DNS / R2 / Rate Limiting)**: apply が自動実行されない。merge されても apply workflow の手動起動を経なければ本番へ反映されない。**Wrangler 管轄 (Pages Functions / runtime secret)**: 下記「残る Cons」を参照 |
+| どこまで触ってよいかの境界が曖昧になりやすい                                   | 本 ADR の「ディレクトリ構成」で境界を定める。実装後、その事実を [context/architecture.md](../context/architecture.md) に記述し、CLAUDE.md 系の生成物から参照させる                                                             |
+| 将来 Cloudflare 基盤を複数 app / repo で共有する場合、責務が過剰に広がる       | **対処しない (条件付きで再検討)**。現時点で Cloudflare を共有する別 app は存在しない ([ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md))。下記「見直しの条件」に該当したとき再検討する                           |
+
+### 残る Cons: Wrangler 管轄の変更
+
+Cons 3 のうち **Pages Functions (Workers) の変更は対処しない。** [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md) の分担により Pages Functions は Wrangler 管轄であり、push を起点とする deploy workflow で自動的に本番へ出る。`/api/contact` のコード変更は通常の PR に含まれ、apply workflow のような明示的な行為を挟まない。
+
+**ただしこれは集約によって悪化するものではない。** ADR-0001 の構成でも Pages Functions は app repo 側にあり、Cloudflare Pages の Git 連携で自動 deploy されていた ([context/infrastructure.md](../context/infrastructure.md) の Deployment Flow)。Workers のコードは app 側にあるため、この Cons は repo 境界では解けない。
+
+緩和は通常の PR レビューと自動テストに依存する。infra の権限分離とは別の問題として扱う。
+
+runtime secret はこの Cons の対象外である。値は PR の差分に現れず、特権経路でのみ変更されるため、「通常の PR に埋もれる」経路が存在しない。
 
 ### CODEOWNERS の位置づけと限界
 
@@ -192,15 +208,29 @@ CODEOWNERS を置く理由は 2 つある。境界を宣言として残すこと
 
 - 対象 app / package: `apps/corporate-site`、`e2e` (#33 の VRT)、GitHub Actions workflow、新設する Terraform ディレクトリ
 - spec 更新要否: 要。#47 の spec に、ディレクトリ配置、CODEOWNERS、apply workflow の分離を反映する
-- AI 向け設定更新要否: 要。[context/architecture.md](../context/architecture.md) にディレクトリ境界と依存規約を、[context/infrastructure.md](../context/infrastructure.md) に Infrastructure Contract の位置づけ変更を反映する。[context/project.yml](../context/project.yml) の `repos.infra` を更新する
+- AI 向け設定更新要否: 要。承認後に更新する文書を次に網羅する。本節を唯一の一覧とし、他所に分散させない。
+
+| 対象                                                            | 更新内容                                                                                    |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| [context/architecture.md](../context/architecture.md)           | `infra/` のディレクトリ境界と依存規約                                                       |
+| [context/infrastructure.md](../context/infrastructure.md)       | Infrastructure Contract の位置づけ変更、ツール境界表、bootstrap 順序、state / secret の扱い |
+| [context/project.yml](../context/project.yml) の `repos.infra`  | `kufu-infra` の参照を、アーカイブ済みである旨へ変更する                                     |
+| [context/project.yml](../context/project.yml) の `repos.layout` | `infra/` を追加する                                                                         |
+| [context/project.yml](../context/project.yml) の `commands`     | `infra:plan` / `infra:apply` を追加する (`dev-commands` skill がここを正本として読む)       |
+| [context/project.yml](../context/project.yml) の `domains`      | `infra` を追加するか `core` に含めるかを決める (`domain:*` ラベルの体系に影響する)          |
+| [design/DesignDoc.md](../design/DesignDoc.md) の 105 / 116 行目 | ADR-0001 を infra repo 境界の正本とする記述を、本 ADR へ差し替える                          |
+
 - ADR-0001 の状態は、本 ADR が承認された時点で「置換」へ変更する。提案の段階では変更しない
+- **図 ([design/diagrams/](../design/diagrams/)) は提案の段階で追加済みである。** 図は ADR 本文の一部であり、ADR と同時に存在すべきものだからである。これに対し context / DesignDoc は現状事実を記述する文書であり、実装が完了するまで更新しない ([ADR-0013](0013-designdoc-present-facts-only.md) の原則を context にも適用する)。差分が非対称に見えるのはこの理由による
 
 ## 関連ドキュメント
 
 - [ADR-0001](0001-terraform-infra-repository-boundary.md): 本 ADR が supersede する決定
 - [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md): 集約後のツール分担 (本 ADR の前提の上に立つ)
 - [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md): Phase 1 の対象が corporate-site のみであること
+- [design/DesignDoc.md](../design/DesignDoc.md): 105 / 116 行目が ADR-0001 を infra repo 境界の正本として参照している (承認後に差し替える)
 - [context/infrastructure.md](../context/infrastructure.md): Infrastructure Contract / Deployment Flow
+- [ADR-0013](0013-designdoc-present-facts-only.md): 現状事実のみを記載する原則 (context の更新時期の根拠)
 - [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/): ディレクトリ構成 / モジュール回避 / 環境分割 / cf-terraforming の出典
 - [Terraform Best Practices — Key Concepts](https://www.terraform-best-practices.com/key-concepts): 3 層モジュール構成の出典 (本 ADR では採らない)
 - issue: #47 (決定経緯)

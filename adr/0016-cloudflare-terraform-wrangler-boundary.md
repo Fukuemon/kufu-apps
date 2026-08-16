@@ -30,6 +30,8 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 
 ## 決定
 
+> **承認順序**: 本 ADR と [ADR-0015](0015-terraform-monorepo-consolidation.md) は**同時に承認する**。ADR-0015 が挙げる Cons 2 と Cons 3 の対処は本 ADR の credential 分担に依存し、本 ADR は ADR-0015 の集約決定を前提とする。
+
 ### 分担の原則
 
 **基盤設定を Terraform、アプリの deploy と runtime 設定を Wrangler が管理する。1 つのリソースを両方から管理しない。**
@@ -53,7 +55,7 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 
 決定時点では D1 も KV も使っていない。将来 cms や別アプリがこれらを必要としたとき、この規則で管轄が定まる。
 
-**この規則は値の受け渡しを増やす。** Terraform が作った入れ物の識別子 (R2 のバケット名、D1 の database id) を `wrangler.toml` へ渡す必要があり、入れ物が増えるほど受け渡しの本数が増える。受け渡しの方法は #47 の spec で確立し、入れ物が 2 つ目になる前に整備する。
+**この規則は値の受け渡しを増やす。** Terraform が作った入れ物の識別子 (R2 のバケット名、D1 の database id) を Wrangler 側へ渡す必要があり、入れ物が増えるほど受け渡しの本数が増える。**受け渡しの方法は [context/infrastructure.md](../context/infrastructure.md) を正本として定める。** 入れ物が 2 つ目になる前に整備する。
 
 ### 決定時点の管轄
 
@@ -62,6 +64,7 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 | Zone / DNS record / TLS               | Terraform | deploy と独立し、ドメイン到達性に直結する                         |
 | Pages custom domain 紐付け            | Terraform | 同上。project とは独立した resource として管理できる              |
 | R2 バケット (#33 の VRT baseline 用)  | Terraform | deploy と独立し、CI が消費するだけ                                |
+| R2 バケット (Terraform state 用)      | Terraform | `infra/bootstrap/` が作る。下記「state 用バケットの例外」を参照   |
 | Rate Limiting ルール (`/api/contact`) | Terraform | deploy と独立した濫用制御の設定                                   |
 | Pages project 本体                    | Wrangler  | 下記「Pages project を Wrangler の管轄とする」を参照              |
 | deployment (preview / production)     | Wrangler  | deploy そのもの。Terraform の管理対象ではない                     |
@@ -70,6 +73,8 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 
 この表の運用上の正本は [context/infrastructure.md](../context/infrastructure.md) に置く。リソースが増減したときは同ファイルを更新する。本 ADR の表は決定時点の割り当てであり、後から書き換えない。
 
+**state 用バケットの例外**: R2 バケットは 2 つ存在する。#33 の VRT baseline 用は `infra/cloudflare/` が管理し、state は R2 backend に置かれる。一方 Terraform state 用のバケットは `infra/bootstrap/` が管理し、その state はローカルに置く ([ADR-0015](0015-terraform-monorepo-consolidation.md) の「ディレクトリ構成」)。どちらも Terraform 管轄であり二重管理は生じないが、**state の置き場が異なる**点で扱いが分かれる。
+
 ![Cloudflare リソースの Terraform / Wrangler 管轄境界](../design/diagrams/infra-tool-boundary.drawio.svg)
 
 図の要点:
@@ -77,6 +82,7 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 - Cloudflare の内側は管轄で 2 つに分かれ、それぞれへ入る実線 (管理経路) は 1 本ずつである。同じリソースへ両方のツールから線が入らないことが、二重管理の不在を表す。
 - 破線は参照であり、管理ではない。`cloudflare_pages_domain` は Wrangler が作った project を名前で参照する。この向きが bootstrap の順序制約を生む。
 - VRT workflow を Cloudflare の外に置いたのは、R2 を消費するだけで管理しないためである。アプリ (Worker) から R2 への binding は存在しない。
+- **図が描くのは bootstrap 後の定常状態である。** 初回のみ必要な `infra/bootstrap/` と state 用 R2 バケットは載せていない。初回の順序は下記「bootstrap 順序の制約」を参照する。
 
 ### 権限と実行経路
 
@@ -88,13 +94,13 @@ credential を 2 系統に分け、通常の CI に apply 権限と secret 投�
 
 - 通常の開発フローから到達できるのは deployment だけである。DNS、R2、secret へは到達しない。
 - 特権経路は手動起動に限り、GitHub の environment protection rules で承認を要求する。
-- apply 用と secret 書き込み用は必要な scope が異なるため別の token として描いた。1 つの token に束ねるか分けるかは spec で決める。
+- apply 用と secret 書き込み用は必要な scope が異なるため別の token として描いた。1 つの token に束ねるか分けるかは、実装時に [context/infrastructure.md](../context/infrastructure.md) へ確定した形を記載する。
 
 ### Pages project を Wrangler の管轄とする
 
 Terraform が `cloudflare_pages_project` を管理する場合、Wrangler による secret 投入との衝突を避けるために `lifecycle { ignore_changes = [deployment_configs] }` が必要になる。これは「Terraform が管理しているように見えて、実際には管理していない範囲がある」状態を作り、上記の原則を形骸化させる。
 
-`wrangler pages deploy` は project が存在しない場合に作成するため、project の存在は Wrangler が担保できる。Terraform は `cloudflare_pages_domain` と DNS record を管理することで、本番影響の大きい「どのドメインでどの project が公開されるか」を握る。ADR-0001 が守ろうとした blast radius の分離は、この範囲で満たせる。
+`wrangler pages deploy` は project が存在しない場合に作成するとされ、project の存在は Wrangler が担保できる (この挙動は未検証。下記「未確認事項」を参照)。Terraform は `cloudflare_pages_domain` と DNS record を管理することで、本番影響の大きい「どのドメインでどの project が公開されるか」を握る。ADR-0001 が守ろうとした blast radius の分離は、この範囲で満たせる。
 
 **bootstrap 順序の制約**: `cloudflare_pages_domain` は project の存在を前提とするため、初回のみ Wrangler の deploy を Terraform の apply より先に実行する。この順序は [context/infrastructure.md](../context/infrastructure.md) に手順として記載する。
 
@@ -174,6 +180,8 @@ deploy 経路を作り直す本作業は移行の契機になりうるが、Page
 ### 未確認事項
 
 - Cloudflare Terraform provider は v5 で resource スキーマが変更されている。`cloudflare_pages_project` / `cloudflare_pages_domain` の正確なフィールド名と、`deployment_configs` が secret を含むかどうかは、実装時に provider のドキュメントで確認する。本 ADR の判断は「Pages project resource が deployment 設定を内包する」という構造に基づく。構造が異なっていた場合は代替案 3 を再評価する。
+- **`wrangler pages deploy` が project を自動作成するかは未検証である。** この前提は「Pages project を Wrangler の管轄とする」判断と、`cloudflare_pages_domain` の bootstrap 順序制約の両方を支える。とくに `--project-name` を指定した非対話の CI 実行で自動作成されるかを、実装の最初に確認する。成立しない場合は、project の初回作成を運用者の手動操作 (`wrangler pages project create` または Dashboard) として手順化し、Terraform 管轄には移さない。
+- `wrangler` の設定ファイル形式を `wrangler.toml` と表記しているが、`wrangler.jsonc` 等の選択肢との比較は行っていない。実装時に決め、決まった形式を [context/infrastructure.md](../context/infrastructure.md) に記載する。本 ADR の管轄判断は形式に依存しない。
 - Cloudflare Secrets Store を Pages Functions から参照できるかは未確認である。参照できる場合、Terraform が値を持たずに secret の binding を宣言できるため、runtime secret の管轄を再評価する余地がある。
 
 ## 実装・運用への反映
@@ -187,6 +195,7 @@ deploy 経路を作り直す本作業は移行の契機になりうるが、Page
 - [ADR-0015](0015-terraform-monorepo-consolidation.md): monorepo への集約 (本 ADR の前提)
 - [ADR-0001](0001-terraform-infra-repository-boundary.md): infra repo 分離 (ADR-0015 が supersede)
 - [ADR-0009](0009-corporate-site-contact-form-backend.md): 問い合わせフォームの Workers 依存と secret 要件
-- [context/infrastructure.md](../context/infrastructure.md): ツール境界表 / bootstrap 手順 / Infrastructure Contract の正本
+- [context/infrastructure.md](../context/infrastructure.md): ツール境界表 / bootstrap 手順 / 値の受け渡し / Infrastructure Contract の正本
+- [design/DesignDoc.md](../design/DesignDoc.md): Cloudflare を公開基盤とする前提 (本 ADR は基盤の選択を変えない)
 - [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/)
 - issue: #47 (決定経緯)
