@@ -10,10 +10,12 @@
 
 ## 背景
 
-- `apps/corporate-site` は Astro 静的生成 (`output: "static"`) で Cloudflare Pages へ配信する前提 ([infrastructure.md](../context/infrastructure.md) / [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md))。動的サーバ処理は持たない。
-- IA 設計 ([issue #11](https://github.com/Fukuemon/kufu-apps/issues/11)) で「お問い合わせページ (P6 `/contact`) に問い合わせフォームを設置する」と決定したが、送信処理の方式は IA スコープ外として #14 へ委譲された。
+- `apps/corporate-site` は Astro 静的生成 (`output: "static"`) で Cloudflare Pages へ配信する前提である。動的サーバ処理は持たない。
+  - 根拠: [context/infrastructure.md](../context/infrastructure.md) — 配信基盤と環境戦略
+  - 根拠: [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md) — Phase 1 の対象を corporate-site のみとする決定
+- IA 設計 (issue #11) で「お問い合わせページ (P6 `/contact`) に問い合わせフォームを設置する」と決定した。送信処理の方式は IA のスコープ外として #14 へ委譲された。
 - フォーム送信を成立させるには、入力検証 / スパム判定 / メール通知を行う server 側処理が必要だが、静的配信のみの前提では置き場所が未確定だった。
-- 既存方針の制約: [architecture.md](../context/architecture.md) Runtime Boundary は「ブラウザから直接第三者 API を叩く構成を標準にせず、必要に応じて Workers を中継点にする」「秘密情報を client bundle に含めない」と定める。[infrastructure.md](../context/infrastructure.md) は Cloudflare Turnstile / Workers を bot 対策・API 中継の候補として挙げている。
+- 既存方針の制約: [context/architecture.md](../context/architecture.md) の Runtime Boundary は「ブラウザから直接第三者 API を叩く構成を標準にせず、必要に応じて Workers を中継点にする」「秘密情報を client bundle に含めない」と定める。context/infrastructure.md は Cloudflare Turnstile / Workers を bot 対策・API 中継の候補として挙げている。
 
 ## 決定
 
@@ -57,12 +59,12 @@ corporate-site の問い合わせ送信を **Cloudflare Pages Functions (Workers
 <!-- 対象モジュールは context/project.yml の対象ドメインから選ぶ。固有名を直書きしない。 -->
 
 - 対象モジュール / package: `corporate-site` (フォーム island + `/api/contact` Functions), `e2e` (問い合わせ導線の検証)
-- infra: Cloudflare Pages の Functions 併用 / 必要 secret / SPF・DKIM ([infrastructure.md](../context/infrastructure.md) Infrastructure Contract 経由で `kufu-infra` へ)
+- infra: Cloudflare Pages の Functions 併用 / 必要 secret / SPF・DKIM。Infrastructure Contract 経由で `kufu-infra` へ渡す
 
 ## 実装・運用への反映
 
 - spec 更新要否: 要 (機能仕様の正本は feature doc。実装は #10 と協調)
-- context / AI 向け設定更新要否: 要 ([infrastructure.md](../context/infrastructure.md) の Infrastructure Contract / Security に Workers 依存・secret・bot 対策を反映)
+- context / AI 向け設定更新要否: 要。context/infrastructure.md の Infrastructure Contract / Security へ、Workers 依存・secret・bot 対策を反映する
 
 ## 関連ドキュメント / チケット
 

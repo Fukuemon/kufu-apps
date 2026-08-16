@@ -65,5 +65,5 @@
 ### 2026-07-26: L1 / L2 の掲載基準を「実装済みの実行単位」に明確化 (issue #31)
 
 - **背景**: 決定時の L1 / L2 の構成要素の列挙は、問い合わせ backend (Cloudflare Pages Functions + Resend) を含んでいた。しかし書き換え時点でこれは未実装 (repo に `functions/` が無く、issue #26 が open) であり、「実在の実行単位のみ」という基準と矛盾した。
-- **決定**: 図に載せるのは **repo に実装コードが存在する実行単位と、確定済みの配信先** とする。仕様が決まっていても未実装のものは Future Work 節で扱う。この基準により、問い合わせ backend は L1 / L2 から外し Future Work へ移した。Cloudflare Pages / CDN は確定済みの配信先として残す ([ADR-0001](0001-terraform-infra-repository-boundary.md))。
+- **決定**: 図に載せるのは **repo に実装コードが存在する実行単位と、確定済みの配信先** とする。仕様が決まっていても未実装のものは Future Work 節で扱う。この基準により、問い合わせ backend は L1 / L2 から外し Future Work へ移した。Cloudflare Pages / CDN は確定済みの配信先として残す。
 - **影響**: 実装が進んだ時点で図に追加する。図と実装の対応が一意になり、「決まっているが無い」ものを図から読み取れなくなる代わりに、Future Work を見れば分かる。

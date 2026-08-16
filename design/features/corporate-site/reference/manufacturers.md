@@ -5,7 +5,7 @@
 > データ実体 (JSON / Astro content collection) への落とし込みは #10 で行います。
 >
 > 同一メーカーが複数カテゴリに登場するのは取扱範囲を表す正当な重複として保持する。
-> カテゴリ区分・順序は [company-profile.md](company-profile.md) の 18 区分に揃える。延べ社数 約 320。
+> カテゴリ区分・順序は company-profile.md の 18 区分に揃える。延べ社数 約 320。
 
 ## 1. 駆動・変減速機器 (17)
 

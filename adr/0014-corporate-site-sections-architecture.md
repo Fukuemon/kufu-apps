@@ -43,7 +43,8 @@
 - section の起点が `sections/<section>/index.ts` に一意化し、探索経路が単純になる。
 - 構造が route 構成から独立するため、IA 変更でディレクトリ移動が発生しない。
 - 公開面を機械検査でき、規約 drift を quality gate で検出できる。
-- Storybook の title 階層 (`Sections/<Section>/<Component>`) をディレクトリから機械的に決められる ([component-design.md](../context/component-design.md))。
+- Storybook の title 階層 (`Sections/<Section>/<Component>`) をディレクトリから機械的に決められる。
+  - 根拠: [context/component-design.md](../context/component-design.md) — Storybook の title 規約と component 設計規約
 
 ### 悪い影響 / トレードオフ
 
@@ -55,7 +56,7 @@
 
 - 対象 app / package: `apps/corporate-site` (再編の実施も本決定と同時に行う — PR #44 で実施済)。`packages/ui` は `@source` 移動と motion トークン追加のみ
 - spec 更新要否: 不要 (spec は issue close 時に削除される作業文書であり、決定経緯は本 ADR が正本)
-- AI 向け設定更新要否: 不要 (規約は [context/component-design.md](../context/component-design.md) / [context/architecture.md](../context/architecture.md) が正本で、AI 設定はそれを参照する)
+- AI 向け設定更新要否: 不要。規約は context/component-design.md と context/architecture.md が正本であり、AI 設定はそれを参照する
 
 ## 関連ドキュメント
 

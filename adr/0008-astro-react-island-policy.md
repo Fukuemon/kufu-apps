@@ -10,10 +10,15 @@
 
 ## 背景
 
-- `apps/corporate-site` は純 Astro 静的 (`output: "static"`) で、現状 `@astrojs/react` を導入していない。一方 `packages/ui` は shadcn/ui (React + Radix) を基盤に持つ ([ADR-0007](0007-design-token-architecture.md))。
+- `apps/corporate-site` は純 Astro 静的 (`output: "static"`) で、現状 `@astrojs/react` を導入していない。一方 `packages/ui` は shadcn/ui (React + Radix) を基盤に持つ。
+  - 根拠: [ADR-0007](0007-design-token-architecture.md) — デザイントークン体系と `packages/ui` の正本境界を定める
 - corporate-site の UI を実装するにあたり、「shadcn(React) を `.astro` でどう消費するか」「どこから `client:*` (React island) にするか」が未確定だった。
 - 誤解されやすい点: Astro は React コンポーネントも **ビルド時に静的 HTML へ描画**し、`client:*` を付けない限りクライアント JS を一切出荷しない。パフォーマンスコストが発生するのは `client:*` を付けて island 化 (React ランタイム出荷 + ハイドレーション) した時だけである。
-- 既存方針 ([context/architecture.md](../context/architecture.md) Runtime Boundary、[feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md)、[design-workflow §3 Phase C](../context/design-workflow.md)、CLAUDE.md 禁止事項) は「React island は必要最小限」を定めるが、shadcn の具体的な消費パターンは明文化されていなかった。
+- 既存方針は「React island は必要最小限」を定めるが、shadcn の具体的な消費パターンは明文化されていなかった。定めているのは次の 4 つである。
+  - 根拠: [context/architecture.md](../context/architecture.md) の Runtime Boundary — 第三者 API 直叩きと client bundle への secret 混入を禁じる
+  - 根拠: [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md) — corporate-site の island 方針
+  - 根拠: [context/design-workflow.md](../context/design-workflow.md) の Phase C — 実装出力の形式
+  - 根拠: `CLAUDE.md` の禁止事項
 
 ## 決定
 
@@ -26,7 +31,7 @@
 
 ## 代替案
 
-- **`.astro` で shadcn スタイルを再実装 (React を一切使わない)**: client JS ゼロは同じだが、shadcn コンポーネントと `.astro` 版の二重実装線が生まれ、`@kufu/ui` 正本と drift する。トークンを二重管理しない方針 ([ADR-0007](0007-design-token-architecture.md)) と一貫しないため不採用。
+- **`.astro` で shadcn スタイルを再実装 (React を一切使わない)**: client JS ゼロは同じだが、shadcn コンポーネントと `.astro` 版の二重実装線が生まれ、`@kufu/ui` 正本と drift する。トークンを二重管理しない方針と一貫しないため不採用。
 - **すべて React island (`client:load`) で実装**: DX は単純だが、表示専用 UI にまで React ランタイムを出荷し性能予算を圧迫する。corporate-site の主価値 (高速静的配信) に反するため不採用。
 - **`@astrojs/react` を入れず Astro 完結に固執**: 一見性能に安全だが、shadcn 正本を corporate-site で再利用できず二重実装を強いる。静的描画にランタイムコストが無い以上、過剰な制約のため不採用。
 

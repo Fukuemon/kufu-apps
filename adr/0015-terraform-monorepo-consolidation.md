@@ -240,20 +240,20 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 - AI 向け設定更新要否: 要。**本 ADR に由来する更新**を次に網羅する。ADR-0016 に由来する更新は同 ADR の同名節を正本とする。
 - **更新時期は実装完了後である。** context と DesignDoc は現状事実を記述する文書であり、決定が承認されただけでは記述すべき事実が存在しない。承認時点で行うのは ADR-0001 の状態変更だけである。
 
-| 対象                                                            | 更新内容                                                                                                                         |
-| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| [context/architecture.md](../context/architecture.md)           | `infra/` のディレクトリ境界と依存規約                                                                                            |
-| [context/infrastructure.md](../context/infrastructure.md)       | Infrastructure Contract の位置づけ変更、ツール境界表、bootstrap 順序、state / secret の扱い                                      |
-| [context/project.yml](../context/project.yml) の `repos.infra`  | `kufu-infra` の参照を、アーカイブ済みである旨へ変更する                                                                          |
-| [context/project.yml](../context/project.yml) の `repos.layout` | `infra/` を追加する                                                                                                              |
-| [context/project.yml](../context/project.yml) の `commands`     | `infra:plan` / `infra:apply` を追加する (`dev-commands` skill がここを正本として読む)                                            |
-| [context/project.yml](../context/project.yml) の `domains`      | 対応済み。`infra` を追加した (`domain:infra` ラベルの追加を伴う)                                                                 |
-| [design/DesignDoc.md](../design/DesignDoc.md) の 105 / 116 行目 | ADR-0001 を infra repo 境界の正本とする記述を、本 ADR へ差し替える                                                               |
-| [design/DesignDoc.md](../design/DesignDoc.md) の 251 行目       | 「Terraform は別 repo 管理とし、アプリ repo に本番基盤の apply 導線を持ち込まない」は本 ADR が覆す規範そのものである。書き換える |
-| [design/DesignDoc.md](../design/DesignDoc.md) の 280 行目       | Open Question #6「infra repo と app repo の変更を相互参照する review workflow」は集約により論点が消滅する。クローズする          |
+| 対象                                                                                      | 更新内容                                                                                                                         |
+| ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| [context/architecture.md](../context/architecture.md)                                     | `infra/` のディレクトリ境界と依存規約                                                                                            |
+| [context/infrastructure.md](../context/infrastructure.md)                                 | Infrastructure Contract の位置づけ変更、ツール境界表、bootstrap 順序、state / secret の扱い                                      |
+| [context/project.yml](../context/project.yml) の `repos.infra`                            | `kufu-infra` の参照を、アーカイブ済みである旨へ変更する                                                                          |
+| [context/project.yml](../context/project.yml) の `repos.layout`                           | `infra/` を追加する                                                                                                              |
+| [context/project.yml](../context/project.yml) の `commands`                               | `infra:plan` / `infra:apply` を追加する (`dev-commands` skill がここを正本として読む)                                            |
+| [context/project.yml](../context/project.yml) の `domains`                                | 対応済み。`infra` を追加した (`domain:infra` ラベルの追加を伴う)                                                                 |
+| [design/DesignDoc.md](../design/DesignDoc.md) の `Related ADRs` 表と `Project Profile` 節 | ADR-0001 を infra repo 境界の正本とする記述を、本 ADR へ差し替える                                                               |
+| [design/DesignDoc.md](../design/DesignDoc.md) の `設計上の重要ポイント` 節                | 「Terraform は別 repo 管理とし、アプリ repo に本番基盤の apply 導線を持ち込まない」は本 ADR が覆す規範そのものである。書き換える |
+| [design/DesignDoc.md](../design/DesignDoc.md) の `未決事項` #6                            | 「infra repo と app repo の変更を相互参照する review workflow」は集約により論点が消滅する。クローズする                          |
 
 - ADR-0001 の状態は、本 ADR が承認された時点で「置換」へ変更する。提案の段階では変更しない
-- **図 ([design/diagrams/](../design/diagrams/)) は提案の段階で追加済みである。** 図は ADR 本文の一部であり、ADR と同時に存在すべきだからである。context / DesignDoc の更新を実装完了後とする扱いとの差は、この理由による
+- **図は提案の段階で追加済みである。** 置き場は [design/diagrams/](../design/diagrams/) である。図は ADR 本文の一部であり、ADR と同時に存在すべきだからである。context / DesignDoc の更新を実装完了後とする扱いとの差は、この理由による
 
 ## 関連ドキュメント
 

@@ -1,13 +1,15 @@
 # Kufu Monorepo Design Docs
 
-> 最終更新: 2026-07-26
+> 最終更新: 2026-08-16
 
 **Document Status:** Approved
 **Development Status:** In Progress
 
 本 Design Doc は Kufu Monorepo の **全体像 (system landscape)** を扱う。Why/What の所在 → Goal → アーキテクチャ概観 → モジュール責務の順に示し、詳細は feature doc と context library へ委譲する。独立 PRD は作らず、本 doc の `## Why / What` 節を PRD 相当の正本とする。要求と landscape 判断を同じ読者・同じ変更単位で管理し、重複と drift を避けるためである。
 
-本 doc は **現状の事実のみ**を記載する。将来計画は [Open Questions / Future Work](#open-questions--future-work) 節に集約し、他の節には書かない ([ADR-0013](../adr/0013-designdoc-present-facts-only.md))。
+本 doc は **現状の事実のみ**を記載する。将来計画は [Open Questions / Future Work](#open-questions--future-work) 節に集約し、他の節には書かない。
+
+- 根拠: [ADR-0013](../adr/0013-designdoc-present-facts-only.md) — Design Doc に現状事実のみを記載し、将来計画を Future Work 節へ集約する決定
 
 ## 概要 (Summary)
 
@@ -112,8 +114,9 @@ Package Boundary Violation Count は repository quality gate (`pnpm depcruise` /
 
 ## Project Profile
 
-- repository path、commands、branch pattern、対象ドメイン、Issue Tracker は [context/project.yml](../context/project.yml) を正本とする。
-- infra repo 境界は [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md) を正本とする。
+- repository path、commands、branch pattern、対象ドメイン、Issue Tracker は `context/project.yml` を正本とする。
+- infra repo の境界は、別の決定を正本とする。
+  - 根拠: [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md) — Cloudflare の Terraform を別 repo `kufu-infra` で管理すると定めた決定
 
 ## Goal
 
@@ -134,9 +137,10 @@ Kufu のコーポレートサイトを Astro で高いパフォーマンスと�
 - Island: Astro ページ上で必要箇所だけクライアント実行される UI。
 - app: `apps/*` 配下の実行単位。
 - package: `packages/*` 配下の共有 UI、設定、ライブラリ。
-- spec: issue 単位で要求・論点・設計・テスト観点を整理する作業文書。issue close 時に削除する ([ADR-0011](../adr/0011-specs-closeout-enforcement.md))。
-- feature doc: feature 単位の設計 (How) を残す永続文書 ([features/](features/))。
-- context: 技術スタック規約・codebase architecture・運用契約を集約する永続ナレッジ層 ([context/](../context/))。
+- spec: issue 単位で要求・論点・設計・テスト観点を整理する作業文書。issue close 時に削除する。
+  - 根拠: [ADR-0011](../adr/0011-specs-closeout-enforcement.md) — spec を存続させ、close 時の削除を徹底する決定
+- feature doc: feature 単位の設計 (How) を残す永続文書。
+- context: 技術スタック規約・codebase architecture・運用契約を集約する永続ナレッジ層。
 - ADR: 長期参照する意思決定ログ。
 
 ### 背景
@@ -147,14 +151,16 @@ Kufu Monorepo はコーポレートサイトの構築・運用を主目的とす
 
 - 文書上の正式名は `Kufu Monorepo` とする。
 - npm package prefix は `@kufu/*` とする。
-- app 実装対象は `apps/corporate-site` のみ ([ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md))。
-- UI はコーポレートサイト内 colocation を第一原則とし、複数 consumer が明確になったものを `packages/ui` へ移す。デザイントークンは最初から `packages/ui` が正本 ([ADR-0007](../adr/0007-design-token-architecture.md))。
+- app 実装対象は `apps/corporate-site` のみとする。
+  - 根拠: [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) — Phase 1 の対象を corporate-site のみとし、cms を後続へ回す決定
+- UI はコーポレートサイト内 colocation を第一原則とし、複数 consumer が明確になったものを `packages/ui` へ移す。デザイントークンは最初から `packages/ui` を正本とする。
+  - 根拠: [ADR-0007](../adr/0007-design-token-architecture.md) — デザイントークンの正本を `packages/ui` に置く決定
 - TypeScript、lint、format、test 設定は `packages/config` に寄せる。
 - pnpm workspace と Turborepo を使い、app / package 単位でタスクを実行する。
 
 ## アーキテクチャ概観 (Overview)
 
-C4 L1 / L2 の粒度で全体像を示す。feature 内部の component 図や詳細フローは [design/features/](features/) へ委譲する。
+C4 L1 / L2 の粒度で全体像を示す。feature 内部の component 図や詳細フローは feature doc へ委譲する。
 
 ### System Context (C4 L1) — 誰が・何のために使うか
 
@@ -169,7 +175,7 @@ flowchart LR
 
 ### Container (C4 L2) — 主要な実行単位とデータの流れ
 
-図に載せるのは **repo に実装コードが存在する実行単位と、確定済みの配信先** とする。仕様が決まっていても未実装のものは [Future Work](#未実装の計画) が扱う ([ADR-0013](../adr/0013-designdoc-present-facts-only.md) の更新)。
+図に載せるのは **repo に実装コードが存在する実行単位と、確定済みの配信先** とする。仕様が決まっていても未実装のものは [Future Work](#未実装の計画) へ置く。
 
 ```mermaid
 flowchart TD
@@ -197,7 +203,7 @@ landscape より下の詳細は以下を正本とする。本 doc には重複�
 
 ### Feature 設計 (How: feature)
 
-feature 単位の設計 (データ構造・画面・主要シナリオ / フロー) は [design/features/](features/) を正本とする。実装レベルの手順は spec へ委譲する。
+feature 単位の設計 (データ構造・画面・主要シナリオ / フロー) は feature doc を正本とする。実装レベルの手順は spec へ委譲する。
 
 | Feature            | 文書                                                                                                       | 状態                                |
 | ------------------ | ---------------------------------------------------------------------------------------------------------- | ----------------------------------- |
@@ -206,11 +212,11 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 
 ### 判断 (Why)
 
-確定した技術判断・却下した代替案は [adr/](../adr/) を正本とする。上の Related ADRs 表は landscape に影響する分の抜粋。
+確定した技術判断・却下した代替案は [adr/](../adr/) を正本とする。上の Related ADRs 表は、landscape に影響するものだけを抜粋している。
 
 ### Engineering Context (How: 横断規約)
 
-技術スタック規約・codebase architecture・運用契約は [context/](../context/) ライブラリを正本とする。プロジェクト固有値は [context/project.yml](../context/project.yml) を正本とする。
+技術スタック規約・codebase architecture・運用契約は context library を正本とする。プロジェクト固有値は `context/project.yml` を正本とする。
 
 | トピック                                    | 文書                                                          |
 | ------------------------------------------- | ------------------------------------------------------------- |
@@ -290,3 +296,4 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 | 2026-07-05 | Claude | 背景・課題 (Why) を事業上の課題 (訪問者・見込み顧客・内容更新者視点) 先出しに再構成し、開発上の制約と分離 |
 | 2026-07-25 | Claude | Related ADRs に ADR-0011/0012/0013 を追記                                                                 |
 | 2026-07-26 | Claude | 現状事実化: Phase 語彙と将来記述を全節から排除し Future Work へ集約。C4 L1/L2 を実在の要素のみに再設計    |
+| 2026-08-16 | Claude | 根拠を括弧からネストした参照行へ移し、本文中の重複リンクを初出 1 回に整理                                 |

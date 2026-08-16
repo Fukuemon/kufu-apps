@@ -2,7 +2,7 @@
 
 ## 状態
 
-置換 ([ADR-0012](0012-design-source-of-truth-implementation.md) により置換。2026-07-25。デザイン正本は実装 (コード + Storybook) とし、Pencil / `.pen` 工程を廃止)
+置換 (2026-07-25)。デザイン正本は実装 (コード + Storybook) となり、Pencil / `.pen` 工程は廃止された。
 
 > 以下の本文は決定当時の記録であり、現行の運用ではない。現行のデザイン制作フローは [ADR-0012](0012-design-source-of-truth-implementation.md) と [context/design-workflow.md](../context/design-workflow.md) を参照する。
 

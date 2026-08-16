@@ -10,7 +10,7 @@
 
 ## 背景
 
-- 本リポは AI エージェント設定を [.rulesync/](.rulesync/) を単一正本として管理し、rulesync で **claudecode / codexcli / cursor** の3プロバイダへ生成している（[rulesync.jsonc](../rulesync.jsonc)）。hook 定義も [.rulesync/hooks.json](../.rulesync/hooks.json) が正本で、`.claude/settings.json` / `.codex/hooks.json` / `.cursor/hooks.json` へ**同一のコマンド文字列**として展開される。
+- 本リポは AI エージェント設定を `.rulesync/` を単一正本として管理し、rulesync で **claudecode / codexcli / cursor** の3プロバイダへ生成している。hook 定義も [.rulesync/hooks.json](../.rulesync/hooks.json) が正本で、`.claude/settings.json` / `.codex/hooks.json` / `.cursor/hooks.json` へ**同一のコマンド文字列**として展開される。
 - hook はリポジトリ直下の [hooks/](../hooks/) 配下のスクリプト（`protected-branch/pre_tool_use.py`、`markdown/format_markdown.sh`、`spec/validate_*.sh`）を呼ぶ。各プロバイダの hook runner は別物だが、単一ソースのため **コマンドはどの runner でも動く素のシェル式**でなければならない。
 - 従来は hook スクリプトの絶対パスを `python3 "$(git rev-parse --show-toplevel)/hooks/..."` で解決していた。
 - **観測された事故 (2026-06-06)**: Claude Code の Bash ツールで一度 `cd /tmp` した結果、以後の hook 実行時 cwd が `/tmp`（git repo 外）に固定され、`$(git rev-parse --show-toplevel)` が失敗 → スクリプトパスが空 → `Edit` / `Write` / `Bash` が全面ブロックされ、セッション内で自己回復不能になった。
@@ -63,12 +63,12 @@ hook コマンドは「① provider 非依存（単一ソース → 3プロバ�
 ### 悪い影響 / トレードオフ
 
 - **ghq 必須**: ghq を使わず手動 clone した環境では `ghq root` が当該 repo を指さず hook が解決失敗する。本リポが ghq 管理を標準化している前提で許容する。
-- **repo path 直書き**: `github.com/Fukuemon/kufu-apps` がコマンドに固定される。**fork / repo リネーム時は [.rulesync/hooks.json](../.rulesync/hooks.json) の更新 + 再生成が必要**（README / 移行手順に明記する）。
+- **repo path 直書き**: `github.com/Fukuemon/kufu-apps` がコマンドに固定される。**fork / repo リネーム時は `.rulesync/hooks.json` の更新と再生成が必要**である（README / 移行手順に明記する）。
 - ghq のインストールパス / バージョン差で `ghq root` の挙動が変わる可能性（通常は安定）。
 
 ## 実装・運用への反映
 
-- 対象 app / package: なし（リポジトリ横断の AI エージェント設定）。変更対象は [.rulesync/hooks.json](../.rulesync/hooks.json) と生成物 `.claude/settings.json` / `.codex/hooks.json` / `.cursor/hooks.json`。
+- 対象 app / package: なし（リポジトリ横断の AI エージェント設定）。変更対象は `.rulesync/hooks.json` と生成物 `.claude/settings.json` / `.codex/hooks.json` / `.cursor/hooks.json` である。
 - 編集は **`rulesync-sync` skill 経由**で `.rulesync/hooks.json` を直し、各プロバイダへ再生成する（生成物の直接編集は禁止）。
 - spec 更新要否: 不要。
 - AI 向け設定更新要否: 要（本 ADR の主対象）。fork / リネーム時の更新手順を README 等に追記する。

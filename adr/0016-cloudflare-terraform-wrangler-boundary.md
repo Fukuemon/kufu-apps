@@ -194,7 +194,7 @@ deploy 経路を作り直す本作業は移行の契機になりうるが、決�
 - 対象 app / package: `apps/corporate-site`、`e2e` (#33 の VRT が R2 を参照する)、GitHub Actions workflow
 - spec 更新要否: 要。#47 の spec に、ツール別の作業分割と bootstrap 順序を反映する
 - 本節は**本 ADR に由来する更新**を扱う。集約そのものに由来する更新 (`repos.infra` / `repos.layout` / `commands` / `domains` / DesignDoc) は ADR-0015 の同名節を正本とする。更新時期も同 ADR に従い、実装完了後である
-- AI 向け設定更新要否: 要。[context/infrastructure.md](../context/infrastructure.md) にツール境界表と bootstrap 手順を追加し、[context/architecture.md](../context/architecture.md) に Terraform と `wrangler.toml` の配置と依存規約を定める
+- AI 向け設定更新要否: 要。context/infrastructure.md にツール境界表と bootstrap 手順を追加し、[context/architecture.md](../context/architecture.md) に Terraform と `wrangler.toml` の配置と依存規約を定める
 
 ## 関連ドキュメント
 

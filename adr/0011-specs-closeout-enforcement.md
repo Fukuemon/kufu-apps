@@ -67,7 +67,7 @@
 ### 2026-07-27: closeout を「削除 PR の自動起票 + 人の判断」で運用する
 
 - **背景**: `pnpm check:specs` は残存を**検出**するだけで、削除そのものは手作業だった。一方で自動削除は採れない — 削除の前提である「durable な設計成果が sync 済みか」は機械判定できず、実際 issue #31 の清算では未転記の設計情報が 6 件見つかっている (うち 1 件は ADR と実装が矛盾していた)。自動で消していれば失われていた。
-- **決定**: issue の close をトリガに、GitHub Actions ([`.github/workflows/spec-closeout.yml`](../.github/workflows/spec-closeout.yml)) が **spec を削除する PR を起票する**。bot は候補を提示するだけで、**削除の可否はその PR をマージするかどうかで人が決める**。PR 本文に sync 済み確認のチェックリストを載せ、本 ADR の IF 基準を人のレビューとして残す。
+- **決定**: issue の close をトリガに、GitHub Actions の [`spec-closeout.yml`](../.github/workflows/spec-closeout.yml) が **spec を削除する PR を起票する**。bot は候補を提示するだけで、**削除の可否はその PR をマージするかどうかで人が決める**。PR 本文に sync 済み確認のチェックリストを載せ、本 ADR の IF 基準を人のレビューとして残す。
   - 対象 spec が無ければ何もしない。同じ branch の PR が既に open なら再起票しない。
   - `workflow_dispatch` で issue 番号を指定した手動実行もできる (workflow 障害時の退避路)。
   - PR を close すれば spec は残る。その場合 `pnpm check:specs` は残存として検出し続ける。

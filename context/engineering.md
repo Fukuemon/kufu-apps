@@ -68,7 +68,8 @@ sequenceDiagram
 
 - `knip` は workspace ごとの `project` / `entry` を持つ monorepo config を root `knip.json` に持つ。
 - `dependency-cruiser` は root `.dependency-cruiser.cjs` を正本とし、少なくとも circular dependency、未宣言依存、devDependency 流入、app 間直接依存を検査する。
-- app 間直接依存は禁止し、共有コードは `packages/*` の公開入口へ寄せる ([architecture.md](architecture.md))。
+- app 間直接依存は禁止し、共有コードは `packages/*` の公開入口へ寄せる。
+  - 根拠: [architecture.md](architecture.md) — package / runtime / state の境界規約
 - false positive を避けるため、generated file や root 管理の設定ファイルは root config 側で除外する。
 
 ## Storybook Review Contract

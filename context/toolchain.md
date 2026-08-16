@@ -31,7 +31,9 @@ Kufu Monorepo で採用する標準 toolchain。採否の根拠は [adr/](../adr
 
 ## Scaffold Policy
 
-app の初期 scaffold は公式 `create` command を優先する ([ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md))。
+app の初期 scaffold は公式 `create` command を優先する。
+
+- 根拠: [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md) — scaffold に公式 create command を使うと定めた決定
 
 - `apps/corporate-site`: `pnpm create astro@latest apps/corporate-site`
 - React app: `pnpm create vite ... --template react-ts`

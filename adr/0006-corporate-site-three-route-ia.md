@@ -10,7 +10,7 @@
 
 ## 背景
 
-- corporate-site の IA は issue #11 で 5 ページ構成 (トップ `/` / 事業内容 `/services` / 取扱製品 `/products` / 会社情報 `/company` / お問い合わせ `/contact` + 共通レイアウト G) として確定し、feature doc ([DesignDoc_corporate-site.md](../design/features/corporate-site/DesignDoc_corporate-site.md)) を正本としていた。
+- corporate-site の IA は issue #11 で 5 ページ構成 (トップ `/` / 事業内容 `/services` / 取扱製品 `/products` / 会社情報 `/company` / お問い合わせ `/contact` + 共通レイアウト G) として確定し、[feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md) を正本としていた。
 - issue #16 (デザイン制作ワークフロー定義) のパイロット対象選定中に「そもそも多ページにする必要があるか」という IA レベルの問いが出て、issue #17 へ切り出した。
 - #17 では机上比較ではなく、#16 で確定した design-workflow (A0 → A 発散 → import → B 収束) を実走し、実プロト (`design/features/corporate-site/index.pen`) の反復 (デザイン方針 V1〜V16) を通じて IA を再評価した。
 - 実走の結果、事業内容と会社情報は LP 内 section で十分な密度を持てる一方、取扱製品 (18 カテゴリ × 延べ約 320 社のメーカー一覧) は分量的に独立ページが必要であることが実プロト上で確認できた。
@@ -69,7 +69,7 @@
 ### 良い影響
 
 - 実装 (#10) の対象が 3 route に絞られ、制作・保守・E2E のコストが下がる。
-- 3 route の IA と実装 (+ Storybook) が 1:1 で対応する (決定時は `.pen` を正本とした。[ADR-0012](0012-design-source-of-truth-implementation.md) で正本を実装へ移管)。
+- 3 route の IA と実装 (+ Storybook) が 1:1 で対応する。決定時は `.pen` を正本としたが、ADR-0012 が正本を実装へ移管した。
 - #16 design-workflow の A→B パイロット検証を兼ねた、実プロト根拠のある IA 決定として残る。
 
 ### 悪い影響 / トレードオフ

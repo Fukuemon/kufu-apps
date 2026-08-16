@@ -24,11 +24,14 @@ apps/cms ─────┼─→ packages/ui ─→ packages/config
 - `apps/*` → `packages/*` (公開入口) のみ許可。
 - `apps/* → apps/*` (app 間直接依存) は禁止。
 - `packages/ui` → `packages/config` は許可。
-- 循環依存・未宣言依存・devDependency 流入は禁止 ([engineering.md](engineering.md) の repository quality gate で検査)。
+- 循環依存・未宣言依存・devDependency 流入は禁止する。
+  - 根拠: [engineering.md](engineering.md) — repository quality gate が検査する対象と実行経路
 
 ### App 内依存方向 (sections 公開面)
 
-app 内の component 依存は次の一方向に固定する (決定経緯: [ADR-0014](../adr/0014-corporate-site-sections-architecture.md)。ディレクトリ構成は [component-design.md](component-design.md) が正本):
+app 内の component 依存は次の一方向に固定する。ディレクトリ構成は component-design.md が正本である。
+
+- 根拠: [ADR-0014](../adr/0014-corporate-site-sections-architecture.md) — sections の再編と公開面規約を定める
 
 ```text
 pages → sections (index.ts) → common → @kufu/ui
@@ -40,7 +43,7 @@ pages → sections (index.ts) → common → @kufu/ui
 - 各 section の `index.ts` は Section component のみを再輸出する (公開面違反も検査対象)。
 - 同 section 内 (story 含む) の直接参照は自由 (story の colocation を維持)。
 - **検査手段**: dependency-cruiser と oxlint はいずれも `.astro` を解析対象にしないため、本境界は app 配下の独自スクリプト (`apps/corporate-site/scripts/check-section-boundary.mjs`) で検査する。`check-token-usage.mjs` (トークン直書きガード) と同方式で、ripgrep により import (静的 / 動的 / 再輸出) を走査する。検査は上記 4 点 (pages → 内部 / section 間 / common → sections / index.ts 公開面) を対象とし、対象拡張子・構文などの検査契約と既知の非検出範囲はスクリプトと fixture テストを正とする。dependency-cruiser は引き続き `.ts` / `.js` 層の package 境界・循環・未宣言依存を担当する。
-- **gate 配線**: 検査は corporate-site の `lint` script に合流し、root `pnpm lint`・lefthook pre-commit・CI workflow の 3 経路で走る。pre-commit は `--no-verify` で素通しできるため、**必須 gate は CI** (決定経緯: [ADR-0014](../adr/0014-corporate-site-sections-architecture.md) 決定 5)。
+- **gate 配線**: 検査は corporate-site の `lint` script に合流し、root `pnpm lint`・lefthook pre-commit・CI workflow の 3 経路で走る。pre-commit は `--no-verify` で素通しできるため、**必須 gate は CI である**。
 
 ### デザインシステム資産の正本と昇格境界
 
@@ -65,15 +68,18 @@ colocation 第一原則の適用を資産種別ごとに定める (本テーブ�
 
 ### shadcn 消費と React island の境界 (corporate-site)
 
-Astro は React/shadcn コンポーネントもビルド時に静的 HTML へ描画し、`client:*` を付けない限りクライアント JS を出荷しない。コストが発生するのは island 化 (`client:*`) した時だけである。詳細と代替案は [ADR-0008](../adr/0008-astro-react-island-policy.md)。
+Astro は React/shadcn コンポーネントもビルド時に静的 HTML へ描画し、`client:*` を付けない限りクライアント JS を出荷しない。コストが発生するのは island 化 (`client:*`) した時だけである。
+
+- 根拠: [ADR-0008](../adr/0008-astro-react-island-policy.md) — React island 化の境界と shadcn の消費ポリシー。代替案の比較も含む
 
 - **表示専用 UI** (Button-as-link / Card / Badge / Tag / section 等) は `@kufu/ui` の shadcn コンポーネントを `.astro` 内で **`client:*` なし**で使う (JS ゼロ)。`.astro` で再実装せず `@kufu/ui` を単一正本に保つ。
 - **`@astrojs/react` は導入してよい** (island が無ければランタイムは出荷されない)。
-- **`client:*` island はインタラクションに限定**: 問い合わせフォーム、Radix インタラクティブ primitive (Dialog / Dropdown / Popover / Tooltip / Accordion / Tabs / Select 等)。モバイルナビ開閉のように素の script で足りるものは `.astro` + 最小 script で実装し island 化しない ([ADR-0008](../adr/0008-astro-react-island-policy.md) 決定 3 の更新)。
+- **`client:*` island はインタラクションに限定**: 問い合わせフォーム、Radix インタラクティブ primitive (Dialog / Dropdown / Popover / Tooltip / Accordion / Tabs / Select 等)。モバイルナビ開閉のように素の script で足りるものは `.astro` + 最小 script で実装し island 化しない。
 - island の既定ディレクティブは `client:visible` / `client:idle`。`client:load` は above-the-fold で即時操作が要る時のみ。
 - **ハードルール**: インタラクティブ Radix primitive を `client:*` なしで静的描画しない (見た目だけ出て動かないため必ず island 化)。
-- `client:*` 総数は [design/DesignDoc.md](../design/DesignDoc.md) の Why/What 節にあるガードレール「Unnecessary Client JS Count」で監視する。
-- 秘密情報を client bundle に含めない。Cloudflare の secret 管理に置くべき値は repo に保存しない ([infrastructure.md](infrastructure.md))。
+- `client:*` 総数は、design/DesignDoc.md の Why/What 節にあるガードレール「Unnecessary Client JS Count」で監視する。
+- 秘密情報を client bundle に含めない。Cloudflare の secret 管理に置くべき値は repo に保存しない。
+  - 根拠: [infrastructure.md](infrastructure.md) — secret の置き場と Infrastructure Contract
 - 問い合わせフォームや外部 API 連携を追加する場合は、ブラウザから直接第三者 API を叩く構成を標準にせず、Workers を中継点にする (下記「Edge API / Error Contract」)。
 
 ### Edge API / Error Contract
@@ -85,7 +91,7 @@ Cloudflare Pages Functions / Workers で app 側 API を追加する場合の横
 - client validation は UX のために行い、Workers 側で必ず再検証する。server は client の validation 結果を信頼しない。
 - JSON API の成功 response は `{ "ok": true }`、失敗 response は `{ "ok": false, "code": string, "message"?: string, "errors"?: object }` を標準 envelope とする。
 - client は `message` の文言ではなく `code` と HTTP status で分岐する。`errors` は field-level validation error のみに使う。
-- bot 対策 / rate limit / Origin 検証などの security 判断は Workers 側に集約し、feature doc と [infrastructure.md](infrastructure.md) に反映する。
+- bot 対策 / rate limit / Origin 検証などの security 判断は Workers 側に集約し、feature doc と infrastructure.md に反映する。
 
 corporate-site 問い合わせフォームの concrete contract は [DesignDoc_corporate-site.md](../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様) を正本とする。
 

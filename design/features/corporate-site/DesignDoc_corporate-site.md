@@ -1,6 +1,8 @@
 # Feature 設計: コーポレートサイト (apps/corporate-site)
 
-> 最終更新: 2026-08-08 / Status: 設計確定・実装中 / IA 確定済 ([ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)) / デザイントークン体系確定 ([ADR-0007](../../../adr/0007-design-token-architecture.md)) / 問い合わせフォーム仕様確定 ([ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md)) / sections 再編・公開面規約確定 ([ADR-0014](../../../adr/0014-corporate-site-sections-architecture.md))
+> 最終更新: 2026-08-16 / Status: 設計確定・実装中
+
+IA、デザイントークン体系、問い合わせフォーム仕様、sections 再編と公開面規約は、いずれも決定済みである。決定の一覧は下記「メタ」の関連 ADR に置く。
 
 現行の主対象。Astro によるコーポレートサイトを高いパフォーマンスと保守性で公開する。全体像は [design/DesignDoc.md](../../DesignDoc.md)、横断規約は [context/](../../../context/) を参照する。
 
@@ -30,41 +32,51 @@
 ### やらないこと
 
 - Astro で完結できるコーポレートサイト機能の React 化。
-- CMS 化 (コンテンツ管理は未実装。[cms.md](../cms/DesignDoc_cms.md))。
+- CMS 化。コンテンツ管理は未実装である。
+  - 根拠: [DesignDoc_cms.md](../cms/DesignDoc_cms.md) — cms の構想と、未設計として残している範囲
 
 ## 設計
 
 ### 設計方針
 
 - コーポレートサイトは Astro の `.astro` コンポーネントを基本にする。
-- React island はフォーム、動的 UI、外部 widget など必要な箇所に限定する。表示専用 UI は `@kufu/ui` の shadcn を静的描画 (`client:*` なし、JS ゼロ) で使い、island 化の境界は [ADR-0008](../../../adr/0008-astro-react-island-policy.md) に従う。
-- 問い合わせフォームは最初の主要 React island。送信は静的配信を維持しつつ Cloudflare Pages Functions (Workers) を中継する ([ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md))。機能仕様 (入力項目 / バリデーション / スパム対策 / 通知 / API 契約) の正本は本 doc。
+- React island はフォーム、動的 UI、外部 widget など必要な箇所に限定する。表示専用 UI は `@kufu/ui` の shadcn を静的描画 (`client:*` なし、JS ゼロ) で使う。
+  - 根拠: [ADR-0008](../../../adr/0008-astro-react-island-policy.md) — React island 化の境界と shadcn の消費ポリシーを定める
+- 問い合わせフォームは最初の主要 React island である。送信は静的配信を維持しつつ Cloudflare Pages Functions (Workers) を中継する。機能仕様 (入力項目 / バリデーション / スパム対策 / 通知 / API 契約) の正本は本 doc である。
+  - 根拠: [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md) — 送信 backend に Pages Functions と Resend を選んだ決定
 - コーポレートサイトの画像、フォント、スクリプトは性能予算を意識して管理する。
 - 第一原則は colocation とし、app や section 内で閉じる UI はローカルに置く。
-- 共通 UI の昇格は 2 段階とする: 同一 app 内で複数 section / route にまたがるものは `components/common/`、**複数 app** にまたがる時点で `packages/ui` へ移す ([architecture.md](../../../context/architecture.md) / [component-design.md](../../../context/component-design.md))。
+- 共通 UI の昇格は 2 段階とする。同一 app 内で複数 section / route にまたがるものは `components/common/` へ、**複数 app** にまたがる時点で `packages/ui` へ移す。
+  - 根拠: [context/architecture.md](../../../context/architecture.md) — package / runtime / state の境界規約
+  - 根拠: [context/component-design.md](../../../context/component-design.md) — component 設計と Storybook の対象基準
 - コーポレートサイト内で閉じる UI は `apps/corporate-site` に置く。
-- component は `components/sections/<section>/` の 1 階層フラット構成に置き、各 section の公開面は `index.ts` 再輸出のみとする ([ADR-0014](../../../adr/0014-corporate-site-sections-architecture.md))。section 名はドメインで付け、ページ対応は下記「section 構成」の表を正本とする (ディレクトリ構造には持たせない)。
-- `src/styles/` は 4 ファイルに分割し `globals.css` は `@import` のみの entry とする: `base.css` (`:root` と要素セレクタの base) / `components.css` (クラスセレクタ群。cva / utility 移行で逐次削減し削除目標) / `animations.css` (site 固有演出の keyframes)。`utilities.css` は `@utility` が必要になるまで作らず、既存 CSS を `@layer` で包まない (優先順位が変わるため)。横断のスタイル規約 (cva 基準 / motion トークン境界) は [component-design.md](../../../context/component-design.md) を正本とする。
-- E2E はコーポレートサイトの表示、主要導線、問い合わせ導線を優先し、実行入口は root `playwright.config.ts` と `e2e/` 配下に置く ([testing.md](../../../context/testing.md))。
+- component は `components/sections/<section>/` の 1 階層フラット構成に置き、各 section の公開面は `index.ts` の再輸出のみとする。section 名はドメインで付ける。ページ対応はディレクトリ構造に持たせず、下記「section 構成」の表を正本とする。
+  - 根拠: [ADR-0014](../../../adr/0014-corporate-site-sections-architecture.md) — sections の再編と公開面規約を定める
+- `src/styles/` は 4 ファイルに分割し `globals.css` は `@import` のみの entry とする: `base.css` (`:root` と要素セレクタの base) / `components.css` (クラスセレクタ群。cva / utility 移行で逐次削減し削除目標) / `animations.css` (site 固有演出の keyframes)。`utilities.css` は `@utility` が必要になるまで作らず、既存 CSS を `@layer` で包まない (優先順位が変わるため)。横断のスタイル規約 (cva 基準 / motion トークン境界) は context/component-design.md を正本とする。
+- E2E はコーポレートサイトの表示、主要導線、問い合わせ導線を優先し、実行入口は root `playwright.config.ts` と `e2e/` 配下に置く。
+  - 根拠: [context/testing.md](../../../context/testing.md) — E2E runtime contract と unit test の分担
 
 ### データ / コンテンツモデル
 
 - コーポレートサイトの静的コンテンツは、初期段階では `apps/corporate-site` 内に配置する。
-- 公開 asset は Cloudflare CDN 配信を前提に、キャッシュ戦略と更新単位を意識して配置する ([infrastructure.md](../../../context/infrastructure.md))。
-- 画像は `apps/corporate-site/src/assets/` に置き、Astro Image / import 経由で扱う。build の asset graph に載せ、width / height / lazy loading / format 最適化を効かせる (`public` 直配置は参照追跡と最適化が弱いため使わない)。
+- 公開 asset は Cloudflare CDN 配信を前提に、キャッシュ戦略と更新単位を意識して配置する。
+  - 根拠: [context/infrastructure.md](../../../context/infrastructure.md) — 配信基盤 / 環境戦略 / Infrastructure Contract
+- 画像は `apps/corporate-site/src/assets/` に置き、Astro Image / import 経由で扱う。build の asset graph に載せ、width / height / lazy loading / format 最適化を効かせる。`public` への直配置は使わない。参照の追跡と最適化が効かないためである。
 
 #### ページ構成 (IA)
 
-情報設計 (IA) の正本は本 feature doc。確定済のページ / section 構成・配置マッピング・回遊フローはここに集約する。構造変更の決定根拠は [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md)、それ以前の変更経緯は git history が持つ。
+情報設計 (IA) の正本は本 feature doc。確定済のページ / section 構成・配置マッピング・回遊フローはここに集約する。それ以前の変更経緯は git history が持つ。
 
-サイトマップ (**3 route 統合構成** + 全ページ共通レイアウト G。ADR-0006 で 5 ページ構成から変更):
+- 根拠: [ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md) — 5 ページ構成から 3 route 統合構成へ変更した決定
+
+サイトマップ (**3 route 統合構成** + 全ページ共通レイアウト G):
 
 | ID  | ページ       | route       | 主な section                                                                                   | 優先 | 担う成功条件                          |
 | --- | ------------ | ----------- | ---------------------------------------------------------------------------------------------- | ---- | ------------------------------------- |
 | P1  | トップ (LP)  | `/`         | hero(理念/事業要約) / 事業紹介(販売×加工・ジグザグ構成) / 取扱製品索引(18 カテゴリ) / 会社情報 | 高   | 訴求 + 信頼性 (入口〜中核)            |
 | P3  | 取扱製品     | `/products` | 18 カテゴリ詳細 (INDEX パネル + カテゴリ→全メーカー一覧)                                       | 中   | 訴求 (網羅性) + 信頼性 (取扱メーカー) |
-| P6  | お問い合わせ | `/contact`  | 連絡先(TEL/FAX/メール) / 問い合わせフォーム (仕様は本 doc / 送信は Workers 中継 ADR-0009)      | 中   | 接点確保 (BR2)                        |
-| G   | 全ページ共通 | -           | ヘッダー(ナビ+CTA)。フッターは LP=フル(サイトマップ付き) / 下層=コンパクト(ブランド+連絡先)    | 高   | BR2 / BR3                             |
+| P6  | お問い合わせ | `/contact`  | 連絡先(TEL/FAX/メール) / 問い合わせフォーム (仕様は本 doc / 送信は Workers 中継)               | 中   | 接点確保                              |
+| G   | 全ページ共通 | -           | ヘッダー(ナビ+CTA)。フッターは LP=フル(サイトマップ付き) / 下層=コンパクト(ブランド+連絡先)    | 高   | 接点確保 / 会社情報の掲載             |
 
 - 旧 P2 (事業内容 `/services`) / 旧 P4 (会社情報 `/company`) は LP 内 section に統合し、単独 route は設けない。直接導線は LP 内アンカーで提供する。
 - コンテナ幅・横余白は全ページ 1440px・横 padding 56 に統一する。実装は単一 max-width + 共通 padding に正規化する。
@@ -72,26 +84,26 @@
 - P3 のカテゴリ・メーカー検索は `q` query parameter を唯一の状態正本とする。初期表示・再読込・共有 URL から検索条件を復元し、入力中は履歴を増やさない。空文字では `q` を削除する。JavaScript 実行前の HTML には 18 カテゴリと全メーカーを保持する。
 - reveal アニメーションは progressive enhancement とし、JavaScript が無効または `IntersectionObserver` が利用できない環境では全コンテンツを初期表示する。アニメーションのために HTML-first の可読性を損なわない。
 
-情報項目 → 配置マッピング (コンテンツ正本: [reference/](reference/)):
+情報項目と配置先の対応 (コンテンツ正本は下記「コンテンツ正本」節):
 
 | 項目                           | 配置先                            | 備考                                                |
 | ------------------------------ | --------------------------------- | --------------------------------------------------- |
-| 会社名/創立/資本金/代表/所在地 | P1 会社情報 section               | フッターにも要約 (BR3)                              |
-| TEL/FAX/Eメール                | P1 会社情報 + P6 + 全ページ共通   | BR2                                                 |
+| 会社名/創立/資本金/代表/所在地 | P1 会社情報 section               | フッターにも要約する                                |
+| TEL/FAX/Eメール                | P1 会社情報 + P6 + 全ページ共通   | 接点確保の中核                                      |
 | 経営理念                       | P1 hero + 会社情報 section        | 訴求/信頼性の中核                                   |
-| 業務内容 (見積/販売・加工)     | P1 事業紹介 section               | 二本柱 (BR1)                                        |
+| 業務内容 (見積/販売・加工)     | P1 事業紹介 section               | 販売と加工の二本柱                                  |
 | 取扱製品カテゴリ (18 区分)     | P1 索引 + P3                      | 単一データソースを共通参照。正本 company-profile.md |
 | 取扱メーカー (延べ ~320 社)    | P3                                | カテゴリ→全メーカー一覧。正本 manufacturers.md      |
-| アクセス/地図                  | P1 会社情報 section 内            | 地図埋め込み可否は性能予算で判断 (E2)               |
+| アクセス/地図                  | P1 会社情報 section 内            | 地図埋め込み可否は性能予算で判断する                |
 | 沿革 / 代表挨拶                | P1 会社情報 section (placeholder) | 本文は後追い                                        |
 
-- 会社概要の一次情報 (社名 / 所在地 / 代表 / 連絡先) は LP 会社情報 section を正本とし、フッター等は参照に留める (BR3)。
-- アクセス / 地図・沿革・代表挨拶は LP 会社情報 section 内とし、未確定分は placeholder で公開可能な状態を保つ (E1 / E2)。
-- グローバルナビ (LP 内 section アンカー + 取扱製品 / お問い合わせ) と全ページ共通の問い合わせ CTA で、全ページから問い合わせ導線 (P6) に到達可能にする (BR2)。ナビ項目の詳細は実装 (`SiteHeader.astro`) を正本とする。
+- 会社概要の一次情報 (社名 / 所在地 / 代表 / 連絡先) は LP 会社情報 section を正本とし、フッター等は参照に留める。
+- アクセス / 地図・沿革・代表挨拶は LP 会社情報 section 内とし、未確定分は placeholder で公開可能な状態を保つ。
+- グローバルナビ (LP 内 section アンカー + 取扱製品 / お問い合わせ) と全ページ共通の問い合わせ CTA で、全ページから問い合わせ導線 (P6) に到達可能にする。ナビ項目の詳細は実装 (`SiteHeader.astro`) を正本とする。
 
 #### section 構成 (実装の配置)
 
-`components/sections/<section>/` の 1 階層フラット構成における section と、その公開面・使用ページの対応 ([ADR-0014](../../../adr/0014-corporate-site-sections-architecture.md))。section 名はドメインで付けるためページ対応は物理構造から読めず、本表を正本とする。
+`components/sections/<section>/` の 1 階層フラット構成における section と、その公開面・使用ページの対応を示す。section 名はドメインで付けるためページ対応は物理構造から読めない。本表を正本とする。
 
 | section             | 公開面 (`index.ts` が再輸出)    | 内部 component (presentation)                                                           | 使用ページ  |
 | ------------------- | ------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
@@ -109,7 +121,7 @@
 
 #### 問い合わせフォーム仕様
 
-本節を P6 `/contact` の問い合わせフォーム機能仕様の**正本**とする。送信 backend のアーキ決定は [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md)、runtime / security contract は [architecture.md](../../../context/architecture.md) と [infrastructure.md](../../../context/infrastructure.md) を参照する。
+本節を P6 `/contact` の問い合わせフォーム機能仕様の**正本**とする。送信 backend の決定は ADR-0009、runtime / security contract は context/architecture.md と context/infrastructure.md を参照する。
 
 フォームは `/contact` の連絡先 (TEL / FAX / Email) と並ぶ補助導線であり、フォーム送信が失敗しても電話・FAX・メールで接点を確保できる構成にする。
 
@@ -216,10 +228,12 @@ API 契約:
 
 #### コンテンツ正本 (source of truth)
 
-- 掲載コンテンツの正本は committed の [reference/](reference/) に置く: [company-profile.md](reference/company-profile.md) (会社概要 / 業務内容 / 取扱製品カテゴリ 18 区分) と [manufacturers.md](reference/manufacturers.md) (取扱メーカー 延べ ~320 社)。
+- 掲載コンテンツの正本は committed の [reference/](reference/) に置く。内訳は次の 2 ファイルである。
+  - [company-profile.md](reference/company-profile.md) — 会社概要 / 業務内容 / 取扱製品カテゴリ 18 区分
+  - [manufacturers.md](reference/manufacturers.md) — 取扱メーカー 延べ ~320 社
 - `.ai-out/` は AI 取り込み用の未追跡スクラッチであり正本にしない。
 - 取扱製品 (`/products`) は「カテゴリ (18 区分) → 当該カテゴリの取扱メーカー一覧」のモデルで提示する。同一メーカーの複数カテゴリ登場は取扱範囲として許容する。
-- コードから消費するデータ実体は Astro Content Collection (`src/content/`) とし、[reference/](reference/) からの **手動転記**で維持する。転記したデータには参照元 reference path を明記し (`src/content/source-references.ts`)、drift は PR レビューと表示確認で検出する。
+- コードから消費するデータ実体は Astro Content Collection (`src/content/`) とし、`reference/` からの **手動転記**で維持する。転記したデータには参照元 reference path を明記し (`src/content/source-references.ts`)、drift は PR レビューと表示確認で検出する。
 - 18 カテゴリ + メーカー一覧は LP 索引 (`/`) と取扱製品 (`/products`) の両方に表示されるため、単一のデータファイル (JSON / content collection 等) を正本として両ページが共通参照する。ページ直書きの二重管理はしない。
 
 ### デザイントークン
@@ -235,7 +249,8 @@ API 契約:
 | 体系 (2 層構造 / shadcn 語彙 / inverse スコープ) | [ADR-0007](../../../adr/0007-design-token-architecture.md)     |
 
 - CSS トークンを持たない (doc 管理の) ガイドのみ以下に置く:
-  - **spacing**: CSS トークンなし。4px グリッド + 推奨リズム 12 / 16 / 24 / 32 / 48 / 80 (= Tailwind `3/4/6/8/12/20`)。`space-*` はこの写像として扱い fork 判定の対象外 ([design-workflow §6](../../../context/design-workflow.md))
+  - **spacing**: CSS トークンなし。4px グリッド + 推奨リズム 12 / 16 / 24 / 32 / 48 / 80 (= Tailwind `3/4/6/8/12/20`)。`space-*` はこの写像として扱い、fork 判定の対象外とする
+    - 根拠: [context/design-workflow.md](../../../context/design-workflow.md) — デザイン制作ワークフローと fork 判定の基準
   - **radius**: shadcn `--radius` に一本化し、基準値は `tokens.css` の 4px。Button 8px / Tag 4px など component 固有値は `@kufu/ui` の component variant で管理する
   - **type scale**: Tailwind 標準。見出し階層との対応は次節「トーン & マナー / ブランド指針」
 
@@ -304,16 +319,16 @@ flowchart TD
 
     Company --> MapCheck{"地図埋め込み可?"}
     MapCheck -->|"可"| MapEmbed["地図 widget 表示"]
-    MapCheck -->|"不可"| MapLink["住所テキスト + 外部地図リンク (E2)"]
+    MapCheck -->|"不可"| MapLink["住所テキスト + 外部地図リンク"]
     Company --> ContentCheck{"沿革/挨拶 確定?"}
-    ContentCheck -->|"未確定"| Placeholder["placeholder section 表示 (E1)"]
+    ContentCheck -->|"未確定"| Placeholder["placeholder section 表示"]
 
     Services --> Contact
     Products --> Contact
     MapEmbed --> Contact
     MapLink --> Contact
     Placeholder --> Contact
-    Hero -.->|"全ページ共通の導線 (BR2)"| Contact
+    Hero -.->|"全ページ共通の導線"| Contact
     Contact(["お問い合わせ (P6): 連絡先 + フォーム"]) --> Goal(["接点確保 (電話/FAX/メール/フォーム)"])
 ```
 
@@ -343,11 +358,11 @@ sequenceDiagram
 
 ## 上位資料からの変更点
 
-| 対象資料                     | 変更種別 | 内容                                                                                                                                                                                                            |
-| ---------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DesignDoc                    | 継承     | Why/What (コーポレートサイト関連要求・スコープ)、Goal / モジュール責務 (`apps/corporate-site`) を実現方針へ具体化                                                                                               |
-| 旧 spec (IA 検討)            | 集約     | IA (サイトマップ / section 構成 / 配置マッピング / 回遊フロー) の正本を本 doc へ移管                                                                                                                            |
-| 旧 spec (デザイントークン)   | 追加     | デザイントークン節 (正本への参照ハブ + spacing / radius / type scale ガイド) とトーン & マナー / ブランド指針を新設。値の正本は `tokens.css`、体系は [ADR-0007](../../../adr/0007-design-token-architecture.md) |
-| 旧 spec (3 route IA)         | 変更     | IA を 5 ページ構成から 3 route 統合構成へ変更 ([ADR-0006](../../../adr/0006-corporate-site-three-route-ia.md))。幅統一 (1440px/56)・モバイル variant 方針・18 カテゴリ単一データソースを追記                    |
-| 旧 spec (問い合わせフォーム) | 集約     | 問い合わせフォーム仕様 (入力項目 / validation / flowchart / sequence / API 契約 / error code / test 境界) の正本を本 doc へ移管                                                                                 |
-| 旧 spec (デザイン正本移行)   | 変更     | デザイン正本を `index.pen` から実装 (コード + Storybook) へ変更し、`.pen` 参照を削除 ([ADR-0012](../../../adr/0012-design-source-of-truth-implementation.md))                                                   |
+| 対象資料                     | 変更種別 | 内容                                                                                                                                                          |
+| ---------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DesignDoc                    | 継承     | Why/What (コーポレートサイト関連要求・スコープ)、Goal / モジュール責務 (`apps/corporate-site`) を実現方針へ具体化                                             |
+| 旧 spec (IA 検討)            | 集約     | IA (サイトマップ / section 構成 / 配置マッピング / 回遊フロー) の正本を本 doc へ移管                                                                          |
+| 旧 spec (デザイントークン)   | 追加     | デザイントークン節 (正本への参照ハブ + spacing / radius / type scale ガイド) とトーン & マナー / ブランド指針を新設。値の正本は `tokens.css`、体系は ADR-0007 |
+| 旧 spec (3 route IA)         | 変更     | IA を 5 ページ構成から 3 route 統合構成へ変更。幅統一 (1440px/56)・モバイル variant 方針・18 カテゴリ単一データソースを追記                                   |
+| 旧 spec (問い合わせフォーム) | 集約     | 問い合わせフォーム仕様 (入力項目 / validation / flowchart / sequence / API 契約 / error code / test 境界) の正本を本 doc へ移管                               |
+| 旧 spec (デザイン正本移行)   | 変更     | デザイン正本を `index.pen` から実装 (コード + Storybook) へ変更し、`.pen` 参照を削除                                                                          |

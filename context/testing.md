@@ -54,5 +54,6 @@ Cloudflare Pages Functions / Workers を伴う feature は、ローカル E2E ru
 
 ## 横断テスト方針
 
-- 公開判定には deploy 成功だけでなく、preview での導線確認を含める ([infrastructure.md](infrastructure.md))。
+- 公開判定には deploy 成功だけでなく、preview での導線確認を含める。
+  - 根拠: [infrastructure.md](infrastructure.md) — 環境戦略と preview deployment の扱い
 - `apps/cms` 追加時の候補技術・採用判断ゲートのテスト観点は [DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md) を正本とする。
