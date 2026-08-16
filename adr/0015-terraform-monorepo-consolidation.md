@@ -13,7 +13,8 @@
 - [ADR-0001](0001-terraform-infra-repository-boundary.md) は 2026-05-07 に、Cloudflare の infra code を Terraform で管理し、その正本を別リポジトリ `kufu-infra` に置くと決めた。
 - **2026-08-16 時点で `kufu-infra` は事実上空である。** `.tf` ファイルが 1 つも存在せず、中身は PRD / DesignDoc / ADR-0001 のコピーと AI 設定のみで、最終コミットは 2026-05-08 である。
 - ADR-0001 が前提にした「Terraform による infra 管理」そのものが始まっていない。したがって現状は、分離のコスト (別 repo の維持、Infrastructure Contract の同期) だけを払い、分離の利益を受け取っていない。
-- Cloudflare の設定 (Pages project / domain / secret) はすべて Dashboard 上にあり、コード管理されていない。これは ADR-0001 が代替案 2 の Cons として退けた状態と同じである。決定から 3 か月、実態は退けたはずの選択肢のままだった。
+- Cloudflare の設定はすべて Dashboard 上にあり、コード管理されていない。これは ADR-0001 が代替案 2 の Cons として退けた状態と同じである。決定から 3 か月、実態は退けたはずの選択肢のままだった。
+- **未確認**: Dashboard 上に何が実在するかは棚卸ししていない。issue #47 は Pages project / domain / secret があると記すが、runtime secret の消費者である Pages Functions は未実装であり (`apps/corporate-site/functions/` が存在しない)、secret が実在するとは限らない。実在の確定は下記「既存の Dashboard 設定の移行」で行う。
 - #33 (テスト戦略と CI パイプライン整備) が VRT baseline の保管先に Cloudflare R2 を選んだ結果、R2 が Infrastructure Contract の対象となり、空の repo 待ちで実装が止まっている。
 
 ### 判断を分ける事実
@@ -92,6 +93,19 @@ Cloudflare 側を採る根拠は次の 3 点である。
 ### 既存の Dashboard 設定の移行
 
 Cloudflare が推奨する `cf-terraforming` を使い、既存リソースを Terraform state へ import する。作り直しは行わない。本番稼働中のリソースを削除・再作成する経路を避けるためである。
+
+ただし Terraform 管轄のすべてが import 対象ではない。実在しないものは新規に書く。
+
+| リソース                              | 移行方法                    | 根拠                                                                                                                                   |
+| ------------------------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Zone / DNS record / TLS               | `cf-terraforming` で import | 公開中のサイトが依存しており実在する                                                                                                   |
+| Pages custom domain 紐付け            | `cf-terraforming` で import | 同上                                                                                                                                   |
+| Rate Limiting ルール (`/api/contact`) | 新規作成                    | [context/infrastructure.md](../context/infrastructure.md) が「設定する」と将来形で書いており未設定。対象の `/api/contact` 自体も未実装 |
+| R2 バケット (VRT baseline 用)         | 新規作成                    | #33 のために新設する                                                                                                                   |
+| R2 バケット (Terraform state 用)      | 新規作成                    | `infra/bootstrap/` が作る                                                                                                              |
+| runtime secret                        | 対象外                      | Terraform 管轄ではない ([ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md))                                                    |
+
+**この表は棚卸しの前に作った見込みである。** apply の前に Dashboard を棚卸しし、実在するリソースを確定させる。結果は [context/infrastructure.md](../context/infrastructure.md) に記載し、上表と食い違った場合はそちらを正とする。
 
 ### ADR-0001 が挙げた Cons への対処
 
@@ -231,7 +245,7 @@ CODEOWNERS を置く理由は 2 つある。境界を宣言として残すこと
 - [ADR-0001](0001-terraform-infra-repository-boundary.md): 本 ADR が supersede する決定
 - [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md): 集約後のツール分担 (本 ADR の前提の上に立つ)
 - [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md): Phase 1 の対象が corporate-site のみであること
-- [design/DesignDoc.md](../design/DesignDoc.md): 105 / 116 行目が ADR-0001 を infra repo 境界の正本として参照している (承認後に差し替える)
+- [design/DesignDoc.md](../design/DesignDoc.md): ADR-0001 を前提にした記述を持つ (実装完了後に差し替える。対象行は「実装・運用への反映」の表を正本とする)
 - [context/infrastructure.md](../context/infrastructure.md): Infrastructure Contract / Environment Strategy
 - [ADR-0013](0013-designdoc-present-facts-only.md): 現状事実のみを記載する原則 (context の更新時期の根拠)
 - [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/): ディレクトリ構成 / モジュール回避 / 環境分割 / cf-terraforming の出典
