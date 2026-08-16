@@ -17,9 +17,9 @@
 
 ## 決定
 
-- VRT を、unit test / E2E と並ぶ **独立した第 3 のテスト種別**として位置づける。
+- VRT を、unit test / play / E2E と並ぶ **独立したテスト種別**として位置づける。
 - 撮影手段は **2 系統の併用**とする。
-  - **story 側**: storycap で撮影し reg-suit で比較する。対象は 81 story (fixture story は対象外)。撮影は既定 viewport 1 種。
+  - **story 側**: storycap で撮影し reg-suit で比較する。対象は 81 story (fixture story は対象外)。撮影は既定 viewport 1 種。Storybook は `@kufu/ui` と `@kufu/corporate-site` の 2 インスタンスがあるため、それぞれ撮影して比較対象へまとめる。
   - **route 側**: Playwright の `toHaveScreenshot` で撮影する。対象は 3 route × desktop / mobile の 2 viewport = 6 枚。
 - baseline の保管先は系統ごとに分ける。route 側はリポジトリ (Git 管理)、story 側は S3 互換ストレージ。
 - **許容 diff は 0 (完全一致) を初期値**とし、flake が実測された場合にその実測値を上回る最小値まで緩める。

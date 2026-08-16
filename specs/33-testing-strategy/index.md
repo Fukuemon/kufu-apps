@@ -185,7 +185,15 @@ EARS 風の振る舞い。観測手段が定義できるものだけを本 spec 
 
 ### Content / Assets
 
+> **決定時スナップショット。** 対象セットと viewport の適用範囲の正本は
+> [ADR-0015](../../adr/0015-visual-regression-testing-policy.md)。差異が生じた場合は ADR 側が正しい。
+
 VRT の baseline は D4 の決定により **2 系統** を持つ。
+
+**Storybook は 2 インスタンスある (2026-08-16 確認)。** `pnpm storybook:build` は `@kufu/ui` と
+`@kufu/corporate-site` を別々にビルドし、`scripts/build-storybook-pages.mjs` が `.storybook-pages/ui/` と
+`.storybook-pages/corporate-site/` へ別の静的サイトとして配置する。統合された 1 つの Storybook にはならないため、
+storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要がある。
 
 #### reg-suit を S3 互換ストレージへ接続する際の設定
 
@@ -443,7 +451,8 @@ sequenceDiagram
   - 規模は 3 route に対応する 3 クラス程度に収まる
   - トレードオフ / 却下した代替案: 現規模では過剰になり得る (要求の業務ルール #1) が、規約だけ先行させる案は、ジャーニー実装 issue が型のない状態で書き始めることになり、後から一括で書き換える手戻りが大きいため却下した
 
-- **D3: VRT を `context/testing.md` の責務分担で、Unit test / E2E と並ぶ独立した第 3 種別として立てる。**
+- **D3: VRT を `context/testing.md` の責務分担で、独立したテスト種別として立てる。**
+  - **追記 (2026-08-16)**: sync 後の `context/testing.md` は play を含めて Unit test / play / E2E / VRT の 4 種別になった。決定内容 (VRT を独立種別にする) は変わらない
   - 根拠: D4 で story 系統 (reg-suit + storycap) と route 系統 (Playwright) の 2 つを持つため、E2E の一部として書くと Storybook 基盤側が収まらず、Storybook の gate として書くと Playwright 側が収まらない
   - トレードオフ: 種別が 1 つ増えるが、2 系統を 1 つの責務として説明できる利点が上回る
 
@@ -588,7 +597,7 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | [ADR-0015](../../adr/0015-visual-regression-testing-policy.md) | VRT の手段・対象セット・許容 diff・ブロッキング扱い                                | D3 / D4 / D10 / D12 |
 | [ADR-0016](../../adr/0016-ci-local-hook-responsibility.md)     | CI とローカル hook の責務分担、実行時間の目標を置かない判断                        | D6 / D7 / D8 / D9   |
 | [ADR-0017](../../adr/0017-ui-test-structure-policy.md)         | play の対象、Page Object、locator 規約、ジャーニー定義                             | D1 / D2 / D5 / D11  |
-| `context/testing.md`                                           | テスト責務の分担 (VRT を第 3 種別へ)、play / ジャーニー / locator / VRT の各節     | D1〜D5 / D10〜D12   |
+| `context/testing.md`                                           | テスト責務の分担 (4 種別へ拡張)、play / ジャーニー / locator / VRT の各節          | D1〜D5 / D10〜D12   |
 | `context/engineering.md`                                       | Repository Quality Gate の「CI とローカル hook の分担」、Docs Closeout Gate の実態 | D6 / D7 / D8 / D9   |
 | `context/toolchain.md`                                         | 標準スタックへ VRT (story) / VRT (route) を追加                                    | D4                  |
 | `design/DesignDoc.md`                                          | Future Work「CI パイプライン」行を現状事実へ更新                                   | D6 / D7             |
@@ -606,11 +615,11 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | 2026-08-15 | NEEDS_WORK               | 6 回目。指摘 3 件 (設計時の論点節の markdown 破損 / 存在しない選択肢ラベルの参照 / D8・D9 の帰属誤り)                                     | 全 3 件反映済                                                                 |
 | 2026-08-15 | NEEDS_WORK               | 7 回目。指摘 2 件 (許容 diff の決定が spec 内に存在しない / Fallback が存在しない目標値を参照)                                            | 全 2 件反映済                                                                 |
 | 2026-08-15 | NEEDS_WORK               | 8 回目。指摘 2 件 (ジャーニー定義の欠落 / 差分レポート閲覧経路が未管理) + 補足 2 件                                                       | 全件反映済                                                                    |
-| 2026-08-15 | NEEDS_WORK               | 9 回目。指摘 4 件 (Fallback が D12 の却下案を残す / requirements の例外シナリオ未改訂 / D11 の根拠の事実誤り / フェーズ 4 の日付)         | 3 件反映済。requirements の改訂は 10 回目で実施                               |
+| 2026-08-15 | NEEDS_WORK               | 10 回目。指摘 2 件 (9 回目の requirements 改訂が未反映 / 実体のない改訂を反映済と記録)                                                    | 全 2 件反映済 (本文を読み返して確認)                                          |
 | 2026-08-15 | —                        | 10 回目の指摘は解消済み。**PASS を確認する再レビューは未実施**のまま、ユーザー判断で clarify gate を通過し diagram phase へ進んだ         | ユーザー判断                                                                  |
 | 2026-08-16 | NEEDS_WORK               | track gate (diagram〜track 累積)。指摘 7 件 (図が #47 後の状態 / ジョブ順序の暗黙導入 / toolchain 反映漏れ / メタ同期 / レビュー表の重複) | 全 7 件反映済                                                                 |
 | 2026-08-16 | NEEDS_WORK               | track gate 2 回目 (diagram〜sync 累積)。指摘 7 件 (sync 後の spec 降格が不完全 / R2 設定知識の取りこぼし / メタ情報同期)                  | 全 7 件反映済                                                                 |
-| 2026-08-15 | NEEDS_WORK               | 10 回目。指摘 2 件 (9 回目の requirements 改訂が未反映 / 実体のない改訂を反映済と記録)                                                    | 全 2 件反映済 (本文を読み返して確認)                                          |
+| 2026-08-16 | NEEDS_WORK               | track gate 3 回目。指摘 2 件 (review.md に 2 回目の記録が無い / レビュー表の時系列) + 補足 3 件。**正本境界を含む 5 観点が PASS**         | 全件反映済                                                                    |
 
 ## 変更履歴
 
@@ -638,15 +647,14 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | 2026-08-15 | spec-lifecycle | 8 回目の指摘に対応。ジャーニーを D11、VRT のブロッキング扱いを D12 として確定し、レポート閲覧経路を U1 へ統合                                                                                      |
 | 2026-08-15 | spec-review    | clarify gate 9 回目 NEEDS_WORK (指摘 4 件)。5 観点が PASS                                                                                                                                          |
 | 2026-08-15 | spec-lifecycle | 9 回目の指摘に対応。Fallback をエスカレーション順へ、D11 の根拠を実態へ修正                                                                                                                        |
-| 2026-08-15 | spec-review    | clarify gate 10 回目 NEEDS_WORK (指摘 2 件)。9 回目の requirements 改訂が実際には未反映だったことが判明                                                                                            |
 | 2026-08-15 | spec-lifecycle | requirements の例外シナリオ #3 を実際に改訂し、本文を読み返して spec との一致を確認                                                                                                                |
 | 2026-08-15 | spec-lifecycle | diagram: Flowchart と Sequence を生成。Mermaid のパースをブラウザで検証し 2 図とも OK を確認                                                                                                       |
 | 2026-08-16 | spec-lifecycle | track: 未記録だった反映先を追記。feature doc のテスト観点 (D11 / VRT)、context/testing.md の play 対象基準・許容 diff・ジャーニー境界、ADR に D8 / D10 / D12 を追加。他 issue への引き継ぎ表を新設 |
-| 2026-08-16 | spec-review    | track gate NEEDS_WORK (指摘 7 件)。図が #33 ではなく #47 後の状態を描いていた                                                                                                                      |
-| 2026-08-16 | spec-lifecycle | track gate の指摘 7 件に対応。図を #33 時点と #47 後に分け、CI のジョブ順序の暗黙導入を解消。context/toolchain.md を反映先へ追加                                                                   |
 | 2026-08-16 | spec-lifecycle | sync: ADR-0015 / 0016 / 0017 を起票し、context 3 本と DesignDoc / feature doc へ反映。正本ハンドオフを記録                                                                                         |
 | 2026-08-16 | spec-review    | track gate 2 回目 NEEDS_WORK (指摘 7 件)。sync 後の spec 降格が不完全だった                                                                                                                        |
 | 2026-08-16 | spec-lifecycle | 指摘 7 件に対応。R2 の接続設定を ADR-0015 へ移し、spec の該当節を決定時スナップショットへ降格。反映済 / 未反映の状態列を各表へ追加し二重管理を解消。DesignDoc と feature doc のメタ情報を同期      |
+| 2026-08-16 | spec-review    | track gate 3 回目 NEEDS_WORK (指摘 2 件 + 補足 3 件)。正本境界を含む 5 観点が PASS                                                                                                                 |
+| 2026-08-16 | spec-lifecycle | 3 回目の指摘に対応。review.md へ 2 回目・3 回目を追記し、レビュー表を時系列へ整えた。系統表へ正本リンクを付与し、Storybook が 2 インスタンスである事実を追記                                       |
 
 ## 備考
 
