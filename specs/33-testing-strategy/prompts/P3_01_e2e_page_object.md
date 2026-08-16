@@ -80,6 +80,7 @@ depends_on: []
 
 ## 実装コンテキスト
 
+- 読み取り索引: `context/impact-index.yaml` の `testing-strategy` エントリ (最初に読むのはその `read:` が指すファイル)
 - spec: `specs/33-testing-strategy/index.md`
 - 参照する appendix:
   - `specs/33-testing-strategy/index.md` の `## 解決済みの論点` の D2 / D5 / D11

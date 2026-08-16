@@ -372,3 +372,31 @@ P3 だけは対応する EARS が無いため、無いことと判定手段 (完
 **指摘 5 は正本境界に関わる。** P4 を prompt 化しなかった判断が spec 本文に反映されておらず、
 生成方針は「P4 を P1a〜P3 の後に置く」と書いたままだった。spec は issue close 時に削除されるが、
 削除前に読まれる間は誤読の原因になる。実装分割表と生成方針の双方へ、sync phase で消化済みである旨を書いた。
+
+## 2026-08-16 — prompts gate 2 回目 (prompts 5 本 + spec)
+
+**Verdict: NEEDS_WORK** (指摘 1 件 + 補足 3 件)
+
+**上位文書整合 / 未解決論点 / 実装対象明示 / template 必須節 / EARS acceptance / 正本境界の 6 観点が PASS。**
+1 回目の指摘 5 件はすべて解消が確認された。命名は `P{整数}_{2 桁}_{domain}_{scope}` へ是正済、
+frontmatter の seq とファイル名が一致、depends_on と本文の依存記述も整合、antipatterns の制約ブロックは逐語で注入、
+参照 path はすべて実在、実測値も実ファイルと一致、secret の実値と個人 PC の絶対パスは無し。
+**文書メタ情報の同期も 3 方向が一致した** (3 回連続で落ちていた観点)。
+
+| #    | 指摘                                                                             | 対応   |
+| ---- | -------------------------------------------------------------------------------- | ------ |
+| 1    | 読み取り索引に testing / VRT / CI のエントリが無いまま prompt が path を独自列挙 | 反映済 |
+| 補足 | P5 の EARS 1 件が spec 原文の派生で、抜粋と区別が付かない                        | 反映済 |
+| 補足 | P1_01 の「P4 相当の作業」が後続 prompt の存在を示唆する                          | 反映済 |
+| 補足 | prompts の phase 番号が 4 を飛ばす理由が prompt 単体に届かない                   | 反映済 |
+
+**指摘 1 は sync phase の取りこぼしである。** `context/impact-index.yaml` は「何を読めば足りるか」の
+ルーティング表であり、その育成は sync phase の担当と同ファイルが定めている。
+本 spec は `context/testing.md` を 4 種別へ拡張し ADR を 3 本起票したにもかかわらず、
+索引には `component-architecture` / `docs-operation` の 2 エントリしか無く、そこへ辿り着く経路が無かった。
+prompt が参照 path を独自に列挙していたのは、索引が無いことの帰結である。
+
+対応として `testing-strategy` (read: `context/testing.md` / feature doc、source_refs: ADR-0015 / 0017) と
+`ci-pipeline` (read: `context/engineering.md` / `context/toolchain.md`、source_refs: ADR-0016 / 0015) の
+2 エントリを追加し、各 prompt の `## 実装コンテキスト` へ該当エントリを明記した。
+これは spec が削除された後も残る経路であり、正本境界の観点でも意味がある。

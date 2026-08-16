@@ -89,6 +89,7 @@ depends_on: [P1_01_ui_story_vrt.md, P2_01_core_ci_pipeline.md]
 
 ## 実装コンテキスト
 
+- 読み取り索引: `context/impact-index.yaml` の `ci-pipeline` エントリ (最初に読むのはその `read:` が指すファイル)
 - spec: `specs/33-testing-strategy/index.md`
 - 参照する appendix:
   - `specs/33-testing-strategy/index.md` の `## 機能仕様 → Content / Assets`
@@ -106,6 +107,7 @@ depends_on: [P1_01_ui_story_vrt.md, P2_01_core_ci_pipeline.md]
 
 - 完了しているべき phase / 依存 prompt: `P1_01_ui_story_vrt.md` / `P2_01_core_ci_pipeline.md`
 - **外部依存**: #47 の完了 (R2 バケットの調達と資格情報の置き場の確定)
+- **phase 4 が欠番である理由**: 規約の `context/` 反映と ADR 起票 (spec の実装分割 P4) は spec-lifecycle の sync phase で実施済みのため、prompt 化していない
 - 完了後に着手可能になる後続 prompt: なし (本 prompt が #33 の最終工程)
 - 必要な repo 状態: story 側 VRT がローカル S3 互換ストレージで成立していること
 
@@ -179,7 +181,8 @@ spec からの抜粋。
 - WHERE story 側の VRT は #47 完了後に CI へ載せる。**本 prompt がこの条件を満たす工程である。**
 - WHILE UI に変更がない間、システムは VRT を 2 回連続実行しても差分 0 件を返す。
 - WHEN 開発者が意図的に 1 箇所のスタイルを変更したとき、システムは VRT で差分を 1 件以上検出する。
-- WHEN develop 向けの PR が作成されたとき、システムは story 側の VRT も実行し、成否を PR のチェック欄に返す。
+- (派生基準) WHEN develop 向けの PR が作成されたとき、システムは story 側の VRT も実行し、成否を PR のチェック欄に返す。
+  spec の EARS 原文は route の VRT までを列挙しており、これは **WHERE 句が満たされた後の派生**である。
 
 ## テスト観点
 

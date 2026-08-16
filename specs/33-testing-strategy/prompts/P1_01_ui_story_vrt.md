@@ -75,7 +75,7 @@ depends_on: []
 ### ステップ 4: 実行コマンドを整える
 
 1. VRT 実行コマンドと baseline 更新コマンドを `package.json` の scripts として定義する
-2. コマンド名を `## 上位資料からの変更点` へ渡すため、決定したコマンド名を spec へ記録する (`context/project.yml` の `commands` 反映は P4 相当の作業として phase: track へ渡す)
+2. コマンド名を `## 上位資料からの変更点` へ渡すため、決定したコマンド名を spec へ記録する (`context/project.yml` の `commands` 反映は phase: track へ渡す)
 3. `## 検証コマンド` を実行する
 4. diff レビューを回し、指摘を対応してから次へ
 
@@ -88,6 +88,7 @@ depends_on: []
 
 ## 実装コンテキスト
 
+- 読み取り索引: `context/impact-index.yaml` の `testing-strategy` エントリ (最初に読むのはその `read:` が指すファイル)
 - spec: `specs/33-testing-strategy/index.md`
 - 参照する appendix:
   - `specs/33-testing-strategy/index.md` の `## 機能仕様 → Content / Assets`

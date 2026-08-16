@@ -87,6 +87,7 @@ depends_on: [P1_02_e2e_route_vrt.md]
 
 ## 実装コンテキスト
 
+- 読み取り索引: `context/impact-index.yaml` の `ci-pipeline` エントリ (最初に読むのはその `read:` が指すファイル)
 - spec: `specs/33-testing-strategy/index.md`
 - 参照する appendix:
   - `specs/33-testing-strategy/index.md` の `## 解決済みの論点` の D6 / D7 / D8 / D9 / D12

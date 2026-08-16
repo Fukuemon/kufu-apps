@@ -46,6 +46,7 @@
 | ADR-0008                     | Astro / React island ポリシー                       | 継承。play 対象を React に限る根拠                                                                                 |
 | ADR-0012                     | デザイン正本 = 実装 + Storybook                     | 継承。VRT の対象セットを Storybook に置く根拠                                                                      |
 | context/toolchain.md         | 標準スタック表                                      | **反映済**。VRT (story) / VRT (route) を追加した                                                                   |
+| context/impact-index.yaml    | 読み取り索引 (feature エントリ)                     | **反映済**。`testing-strategy` / `ci-pipeline` を追加した                                                          |
 | ADR-0001                     | Terraform の infra code は別リポジトリで管理する    | 継承。**本 spec は R2 を調達しない** (ローカル S3 互換で検証まで)。R2 の調達と ADR-0001 の supersede は #47 が行う |
 | ADR-0015 / 0016 / 0017       | 本 spec で新規起票 (sync 反映済)                    | 以後この 3 本が D1〜D12 の判断の正本                                                                               |
 
@@ -576,6 +577,7 @@ sequenceDiagram
 | `context/engineering.md` Repository Quality Gate    | CI とローカル hook の分担を追加 (D6〜D9)                                       | **反映済** (sync)                   |
 | `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は委譲する」を実態へ更新                                        | **反映済** (sync)                   |
 | `context/toolchain.md` 標準スタック                 | VRT (story) / VRT (route) を追加 (D4)                                          | **反映済** (sync)                   |
+| `context/impact-index.yaml`                         | `testing-strategy` / `ci-pipeline` の 2 エントリを追加                         | **反映済** (sync)                   |
 | `context/project.yml` の `commands`                 | VRT 実行コマンドと baseline 更新コマンド。`meta.updated` も同期                | 未反映 — コマンド名が確定する実装時 |
 | `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケット                                                 | 未反映 — #47 の完了時               |
 | `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を集約後の実態へ更新                                         | 未反映 — #47 の完了時               |
@@ -636,6 +638,7 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | 2026-08-16 | NEEDS_WORK               | track gate 5 回目。指摘 1 件 (変更履歴に gate 記録 2 件が無い) + 補足 3 件。**5 観点が PASS**                                                                                     | 全件反映済                                                                    |
 | 2026-08-16 | —                        | 5 回目の指摘は解消済み。**PASS を確認する再レビューは未実施**のまま、ユーザー判断で track gate を通過し prompts phase へ進んだ (残る指摘は記録の整合のみで、設計は 5 観点が PASS) | ユーザー判断                                                                  |
 | 2026-08-16 | NEEDS_WORK               | prompts gate 1 回目。指摘 5 件 (命名規則 / seq 不一致 / EARS 抜粋の欠落 / 生成モード未記録 / 実装分割の食い違い) + 補足 3 件。**spec 本体は 6 観点すべて PASS**                   | 全件反映済                                                                    |
+| 2026-08-16 | NEEDS_WORK               | prompts gate 2 回目。指摘 1 件 (読み取り索引に testing / CI のエントリが無い) + 補足 3 件。**6 観点が PASS**                                                                      | 全件反映済                                                                    |
 
 ## 変更履歴
 
@@ -682,6 +685,8 @@ sync phase で durable な設計成果を design 側へ反映した。**以後�
 | 2026-08-16 | spec-lifecycle | prompts: P1a / P1b / P2 / P3 / P5 の 5 本を生成した (P4 は sync phase で消化済み)                                                                                                                     |
 | 2026-08-16 | spec-review    | prompts gate 1 回目 NEEDS_WORK (指摘 5 件 + 補足 3 件)。spec 本体は 6 観点すべて PASS                                                                                                                 |
 | 2026-08-16 | spec-lifecycle | prompts gate の指摘に対応。P1a / P1b を `P1_01` / `P1_02` へ改名し、EARS の受け入れ基準を各 prompt へ抜粋。生成モードと prompts 一覧を spec へ記録し、P4 を prompt 化しない判断を実装分割へ反映       |
+| 2026-08-16 | spec-review    | prompts gate 2 回目 NEEDS_WORK (指摘 1 件 + 補足 3 件)。6 観点が PASS                                                                                                                                 |
+| 2026-08-16 | spec-lifecycle | `context/impact-index.yaml` へ `testing-strategy` / `ci-pipeline` のエントリを追加し、各 prompt の参照 path を索引に紐づけた                                                                          |
 
 ## 備考
 
