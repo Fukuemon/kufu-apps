@@ -335,6 +335,27 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 
 story 側 VRT の CI 稼働は #47 の完了後 (実装分割 P5) であり、ここで撮った baseline は破棄する。
 
+#### route 側 VRT の実測 (2026-08-17 / P1_02)
+
+撮影と判定は Playwright 公式 container (`mcr.microsoft.com/playwright:v1.59.1-noble`) に固定した。Playwright の baseline はファイル名に platform を含み、macOS で撮った `-darwin.png` は CI (Linux) では使われないうえフォント描画も一致しないため、D8 の「撮影環境を固定する」をローカル実行の時点から適用した。
+
+| 項目                     | 実測値                                                                                                                                                                                                                                                 |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 撮影枚数                 | **6 枚** (3 route × desktop 1280x800 / mobile 390x900)。`-linux.png` として Git 管理する                                                                                                                                                               |
+| 1 回目 (baseline 生成)   | 6 枚を書き出した                                                                                                                                                                                                                                       |
+| 2 回目 (UI 無変更)       | 5 passed / 1 failed。`home` の desktop が **差分ではなく 5 秒のタイムアウト**で落ちた                                                                                                                                                                  |
+| タイムアウトの対処       | full-page 合成が既定の 5 秒に収まらなかっただけなので、assertion を 30 秒・describe を 120 秒へ引き上げた。許容 diff は 0 のまま                                                                                                                       |
+| 3 回目 / 4 回目 (無変更) | いずれも **6 passed**。2 回連続で差分 0 を確認した                                                                                                                                                                                                     |
+| 5 回目 (意図的な変更)    | `SiteHeader` の `px-5` を `px-16` に変更。mobile 3 件が失敗し desktop 3 件は pass、終了コード 1。`sm:` 未満だけに効く変更で、影響範囲どおりに検出した                                                                                                  |
+| 6 回目 (変更を戻す)      | 6 passed。baseline へ復帰した                                                                                                                                                                                                                          |
+| flake 要因と対処         | 外部通信 (Google Maps / Unsplash の写真) を `page.route` で abort し、VRT をネットワークに依存させない。地図 iframe は枠が残るため `mask` も併用する。reveal とカルーセルの自動スクロールは `reducedMotion: "reduce"` で既存実装の分岐を使い停止させた |
+| ホストでの `pnpm e2e`    | smoke 5 passed / route VRT 6 skipped。撮影を container に固定したため、ホストでは skip する                                                                                                                                                            |
+| skip の検知              | `pnpm vrt:route` は Playwright の JSON レポートで 6 件すべての実行を検査する。skip されたまま緑になる事故を防ぐため                                                                                                                                    |
+| 許容 diff                | `maxDiffPixels: 0` / `threshold: 0` (完全一致)。緩める必要は生じなかった                                                                                                                                                                               |
+| 差分成果物               | `test-results/` に出力され `.gitignore` 済み。リポジトリには残らない                                                                                                                                                                                   |
+
+P2 への申し送り: root の `playwright.config.ts` は CI で `retries: 2` を与える。route VRT は許容 diff 0 で flake に最も敏感なため、CI へ載せる P2 で retry の扱いを決める。
+
 ## フロー / シーケンス
 
 本 spec の「操作主体」は開発者・AI エージェント・CI であり、描く対象は **UI を変更してから検証されるまでの流れ**である
@@ -589,17 +610,18 @@ sequenceDiagram
 
 ### context への影響
 
-| 対象 doc / 節                                       | 変更内容                                                                                                               | 状態                                                              |
-| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `context/testing.md` テスト責務の分担               | play / VRT を追加し 4 種別へ拡張 (D1 / D3)                                                                             | **反映済** (sync)                                                 |
-| `context/testing.md`                                | play 対象・ジャーニー・Page Object と locator・VRT の各節 (D2 / D5 / D10〜D12)                                         | **反映済** (sync)                                                 |
-| `context/engineering.md` Repository Quality Gate    | CI とローカル hook の分担を追加 (D6〜D9)                                                                               | **反映済** (sync)                                                 |
-| `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は委譲する」を実態へ更新                                                                                | **反映済** (sync)                                                 |
-| `context/toolchain.md` 標準スタック                 | VRT (story) / VRT (route) を追加 (D4)                                                                                  | **反映済** (sync)                                                 |
-| `context/impact-index.yaml`                         | `testing-strategy` / `ci-pipeline` の 2 エントリを追加                                                                 | **反映済** (sync)                                                 |
-| `context/project.yml` の `commands`                 | story 側の VRT 実行コマンド `pnpm vrt:story` と baseline 更新コマンド `pnpm vrt:story:baseline`。`meta.updated` も同期 | **反映済** (P1_01)。route 側 (P1_02) のコマンドは確定後に追加する |
-| `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケット                                                                                         | 未反映 — #47 の完了時                                             |
-| `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を集約後の実態へ更新                                                                                 | 未反映 — #47 の完了時                                             |
+| 対象 doc / 節                                       | 変更内容                                                                                                                                                                          | 状態                       |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| `context/testing.md` テスト責務の分担               | play / VRT を追加し 4 種別へ拡張 (D1 / D3)                                                                                                                                        | **反映済** (sync)          |
+| `context/testing.md`                                | play 対象・ジャーニー・Page Object と locator・VRT の各節 (D2 / D5 / D10〜D12)                                                                                                    | **反映済** (sync)          |
+| `context/testing.md` VRT                            | 実行コマンドと、route 側を Playwright 公式 container へ固定する具体策・外部通信を落とす方針を追記                                                                                 | **反映済** (P1_02)         |
+| `context/engineering.md` Repository Quality Gate    | CI とローカル hook の分担を追加 (D6〜D9)                                                                                                                                          | **反映済** (sync)          |
+| `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は委譲する」を実態へ更新                                                                                                                                           | **反映済** (sync)          |
+| `context/toolchain.md` 標準スタック                 | VRT (story) / VRT (route) を追加 (D4)                                                                                                                                             | **反映済** (sync)          |
+| `context/impact-index.yaml`                         | `testing-strategy` / `ci-pipeline` の 2 エントリを追加                                                                                                                            | **反映済** (sync)          |
+| `context/project.yml` の `commands`                 | VRT 実行コマンドと baseline 更新コマンド。story 側 (`pnpm vrt:story` / `pnpm vrt:story:baseline`) と route 側 (`pnpm vrt:route` / `pnpm vrt:route:update`)。`meta.updated` も同期 | **反映済** (P1_01 / P1_02) |
+| `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケット                                                                                                                                                    | 未反映 — #47 の完了時      |
+| `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を集約後の実態へ更新                                                                                                                                            | 未反映 — #47 の完了時      |
 
 ### 他 issue への引き継ぎ
 

@@ -47,6 +47,7 @@ commands:
   storybook: pnpm storybook # ui のみ pnpm storybook:ui / corporate は pnpm storybook:corporate
   storybook-build: pnpm storybook:build # Pages artifact は pnpm storybook:pages
   vrt-story: pnpm vrt:story # story 側 VRT (storycap + reg-suit)。baseline 更新は pnpm vrt:story:baseline。手順は README.md
+  vrt-route: pnpm vrt:route # route 側 VRT (Playwright)。baseline 更新は pnpm vrt:route:update。Playwright 公式 container で実行する
   check: pnpm knip && pnpm depcruise # 健全性検査
   check-specs: pnpm check:specs # closed issue の spec 残存検査 (closeout。adr/0011)
   add-dep: pnpm --filter @kufu/<module> add <package>

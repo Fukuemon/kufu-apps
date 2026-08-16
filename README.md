@@ -32,7 +32,16 @@ pnpm install
 
 ## Visual Regression Testing (VRT)
 
-VRT は story 側 (storycap + reg-suit) と route 側 (Playwright) の 2 系統を持つ。方針の正本は [adr/0015-visual-regression-testing-policy.md](adr/0015-visual-regression-testing-policy.md)、テスト種別の責務分担は [context/testing.md](context/testing.md)。以下は story 側の手順で、route 側の baseline はリポジトリで Git 管理する。
+VRT は story 側 (storycap + reg-suit) と route 側 (Playwright) の 2 系統を持つ。方針の正本は [adr/0015-visual-regression-testing-policy.md](adr/0015-visual-regression-testing-policy.md)、テスト種別の責務分担は [context/testing.md](context/testing.md)。
+
+| 系統  | 撮影対象                              | baseline の置き場                    | 実行コマンド     |
+| ----- | ------------------------------------- | ------------------------------------ | ---------------- |
+| story | Storybook の全 story (fixture は除く) | ローカル S3 互換ストレージ → 将来 R2 | `pnpm vrt:story` |
+| route | 3 route × desktop / mobile = 6 枚     | リポジトリ (Git 管理)                | `pnpm vrt:route` |
+
+どちらも Docker が要る。以下はまず story 側、続いて route 側の手順。
+
+## story 側 VRT
 
 ### 前提
 
@@ -99,6 +108,35 @@ VRT 関連の devDependency (`storycap` / `reg-*` / `http-server`) は `^` を�
 - 二重化: `.storybook/preview.ts` が同じ iframe から `src` を外す
 
 通常の `pnpm storybook` と `pnpm storybook:pages` は地図をそのまま表示する。
+
+## route 側 VRT
+
+3 route (`/` / `/products` / `/contact`) を desktop / mobile の 2 viewport で撮り、baseline をリポジトリで Git 管理する。差分が PR レビューに乗ることを狙った使い分けである (ADR-0015)。
+
+### 撮影環境を Linux に固定する
+
+Playwright の baseline はファイル名に platform を含み (`home-desktop-linux.png`)、macOS で撮った `-darwin.png` は CI では使われない。フォント描画もホストと CI で違うため、撮影と判定は Playwright 公式 container (Linux) に固定する。
+
+| コマンド                | 内容                                                        |
+| ----------------------- | ----------------------------------------------------------- |
+| `pnpm vrt:route`        | container の中で route VRT を実行し、baseline と比較する    |
+| `pnpm vrt:route:update` | 同じ実行に `--update-snapshots` を渡し、baseline を撮り直す |
+
+container の中でホストとは別に `pnpm install` をやり直す。ホスト (macOS) の `node_modules` にあるネイティブ依存が Linux で動かないためで、`node_modules` は名前付き volume に隔離してホスト側を壊さない。volume は再利用されるので 2 回目以降は速い。volume 名には checkout の path を混ぜてあるので、`.wt/<branch>` の worktree どうしで競合しない。掃除は `docker volume ls | grep kufu-e2e` で探して `docker volume rm` する。
+
+container の image tag は `@playwright/test` の版から組み立てる。二重管理にすると、依存を上げたときに container のブラウザ版だけ取り残されて baseline が黙って無効化されるためで、`@playwright/test` は `^` を付けず固定している。
+
+`pnpm vrt:route` を経由しない実行では route VRT は skip される (spec が `ROUTE_VRT_CONTAINER` を見る)。ホストの `pnpm e2e` では 6 件が skip され、smoke テストはこれまでどおり実行される。skip されたまま緑になる事故を防ぐため、`pnpm vrt:route` は Playwright の JSON レポートで 6 件すべてが実行されたことを検査する。
+
+**Linux ホストでの注意**: container は root で動き、リポジトリを read-write で bind mount する。macOS の Docker Desktop では所有者が写像されるが、Linux ホストでは baseline PNG や `test-results/` が root 所有で残り、以降のホスト実行が失敗しうる。その場合は生成物の所有者を戻してから続ける。
+
+### 撮影の安定化
+
+- **外部への通信を落とす**。会社概要の Google Maps とカテゴリ写真 (Unsplash) は内容も応答時間も実行ごとに変わり、許容 diff 0 と両立しない。`page.route` で same-origin 以外を abort し、VRT をネットワークに依存させない
+- 地図 iframe は通信を落としても枠が残るため、あわせて `mask` で隠す
+- reveal は `IntersectionObserver` で `is-visible` を付けるため、既定のままでは表示状態がスクロール位置に依存する。Playwright の `reducedMotion: "reduce"` を使い、既存実装が持つ `prefers-reduced-motion` の分岐で全 reveal 対象を即時可視にする。カルーセルの自動スクロールも同じ分岐で止まる。テスト都合のコードをプロダクションへ足していない
+
+差分画像は `test-results/` に出る。`.gitignore` 済みでリポジトリには残らない。
 
 ## Project Structure
 

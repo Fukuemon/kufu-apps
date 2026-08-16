@@ -16,6 +16,8 @@
     "storybook:corporate": "pnpm --filter @kufu/corporate-site storybook",
     "storybook:build": "pnpm --filter @kufu/ui storybook:build && pnpm --filter @kufu/corporate-site storybook:build",
     "storybook:pages": "pnpm storybook:build && node scripts/build-storybook-pages.mjs",
+    "vrt:route": "node scripts/vrt-route.mjs",
+    "vrt:route:update": "node scripts/vrt-route.mjs --update-snapshots",
     "vrt:story": "node --env-file-if-exists=.env scripts/vrt-story.mjs",
     "vrt:story:baseline": "node --env-file-if-exists=.env scripts/vrt-story.mjs --no-fail-on-diff",
     "knip": "knip",
@@ -23,7 +25,7 @@
     "check:specs": "bash scripts/check-specs-residue.sh"
   },
   "devDependencies": {
-    "@playwright/test": "^1.59.1",
+    "@playwright/test": "1.59.1",
     "@types/node": "^25.6.2",
     "dependency-cruiser": "^17.3.1",
     "http-server": "14.1.1",
