@@ -1,6 +1,6 @@
 # Engineering Conventions
 
-> 最終更新: 2026-07-26
+> 最終更新: 2026-08-16
 
 shared config / root task / repository quality gate の境界規約。toolchain 一覧は [toolchain.md](toolchain.md)。
 
@@ -57,7 +57,9 @@ sequenceDiagram
 
 ## Docs Closeout Gate (手動)
 
-`pnpm check:specs` は close 済み issue の spec ディレクトリが `specs/` に残っていないかを検査する。closeout (issue close 時の spec 削除) の実施を担保する gate であり、判断根拠は [ADR-0011](../adr/0011-specs-closeout-enforcement.md)。
+`pnpm check:specs` は close 済み issue の spec ディレクトリが `specs/` に残っていないかを検査する。closeout (issue close 時の spec 削除) の実施を担保する gate である。
+
+- 根拠: [ADR-0011](../adr/0011-specs-closeout-enforcement.md) — issue close 時に bot が spec 削除 PR を起票し、削除の可否は人がマージ判断で決めると定めた決定
 
 - 実行タイミング: **issue close 直後** と、文書整理の PR。close 前に実行しても対象 issue はまだ OPEN で、その spec の消し忘れは検出できない
 - `gh` CLI で issue state を照会するため、オフライン時・commit 速度への影響を避けて **lefthook には組み込まない**
@@ -69,7 +71,7 @@ sequenceDiagram
 - `knip` は workspace ごとの `project` / `entry` を持つ monorepo config を root `knip.json` に持つ。
 - `dependency-cruiser` は root `.dependency-cruiser.cjs` を正本とし、少なくとも circular dependency、未宣言依存、devDependency 流入、app 間直接依存を検査する。
 - app 間直接依存は禁止し、共有コードは `packages/*` の公開入口へ寄せる。
-  - 根拠: [architecture.md](architecture.md) — package / runtime / state の境界規約
+  - 根拠: [architecture.md](architecture.md) の Package Boundary — app 間直接依存の禁止と `packages/*` 経由の共有を定める
 - false positive を避けるため、generated file や root 管理の設定ファイルは root config 側で除外する。
 
 ## Storybook Review Contract
@@ -81,3 +83,11 @@ sequenceDiagram
 - story は default を必須とし、主要 variant / error / empty / disabled などの状態がある場合は story に残す。
 - story は固定 props / fixture を使い、本番 secret や実送信を伴う Container を載せない。
 - Storybook build は CI / PR で確認する。production `build` の一部にはしない。
+
+## 参照
+
+- [architecture.md](architecture.md): package / runtime / state の境界
+- [component-design.md](component-design.md): Storybook 対象とカタログ規約
+- [toolchain.md](toolchain.md): build / lint / test のツール選定
+- [ADR-0011](../adr/0011-specs-closeout-enforcement.md): spec の closeout を bot の削除 PR 起票と人のマージ判断で担保する決定
+- [specs/README.md](../specs/README.md): spec の置き場と closeout の運用

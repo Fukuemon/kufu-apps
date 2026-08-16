@@ -44,7 +44,7 @@
 - 構造が route 構成から独立するため、IA 変更でディレクトリ移動が発生しない。
 - 公開面を機械検査でき、規約 drift を quality gate で検出できる。
 - Storybook の title 階層 (`Sections/<Section>/<Component>`) をディレクトリから機械的に決められる。
-  - 根拠: [context/component-design.md](../context/component-design.md) — Storybook の title 規約と component 設計規約
+  - 根拠: [context/component-design.md](../context/component-design.md) の Storybook 対象 — title 階層の付け方と story を置く対象を定める
 
 ### 悪い影響 / トレードオフ
 
@@ -63,6 +63,6 @@
 - `design/DesignDoc.md`: モジュール責務 (`apps/corporate-site`)
 - [context/component-design.md](../context/component-design.md): ディレクトリ構成 / Storybook 対象 / スタイリング (規約の正本)
 - [context/architecture.md](../context/architecture.md): App 内依存方向 (sections 公開面)
-- [design/features/corporate-site/DesignDoc_corporate-site.md](../design/features/corporate-site/DesignDoc_corporate-site.md): section → component とページ対応の正本 (旧 component-map.md は廃止済み)
+- [feature doc の section 構成](../design/features/corporate-site/DesignDoc_corporate-site.md#section-構成-実装の配置): section とページ対応の実マップ (旧 component-map.md は廃止済み)
 - [ADR-0006](0006-corporate-site-three-route-ia.md): 3 route IA (本決定は IA から独立した構造にすることで ADR-0006 の変更に耐える)
 - [ADR-0007](0007-design-token-architecture.md) / [ADR-0008](0008-astro-react-island-policy.md) / [ADR-0010](0010-shadcn-base-ui-primitive-policy.md): いずれも継承 (supersede なし)

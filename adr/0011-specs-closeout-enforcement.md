@@ -61,6 +61,7 @@
 - [issue #31](https://github.com/Fukuemon/kufu-apps/issues/31): 決定経緯
 - `CLAUDE.md` Spec Workflow Contract: 正本境界 / closeout (現行契約のまま)
 - issue #12: CI パイプライン方針 (検査の常設化の委譲先)
+- [.github/workflows/spec-closeout.yml](../.github/workflows/spec-closeout.yml): closeout PR を起票する workflow
 
 ## 更新
 

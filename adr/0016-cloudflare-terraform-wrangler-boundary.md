@@ -13,12 +13,12 @@
 - Cloudflare の infra code を Kufu Monorepo へ集約すると決めた。本 ADR はその上に立つ。集約後、どのリソースをどのツールで管理するかは未定である。
   - 根拠: [ADR-0015](0015-terraform-monorepo-consolidation.md) — infra code を monorepo へ集約する決定。ディレクトリ構成と bootstrap の分離も定める
 - Cloudflare はリソースごとのツール使い分けを許容する一方、**同じリソースを複数ツールから管理しないこと**を要件としている。ツールを 1 つに寄せる必要はないが、管轄の重複は排除する必要がある。
-  - 根拠: [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/) — Cloudflare 公式。ツール併用の条件と credential の保管方針を定める
+  - 根拠: [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/) の「Manage some resources outside of Terraform」— Terraform 外で管理してよい条件と、同一リソースを二重管理しない要件を定める
 - 現状の Cloudflare 設定はすべて Dashboard 上にあり、コード管理されていない。`wrangler` の設定ファイルもリポジトリに存在しない (2026-08-16 時点)。
 - corporate-site は Astro の静的生成で、問い合わせフォームの送信のみ Pages Functions (Workers) を使う**設計である**。2026-08-16 時点で未実装のため (`apps/corporate-site/functions/` が存在しない)、本 ADR は実装されたときの管轄を先に定める。
   - 根拠: [ADR-0009](0009-corporate-site-contact-form-backend.md) — 問い合わせフォームのバックエンド構成を定めた決定
 - Pages Functions は runtime secret として Resend API key、メール宛先、Turnstile secret key を必要とする。
-  - 根拠: [context/infrastructure.md](../context/infrastructure.md) の Infrastructure Contract — app が infra へ要求する値の一覧
+  - 根拠: [context/infrastructure.md](../context/infrastructure.md) の Infrastructure Contract (app → infra) — app が要求する secret 名を列挙する。実値は repo に保存しないと定める
 - VRT baseline (#33) は Cloudflare R2 に置くが、読み書きするのは GitHub Actions であり、S3 互換 API を使う。**アプリ (Worker) からの R2 binding は不要である。** Pages project が必要とする binding は決定時点で存在しない。
 - 別リポジトリへの分離を決めたとき、monorepo 同居の欠点として「Terraform apply 権限や Cloudflare credential を app 開発導線に近づけやすくなる」が挙げられた。集約後も残る懸念のため、管轄の分割はこの対処と整合させる必要がある。
 
@@ -35,7 +35,7 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 
 ## 決定
 
-> **承認順序**: 本 ADR と ADR-0015 は**同時に承認する**。ADR-0015 が挙げる欠点のうち、credential の分離と、本番影響の大きい変更を PR に埋もれさせない対処は、本 ADR の管轄分担に依存する。本 ADR は ADR-0015 の集約決定を前提とする。
+> **承認順序**: 本 ADR と ADR-0015 は**同時に承認する**。monorepo 同居の欠点として挙がった 5 点のうち、credential の分離と、本番影響の大きい変更を PR に埋もれさせない対処は、本 ADR の管轄分担に依存する。本 ADR は infra code の集約を前提とする。
 
 ### 分担の原則
 
@@ -178,7 +178,7 @@ deploy 経路を作り直す本作業は移行の契機になりうるが、決�
 ### 悪い影響 / トレードオフ
 
 - 管理ツールが 2 つになり、「どちらが管轄か」を都度判断する必要が生じる。判定手順と表を正本として維持する運用コストがかかる。
-- Pages project の設定 (production branch、compatibility date など) が Terraform の差分に現れない。`wrangler.toml` が実質の正本となるため、同ファイルをレビュー対象として扱う必要がある。
+- Pages project の設定 (compatibility date、binding など) が Terraform の差分に現れない。Wrangler の設定ファイルが実質の正本となるため、同ファイルをレビュー対象として扱う必要がある。production branch は設定ファイルではなく `wrangler pages project create --production-branch` と deploy 時の `--branch` で決まるため、手順として残す。
 - 初回構築時に Wrangler deploy → Terraform apply の順序制約がある。手順を誤ると `cloudflare_pages_domain` の apply が失敗する。
 - secret の投入が自動化されないため、値の更新時に手動操作が必要になる。ローテーション手順を運用として残す必要がある。
 
@@ -204,4 +204,7 @@ deploy 経路を作り直す本作業は移行の契機になりうるが、決�
 - [context/infrastructure.md](../context/infrastructure.md): ツール境界表 / bootstrap 手順 / 値の受け渡し / Infrastructure Contract の正本
 - [design/DesignDoc.md](../design/DesignDoc.md): Cloudflare を公開基盤とする前提 (本 ADR は基盤の選択を変えない)
 - [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/)
+- [context/architecture.md](../context/architecture.md): Terraform と Wrangler 設定ファイルの配置と依存規約 (実装完了後に追記する)
+- [infra-tool-boundary.drawio.svg](../design/diagrams/infra-tool-boundary.drawio.svg): 管轄境界の図
+- [infra-permission-flow.drawio.svg](../design/diagrams/infra-permission-flow.drawio.svg): credential と実行経路の図
 - issue: #47 (決定経緯)

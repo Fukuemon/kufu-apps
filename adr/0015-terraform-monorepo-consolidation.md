@@ -31,9 +31,9 @@ ADR-0001 の判断が誤っていたのではない。**分離が成立する前
 - **Cloudflare の infra code を Kufu Monorepo へ集約する。** ADR-0001 を supersede する。
 - `kufu-infra` は **アーカイブする** (削除しない)。ADR-0001 のコピーと初期検討の履歴が残っており、判断の経緯を追える状態を保つ。read-only にすることで、誤って書き込みが再開されることを防ぐ。
 - ツールの分担 (どのリソースを Terraform が持ち、どれを Wrangler が持つか) は本 ADR の対象外とする。
-  - 根拠: [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md) — Cloudflare リソースの Terraform / Wrangler 管轄と、credential の分離を定める
+  - 根拠: [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md) — Cloudflare リソースの Terraform / Wrangler 管轄と credential の分離を定めた決定
 - Infrastructure Contract は「app repo から infra repo への受け渡し」ではなくなる。同一 repo 内の規約として残す。
-  - 根拠: [context/infrastructure.md](../context/infrastructure.md) — Infrastructure Contract / Environment Strategy / Security の正本
+  - 根拠: [context/infrastructure.md](../context/infrastructure.md) の Infrastructure Contract (app → infra) — app が infra へ要求する値と、その受け渡しの契約を定める
 
 ### ディレクトリ構成
 
@@ -56,16 +56,16 @@ infra/
 - **repo ルート直下に置く。** `pnpm-workspace.yaml` の glob は `apps/*` と `packages/*` のみのため、workspace package として拾われない。`packages/infra/` は採らない。`packages/` は app から import される共有ライブラリの場所であり、infra はどこからも import されないためである。
 - **実行は root script から行う** (`pnpm infra:plan` など)。`package.json` を持たない root 直下のディレクトリを root script から動かす形は、既存の `e2e/` と同じである。
 - **ファイル命名は Cloudflare の推奨に従う。** `provider.tf` / `<subject>.tf` / `vars.tf` の 3 種で構成する。
-  - 根拠: [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/) — Cloudflare 公式。ディレクトリ構成 / モジュール回避 / 環境分割 / cf-terraforming を定める
+  - 根拠: [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/) の「Directory structure」— `provider.tf` / `<subject>.tf` / `vars.tf` の 3 種によるファイル分割を定める
 - **bootstrap を別の root module にする。** state の置き場である R2 バケットを Terraform 自身が作るため、`infra/cloudflare/` だけでは初回が実行できない。`bootstrap/` の state はローカルに置き、commit しない。失った場合は `terraform import` で回復する。
 - **state の key に scope を含める。** `terraform.tfstate` ではなく `cloudflare/main/terraform.tfstate` とする。後から兄弟の state を足すときに、既存 state のリネームを避けられる。
-- **環境をディレクトリで分けない** (`envs/staging/` のような構成を採らない)。Cloudflare は staging / QA / production を別アカウント + 別ドメインで分けるよう定めている。アカウント階層の共有リソース (Load Balancer の monitor / pool など) を同一アカウント内で分離できないためである。
+- **環境をディレクトリで分けない** (`envs/staging/` のような構成を採らない)。Cloudflare Terraform Best Practices の「Use separate environments」は、staging / QA / production を別アカウント + 別ドメインで分けるよう定めている。アカウント階層の共有リソース (Load Balancer の monitor / pool など) を同一アカウント内で分離できないためである。
 
 ### モジュールを作らない
 
 `modules/` ディレクトリを設けず、resource module / infrastructure module / composition の 3 層構成を採らない。
 
-Terraform の一般的なベストプラクティスはこの 3 層を提示するが、Cloudflare は「**モジュールは避ける (使うとしても控えめに)**」と定める。理由は 2 点である。共有モジュールの内部変更でリソースが同期を失うか再作成されること、Terraform core の外側のロジックがデバッグを難しくすることである。
+Terraform の一般的なベストプラクティスはこの 3 層を提示するが、Cloudflare Terraform Best Practices の「Avoid modules (or use them sparingly)」は「**モジュールは避ける (使うとしても控えめに)**」と定める。理由は 2 点である。共有モジュールの内部変更でリソースが同期を失うか再作成されること、Terraform core の外側のロジックがデバッグを難しくすることである。
 
 - 根拠: [Terraform Best Practices — Key Concepts](https://www.terraform-best-practices.com/key-concepts) — resource module / infrastructure module / composition の 3 層を提示する
 
@@ -136,7 +136,7 @@ Cloudflare が推奨する `cf-terraforming` を使い、既存リソースを T
 
 Pages Functions は 2026-08-16 時点で未実装である。`apps/corporate-site/functions/` が存在せず、issue #26 が open である。したがって自動 deploy された実績はなく、ここで述べるのは過去の記録ではなく構成上の帰結である。
 
-- 根拠: [ADR-0013](0013-designdoc-present-facts-only.md) — 文書は現状事実のみを記載する原則。Pages Functions が未実装であることを同じく記録している
+- 根拠: [ADR-0013](0013-designdoc-present-facts-only.md) — Design Doc は現状事実のみを記載し、将来計画を Future Work 節へ集約すると定めた決定。Pages Functions が未実装であることを同じく記録している
 
 別リポジトリの構成を維持したとしても、Pages Functions を実装すれば app repo への push を起点に Cloudflare Pages が自動 deploy する。Workers のコードは app 側にあるため、この欠点は repo をどう分けても解けない。
 
@@ -169,7 +169,7 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 #### Pros
 
 - 決定を変えずに済む。ADR の履歴が単純に保たれる。
-- ADR-0001 が意図した責務分離と権限分離を、当初の設計どおりに実現できる。
+- app 開発の導線から apply 権限と credential を切り離すという当初の狙いを、設計どおりに実現できる。
 
 #### Cons
 
@@ -220,7 +220,7 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 - 1 つの PR で app 変更と infra 変更を整合させられる。#33 のような「app 側の都合で infra リソースが要る」変更が、repo をまたがずに完結する。
 - Infrastructure Contract の同期漏れという失敗モードがなくなる。contract と実体が同じ repo に置かれる。
 - #33 のブロックが解ける。
-- コード管理されていなかった Cloudflare リソースが、初めてコード管理下に入る。ADR-0001 が本来目指していた状態に、別の経路で到達する。
+- コード管理されていなかった Cloudflare リソースが、初めてコード管理下に入る。Terraform で infra を管理するという当初の目標に、別の経路で到達する。
 
 ### 悪い影響 / トレードオフ
 
@@ -239,6 +239,7 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 - spec 更新要否: 要。#47 の spec に、ディレクトリ配置と apply workflow の分離を反映する
 - AI 向け設定更新要否: 要。**本 ADR に由来する更新**を次に網羅する。ADR-0016 に由来する更新は同 ADR の同名節を正本とする。
 - **更新時期は実装完了後である。** context と DesignDoc は現状事実を記述する文書であり、決定が承認されただけでは記述すべき事実が存在しない。承認時点で行うのは ADR-0001 の状態変更だけである。
+- **例外は `domains` への `infra` 追加である。** これは infra の実装状態ではなく、issue と PR に付けるラベルの体系を定める値であり、実装より前に必要になる。本 issue の作業へ `domain:infra` を付けるため、先に追加した。
 
 | 対象                                                                                      | 更新内容                                                                                                                         |
 | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
@@ -253,16 +254,19 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 | [design/DesignDoc.md](../design/DesignDoc.md) の `未決事項` #6                            | 「infra repo と app repo の変更を相互参照する review workflow」は集約により論点が消滅する。クローズする                          |
 
 - ADR-0001 の状態は、本 ADR が承認された時点で「置換」へ変更する。提案の段階では変更しない
-- **図は提案の段階で追加済みである。** 置き場は [design/diagrams/](../design/diagrams/) である。図は ADR 本文の一部であり、ADR と同時に存在すべきだからである。context / DesignDoc の更新を実装完了後とする扱いとの差は、この理由による
+- **ADR-0016 が持つ 2 枚の図は、提案の段階で追加済みである。** 置き場は [design/diagrams/](../design/diagrams/) である。図は ADR 本文の一部であり、ADR と同時に存在すべきだからである。context / DesignDoc の更新を実装完了後とする扱いとの差は、この理由による
 
 ## 関連ドキュメント
 
 - [ADR-0001](0001-terraform-infra-repository-boundary.md): 本 ADR が supersede する決定
 - [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md): 集約後のツール分担 (本 ADR の前提の上に立つ)
 - [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md): Phase 1 の対象が corporate-site のみであること
-- [ADR-0013](0013-designdoc-present-facts-only.md): 現状事実のみを記載する原則 (context の更新時期の根拠)
+- [ADR-0013](0013-designdoc-present-facts-only.md): Design Doc に現状事実のみを記載する決定 (context の更新時期の根拠)
 - [design/DesignDoc.md](../design/DesignDoc.md): ADR-0001 を前提にした記述を持つ (実装完了後に差し替える。対象行は「実装・運用への反映」の表を正本とする)
 - [context/infrastructure.md](../context/infrastructure.md): Infrastructure Contract / Environment Strategy
 - [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/): ディレクトリ構成 / モジュール回避 / 環境分割 / cf-terraforming の出典
 - [Terraform Best Practices — Key Concepts](https://www.terraform-best-practices.com/key-concepts): 3 層モジュール構成の出典 (本 ADR では採らない)
+- [context/architecture.md](../context/architecture.md): `infra/` のディレクトリ境界と依存規約 (実装完了後に追記する)
+- [context/project.yml](../context/project.yml): repos / commands / domains / decision_priority の正本
+- [design/diagrams/](../design/diagrams/): 構成図の置き場
 - issue: #47 (決定経緯)

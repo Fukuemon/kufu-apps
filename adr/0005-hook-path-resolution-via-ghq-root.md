@@ -10,7 +10,7 @@
 
 ## 背景
 
-- 本リポは AI エージェント設定を `.rulesync/` を単一正本として管理し、rulesync で **claudecode / codexcli / cursor** の3プロバイダへ生成している。hook 定義も [.rulesync/hooks.json](../.rulesync/hooks.json) が正本で、`.claude/settings.json` / `.codex/hooks.json` / `.cursor/hooks.json` へ**同一のコマンド文字列**として展開される。
+- 本リポは AI エージェント設定を `.rulesync/` を単一正本として管理し、rulesync で **claudecode / codexcli / cursor** の3プロバイダへ生成している。hook 定義も `.rulesync/hooks.json` が正本で、`.claude/settings.json` / `.codex/hooks.json` / `.cursor/hooks.json` へ**同一のコマンド文字列**として展開される。
 - hook はリポジトリ直下の [hooks/](../hooks/) 配下のスクリプト（`protected-branch/pre_tool_use.py`、`markdown/format_markdown.sh`、`spec/validate_*.sh`）を呼ぶ。各プロバイダの hook runner は別物だが、単一ソースのため **コマンドはどの runner でも動く素のシェル式**でなければならない。
 - 従来は hook スクリプトの絶対パスを `python3 "$(git rev-parse --show-toplevel)/hooks/..."` で解決していた。
 - **観測された事故 (2026-06-06)**: Claude Code の Bash ツールで一度 `cd /tmp` した結果、以後の hook 実行時 cwd が `/tmp`（git repo 外）に固定され、`$(git rev-parse --show-toplevel)` が失敗 → スクリプトパスが空 → `Edit` / `Write` / `Bash` が全面ブロックされ、セッション内で自己回復不能になった。
@@ -40,7 +40,8 @@ hook コマンドは「① provider 非依存（単一ソース → 3プロバ�
   ```
 
 - 根拠:
-  - **規約一貫性**: [CLAUDE.md](../CLAUDE.md) の Repository Reference Rules が既に「本プロジェクトは ghq 管理」「path 記載は `$(ghq root)/<repository-path>/...` を優先」と宣言済み。hook を ghq ベースにするのは**新規依存の追加ではなく既存規約への一貫化**。
+  - **規約一貫性**: repo path の記法は既に ghq 前提で宣言済みである。hook を ghq ベースにするのは**新規依存の追加ではなく既存規約への一貫化**。
+    - 根拠: [context/project.yml](../context/project.yml) の `repos.convention` — `$(ghq root)/github.com/<owner>/<repo>` を repo path の記法と定める
   - **cwd 完全非依存**: `ghq root` は cwd に依存せず固定の管理ルートを返すため、`cd` でどこに逸れても、別 repo 内にいても、常に正しい repo root を解決する（本事故を構造的に排除）。
   - **provider 非依存**: 素のシェル置換なので claudecode / codexcli / cursor のいずれの runner でも同一に動く。単一ソースを維持。
   - **ghq 依存の実害が小さい**: これらの hook は **AI エージェントのローカル実行時のみ**発火する。CI は hook を走らせないため「非 ghq な CI 環境」は実害なし。
@@ -75,8 +76,9 @@ hook コマンドは「① provider 非依存（単一ソース → 3プロバ�
 
 ## 関連ドキュメント
 
-- `CLAUDE.md`: Repository Reference Rules（ghq 管理・`$(ghq root)/<repository-path>/...` 表記規約）
-- `.rulesync/hooks.json`: hook 定義の単一正本
-- `rulesync.jsonc`: 生成ターゲット（cursor / claudecode / codexcli）
-- `hooks/`: 実体スクリプト群
-- `adr/0001-terraform-infra-repository-boundary.md`: ghq 前提のリポジトリ境界
+- `.rulesync/hooks.json`: hook 定義の単一正本。実体は sdd-template repo にあり、本 repo では symlink かつ未追跡である
+- [hooks/](../hooks/): hook スクリプトの実体
+- `CLAUDE.md`: repo ルートの生成物。symlink 配布のため追跡しない。repo path の記法は `context/project.yml` の `repos.convention` へ委ねている
+- `rulesync.jsonc`: 生成ターゲット（cursor / claudecode / codexcli）。実体は sdd-template repo にある
+- [ADR-0001](0001-terraform-infra-repository-boundary.md): ghq 前提のリポジトリ境界
+- [context/project.yml](../context/project.yml): `repos.convention` (repo path の記法)

@@ -1,6 +1,6 @@
 # Testing Conventions
 
-> 最終更新: 2026-07-03
+> 最終更新: 2026-08-16
 
 E2E runtime contract と unit test の横断規約。feature 固有のテスト観点は各 [design/features/](../design/features/) に置く。
 
@@ -55,5 +55,13 @@ Cloudflare Pages Functions / Workers を伴う feature は、ローカル E2E ru
 ## 横断テスト方針
 
 - 公開判定には deploy 成功だけでなく、preview での導線確認を含める。
-  - 根拠: [infrastructure.md](infrastructure.md) — 環境戦略と preview deployment の扱い
+  - 根拠: [infrastructure.md](infrastructure.md) の Operations / Observability — 公開判定に preview での導線確認を含めると定める
 - `apps/cms` 追加時の候補技術・採用判断ゲートのテスト観点は [DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md) を正本とする。
+
+## 参照
+
+- [architecture.md](architecture.md): Runtime Boundary / Edge API / Error Contract
+- [infrastructure.md](infrastructure.md): 環境戦略と preview deployment
+- [toolchain.md](toolchain.md): テストに使うツールの選定
+- [design/features/](../design/features/): feature 単位のテスト観点の置き場
+- [DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md): cms のテスト方針 (未設計)

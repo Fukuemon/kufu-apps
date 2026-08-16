@@ -1,17 +1,18 @@
 # Design Production Workflow
 
-> 最終更新: 2026-07-26
+> 最終更新: 2026-08-16
 
 デザイン制作 (方向性探索 → 実装) の **プラットフォーム共通ワークフロー** を定める横断契約。
 
-- ツール選定の意思決定根拠 → [ADR-0012](../adr/0012-design-source-of-truth-implementation.md) (旧 [ADR-0004](../adr/0004-design-production-workflow.md) を置換)
-- デザインシステムの _中身_ (トークン) の正本 → `packages/ui/src/styles/tokens.css` (体系は [ADR-0007](../adr/0007-design-token-architecture.md)、参照ハブは [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md))
-- 本書は _どう作るか_ (プロセス・ディレクトリ・拡張方針) の運用正本。
+- 本書は _どう作るか_ (プロセス・ディレクトリ・拡張方針) の運用正本である。
+- デザインシステムの _中身_ (トークン) の正本は `packages/ui/src/styles/tokens.css` である。
 
 ## 1. 大原則
 
-1. **デザインシステム正本は `packages/ui`** とする。トークンは [`tokens.css`](../packages/ui/src/styles/tokens.css) の CSS 変数とコンポーネントであり、ADR-0007 が 2 層構造 + 3 entry 配信に確定した。各ツールはこれを **消費** するだけで fork しない。新トークンが要る場合は先に `packages/ui` へレビュー経由で昇格する。
+1. **デザインシステム正本は `packages/ui`** とする。中身は [`tokens.css`](../packages/ui/src/styles/tokens.css) が定義する CSS 変数 (トークン) とコンポーネントの 2 つで、トークンは 2 層構造 + 3 entry 配信で確定している。各ツールはこれを **消費** するだけで fork しない。新トークンが要る場合は先に `packages/ui` へレビュー経由で昇格する。
+   - 根拠: [ADR-0007](../adr/0007-design-token-architecture.md) — トークンの 2 層構造と 3 entry 配信、正本を `packages/ui` に置くと定めた決定
 2. **デザイン正本は実装 (コード + Storybook) である。** 中間デザイン正本 (デザインファイル) を持たない。デザインの「今の姿」は実装と Storybook が示す。
+   - 根拠: [ADR-0012](../adr/0012-design-source-of-truth-implementation.md) — デザイン正本を実装へ移し、[ADR-0004](../adr/0004-design-production-workflow.md) を置換した決定
 3. **drift 最小**。中間正本を持たないことで二重更新が発生しない。durable な設計判断 (IA / レイアウト方針 / ブランド指針) は [design/features/](../design/features/) と `packages/ui` トークンへ back-propagate する。
 
 ## 2. 全体フロー
@@ -44,7 +45,7 @@ Claude Design の出力品質は依頼文に強く依存する (密な単一段�
 #### 依頼文テンプレ (goal / layout / content / audience を 1 段落で)
 
 - **goal**: 何の画面/セクションを何のために作るか
-- **layout**: 視覚構造 (セクション順・グリッド・nav 形式)。IA の正本は feature doc のページ構成節である
+- **layout**: 視覚構造 (セクション順・グリッド・nav 形式)。IA の正本は [feature doc のページ構成](../design/features/corporate-site/DesignDoc_corporate-site.md#ページ構成-ia) である
 - **content**: ドメインと **実コンテンツ素材** (company-profile / manufacturers の実テキスト。ダミー回避)
 - **audience**: 誰向けか (例: 取引先・採用候補)
 - **制約**: `packages/ui` トークン踏襲、Astro 静的・最小 island・性能予算、レスポンシブ (desktop / mobile)
@@ -69,14 +70,15 @@ Claude Design の出力品質は依頼文に強く依存する (密な単一段�
 ### Phase C: 実装 (Claude Code / Codex)
 
 - 採用案の HTML とデザイン意図を参照し、layout / styling / 構造を実装へ写像する。参照元は使い捨てであり、成果物であるコードが以後の正本になる。
-- 出力は **Astro 中心** とし、`src/pages/*.astro` と `src/components/sections/<section>/` に置く。配置規約は component-design.md を正本とする。`@kufu/ui` のトークンとコンポーネントを参照し、インタラクションが要る所だけ React island (`client:*`) にする。
+- 出力は **Astro 中心** とし、`src/pages/*.astro` と `src/components/sections/<section>/` に置く。配置規約は [component-design.md](component-design.md) のディレクトリ構成を正本とする。`@kufu/ui` のトークンとコンポーネントを参照し、インタラクションが要る所だけ React island (`client:*`) にする。
   - 根拠: [ADR-0008](../adr/0008-astro-react-island-policy.md) — React island 化の境界と shadcn の消費ポリシー
 - **状態系 (hover / focus / error / empty)、データ量違い・検索/フィルタ結果などの動的データ、レスポンシブは実装時に必ず補完する。** プロト HTML に無くても省略しない。
 - 実データ (company-profile / manufacturers) で表示検証する。ダミーテキスト前提のレイアウト破綻を防ぐ。
 - プロト HTML の素朴な div 配置をそのまま持ち込まず、`@kufu/ui` コンポ + セマンティック HTML へ **写像**する (a11y 崩れの防止)。
-- 性能方針 (静的生成・最小 island) は [architecture.md](architecture.md) / [toolchain.md](toolchain.md) に従い、E2E / テストを整える。
-- レビューは **Storybook と実画面** で行う。component は Storybook に story を置き、状態を確認できるようにする。
-  - 根拠: [component-design.md](component-design.md) — Storybook の対象基準と component 設計規約
+- 性能方針 (静的生成・最小 island) に従い、E2E / テストを整える。
+  - 根拠: [architecture.md](architecture.md) の Runtime Boundary — 静的配信を基本とし `client:*` island を限定する原則
+  - 根拠: [toolchain.md](toolchain.md) — build / test / E2E に使うツールの選定
+- レビューは **Storybook と実画面** で行う。component は Storybook に story を置き、状態を確認できるようにする。story を置く対象の基準は component-design.md が定める。
 
 ## 4. ディレクトリ / ファイル規約
 
@@ -103,7 +105,7 @@ shadcn/ui は **コードを自分の repo に copy して所有する** モデ�
 3. **wrapper パターン**: 既存コンポにロジック/レイアウトを足す場合は base を汚さず wrapper で包む。
 4. **独自コンポーネント新設**: shadcn の流儀 (CVA variants・セマンティックトークン・a11y は Radix primitives) に沿って `packages/ui` に新規追加する。
 
-「shadcn/ui の拡張」と「独自デザインシステム」は **対立しない**。別システムを並立させず、`packages/ui` を単一正本として **token → primitive → 独自コンポ** と積み上げる。architecture.md の colocation と昇格のルールに従う。
+「shadcn/ui の拡張」と「独自デザインシステム」は **対立しない**。別システムを並立させず、`packages/ui` を単一正本として **token → primitive → 独自コンポ** と積み上げる。資産種別ごとの昇格境界は architecture.md のデザインシステム資産の正本と昇格境界、component の昇格段階は component-design.md の Colocation と昇格が正本である。
 
 ## 6. トークン正本ガード (バリデーション)
 
@@ -121,4 +123,18 @@ shadcn/ui は **コードを自分の repo に copy して所有する** モデ�
 
 - **ライセンス**: Claude Design は **Pro 枠で利用可** (research preview)。使用上限に当たれば Max へアップグレード (別購入不要)。
 - **有償化トリガー**: 非エンジニア含む共同レビュー / 本格デザインオペが必要になったら **Figma + MCP** (§7 fallback) を検討する。単なるコストでは乗り換えない。
-- フローを変える場合は ADR-0012 を更新してから本書を改訂する。
+- フローを変える場合は、先にデザイン正本の決定 (ADR-0012) を更新してから本書を改訂する。
+
+## 参照
+
+- [ADR-0012](../adr/0012-design-source-of-truth-implementation.md): デザイン正本を実装へ移した決定
+- [ADR-0004](../adr/0004-design-production-workflow.md): 旧デザイン制作フロー (ADR-0012 が置換)
+- [ADR-0007](../adr/0007-design-token-architecture.md): トークン体系 (2 層構造 / shadcn 語彙 / 3 entry 配信)
+- [ADR-0008](../adr/0008-astro-react-island-policy.md): React island 化の境界と shadcn の消費ポリシー
+- [architecture.md](architecture.md): package / runtime / state の境界
+- [component-design.md](component-design.md): ディレクトリ構成 / Storybook 対象 / スタイリング
+- [toolchain.md](toolchain.md): build / test / E2E のツール選定
+- [tokens.css](../packages/ui/src/styles/tokens.css): CSS 変数 (トークン) の実体
+- [design/features/](../design/features/): durable な設計判断の書き戻し先
+- [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md): IA の正本 (ページ構成) と、spacing / radius / type scale のガイド (デザイントークン節)
+- [PULL_REQUEST_TEMPLATE.md](../.github/PULL_REQUEST_TEMPLATE.md): レビュー時の確認項目

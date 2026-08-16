@@ -1,6 +1,6 @@
 # Infrastructure & Operations
 
-> 最終更新: 2026-07-03
+> 最終更新: 2026-08-16
 
 公開基盤・環境戦略・運用・セキュリティの契約を定める。Terraform の実体は別 repo `kufu-infra` で管理する。本書は **app 側が依存する contract** を定義する。
 
@@ -99,7 +99,13 @@ flowchart LR
 - リプレイ / CSRF 対策: Turnstile token は単回利用 (`siteverify` の二度目拒否に依拠) とし、Workers で `/api/contact` のリクエスト元 Origin / Referer を自サイトに限定する。
 - 濫用 / 連投対策: `/api/contact` の Cloudflare Rate Limiting は上記 Infrastructure Contract の設定を正とする (本節では重複記載しない)。
 - メール生成時のインジェクション対策: Resend へ渡す宛先・件名はサーバ固定値とし、ユーザー入力は本文に plain text としてのみ埋め込み、改行・制御文字 (CRLF) を無害化する。email を Reply-To に使う場合も CRLF 除去・単一値に制限する。
-- CMS/API を導入する場合は、認証、権限、公開フロー、プレビュー環境を設計する。
-  - 根拠: [DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md) — cms の構想と未設計として残している範囲
+- CMS/API を導入する場合は、認証、権限、公開フロー、プレビュー環境を設計する。設計の実体は `apps/cms` 着手時の spec / ADR が持つ。
 - コーポレートサイトの assets はライセンスと利用許諾を確認する。
 - 問い合わせフォームなどで個人情報を扱う場合の方針は feature doc で明記する。corporate-site の問い合わせフォームは **アプリ側 (Workers) で永続化せず (DB / ストレージ / ログに残さず) メール通知のみ**とし、フォーム近傍に利用目的を明示する。「永続化なし」の射程はアプリ側に限り、通知経路 (Resend 経由のメール送信 → 受信箱・Resend 側の一時保持) には通知という利用目的の範囲でデータが残る。
+
+## 参照
+
+- [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md): Terraform の正本を別 repo に置く決定
+- [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md): 問い合わせ送信 backend とスパム対策の決定
+- [feature doc の問い合わせフォーム仕様](../design/features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様): 入力項目 / validation / API 契約 / error code の正本
+- [DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md): cms の構想と、認証 / 権限 / 公開フローの未設計範囲

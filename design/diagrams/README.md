@@ -62,7 +62,7 @@ draw.io の公式 stencil に Cloudflare は含まれない (AWS / Azure / GCP /
 ### 由来とライセンス
 
 - 出典: [`@cloudflare/component-icon`](https://www.npmjs.com/package/@cloudflare/component-icon) v13.15.3 (author: Cloudflare Frontend Team)
-- ライセンス: BSD-3-Clause (パッケージの `package.json` の `license` フィールドによる)
+- ライセンス: BSD-3-Clause。パッケージの `package.json` の `license` フィールドに基づく
 - 加工内容: React コンポーネントとして配布されているものを静的 SVG へ描画し、draw.io のライブラリ形式へ変換した。図形そのものは改変していない。
 
 **未確認**: 当該パッケージは `LICENSE` ファイルと著作権表示を同梱していない。BSD-3-Clause は再配布時に著作権表示の保持を求めるが、保持すべき原文が上流に存在しない。厳密な遵守を要する場合は Cloudflare へ確認する。

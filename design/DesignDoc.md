@@ -115,8 +115,8 @@ Package Boundary Violation Count は repository quality gate (`pnpm depcruise` /
 ## Project Profile
 
 - repository path、commands、branch pattern、対象ドメイン、Issue Tracker は `context/project.yml` を正本とする。
-- infra repo の境界は、別の決定を正本とする。
-  - 根拠: [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md) — Cloudflare の Terraform を別 repo `kufu-infra` で管理すると定めた決定
+- Cloudflare の Terraform は別 repo `kufu-infra` で管理する。
+  - 根拠: [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md) — infra code の正本を別リポジトリへ置くと定めた決定
 
 ## Goal
 
@@ -138,7 +138,7 @@ Kufu のコーポレートサイトを Astro で高いパフォーマンスと�
 - app: `apps/*` 配下の実行単位。
 - package: `packages/*` 配下の共有 UI、設定、ライブラリ。
 - spec: issue 単位で要求・論点・設計・テスト観点を整理する作業文書。issue close 時に削除する。
-  - 根拠: [ADR-0011](../adr/0011-specs-closeout-enforcement.md) — spec を存続させ、close 時の削除を徹底する決定
+  - 根拠: [ADR-0011](../adr/0011-specs-closeout-enforcement.md) — issue close 時に bot が spec 削除 PR を起票し、削除の可否は人が決めると定めた決定
 - feature doc: feature 単位の設計 (How) を残す永続文書。
 - context: 技術スタック規約・codebase architecture・運用契約を集約する永続ナレッジ層。
 - ADR: 長期参照する意思決定ログ。
@@ -297,3 +297,15 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 | 2026-07-25 | Claude | Related ADRs に ADR-0011/0012/0013 を追記                                                                 |
 | 2026-07-26 | Claude | 現状事実化: Phase 語彙と将来記述を全節から排除し Future Work へ集約。C4 L1/L2 を実在の要素のみに再設計    |
 | 2026-08-16 | Claude | 根拠を括弧からネストした参照行へ移し、本文中の重複リンクを初出 1 回に整理                                 |
+
+## 関連ドキュメント
+
+- [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md): infra code の正本を別リポジトリへ置く決定
+- [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md): Phase 1 の対象を corporate-site のみとする決定
+- [ADR-0007](../adr/0007-design-token-architecture.md): デザイントークンの正本を `packages/ui` に置く決定
+- [ADR-0011](../adr/0011-specs-closeout-enforcement.md): spec の closeout を担保する決定
+- [ADR-0013](../adr/0013-designdoc-present-facts-only.md): 本 doc に現状事実のみを記載する決定
+- [adr/](../adr/): 確定した技術判断と却下した代替案
+- [context/](../context/): 技術規約 / codebase architecture / 運用契約
+- [context/project.yml](../context/project.yml): プロジェクト固有値
+- [design/features/](features/): feature 単位の設計

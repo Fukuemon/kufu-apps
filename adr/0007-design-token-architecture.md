@@ -24,7 +24,8 @@
    - **追加した独自 semantic (`--primary-soft` 等) を `bg-*` 等のユーティリティで使うには `@theme inline` への追加マッピングが必要** (生 CSS の `var()` 直書きなら不要)。ユーティリティ提供は #10 の実需に応じて行う。
 3. **ダーク面は inverse スコープ**: `.dark` テーマでなく、semantic 変数を上書きするラッパー class (案: `.surface-inverse`) で section 単位のダーク面を表現する。class 内で `--background` / `--foreground` 等を上書きすると、**そのスコープ内の shadcn コンポーネントもカスケードで自動的にダーク面の見た目へ再テーマされる** (`.dark` と同じ機構)。名前を保って値だけ差し替える設計の利点。
 4. **3 entry 配信**: `@kufu/ui/tokens.css` (CSS 変数のみ) / `@kufu/ui/fonts.css` (fontsource font-face) / `@kufu/ui/styles.css` (全量エントリ = `globals.css`。tokens + fonts + Tailwind theme + shadcn 層) に分離する。Astro (corporate-site) は `tokens.css` + `fonts.css` のみ、React app (将来の cms) は `styles.css` を import する。**(2026-06-22 改訂 — 下記「更新」参照)** corporate-site は全量 `styles.css` は取り込まないまま、app-local に lean な Tailwind v4 entry を立てて utility を使えるようにした。不採用にしたのは tw-animate-css / shadcn 層を含む「全量エントリの混入」であり、lean Tailwind 自体ではない。
-5. **実績ベースの最小定義**: type scale / spacing / shadow / breakpoint は独自トークンを作らず Tailwind 標準を使う (spacing は 4px グリッド + 推奨リズム 12/16/24/32/48/80 をガイド文書化)。radius は shadcn `--radius` に一本化する。基準値は `0.25rem` (4px) とし、Button 8px / Tag 4px など component 固有値は `@kufu/ui` の component variant で管理する 。当初は `.pen` との二重管理だったが、ADR-0012 が `.pen` を廃止した。
+5. **実績ベースの最小定義**: type scale / spacing / shadow / breakpoint は独自トークンを作らず Tailwind 標準を使う (spacing は 4px グリッド + 推奨リズム 12/16/24/32/48/80 をガイド文書化)。radius は shadcn `--radius` に一本化する。基準値は `0.25rem` (4px) とし、Button 8px / Tag 4px など component 固有値は `@kufu/ui` の component variant で管理する。当初は `.pen` との二重管理だったが、`.pen` は廃止された。
+   - 根拠: [ADR-0012](0012-design-source-of-truth-implementation.md) — デザイン正本を実装へ移し `.pen` を廃止した決定
 
 ## 代替案
 
@@ -67,7 +68,7 @@
 ### 2026-07-26: `.pen` 廃止に伴う参照の整理 (issue #31)
 
 - **背景**: 本 ADR は `.pen` (Pencil) をデザイン正本とする前提で、トークンの一方向同期 (`packages/ui` → Pencil) と variables の rename を定めていた。
-- **決定**: [ADR-0012](0012-design-source-of-truth-implementation.md) によりデザイン正本は実装 (コード + Storybook) となり `.pen` は廃止された。本 ADR の 2 層構造・3 entry 配信・semantic 語彙は有効なまま、`.pen` 同期に関する記述は歴史的経緯として読む。
+- **決定**: デザイン正本は実装 (コード + Storybook) となり `.pen` は廃止された。本 ADR の 2 層構造・3 entry 配信・semantic 語彙は有効なまま、`.pen` 同期に関する記述は歴史的経緯として読む。
 - **影響**: トークン正本は引き続き `packages/ui/src/styles/tokens.css`。消費側は実装のみとなり、デザインツールへの同期は不要になった。
 
 ### 2026-07-15: radius 基準値を 4px へ改訂 (issue #10)
@@ -92,3 +93,5 @@
 - issue #6 (Storybook。本トークン体系を前提とする)
 - feature doc: [design/features/corporate-site/DesignDoc_corporate-site.md](../design/features/corporate-site/DesignDoc_corporate-site.md) (トークン対応表 / ブランド指針の正本)
 - 運用契約: [context/design-workflow.md](../context/design-workflow.md) (正本 path / トークンガード)
+- [ADR-0012](0012-design-source-of-truth-implementation.md): デザイン正本を実装へ移し `.pen` を廃止した決定
+- [context/component-design.md](../context/component-design.md): component 設計とスタイリング規約

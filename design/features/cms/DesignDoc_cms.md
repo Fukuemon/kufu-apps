@@ -1,6 +1,6 @@
 # Feature 設計: CMS / React アプリ候補 (apps/cms)
 
-> 最終更新: 2026-07-26 / Status: 暫定標準候補 (Phase 2 以降, 未着手)
+> 最終更新: 2026-08-16 / Status: 暫定標準候補 (Phase 2 以降, 未着手)
 
 コーポレートサイト掲載投稿を管理する Phase 2 以降の app 候補である。Phase 1 では実装せず、React app の暫定標準候補と採用判断の条件だけを置く。実装着手時は spec / ADR で採否、バージョン、互換性、運用責務を再確認して確定する。
 
@@ -51,7 +51,7 @@
 - 暫定候補は Phase 2 spec の入力であり、現時点の実装指示ではない。
 - 追加ライブラリ (axios など) は、標準 Web API / framework 機能 / TanStack Query で足りない理由を spec に書いた場合のみ採用する。
 - URL に表現できる状態は router 側へ寄せる。
-  - 根拠: [context/architecture.md](../../../context/architecture.md) — package / runtime / state の境界規約
+  - 根拠: [context/architecture.md](../../../context/architecture.md) の State Boundary (React app) — URL で表現できる状態を client state に持たないと定める
 
 ### データ / コンテンツモデル
 
@@ -88,3 +88,11 @@
 | --------- | -------- | ------------------------------------------------------------------------------------- |
 | DesignDoc | 継承     | `apps/cms` を Future Work の「未実装の計画」として保持 (モジュール責務表には載せない) |
 | ADR       | 継承     | ADR-0003 「app 実装対象は corporate-site のみ」を前提に候補のみ記載                   |
+
+## 関連ドキュメント
+
+- [design/DesignDoc.md](../../DesignDoc.md): system landscape と Future Work。`apps/cms` の立ち上げ判断基準は同 doc の未決事項 #4 が持つ
+- [ADR-0003](../../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md): Phase 1 の対象を corporate-site のみとする決定
+- [context/architecture.md](../../../context/architecture.md): package / runtime / state の境界
+- [context/toolchain.md](../../../context/toolchain.md): toolchain と scaffold policy
+- [context/infrastructure.md](../../../context/infrastructure.md): 配信基盤 / 環境戦略 / Security
