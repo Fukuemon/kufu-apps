@@ -1,0 +1,47 @@
+# story 側 VRT (storycap + reg-suit) の baseline と差分レポートを置くローカル S3 互換ストレージ。
+#
+# #33 の時点では仕組みの検証だけを目的とし、ここに置く baseline は破棄前提とする (ADR-0015 / spec D8)。
+# 正となる baseline は #47 の完了後に CI 環境で撮り直し、保管先を Cloudflare R2 へ移す。
+# 移行時に差し替えるのは regconfig.json の sdkOptions.endpoint と資格情報だけで、
+# enableACL: false と region: auto はそのまま使える。
+#
+# 起動手順と資格情報の渡し方は README.md の「Visual Regression Testing (VRT)」節を読む。
+
+name: kufu-vrt
+
+services:
+  vrt-storage:
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    # 資格情報の実値はリポジトリに置かない。git 管理外の .env から docker compose が読む。
+    # 未設定なら既定値で素通しさせず、その場で失敗させる。
+    environment:
+      MINIO_ROOT_USER: ${VRT_S3_ACCESS_KEY_ID:?README.md の VRT 節に従って .env へ設定してください}
+      MINIO_ROOT_PASSWORD: ${VRT_S3_SECRET_ACCESS_KEY:?README.md の VRT 節に従って .env へ設定してください}
+    # バケットは /data 直下のディレクトリとして作る。mc を使う 1 回限りのジョブを別サービスに
+    # 分けると、そのサービスが正常終了しても `docker compose up --wait` が失敗扱いにする。
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        mkdir -p /data/kufu-vrt-baseline &&
+        exec minio server /data --address ":9000" --console-address ":9001"
+    # ローカル検証専用のため loopback にだけ bind する。
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    volumes:
+      - vrt-storage-data:/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--fail",
+          "--silent",
+          "http://localhost:9000/minio/health/live",
+        ]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  vrt-storage-data:

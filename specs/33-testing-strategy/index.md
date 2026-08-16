@@ -309,12 +309,31 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 
 ### 計測指標
 
-| 指標                     | 目的                                                                      |
-| ------------------------ | ------------------------------------------------------------------------- |
-| CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする                        |
-| VRT の撮影枚数           | 実行時間と保守コストの見積もり。初期値は story 81 枚 + route 6 枚 = 87 枚 |
-| VRT の連続実行での差分数 | flake の有無 (目標: 0)                                                    |
-| E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                                            |
+| 指標                     | 目的                                                                      | 実測値                       |
+| ------------------------ | ------------------------------------------------------------------------- | ---------------------------- |
+| CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする                        | 未計測 — P2 で計測する       |
+| VRT の撮影枚数           | 実行時間と保守コストの見積もり。初期値は story 81 枚 + route 6 枚 = 87 枚 | story 81 枚 (P1_01 で実測)   |
+| VRT の連続実行での差分数 | flake の有無 (目標: 0)                                                    | story 側 0 件 (P1_01 で実測) |
+| E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                                            | 未計測 — P3 で計測する       |
+
+#### story 側 VRT の実測 (2026-08-16 / P1_01)
+
+ローカルの S3 互換ストレージ (Docker、破棄前提) に対して実行した。
+
+| 項目                   | 実測値                                                                                                                        |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 撮影枚数               | **81 枚** (`packages/ui` 47 + `apps/corporate-site` 34)。設計時の見積もりと一致した                                           |
+| fixture story          | 撮影対象に含まれない。Storybook の glob (`../src/**`) の外にあり、除外設定を足す必要がなかった                                |
+| 1 回目 (baseline 不在) | changed 0 / new 81 / deleted 0 / passed 0。81 枚を publish した                                                               |
+| 2 回目 (UI 無変更)     | changed **0** / new 0 / deleted 0 / passed 81                                                                                 |
+| 3 回目 (UI 無変更)     | changed **0** / new 0 / deleted 0 / passed 81。**2 回連続で差分 0** を確認した                                                |
+| 4 回目 (意図的な変更)  | `badge` の `px-3` を `px-6` に変更。changed **6** / passed 75 で終了コード 1。差分は Badge と Tag の 6 story だけで誤検出なし |
+| 5 回目 (変更を戻す)    | changed 0 / passed 81。baseline へ復帰した                                                                                    |
+| flake 要因と対処       | `CompanySection` の Google Maps iframe で撮影が完了しなかった。VRT 用ビルドにだけ CSP (`frame-src 'none'`) を入れて解消した   |
+| 許容 diff              | `thresholdRate: 0` (完全一致)。緩める必要は生じなかった                                                                       |
+| レビュー対応後の再検証 | 撮影 81 枚、UI 無変更で changed 0 / new 0 / deleted 0 / passed 81。CSP 追加後も撮影と判定が成立することを確認した             |
+
+story 側 VRT の CI 稼働は #47 の完了後 (実装分割 P5) であり、ここで撮った baseline は破棄する。
 
 ## フロー / シーケンス
 
@@ -570,17 +589,17 @@ sequenceDiagram
 
 ### context への影響
 
-| 対象 doc / 節                                       | 変更内容                                                                       | 状態                                |
-| --------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------- |
-| `context/testing.md` テスト責務の分担               | play / VRT を追加し 4 種別へ拡張 (D1 / D3)                                     | **反映済** (sync)                   |
-| `context/testing.md`                                | play 対象・ジャーニー・Page Object と locator・VRT の各節 (D2 / D5 / D10〜D12) | **反映済** (sync)                   |
-| `context/engineering.md` Repository Quality Gate    | CI とローカル hook の分担を追加 (D6〜D9)                                       | **反映済** (sync)                   |
-| `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は委譲する」を実態へ更新                                        | **反映済** (sync)                   |
-| `context/toolchain.md` 標準スタック                 | VRT (story) / VRT (route) を追加 (D4)                                          | **反映済** (sync)                   |
-| `context/impact-index.yaml`                         | `testing-strategy` / `ci-pipeline` の 2 エントリを追加                         | **反映済** (sync)                   |
-| `context/project.yml` の `commands`                 | VRT 実行コマンドと baseline 更新コマンド。`meta.updated` も同期                | 未反映 — コマンド名が確定する実装時 |
-| `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケット                                                 | 未反映 — #47 の完了時               |
-| `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を集約後の実態へ更新                                         | 未反映 — #47 の完了時               |
+| 対象 doc / 節                                       | 変更内容                                                                                                               | 状態                                                              |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `context/testing.md` テスト責務の分担               | play / VRT を追加し 4 種別へ拡張 (D1 / D3)                                                                             | **反映済** (sync)                                                 |
+| `context/testing.md`                                | play 対象・ジャーニー・Page Object と locator・VRT の各節 (D2 / D5 / D10〜D12)                                         | **反映済** (sync)                                                 |
+| `context/engineering.md` Repository Quality Gate    | CI とローカル hook の分担を追加 (D6〜D9)                                                                               | **反映済** (sync)                                                 |
+| `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は委譲する」を実態へ更新                                                                                | **反映済** (sync)                                                 |
+| `context/toolchain.md` 標準スタック                 | VRT (story) / VRT (route) を追加 (D4)                                                                                  | **反映済** (sync)                                                 |
+| `context/impact-index.yaml`                         | `testing-strategy` / `ci-pipeline` の 2 エントリを追加                                                                 | **反映済** (sync)                                                 |
+| `context/project.yml` の `commands`                 | story 側の VRT 実行コマンド `pnpm vrt:story` と baseline 更新コマンド `pnpm vrt:story:baseline`。`meta.updated` も同期 | **反映済** (P1_01)。route 側 (P1_02) のコマンドは確定後に追加する |
+| `context/infrastructure.md` secret の置き場         | R2 の資格情報と VRT 用バケット                                                                                         | 未反映 — #47 の完了時                                             |
+| `context/infrastructure.md` Infrastructure Contract | 別 repo 依頼の記述を集約後の実態へ更新                                                                                 | 未反映 — #47 の完了時                                             |
 
 ### 他 issue への引き継ぎ
 
@@ -594,12 +613,13 @@ sequenceDiagram
 
 ### ADR の新規 / 更新
 
-| ADR ID                | 変更内容                                               | 理由                                                                                           |
-| --------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| **ADR-0015** (反映済) | VRT の導入方針 (D3 / D4 / D10 / D12)                   | 候補を比較して決めた判断のため。以後 ADR-0015 が正本                                           |
-| **ADR-0016** (反映済) | CI とローカル hook の責務分担 (D6 / D7 / D8 / D9)      | 二重実行を許すかを含む運用方針の判断のため。以後 ADR-0016 が正本                               |
-| **ADR-0017** (反映済) | play / E2E のテスト構造規約 (D1 / D2 / D5 / D11)       | 却下案のある判断のため。以後 ADR-0017 が正本                                                   |
-| ADR-0001              | **#47 側で supersede される** (本 spec では起票しない) | 本 spec は R2 を調達しないため衝突しない。story 側 VRT の CI 稼働 (P5) が #47 の結論に依存する |
+| ADR ID                | 変更内容                                                    | 理由                                                                                                                                                   |
+| --------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **ADR-0015** (反映済) | VRT の導入方針 (D3 / D4 / D10 / D12)                        | 候補を比較して決めた判断のため。以後 ADR-0015 が正本                                                                                                   |
+| **ADR-0015** (反映済) | 必須設定へ `sdkOptions.forcePathStyle: true` を追加 (P1_01) | S3 既定の virtual-host style ではローカルの検証用ストレージを名前解決できず、実測で必要だった。R2 も path style を受け付けるため移行後も同じ値で使える |
+| **ADR-0016** (反映済) | CI とローカル hook の責務分担 (D6 / D7 / D8 / D9)           | 二重実行を許すかを含む運用方針の判断のため。以後 ADR-0016 が正本                                                                                       |
+| **ADR-0017** (反映済) | play / E2E のテスト構造規約 (D1 / D2 / D5 / D11)            | 却下案のある判断のため。以後 ADR-0017 が正本                                                                                                           |
+| ADR-0001              | **#47 側で supersede される** (本 spec では起票しない)      | 本 spec は R2 を調達しないため衝突しない。story 側 VRT の CI 稼働 (P5) が #47 の結論に依存する                                                         |
 
 ### 正本ハンドオフ
 

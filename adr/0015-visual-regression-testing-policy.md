@@ -92,15 +92,16 @@
 
 ### reg-suit を S3 互換ストレージへ接続するときの必須設定
 
-`reg-publish-s3-plugin` は `sdkOptions` を `S3Client` のコンストラクタへ渡すため、S3 互換ストレージ (Cloudflare R2 / ローカルの検証用ストレージ) で動作する。ただし既定値のままでは失敗するため、次の 3 点を設定する (2026-08-16 調査)。
+`reg-publish-s3-plugin` は `sdkOptions` を `S3Client` のコンストラクタへ渡すため、S3 互換ストレージ (Cloudflare R2 / ローカルの検証用ストレージ) で動作する。ただし既定値のままでは失敗するため、次の 4 点を設定する (2026-08-16 調査。4 は同日の実測で追加)。
 
-| #   | 設定                                      | 理由                                                                                                                                                          |
-| --- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | `enableACL: false` を明示する             | plugin の既定は `enableACL: true` / `acl: public-read` だが、**R2 はオブジェクト ACL を未実装**で `x-amz-acl` 等が非対応。既定のままでは PutObject が失敗する |
-| 2   | `sdkOptions.region` に `auto` を指定する  | R2 の region は `auto` が正 (空値と `us-east-1` がエイリアス)                                                                                                 |
-| 3   | `customDomain` と `endpoint` を併用しない | 併用すると差分レポートの URL が二重に組み立てられる既知の不具合がある ([reg-suit issue #162](https://github.com/reg-viz/reg-suit/issues/162))                 |
+| #   | 設定                                             | 理由                                                                                                                                                                                                          |
+| --- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `enableACL: false` を明示する                    | plugin の既定は `enableACL: true` / `acl: public-read` だが、**R2 はオブジェクト ACL を未実装**で `x-amz-acl` 等が非対応。既定のままでは PutObject が失敗する                                                 |
+| 2   | `sdkOptions.region` に `auto` を指定する         | R2 の region は `auto` が正 (空値と `us-east-1` がエイリアス)                                                                                                                                                 |
+| 3   | `customDomain` と `endpoint` を併用しない        | 併用すると差分レポートの URL が二重に組み立てられる既知の不具合がある ([reg-suit issue #162](https://github.com/reg-viz/reg-suit/issues/162))                                                                 |
+| 4   | `sdkOptions.forcePathStyle` に `true` を指定する | S3 の既定である virtual-host style は `<bucket>.<endpoint>` を名前解決するため、ローカルの検証用ストレージでは解決できない。R2 も path style を受け付けるので、移行後も同じ値で使える (2026-08-16 実測で追加) |
 
-`sdkOptions.endpoint` には R2 の場合 `https://<ACCOUNT_ID>.r2.cloudflarestorage.com` を指定する。ローカル検証では同じ項目を検証用ストレージのエンドポイントへ向け、`enableACL` と `region` は同じ値のまま使える。
+`sdkOptions.endpoint` には R2 の場合 `https://<ACCOUNT_ID>.r2.cloudflarestorage.com` を指定する。ローカル検証では同じ項目を検証用ストレージのエンドポイントへ向け、`enableACL` / `region` / `forcePathStyle` は同じ値のまま使える。
 
 出典: [plugin README](https://github.com/reg-viz/reg-suit/blob/master/packages/reg-publish-s3-plugin/README.md) / [R2 の S3 API 互換性](https://developers.cloudflare.com/r2/api/s3/api/)
 
