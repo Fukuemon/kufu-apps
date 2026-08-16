@@ -24,7 +24,7 @@ Cloudflare Pages project は 2 つの性質が 1 リソースに同居してい�
 - 基盤としての性質: サイトがどのドメインで公開されるか。変更頻度が低く、本番影響が大きい。
 - アプリとしての性質: どの成果物を配るか、どの環境変数と secret を持つか。deploy のたびに変わる。
 
-Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境変数 / secret / binding) を内包する。Terraform がこの resource を管理すると、Wrangler が secret を投入した時点で Terraform が差分を検出し、次の apply で削除しにいく。
+Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境変数 / secret / binding) を内包する。Terraform がこの resource を管理すると、Wrangler が secret を投入した時点で Terraform が差分を検出し、次の apply でその secret を削除しようとする。
 
 一方、custom domain の紐付けは `cloudflare_pages_domain` という独立した resource であり、project を Terraform が管理しなくても紐付けだけを管理できる。
 
@@ -38,24 +38,24 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 
 いずれのツールに属するか判断できない新規リソースが現れた場合は、次の順で判定する。
 
-1. **データを保持するか。保持するなら Terraform。** 消失が復旧不能な結果を招くリソースを、deploy のたびに動く経路から切り離す。
+1. **データを保持するか。保持するなら Terraform。** 消えると復旧できないリソースを、deploy のたびに動く経路から切り離すためである。
 2. deploy のたびに変わるか。変わるなら Wrangler。
 3. 変わらない場合、そのリソースの変更が本番の可用性またはドメイン到達性に影響するか。影響するなら Terraform。
 4. どちらでもない場合、Terraform を既定とする (変更履歴と review を残せるため)。
 
-### 箱は Terraform、中身と結線は Wrangler
+### データを保持するリソースは Terraform、実行するリソースは Wrangler
 
-判定 1 を言い換えると次になる。Cloudflare で実害に直結する線はここである。
+判定 1 を具体的なリソース種別へ当てはめると次になる。誤った管轄はデータの消失に直結するため、この 3 行が最も重要である。
 
-| 種別                                                         | 管轄      | 理由                                                  |
-| ------------------------------------------------------------ | --------- | ----------------------------------------------------- |
-| 状態を持つ入れ物 (R2 バケット、D1 データベース、KV 名前空間) | Terraform | 消えると復旧できない。deploy では変わらない           |
-| 状態を持たない実行体 (Worker script、deployment)             | Wrangler  | deploy のたびに入れ替わる。作り直しても失うものがない |
-| binding (どの実行体がどの入れ物を見るか)                     | Wrangler  | アプリの依存宣言であり、`wrangler.toml` を正本とする  |
+| 種別                                                                 | 管轄      | 理由                                                  |
+| -------------------------------------------------------------------- | --------- | ----------------------------------------------------- |
+| データを保持するリソース (R2 バケット、D1 データベース、KV 名前空間) | Terraform | 消えると復旧できない。deploy では変わらない           |
+| データを保持しない実行リソース (Worker script、deployment)           | Wrangler  | deploy のたびに入れ替わる。作り直しても失うものがない |
+| binding (どの実行リソースがどのデータを参照するか)                   | Wrangler  | アプリの依存宣言であり、`wrangler.toml` を正本とする  |
 
 決定時点では D1 も KV も使っていない。将来 cms や別アプリがこれらを必要としたとき、この規則で管轄が定まる。
 
-**この規則は値の受け渡しを増やす。** Terraform が作った入れ物の識別子 (R2 のバケット名、D1 の database id) を Wrangler 側へ渡す必要があり、入れ物が増えるほど受け渡しの本数が増える。**受け渡しの方法は [context/infrastructure.md](../context/infrastructure.md) を正本として定める。** 入れ物が 2 つ目になる前に整備する。
+**この規則は値の受け渡しを増やす。** Terraform が作ったリソースの識別子 (R2 のバケット名、D1 の database id) を Wrangler 側へ渡す必要があり、データを保持するリソースが増えるほど受け渡しの本数が増える。**受け渡しの方法は [context/infrastructure.md](../context/infrastructure.md) を正本として定める。** 対象が 2 つ目になる前に整備する。
 
 ### 決定時点の管轄
 
@@ -79,7 +79,7 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 
 図の要点:
 
-- Cloudflare の内側は管轄で 2 つに分かれ、それぞれへ入る実線 (管理経路) は 1 本ずつである。同じリソースへ両方のツールから線が入らないことが、二重管理の不在を表す。
+- Cloudflare の内側は管轄で 2 つに分かれ、それぞれへ入る実線 (管理経路) は 1 本ずつである。同じリソースへ両方のツールから線が入っていないことが、二重管理が生じていないことを表す。
 - 破線は参照であり、管理ではない。`cloudflare_pages_domain` は Wrangler が作った project を名前で参照する。この向きが bootstrap の順序制約を生む。
 - VRT workflow を Cloudflare の外に置いたのは、R2 を消費するだけで管理しないためである。アプリ (Worker) から R2 への binding は存在しない。
 - **図が描くのは、本決定を実装した後の定常状態である。** 初回のみ必要な `infra/bootstrap/` と state 用 R2 バケットは載せていない (初回の順序は下記「bootstrap 順序の制約」を参照する)。また Pages Functions は未実装であり、実装されたときの管轄として描いている。
@@ -100,7 +100,7 @@ credential を 2 系統に分け、通常の CI に apply 権限と secret 投�
 
 Terraform が `cloudflare_pages_project` を管理する場合、Wrangler による secret 投入との衝突を避けるために `lifecycle { ignore_changes = [deployment_configs] }` が必要になる。これは「Terraform が管理しているように見えて、実際には管理していない範囲がある」状態を作り、上記の原則を形骸化させる。
 
-`wrangler pages deploy` は project が存在しない場合に作成するとされ、project の存在は Wrangler が担保できる (この挙動は未検証。下記「未確認事項」を参照)。Terraform は `cloudflare_pages_domain` と DNS record を管理することで、本番影響の大きい「どのドメインでどの project が公開されるか」を握る。ADR-0001 が守ろうとした blast radius の分離は、この範囲で満たせる。
+`wrangler pages deploy` は project が存在しない場合に作成するとされ、project の存在は Wrangler が担保できる (この挙動は未検証。下記「未確認事項」を参照)。Terraform は `cloudflare_pages_domain` と DNS record を管理する。これにより、本番影響の大きい「どのドメインでどの project が公開されるか」は Terraform 側に残る。ADR-0001 が守ろうとした影響範囲の分離は、この範囲で満たせる。
 
 **bootstrap 順序の制約**: `cloudflare_pages_domain` は project の存在を前提とするため、初回のみ Wrangler の deploy を Terraform の apply より先に実行する。この順序は [context/infrastructure.md](../context/infrastructure.md) に手順として記載する。
 

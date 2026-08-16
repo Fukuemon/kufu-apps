@@ -62,6 +62,7 @@ domains:
   - ui
   - config
   - e2e
+  - infra
   - core
 
 # Label Policy — Issue / PR のラベル体系の唯一の正本 (workflow-git skill が読む)

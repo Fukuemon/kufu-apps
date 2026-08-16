@@ -23,8 +23,6 @@ ADR-0001 の判断自体が誤っていたのではない。**分離が成立す
 
 事実として確認できるのは、3 か月間 `.tf` が 1 つも書かれなかったこと、Cloudflare の設定が Dashboard 上に残り続けたこと、#33 が空の repo 待ちで止まっていることの 3 点である。
 
-**推定** (単一事例からの解釈であり、検証していない): 現状の開発体制は 1 名で、対象は corporate-site 1 つ ([ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md)) である。この規模に対して 2 リポジトリにまたがる変更手順が重く、着手の障壁として働いた可能性が高い。
-
 ## 決定
 
 > **承認順序**: 本 ADR と [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md) は**同時に承認する**。本 ADR が挙げる Cons 2 と Cons 3 の対処は ADR-0016 の credential 分担に依存しており、本 ADR だけを承認すると対処のない状態になる。
@@ -43,7 +41,7 @@ infra/
 │   ├── provider.tf
 │   ├── r2_state_bucket.tf
 │   └── vars.tf
-└── cloudflare/                  # 本体。account 階層と zone 階層を 1 つに畳んでいる
+└── cloudflare/                  # 本体。account レベルと zone レベルを 1 ディレクトリにまとめる
     ├── provider.tf              # terraform{} + backend (R2) + provider
     ├── vars.tf
     ├── r2.tf                    # account レベル
@@ -52,12 +50,12 @@ infra/
     └── rate_limiting.tf
 ```
 
-- **`infra/` を repo ルート直下に置く。** `pnpm-workspace.yaml` の glob は `apps/*` と `packages/*` のみのため、workspace package として拾われない。`packages/infra/` は採らない。`packages/` は app から import される共有ライブラリの場所であり、infra は誰からも import されないため意味が合わない。
+- **repo ルート直下に置く。** `pnpm-workspace.yaml` の glob は `apps/*` と `packages/*` のみのため、workspace package として拾われない。`packages/infra/` は採らない。`packages/` は app から import される共有ライブラリの場所であり、infra はどこからも import されないためである。
 - **実行は root script から行う** (`pnpm infra:plan` など)。`package.json` を持たない root 直下のディレクトリを root script から動かす形は、既存の `e2e/` と同じである。
 - **ファイル命名は Cloudflare の推奨に従う。** `provider.tf` / `<subject>.tf` / `vars.tf` の 3 種で構成する ([Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/))。
-- **`bootstrap/` を別の root module にする。** state を R2 に置く一方で R2 バケットを Terraform が作るため、本体だけでは初回が回らない。`bootstrap/` の state はローカルに置き、commit しない。失った場合は `terraform import` で回復する。
+- **bootstrap を別の root module にする。** state の置き場である R2 バケットを Terraform 自身が作るため、`infra/cloudflare/` だけでは初回が実行できない。`bootstrap/` の state はローカルに置き、commit しない。失った場合は `terraform import` で回復する。
 - **state の key に scope を含める。** `terraform.tfstate` ではなく `cloudflare/main/terraform.tfstate` とする。後から兄弟の state を足すときに、既存 state のリネームを避けられる。
-- **`envs/` のようなディレクトリで環境を分けない。** Cloudflare は staging / QA / production を**別アカウント + 別ドメイン**で分けるよう定めている。アカウント階層の共有リソース (Load Balancer の monitor / pool など) を同一アカウント内で分離できないためである。
+- **環境をディレクトリで分けない** (`envs/staging/` のような構成を採らない)。Cloudflare は staging / QA / production を別アカウント + 別ドメインで分けるよう定めている。アカウント階層の共有リソース (Load Balancer の monitor / pool など) を同一アカウント内で分離できないためである。
 
 ### モジュールを作らない
 
@@ -84,9 +82,9 @@ Cloudflare 側を採る根拠は次の 3 点である。
 | 2    | staging 等の環境追加       | `infra/cloudflare/<account>/...`                    | 2 つ目の Cloudflare アカウント                                |
 | 3    | AWS / GCP 併用             | `infra/aws/` / `infra/gcp/` を並置                  | 別プロバイダの導入                                            |
 
-段階 3 で初めて composition の概念が実利を持つ。プロバイダを跨ぐ参照 (Cloudflare の DNS が他クラウドの資源を指すなど) が生じ、root module 間で値を渡す `terraform_remote_state` が必要になるためである。現時点では接着すべき相手が存在しない。
+段階 3 で初めて composition の概念が実利を持つ。プロバイダを跨ぐ参照 (Cloudflare の DNS が他クラウドのリソースを指すなど) が生じ、root module 間で値を渡す `terraform_remote_state` が必要になるためである。現時点では値を渡す相手が存在しない。
 
-`infra/cloudflare/` という名前は段階 3 を織り込んでいる。`infra/main/` としない理由がこれである。また subject 別にファイルを分けることで、段階 1 の分割をファイルの移動だけで済ませられる。
+`infra/main/` ではなく `infra/cloudflare/` という名前にしたのは、段階 3 を見越したためである。また subject 別にファイルを分けておくことで、段階 1 の分割をファイルの移動だけで済ませられる。
 
 **この展開には代償がある。** root module を分ける時点で state を分ける作業 (`terraform state mv` または import) が一度発生する。これを避けるには最初から分割することになるが、6 リソース程度に対して常時の運用コストを払うことになり、`decision_priority` の順位に反する。一度きりの限定的な作業として受け入れる。
 
@@ -121,24 +119,28 @@ ADR-0001 は monorepo 同居 (代替案 1) の Cons を 5 点挙げた。集約�
 
 ### 残る Cons: Wrangler 管轄の変更
 
-Cons 3 のうち **Pages Functions (Workers) の変更は対処しない。** [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md) の分担により Pages Functions は Wrangler 管轄であり、push を起点とする deploy workflow で自動的に本番へ出る。`/api/contact` のコード変更は通常の PR に含まれ、apply workflow のような明示的な行為を挟まない。
+Cons 3 のうち **Pages Functions (Workers) の変更は対処しない。** [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md) の分担により Pages Functions は Wrangler 管轄であり、push を起点とする deploy workflow で自動的に本番へ反映される。`/api/contact` のコード変更は通常の PR に含まれ、apply workflow のような明示的な行為を挟まない。
 
-**ただしこれは集約によって悪化するものではない。** Pages Functions は 2026-08-16 時点で未実装であり (`apps/corporate-site/functions/` が存在せず、issue #26 が open。[ADR-0013](0013-designdoc-present-facts-only.md) が同じ事実を記録している)、自動 deploy された実績はない。ここで言えるのは構成上の帰結である。ADR-0001 の構成のままでも、Pages Functions を実装すれば app repo への push を起点に Cloudflare Pages が自動 deploy する ([context/infrastructure.md](../context/infrastructure.md) の Environment Strategy)。Workers のコードは app 側にあるため、この Cons は repo 境界では解けない。
+**ただしこれは集約によって悪化するものではない。**
+
+Pages Functions は 2026-08-16 時点で未実装である (`apps/corporate-site/functions/` が存在せず、issue #26 が open。[ADR-0013](0013-designdoc-present-facts-only.md) が同じ事実を記録している)。したがって自動 deploy された実績はなく、ここで述べるのは過去の記録ではなく構成上の帰結である。
+
+ADR-0001 の構成を維持したとしても、Pages Functions を実装すれば app repo への push を起点に Cloudflare Pages が自動 deploy する ([context/infrastructure.md](../context/infrastructure.md) の Environment Strategy)。Workers のコードは app 側にあるため、この Cons は repo をどう分けても解けない。
 
 緩和は通常の PR レビューと自動テストに依存する。infra の権限分離とは別の問題として扱う。
 
 runtime secret はこの Cons の対象外である。値は PR の差分に現れず、特権経路でのみ変更されるため、「通常の PR に埋もれる」経路が存在しない。
 
-### CODEOWNERS の位置づけと限界
+### 権限分離として実際に効くもの
 
-`.github/CODEOWNERS` に `/infra/` の所有者を宣言する。ただし**現在の開発体制は 1 名であり、CODEOWNERS は職務分離として機能しない**。自分の PR を自分が承認する形になるためである。
+現在の開発体制は 1 名である。したがって**レビューによる職務分離は成立しない**。自分の変更を自分が承認する形になるためである。`.github/CODEOWNERS` による所有者の宣言も同じ理由で分離として働かないため、本 ADR では設定しない。
 
-したがって上記の対処表に CODEOWNERS を数えていない。実効的な分離は次の 2 つだけである。
+実際に効く分離は次の 2 つである。
 
 - apply が自動実行されず、手動起動という明示的な行為を必ず伴うこと
 - 通常の CI が apply 用 credential を持たないこと ([ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md))
 
-CODEOWNERS を置く理由は 2 つある。境界を宣言として残すことと、人員が増えた時点で追加の設定なしに効き始めることである。人員が増えるまでは、分離手段として数えない。
+いずれも 1 名の体制でも成立する。人員が増えてレビューによる分離が可能になった時点で、手段を追加するかを見直す。
 
 ### 見直しの条件
 
@@ -196,7 +198,7 @@ CODEOWNERS を置く理由は 2 つある。境界を宣言として残すこと
 #### Cons
 
 - ADR-0001 が挙げた Cons のうち「境界が曖昧になる」「レビュー観点が混ざる」に対処できない。
-- `infra/` というパス接頭辞がなくなり、CI の path filter や CODEOWNERS で infra 変更だけを対象にできなくなる。
+- `infra/` というパス接頭辞がなくなり、CI の path filter で infra 変更だけを対象にできなくなる。
 
 ## 影響
 
@@ -210,7 +212,7 @@ CODEOWNERS を置く理由は 2 つある。境界を宣言として残すこと
 ### 悪い影響 / トレードオフ
 
 - monorepo の責務が広がる。frontend 中心の repo に infra の関心事が加わり、読み手が把握すべき範囲が増える。
-- 権限分離を repo 境界ではなく、ディレクトリ・CODEOWNERS・workflow の組み合わせで実現することになる。repo 境界より弱い分離であり、設定漏れが直接リスクになる。
+- 権限分離を repo 境界ではなく、ディレクトリと workflow の組み合わせで実現することになる。repo 境界より弱い分離であり、設定漏れが直接リスクになる。
 - ADR-0001 を前提に書かれた文書 ([context/infrastructure.md](../context/infrastructure.md) / [design/DesignDoc.md](../design/DesignDoc.md) / [context/project.yml](../context/project.yml)) の更新が必要になる。
 - `kufu-infra` をアーカイブすることで、そこへのリンクを持つ既存文書のリンク先が read-only になる。リンク自体は切れない。
 
@@ -221,7 +223,7 @@ CODEOWNERS を置く理由は 2 つある。境界を宣言として残すこと
 ## 実装・運用への反映
 
 - 対象 app / package: `apps/corporate-site`、`e2e` (#33 の VRT)、GitHub Actions workflow、新設する Terraform ディレクトリ
-- spec 更新要否: 要。#47 の spec に、ディレクトリ配置、CODEOWNERS、apply workflow の分離を反映する
+- spec 更新要否: 要。#47 の spec に、ディレクトリ配置と apply workflow の分離を反映する
 - AI 向け設定更新要否: 要。**本 ADR に由来する更新**を次に網羅する。ADR-0016 に由来する更新は同 ADR の同名節を正本とする。
 - **更新時期は実装完了後である。** context と DesignDoc は現状事実を記述する文書であり、決定が承認されただけでは記述すべき事実が存在しない ([ADR-0013](0013-designdoc-present-facts-only.md) の原則を context にも適用する)。承認時点で行うのは ADR-0001 の状態変更だけである。
 
@@ -232,7 +234,7 @@ CODEOWNERS を置く理由は 2 つある。境界を宣言として残すこと
 | [context/project.yml](../context/project.yml) の `repos.infra`  | `kufu-infra` の参照を、アーカイブ済みである旨へ変更する                                                                          |
 | [context/project.yml](../context/project.yml) の `repos.layout` | `infra/` を追加する                                                                                                              |
 | [context/project.yml](../context/project.yml) の `commands`     | `infra:plan` / `infra:apply` を追加する (`dev-commands` skill がここを正本として読む)                                            |
-| [context/project.yml](../context/project.yml) の `domains`      | `infra` を追加するか `core` に含めるかを決める (`domain:*` ラベルの体系に影響する)                                               |
+| [context/project.yml](../context/project.yml) の `domains`      | 対応済み。`infra` を追加した (`domain:infra` ラベルの追加を伴う)                                                                 |
 | [design/DesignDoc.md](../design/DesignDoc.md) の 105 / 116 行目 | ADR-0001 を infra repo 境界の正本とする記述を、本 ADR へ差し替える                                                               |
 | [design/DesignDoc.md](../design/DesignDoc.md) の 251 行目       | 「Terraform は別 repo 管理とし、アプリ repo に本番基盤の apply 導線を持ち込まない」は本 ADR が覆す規範そのものである。書き換える |
 | [design/DesignDoc.md](../design/DesignDoc.md) の 280 行目       | Open Question #6「infra repo と app repo の変更を相互参照する review workflow」は集約により論点が消滅する。クローズする          |
