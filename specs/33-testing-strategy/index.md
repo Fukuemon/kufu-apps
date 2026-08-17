@@ -311,7 +311,7 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 
 | 指標                     | 目的                                                                      | 実測値                       |
 | ------------------------ | ------------------------------------------------------------------------- | ---------------------------- |
-| CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする                        | 未計測 — P2 で計測する       |
+| CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする                        | **2 分 37 秒** (P2 で実測)   |
 | VRT の撮影枚数           | 実行時間と保守コストの見積もり。初期値は story 81 枚 + route 6 枚 = 87 枚 | story 81 枚 (P1_01 で実測)   |
 | VRT の連続実行での差分数 | flake の有無 (目標: 0)                                                    | story 側 0 件 (P1_01 で実測) |
 | E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                                            | 未計測 — P3 で計測する       |
@@ -335,6 +335,29 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 - `permissions: contents: read` を明示する。既定権限に依存させない。
 - 各 job が checkout と install を繰り返すのは並列を優先した結果であり、install の重複は許容する。
 - `lefthook.yml` は変更しない。CI との重複は意図的な二重化として維持し、分担の理由をコメントで残した (ADR-0016)。
+
+**実測 (2026-08-17 / PR #48 の run 31981674870)**: 5 job すべて success。route VRT も CI (amd64 runner) で baseline と一致した。
+
+| job         | 実行時間 |
+| ----------- | -------- |
+| `analyze`   | 30 秒    |
+| `build`     | 35 秒    |
+| `typecheck` | 39 秒    |
+| `e2e`       | 62 秒    |
+| `vrt-route` | 152 秒   |
+
+- `ci.yml` の wall clock は **157 秒**。並列実行のため最長 job (`vrt-route`) が支配する。
+- 既存 `lint.yml` は wall clock **49 秒** (job `lint` が 44 秒) で、`ci.yml` と並走する。
+- したがって PR のチェックが揃うまでの総実行時間は **約 2 分 37 秒**。
+- **U2 の判断材料**: この値であれば Turbo remote cache を入れる必要は無いと読める。最終判断はユーザーが行う。
+- required status checks に設定しうる job 名: `lint` (`lint.yml`。lint と test の 2 step を持つ 1 job)、`typecheck` / `build` / `analyze` / `e2e` / `vrt-route` (`ci.yml`)。設定は U2 としてユーザーが判断する。
+
+**失敗経路の実測 (2026-08-17)**: 使い捨てブランチで `SiteHeader` の `px-5` を `px-16` に変え、Draft PR を立てて CI を回した (確認後に PR を閉じてブランチを削除)。
+
+- `vrt-route` だけが failure、他の 4 job は success。失敗の切り分けが効いている
+- PR のチェック欄に **失敗ジョブ名 `vrt-route` と実行ログへのリンク**が並ぶ
+- ログに落ちた 3 テスト名と `Expected` / `Received` / `Diff` の画像 path が出る
+- 差分画像は artifact `vrt-route-diff` (1.9 MB) として PR から辿れる
 
 #### story 側 VRT の実測 (2026-08-16 / P1_01)
 
