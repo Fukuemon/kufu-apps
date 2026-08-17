@@ -1,0 +1,144 @@
+# 迂回できない quality gate (正本: adr/0016-ci-local-hook-responsibility.md)。
+#
+# lint.yml とは別 workflow に分ける。lint.yml は「lint の必須 gate」として名前と
+# concurrency group を持っており、そこへ build / e2e / VRT を足すと workflow の名前が
+# 実態と合わなくなる。job 名は required status checks の契約になるため、意味の通る
+# 単位で分けておく。lint / test は lint.yml のまま残す。
+#
+# **job 間に needs を置かない。** 実行順序は spec の D6〜D9 のいずれでも決めておらず、
+# 決定の無い順序依存を実装で持ち込まない。
+
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# checkout と artifact だけで足りる。既定権限に依存させない。
+permissions:
+  contents: read
+
+# 各 job が checkout と install を繰り返すのは、job 間に needs を置かずに並列で回すため。
+# install の重複より、順序依存を持ち込まないことを優先する。
+jobs:
+  typecheck:
+    # PR ブランチへの push は pull_request 側が拾う (二重実行の回避)
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          # 24 以上: vitest 設定が import する .ts (packages/config) の
+          # type stripping が既定で有効 (22.12 では ERR_UNKNOWN_FILE_EXTENSION)
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm typecheck
+
+  build:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm build
+
+  # knip と depcruise は project.yml が `pnpm check` として 1 組で扱う健全性検査。
+  analyze:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Knip
+        run: pnpm knip
+      - name: Dependency cruiser
+        run: pnpm depcruise
+
+  e2e:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+      # route VRT は container 実行を条件に skip されるため、このジョブでは smoke だけが走る。
+      - name: E2E
+        run: pnpm e2e
+      # trace (trace: on-first-retry) を PR から辿れるようにする。
+      # playwright-report/ は reporter 未指定 (CI 既定は dot) のため生成されない。
+      - name: Upload E2E artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-artifacts
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # route 側の VRT。ローカルと同じ `pnpm vrt:route` を通す。
+  # container の image は @playwright/test の版から導出され、--platform / --ipc=host /
+  # --retries=0 と「6 件すべて実行されたか」の検査も同じ経路に入る。ここで
+  # `playwright test` を直に叩くと、それらが CI 側だけ抜ける。
+  # 差分が出たらジョブを失敗させる (spec D12)。
+  vrt-route:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      # scripts/vrt-route.mjs が @playwright/test の版を読むために要る。
+      # 撮影そのものは container 内の install を使う。
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Route VRT
+        run: pnpm vrt:route
+      # 差分画像を PR から辿れるようにする (spec のエラーケース #2)。
+      # timeout はキャンセル扱いになり failure() では拾えないため !cancelled() にする。
+      - name: Upload VRT diff
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-route-diff
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore

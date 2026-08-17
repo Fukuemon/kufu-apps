@@ -316,6 +316,26 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 | VRT の連続実行での差分数 | flake の有無 (目標: 0)                                                    | story 側 0 件 (P1_01 で実測) |
 | E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                                            | 未計測 — P3 で計測する       |
 
+#### CI ジョブ構成 (2026-08-17 / P2)
+
+`lint.yml` (lint / test) は残し、`ci.yml` を新設して次の job を **needs なしで並列**に置いた。ジョブ順序は D6〜D9 のいずれでも決めていないため、決定の無い順序依存を実装で持ち込まない。
+
+| job                      | 内容                                                                              |
+| ------------------------ | --------------------------------------------------------------------------------- |
+| `lint` (既存 `lint.yml`) | `pnpm lint`                                                                       |
+| `test` (既存 `lint.yml`) | `pnpm test`                                                                       |
+| `typecheck`              | `pnpm typecheck`                                                                  |
+| `build`                  | `pnpm build`                                                                      |
+| `analyze`                | `pnpm knip` と `pnpm depcruise` (`project.yml` が `pnpm check` として 1 組で扱う) |
+| `e2e`                    | `pnpm e2e` (route VRT は container 実行を条件に skip されるため smoke だけが走る) |
+| `vrt-route`              | `pnpm vrt:route` (Playwright 公式 container。差分でジョブを失敗させる)            |
+
+- `vrt-route` はローカルと同じ `pnpm vrt:route` を通す。image 版の導出・`--platform linux/amd64`・`--ipc=host`・`--retries=0`・6 件実行の検査が 1 箇所に集まり、CI 側だけ抜ける経路を作らないため。
+- artifact は `e2e-artifacts` (trace) と `vrt-route-diff` (差分画像) を上げる。`timeout-minutes` 超過はキャンセル扱いで `failure()` に入らないため、条件は `!cancelled()` とする。
+- `permissions: contents: read` を明示する。既定権限に依存させない。
+- 各 job が checkout と install を繰り返すのは並列を優先した結果であり、install の重複は許容する。
+- `lefthook.yml` は変更しない。CI との重複は意図的な二重化として維持し、分担の理由をコメントで残した (ADR-0016)。
+
 #### story 側 VRT の実測 (2026-08-16 / P1_01)
 
 ローカルの S3 互換ストレージ (Docker、破棄前提) に対して実行した。
@@ -350,11 +370,12 @@ story 側 VRT の CI 稼働は #47 の完了後 (実装分割 P5) であり、�
 | 6 回目 (変更を戻す)      | 6 passed。baseline へ復帰した                                                                                                                                                                                                                          |
 | flake 要因と対処         | 外部通信 (Google Maps / Unsplash の写真) を `page.route` で abort し、VRT をネットワークに依存させない。地図 iframe は枠が残るため `mask` も併用する。reveal とカルーセルの自動スクロールは `reducedMotion: "reduce"` で既存実装の分岐を使い停止させた |
 | ホストでの `pnpm e2e`    | smoke 5 passed / route VRT 6 skipped。撮影を container に固定したため、ホストでは skip する                                                                                                                                                            |
+| アーキテクチャ           | `linux/amd64` に固定した (P2)。CI の runner が amd64 で、arm64 のホストで撮った画像とは一致しない。**実測で 6 枚中 2 枚 (products の 2 viewport) が変わった**                                                                                          |
 | skip の検知              | `pnpm vrt:route` は Playwright の JSON レポートで 6 件すべての実行を検査する。skip されたまま緑になる事故を防ぐため                                                                                                                                    |
 | 許容 diff                | `maxDiffPixels: 0` / `threshold: 0` (完全一致)。緩める必要は生じなかった                                                                                                                                                                               |
 | 差分成果物               | `test-results/` に出力され `.gitignore` 済み。リポジトリには残らない                                                                                                                                                                                   |
 
-P2 への申し送り: root の `playwright.config.ts` は CI で `retries: 2` を与える。route VRT は許容 diff 0 で flake に最も敏感なため、CI へ載せる P2 で retry の扱いを決める。
+retry の扱い (P2 で決定): route VRT は `--retries=0` を明示する。root の `playwright.config.ts` は CI で `retries: 2` を与えるが、許容 diff 0 の VRT で再試行すると flake を緑で握り潰し、D10 / D12 が実質無意味になる。smoke テストは既定の `retries: 2` のままとする。
 
 ## フロー / シーケンス
 

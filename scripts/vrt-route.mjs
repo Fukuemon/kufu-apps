@@ -95,6 +95,8 @@ const containerScript = [
   "corepack enable",
   "pnpm install --frozen-lockfile --store-dir /pnpm-store",
   // json reporter を足すのは、実行件数をホスト側で検査するため (下の EXPECTED_TESTS)。
+  // --retries=0 を明示するのは、root の playwright.config.ts が CI で retries: 2 を
+  // 与えるため。許容 diff 0 の VRT で再試行すると flake を緑で握り潰す (spec D10 / D12)。
   [
     "pnpm",
     "exec",
@@ -102,6 +104,7 @@ const containerScript = [
     "test",
     "route-vrt",
     "--reporter=list,json",
+    "--retries=0",
     ...playwrightArgs,
   ].join(" "),
 ].join("\n");
@@ -110,6 +113,14 @@ const dockerArgs = [
   "run",
   "--rm",
   "--init",
+  // CI の runner は amd64。arm64 のホストで撮ると Skia のラスタライズ経路が変わりうるので、
+  // アーキテクチャまで含めて撮影環境を固定する (adr/0015)。Apple Silicon では Rosetta の
+  // エミュレーションで動くため、その分だけ遅くなる。
+  "--platform",
+  "linux/amd64",
+  // Playwright の推奨。既定の小さい /dev/shm では Chromium が落ちることがあり、
+  // 許容 diff 0 の VRT ではそのまま flake になる。
+  "--ipc=host",
   "-v",
   `${repoRoot}:/work`,
   "-w",

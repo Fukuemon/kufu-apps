@@ -126,6 +126,8 @@ container の中でホストとは別に `pnpm install` をやり直す。ホス
 
 container の image tag は `@playwright/test` の版から組み立てる。二重管理にすると、依存を上げたときに container のブラウザ版だけ取り残されて baseline が黙って無効化されるためで、`@playwright/test` は `^` を付けず固定している。
 
+**アーキテクチャも `linux/amd64` に固定する。** CI の runner が amd64 で、arm64 のホストで撮った画像とはラスタライズが一致しない (実測で 6 枚中 2 枚が変わった)。Apple Silicon では Rosetta のエミュレーションで動くため、その分だけ遅くなる。
+
 `pnpm vrt:route` を経由しない実行では route VRT は skip される (spec が `ROUTE_VRT_CONTAINER` を見る)。ホストの `pnpm e2e` では 6 件が skip され、smoke テストはこれまでどおり実行される。skip されたまま緑になる事故を防ぐため、`pnpm vrt:route` は Playwright の JSON レポートで 6 件すべてが実行されたことを検査する。
 
 **Linux ホストでの注意**: container は root で動き、リポジトリを read-write で bind mount する。macOS の Docker Desktop では所有者が写像されるが、Linux ホストでは baseline PNG や `test-results/` が root 所有で残り、以降のホスト実行が失敗しうる。その場合は生成物の所有者を戻してから続ける。
