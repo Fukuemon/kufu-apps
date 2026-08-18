@@ -79,10 +79,17 @@ for (const viewport of viewports) {
             // 通信を落としても iframe の枠は残る。描画の揺れを避けるため合わせて隠す。
             // 該当 route 以外では 0 件にマッチするだけで害はない。
             mask: [page.getByTestId("company-access-map")],
-            // 許容 diff は 0 (完全一致) を初期値とする (adr/0015 / spec D10)。
-            // flake が実測されたときだけ、その実測値を上回る最小値まで緩める。
+            // 許容 diff は 0 (完全一致) を初期値とし、flake が実測されたときだけ
+            // その実測値を上回る最小値まで緩める (adr/0015 / spec D10)。
+            //
+            // maxDiffPixels は 0 のまま据え置く。知覚できる差は 1 ピクセルも許さない。
+            // threshold だけ 0 から 0.02 へ上げたのは、CI の比較 4 回中 2 回、常に同じ
+            // 箇所 (products desktop の x≈366 / y≈956) で 1 チャンネルあたり ±1 の
+            // アンチエイリアスの揺れが出たため。原因要素は 2x3 px の縁でマスクの対象に
+            // ならず、撮影環境の固定 (公式 container / linux/amd64 / --ipc=host) は
+            // 適用済みで、エスカレーション順の残りが閾値の緩和だった。
             maxDiffPixels: 0,
-            threshold: 0,
+            threshold: 0.02,
             // toHaveScreenshot は「連続 2 枚が一致するまで」撮り直す。トップページの
             // full-page は縦が長く、既定の 5 秒では合成が終わらずタイムアウトした (実測)。
             // 許容 diff は 0 のままで、撮影に必要な時間だけを与える。
