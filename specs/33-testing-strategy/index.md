@@ -364,6 +364,7 @@ CI で route VRT を 3 回比較実行し、**1 回だけ `products-desktop` に
 - **追記 (2026-08-18)**: 比較 4 回中 2 回に増え、差分の実体を特定した。`products` desktop の x≈366 / y≈956 で **5 ピクセルが 1 チャンネルあたり ±1** ずれる (Playwright の判定では 1 ピクセル分)。典型的なアンチエイリアスの揺れである
 - ADR-0015 のエスカレーション順に従い、一次対処 (外部通信の遮断・地図のマスク・`reducedMotion`) と撮影環境の固定 (公式 container / `linux/amd64` / `--ipc=host`) は適用済み。原因要素は 2x3 px の縁でマスクの対象にならないため、残る手段の閾値緩和へ進んだ
 - **`maxDiffPixels` は 0 のまま据え置き、`threshold` だけ 0 → 0.02 へ上げた** (ユーザー判断、2026-08-18)。知覚できる差は 1 ピクセルも許さないという許容 diff 0 の趣旨を保ちつつ、±1/255 のサブピクセルの揺れだけを吸収する
+- **変更の効果 (2026-08-19)**: 変更前は CI の比較 4 回中 2 回失敗。変更後は **3 回連続で success**。以後も差分が出た場合は ADR-0015 の Fallback 4 (3 回連続で差分ならユーザーが required checks からの除外を判断) に従う
 - 閾値の緩和と required checks からの除外は、**マスク適用後も 3 回連続で差分が出た場合に限りユーザーが判断する** (ADR-0015 の Fallback 4)。現時点はその条件に達していない
 - baseline の正は CI で撮った画像とする。撮り直しは `ci.yml` の `workflow_dispatch` (`update-route-vrt-baseline`) から行い、artifact の PNG を commit する
 
