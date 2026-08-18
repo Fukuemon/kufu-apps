@@ -355,6 +355,16 @@ page 単位の Page Object を 3 クラス (`e2e/corporate-site/pages/`) 入れ�
   - role も testid も持たない `[data-products-result]` (`aria-live` の `<p>`)
 - 3 ジャーニー (回遊 / ナビゲーション / JS 無効時) の定義は `e2e/README.md` に書いた。テストコードの実装は別 issue。
 
+#### route VRT の flake 観測 (2026-08-17〜18)
+
+CI で route VRT を 3 回比較実行し、**1 回だけ `products-desktop` に 1 ピクセル (全体の 0.01%) の差分**が出た。残り 2 回は差分 0。
+
+- ローカル (Apple Silicon 上の Rosetta で amd64 を実行) が撮った 6 枚と、CI (ネイティブ amd64) が撮り直した 6 枚は **バイト単位で同一**だった。当初はアーキテクチャ差を疑ったが、実測で否定された
+- したがって残る原因は撮影タイミング側の揺れである。原因要素は特定できていない
+- ADR-0015 のエスカレーション順に従い、一次対処 (外部通信の遮断・地図のマスク・`reducedMotion`) と撮影環境の固定 (公式 container / `linux/amd64` / `--ipc=host`) は適用済み。**許容 diff は 0 のまま据え置く**
+- 閾値の緩和と required checks からの除外は、**マスク適用後も 3 回連続で差分が出た場合に限りユーザーが判断する** (ADR-0015 の Fallback 4)。現時点はその条件に達していない
+- baseline の正は CI で撮った画像とする。撮り直しは `ci.yml` の `workflow_dispatch` (`update-route-vrt-baseline`) から行い、artifact の PNG を commit する
+
 **実測 (2026-08-17 / PR #48 の run 31981674870)**: 5 job すべて success。route VRT も CI (amd64 runner) で baseline と一致した。
 
 | job         | 実行時間 |
