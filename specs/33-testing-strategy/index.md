@@ -314,7 +314,7 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 | CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする                        | **2 分 37 秒** (P2 で実測)   |
 | VRT の撮影枚数           | 実行時間と保守コストの見積もり。初期値は story 81 枚 + route 6 枚 = 87 枚 | story 81 枚 (P1_01 で実測)   |
 | VRT の連続実行での差分数 | flake の有無 (目標: 0)                                                    | story 側 0 件 (P1_01 で実測) |
-| E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                                            | 未計測 — P3 で計測する       |
+| E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                                            | **下表のとおり** (P3 で実測) |
 
 #### CI ジョブ構成 (2026-08-17 / P2)
 
@@ -335,6 +335,25 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 - `permissions: contents: read` を明示する。既定権限に依存させない。
 - 各 job が checkout と install を繰り返すのは並列を優先した結果であり、install の重複は許容する。
 - `lefthook.yml` は変更しない。CI との重複は意図的な二重化として維持し、分担の理由をコメントで残した (ADR-0016)。
+
+#### E2E のセレクタ内訳 (2026-08-17 / P3)
+
+page 単位の Page Object を 3 クラス (`e2e/corporate-site/pages/`) 入れ、既存 smoke 5 件を移し替えた。
+
+| locator       | 規約適用前 | 適用後 |
+| ------------- | ---------- | ------ |
+| `getByTestId` | 24         | 17     |
+| `getByRole`   | 3          | 8      |
+| `getByText`   | 6          | 2      |
+| `locator()`   | 5          | 4      |
+
+- **`smoke.spec.ts` 内の生 locator は 0 件**になった。セレクタはすべて Page Object の内側に入り、テスト本体はシナリオだけを持つ。
+- テスト数と検証内容は変えていない。5 件すべてパスする。
+- 規約の例外は 3 分類あり、いずれも理由をコメントで残した (`e2e/README.md` に集約)。
+  - ヘッダー / フッターで文言が重複する操作対象 (role で一意にならない)
+  - 件数を数える locator (`getByRole` は `href` 無しアンカーと非表示要素を除くため意味が変わる)
+  - role も testid も持たない `[data-products-result]` (`aria-live` の `<p>`)
+- 3 ジャーニー (回遊 / ナビゲーション / JS 無効時) の定義は `e2e/README.md` に書いた。テストコードの実装は別 issue。
 
 **実測 (2026-08-17 / PR #48 の run 31981674870)**: 5 job すべて success。route VRT も CI (amd64 runner) で baseline と一致した。
 
@@ -663,6 +682,7 @@ sequenceDiagram
 | `context/testing.md` テスト責務の分担               | play / VRT を追加し 4 種別へ拡張 (D1 / D3)                                                                                                                                        | **反映済** (sync)          |
 | `context/testing.md`                                | play 対象・ジャーニー・Page Object と locator・VRT の各節 (D2 / D5 / D10〜D12)                                                                                                    | **反映済** (sync)          |
 | `context/testing.md` VRT                            | 実行コマンドと、route 側を Playwright 公式 container へ固定する具体策・外部通信を落とす方針を追記                                                                                 | **反映済** (P1_02)         |
+| `e2e/README.md` (新規)                              | Page Object の書き方、locator 規約の例外 3 分類、3 ジャーニーの定義                                                                                                               | **反映済** (P3)            |
 | `context/engineering.md` Repository Quality Gate    | CI とローカル hook の分担を追加 (D6〜D9)                                                                                                                                          | **反映済** (sync)          |
 | `context/engineering.md` Docs Closeout Gate         | 「CI への常設化は委譲する」を実態へ更新                                                                                                                                           | **反映済** (sync)          |
 | `context/toolchain.md` 標準スタック                 | VRT (story) / VRT (route) を追加 (D4)                                                                                                                                             | **反映済** (sync)          |
