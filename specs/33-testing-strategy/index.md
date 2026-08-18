@@ -359,6 +359,10 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 - ログに落ちた 3 テスト名と `Expected` / `Received` / `Diff` の画像 path が出る
 - 差分画像は artifact `vrt-route-diff` (1.9 MB) として PR から辿れる
 
+**typecheck の穴を塞いだ (2026-08-17)**: root の `tsconfig.json` は `e2e/**/*.ts` を include しているが、`pnpm typecheck` は `turbo run typecheck` で package 側しか回しておらず、`e2e/` はどこでも型検査されていなかった。root の `typecheck` を `tsc -p tsconfig.json --noEmit && turbo run typecheck` に変え、CI の `typecheck` job が e2e も見るようにした。
+
+- この穴に落ちていた欠陥: route VRT の `test.use({ reducedMotion: "reduce" })` が **Playwright 1.59 の `TestOptions` に無く、指定しても黙って無視されていた**。実行時に `prefers-reduced-motion` が適用されていないことを実測で確認し、`contextOptions: { reducedMotion: "reduce" }` へ直して baseline を撮り直した
+
 #### story 側 VRT の実測 (2026-08-16 / P1_01)
 
 ローカルの S3 互換ストレージ (Docker、破棄前提) に対して実行した。

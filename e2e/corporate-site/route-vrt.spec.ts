@@ -40,7 +40,10 @@ for (const viewport of viewports) {
       // 既存実装が持つ分岐で、全 reveal 対象を即時可視にし CSS の animation / transition も止める。
       // カルーセルの自動スクロールも同じ分岐で停止する。
       // テスト都合のコードをプロダクションへ足さずに撮影を決定的にできる。
-      reducedMotion: "reduce",
+      //
+      // reducedMotion は test.use の直下では受け取られない (Playwright 1.59 の
+      // TestOptions に無く、指定しても黙って無視される)。contextOptions 経由で渡す。
+      contextOptions: { reducedMotion: "reduce" },
     });
 
     test.beforeEach(async ({ page, baseURL }) => {
