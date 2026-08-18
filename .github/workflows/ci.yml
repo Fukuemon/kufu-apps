@@ -15,6 +15,11 @@ on:
     branches: ["**"]
   pull_request:
   workflow_dispatch:
+    inputs:
+      update-route-vrt-baseline:
+        description: "route VRT の baseline を撮り直して artifact に上げる"
+        type: boolean
+        default: false
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -131,7 +136,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Route VRT
+        if: ${{ inputs.update-route-vrt-baseline != true }}
         run: pnpm vrt:route
+      # baseline の正は CI で撮った画像とする (spec D8 の「撮影と判定は CI 環境に一本化する」)。
+      # ローカルの Apple Silicon は Rosetta のエミュレーションで amd64 を動かすため、
+      # runner のネイティブ amd64 とラスタライズが 1 px ずれる (実測)。撮り直しは
+      # workflow_dispatch から行い、artifact の PNG を commit する。
+      - name: Update route VRT baseline
+        if: ${{ inputs.update-route-vrt-baseline == true }}
+        run: pnpm vrt:route:update
+      - name: Upload updated baseline
+        if: ${{ inputs.update-route-vrt-baseline == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-route-baseline
+          path: e2e/corporate-site/route-vrt.spec.ts-snapshots/
+          retention-days: 7
+          if-no-files-found: error
       # 差分画像を PR から辿れるようにする (spec のエラーケース #2)。
       # timeout はキャンセル扱いになり failure() では拾えないため !cancelled() にする。
       - name: Upload VRT diff
