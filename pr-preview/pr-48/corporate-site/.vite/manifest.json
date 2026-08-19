@@ -1,93 +1,93 @@
 {
-  "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_0f12322be64343a2b0c886557819be96/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js": {
-    "file": "_astro/Color-KMSTOMOX-Ckjg68s4.js",
-    "name": "Color-KMSTOMOX",
-    "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_0f12322be64343a2b0c886557819be96/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js",
+  "../../node_modules/.pnpm/@storybook+addon-docs@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_940e2deed1bcafe17c4b623cd1bac3db/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-6AOWCN3U.js": {
+    "file": "_astro/Color-6AOWCN3U-B8c67ppl.js",
+    "name": "Color-6AOWCN3U",
+    "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_940e2deed1bcafe17c4b623cd1bac3db/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-6AOWCN3U.js",
     "isDynamicEntry": true,
     "imports": [
-      "_DocsRenderer-JROSPFPF-wwrFj6qt.js",
-      "_iframe--Qurdu6Z.js",
+      "_DocsRenderer-JROSPFPF-ApWK6d3N.js",
+      "_iframe-x1xRoPfc.js",
       "_index-GO7GDrc_.js",
       "_preload-helper-PPVm8Dsz.js",
-      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
       "_client-DL5r4Q2I.js"
     ]
   },
-  "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js": {
+  "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js": {
     "file": "_astro/react-18-CdpftTip.js",
     "name": "react-18",
-    "src": "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+    "src": "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
     "isDynamicEntry": true,
     "imports": [
       "_index-GO7GDrc_.js",
       "_client-DL5r4Q2I.js"
     ]
   },
-  "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js": {
-    "file": "_astro/WithTooltip-7X4HQR7L-BuylMdBB.js",
+  "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js": {
+    "file": "_astro/WithTooltip-7X4HQR7L-BdJR1aST.js",
     "name": "WithTooltip-7X4HQR7L",
-    "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
+    "src": "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
     "isDynamicEntry": true,
     "imports": [
-      "_DocsRenderer-JROSPFPF-wwrFj6qt.js",
+      "_DocsRenderer-JROSPFPF-ApWK6d3N.js",
       "_index-GO7GDrc_.js",
       "_preload-helper-PPVm8Dsz.js",
-      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
       "_client-DL5r4Q2I.js"
     ]
   },
-  "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js": {
-    "file": "_astro/formatter-L2YTDE3Q-Bu3MX9d6.js",
+  "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js": {
+    "file": "_astro/formatter-L2YTDE3Q-mNv9WRf4.js",
     "name": "formatter-L2YTDE3Q",
-    "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js",
+    "src": "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js",
     "isDynamicEntry": true,
     "imports": [
-      "_DocsRenderer-JROSPFPF-wwrFj6qt.js",
+      "_DocsRenderer-JROSPFPF-ApWK6d3N.js",
       "_preload-helper-PPVm8Dsz.js",
       "_index-GO7GDrc_.js",
-      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
       "_client-DL5r4Q2I.js"
     ]
   },
-  "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js": {
-    "file": "_astro/syntaxhighlighter-RTCFPKCB-BUs0LPnj.js",
-    "name": "syntaxhighlighter-RTCFPKCB",
-    "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js",
+  "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-QEQV7K2Y.js": {
+    "file": "_astro/syntaxhighlighter-QEQV7K2Y-CL8TWcd0.js",
+    "name": "syntaxhighlighter-QEQV7K2Y",
+    "src": "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-QEQV7K2Y.js",
     "isDynamicEntry": true,
     "imports": [
-      "_DocsRenderer-JROSPFPF-wwrFj6qt.js",
+      "_DocsRenderer-JROSPFPF-ApWK6d3N.js",
       "_index-GO7GDrc_.js",
       "_preload-helper-PPVm8Dsz.js",
-      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
       "_client-DL5r4Q2I.js"
     ]
   },
-  "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/mocking-utils/mocker-runtime.js": {
+  "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/mocking-utils/mocker-runtime.js": {
     "file": "vite-inject-mocker-entry.js",
     "name": "vite-inject-mocker-entry",
-    "src": "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/mocking-utils/mocker-runtime.js",
+    "src": "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/mocking-utils/mocker-runtime.js",
     "isEntry": true,
     "imports": [
       "_preload-helper-PPVm8Dsz.js"
     ]
   },
-  "_DocsRenderer-JROSPFPF-wwrFj6qt.js": {
-    "file": "_astro/DocsRenderer-JROSPFPF-wwrFj6qt.js",
+  "_DocsRenderer-JROSPFPF-ApWK6d3N.js": {
+    "file": "_astro/DocsRenderer-JROSPFPF-ApWK6d3N.js",
     "name": "DocsRenderer-JROSPFPF",
     "isDynamicEntry": true,
     "imports": [
       "_preload-helper-PPVm8Dsz.js",
       "_index-GO7GDrc_.js",
-      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
       "_client-DL5r4Q2I.js"
     ],
     "dynamicImports": [
-      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js",
-      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-RTCFPKCB.js",
-      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js",
-      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
-      "../../node_modules/.pnpm/storybook@10.4.6_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@testing-library+dom@10.4.1_fd5ee6c414e0598fa1d2b2769c43ca9a/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
-      "../../node_modules/.pnpm/@storybook+addon-docs@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_0f12322be64343a2b0c886557819be96/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-KMSTOMOX.js"
+      "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-QEQV7K2Y.js",
+      "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-QEQV7K2Y.js",
+      "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js",
+      "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
+      "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
+      "../../node_modules/.pnpm/@storybook+addon-docs@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_940e2deed1bcafe17c4b623cd1bac3db/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-6AOWCN3U.js"
     ]
   },
   "_client-DL5r4Q2I.js": {
@@ -97,8 +97,12 @@
       "_index-GO7GDrc_.js"
     ]
   },
-  "_iframe--Qurdu6Z.js": {
-    "file": "_astro/iframe--Qurdu6Z.js",
+  "_iframe-BEOkG3RM.css": {
+    "file": "_astro/iframe-BEOkG3RM.css",
+    "src": "_iframe-BEOkG3RM.css"
+  },
+  "_iframe-x1xRoPfc.js": {
+    "file": "_astro/iframe-x1xRoPfc.js",
     "name": "iframe",
     "imports": [
       "_preload-helper-PPVm8Dsz.js",
@@ -122,16 +126,12 @@
       "src/components/sections/products-detail/ProductsDetailSection.stories.ts",
       "src/components/sections/products-detail/ProductsHero.stories.ts",
       "src/components/sections/products-detail/ProductsSidebarNav.stories.ts",
-      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.4.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_f9746430643616a67f4813f4d0bd268d/node_modules/@storybook/react-dom-shim/dist/react-18.js",
-      "_DocsRenderer-JROSPFPF-wwrFj6qt.js"
+      "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
+      "_DocsRenderer-JROSPFPF-ApWK6d3N.js"
     ],
     "css": [
       "_astro/iframe-BEOkG3RM.css"
     ]
-  },
-  "_iframe-BEOkG3RM.css": {
-    "file": "_astro/iframe-BEOkG3RM.css",
-    "src": "_iframe-BEOkG3RM.css"
   },
   "_index-GO7GDrc_.js": {
     "file": "_astro/index-GO7GDrc_.js",
@@ -226,7 +226,7 @@
     "isDynamicEntry": true
   },
   "src/components/sections/products-detail/ProductsDetailSection.stories.ts": {
-    "file": "_astro/ProductsDetailSection.stories-Dc_0wWQd.js",
+    "file": "_astro/ProductsDetailSection.stories-CFQN3Awy.js",
     "name": "ProductsDetailSection.stories",
     "src": "src/components/sections/products-detail/ProductsDetailSection.stories.ts",
     "isDynamicEntry": true
@@ -238,7 +238,7 @@
     "isDynamicEntry": true
   },
   "src/components/sections/products-detail/ProductsSidebarNav.stories.ts": {
-    "file": "_astro/ProductsSidebarNav.stories-axVdO7mc.js",
+    "file": "_astro/ProductsSidebarNav.stories-cAxhUFW0.js",
     "name": "ProductsSidebarNav.stories",
     "src": "src/components/sections/products-detail/ProductsSidebarNav.stories.ts",
     "isDynamicEntry": true
