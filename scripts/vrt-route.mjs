@@ -1,16 +1,6 @@
 #!/usr/bin/env node
-// route 側 VRT (Playwright の toHaveScreenshot) を Playwright 公式 container の中で実行する。
-//
-// Playwright の baseline はファイル名に platform を含み、macOS で撮った `-darwin.png` は
-// CI (Linux) では使われない。素の Linux ホストでもフォント資産が違えば一致しないため、撮影と
-// 判定は公式 container に固定する (adr/0015 の「撮影環境を固定する」/ spec D8)。
-// spec 側は ROUTE_VRT_CONTAINER でこの container 経由かを判定し、外では skip する。
-//
-// container の中でホストとは別に pnpm install をやり直すのは、ホスト (macOS) の node_modules に
-// 入っているネイティブ依存が Linux で動かないため。node_modules は名前付き volume に隔離して
-// ホスト側を壊さない。volume は再利用されるので 2 回目以降の install は速い。
-//
-// baseline の更新は `pnpm vrt:route:update` (--update-snapshots を渡す)。
+// route 側 VRT を Playwright 公式 container で実行する。手順と理由は
+// README.md の「route 側 VRT」節。baseline の更新は pnpm vrt:route:update。
 
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -20,8 +10,7 @@ import { dirname, join, resolve } from "node:path";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-// image の版は @playwright/test から導出する。二重管理にすると、依存を上げたときに
-// container のブラウザ版だけ取り残されて baseline が黙って無効化される。
+// image の版は @playwright/test から導出する。二重管理だとブラウザ版だけ取り残される。
 const playwrightVersion = JSON.parse(
   readFileSync(
     join(repoRoot, "node_modules/@playwright/test/package.json"),
@@ -33,14 +22,12 @@ const image = `mcr.microsoft.com/playwright:v${playwrightVersion}-noble`;
 // 3 route × desktop / mobile。spec 側の routes / viewports と一致させる。
 const EXPECTED_TESTS = 6;
 
-// 渡せる引数は allowlist に限る。container へは shell 経由で渡すため、任意の文字列を
-// 素通しすると語分割とコマンド注入が起きる。
+// container へは shell 経由で渡すため、素通しすると語分割とコマンド注入が起きる。
 const ALLOWED_ARGS = ["--update-snapshots"];
 
 const REPORT_RELATIVE_PATH = "test-results/route-vrt-report.json";
 
-// worktree ごとに volume を分ける。固定名だと .wt/<branch> の別 worktree と同じ volume を
-// 共有し、同時に走らせたときに pnpm install が競合する。
+// worktree ごとに分ける。固定名だと別 worktree と install が競合する。
 const volumeScope = createHash("sha256")
   .update(repoRoot)
   .digest("hex")
@@ -54,9 +41,8 @@ function fail(message, hint) {
   process.exit(1);
 }
 
-// pnpm-workspace.yaml は apps/* / packages/* の glob なので、package を足したときに
-// 列挙漏れが起きないよう実ディレクトリから組み立てる。隠し損ねると container の
-// pnpm install が Linux 向けの依存をホストの bind mount へ直接書き込む。
+// workspace は glob 指定のため実ディレクトリから組み立てる。隠し損ねると container の
+// install が Linux 向けの依存をホストの bind mount へ書き込む。
 function workspaceModulePaths() {
   const paths = ["/work/node_modules"];
   for (const group of ["apps", "packages"]) {
@@ -94,9 +80,8 @@ const containerScript = [
   "set -e",
   "corepack enable",
   "pnpm install --frozen-lockfile --store-dir /pnpm-store",
-  // json reporter を足すのは、実行件数をホスト側で検査するため (下の EXPECTED_TESTS)。
-  // --retries=0 を明示するのは、root の playwright.config.ts が CI で retries: 2 を
-  // 与えるため。許容 diff 0 の VRT で再試行すると flake を緑で握り潰す (spec D10 / D12)。
+  // json reporter は実行件数の検査用。--retries=0 は、許容 diff 0 の VRT で
+  // 再試行すると flake を緑で握り潰すため (config は CI で retries: 2 を与える)。
   [
     "pnpm",
     "exec",
@@ -113,13 +98,10 @@ const dockerArgs = [
   "run",
   "--rm",
   "--init",
-  // CI の runner は amd64。arm64 のホストで撮ると Skia のラスタライズ経路が変わりうるので、
-  // アーキテクチャまで含めて撮影環境を固定する (adr/0015)。Apple Silicon では Rosetta の
-  // エミュレーションで動くため、その分だけ遅くなる。
+  // CI の runner に合わせる。Apple Silicon では Rosetta で動くため遅くなる。
   "--platform",
   "linux/amd64",
-  // Playwright の推奨。既定の小さい /dev/shm では Chromium が落ちることがあり、
-  // 許容 diff 0 の VRT ではそのまま flake になる。
+  // 既定の小さい /dev/shm では Chromium が落ちる (Playwright の推奨設定)。
   "--ipc=host",
   "-v",
   `${repoRoot}:/work`,
@@ -128,7 +110,7 @@ const dockerArgs = [
   ...moduleVolumeArgs,
   "-v",
   `kufu-e2e-${volumeScope}-pnpm-store:/pnpm-store`,
-  // spec 側の skip 判定。この変数がある実行だけが撮影環境の条件を満たす。
+  // spec 側の skip 判定。
   "-e",
   "ROUTE_VRT_CONTAINER=1",
   "-e",
@@ -160,7 +142,7 @@ if (result.status !== 0) {
   process.exit(result.status ?? 1);
 }
 
-// container の外から実行された、image を取り違えた等で 1 件も撮らずに緑になる事故を防ぐ。
+// 1 件も撮らずに緑になる事故を防ぐ。
 if (!existsSync(reportPath)) {
   fail(`Playwright のレポートが見つかりません: ${REPORT_RELATIVE_PATH}`);
 }

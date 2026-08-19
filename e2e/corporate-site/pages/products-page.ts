@@ -1,29 +1,18 @@
 import type { Locator, Page } from "@playwright/test";
 
-/**
- * `/products` (取扱製品) の Page Object。
- *
- * locator の使い分けは home-page.ts と同じ規約に従う (context/testing.md)。
- */
+/** `/products` (取扱製品) の Page Object。locator 規約は e2e/README.md。 */
 export class ProductsPage {
   readonly indexSection: Locator;
   readonly categoryList: Locator;
   readonly searchBox: Locator;
   readonly searchResult: Locator;
 
-  /**
-   * 索引リストに並ぶカテゴリの `<a>`。件数の検証に使う。
-   *
-   * 規約の例外。理由は home-page.ts の同名プロパティと同じ (DOM 上のアンカー数を数える)。
-   */
+  /** 索引リストのカテゴリ `<a>`。規約の例外 (DOM 上のアンカー数を数えるため)。 */
   readonly categoryLinks: Locator;
 
   /**
-   * カテゴリ記事 18 件。
-   *
-   * 規約の例外。`data-testid` の前方一致に加えて要素が `article` であることまで必要で
-   * (サイドバーの `products-category-list` が同じ接頭辞を持つ)、かつ「DOM 上の件数」を
-   * 数えるため、`getByRole("article")` では非表示要素が除かれて意味が変わる。
+   * カテゴリ記事 18 件。規約の例外。testid の前方一致だけでは同じ接頭辞を持つ
+   * `products-category-list` を拾い、role では非表示要素が除かれて件数が変わる。
    */
   readonly categoryArticles: Locator;
 
@@ -37,8 +26,7 @@ export class ProductsPage {
     this.searchBox = page.getByRole("searchbox", {
       name: "カテゴリ・メーカー名で検索",
     });
-    // 規約の例外。検索結果の件数表示は aria-live の <p> で、role も testid も持たない。
-    // 規約へ寄せるには production の markup に testid を足す必要があり、本 issue の範囲外。
+    // 規約の例外。role も testid も持たない aria-live の <p>。markup 変更は別 issue。
     this.searchResult = page.locator("[data-products-result]");
   }
 
@@ -46,12 +34,7 @@ export class ProductsPage {
     await this.page.goto("/products");
   }
 
-  /**
-   * ページ全体から文言を引く。メーカー名のような表示内容の確認に使う。
-   *
-   * 文言の検証は領域の特定でも操作対象でもないため locator 規約の対象外。
-   * 探索範囲は移し替え前と同じくページ全体に保つ。
-   */
+  /** 表示内容の確認に使う。文言の検証は locator 規約の対象外。 */
   text(value: string): Locator {
     return this.page.getByText(value);
   }

@@ -330,11 +330,11 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 | `e2e`                    | `pnpm e2e` (route VRT は container 実行を条件に skip されるため smoke だけが走る) |
 | `vrt-route`              | `pnpm vrt:route` (Playwright 公式 container。差分でジョブを失敗させる)            |
 
-- `vrt-route` はローカルと同じ `pnpm vrt:route` を通す。image 版の導出・`--platform linux/amd64`・`--ipc=host`・`--retries=0`・6 件実行の検査が 1 箇所に集まり、CI 側だけ抜ける経路を作らないため。
-- artifact は `e2e-artifacts` (trace) と `vrt-route-diff` (差分画像) を上げる。`timeout-minutes` 超過はキャンセル扱いで `failure()` に入らないため、条件は `!cancelled()` とする。
-- `permissions: contents: read` を明示する。既定権限に依存させない。
-- 各 job が checkout と install を繰り返すのは並列を優先した結果であり、install の重複は許容する。
-- `lefthook.yml` は変更しない。CI との重複は意図的な二重化として維持し、分担の理由をコメントで残した (ADR-0016)。
+- `vrt-route` はローカルと同じ `pnpm vrt:route` を通す。image 版の導出・起動条件・件数検査が CI 側だけ抜けるのを防ぐため。
+- artifact は `e2e-artifacts` (trace) と `vrt-route-diff` (差分画像)。`timeout-minutes` 超過は `failure()` に入らないため条件は `!cancelled()`。
+- `permissions: contents: read` を明示する。
+- checkout と install の重複は、並列を優先した結果として許容する。
+- `lefthook.yml` は検査を変えない。CI との重複は意図的な二重化として維持する (ADR-0016)。
 
 #### E2E のセレクタ内訳 (2026-08-17 / P3)
 
@@ -347,9 +347,8 @@ page 単位の Page Object を 3 クラス (`e2e/corporate-site/pages/`) 入れ�
 | `getByText`   | 6          | 2      |
 | `locator()`   | 5          | 4      |
 
-- **`smoke.spec.ts` 内の生 locator は 0 件**になった。セレクタはすべて Page Object の内側に入り、テスト本体はシナリオだけを持つ。
-- テスト数と検証内容は変えていない。5 件すべてパスする。
-- 規約の例外は 3 分類あり、いずれも理由をコメントで残した (`e2e/README.md` に集約)。
+- **`smoke.spec.ts` 内の生 locator は 0 件**。テスト数と検証内容は変えておらず、5 件すべてパスする。
+- 規約の例外は 3 分類。理由は `e2e/README.md` に集約した。
   - ヘッダー / フッターで文言が重複する操作対象 (role で一意にならない)
   - 件数を数える locator (`getByRole` は `href` 無しアンカーと非表示要素を除くため意味が変わる)
   - role も testid も持たない `[data-products-result]` (`aria-live` の `<p>`)
@@ -399,40 +398,45 @@ CI で route VRT を 3 回比較実行し、**1 回だけ `products-desktop` に
 
 ローカルの S3 互換ストレージ (Docker、破棄前提) に対して実行した。
 
-| 項目                   | 実測値                                                                                                                        |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| 撮影枚数               | **81 枚** (`packages/ui` 47 + `apps/corporate-site` 34)。設計時の見積もりと一致した                                           |
-| fixture story          | 撮影対象に含まれない。Storybook の glob (`../src/**`) の外にあり、除外設定を足す必要がなかった                                |
-| 1 回目 (baseline 不在) | changed 0 / new 81 / deleted 0 / passed 0。81 枚を publish した                                                               |
-| 2 回目 (UI 無変更)     | changed **0** / new 0 / deleted 0 / passed 81                                                                                 |
-| 3 回目 (UI 無変更)     | changed **0** / new 0 / deleted 0 / passed 81。**2 回連続で差分 0** を確認した                                                |
-| 4 回目 (意図的な変更)  | `badge` の `px-3` を `px-6` に変更。changed **6** / passed 75 で終了コード 1。差分は Badge と Tag の 6 story だけで誤検出なし |
-| 5 回目 (変更を戻す)    | changed 0 / passed 81。baseline へ復帰した                                                                                    |
-| flake 要因と対処       | `CompanySection` の Google Maps iframe で撮影が完了しなかった。VRT 用ビルドにだけ CSP (`frame-src 'none'`) を入れて解消した   |
-| 許容 diff              | `thresholdRate: 0` (完全一致)。緩める必要は生じなかった                                                                       |
-| レビュー対応後の再検証 | 撮影 81 枚、UI 無変更で changed 0 / new 0 / deleted 0 / passed 81。CSP 追加後も撮影と判定が成立することを確認した             |
+| 項目                   | 実測値                                                                                                                                                                                                                                             |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 撮影枚数               | **81 枚** (`packages/ui` 47 + `apps/corporate-site` 34)。設計時の見積もりと一致した                                                                                                                                                                |
+| fixture story          | 撮影対象に含まれない。Storybook の glob (`../src/**`) の外にあり、除外設定を足す必要がなかった                                                                                                                                                     |
+| 1 回目 (baseline 不在) | changed 0 / new 81 / deleted 0 / passed 0。81 枚を publish した                                                                                                                                                                                    |
+| 2 回目 (UI 無変更)     | changed **0** / new 0 / deleted 0 / passed 81                                                                                                                                                                                                      |
+| 3 回目 (UI 無変更)     | changed **0** / new 0 / deleted 0 / passed 81。**2 回連続で差分 0** を確認した                                                                                                                                                                     |
+| 4 回目 (意図的な変更)  | `badge` の `px-3` を `px-6` に変更。changed **6** / passed 75 で終了コード 1。差分は Badge と Tag の 6 story だけで誤検出なし                                                                                                                      |
+| 5 回目 (変更を戻す)    | changed 0 / passed 81。baseline へ復帰した                                                                                                                                                                                                         |
+| flake 要因と対処       | `CompanySection` の Google Maps iframe で撮影が完了しなかった。VRT 用ビルドにだけ CSP (`frame-src 'none'`) を入れて解消した                                                                                                                        |
+| viewport               | `packages/ui` は 800x200、`apps/corporate-site` は 1280x800。story あたり 1 viewport は保つ。ui は単体コンポーネントで余白が大半を占めるため高さを詰め、corporate-site は 800px では `lg:` 未満の狭い並びになるため実サイトと同じ desktop 幅で撮る |
+| 許容 diff              | `thresholdRate: 0` (完全一致)。緩める必要は生じなかった                                                                                                                                                                                            |
+| レビュー対応後の再検証 | 撮影 81 枚、UI 無変更で changed 0 / new 0 / deleted 0 / passed 81。CSP 追加後も撮影と判定が成立することを確認した                                                                                                                                  |
 
 story 側 VRT の CI 稼働は #47 の完了後 (実装分割 P5) であり、ここで撮った baseline は破棄する。
 
+**実行時間 (2026-08-19 実測)**: 全体 191 秒。内訳は Storybook 2 本のビルド 17 秒、撮影 81 枚 171 秒 (1 枚あたり約 2 秒)、reg-suit 約 7 秒。storycap の並列数は既定の 4 のままとする。許容 diff 0 の撮影で負荷を上げると flake の表面積が広がるため。
+
+**観測**: `FeaturedCategoryCarousel` の 2 story だけ幅 1286px になる (他は 1280px)。カルーセルの横スクロール領域が 6px はみ出している。撮影は安定しているため VRT では扱わず、レイアウトの確認対象として記録する。
+
 #### route 側 VRT の実測 (2026-08-17 / P1_02)
 
-撮影と判定は Playwright 公式 container (`mcr.microsoft.com/playwright:v1.59.1-noble`) に固定した。Playwright の baseline はファイル名に platform を含み、macOS で撮った `-darwin.png` は CI (Linux) では使われないうえフォント描画も一致しないため、D8 の「撮影環境を固定する」をローカル実行の時点から適用した。
+撮影と判定は Playwright 公式 container に固定した。baseline はファイル名に platform を含み、macOS で撮った `-darwin.png` は CI では使われないため、D8 の「撮影環境を固定する」をローカル実行から適用した。
 
-| 項目                     | 実測値                                                                                                                                                                                                                                                 |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 撮影枚数                 | **6 枚** (3 route × desktop 1280x800 / mobile 390x900)。`-linux.png` として Git 管理する                                                                                                                                                               |
-| 1 回目 (baseline 生成)   | 6 枚を書き出した                                                                                                                                                                                                                                       |
-| 2 回目 (UI 無変更)       | 5 passed / 1 failed。`home` の desktop が **差分ではなく 5 秒のタイムアウト**で落ちた                                                                                                                                                                  |
-| タイムアウトの対処       | full-page 合成が既定の 5 秒に収まらなかっただけなので、assertion を 30 秒・describe を 120 秒へ引き上げた。許容 diff は 0 のまま                                                                                                                       |
-| 3 回目 / 4 回目 (無変更) | いずれも **6 passed**。2 回連続で差分 0 を確認した                                                                                                                                                                                                     |
-| 5 回目 (意図的な変更)    | `SiteHeader` の `px-5` を `px-16` に変更。mobile 3 件が失敗し desktop 3 件は pass、終了コード 1。`sm:` 未満だけに効く変更で、影響範囲どおりに検出した                                                                                                  |
-| 6 回目 (変更を戻す)      | 6 passed。baseline へ復帰した                                                                                                                                                                                                                          |
-| flake 要因と対処         | 外部通信 (Google Maps / Unsplash の写真) を `page.route` で abort し、VRT をネットワークに依存させない。地図 iframe は枠が残るため `mask` も併用する。reveal とカルーセルの自動スクロールは `reducedMotion: "reduce"` で既存実装の分岐を使い停止させた |
-| ホストでの `pnpm e2e`    | smoke 5 passed / route VRT 6 skipped。撮影を container に固定したため、ホストでは skip する                                                                                                                                                            |
-| アーキテクチャ           | `linux/amd64` に固定した (P2)。CI の runner が amd64 で、arm64 のホストで撮った画像とは一致しない。**実測で 6 枚中 2 枚 (products の 2 viewport) が変わった**。固定後は Rosetta 実行と CI のネイティブ実行がバイト単位で一致する                       |
-| skip の検知              | `pnpm vrt:route` は Playwright の JSON レポートで 6 件すべての実行を検査する。skip されたまま緑になる事故を防ぐため                                                                                                                                    |
-| 許容 diff                | `maxDiffPixels: 0` / `threshold: 0` (完全一致)。緩める必要は生じなかった                                                                                                                                                                               |
-| 差分成果物               | `test-results/` に出力され `.gitignore` 済み。リポジトリには残らない                                                                                                                                                                                   |
+| 項目                     | 実測値                                                                                                                                                                                                                           |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 撮影枚数                 | **6 枚** (3 route × desktop 1280x800 / mobile 390x900)。`-linux.png` として Git 管理する                                                                                                                                         |
+| 1 回目 (baseline 生成)   | 6 枚を書き出した                                                                                                                                                                                                                 |
+| 2 回目 (UI 無変更)       | 5 passed / 1 failed。`home` の desktop が **差分ではなく 5 秒のタイムアウト**で落ちた                                                                                                                                            |
+| タイムアウトの対処       | assertion を 30 秒・describe を 120 秒へ引き上げた。許容 diff は 0 のまま                                                                                                                                                        |
+| 3 回目 / 4 回目 (無変更) | いずれも **6 passed**。2 回連続で差分 0 を確認した                                                                                                                                                                               |
+| 5 回目 (意図的な変更)    | `SiteHeader` の `px-5` を `px-16` に変更。mobile 3 件が失敗し desktop 3 件は pass、終了コード 1。`sm:` 未満だけに効く変更で、影響範囲どおりに検出した                                                                            |
+| 6 回目 (変更を戻す)      | 6 passed。baseline へ復帰した                                                                                                                                                                                                    |
+| flake 要因と対処         | 外部通信 (Google Maps / Unsplash) を `page.route` で abort。地図 iframe は枠が残るため `mask` も併用。reveal とカルーセルは `reducedMotion` で停止                                                                               |
+| ホストでの `pnpm e2e`    | smoke 5 passed / route VRT 6 skipped。撮影を container に固定したため、ホストでは skip する                                                                                                                                      |
+| アーキテクチャ           | `linux/amd64` に固定した (P2)。CI の runner が amd64 で、arm64 のホストで撮った画像とは一致しない。**実測で 6 枚中 2 枚 (products の 2 viewport) が変わった**。固定後は Rosetta 実行と CI のネイティブ実行がバイト単位で一致する |
+| skip の検知              | JSON レポートで 6 件すべての実行を検査する。skip されたまま緑になる事故を防ぐため                                                                                                                                                |
+| 許容 diff                | `maxDiffPixels: 0` / `threshold: 0` (完全一致)。緩める必要は生じなかった                                                                                                                                                         |
+| 差分成果物               | `test-results/` に出力され `.gitignore` 済み。リポジトリには残らない                                                                                                                                                             |
 
 retry の扱い (P2 で決定): route VRT は `--retries=0` を明示する。root の `playwright.config.ts` は CI で `retries: 2` を与えるが、許容 diff 0 の VRT で再試行すると flake を緑で握り潰し、D10 / D12 が実質無意味になる。smoke テストは既定の `retries: 2` のままとする。
 

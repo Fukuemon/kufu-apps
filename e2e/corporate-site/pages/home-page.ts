@@ -1,16 +1,6 @@
 import type { Locator, Page } from "@playwright/test";
 
-/**
- * `/` (トップページ) の Page Object。
- *
- * セレクタと操作をここへ集約し、テスト本体はシナリオだけを書く (adr/0017 の D2)。
- * locator は用途で使い分ける (context/testing.md)。この規約は Page Object の内部にも適用する。
- *
- * - 領域の特定 (セクション / ページ): `data-testid`
- * - 操作対象 (ボタン / リンク / 入力欄): `getByRole`
- *
- * 規約へ寄せられない箇所は理由をコメントで残す。
- */
+/** `/` (トップページ) の Page Object。locator 規約は e2e/README.md。 */
 export class HomePage {
   readonly header: Locator;
   readonly footer: Locator;
@@ -27,12 +17,7 @@ export class HomePage {
   readonly ctaProductsLink: Locator;
   readonly ctaContactLink: Locator;
 
-  /**
-   * 索引リストに並ぶカテゴリの `<a>`。件数の検証に使う。
-   *
-   * 規約の例外。ここは「DOM 上のアンカー数」を数えており、`getByRole("link")` にすると
-   * `href` の無いアンカーとアクセシビリティツリー上の非表示要素が除かれて件数の意味が変わる。
-   */
+  /** 索引リストのカテゴリ `<a>`。規約の例外 (DOM 上のアンカー数を数えるため)。 */
   readonly categoryLinks: Locator;
 
   constructor(private readonly page: Page) {
@@ -45,8 +30,7 @@ export class HomePage {
     this.categoryList = page.getByTestId("products-category-list");
     this.categoryLinks = this.categoryList.locator("a");
 
-    // 規約の例外。ヘッダーとフッターに同じ文言のリンクが並ぶため role では一意にならない。
-    // 領域を特定する testid が既にあるのでそれを使う。
+    // 規約の例外。ヘッダーとフッターに同じ文言のリンクが並び role で一意にならない。
     this.navProductsLink = page.getByTestId("site-nav-products");
     this.navContactLink = page.getByTestId("site-nav-contact");
     this.navToggle = page.getByTestId("site-nav-toggle");
@@ -59,12 +43,7 @@ export class HomePage {
     await this.page.goto("/");
   }
 
-  /**
-   * フッター内のリンクを名前で引く。
-   *
-   * 起点が `this.footer` (testid) ではなく role=contentinfo なのは、フッターを領域として
-   * 一意に決められる landmark があるため。移し替え前のテストもこの経路で引いていた。
-   */
+  /** フッター内のリンク。landmark で領域が一意に決まるため role=contentinfo を起点にする。 */
   footerLink(name: string): Locator {
     return this.page.getByRole("contentinfo").getByRole("link", { name });
   }

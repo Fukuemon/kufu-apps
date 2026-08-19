@@ -1,19 +1,9 @@
 #!/usr/bin/env node
-// story 側 VRT (storycap + reg-suit) の実行入口。
+// story 側 VRT (storycap + reg-suit) の実行入口。判定方針の正本は adr/0015。
+// 手順は README.md の「story 側 VRT」節。
 //
-// Storybook は @kufu/ui と @kufu/corporate-site の 2 インスタンスあり、storycap は 1 回の実行で
-// 1 インスタンスしか撮影できない。そのため順に撮影し、reg-suit の比較対象 1 つ (__screenshots__) へ
-// まとめる。story id は Storybook インスタンスをまたぐと衝突しうるので、インスタンス名の
-// サブディレクトリ (__screenshots__/<instance>/) で名前空間を分けている。
-//
-// 撮影対象は Storybook が拾う story だけであり、fixture story
-// (apps/corporate-site/scripts/__fixtures__/) は .storybook/main.ts の glob (../src/**) の外にあるため
-// 自動的に対象外になる。
-//
-// storycap / http-server は文字列で組み立てて `pnpm exec` から起動するため、knip は依存として
-// 検出できない。knip.json の ignoreDependencies に列挙してあるのはそのため。
-//
-// 判定方針の正本は adr/0015-visual-regression-testing-policy.md。
+// storycap は 1 回で 1 Storybook しか撮れないため、2 インスタンスを順に撮って
+// __screenshots__/<instance>/ へ分ける (story id が衝突しうるため)。
 
 import { spawnSync } from "node:child_process";
 import {
@@ -28,7 +18,7 @@ import { dirname, join, resolve } from "node:path";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-// endpoint と資格情報は env でだけ渡す。実値をリポジトリに置かない (spec の Security / Privacy)。
+// 資格情報の実値はリポジトリに置かない。
 const REQUIRED_ENV = [
   "VRT_S3_ENDPOINT",
   "VRT_S3_ACCESS_KEY_ID",
@@ -39,26 +29,27 @@ const SCREENSHOT_DIR = join(repoRoot, "__screenshots__");
 const WORKING_DIR = join(repoRoot, ".reg");
 const REPORT_JSON = join(WORKING_DIR, "out.json");
 
-// VRT 用に build した Storybook だけに置く目印。--skip-build で通常ビルドを撮ってしまうと、
-// 外部地図が遮断されず撮影が終わらないか flake するため、この目印の有無で弾く。
+// VRT 用ビルドだけに置く目印。通常ビルドを --skip-build で撮ると外部地図が遮断されない。
 const VRT_BUILD_MARKER = ".vrt-build";
 
-// storycap の既定 viewport を明示的に固定する。story 側は 1 種だけで撮り、
-// desktop / mobile の 2 viewport は route 側 (Playwright) に適用する (ADR-0015)。
-const VIEWPORT = "800x600";
-
+// story あたり 1 viewport で撮る (ADR-0015)。値は Storybook ごとに変える。
+// ui は単体コンポーネントなので高さを詰めて余白を減らし、corporate-site は
+// セクションを実サイトと同じ desktop 幅で撮る (800px では lg: 未満の狭い並びになる)。
+// 背の高い story は fullPage で伸びるため、指定した高さで切れることはない。
 const TARGETS = [
   {
     name: "ui",
     filter: "@kufu/ui",
     staticDir: join(repoRoot, "packages/ui/storybook-static"),
     port: 6011,
+    viewport: "800x200",
   },
   {
     name: "corporate-site",
     filter: "@kufu/corporate-site",
     staticDir: join(repoRoot, "apps/corporate-site/storybook-static"),
     port: 6012,
+    viewport: "1280x800",
   },
 ];
 
@@ -66,8 +57,7 @@ const KNOWN_FLAGS = ["--skip-build", "--no-fail-on-diff"];
 
 const args = process.argv.slice(2);
 const skipBuild = args.includes("--skip-build");
-// base branch 上で baseline を撮り直すとき用。差分があっても失敗させない。
-// publish は reg-suit run が常に行うため、このフラグは publish の有無を変えない。
+// base branch で baseline を撮り直すとき用。publish は両モードで行われる。
 const noFailOnDiff = args.includes("--no-fail-on-diff");
 
 const unknownArgs = args.filter((arg) => !KNOWN_FLAGS.includes(arg));
@@ -128,8 +118,7 @@ function run(command, commandArgs, extraEnv = {}) {
 
 function buildStorybook(target) {
   console.log(`\n[vrt] build storybook: ${target.filter}`);
-  // VITE_VRT=1 のときだけ外部地図の埋め込みを遮断する。
-  // 地図タイルは内容と読み込み完了時刻が実行ごとに変わり、許容 diff 0 と両立しないため。
+  // VITE_VRT=1 のときだけ外部地図の埋め込みを遮断する (README.md の「撮影の安定化」)。
   run("pnpm", ["--filter", target.filter, "storybook:build"], {
     VITE_VRT: "1",
   });
@@ -151,8 +140,7 @@ function capture(target) {
   console.log(`\n[vrt] capture: ${target.name}`);
   const outDir = join(SCREENSHOT_DIR, target.name);
   const serverCmd = `pnpm exec http-server ${target.staticDir} -p ${target.port} -c-1 --silent`;
-  // storycap の --viewport は配列オプションなので、URL を先頭に置かないと URL が
-  // viewport 値として読み込まれる。
+  // --viewport は配列オプション。URL を先頭に置かないと viewport 値として読まれる。
   run("pnpm", [
     "exec",
     "storycap",
@@ -162,12 +150,10 @@ function capture(target) {
     "--outDir",
     outDir,
     "--viewport",
-    VIEWPORT,
+    target.viewport,
   ]);
 
-  // storycap は 1 枚も撮れなくても正常終了しうる。0 枚のまま比較へ進むと、reg-suit は
-  // baseline 側だけが存在する状態 (deleted) を作り、その欠損を当該コミットの snapshot として
-  // publish してしまう。ここで止める。
+  // storycap は 0 枚でも正常終了しうる。そのまま進むと欠損が snapshot として publish される。
   const captured = countPngs(outDir);
   if (captured === 0) {
     fail(
@@ -212,9 +198,8 @@ function report() {
     return 0;
   }
 
-  // 許容 diff は 0 (完全一致) で、差分が出たら失敗させる (ADR-0015 / spec D10・D12)。
-  // deleted も失敗させる。story を消したときだけでなく、撮影が部分的に欠けたときにも出るため。
-  // new は story の追加と baseline 不在の初回で必ず出るので、件数だけ報告して失敗させない。
+  // 許容 diff は 0 (ADR-0015)。deleted は撮影欠損でも出るため失敗させる。
+  // new は story 追加と baseline 不在の初回で必ず出るので報告だけにする。
   const blocking = counts.changed + counts.deleted;
   if (blocking > 0) {
     console.error(
@@ -238,7 +223,7 @@ if (skipBuild) {
   }
 }
 
-// 前回実行の比較結果を残さない。読み違えて古い判定を返さないようにする。
+// 前回の比較結果を読み違えないよう消す。
 rmSync(WORKING_DIR, { force: true, recursive: true });
 rmSync(SCREENSHOT_DIR, { force: true, recursive: true });
 

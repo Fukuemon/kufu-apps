@@ -32,25 +32,20 @@ pnpm install
 
 ## Visual Regression Testing (VRT)
 
-VRT は story 側 (storycap + reg-suit) と route 側 (Playwright) の 2 系統を持つ。方針の正本は [adr/0015-visual-regression-testing-policy.md](adr/0015-visual-regression-testing-policy.md)、テスト種別の責務分担は [context/testing.md](context/testing.md)。
+方針の正本は [adr/0015](adr/0015-visual-regression-testing-policy.md)、責務分担は [context/testing.md](context/testing.md)。どちらの系統も Docker が要る。
 
 | 系統  | 撮影対象                              | baseline の置き場                    | 実行コマンド     |
 | ----- | ------------------------------------- | ------------------------------------ | ---------------- |
 | story | Storybook の全 story (fixture は除く) | ローカル S3 互換ストレージ → 将来 R2 | `pnpm vrt:story` |
 | route | 3 route × desktop / mobile = 6 枚     | リポジトリ (Git 管理)                | `pnpm vrt:route` |
 
-どちらも Docker が要る。以下はまず story 側、続いて route 側の手順。
-
 ## story 側 VRT
 
-### 前提
+baseline はローカルの MinIO に置く。**破棄前提**であり、正となる baseline は #47 の完了後に CI 環境で撮り直して R2 へ移す。
 
-- Docker が起動していること。story 側の baseline はローカルの S3 互換ストレージ (MinIO) に置く
-- **この baseline は破棄前提**とする。#33 の時点では仕組みが成立することの検証が目的で、正となる baseline は #47 の完了後に CI 環境で撮り直し、保管先を Cloudflare R2 へ移す
+### 資格情報
 
-### 資格情報の受け渡し
-
-資格情報の実値はリポジトリに置かない。git 管理外の `.env` へ書き、`docker compose` と VRT スクリプトの双方がそこから読む。値は各自で生成する。`.env` は他の設定も持つため、既存の内容を消さないよう追記する。
+実値はリポジトリに置かず、git 管理外の `.env` から `docker compose` と VRT スクリプトの双方が読む。`.env` は他の設定も持つため追記する。
 
 ```sh
 umask 077
@@ -61,8 +56,6 @@ umask 077
 } >> .env
 ```
 
-### ストレージの起動と破棄
-
 ```sh
 docker compose up -d --wait   # 起動し、バケット kufu-vrt-baseline を作る
 docker compose down -v        # 破棄する (baseline も消える)
@@ -70,75 +63,71 @@ docker compose down -v        # 破棄する (baseline も消える)
 
 ### 実行
 
-| コマンド                  | 内容                                                                                                |
-| ------------------------- | --------------------------------------------------------------------------------------------------- |
-| `pnpm vrt:story`          | 2 つの Storybook を VRT 用に build して撮影し、baseline と比較する。差分があれば終了コード 1 を返す |
-| `pnpm vrt:story:baseline` | 同じ撮影と比較を行い、差分では失敗させない。base branch 上で baseline を撮り直すときに使う          |
+| コマンド                  | 内容                                                                         |
+| ------------------------- | ---------------------------------------------------------------------------- |
+| `pnpm vrt:story`          | 撮影して baseline と比較する。差分があれば終了コード 1                       |
+| `pnpm vrt:story:baseline` | 同じ実行で差分では失敗させない。base branch で baseline を撮り直すときに使う |
 
-**どちらの実行も、撮影結果を現在のコミットのスナップショットとしてストレージへ publish する。** 両者の違いは差分で失敗させるかどうかだけである。
+どちらも撮影結果を現在のコミットのスナップショットとして publish する。違いは差分で失敗させるかどうかだけ。
 
-`--skip-build` を渡すと Storybook の build を省略して既存の `storybook-static` を撮影する。VRT 用に build した成果物でなければ実行を止めるので、通常の `pnpm storybook:build` の出力を誤って撮ることはない。
-
-差分レポートは `.reg/index.html`、撮影結果は `__screenshots__/<Storybook インスタンス>/` に出る。Storybook は `@kufu/ui` と `@kufu/corporate-site` の 2 インスタンスあり、story id がインスタンスをまたぐと衝突しうるため、インスタンス名のサブディレクトリで名前空間を分けている。
-
-失敗させる差分は **changed と deleted** とする。deleted は story を消したときだけでなく撮影が欠けたときにも出るため、見逃さない。new は story の追加と baseline 不在の初回で必ず出るので、件数だけ報告する。
-
-baseline は reg-suit がブランチの分岐点コミットから解決する。意図した UI 変更を baseline に取り込むには、その変更を base branch へ merge し、base branch 上で `pnpm vrt:story:baseline` を実行する。
+- `--skip-build`: Storybook の build を省く。VRT 用ビルドでなければ実行を止める
+- 差分レポートは `.reg/index.html`、撮影結果は `__screenshots__/<Storybook インスタンス>/`
+- 失敗させるのは **changed と deleted**。deleted は撮影欠損でも出る。new は初回と story 追加で必ず出るため報告だけ
+- baseline は reg-suit がブランチの分岐点コミットから解決する。意図した変更を取り込むには base branch へ merge し、そこで `pnpm vrt:story:baseline` を実行する
+- viewport は Storybook ごとに変える。`packages/ui` は 800x200 (単体コンポーネントは余白が大半を占めるため高さを詰める)、`apps/corporate-site` は 1280x800 (800px では `lg:` 未満の狭い並びになる)。背の高い story は fullPage で伸びるため切れない
 
 ### 設定上の注意
 
-`reg-publish-s3-plugin` は `sdkOptions` を `S3Client` のコンストラクタへ渡すため S3 互換ストレージで動く。ただし既定値のままでは失敗するため、`regconfig.json` で次を設定している (正本は ADR-0015)。
+`reg-publish-s3-plugin` は既定値のままでは S3 互換ストレージで失敗するため、`regconfig.json` で次を設定している (正本は ADR-0015)。
 
-| 設定                              | 理由                                                                                                  |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `enableACL: false`                | plugin の既定は `acl: public-read` だが、R2 はオブジェクト ACL を未実装で PutObject が失敗する        |
-| `sdkOptions.region: "auto"`       | R2 の region は `auto` が正                                                                           |
-| `customDomain` を設定しない       | `endpoint` と併用すると差分レポートの URL が二重に組み立てられる                                      |
-| `sdkOptions.forcePathStyle: true` | MinIO は virtual-host style のホスト名を解決できない。R2 も path style を受け付けるため移行後も使える |
+| 設定                              | 理由                                                                     |
+| --------------------------------- | ------------------------------------------------------------------------ |
+| `enableACL: false`                | R2 はオブジェクト ACL を未実装で、既定の `acl: public-read` では失敗する |
+| `sdkOptions.region: "auto"`       | R2 の region は `auto` が正                                              |
+| `customDomain` を設定しない       | `endpoint` と併用すると差分レポートの URL が二重に組み立てられる         |
+| `sdkOptions.forcePathStyle: true` | MinIO は virtual-host style のホスト名を解決できない                     |
 
-R2 へ移行するときに差し替えるのは `sdkOptions.endpoint` と `.env` の資格情報だけで、残りはそのまま使える。
+R2 へ移行するときに差し替えるのは `sdkOptions.endpoint` と `.env` の資格情報だけ。
 
-VRT 関連の devDependency (`storycap` / `reg-*` / `http-server`) は `^` を付けず版を固定している。撮影結果のピクセルが依存の更新で動くと baseline が一斉に無効化されるため、更新は意図して行う。
+VRT 関連の devDependency (`storycap` / `reg-*` / `http-server`) は版を固定している。依存の更新でピクセルが動くと baseline が一斉に無効化されるため。
 
 ### 撮影の安定化
 
-`CompanySection` の Google Maps iframe は、タイル内容も読み込み完了時刻も実行ごとに変わり、許容 diff 0 と両立しない。そのため VRT 用のビルドでだけ埋め込みフレームを遮断している。
+`CompanySection` の Google Maps は読み込み完了時刻もタイル内容も実行ごとに変わるため、VRT 用ビルドでだけ埋め込みフレームを遮断する。
 
-- 一次の遮断: `.storybook/main.ts` が VRT ビルドにだけ `frame-src 'none'` の CSP を preview へ入れる。リクエストが出る前に止まるので読み込みとの競合が起きない
-- 二重化: `.storybook/preview.ts` が同じ iframe から `src` を外す
+- `.storybook/main.ts` が `frame-src 'none'` の CSP を入れる (リクエスト前に止まる)
+- `.storybook/preview.ts` が同じ iframe から `src` を外す (二重化)
 
-通常の `pnpm storybook` と `pnpm storybook:pages` は地図をそのまま表示する。
+通常の `pnpm storybook` と `pnpm storybook:pages` は地図を表示する。
 
 ## route 側 VRT
 
-3 route (`/` / `/products` / `/contact`) を desktop / mobile の 2 viewport で撮り、baseline をリポジトリで Git 管理する。差分が PR レビューに乗ることを狙った使い分けである (ADR-0015)。
+3 route を desktop / mobile で撮り、baseline を Git 管理する。差分が PR レビューに乗ることを狙った使い分け (ADR-0015)。
 
-### 撮影環境を Linux に固定する
+| コマンド                | 内容                                   |
+| ----------------------- | -------------------------------------- |
+| `pnpm vrt:route`        | container で実行し baseline と比較する |
+| `pnpm vrt:route:update` | 同じ実行で baseline を撮り直す         |
 
-Playwright の baseline はファイル名に platform を含み (`home-desktop-linux.png`)、macOS で撮った `-darwin.png` は CI では使われない。フォント描画もホストと CI で違うため、撮影と判定は Playwright 公式 container (Linux) に固定する。
+### 撮影環境の固定
 
-| コマンド                | 内容                                                        |
-| ----------------------- | ----------------------------------------------------------- |
-| `pnpm vrt:route`        | container の中で route VRT を実行し、baseline と比較する    |
-| `pnpm vrt:route:update` | 同じ実行に `--update-snapshots` を渡し、baseline を撮り直す |
+Playwright の baseline はファイル名に platform を含み、macOS で撮った `-darwin.png` は CI では使われない。フォント描画も環境で違うため、Playwright 公式 container (`linux/amd64`) に固定する。
 
-container の中でホストとは別に `pnpm install` をやり直す。ホスト (macOS) の `node_modules` にあるネイティブ依存が Linux で動かないためで、`node_modules` は名前付き volume に隔離してホスト側を壊さない。volume は再利用されるので 2 回目以降は速い。volume 名には checkout の path を混ぜてあるので、`.wt/<branch>` の worktree どうしで競合しない。掃除は `docker volume ls | grep kufu-e2e` で探して `docker volume rm` する。
+- **image tag は `@playwright/test` の版から導出する**。二重管理だとブラウザ版だけ取り残され、baseline が黙って無効化される
+- **アーキテクチャも固定する**。CI の runner は amd64 で、arm64 で撮った画像とは一致しない (実測で 6 枚中 2 枚が変わった)。Apple Silicon では Rosetta で動くため遅くなる
+- container 内でホストとは別に `pnpm install` をやり直す。ホストのネイティブ依存が Linux で動かないため。`node_modules` は名前付き volume に隔離する。volume 名には checkout の path を混ぜてあり worktree 間で競合しない。掃除は `docker volume ls | grep kufu-e2e` から `docker volume rm`
+- `pnpm vrt:route` を経由しない実行は skip される。skip されたまま緑になる事故を防ぐため、6 件すべての実行を JSON レポートで検査する
+- baseline の正は CI で撮った画像とする。撮り直しは `ci.yml` の `workflow_dispatch` (`update-route-vrt-baseline`) から行い、artifact の PNG を commit する
 
-container の image tag は `@playwright/test` の版から組み立てる。二重管理にすると、依存を上げたときに container のブラウザ版だけ取り残されて baseline が黙って無効化されるためで、`@playwright/test` は `^` を付けず固定している。
-
-**アーキテクチャも `linux/amd64` に固定する。** CI の runner が amd64 で、arm64 のホストで撮った画像とはラスタライズが一致しない (実測で 6 枚中 2 枚が変わった)。Apple Silicon では Rosetta のエミュレーションで動くため、その分だけ遅くなる。
-
-`pnpm vrt:route` を経由しない実行では route VRT は skip される (spec が `ROUTE_VRT_CONTAINER` を見る)。ホストの `pnpm e2e` では 6 件が skip され、smoke テストはこれまでどおり実行される。skip されたまま緑になる事故を防ぐため、`pnpm vrt:route` は Playwright の JSON レポートで 6 件すべてが実行されたことを検査する。
-
-**Linux ホストでの注意**: container は root で動き、リポジトリを read-write で bind mount する。macOS の Docker Desktop では所有者が写像されるが、Linux ホストでは baseline PNG や `test-results/` が root 所有で残り、以降のホスト実行が失敗しうる。その場合は生成物の所有者を戻してから続ける。
+**Linux ホストでの注意**: container は root でリポジトリを read-write に bind mount する。baseline PNG や `test-results/` が root 所有で残り、以降のホスト実行が失敗しうる。
 
 ### 撮影の安定化
 
-- **外部への通信を落とす**。会社概要の Google Maps とカテゴリ写真 (Unsplash) は内容も応答時間も実行ごとに変わり、許容 diff 0 と両立しない。`page.route` で same-origin 以外を abort し、VRT をネットワークに依存させない
-- 地図 iframe は通信を落としても枠が残るため、あわせて `mask` で隠す
-- reveal は `IntersectionObserver` で `is-visible` を付けるため、既定のままでは表示状態がスクロール位置に依存する。Playwright の `reducedMotion: "reduce"` を使い、既存実装が持つ `prefers-reduced-motion` の分岐で全 reveal 対象を即時可視にする。カルーセルの自動スクロールも同じ分岐で止まる。テスト都合のコードをプロダクションへ足していない
+- 外部への通信を落とす。Google Maps とカテゴリ写真 (Unsplash) は内容も応答時間も実行ごとに変わるため、`page.route` で same-origin 以外を abort する
+- 地図 iframe は通信を落としても枠が残るため `mask` で隠す
+- reveal とカルーセルの自動スクロールは、既存実装が持つ `prefers-reduced-motion` の分岐で止める。テスト都合のコードをプロダクションへ足していない
 
-差分画像は `test-results/` に出る。`.gitignore` 済みでリポジトリには残らない。
+差分画像は `test-results/` に出る。`.gitignore` 済み。
 
 ## Project Structure
 

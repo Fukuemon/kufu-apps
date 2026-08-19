@@ -1,11 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-// route 側 VRT。3 route × desktop / mobile の 2 viewport = 6 枚を撮る (adr/0015)。
-// baseline はリポジトリで Git 管理し、差分が PR レビューに乗るようにする。
-// story 側 (storycap + reg-suit) との保管先の使い分けは README.md の VRT 節を読む。
-//
-// 申し送り: root の playwright.config.ts は CI で retries: 2 を与える。route VRT は
-// 許容 diff 0 で flake に最も敏感なため、CI へ載せる P2 で retry の扱いを決める。
+// route 側 VRT。3 route × desktop / mobile = 6 枚を撮る (adr/0015)。
+// baseline は Git 管理し、差分が PR レビューに乗るようにする。手順は README.md の VRT 節。
 
 const routes = [
   { name: "home", path: "/" },
@@ -21,13 +17,11 @@ const viewports = [
 
 for (const viewport of viewports) {
   test.describe(`route VRT (${viewport.name})`, () => {
-    // full-page 撮影はページ全体をスクロールして合成するため、root の 30 秒では足りない。
+    // full-page 撮影は合成に時間がかかり、root の 30 秒では足りない。
     test.describe.configure({ timeout: 120_000 });
 
-    // 撮影と判定は Playwright 公式 container に固定する。Playwright の baseline は
-    // ファイル名に platform を含み、素の環境ではフォント描画も一致しない (adr/0015)。
-    // ROUTE_VRT_CONTAINER は scripts/vrt-route.mjs だけが渡すので、`pnpm vrt:route` を
-    // 経由しない実行はここで止まる。
+    // 撮影環境は container に固定する (adr/0015)。ROUTE_VRT_CONTAINER は
+    // scripts/vrt-route.mjs だけが渡す。
     test.skip(
       process.env["ROUTE_VRT_CONTAINER"] !== "1",
       "route VRT は Playwright 公式 container でのみ実行する (pnpm vrt:route)",
@@ -35,14 +29,9 @@ for (const viewport of viewports) {
 
     test.use({
       viewport: { width: viewport.width, height: viewport.height },
-      // BaseLayout.astro の reveal は IntersectionObserver で is-visible を付けるため、
-      // 既定のままでは表示状態がスクロール位置に依存する。prefers-reduced-motion: reduce は
-      // 既存実装が持つ分岐で、全 reveal 対象を即時可視にし CSS の animation / transition も止める。
-      // カルーセルの自動スクロールも同じ分岐で停止する。
-      // テスト都合のコードをプロダクションへ足さずに撮影を決定的にできる。
-      //
-      // reducedMotion は test.use の直下では受け取られない (Playwright 1.59 の
-      // TestOptions に無く、指定しても黙って無視される)。contextOptions 経由で渡す。
+      // reveal (IntersectionObserver) とカルーセルの自動スクロールを、既存実装が持つ
+      // prefers-reduced-motion の分岐で止める。test.use の直下に書くと Playwright 1.59 は
+      // 黙って無視するため contextOptions 経由で渡す。
       contextOptions: { reducedMotion: "reduce" },
     });
 
@@ -52,8 +41,7 @@ for (const viewport of viewports) {
       }
       const origin = new URL(baseURL).origin;
 
-      // VRT を外部サービスの応答に依存させない。会社概要の Google Maps とカテゴリ写真
-      // (Unsplash) は内容も応答時間も実行ごとに変わり、許容 diff 0 と両立しない。
+      // 外部サービス (Google Maps / Unsplash) は内容も応答時間も実行ごとに変わる。
       // mask は描画を隠すだけで通信は残るため、リクエスト自体を落とす。
       await page.route("**/*", (route) => {
         const url = route.request().url();
@@ -76,23 +64,14 @@ for (const viewport of viewports) {
           `${route.name}-${viewport.name}.png`,
           {
             fullPage: true,
-            // 通信を落としても iframe の枠は残る。描画の揺れを避けるため合わせて隠す。
-            // 該当 route 以外では 0 件にマッチするだけで害はない。
+            // 通信を落としても iframe の枠は残るため合わせて隠す。
             mask: [page.getByTestId("company-access-map")],
-            // 許容 diff は 0 (完全一致) を初期値とし、flake が実測されたときだけ
-            // その実測値を上回る最小値まで緩める (adr/0015 / spec D10)。
-            //
-            // maxDiffPixels は 0 のまま据え置く。知覚できる差は 1 ピクセルも許さない。
-            // threshold だけ 0 から 0.02 へ上げたのは、CI の比較 4 回中 2 回、常に同じ
-            // 箇所 (products desktop の x≈366 / y≈956) で 1 チャンネルあたり ±1 の
-            // アンチエイリアスの揺れが出たため。原因要素は 2x3 px の縁でマスクの対象に
-            // ならず、撮影環境の固定 (公式 container / linux/amd64 / --ipc=host) は
-            // 適用済みで、エスカレーション順の残りが閾値の緩和だった。
+            // 知覚できる差は 1 ピクセルも許さない。threshold だけ 0.02 にしたのは、
+            // products desktop の 1 箇所で ±1/255 のアンチエイリアスの揺れが出たため
+            // (経緯は spec の「route VRT の flake 観測」)。
             maxDiffPixels: 0,
             threshold: 0.02,
-            // toHaveScreenshot は「連続 2 枚が一致するまで」撮り直す。トップページの
-            // full-page は縦が長く、既定の 5 秒では合成が終わらずタイムアウトした (実測)。
-            // 許容 diff は 0 のままで、撮影に必要な時間だけを与える。
+            // 連続 2 枚が一致するまで撮り直すため、既定の 5 秒では足りなかった (実測)。
             timeout: 30_000,
           },
         );

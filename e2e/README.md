@@ -1,6 +1,6 @@
 # E2E Test Conventions
 
-`pnpm e2e` が読む Playwright suite の書き方。**正本は [context/testing.md](../context/testing.md) と [ADR-0017](../adr/0017-ui-test-structure-policy.md)** で、ここはその実装側の申し合わせを置く。両者が食い違ったら正本が正しい。
+`pnpm e2e` が読む Playwright suite の実装側の申し合わせ。正本は [context/testing.md](../context/testing.md) と [ADR-0017](../adr/0017-ui-test-structure-policy.md) で、食い違ったら正本が正しい。
 
 ## 構成
 
@@ -16,7 +16,7 @@ Page Object と VRT のヘルパは `e2e/` 配下に置く。`packages/*` へ昇
 
 ## Page Object
 
-- **page 単位**で 1 クラスとし、route が増えたときだけ増やす。ページ数を超える抽象化を先回りで作らない。
+- **page 単位**で 1 クラスとし、route が増えたときだけ増やす。先回りの抽象化を作らない。
 - セレクタと操作を Page Object へ集約し、テスト本体はシナリオだけを書く。
 - locator は用途で使い分ける。**この規約は Page Object の内部にも適用する。**
 
@@ -34,13 +34,9 @@ Page Object と VRT のヘルパは `e2e/` 配下に置く。`packages/*` へ昇
 
 ## E2E が担うジャーニー
 
-**route をまたぐ到達性**を見る。単一コンポーネント内で閉じる操作 (入力検証の表示切り替え等) は play が担う。
-
-以下は定義であり、テストコードの実装は別 issue で行う。
+**route をまたぐ到達性**を見る。単一コンポーネント内で閉じる操作は play が担う。以下は定義で、テストコードの実装は別 issue。
 
 ### 1. 回遊
-
-`/` から製品を見て問い合わせへ至る導線を通す。
 
 1. `/` を開く
 2. 取扱製品への導線から `/products` へ到達する
@@ -49,23 +45,19 @@ Page Object と VRT のヘルパは `e2e/` 配下に置く。`packages/*` へ昇
 
 ### 2. ナビゲーション
 
-サイト共通のナビゲーションから各 route へ到達できることを確認する。
-
 1. ヘッダーのリンクから `/products` / `/contact` へ到達する
 2. フッターのリンクから各 route へ到達する
 3. モバイル幅でナビゲーションを開閉し、開いた状態から各 route へ到達する
 
 ### 3. JS 無効時
 
-JavaScript を無効にしても主要コンテンツが読め、問い合わせ先に到達できることを確認する。
-
 1. 3 route の主要セクションが表示される
 2. 問い合わせ先 (電話 / メール) に到達できる
 
 ### 対象外
 
-- **問い合わせフォームの送信**。`ContactSection.astro` に `<form>` 要素は無く、`contact-form-slot` の中は「デザイン確認用のフォーム枠」と明記されている。送信ジャーニーを通せる実体ができた時点 (#26) で追加する。
+- **問い合わせフォームの送信**。`ContactSection.astro` に `<form>` は無く、`contact-form-slot` は「デザイン確認用のフォーム枠」と明記されている。実体ができた時点 (#26) で追加する。
 
 ## VRT
 
-route 側 VRT の実行方法と撮影環境の固定は [README.md](../README.md) の「route 側 VRT」節を読む。
+route 側 VRT は [README.md](../README.md) の「route 側 VRT」節。

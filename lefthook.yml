@@ -1,13 +1,7 @@
-# CI とローカル hook の分担 (正本: adr/0016-ci-local-hook-responsibility.md)。
-#
-# - ローカル hook は**速いフィードバック**を担う。commit を止めない範囲の検査だけを置く。
-# - CI (.github/workflows/lint.yml / ci.yml) は**迂回できない gate** を担う。pre-commit は
-#   `--no-verify` で素通しできるため、lint / test / typecheck / build / knip / depcruise /
-#   e2e / route VRT は CI 側にも置く。
-# - 同じ検査が両方で走ることは**意図的な二重化**として許容する。CI にあるからといって
-#   ここから削らない。
-# - typecheck / build / e2e / VRT はここに足さない。commit のたびに走らせるには重く、
-#   速いフィードバックという役割から外れるため。CI が最後の砦として拾う。
+# CI とローカル hook の分担 (正本: adr/0016)。
+# ローカル hook は速いフィードバック、CI は迂回できない gate を担う。
+# 同じ検査が両方で走るのは意図的な二重化なので、CI にあることを理由にここから削らない。
+# typecheck / build / e2e / VRT は commit ごとには重いため CI 側だけに置く。
 
 pre-commit:
   commands:
