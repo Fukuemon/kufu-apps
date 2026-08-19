@@ -32,24 +32,40 @@ const REPORT_JSON = join(WORKING_DIR, "out.json");
 // VRT 用ビルドだけに置く目印。通常ビルドを --skip-build で撮ると外部地図が遮断されない。
 const VRT_BUILD_MARKER = ".vrt-build";
 
-// story あたり 1 viewport で撮る (ADR-0015)。値は Storybook ごとに変える。
-// ui は単体コンポーネントなので高さを詰めて余白を減らし、corporate-site は
-// セクションを実サイトと同じ desktop 幅で撮る (800px では lg: 未満の狭い並びになる)。
-// 背の高い story は fullPage で伸びるため、指定した高さで切れることはない。
+// story あたり 1 viewport で撮る (ADR-0015)。幅と高さの決め方は次のとおり。
+//
+// - 幅は固定する。内容に合わせると w-full のコンポーネントが潰れ、レイアウト情報が落ちる。
+//   corporate-site は 800px だと lg: 未満の狭い並びになるので実サイトと同じ desktop 幅にする。
+// - 高さは最小にする。fullPage が内容の高さまで伸ばすため、余白が残らない。
+//
+// 高さを viewport から算出するコンポーネント (calc(100vh - ...) 等) は最小の高さだと潰れる。
+// storycap の per-story parameters は addon 登録が要り、その addon は Storybook 7/8 向けで
+// 本リポジトリの 10 と合わない。そのため exceptions に列挙し、CLI の include / exclude で
+// パスを分けて撮る。同じ outDir へ追記されるので比較対象は 1 つのまま。
 const TARGETS = [
   {
     name: "ui",
     filter: "@kufu/ui",
     staticDir: join(repoRoot, "packages/ui/storybook-static"),
     port: 6011,
-    viewport: "800x200",
+    viewport: "800x10",
   },
   {
     name: "corporate-site",
     filter: "@kufu/corporate-site",
     staticDir: join(repoRoot, "apps/corporate-site/storybook-static"),
     port: 6012,
-    viewport: "1280x800",
+    viewport: "1280x10",
+    // ProductsSidebarNav は lg:max-h-[calc(100vh-18rem)] で一覧の高さを決める。
+    exceptions: [
+      {
+        viewport: "1280x800",
+        stories: [
+          "Sections/ProductsDetail/ProductsSidebarNav/*",
+          "Sections/ProductsDetail/ProductsDetailSection/*",
+        ],
+      },
+    ],
   },
 ];
 
@@ -136,9 +152,7 @@ function requireVrtBuild(target) {
   );
 }
 
-function capture(target) {
-  console.log(`\n[vrt] capture: ${target.name}`);
-  const outDir = join(SCREENSHOT_DIR, target.name);
+function storycap(target, outDir, viewport, storyFilters) {
   const serverCmd = `pnpm exec http-server ${target.staticDir} -p ${target.port} -c-1 --silent`;
   // --viewport は配列オプション。URL を先頭に置かないと viewport 値として読まれる。
   run("pnpm", [
@@ -150,8 +164,28 @@ function capture(target) {
     "--outDir",
     outDir,
     "--viewport",
-    target.viewport,
+    viewport,
+    ...storyFilters,
   ]);
+}
+
+function capture(target) {
+  console.log(`\n[vrt] capture: ${target.name}`);
+  const outDir = join(SCREENSHOT_DIR, target.name);
+  const exceptions = target.exceptions ?? [];
+  const excluded = exceptions.flatMap((e) =>
+    e.stories.flatMap((s) => ["--exclude", s]),
+  );
+
+  storycap(target, outDir, target.viewport, excluded);
+  for (const exception of exceptions) {
+    // 対象が数件なので並列数を 1 に落とす。ブラウザの起動回数が実行時間を決める。
+    storycap(target, outDir, exception.viewport, [
+      "--parallel",
+      "1",
+      ...exception.stories.flatMap((s) => ["--include", s]),
+    ]);
+  }
 
   // storycap は 0 枚でも正常終了しうる。そのまま進むと欠損が snapshot として publish される。
   const captured = countPngs(outDir);

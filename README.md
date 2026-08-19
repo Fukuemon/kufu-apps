@@ -74,7 +74,9 @@ docker compose down -v        # 破棄する (baseline も消える)
 - 差分レポートは `.reg/index.html`、撮影結果は `__screenshots__/<Storybook インスタンス>/`
 - 失敗させるのは **changed と deleted**。deleted は撮影欠損でも出る。new は初回と story 追加で必ず出るため報告だけ
 - baseline は reg-suit がブランチの分岐点コミットから解決する。意図した変更を取り込むには base branch へ merge し、そこで `pnpm vrt:story:baseline` を実行する
-- viewport は Storybook ごとに変える。`packages/ui` は 800x200 (単体コンポーネントは余白が大半を占めるため高さを詰める)、`apps/corporate-site` は 1280x800 (800px では `lg:` 未満の狭い並びになる)。背の高い story は fullPage で伸びるため切れない
+- viewport は **幅を固定し、高さは最小**にする。`packages/ui` は 800x10、`apps/corporate-site` は 1280x10。`fullPage` が内容の高さまで伸ばすので余白が残らない
+  - 幅を固定するのは、内容に合わせると `w-full` のコンポーネントが潰れてレイアウト情報が落ちるため。corporate-site が 1280px なのは、800px では `lg:` 未満の狭い並びになるため
+  - 高さを viewport から算出するコンポーネント (`calc(100vh - ...)`) は最小の高さだと潰れる。該当 story は `scripts/vrt-story.mjs` の `exceptions` に列挙し、CLI の include / exclude でパスを分けて撮る。storycap の per-story parameters は addon 登録が要り、その addon は Storybook 7/8 向けで本リポジトリの 10 と合わない
 
 ### 設定上の注意
 
