@@ -17,5 +17,4 @@ __pycache__/
 .turbo/
 storybook-static
 .storybook-pages
-__screenshots__
-.reg
+.vrt

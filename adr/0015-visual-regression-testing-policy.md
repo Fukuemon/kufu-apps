@@ -2,7 +2,10 @@
 
 ## 状態
 
-承認
+一部 superseded ([ADR-0018](0018-story-vrt-on-storybook-test-integrations.md))
+
+story 側の撮影手段 (storycap + reg-suit) と baseline の保管先 (S3 互換ストレージ) は ADR-0018 が置き換えた。
+route 側の方針、対象セット、許容 diff 0、差分でのブロッキングは本 ADR が引き続き正本。
 
 ## 決定日
 

@@ -1,6 +1,6 @@
 # Testing Conventions
 
-> 最終更新: 2026-08-17
+> 最終更新: 2026-08-19
 
 E2E runtime contract と unit test の横断規約。feature 固有のテスト観点は各 [design/features/](../design/features/) に置く。
 
@@ -42,17 +42,19 @@ E2E runtime contract と unit test の横断規約。feature 固有のテスト�
 
 ### VRT (visual regression testing)
 
-正本は [ADR-0015](../adr/0015-visual-regression-testing-policy.md)。
+正本は route 側が [ADR-0015](../adr/0015-visual-regression-testing-policy.md)、story 側が [ADR-0018](../adr/0018-story-vrt-on-storybook-test-integrations.md)。
 
-| 系統  | 撮影対象                                 | baseline の置き場     | 実行コマンド     |
-| ----- | ---------------------------------------- | --------------------- | ---------------- |
-| story | Storybook の story (fixture は除く)      | S3 互換ストレージ     | `pnpm vrt:story` |
-| route | 3 route × desktop / mobile の 2 viewport | リポジトリ (Git 管理) | `pnpm vrt:route` |
+| 系統  | 撮影対象                                 | 撮影                           | baseline の置き場     | 実行コマンド     |
+| ----- | ---------------------------------------- | ------------------------------ | --------------------- | ---------------- |
+| story | Storybook の story (fixture は除く)      | `storycap-testrun` + `reg-cli` | リポジトリ (Git 管理) | `pnpm vrt:story` |
+| route | 3 route × desktop / mobile の 2 viewport | Playwright `toHaveScreenshot`  | リポジトリ (Git 管理) | `pnpm vrt:route` |
 
 - **許容 diff は 0 (完全一致)** を初期値とし、flake が実測された場合にその実測値を上回る最小値まで緩める。
 - **差分が出たら CI を失敗させる。** 環境差による恒常的な差分への一次対処は、閾値の引き上げでも非ブロッキング化でもなく、**原因要素のマスクと撮影環境の固定**とする。
 - 撮影と判定は CI 環境に一本化する。ローカルと CI ではフォントのレンダリングが異なり、baseline を撮る環境を固定しなければ恒常的な差分が発生するため。
 - route 側は **Playwright 公式 container** で撮る。Playwright の baseline はファイル名に platform を含み、ホスト (macOS) で撮った画像は CI では使われない。`pnpm vrt:route` を経由しない実行は skip される。
+- story 側は **CI で撮った画像を baseline の正**とする。撮影が Vite のバンドルを伴い container 実行と両立しないため (ADR-0018)。ローカル実行は撮影の確認に使う。
+- story 側の撮影基盤は Storybook ごとに違う。`packages/ui` は `@storybook/addon-vitest`、`apps/corporate-site` は `@storybook/test-runner` (Astro は addon-vitest に載らない)。
 - VRT を外部サービスの応答に依存させない。外部の埋め込みや画像はリクエストごと落とし、残る枠はマスクする。
 
 手順とコマンドの詳細は [README.md](../README.md) の「Visual Regression Testing (VRT)」節。

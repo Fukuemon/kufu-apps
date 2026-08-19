@@ -1,6 +1,11 @@
 #!/usr/bin/env node
-// route 側 VRT を Playwright 公式 container で実行する。手順と理由は
-// README.md の「route 側 VRT」節。baseline の更新は pnpm vrt:route:update。
+// 引数で渡した pnpm script を Playwright 公式 container の中で実行する。
+//
+// VRT の baseline はリポジトリで Git 管理するため、撮影環境を固定しないとホストと CI で
+// 一致しない。Playwright の baseline はファイル名に platform を含み、素の環境ではフォント
+// 描画も違う (adr/0015)。手順と理由は README.md の VRT 節。
+//
+//   node scripts/vrt-container.mjs <pnpm script> [追加引数...]
 
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -19,13 +24,9 @@ const playwrightVersion = JSON.parse(
 ).version;
 const image = `mcr.microsoft.com/playwright:v${playwrightVersion}-noble`;
 
-// 3 route × desktop / mobile。spec 側の routes / viewports と一致させる。
-const EXPECTED_TESTS = 6;
-
 // container へは shell 経由で渡すため、素通しすると語分割とコマンド注入が起きる。
+const ALLOWED_SCRIPTS = ["vrt:route:run"];
 const ALLOWED_ARGS = ["--update-snapshots"];
-
-const REPORT_RELATIVE_PATH = "test-results/route-vrt-report.json";
 
 // worktree ごとに分ける。固定名だと別 worktree と install が競合する。
 const volumeScope = createHash("sha256")
@@ -62,8 +63,14 @@ function workspaceModulePaths() {
   return paths;
 }
 
-const playwrightArgs = process.argv.slice(2);
-const rejected = playwrightArgs.filter((arg) => !ALLOWED_ARGS.includes(arg));
+const [script, ...extraArgs] = process.argv.slice(2);
+if (!ALLOWED_SCRIPTS.includes(script)) {
+  fail(
+    `渡せない script です: ${script ?? "(指定なし)"}`,
+    `使えるのは ${ALLOWED_SCRIPTS.join(" / ")} だけです。`,
+  );
+}
+const rejected = extraArgs.filter((arg) => !ALLOWED_ARGS.includes(arg));
 if (rejected.length > 0) {
   fail(
     `渡せない引数です: ${rejected.join(" ")}`,
@@ -80,18 +87,7 @@ const containerScript = [
   "set -e",
   "corepack enable",
   "pnpm install --frozen-lockfile --store-dir /pnpm-store",
-  // json reporter は実行件数の検査用。--retries=0 は、許容 diff 0 の VRT で
-  // 再試行すると flake を緑で握り潰すため (config は CI で retries: 2 を与える)。
-  [
-    "pnpm",
-    "exec",
-    "playwright",
-    "test",
-    "route-vrt",
-    "--reporter=list,json",
-    "--retries=0",
-    ...playwrightArgs,
-  ].join(" "),
+  ["pnpm", script, ...extraArgs].join(" "),
 ].join("\n");
 
 const dockerArgs = [
@@ -110,21 +106,16 @@ const dockerArgs = [
   ...moduleVolumeArgs,
   "-v",
   `kufu-e2e-${volumeScope}-pnpm-store:/pnpm-store`,
-  // spec 側の skip 判定。
+  // route VRT の spec 側の skip 判定。
   "-e",
   "ROUTE_VRT_CONTAINER=1",
-  "-e",
-  `PLAYWRIGHT_JSON_OUTPUT_NAME=${REPORT_RELATIVE_PATH}`,
   image,
   "/bin/bash",
   "-c",
   containerScript,
 ];
 
-const reportPath = join(repoRoot, REPORT_RELATIVE_PATH);
-rmSync(reportPath, { force: true });
-
-console.log(`[vrt] route VRT を ${image} で実行します`);
+console.log(`[vrt] ${script} を ${image} で実行します`);
 
 const result = spawnSync("docker", dockerArgs, {
   cwd: repoRoot,
@@ -138,32 +129,4 @@ if (result.error) {
   );
 }
 
-if (result.status !== 0) {
-  process.exit(result.status ?? 1);
-}
-
-// 1 件も撮らずに緑になる事故を防ぐ。
-if (!existsSync(reportPath)) {
-  fail(`Playwright のレポートが見つかりません: ${REPORT_RELATIVE_PATH}`);
-}
-
-let stats;
-try {
-  ({ stats } = JSON.parse(readFileSync(reportPath, "utf8")));
-} catch (error) {
-  fail(
-    `Playwright のレポートを読めません: ${REPORT_RELATIVE_PATH}`,
-    error.message,
-  );
-}
-
-if (stats?.expected !== EXPECTED_TESTS) {
-  fail(
-    `期待した ${EXPECTED_TESTS} 件が実行されていません (passed ${stats?.expected ?? 0} / skipped ${stats?.skipped ?? 0})`,
-    "撮影環境の条件を満たさず skip された可能性があります。",
-  );
-}
-
-console.log(
-  `\n[vrt] route VRT: ${stats.expected} 件すべて baseline と一致しました。`,
-);
+process.exit(result.status ?? 1);

@@ -26,9 +26,14 @@ const categoryGroups = [
   },
 ];
 
+// VRT は既定で viewport の高さを最小にして内容の高さに合わせる (.storybook/test-runner.ts)。
+// このコンポーネントは calc(100vh - 18rem) で一覧の高さを決めるため、最小の高さだと潰れる。
+const vrt = { viewport: { width: 1280, height: 800 } };
+
 const meta = {
   title: "Sections/ProductsDetail/ProductsSidebarNav",
   component: ProductsSidebarNav,
+  parameters: { vrt },
 };
 
 export default meta;

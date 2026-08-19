@@ -3,13 +3,7 @@
   "workspaces": {
     ".": {
       "project": ["e2e/**/*.ts", "scripts/**/*.mjs"],
-      "ignoreDependencies": [
-        "storycap",
-        "http-server",
-        "reg-suit",
-        "reg-keygen-git-hash-plugin",
-        "reg-publish-s3-plugin"
-      ]
+      "ignoreDependencies": ["http-server", "reg-cli"]
     },
     "apps/corporate-site": {
       "entry": [

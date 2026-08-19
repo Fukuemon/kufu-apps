@@ -14,6 +14,10 @@ on:
         description: "route VRT の baseline を撮り直して artifact に上げる"
         type: boolean
         default: false
+      update-story-vrt-baseline:
+        description: "story VRT の baseline を撮り直して artifact に上げる"
+        type: boolean
+        default: false
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -104,6 +108,48 @@ jobs:
         with:
           name: e2e-artifacts
           path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # story 側の VRT。撮影と判定は CI に一本化する (spec D8)。
+  # @storybook/addon-vitest は撮影時に Vite のバンドルを回すため container 実行と両立しない。
+  # runner は amd64 なので、ここで撮った baseline が正になる。
+  vrt-story:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Story VRT
+        if: ${{ inputs.update-story-vrt-baseline != true }}
+        run: pnpm vrt:story
+      # baseline の撮り直し。artifact の PNG を commit して取り込む。
+      - name: Update story VRT baseline
+        if: ${{ inputs.update-story-vrt-baseline == true }}
+        run: pnpm vrt:story:update
+      - name: Upload updated baseline
+        if: ${{ inputs.update-story-vrt-baseline == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-story-baseline
+          path: vrt/baseline/
+          retention-days: 7
+          if-no-files-found: error
+      - name: Upload VRT diff
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-story-diff
+          path: .vrt/
           retention-days: 7
           if-no-files-found: ignore
 
