@@ -62,8 +62,10 @@ function run(command, args, options = {}) {
   return result.status ?? 1;
 }
 
-console.log("\n[vrt] build storybook");
-run("pnpm", ["storybook:build"]);
+// corporate-site だけ build する。packages/ui は addon-vitest が Vite で story を
+// 変換して描画するため、静的ビルドを使わない。
+console.log("\n[vrt] build storybook: @kufu/corporate-site");
+run("pnpm", ["--filter", "@kufu/corporate-site", "storybook:build"]);
 
 rmSync(actualDir, { force: true, recursive: true });
 rmSync(diffDir, { force: true, recursive: true });

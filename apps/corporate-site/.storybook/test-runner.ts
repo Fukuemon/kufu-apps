@@ -23,6 +23,10 @@ const config: TestRunnerConfig = {
     const story = await getStoryContext(page, context);
     const viewport = story.parameters["vrt"]?.viewport ?? DEFAULT_VIEWPORT;
     await page.setViewportSize(viewport);
+
+    // reveal (IntersectionObserver) とカルーセルの自動スクロールを、既存実装が持つ
+    // prefers-reduced-motion の分岐で止める。動きが残ると撮影の安定判定が終わらない。
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.addStyleTag({ content: VRT_STYLE });
   },
   async postVisit(page, context) {

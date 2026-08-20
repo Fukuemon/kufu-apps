@@ -10,7 +10,7 @@
     "format:check": "oxfmt . --check",
     "typecheck": "tsc -p tsconfig.json --noEmit && turbo run typecheck",
     "test": "turbo run test",
-    "e2e": "playwright test",
+    "e2e": "playwright test smoke",
     "storybook": "pnpm --parallel --filter @kufu/ui --filter @kufu/corporate-site storybook",
     "storybook:ui": "pnpm --filter @kufu/ui storybook",
     "storybook:corporate": "pnpm --filter @kufu/corporate-site storybook",

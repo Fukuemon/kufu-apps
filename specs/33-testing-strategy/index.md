@@ -440,6 +440,23 @@ CI で route VRT を 3 回比較実行し、**1 回だけ `products-desktop` に
 
 **#47 への引き継ぎの変更**: story 側 VRT から R2 依存が外れた。#47 完了後に reg-suit + R2 + 明示キーへ乗り換えるかは、そのときの判断とする。
 
+**CI 構成の見直し (2026-08-20)**
+
+| 直したもの       | 内容                                                                                                                                                |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 無駄なビルド     | `vrt:story` が `packages/ui` の Storybook を build していた。addon-vitest は静的ビルドを使わないため削除した                                        |
+| container の起動 | CI で docker-in-job を起こしていた。Playwright 公式推奨の job 単位 `container:` へ変え、`playwright install --with-deps` (約 3.5 分) も不要になった |
+| e2e のノイズ     | `pnpm e2e` が skip される route VRT 6 件を読んでいた。`playwright test smoke` に絞った                                                              |
+| setup の重複     | 6 job が同じ checkout + install を書いていた。`.github/actions/setup` の composite action にまとめた                                                |
+
+**`CompanySection` を撮影対象から外した (2026-08-20)**
+
+並列実行時にページの load 状態が完了せず、`screenshot()` の `waitForLoadState` が 30 秒で切れる。単独実行なら 942ms で通る。原因は未特定。
+
+効かなかった対処 (すべて実測): iframe のプレースホルダ置換 / CSP `frame-src 'none'` / `page.route` の abort・fulfill / `reducedMotion` / 安定判定の retry 削減 / タイムアウト延長。
+
+地図を含むこのセクションは route 側 VRT の `/` 全面撮影でも見えているため、視覚回帰の検出が完全に抜けるわけではない。別 issue で扱う。
+
 **CI での実測 (2026-08-19)**: 6 job すべて success。`vrt-story` は 184 秒。baseline は CI が撮った 81 枚 (2.24MB) を正とし、ホストで撮った暫定版は 81 枚すべてが CI 版と異なっていた。
 
 **実行時間 (2026-08-19 実測)**: 全体 約 226 秒 (Storybook 2 本のビルド 17 秒 + 撮影と比較 209 秒)。例外の別パス撮影で 35 秒増えている。storycap の並列数は既定の 4 のままとする。許容 diff 0 の撮影で負荷を上げると flake の表面積が広がるため。例外パスだけは対象が数件なので並列数 1 とし、ブラウザの起動回数を減らしている。

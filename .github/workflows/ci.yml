@@ -28,6 +28,7 @@ permissions:
   contents: read
 
 # checkout と install の重複は、並列を優先した結果として許容する。
+# 共通の手順は .github/actions/setup にまとめてある。
 jobs:
   typecheck:
     # PR ブランチへの push は pull_request 側が拾う (二重実行の回避)
@@ -36,15 +37,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          # 24 以上: vitest 設定が import する .ts (packages/config) の
-          # type stripping が既定で有効 (22.12 では ERR_UNKNOWN_FILE_EXTENSION)
-          node-version: 24
-          cache: pnpm
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup
       - name: Typecheck
         run: pnpm typecheck
 
@@ -54,13 +47,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup
       - name: Build
         run: pnpm build
 
@@ -71,34 +58,25 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup
       - name: Knip
         run: pnpm knip
       - name: Dependency cruiser
         run: pnpm depcruise
 
+  # Playwright 公式 image を container で使う (公式推奨)。ブラウザと system 依存が同梱で、
+  # playwright install --with-deps を省ける。版が @playwright/test と違えばブラウザが
+  # 見つからず失敗するため、取り違えは黙って通らない。
   e2e:
     if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      options: --ipc=host
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
-      # route VRT は container 実行を条件に skip されるため、このジョブでは smoke だけが走る。
+      - uses: ./.github/actions/setup
       - name: E2E
         run: pnpm e2e
       # trace を PR から辿れるようにする。playwright-report/ は reporter 未指定のため出ない。
@@ -111,24 +89,18 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
-  # story 側の VRT。撮影と判定は CI に一本化する (spec D8)。
-  # @storybook/addon-vitest は撮影時に Vite のバンドルを回すため container 実行と両立しない。
+  # story 側の VRT。撮影と判定は CI に一本化する (adr/0018)。
   # runner は amd64 なので、ここで撮った baseline が正になる。
   vrt-story:
     if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      options: --ipc=host
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
+      - uses: ./.github/actions/setup
       - name: Story VRT
         if: ${{ inputs.update-story-vrt-baseline != true }}
         run: pnpm vrt:story
@@ -153,29 +125,28 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
-  # route 側の VRT。ローカルと同じ pnpm vrt:route を通す。playwright test を直に叩くと
-  # image 版の導出・起動条件・件数検査が CI 側だけ抜ける。差分が出たら失敗させる (D12)。
+  # route 側の VRT。baseline を撮った環境と合わせるため同じ image を使う。
+  # ローカルは scripts/vrt-container.mjs が同じ image を起動する。
+  # 差分が出たらジョブを失敗させる (D12)。
   vrt-route:
     if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      options: --ipc=host
+    env:
+      # spec 側の skip 判定。撮影環境の条件を満たす実行だけ true にする。
+      ROUTE_VRT_CONTAINER: "1"
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-      # @playwright/test の版を読むために要る。撮影は container 内の install を使う。
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup
       - name: Route VRT
         if: ${{ inputs.update-route-vrt-baseline != true }}
-        run: pnpm vrt:route
-      # baseline の正は CI で撮った画像とする (D8)。artifact の PNG を commit して取り込む。
+        run: pnpm vrt:route:run
       - name: Update route VRT baseline
         if: ${{ inputs.update-route-vrt-baseline == true }}
-        run: pnpm vrt:route:update
+        run: pnpm vrt:route:run --update-snapshots
       - name: Upload updated baseline
         if: ${{ inputs.update-route-vrt-baseline == true }}
         uses: actions/upload-artifact@v4

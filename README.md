@@ -70,7 +70,7 @@ baseline の撮り直しは `ci.yml` の `workflow_dispatch` (`update-story-vrt-
 - **幅は固定し、高さは最小にする** (1280x10)。`fullPage` が内容の高さまで伸ばすので余白が残らない。幅を固定するのは、内容に合わせると `w-full` のコンポーネントが潰れてレイアウト情報が落ちるため
 - 高さを viewport から算出する story (`calc(100vh - ...)`) は `parameters.vrt.viewport` で上書きする
 - 撮影時だけスクロールバーとキャレットを CSS で隠す。どちらも画像の端で揺れる (実測)
-- `CompanySection` の Google Maps は VRT 用ビルドで遮断する。`.storybook/main.ts` が `frame-src 'none'` の CSP を入れ、`.storybook/preview.ts` が `src` を外す
+- `CompanySection` は撮影対象から外している (`parameters.screenshot.skip`)。並列実行時にページの load 状態が完了せず撮影が終わらない。原因は未特定で別 issue で扱う
 - 角丸のアンチエイリアスが 1 チャンネルあたり ±1 で揺れるため、`reg-cli` の `--matchingThreshold` を 0.02 にしている。差分ピクセル数は 0 のまま
 
 ## route 側 VRT
