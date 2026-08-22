@@ -1,0 +1,220 @@
+# 迂回できない quality gate (正本: adr/0016)。
+# 検査は 1 workflow に集める。job 間に同期 (needs) が要らず secret も使わないため、
+# workflow を分ける根拠が無い。実行順序は設計で決めておらず、順序依存を持ち込まない。
+# 共通の step は .github/actions/setup にまとめてある (repo 内の重複は composite action の担当)。
+
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      update-route-vrt-baseline:
+        description: "route VRT の baseline を撮り直して artifact に上げる"
+        type: boolean
+        default: false
+      update-story-vrt-baseline:
+        description: "story VRT の baseline を撮り直して artifact に上げる"
+        type: boolean
+        default: false
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# 既定権限に依存させない。
+permissions:
+  contents: read
+
+# 全 job 共通の if: PR ブランチへの push は pull_request 側が拾う (二重実行の回避)。
+jobs:
+  lint:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Install ripgrep # check-token-usage.mjs が使う (runner 標準に無い)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ripgrep
+      - name: Lint
+        run: pnpm lint
+
+  test:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Test
+        run: pnpm test
+
+  typecheck:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Typecheck
+        run: pnpm typecheck
+
+  build:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Build
+        run: pnpm build
+
+  # knip と depcruise は project.yml が pnpm check として 1 組で扱う。
+  analyze:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Knip
+        run: pnpm knip
+      - name: Dependency cruiser
+        run: pnpm depcruise
+
+  # Playwright 公式 image を container で使う (公式推奨)。ブラウザと system 依存が同梱で、
+  # playwright install --with-deps を省ける。版が @playwright/test と違えばブラウザが
+  # 見つからず失敗するため、取り違えは黙って通らない。
+  e2e:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: E2E
+        run: pnpm e2e
+      # trace を PR から辿れるようにする。playwright-report/ は reporter 未指定のため出ない。
+      - name: Upload E2E artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-artifacts
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # story 側の VRT。撮影と判定は CI に一本化する (adr/0018)。runner は amd64 なので、
+  # ここで撮った baseline が正になる。Storybook 単位に job を分けて撮影を並列にする。
+  # 各 job は自分の baseline とだけ比べるため、job 間に順序依存は生まれない。
+  vrt-story-ui:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Story VRT (ui)
+        if: ${{ inputs.update-story-vrt-baseline != true }}
+        run: pnpm vrt:story --target=ui
+      - name: Update baseline
+        if: ${{ inputs.update-story-vrt-baseline == true }}
+        run: pnpm vrt:story:update --target=ui
+      - name: Upload updated baseline
+        if: ${{ inputs.update-story-vrt-baseline == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-story-baseline-ui
+          path: vrt/baseline/ui/
+          retention-days: 7
+          if-no-files-found: error
+      - name: Upload VRT diff
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-story-diff-ui
+          path: .vrt/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  vrt-story-corporate:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Story VRT (corporate-site)
+        if: ${{ inputs.update-story-vrt-baseline != true }}
+        run: pnpm vrt:story --target=corporate-site
+      - name: Update baseline
+        if: ${{ inputs.update-story-vrt-baseline == true }}
+        run: pnpm vrt:story:update --target=corporate-site
+      - name: Upload updated baseline
+        if: ${{ inputs.update-story-vrt-baseline == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-story-baseline-corporate-site
+          path: vrt/baseline/corporate-site/
+          retention-days: 7
+          if-no-files-found: error
+      - name: Upload VRT diff
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-story-diff-corporate-site
+          path: .vrt/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # route 側の VRT。baseline を撮った環境と合わせるため同じ image を使う。
+  # ローカルは scripts/vrt-container.mjs が同じ image を起動する。
+  # 差分が出たらジョブを失敗させる (D12)。
+  vrt-route:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      options: --ipc=host
+    env:
+      # spec 側の skip 判定。撮影環境の条件を満たす実行だけ true にする。
+      ROUTE_VRT_CONTAINER: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Route VRT
+        if: ${{ inputs.update-route-vrt-baseline != true }}
+        run: pnpm vrt:route:run
+      - name: Update route VRT baseline
+        if: ${{ inputs.update-route-vrt-baseline == true }}
+        run: pnpm vrt:route:run --update-snapshots
+      - name: Upload updated baseline
+        if: ${{ inputs.update-route-vrt-baseline == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-route-baseline
+          path: e2e/corporate-site/route-vrt.spec.ts-snapshots/
+          retention-days: 7
+          if-no-files-found: error
+      # timeout はキャンセル扱いで failure() に入らないため !cancelled() にする。
+      - name: Upload VRT diff
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-route-diff
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore

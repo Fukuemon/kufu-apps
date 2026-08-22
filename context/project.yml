@@ -5,7 +5,7 @@
 # 依存する context/*.md との整合を確認する。
 
 meta:
-  updated: 2026-08-16
+  updated: 2026-08-22
 
 product:
   name: Kufu
@@ -46,6 +46,8 @@ commands:
   e2e: pnpm e2e # 既定 corporate-site
   storybook: pnpm storybook # ui のみ pnpm storybook:ui / corporate は pnpm storybook:corporate
   storybook-build: pnpm storybook:build # Pages artifact は pnpm storybook:pages
+  vrt-story: pnpm vrt:story # story 側 VRT (storycap-testrun + reg-cli)。baseline 更新は pnpm vrt:story:update。撮影と判定は CI に一本化する
+  vrt-route: pnpm vrt:route # route 側 VRT (Playwright)。baseline 更新は pnpm vrt:route:update。Playwright 公式 container で実行する
   check: pnpm knip && pnpm depcruise # 健全性検査
   check-specs: pnpm check:specs # closed issue の spec 残存検査 (closeout。adr/0011)
   add-dep: pnpm --filter @kufu/<module> add <package>

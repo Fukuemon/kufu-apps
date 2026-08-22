@@ -1,4 +1,4 @@
-# ADR-0016: Cloudflare リソースの管理は Terraform と Wrangler で分担する
+# ADR-0020: Cloudflare リソースの管理は Terraform と Wrangler で分担する
 
 ## 状態
 
@@ -11,7 +11,7 @@
 ## 背景
 
 - Cloudflare の infra code を Kufu Monorepo へ集約すると決めた。本 ADR はその上に立つ。集約後、どのリソースをどのツールで管理するかは未定である。
-  - [ADR-0015](0015-terraform-monorepo-consolidation.md) — infra code を monorepo へ集約する決定。ディレクトリ構成と bootstrap の分離も定める
+  - [ADR-0019](0019-terraform-monorepo-consolidation.md) — infra code を monorepo へ集約する決定。ディレクトリ構成と bootstrap の分離も定める
 - Cloudflare はリソースごとのツール使い分けを許容する一方、**同じリソースを複数ツールから管理しないこと**を要件としている。ツールを 1 つに寄せる必要はないが、管轄の重複は排除する必要がある。
   - [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/) の「Manage some resources outside of Terraform」— Terraform 外で管理してよい条件と、同一リソースを二重管理しない要件を定める
 - 現状の Cloudflare 設定はすべて Dashboard 上にあり、コード管理されていない。`wrangler` の設定ファイルもリポジトリに存在しない (2026-08-16 時点)。
@@ -35,7 +35,7 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 
 ## 決定
 
-> **承認順序**: 本 ADR と ADR-0015 は**同時に承認する**。monorepo 同居の欠点として挙がった 5 点のうち、credential の分離と、本番影響の大きい変更を PR に埋もれさせない対処は、本 ADR の管轄分担に依存する。本 ADR は infra code の集約を前提とする。
+> **承認順序**: 本 ADR と ADR-0019 は**同時に承認する**。monorepo 同居の欠点として挙がった 5 点のうち、credential の分離と、本番影響の大きい変更を PR に埋もれさせない対処は、本 ADR の管轄分担に依存する。本 ADR は infra code の集約を前提とする。
 
 ### 分担の原則
 
@@ -193,13 +193,13 @@ deploy 経路を作り直す本作業は移行の契機になりうるが、決�
 
 - 対象 app / package: `apps/corporate-site`、`e2e` (#33 の VRT が R2 を参照する)、GitHub Actions workflow
 - spec 更新要否: 要。#47 の spec に、ツール別の作業分割と bootstrap 順序を反映する
-- 本節は**本 ADR に由来する更新**を扱う。集約そのものに由来する更新 (`repos.infra` / `repos.layout` / `commands` / `domains` / DesignDoc) は ADR-0015 の同名節を正本とする。更新時期も同 ADR に従い、実装完了後である
+- 本節は**本 ADR に由来する更新**を扱う。集約そのものに由来する更新 (`repos.infra` / `repos.layout` / `commands` / `domains` / DesignDoc) は ADR-0019 の同名節を正本とする。更新時期も同 ADR に従い、実装完了後である
 - AI 向け設定更新要否: 要。context/infrastructure.md にツール境界表と bootstrap 手順を追加し、[context/architecture.md](../context/architecture.md) に Terraform と `wrangler.toml` の配置と依存規約を定める
 
 ## 関連ドキュメント
 
-- [ADR-0015](0015-terraform-monorepo-consolidation.md): monorepo への集約 (本 ADR の前提)
-- [ADR-0001](0001-terraform-infra-repository-boundary.md): infra repo 分離 (ADR-0015 が supersede)
+- [ADR-0019](0019-terraform-monorepo-consolidation.md): monorepo への集約 (本 ADR の前提)
+- [ADR-0001](0001-terraform-infra-repository-boundary.md): infra repo 分離 (ADR-0019 が supersede)
 - [ADR-0009](0009-corporate-site-contact-form-backend.md): 問い合わせフォームの Workers 依存と secret 要件
 - [context/infrastructure.md](../context/infrastructure.md): ツール境界表 / bootstrap 手順 / 値の受け渡し / Infrastructure Contract の正本
 - [design/DesignDoc.md](../design/DesignDoc.md): Cloudflare を公開基盤とする前提 (本 ADR は基盤の選択を変えない)

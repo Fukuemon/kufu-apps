@@ -1,18 +1,63 @@
 # Testing Conventions
 
-> 最終更新: 2026-08-16
+> 最終更新: 2026-08-22
 
 E2E runtime contract と unit test の横断規約。feature 固有のテスト観点は各 [design/features/](../design/features/) に置く。
 
 ## テスト責務の分担
 
-| 種別      | 配置                      | 主担当範囲                                      |
-| --------- | ------------------------- | ----------------------------------------------- |
-| Unit test | 各 app / package (Vitest) | ロジック、shared UI、shared config の利用可能性 |
-| E2E       | root `e2e/` (Playwright)  | 公開前検証、主要導線、回帰                      |
+| 種別      | 配置                                         | 主担当範囲                                         |
+| --------- | -------------------------------------------- | -------------------------------------------------- |
+| Unit test | 各 app / package (Vitest)                    | ロジック、shared UI、shared config の利用可能性    |
+| play      | 各 component の story (Storybook)            | 単一コンポーネント内で閉じる interaction           |
+| E2E       | root `e2e/` (Playwright)                     | 公開前検証、route をまたぐ到達性、回帰             |
+| VRT       | story 側は Storybook、route 側は root `e2e/` | 視覚回帰。要素の存在ではなく見た目の差分を検出する |
 
 - `packages/ui` の共有 UI は Storybook / unit test で確認できること。
 - `packages/config` の共有設定を各 app / package が利用できること。
+
+### play テスト
+
+- 対象は **`packages/ui`** に限る。Astro の静的コンポーネントは E2E でカバーする。
+  - [ADR-0017](../adr/0017-ui-test-structure-policy.md) — UI テストの構造と対象範囲を定めた決定
+- React island 向けの対象基準は、島が生まれる時点で決める (現在 `client:*` の使用箇所は無い)。
+
+### E2E が担うジャーニー
+
+**route をまたぐ到達性**を見る。単一コンポーネント内で閉じる操作は play が担う。
+
+| ジャーニー     | 内容                                                                              |
+| -------------- | --------------------------------------------------------------------------------- |
+| 回遊           | `/` → `/products` → カテゴリ検索 (URL に検索条件が保持される) → `/contact` の到達 |
+| ナビゲーション | ヘッダー / フッターのリンクとモバイルナビの開閉から各 route へ到達できる          |
+| JS 無効時      | JS を無効にしても 3 route の主要コンテンツが表示され、問い合わせ先へ到達できる    |
+
+問い合わせフォームの送信ジャーニーは、フォームの実体が実装された時点で追加する。
+
+### Page Object と locator の規約
+
+- E2E は **page 単位の Page Object** にセレクタと操作を集約し、テスト本体はシナリオのみを書く。
+- locator は用途で使い分ける。この規約は Page Object の内部にも適用する。
+  - **領域の特定** (セクション / ページ): `data-testid`
+  - **操作対象** (ボタン / リンク / 入力欄): `getByRole` を優先する
+
+### VRT (visual regression testing)
+
+正本は route 側が [ADR-0015](../adr/0015-visual-regression-testing-policy.md)、story 側が [ADR-0018](../adr/0018-story-vrt-on-storybook-test-integrations.md)。
+
+| 系統  | 撮影対象                                 | 撮影                           | baseline の置き場     | 実行コマンド     |
+| ----- | ---------------------------------------- | ------------------------------ | --------------------- | ---------------- |
+| story | Storybook の story (fixture は除く)      | `storycap-testrun` + `reg-cli` | リポジトリ (Git 管理) | `pnpm vrt:story` |
+| route | 3 route × desktop / mobile の 2 viewport | Playwright `toHaveScreenshot`  | リポジトリ (Git 管理) | `pnpm vrt:route` |
+
+- **許容 diff は 0 (完全一致)** を初期値とし、flake が実測された場合にその実測値を上回る最小値まで緩める。
+- **差分が出たら CI を失敗させる。** 環境差による恒常的な差分への一次対処は、閾値の引き上げでも非ブロッキング化でもなく、**原因要素のマスクと撮影環境の固定**とする。
+- **baseline の正は CI (amd64) で撮った画像**とする。ローカルとはフォントの描画が違い、撮る環境を固定しなければ恒常的な差分が出る。ローカル実行は撮影の確認に使う。
+- route 側は **Playwright 公式 container** で撮る。Playwright の baseline はファイル名に platform を含み、ホスト (macOS) で撮った画像は CI では使われない。`pnpm vrt:route` を経由しない実行は skip される。
+- story 側は container を使わず CI に一本化する。撮影が Vite のバンドルを伴い、エミュレーション下の container 実行と両立しないため (ADR-0018)。
+- VRT を外部サービスの応答に依存させない。外部の埋め込みや画像はリクエストごと落とし、残る枠はマスクする。
+
+手順とコマンドの詳細は [README.md](../README.md) の「Visual Regression Testing (VRT)」節。
 
 ## E2E Runtime Contract
 
@@ -65,3 +110,7 @@ Cloudflare Pages Functions / Workers を伴う feature は、ローカル E2E ru
 - [toolchain.md](toolchain.md): テストに使うツールの選定
 - [design/features/](../design/features/): feature 単位のテスト観点の置き場
 - [DesignDoc_cms.md](../design/features/cms/DesignDoc_cms.md): cms のテスト方針 (未設計)
+- [ADR-0015](../adr/0015-visual-regression-testing-policy.md): VRT の方針と baseline の扱い
+- [ADR-0017](../adr/0017-ui-test-structure-policy.md): UI テストの構造と対象範囲
+- [ADR-0018](../adr/0018-story-vrt-on-storybook-test-integrations.md): story VRT に storycap-testrun と reg-cli を使う決定
+- [README.md](../README.md): テストコマンドの実行入口

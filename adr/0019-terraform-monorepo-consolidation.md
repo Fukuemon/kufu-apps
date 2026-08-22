@@ -1,4 +1,4 @@
-# ADR-0015: Terraform の infra code を Kufu Monorepo へ集約する
+# ADR-0019: Terraform の infra code を Kufu Monorepo へ集約する
 
 ## 状態
 
@@ -26,12 +26,12 @@ ADR-0001 の判断が誤っていたのではない。**分離が成立する前
 
 ## 決定
 
-> **承認順序**: 本 ADR と ADR-0016 は**同時に承認する**。下記「monorepo 同居の欠点への対処」のうち、credential の分離と、本番影響の大きい変更を PR に埋もれさせない対処は、ADR-0016 が定めるツール分担に依存する。本 ADR だけを承認すると、この 2 つが対処のない状態になる。
+> **承認順序**: 本 ADR と ADR-0020 は**同時に承認する**。下記「monorepo 同居の欠点への対処」のうち、credential の分離と、本番影響の大きい変更を PR に埋もれさせない対処は、ADR-0020 が定めるツール分担に依存する。本 ADR だけを承認すると、この 2 つが対処のない状態になる。
 
 - **Cloudflare の infra code を Kufu Monorepo へ集約する。** ADR-0001 を supersede する。
 - `kufu-infra` は **アーカイブする** (削除しない)。ADR-0001 のコピーと初期検討の履歴が残っており、判断の経緯を追える状態を保つ。read-only にすることで、誤って書き込みが再開されることを防ぐ。
 - ツールの分担 (どのリソースを Terraform が持ち、どれを Wrangler が持つか) は本 ADR の対象外とする。
-  - [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md) — Cloudflare リソースの Terraform / Wrangler 管轄と credential の分離を定めた決定
+  - [ADR-0020](0020-cloudflare-terraform-wrangler-boundary.md) — Cloudflare リソースの Terraform / Wrangler 管轄と credential の分離を定めた決定
 - Infrastructure Contract は「app repo から infra repo への受け渡し」ではなくなる。同一 repo 内の規約として残す。
   - [context/infrastructure.md](../context/infrastructure.md) の Infrastructure Contract (app → infra) — app が infra へ要求する値と、その受け渡しの契約を定める
 
@@ -108,7 +108,7 @@ Cloudflare が推奨する `cf-terraforming` を使い、既存リソースを T
 | Rate Limiting ルール (`/api/contact`) | 新規作成                    | Infrastructure Contract が「設定する」と将来形で書いており未設定。`/api/contact` 自体も未実装 |
 | R2 バケット (VRT baseline 用)         | 新規作成                    | #33 のために新設する                                                                          |
 | R2 バケット (Terraform state 用)      | 新規作成                    | `infra/bootstrap/` が作る                                                                     |
-| runtime secret                        | 対象外                      | ADR-0016 が Wrangler 管轄と定める                                                             |
+| runtime secret                        | 対象外                      | ADR-0020 が Wrangler 管轄と定める                                                             |
 
 **この表は棚卸しの前に作った見込みである。** apply の前に Dashboard を棚卸しし、実在するリソースを確定させる。結果は Infrastructure Contract へ記載し、上表と食い違った場合はそちらを正とする。
 
@@ -237,7 +237,7 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 
 - 対象 app / package: `apps/corporate-site`、`e2e` (#33 の VRT)、GitHub Actions workflow、新設する Terraform ディレクトリ
 - spec 更新要否: 要。#47 の spec に、ディレクトリ配置と apply workflow の分離を反映する
-- AI 向け設定更新要否: 要。**本 ADR に由来する更新**を次に網羅する。ADR-0016 に由来する更新は同 ADR の同名節を正本とする。
+- AI 向け設定更新要否: 要。**本 ADR に由来する更新**を次に網羅する。ADR-0020 に由来する更新は同 ADR の同名節を正本とする。
 - **更新時期は実装完了後である。** context と DesignDoc は現状事実を記述する文書であり、決定が承認されただけでは記述すべき事実が存在しない。承認時点で行うのは ADR-0001 の状態変更だけである。
 - **例外は `domains` への `infra` 追加である。** これは infra の実装状態ではなく、issue と PR に付けるラベルの体系を定める値であり、実装より前に必要になる。本 issue の作業へ `domain:infra` を付けるため、先に追加した。
 
@@ -254,12 +254,12 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 | [design/DesignDoc.md](../design/DesignDoc.md) の `未決事項` #6                            | 「infra repo と app repo の変更を相互参照する review workflow」は集約により論点が消滅する。クローズする                          |
 
 - ADR-0001 の状態は、本 ADR が承認された時点で「置換」へ変更する。提案の段階では変更しない
-- **ADR-0016 が持つ 2 枚の図は、提案の段階で追加済みである。** 置き場は [design/diagrams/](../design/diagrams/) である。図は ADR 本文の一部であり、ADR と同時に存在すべきだからである。context / DesignDoc の更新を実装完了後とする扱いとの差は、この理由による
+- **ADR-0020 が持つ 2 枚の図は、提案の段階で追加済みである。** 置き場は [design/diagrams/](../design/diagrams/) である。図は ADR 本文の一部であり、ADR と同時に存在すべきだからである。context / DesignDoc の更新を実装完了後とする扱いとの差は、この理由による
 
 ## 関連ドキュメント
 
 - [ADR-0001](0001-terraform-infra-repository-boundary.md): 本 ADR が supersede する決定
-- [ADR-0016](0016-cloudflare-terraform-wrangler-boundary.md): 集約後のツール分担 (本 ADR の前提の上に立つ)
+- [ADR-0020](0020-cloudflare-terraform-wrangler-boundary.md): 集約後のツール分担 (本 ADR の前提の上に立つ)
 - [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md): Phase 1 の対象が corporate-site のみであること
 - [ADR-0013](0013-designdoc-present-facts-only.md): Design Doc に現状事実のみを記載する決定 (context の更新時期の根拠)
 - [design/DesignDoc.md](../design/DesignDoc.md): ADR-0001 を前提にした記述を持つ (実装完了後に差し替える。対象行は「実装・運用への反映」の表を正本とする)

@@ -14,8 +14,8 @@
 
 | ファイル                           | 内容                                                | 参照元   |
 | ---------------------------------- | --------------------------------------------------- | -------- |
-| `infra-tool-boundary.drawio.svg`   | Cloudflare リソースの Terraform / Wrangler 管轄境界 | ADR-0016 |
-| `infra-permission-flow.drawio.svg` | credential と実行経路の権限分離                     | ADR-0016 |
+| `infra-tool-boundary.drawio.svg`   | Cloudflare リソースの Terraform / Wrangler 管轄境界 | ADR-0020 |
+| `infra-permission-flow.drawio.svg` | credential と実行経路の権限分離                     | ADR-0020 |
 
 ## 編集手順
 

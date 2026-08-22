@@ -2,7 +2,8 @@
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "workspaces": {
     ".": {
-      "project": ["e2e/**/*.ts"]
+      "project": ["e2e/**/*.ts", "scripts/**/*.mjs"],
+      "ignoreDependencies": ["http-server", "reg-cli"]
     },
     "apps/corporate-site": {
       "entry": [
