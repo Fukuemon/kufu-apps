@@ -316,21 +316,21 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 | VRT の連続実行での差分数 | flake の有無 (目標: 0)                                                    | story 側 0 件 (P1_01 で実測) |
 | E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                                            | **下表のとおり** (P3 で実測) |
 
-#### CI ジョブ構成 (2026-08-17 / P2、2026-08-22 に story VRT を分割)
+#### CI ジョブ構成 (2026-08-17 / P2、2026-08-22 に story VRT の分割と `lint.yml` の統合)
 
-`lint.yml` (lint / test) は残し、`ci.yml` を新設して次の job を **needs なしで並列**に置いた。ジョブ順序は D6〜D9 のいずれでも決めていないため、決定の無い順序依存を実装で持ち込まない。
+検査は `ci.yml` に集約し、次の job を **needs なしで並列**に置いた。ジョブ順序は D6〜D9 のいずれでも決めていないため、決定の無い順序依存を実装で持ち込まない。
 
-| job                      | 内容                                                                              |
-| ------------------------ | --------------------------------------------------------------------------------- |
-| `lint` (既存 `lint.yml`) | `pnpm lint`                                                                       |
-| `test` (既存 `lint.yml`) | `pnpm test`                                                                       |
-| `typecheck`              | `pnpm typecheck`                                                                  |
-| `build`                  | `pnpm build`                                                                      |
-| `analyze`                | `pnpm knip` と `pnpm depcruise` (`project.yml` が `pnpm check` として 1 組で扱う) |
-| `e2e`                    | `pnpm e2e` (route VRT は container 実行を条件に skip されるため smoke だけが走る) |
-| `vrt-story-ui`           | `pnpm vrt:story --target=ui`                                                      |
-| `vrt-story-corporate`    | `pnpm vrt:story --target=corporate-site`                                          |
-| `vrt-route`              | `pnpm vrt:route` (Playwright 公式 container。差分でジョブを失敗させる)            |
+| job                   | 内容                                                                              |
+| --------------------- | --------------------------------------------------------------------------------- |
+| `lint`                | `pnpm lint`                                                                       |
+| `test`                | `pnpm test`                                                                       |
+| `typecheck`           | `pnpm typecheck`                                                                  |
+| `build`               | `pnpm build`                                                                      |
+| `analyze`             | `pnpm knip` と `pnpm depcruise` (`project.yml` が `pnpm check` として 1 組で扱う) |
+| `e2e`                 | `pnpm e2e` (route VRT は container 実行を条件に skip されるため smoke だけが走る) |
+| `vrt-story-ui`        | `pnpm vrt:story --target=ui`                                                      |
+| `vrt-story-corporate` | `pnpm vrt:story --target=corporate-site`                                          |
+| `vrt-route`           | `pnpm vrt:route` (Playwright 公式 container。差分でジョブを失敗させる)            |
 
 - `vrt-route` はローカルと同じ `pnpm vrt:route` を通す。image 版の導出・起動条件・件数検査が CI 側だけ抜けるのを防ぐため。
 - artifact は `e2e-artifacts` (trace) と `vrt-route-diff` (差分画像)。`timeout-minutes` 超過は `failure()` に入らないため条件は `!cancelled()`。
@@ -724,7 +724,7 @@ sequenceDiagram
 - U2-b **required status checks は設定しない** (2026-08-22, ユーザー)。private repo かつ Free plan では branch protection と ruleset の**機能自体が使えない** (`branches/develop/protection` と `rulesets` がいずれも 403 `Upgrade to GitHub Pro or make this repository public`)。権限の問題ではないため `gh` の実行者を変えても解消しない。解除するには repo の public 化か GitHub Pro が要るが、**どちらも採らない**
   - **残る危険**: CI が赤いまま PR を merge できる。GitHub 側で塞ぐ手段が無いため、merge 前に PR のチェック欄を見る運用で担保する
   - 直接コミットの禁止は別経路で効いている。`lefthook.yml` の `pre-push` が `.protected-branches` (既定 `main` / `master` / `develop`) への push を止める
-  - plan か公開方針が変わった場合に設定する job 名は 8 件。`lint` (`lint.yml`)、`typecheck` / `build` / `analyze` / `e2e` / `vrt-story-ui` / `vrt-story-corporate` / `vrt-route` (`ci.yml`)。`spec-residue.yml` の `check` は PR ゲートにしない ([context/engineering.md](../../context/engineering.md) の判断)、`storybook-pages.yml` は deploy であり検査ではない
+  - plan か公開方針が変わった場合に設定する job 名は `ci.yml` の 9 件 (`lint` / `test` / `typecheck` / `build` / `analyze` / `e2e` / `vrt-story-ui` / `vrt-story-corporate` / `vrt-route`)。`spec-residue.yml` の `check` は PR ゲートにしない ([context/engineering.md](../../context/engineering.md) の判断)、`storybook-pages.yml` は deploy であり検査ではない
 
 ## 上位資料からの変更点
 
@@ -773,12 +773,36 @@ sequenceDiagram
 
 上位資料への反映ではないが、本 spec の決定が他 issue に作業を残すもの。
 
-| 引き継ぎ先 | 内容                                                              | 根拠         |
-| ---------- | ----------------------------------------------------------------- | ------------ |
-| #26        | React island 向けの play テスト対象基準を決める                   | D1           |
-| #26        | 問い合わせフォーム送信のジャーニーを E2E に追加する               | D11          |
-| #47        | R2 バケット / secret / CI 結線 / 差分レポートの閲覧経路を用意する | U1           |
-| #51        | `CompanySection` の story VRT を撮れるようにする                  | 実装時の保留 |
+| 引き継ぎ先 | 内容                                                  | 根拠         |
+| ---------- | ----------------------------------------------------- | ------------ |
+| #26        | React island 向けの play テスト対象基準を決める       | D1           |
+| #26        | 問い合わせフォーム送信のジャーニーを E2E に追加する   | D11          |
+| #47        | VRT baseline を Git 管理から外す (下記の引き継ぎ事項) | 2026-08-22   |
+| #51        | `CompanySection` の story VRT を撮れるようにする      | 実装時の保留 |
+
+#### #47 への引き継ぎ: VRT baseline を Git 管理から外す (2026-08-22)
+
+**要求**: baseline の PNG をリポジトリに置かない。PNG は差分圧縮が効かず、撮り直すたびに履歴へ恒久的に積まれる。
+
+**現状の実測 (2026-08-22)**: `.git` は 54MB。PNG blob の内訳は次のとおり。
+
+| 種別                    | 履歴内の blob    | 作業ツリー     |
+| ----------------------- | ---------------- | -------------- |
+| route baseline          | 16 個 / 9.48 MB  | 6 個 / 6.6 MB  |
+| story baseline          | 196 個 / 8.33 MB | 80 個 / 2.2 MB |
+| その他 PNG (サイト素材) | 4 個 / 6.13 MB   | —              |
+
+- 重いのは **route 側**。fullPage 撮影のため 1 枚 1.1MB で、story 側の 1 枚 27KB とは桁が違う
+- baseline を触った commit は 7 件で、すでに約 9MB が使われない履歴として残っている
+- 全面的な撮り直し (Playwright の版上げ / レイアウト変更) 1 回あたり約 8.8MB が積まれる
+
+**設計上の論点** (保管先を R2 へ移すだけでは解決しない)。
+
+- **reg-suit のキー解決の不安定さは保管先を変えても残る** ([ADR-0018](../../adr/0018-story-vrt-on-storybook-test-integrations.md))。使い捨てブランチを作って消しただけで比較先が変わり、全 81 枚が `new` 扱いで緑になった実測がある。明示キーの仕組みが別途要る
+- **route 側は reg-suit の管轄外**。Playwright の `toHaveScreenshot` は spec の隣のファイルを読む前提のため、実行前に baseline を取得し更新時に戻す仕組みを別に作る必要がある。story 側とは別設計になる
+- **PR レビューで差分画像を見る経路**を失わないこと。Git 管理はこれを無料で満たしている。外部保管にする場合は差分レポートの閲覧経路を同時に用意する (旧 U1 の論点)
+
+**判断が要ること**: 保管方式 (R2 + reg-suit / Git LFS / artifact) の選定と、ADR-0018 の「baseline をリポジトリで Git 管理する」決定の改訂。#47 で infra が整った時点で判断する。
 
 ### ADR の新規 / 更新
 

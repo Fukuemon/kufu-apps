@@ -1,6 +1,7 @@
 # 迂回できない quality gate (正本: adr/0016)。
-# lint.yml と分けるのは、job 名が required status checks の契約になるため。
-# job 間に needs を置かない。実行順序は設計で決めておらず、順序依存を持ち込まない。
+# 検査は 1 workflow に集める。job 間に同期 (needs) が要らず secret も使わないため、
+# workflow を分ける根拠が無い。実行順序は設計で決めておらず、順序依存を持ち込まない。
+# 共通の step は .github/actions/setup にまとめてある (repo 内の重複は composite action の担当)。
 
 name: CI
 
@@ -27,11 +28,31 @@ concurrency:
 permissions:
   contents: read
 
-# checkout と install の重複は、並列を優先した結果として許容する。
-# 共通の手順は .github/actions/setup にまとめてある。
+# 全 job 共通の if: PR ブランチへの push は pull_request 側が拾う (二重実行の回避)。
 jobs:
+  lint:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Install ripgrep # check-token-usage.mjs が使う (runner 標準に無い)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ripgrep
+      - name: Lint
+        run: pnpm lint
+
+  test:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Test
+        run: pnpm test
+
   typecheck:
-    # PR ブランチへの push は pull_request 側が拾う (二重実行の回避)
     if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 15
