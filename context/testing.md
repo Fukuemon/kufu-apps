@@ -51,10 +51,9 @@ E2E runtime contract と unit test の横断規約。feature 固有のテスト�
 
 - **許容 diff は 0 (完全一致)** を初期値とし、flake が実測された場合にその実測値を上回る最小値まで緩める。
 - **差分が出たら CI を失敗させる。** 環境差による恒常的な差分への一次対処は、閾値の引き上げでも非ブロッキング化でもなく、**原因要素のマスクと撮影環境の固定**とする。
-- 撮影と判定は CI 環境に一本化する。ローカルと CI ではフォントのレンダリングが異なり、baseline を撮る環境を固定しなければ恒常的な差分が発生するため。
+- **baseline の正は CI (amd64) で撮った画像**とする。ローカルとはフォントの描画が違い、撮る環境を固定しなければ恒常的な差分が出る。ローカル実行は撮影の確認に使う。
 - route 側は **Playwright 公式 container** で撮る。Playwright の baseline はファイル名に platform を含み、ホスト (macOS) で撮った画像は CI では使われない。`pnpm vrt:route` を経由しない実行は skip される。
-- story 側は **CI で撮った画像を baseline の正**とする。撮影が Vite のバンドルを伴い container 実行と両立しないため (ADR-0018)。ローカル実行は撮影の確認に使う。
-- story 側の撮影基盤は Storybook ごとに違う。`packages/ui` は `@storybook/addon-vitest`、`apps/corporate-site` は `@storybook/test-runner` (Astro は addon-vitest に載らない)。
+- story 側は container を使わず CI に一本化する。撮影が Vite のバンドルを伴い、エミュレーション下の container 実行と両立しないため (ADR-0018)。
 - VRT を外部サービスの応答に依存させない。外部の埋め込みや画像はリクエストごと落とし、残る枠はマスクする。
 
 手順とコマンドの詳細は [README.md](../README.md) の「Visual Regression Testing (VRT)」節。

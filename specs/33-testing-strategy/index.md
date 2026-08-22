@@ -311,12 +311,12 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 
 | 指標                     | 目的                                                                      | 実測値                       |
 | ------------------------ | ------------------------------------------------------------------------- | ---------------------------- |
-| CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする                        | **2 分 37 秒** (P2 で実測)   |
-| VRT の撮影枚数           | 実行時間と保守コストの見積もり。初期値は story 81 枚 + route 6 枚 = 87 枚 | story 81 枚 (P1_01 で実測)   |
+| CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする                        | **2 分 24 秒** (2026-08-22)  |
+| VRT の撮影枚数           | 実行時間と保守コストの見積もり。初期値は story 81 枚 + route 6 枚 = 87 枚 | story 80 枚 + route 6 枚     |
 | VRT の連続実行での差分数 | flake の有無 (目標: 0)                                                    | story 側 0 件 (P1_01 で実測) |
 | E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                                            | **下表のとおり** (P3 で実測) |
 
-#### CI ジョブ構成 (2026-08-17 / P2)
+#### CI ジョブ構成 (2026-08-17 / P2、2026-08-22 に story VRT を分割)
 
 `lint.yml` (lint / test) は残し、`ci.yml` を新設して次の job を **needs なしで並列**に置いた。ジョブ順序は D6〜D9 のいずれでも決めていないため、決定の無い順序依存を実装で持ち込まない。
 
@@ -328,6 +328,8 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 | `build`                  | `pnpm build`                                                                      |
 | `analyze`                | `pnpm knip` と `pnpm depcruise` (`project.yml` が `pnpm check` として 1 組で扱う) |
 | `e2e`                    | `pnpm e2e` (route VRT は container 実行を条件に skip されるため smoke だけが走る) |
+| `vrt-story-ui`           | `pnpm vrt:story --target=ui`                                                      |
+| `vrt-story-corporate`    | `pnpm vrt:story --target=corporate-site`                                          |
 | `vrt-route`              | `pnpm vrt:route` (Playwright 公式 container。差分でジョブを失敗させる)            |
 
 - `vrt-route` はローカルと同じ `pnpm vrt:route` を通す。image 版の導出・起動条件・件数検査が CI 側だけ抜けるのを防ぐため。
@@ -459,7 +461,17 @@ CI で route VRT を 3 回比較実行し、**1 回だけ `products-desktop` に
 
 **CI での実測 (2026-08-19)**: 6 job すべて success。`vrt-story` は 184 秒。baseline は CI が撮った 81 枚 (2.24MB) を正とし、ホストで撮った暫定版は 81 枚すべてが CI 版と異なっていた。
 
-**実行時間 (2026-08-19 実測)**: 全体 約 226 秒 (Storybook 2 本のビルド 17 秒 + 撮影と比較 209 秒)。例外の別パス撮影で 35 秒増えている。storycap の並列数は既定の 4 のままとする。許容 diff 0 の撮影で負荷を上げると flake の表面積が広がるため。例外パスだけは対象が数件なので並列数 1 とし、ブラウザの起動回数を減らしている。
+**story VRT の job 分割 (2026-08-22)**: `vrt-story` を Storybook 単位で `vrt-story-ui` / `vrt-story-corporate` に分けた。`scripts/vrt-story.mjs` の `--target` で撮影先・baseline・レポートを分け、各 job は自分の baseline とだけ比べる。`needs` は置かない。
+
+| job                   | container 起動 | setup | 撮影と比較 | 合計       |
+| --------------------- | -------------- | ----- | ---------- | ---------- |
+| `vrt-story-ui`        | 31 秒          | 23 秒 | 75 秒      | **138 秒** |
+| `vrt-story-corporate` | 43 秒          | 17 秒 | 35 秒      | **100 秒** |
+
+- 分割前の `vrt-story` は **185 秒** (run 32543305867)。critical path は **185 → 138 秒** (-47 秒)。`ci.yml` の wall clock は 191 → **144 秒**
+- `lint.yml` は 47 秒で並走するため、PR のチェックが揃うまでは **約 2 分 24 秒**
+- container 起動と setup が job ごとに重複する (合計 114 秒)。分割で増えたのは課金対象の合計時間であり、待ち時間ではない
+- required status checks に設定しうる job 名が `vrt-story` から 2 つに増える。設定は U2 としてユーザーが判断する
 
 **観測**: `FeaturedCategoryCarousel` の 2 story だけ幅 1286px になる (他は 1280px)。カルーセルの横スクロール領域が 6px はみ出している。撮影は安定しているため VRT では扱わず、レイアウトの確認対象として記録する。
 
