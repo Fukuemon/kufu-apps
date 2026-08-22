@@ -13,7 +13,8 @@
     "e2e:serve": "pnpm build && pnpm preview",
     "astro": "astro",
     "storybook": "storybook dev --host 127.0.0.1 --port 6007",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build",
+    "vrt:capture": "test-storybook --url http://127.0.0.1:6012 --maxWorkers=4"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.0",
@@ -26,11 +27,13 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "@storybook-astro/framework": "^1.5.0",
-    "@storybook/addon-docs": "10.4.6",
-    "@storybook/react": "10.4.6",
+    "@storybook-astro/framework": "^1.10.0",
+    "@storybook/addon-docs": "10.5.9",
+    "@storybook/react": "10.5.9",
+    "@storybook/test-runner": "0.24.4",
+    "@storycap-testrun/node": "2.1.1",
     "@tailwindcss/vite": "^4.3.1",
-    "storybook": "^10.4.6",
+    "storybook": "^10.5.9",
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3",
     "vite": "^8.0.16"

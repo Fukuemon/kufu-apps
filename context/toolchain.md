@@ -1,27 +1,29 @@
 # Toolchain
 
-> 最終更新: 2026-07-26
+> 最終更新: 2026-08-16
 
 Kufu Monorepo で採用する標準 toolchain。採否の根拠は [adr/](../adr/) を参照する。
 
 ## 標準スタック
 
-| 区分                         | ツール                 | 備考                                                                                                                   |
-| ---------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Package manager              | pnpm workspace         |                                                                                                                        |
-| Task runner                  | Turborepo              | root script から `turbo run` で束ねる                                                                                  |
-| コーポレートサイト framework | Astro                  | 現行の主対象                                                                                                           |
-| CMS app candidate            | Hono + Inertia + React | 未実装。候補のみ (採否は ADR / spec)                                                                                   |
-| Bundler                      | Rolldown               | 採用候補として先行固定                                                                                                 |
-| Language                     | TypeScript             |                                                                                                                        |
-| Linter                       | oxlint                 | TS を含む workspace は `oxlint-tsgolint` の type-aware 実行を使う。eslint は oxlint で不足が確認された場合のみ段階併用 |
-| Formatter                    | oxfmt                  | config をほぼ持たず root script を正本にする。prettier は入れない                                                      |
-| Unit test                    | Vitest                 |                                                                                                                        |
-| UI catalog                   | Storybook              | `packages/ui` と app-local Presentation component の review 入口                                                       |
-| E2E                          | Playwright             | root 管理 ([testing.md](testing.md))                                                                                   |
-| Dead code detection          | knip                   | root 管理 ([engineering.md](engineering.md))                                                                           |
-| Dependency analysis          | dependency-cruiser     | root 管理 ([engineering.md](engineering.md))                                                                           |
-| Library build                | tsdown                 |                                                                                                                        |
+| 区分                         | ツール                     | 備考                                                                                                                            |
+| ---------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Package manager              | pnpm workspace             |                                                                                                                                 |
+| Task runner                  | Turborepo                  | root script から `turbo run` で束ねる                                                                                           |
+| コーポレートサイト framework | Astro                      | 現行の主対象                                                                                                                    |
+| CMS app candidate            | Hono + Inertia + React     | 未実装。候補のみ (採否は ADR / spec)                                                                                            |
+| Bundler                      | Rolldown                   | 採用候補として先行固定                                                                                                          |
+| Language                     | TypeScript                 |                                                                                                                                 |
+| Linter                       | oxlint                     | TS を含む workspace は `oxlint-tsgolint` の type-aware 実行を使う。eslint は oxlint で不足が確認された場合のみ段階併用          |
+| Formatter                    | oxfmt                      | config をほぼ持たず root script を正本にする。prettier は入れない                                                               |
+| Unit test                    | Vitest                     |                                                                                                                                 |
+| UI catalog                   | Storybook                  | `packages/ui` と app-local Presentation component の review 入口                                                                |
+| E2E                          | Playwright                 | root 管理 ([testing.md](testing.md))                                                                                            |
+| VRT (story)                  | storycap-testrun + reg-cli | Storybook の story を撮影・比較する。baseline は Git 管理 ([ADR-0018](../adr/0018-story-vrt-on-storybook-test-integrations.md)) |
+| VRT (route)                  | Playwright screenshot      | `toHaveScreenshot` で 3 route を撮影する。baseline は Git 管理 ([ADR-0015](../adr/0015-visual-regression-testing-policy.md))    |
+| Dead code detection          | knip                       | root 管理 ([engineering.md](engineering.md))                                                                                    |
+| Dependency analysis          | dependency-cruiser         | root 管理 ([engineering.md](engineering.md))                                                                                    |
+| Library build                | tsdown                     |                                                                                                                                 |
 
 ## 先行固定の方針
 

@@ -62,6 +62,65 @@ features:
       - "https://github.com/Fukuemon/kufu-apps/issues/31 (決定経緯)"
     coverage: "full"
 
+  - name: "testing-strategy"
+    keywords:
+      [
+        "テスト種別",
+        "Unit test",
+        "play",
+        "interaction test",
+        "E2E",
+        "Playwright",
+        "Page Object",
+        "locator",
+        "data-testid",
+        "getByRole",
+        "ユーザージャーニー",
+        "VRT",
+        "視覚回帰",
+        "storycap",
+        "reg-suit",
+        "toHaveScreenshot",
+        "baseline",
+        "許容 diff",
+      ]
+    read:
+      - "context/testing.md"
+      - "design/features/corporate-site/DesignDoc_corporate-site.md"
+    source_refs:
+      - "adr/0015-visual-regression-testing-policy.md"
+      - "adr/0017-ui-test-structure-policy.md"
+      - "https://github.com/Fukuemon/kufu-apps/issues/33 (決定経緯)"
+    coverage: "full"
+
+  - name: "ci-pipeline"
+    keywords:
+      [
+        "CI",
+        "GitHub Actions",
+        "workflows",
+        "lefthook",
+        "pre-commit",
+        "required status checks",
+        "Turbo キャッシュ",
+        "quality gate",
+        "typecheck",
+        "knip",
+        "depcruise",
+        "R2",
+        "secret",
+        "baseline 保管先",
+      ]
+    read:
+      - "context/engineering.md"
+      - "context/toolchain.md"
+      - "context/infrastructure.md"
+    source_refs:
+      - "adr/0016-ci-local-hook-responsibility.md"
+      - "adr/0015-visual-regression-testing-policy.md"
+      - "https://github.com/Fukuemon/kufu-apps/issues/33 (決定経緯)"
+    coverage: "full"
+
   - name: "<feature 名 (例: contact-form)>"
     keywords: ["<検索の手掛かり>", "<API 名>", "<画面名>"]
     read: # このエントリを触るとき最初に読むファイル (小さく保つ)

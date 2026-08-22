@@ -1,3 +1,8 @@
+# CI とローカル hook の分担 (正本: adr/0016)。
+# ローカル hook は速いフィードバック、CI は迂回できない gate を担う。
+# 同じ検査が両方で走るのは意図的な二重化なので、CI にあることを理由にここから削らない。
+# typecheck / build / e2e / VRT は commit ごとには重いため CI 側だけに置く。
+
 pre-commit:
   commands:
     protected-branch:
