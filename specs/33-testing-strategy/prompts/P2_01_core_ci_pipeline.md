@@ -107,7 +107,7 @@ depends_on: [P1_02_e2e_route_vrt.md]
 ## 前提条件
 
 - 完了しているべき phase / 依存 prompt: `P1_02_e2e_route_vrt.md` (route VRT の実行コマンドが必要)
-- 完了後に着手可能になる後続 prompt: `P5_01_core_story_vrt_r2.md`
+- 完了後に着手可能になる後続 prompt: なし (`P5_01` は 2026-08-22 に廃止した)
 - 必要な repo 状態: route VRT の baseline がリポジトリにコミット済み
 
 ## 不明点ハンドリング
@@ -131,7 +131,7 @@ depends_on: [P1_02_e2e_route_vrt.md]
 - **既存 workflow の作り替え** (`spec-residue.yml` / `spec-closeout.yml` / `storybook-pages.yml`)
 - **Storybook build の CI 搭載** — 既に `storybook-pages.yml` が担っており、本 spec は同 workflow を作り替えない
 - **`pnpm check:specs` の CI 搭載** — `spec-residue.yml` が既に実行しており常設化は完了済み。同 workflow は「別 PR で spec を清算する運用では無関係な PR が落ちる」ため意図的に PR ゲートから外している。**この既存判断を維持する**
-- story 側 VRT の CI 搭載 (#47 完了後。`P5_01_core_story_vrt_r2.md` が行う)
+- story 側 VRT の CI 搭載 (**実装済み**。ADR-0018 で #47 依存が外れたため本 phase で載せた)
 - Turbo remote cache の導入 (U2 の実測後に判断する)
 - required status checks の設定 (ユーザー判断)
 - Cloudflare Pages のデプロイ設定変更

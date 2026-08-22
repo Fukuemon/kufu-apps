@@ -107,7 +107,7 @@ depends_on: []
 ## 前提条件
 
 - 完了しているべき phase / 依存 prompt: なし (本 prompt が phase 1 の起点)
-- 完了後に着手可能になる後続 prompt: `P5_01_core_story_vrt_r2.md`
+- 完了後に着手可能になる後続 prompt: なし (`P5_01` は 2026-08-22 に廃止した)
 - 必要な repo 状態: `pnpm install` 済み。Docker が利用できること
 
 ## 不明点ハンドリング
@@ -127,7 +127,7 @@ depends_on: []
 
 ### 実装しない範囲
 
-- Cloudflare R2 への結線 (#47 完了後。`P5_01_core_story_vrt_r2.md` が行う)
+- Cloudflare R2 への結線 (#47 へ引き継いだ。spec の「#47 への引き継ぎ」節)
 - story 側 VRT を CI へ載せること (同上)
 - route 側 VRT (`P1_02_e2e_route_vrt.md` が行う)
 - play テストの実装 (本 spec の「やらないこと」)
