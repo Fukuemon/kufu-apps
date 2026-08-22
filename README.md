@@ -39,7 +39,11 @@ pnpm install
 | story | Storybook の全 story (fixture は除く) | `@storycap-testrun` (ui は addon-vitest / corporate-site は test-runner) | リポジトリ (Git 管理) | `pnpm vrt:story` |
 | route | 3 route × desktop / mobile = 6 枚     | Playwright `toHaveScreenshot`                                            | リポジトリ (Git 管理) | `pnpm vrt:route` |
 
-許容 diff は 0 (完全一致) を初期値とし、flake が実測されたときだけその値を上回る最小値まで緩める。
+両系統に共通する決まり。
+
+- **許容 diff は 0 (完全一致)** を初期値とし、flake が実測されたときだけその値を上回る最小値まで緩める
+- **baseline の正は CI (ubuntu-latest / amd64) で撮った画像**とする。ホストとはフォント描画が違うため、ローカル実行では差分が出る。撮り直しは `ci.yml` の `workflow_dispatch` から行い、artifact の PNG を commit する
+- 角丸のアンチエイリアスが 1 チャンネルあたり ±1 で揺れるため、色の許容差だけ 0.02 を置く。差分ピクセル数は 0 のまま
 
 ## story 側 VRT
 
@@ -57,13 +61,9 @@ Storybook が 2 インスタンスあり、撮影の載せ方が違う。Astro �
 
 比較は `reg-cli`。差分レポートは `.vrt/report.html`、撮影結果は `.vrt/actual/`、baseline は `vrt/baseline/`。
 
-### 撮影と判定は CI に一本化する
+### container へ寄せていない
 
-**baseline の正は CI (ubuntu-latest / amd64) で撮った画像**とする。ホストとはフォント描画が違うため、ローカル実行では差分が出る。ローカルは撮影が通ることの確認に使う。
-
-route 側と違って container へ寄せていないのは、`@storybook/addon-vitest` が撮影時に Vite のバンドルを回すためである。Apple Silicon 上の amd64 エミュレーションでは Storybook の build だけで 25 分以上かかった (実測。ホストでは 9 秒)。
-
-baseline の撮り直しは `ci.yml` の `workflow_dispatch` (`update-story-vrt-baseline`) から行い、artifact の PNG を commit する。
+route 側と違い、撮影と判定を CI に一本化する。`@storybook/addon-vitest` が撮影時に Vite のバンドルを回すため、Apple Silicon 上の amd64 エミュレーションでは Storybook の build だけで 25 分以上かかる (実測。ホストでは 9 秒)。ローカルは撮影が通ることの確認に使う。
 
 ### 撮影の安定化
 
@@ -71,7 +71,6 @@ baseline の撮り直しは `ci.yml` の `workflow_dispatch` (`update-story-vrt-
 - 高さを viewport から算出する story (`calc(100vh - ...)`) は `parameters.vrt.viewport` で上書きする
 - 撮影時だけスクロールバーとキャレットを CSS で隠す。どちらも画像の端で揺れる (実測)
 - `CompanySection` は撮影対象から外している (`parameters.screenshot.skip`)。並列実行時にページの load 状態が完了せず撮影が終わらない。原因は未特定で別 issue で扱う
-- 角丸のアンチエイリアスが 1 チャンネルあたり ±1 で揺れるため、`reg-cli` の `--matchingThreshold` を 0.02 にしている。差分ピクセル数は 0 のまま
 
 ## route 側 VRT
 
@@ -84,13 +83,12 @@ baseline の撮り直しは `ci.yml` の `workflow_dispatch` (`update-story-vrt-
 
 ### 撮影環境の固定
 
-Playwright の baseline はファイル名に platform を含み、macOS で撮った `-darwin.png` は CI では使われない。フォント描画も環境で違うため、Playwright 公式 container (`linux/amd64`) に固定する。`scripts/vrt-container.mjs` が指定した pnpm script を container で回す。
+Playwright の baseline はファイル名に platform を含み、macOS で撮った `-darwin.png` は CI では使われない。Playwright 公式 container (`linux/amd64`) に固定する。`scripts/vrt-container.mjs` が指定した pnpm script を container で回す。
 
 - **image tag は `@playwright/test` の版から導出する**。二重管理だとブラウザ版だけ取り残される
 - **アーキテクチャも固定する**。CI の runner は amd64 で、arm64 で撮った画像とは一致しない (実測で 6 枚中 2 枚が変わった)
 - container 内でホストとは別に `pnpm install` をやり直す。`node_modules` は名前付き volume に隔離する。掃除は `docker volume ls | grep kufu-e2e` から `docker volume rm`
 - `pnpm vrt:route` を経由しない実行は skip される。6 件すべての実行を JSON レポートで検査する
-- baseline の正は CI で撮った画像とする。撮り直しは `ci.yml` の `workflow_dispatch` (`update-route-vrt-baseline`) から
 
 **Linux ホストでの注意**: container は root でリポジトリを read-write に bind mount する。生成物が root 所有で残り、以降のホスト実行が失敗しうる。
 
@@ -99,7 +97,6 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 - 外部への通信を落とす。Google Maps とカテゴリ写真 (Unsplash) は内容も応答時間も実行ごとに変わるため、`page.route` で same-origin 以外を abort する
 - 地図 iframe は通信を落としても枠が残るため `mask` で隠す
 - reveal とカルーセルの自動スクロールは、既存実装が持つ `prefers-reduced-motion` の分岐で止める
-- 角丸のアンチエイリアス対策に `threshold: 0.02` を置く。差分ピクセル数は 0 のまま
 
 差分画像は `test-results/` に出る。`.gitignore` 済み。
 
