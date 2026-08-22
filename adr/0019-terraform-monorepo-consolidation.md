@@ -16,13 +16,15 @@
 - 前提にした Terraform による infra 管理が始まっていない。現状は分離のコスト (別 repo の維持、Infrastructure Contract の同期) だけを払い、利益を受け取っていない。
 - Cloudflare の設定はすべて Dashboard 上にあり、コード管理されていない。この状態は、ADR-0001 が Dashboard 運用の欠点として退けたものと同じである。決定から 3 か月そのまま続いている。
 - **未確認**: Dashboard 上に何が実在するかは棚卸ししていない。issue #47 は Pages project / domain / secret があると記す。ただし runtime secret の消費者である Pages Functions は未実装で、`apps/corporate-site/functions/` が存在しない。secret が実在するとは限らない。実在の確定は下記「既存の Dashboard 設定の移行」で行う。
-- テスト戦略と CI パイプラインの整備 (#33) が、VRT baseline の保管先に Cloudflare R2 を選んだ。R2 が Infrastructure Contract の対象となり、空の repo 待ちで実装が止まっている。
+- テスト戦略と CI パイプラインの整備 (#33) は、当初 VRT baseline の保管先に Cloudflare R2 を選び、R2 が Infrastructure Contract の対象となって空の repo 待ちになった。#33 は 2026-08-22 に、baseline を Git 管理へ移して R2 依存を外すことで完了した。
+  - [ADR-0018](0018-story-vrt-on-storybook-test-integrations.md) — story VRT を `reg-cli` と baseline の Git 管理へ移し、外部ストレージを不要にした決定
+- **baseline の保管方式は未確定のまま #47 へ引き継がれた。** Git 管理は PNG を履歴へ積み続けるため (実測で `.git` 54MB のうち PNG blob が 212 個 / 17.8MB)、R2 / Git LFS / artifact のいずれを採るかを infra が整った時点で判断する。論点は issue #47 のコメントにある。
 
 ### 判断を分ける事実
 
 ADR-0001 の判断が誤っていたのではない。**分離が成立する前提が満たされなかった**ことが問題である。別リポジトリの運用は、そこへ変更を書き込む頻度と担当があって初めて機能する。
 
-前提が欠けた結果として確認できる事実は 3 点である。3 か月間 `.tf` が 1 つも書かれなかったこと、Cloudflare の設定が Dashboard 上に残り続けたこと、#33 が空の repo 待ちで止まっていることである。
+前提が欠けた結果として確認できる事実は 3 点である。3 か月間 `.tf` が 1 つも書かれなかったこと、Cloudflare の設定が Dashboard 上に残り続けたこと、#33 が空の repo 待ちで一度止まったことである。
 
 ## 決定
 
@@ -106,7 +108,7 @@ Cloudflare が推奨する `cf-terraforming` を使い、既存リソースを T
 | Zone / DNS record / TLS               | `cf-terraforming` で import | 公開中のサイトが依存しており実在する                                                          |
 | Pages custom domain 紐付け            | `cf-terraforming` で import | 同上                                                                                          |
 | Rate Limiting ルール (`/api/contact`) | 新規作成                    | Infrastructure Contract が「設定する」と将来形で書いており未設定。`/api/contact` 自体も未実装 |
-| R2 バケット (VRT baseline 用)         | 新規作成                    | #33 のために新設する                                                                          |
+| R2 バケット (VRT baseline 用)         | 保留                        | #33 は baseline を Git 管理へ移したため現時点で不要。保管方式を決めてから作る                 |
 | R2 バケット (Terraform state 用)      | 新規作成                    | `infra/bootstrap/` が作る                                                                     |
 | runtime secret                        | 対象外                      | ADR-0020 が Wrangler 管轄と定める                                                             |
 
@@ -174,7 +176,7 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 #### Cons
 
 - 着手されなかった原因に対処していない。3 か月の空白は手順の重さが障壁になったことを示しており、同じ構造を残せば同じ結果になる可能性が高い。
-- #33 のブロックが継続する。R2 の 1 リソースを作るために、別 repo の初期構築一式が先に必要になる。
+- baseline の保管方式を R2 で解く選択肢が閉じたままになる。R2 の 1 リソースを作るために、別 repo の初期構築一式が先に必要になるためである。
 - Infrastructure Contract の同期という運用コストを、利益が出ていない段階から払い続ける。
 
 ### 2. Terraform を採用せず Cloudflare Dashboard で運用する
@@ -187,7 +189,7 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 
 - ADR-0001 が Dashboard 運用の欠点として挙げた内容がそのまま該当する。変更履歴、review、再現性、環境差分管理が弱く、secret や binding の運用が属人化する。
 - 本 issue の目的の 1 つ (コード管理されていない Cloudflare リソースをコード管理下に置く) を満たさない。
-- #33 の R2 も Dashboard 作成となり、CI から使う資格情報の管理が文書だけの約束になる。
+- baseline を R2 へ置く場合も Dashboard 作成となり、CI から使う資格情報の管理が文書だけの約束になる。
 
 ### 3. 3 層モジュール構成 (resource module / infrastructure module / composition) を採る
 
@@ -219,7 +221,7 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 
 - 1 つの PR で app 変更と infra 変更を整合させられる。#33 のような「app 側の都合で infra リソースが要る」変更が、repo をまたがずに完結する。
 - Infrastructure Contract の同期漏れという失敗モードがなくなる。contract と実体が同じ repo に置かれる。
-- #33 のブロックが解ける。
+- baseline の保管方式を R2 で解く選択肢が開く。#33 が Git 管理で回避した論点を、infra 側から扱えるようになる。
 - コード管理されていなかった Cloudflare リソースが、初めてコード管理下に入る。Terraform で infra を管理するという当初の目標に、別の経路で到達する。
 
 ### 悪い影響 / トレードオフ
@@ -232,6 +234,7 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 ### 未確認事項
 
 - `kufu-infra` に、本 monorepo 側へ引き継ぐべき内容が残っていないかは、アーカイブ実施前に確認する。現時点の確認では PRD / DesignDoc / ADR-0001 のコピーと AI 設定のみであり、いずれも本 repo に正本がある。
+- **VRT baseline の保管方式が未確定である。** R2 を採る場合は Terraform 管轄のリソースが 1 つ増え、CI へ渡す S3 互換の資格情報も要る。Git LFS や artifact を採る場合は infra 側の対象が増えない。保管方式が決まるまで、上記「既存の Dashboard 設定の移行」の R2 (VRT baseline 用) は保留とする。判断材料は issue #47 のコメントにある。
 
 ## 実装・運用への反映
 
@@ -262,6 +265,7 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 - [ADR-0020](0020-cloudflare-terraform-wrangler-boundary.md): 集約後のツール分担 (本 ADR の前提の上に立つ)
 - [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md): Phase 1 の対象が corporate-site のみであること
 - [ADR-0013](0013-designdoc-present-facts-only.md): Design Doc に現状事実のみを記載する決定 (context の更新時期の根拠)
+- [ADR-0018](0018-story-vrt-on-storybook-test-integrations.md): story VRT を Git 管理の baseline へ移した決定 (R2 依存が外れた経緯)
 - [design/DesignDoc.md](../design/DesignDoc.md): ADR-0001 を前提にした記述を持つ (実装完了後に差し替える。対象行は「実装・運用への反映」の表を正本とする)
 - [context/infrastructure.md](../context/infrastructure.md): Infrastructure Contract / Environment Strategy
 - [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/): ディレクトリ構成 / モジュール回避 / 環境分割 / cf-terraforming の出典
