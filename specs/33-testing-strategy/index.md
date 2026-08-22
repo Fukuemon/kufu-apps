@@ -311,7 +311,7 @@ storycap は **2 回撮影して reg-suit の比較対象へまとめる**必要
 
 | 指標                     | 目的                                                                      | 実測値                       |
 | ------------------------ | ------------------------------------------------------------------------- | ---------------------------- |
-| CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする                        | **2 分 24 秒** (2026-08-22)  |
+| CI の総実行時間          | D6 / D7 適用後の実測値を記録し U2 の判断材料にする                        | **2 分 15 秒** (2026-08-22)  |
 | VRT の撮影枚数           | 実行時間と保守コストの見積もり。初期値は story 81 枚 + route 6 枚 = 87 枚 | story 80 枚 + route 6 枚     |
 | VRT の連続実行での差分数 | flake の有無 (目標: 0)                                                    | story 側 0 件 (P1_01 で実測) |
 | E2E のセレクタ内訳       | locator 規約 (D5) 適用後の変化                                            | **下表のとおり** (P3 で実測) |
@@ -469,9 +469,27 @@ CI で route VRT を 3 回比較実行し、**1 回だけ `products-desktop` に
 | `vrt-story-corporate` | 43 秒          | 17 秒 | 35 秒      | **100 秒** |
 
 - 分割前の `vrt-story` は **185 秒** (run 32543305867)。critical path は **185 → 138 秒** (-47 秒)。`ci.yml` の wall clock は 191 → **144 秒**
-- `lint.yml` は 47 秒で並走するため、PR のチェックが揃うまでは **約 2 分 24 秒**
+- `lint.yml` は 47 秒で並走するため、PR のチェックが揃うまでは **約 2 分 24 秒** (`lint.yml` 統合前の値)
 - container 起動と setup が job ごとに重複する (合計 114 秒)。分割で増えたのは課金対象の合計時間であり、待ち時間ではない
 - required status checks に設定しうる job 名が `vrt-story` から 2 つに増える。設定は U2 としてユーザーが判断する
+
+**`lint.yml` の統合 (2026-08-22)**: 検査を `ci.yml` に集約し 9 job にした。分割の根拠 (job 間の同期 / secret 制約 / 複数リポジトリでの共有) がどれも当てはまらず、repo 内の step の重複は composite action の担当であるため。`pnpm test` は `lint` job の中にあり、落ちても lint の失敗として表示されていたので `test` job へ分けた。
+
+| job                   | 時間   |
+| --------------------- | ------ |
+| `analyze`             | 30 秒  |
+| `build`               | 32 秒  |
+| `test`                | 32 秒  |
+| `lint`                | 34 秒  |
+| `typecheck`           | 49 秒  |
+| `vrt-route`           | 85 秒  |
+| `e2e`                 | 94 秒  |
+| `vrt-story-corporate` | 100 秒 |
+| `vrt-story-ui`        | 131 秒 |
+
+- workflow の wall clock は **135 秒** (run 32559338889)。9 job すべて success
+- 統合前は `ci.yml` 144 秒と `lint.yml` 47 秒が並走して 2 分 24 秒。統合後は **2 分 15 秒**。並列度は変わらないため、縮んだのは workflow 起動の重なり分だけである
+- `ripgrep` のインストールは `check-token-usage.mjs` が使うため `lint` job にだけ残した
 
 **観測**: `FeaturedCategoryCarousel` の 2 story だけ幅 1286px になる (他は 1280px)。カルーセルの横スクロール領域が 6px はみ出している。撮影は安定しているため VRT では扱わず、レイアウトの確認対象として記録する。
 
@@ -720,7 +738,7 @@ sequenceDiagram
 | U2  | Turbo remote cache と required status checks                | 運用判断     | ユーザー | 2026-08-22   | **判断済み**。下記のとおり                      |
 
 - U1 (2026-08-22 に解消): ADR-0018 で story 側の baseline を Git 管理 + `reg-cli` へ移したため、R2 バケットも secret も差分レポートの外部閲覧経路も不要になった。#47 完了後に reg-suit + R2 へ乗り換えるかは、そのときの判断とする
-- U2-a **Turbo remote cache は入れない** (2026-08-22, ユーザー)。PR のチェックが揃うまで 2 分 24 秒で、支配しているのは VRT の撮影 (`vrt-story-ui` 138 秒 / `vrt-route` 85 秒) である。Turbo cache が効く `build` 31 秒 / `typecheck` 40 秒 / `lint` 47 秒を短縮しても critical path は動かない
+- U2-a **Turbo remote cache は入れない** (2026-08-22, ユーザー)。PR のチェックが揃うまで 2 分 15 秒で、支配しているのは VRT の撮影 (`vrt-story-ui` 138 秒 / `vrt-route` 85 秒) である。Turbo cache が効く `build` 31 秒 / `typecheck` 40 秒 / `lint` 47 秒を短縮しても critical path は動かない
 - U2-b **required status checks は設定しない** (2026-08-22, ユーザー)。private repo かつ Free plan では branch protection と ruleset の**機能自体が使えない** (`branches/develop/protection` と `rulesets` がいずれも 403 `Upgrade to GitHub Pro or make this repository public`)。権限の問題ではないため `gh` の実行者を変えても解消しない。解除するには repo の public 化か GitHub Pro が要るが、**どちらも採らない**
   - **残る危険**: CI が赤いまま PR を merge できる。GitHub 側で塞ぐ手段が無いため、merge 前に PR のチェック欄を見る運用で担保する
   - 直接コミットの禁止は別経路で効いている。`lefthook.yml` の `pre-push` が `.protected-branches` (既定 `main` / `master` / `develop`) への push を止める
