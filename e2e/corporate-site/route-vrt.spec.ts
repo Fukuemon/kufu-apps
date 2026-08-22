@@ -21,7 +21,7 @@ for (const viewport of viewports) {
     test.describe.configure({ timeout: 120_000 });
 
     // 撮影環境は container に固定する (adr/0015)。ROUTE_VRT_CONTAINER は
-    // scripts/vrt-route.mjs だけが渡す。
+    // scripts/vrt-container.mjs だけが渡す。
     test.skip(
       process.env["ROUTE_VRT_CONTAINER"] !== "1",
       "route VRT は Playwright 公式 container でのみ実行する (pnpm vrt:route)",

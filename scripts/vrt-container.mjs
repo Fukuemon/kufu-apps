@@ -1,9 +1,6 @@
 #!/usr/bin/env node
 // 引数で渡した pnpm script を Playwright 公式 container の中で実行する。
-//
-// VRT の baseline はリポジトリで Git 管理するため、撮影環境を固定しないとホストと CI で
-// 一致しない。Playwright の baseline はファイル名に platform を含み、素の環境ではフォント
-// 描画も違う (adr/0015)。手順と理由は README.md の VRT 節。
+// 撮影環境を固定しないとホストと CI で baseline が一致しない (adr/0015、README.md の VRT 節)。
 //
 //   node scripts/vrt-container.mjs <pnpm script> [追加引数...]
 

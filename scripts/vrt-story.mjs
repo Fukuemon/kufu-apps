@@ -1,14 +1,11 @@
 #!/usr/bin/env node
-// story 側 VRT の実行入口。Storybook を build して撮影し、reg-cli で baseline と比べる。
+// story 側 VRT。Storybook を撮影し、reg-cli で baseline と比べる。
+// 手順と設計の理由は README.md の VRT 節、判断は adr/0018。
 //
-// **撮影と判定は CI に一本化する** (spec D8)。baseline は CI (ubuntu-latest / amd64) で撮った
-// ものを Git 管理し、ローカル実行はホストの描画差で差分が出る。ローカルは撮影の確認用と考える。
-// container へ寄せないのは、@storybook/addon-vitest が撮影時に Vite のバンドルを回すためで、
-// Apple Silicon 上の amd64 エミュレーションでは Storybook の build だけで 25 分以上かかる (実測)。
+//   node scripts/vrt-story.mjs [--update] [--target=ui|corporate-site]
 //
-// Storybook は 2 インスタンスあり、撮影の載せ方が違う。
-//   packages/ui        : @storybook/addon-vitest + @storycap-testrun/browser
-//   apps/corporate-site: @storybook/test-runner  + @storycap-testrun/node (Astro は addon-vitest 非対応)
+// baseline は CI (ubuntu-latest / amd64) で撮ったものを正とするため、ローカル実行では
+// ホストの描画差で差分が出る。ローカルは撮影が通ることの確認に使う。
 
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, rmSync } from "node:fs";
@@ -16,15 +13,28 @@ import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const actualDir = join(repoRoot, ".vrt/actual");
-const baselineDir = join(repoRoot, "vrt/baseline");
-const diffDir = join(repoRoot, ".vrt/diff");
-const reportPath = join(repoRoot, ".vrt/report.html");
 
 // corporate-site の test-runner は起動済みの Storybook を開く。
 const CORPORATE_PORT = 6012;
 
-const update = process.argv.slice(2).includes("--update");
+const TARGETS = {
+  ui: { capture: captureUi },
+  "corporate-site": { capture: captureCorporate },
+};
+
+const args = process.argv.slice(2);
+const update = args.includes("--update");
+const targetArg = args
+  .find((a) => a.startsWith("--target="))
+  ?.slice("--target=".length);
+
+if (targetArg && !(targetArg in TARGETS)) {
+  fail(
+    `渡せない target です: ${targetArg}`,
+    `使えるのは ${Object.keys(TARGETS).join(" / ")} だけです。`,
+  );
+}
+const targets = targetArg ? [targetArg] : Object.keys(TARGETS);
 
 function fail(message, hint) {
   console.error(`\n[vrt] ${message}`);
@@ -32,12 +42,28 @@ function fail(message, hint) {
   process.exit(1);
 }
 
+function run(command, commandArgs, options = {}) {
+  const result = spawnSync(command, commandArgs, {
+    cwd: repoRoot,
+    stdio: "inherit",
+    ...options,
+  });
+  if (result.error) {
+    fail(`${command} を起動できませんでした: ${result.error.message}`);
+  }
+  if (result.status !== 0 && !options.allowFailure) {
+    fail(
+      `${command} ${commandArgs.join(" ")} が失敗しました (exit ${result.status})`,
+    );
+  }
+  return result.status ?? 1;
+}
+
 async function waitForPort(port, timeoutMs = 60_000) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     try {
-      const res = await fetch(`http://127.0.0.1:${port}/index.json`);
-      if (res.ok) return;
+      if ((await fetch(`http://127.0.0.1:${port}/index.json`)).ok) return;
     } catch {
       // 起動待ち
     }
@@ -48,82 +74,76 @@ async function waitForPort(port, timeoutMs = 60_000) {
   );
 }
 
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: repoRoot,
-    stdio: "inherit",
-    ...options,
-  });
-  if (result.error)
-    fail(`${command} を起動できませんでした: ${result.error.message}`);
-  if (result.status !== 0 && !options.allowFailure) {
-    fail(`${command} ${args.join(" ")} が失敗しました (exit ${result.status})`);
-  }
-  return result.status ?? 1;
+// addon-vitest は Vite で story を変換して描画するため、静的ビルドを使わない。
+function captureUi() {
+  run("pnpm", ["--filter", "@kufu/ui", "vrt:capture"]);
 }
 
-// corporate-site だけ build する。packages/ui は addon-vitest が Vite で story を
-// 変換して描画するため、静的ビルドを使わない。
-console.log("\n[vrt] build storybook: @kufu/corporate-site");
-run("pnpm", ["--filter", "@kufu/corporate-site", "storybook:build"]);
-
-rmSync(actualDir, { force: true, recursive: true });
-rmSync(diffDir, { force: true, recursive: true });
-
-console.log("\n[vrt] capture: @kufu/ui");
-run("pnpm", ["--filter", "@kufu/ui", "vrt:capture"]);
-
-console.log("\n[vrt] capture: @kufu/corporate-site");
-// test-runner は起動済みの Storybook を開く。配信はこの script が抱えて確実に落とす。
-const server = spawn(
-  "pnpm",
-  [
-    "exec",
-    "http-server",
-    "apps/corporate-site/storybook-static",
-    "-p",
-    String(CORPORATE_PORT),
-    "-c-1",
-    "--silent",
-  ],
-  { cwd: repoRoot, stdio: "ignore" },
-);
-try {
-  await waitForPort(CORPORATE_PORT);
-  run("pnpm", ["--filter", "@kufu/corporate-site", "vrt:capture"]);
-} finally {
-  server.kill();
-}
-
-if (update) {
-  mkdirSync(baselineDir, { recursive: true });
-} else if (!existsSync(baselineDir)) {
-  fail(
-    `baseline がありません: ${baselineDir}`,
-    "pnpm vrt:story:update で作成してください。",
+async function captureCorporate() {
+  run("pnpm", ["--filter", "@kufu/corporate-site", "storybook:build"]);
+  const server = spawn(
+    "pnpm",
+    [
+      "exec",
+      "http-server",
+      "apps/corporate-site/storybook-static",
+      "-p",
+      String(CORPORATE_PORT),
+      "-c-1",
+      "--silent",
+    ],
+    { cwd: repoRoot, stdio: "ignore" },
   );
+  try {
+    await waitForPort(CORPORATE_PORT);
+    run("pnpm", ["--filter", "@kufu/corporate-site", "vrt:capture"]);
+  } finally {
+    server.kill();
+  }
 }
 
-console.log("\n[vrt] compare");
-// 許容 diff は 0 (ADR-0015)。matchingThreshold だけ 0.02 にしているのは、角丸の
-// アンチエイリアスが 1 チャンネルあたり ±1 で揺れるため (実測)。差分ピクセル数は 0 のまま。
-const args = [
-  actualDir,
-  baselineDir,
-  diffDir,
-  "-R",
-  reportPath,
-  "--json",
-  join(repoRoot, ".vrt/out.json"),
-  "--matchingThreshold",
-  "0.02",
-  "--thresholdPixel",
-  "0",
-];
-if (update) args.push("--update");
-const status = run("pnpm", ["exec", "reg-cli", ...args], {
-  allowFailure: true,
-});
+// 許容 diff は 0 (adr/0015)。matchingThreshold だけ 0.02 にしているのは、角丸の
+// アンチエイリアスが 1 チャンネルあたり ±1 で揺れるため。差分ピクセル数は 0 のまま。
+function compare(target) {
+  const actual = join(repoRoot, ".vrt/actual", target);
+  const baseline = join(repoRoot, "vrt/baseline", target);
+  if (update) {
+    mkdirSync(baseline, { recursive: true });
+  } else if (!existsSync(baseline)) {
+    fail(
+      `baseline がありません: ${baseline}`,
+      "pnpm vrt:story:update で作成してください。",
+    );
+  }
+  const cliArgs = [
+    actual,
+    baseline,
+    join(repoRoot, ".vrt/diff", target),
+    "-R",
+    join(repoRoot, ".vrt", `report-${target}.html`),
+    "--json",
+    join(repoRoot, ".vrt", `out-${target}.json`),
+    "--matchingThreshold",
+    "0.02",
+    "--thresholdPixel",
+    "0",
+  ];
+  if (update) cliArgs.push("--update");
+  return run("pnpm", ["exec", "reg-cli", ...cliArgs], { allowFailure: true });
+}
+
+let failed = 0;
+for (const target of targets) {
+  console.log(`\n[vrt] capture: ${target}`);
+  rmSync(join(repoRoot, ".vrt/actual", target), {
+    force: true,
+    recursive: true,
+  });
+  await TARGETS[target].capture();
+
+  console.log(`\n[vrt] compare: ${target}`);
+  if (compare(target) !== 0) failed += 1;
+}
 
 if (update) {
   console.log(
@@ -131,7 +151,9 @@ if (update) {
   );
   process.exit(0);
 }
-if (status !== 0) {
-  console.error(`\n[vrt] 差分を検出しました。レポート: .vrt/report.html`);
+if (failed > 0) {
+  console.error(
+    `\n[vrt] 差分を検出しました。レポート: .vrt/report-<target>.html`,
+  );
 }
-process.exit(status);
+process.exit(failed > 0 ? 1 : 0);

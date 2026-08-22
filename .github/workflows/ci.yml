@@ -89,9 +89,10 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
-  # story 側の VRT。撮影と判定は CI に一本化する (adr/0018)。
-  # runner は amd64 なので、ここで撮った baseline が正になる。
-  vrt-story:
+  # story 側の VRT。撮影と判定は CI に一本化する (adr/0018)。runner は amd64 なので、
+  # ここで撮った baseline が正になる。Storybook 単位に job を分けて撮影を並列にする。
+  # 各 job は自分の baseline とだけ比べるため、job 間に順序依存は生まれない。
+  vrt-story-ui:
     if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -101,26 +102,58 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - name: Story VRT
+      - name: Story VRT (ui)
         if: ${{ inputs.update-story-vrt-baseline != true }}
-        run: pnpm vrt:story
-      # baseline の撮り直し。artifact の PNG を commit して取り込む。
-      - name: Update story VRT baseline
+        run: pnpm vrt:story --target=ui
+      - name: Update baseline
         if: ${{ inputs.update-story-vrt-baseline == true }}
-        run: pnpm vrt:story:update
+        run: pnpm vrt:story:update --target=ui
       - name: Upload updated baseline
         if: ${{ inputs.update-story-vrt-baseline == true }}
         uses: actions/upload-artifact@v4
         with:
-          name: vrt-story-baseline
-          path: vrt/baseline/
+          name: vrt-story-baseline-ui
+          path: vrt/baseline/ui/
           retention-days: 7
           if-no-files-found: error
       - name: Upload VRT diff
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: vrt-story-diff
+          name: vrt-story-diff-ui
+          path: .vrt/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  vrt-story-corporate:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Story VRT (corporate-site)
+        if: ${{ inputs.update-story-vrt-baseline != true }}
+        run: pnpm vrt:story --target=corporate-site
+      - name: Update baseline
+        if: ${{ inputs.update-story-vrt-baseline == true }}
+        run: pnpm vrt:story:update --target=corporate-site
+      - name: Upload updated baseline
+        if: ${{ inputs.update-story-vrt-baseline == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-story-baseline-corporate-site
+          path: vrt/baseline/corporate-site/
+          retention-days: 7
+          if-no-files-found: error
+      - name: Upload VRT diff
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-story-diff-corporate-site
           path: .vrt/
           retention-days: 7
           if-no-files-found: ignore

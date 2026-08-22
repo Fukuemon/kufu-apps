@@ -32,56 +32,49 @@ pnpm install
 
 ## Visual Regression Testing (VRT)
 
-方針の正本は [adr/0018](adr/0018-story-vrt-on-storybook-test-integrations.md)、責務分担は [context/testing.md](context/testing.md)。
+story 側と route 側の 2 系統がある。方針の正本は [adr/0018](adr/0018-story-vrt-on-storybook-test-integrations.md) と [adr/0015](adr/0015-visual-regression-testing-policy.md)、責務分担は [context/testing.md](context/testing.md)。ここには実行手順だけを書く。
 
-| 系統  | 撮影対象                              | 撮影                                                                     | baseline              | 実行             |
-| ----- | ------------------------------------- | ------------------------------------------------------------------------ | --------------------- | ---------------- |
-| story | Storybook の全 story (fixture は除く) | `@storycap-testrun` (ui は addon-vitest / corporate-site は test-runner) | リポジトリ (Git 管理) | `pnpm vrt:story` |
-| route | 3 route × desktop / mobile = 6 枚     | Playwright `toHaveScreenshot`                                            | リポジトリ (Git 管理) | `pnpm vrt:route` |
+| 系統  | 撮影対象                              | 撮影                          | 実行             |
+| ----- | ------------------------------------- | ----------------------------- | ---------------- |
+| story | Storybook の全 story (fixture は除く) | `@storycap-testrun`           | `pnpm vrt:story` |
+| route | 3 route × desktop / mobile = 6 枚     | Playwright `toHaveScreenshot` | `pnpm vrt:route` |
 
-両系統に共通する決まり。
+baseline はどちらもリポジトリで Git 管理し、**CI (ubuntu-latest / amd64) で撮った画像を正とする**。ホストとはフォント描画が違うため、ローカル実行では差分が出る。撮り直しは `ci.yml` の `workflow_dispatch` から行い、artifact の PNG を commit する。
 
-- **許容 diff は 0 (完全一致)** を初期値とし、flake が実測されたときだけその値を上回る最小値まで緩める
-- **baseline の正は CI (ubuntu-latest / amd64) で撮った画像**とする。ホストとはフォント描画が違うため、ローカル実行では差分が出る。撮り直しは `ci.yml` の `workflow_dispatch` から行い、artifact の PNG を commit する
-- 角丸のアンチエイリアスが 1 チャンネルあたり ±1 で揺れるため、色の許容差だけ 0.02 を置く。差分ピクセル数は 0 のまま
+### story 側
 
-## story 側 VRT
+| コマンド                             | 内容                                    |
+| ------------------------------------ | --------------------------------------- |
+| `pnpm vrt:story`                     | 全 Storybook を撮影し baseline と比べる |
+| `pnpm vrt:story --target=ui`         | `packages/ui` だけを対象にする          |
+| `pnpm vrt:story:update --target=<t>` | 同じ実行で baseline を撮り直す          |
 
-| コマンド                | 内容                                             |
-| ----------------------- | ------------------------------------------------ |
-| `pnpm vrt:story`        | Storybook を build して撮影し、baseline と比べる |
-| `pnpm vrt:story:update` | 同じ実行で baseline を撮り直す                   |
+`--target` は `ui` / `corporate-site`。CI は Storybook ごとに job を分け、それぞれ自分の baseline とだけ比べる。
 
-Storybook が 2 インスタンスあり、撮影の載せ方が違う。Astro は `@storybook/addon-vitest` (Vite の公式 renderer 限定) に載らないため。
+撮影の載せ方は Storybook ごとに違う。Astro が `@storybook/addon-vitest` (Vite 公式 renderer 限定) に載らないため。
 
 | Storybook             | 撮影                                                    | 設定                                              |
 | --------------------- | ------------------------------------------------------- | ------------------------------------------------- |
 | `packages/ui`         | `@storybook/addon-vitest` + `@storycap-testrun/browser` | `vitest.config.ts` / `.storybook/vitest.setup.ts` |
 | `apps/corporate-site` | `@storybook/test-runner` + `@storycap-testrun/node`     | `.storybook/test-runner.ts`                       |
 
-比較は `reg-cli`。差分レポートは `.vrt/report.html`、撮影結果は `.vrt/actual/`、baseline は `vrt/baseline/`。
+比較は `reg-cli`。撮影結果は `.vrt/actual/<target>/`、差分レポートは `.vrt/report-<target>.html`、baseline は `vrt/baseline/<target>/`。
 
-### container へ寄せていない
+route 側と違って container で撮らない。`@storybook/addon-vitest` が撮影時に Vite のバンドルを回すため、Apple Silicon 上の amd64 エミュレーションでは Storybook の build だけで 25 分以上かかる (実測。ホストでは 9 秒)。ローカルは撮影が通ることの確認に使う。
 
-route 側と違い、撮影と判定を CI に一本化する。`@storybook/addon-vitest` が撮影時に Vite のバンドルを回すため、Apple Silicon 上の amd64 エミュレーションでは Storybook の build だけで 25 分以上かかる (実測。ホストでは 9 秒)。ローカルは撮影が通ることの確認に使う。
+撮影を安定させるために次の手当てを置いている。
 
-### 撮影の安定化
-
-- **幅は固定し、高さは最小にする** (1280x10)。`fullPage` が内容の高さまで伸ばすので余白が残らない。幅を固定するのは、内容に合わせると `w-full` のコンポーネントが潰れてレイアウト情報が落ちるため
+- **幅は固定し、高さは最小にする** (1280x10)。`fullPage` が内容の高さまで伸ばすので余白が残らない。幅を固定するのは、内容に合わせると `w-full` のコンポーネントが潰れるため
 - 高さを viewport から算出する story (`calc(100vh - ...)`) は `parameters.vrt.viewport` で上書きする
-- 撮影時だけスクロールバーとキャレットを CSS で隠す。どちらも画像の端で揺れる (実測)
-- `CompanySection` は撮影対象から外している (`parameters.screenshot.skip`)。並列実行時にページの load 状態が完了せず撮影が終わらない。原因は未特定で別 issue で扱う
+- 撮影時だけスクロールバーとキャレットを CSS で隠す。どちらも画像の端で揺れる
+- `CompanySection` は撮影対象から外している (`parameters.screenshot.skip`)。並列実行時にページの load 状態が完了せず撮影が終わらない。原因は未特定で、#51 で扱う
 
-## route 側 VRT
-
-3 route を desktop / mobile で撮り、baseline を Git 管理する。
+### route 側
 
 | コマンド                | 内容                                   |
 | ----------------------- | -------------------------------------- |
 | `pnpm vrt:route`        | container で実行し baseline と比較する |
 | `pnpm vrt:route:update` | 同じ実行で baseline を撮り直す         |
-
-### 撮影環境の固定
 
 Playwright の baseline はファイル名に platform を含み、macOS で撮った `-darwin.png` は CI では使われない。Playwright 公式 container (`linux/amd64`) に固定する。`scripts/vrt-container.mjs` が指定した pnpm script を container で回す。
 
@@ -92,7 +85,7 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 
 **Linux ホストでの注意**: container は root でリポジトリを read-write に bind mount する。生成物が root 所有で残り、以降のホスト実行が失敗しうる。
 
-### 撮影の安定化
+撮影を安定させるために次の手当てを置いている。
 
 - 外部への通信を落とす。Google Maps とカテゴリ写真 (Unsplash) は内容も応答時間も実行ごとに変わるため、`page.route` で same-origin 以外を abort する
 - 地図 iframe は通信を落としても枠が残るため `mask` で隠す
