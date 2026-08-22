@@ -83,7 +83,7 @@
 
 ### 悪い影響 / トレードオフ
 
-- リポジトリが約 3MB 増える。story を足すたびに増え、PNG は差分圧縮が効かない。**追記 (2026-08-22)**: 撮り直すたびに旧 baseline が履歴へ残る。実測で PNG blob は 212 個 / 17.8MB (`.git` は 54MB) に達した。保管方式の再検討を #47 へ引き継ぐ (#33 の spec を参照)。
+- リポジトリが約 3MB 増える。story を足すたびに増え、PNG は差分圧縮が効かない。**追記 (2026-08-22)**: 撮り直すたびに旧 baseline が履歴へ残る。実測で PNG blob は 212 個 / 17.8MB (`.git` は 54MB) に達した。保管方式の再検討を #47 へ引き継ぐ (実測と論点は #47 のコメントに転記した)。
 - 撮影基盤が Storybook ごとに 2 つになる。Astro が addon-vitest に対応するまで解消しない。
 - `@storybook/test-runner` は Jest を持ち込む。本リポジトリの単体テストは Vitest であり、テストランナーが 2 種類になる。
 - ローカルでは CI と描画が違うため差分が出る。差分の確認は CI 待ちになる。
@@ -91,8 +91,8 @@
 ## 実装・運用への反映
 
 - 対象 app / package: `packages/ui`、`apps/corporate-site`、リポジトリ横断の CI 設定
-- spec 更新要否: 要。#33 の spec に実測値を記録する
-- AI 向け設定更新要否: 要。`context/testing.md` の VRT 節を更新する
+- spec 更新要否: 実施済み。#33 の spec へ実測値を記録した (spec は closeout で削除。経緯は #48)
+- AI 向け設定更新要否: 実施済み。`context/testing.md` / `context/toolchain.md` の VRT 節を更新した
 
 ### 撮影の安定化 (実測に基づく)
 
