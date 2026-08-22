@@ -1,6 +1,6 @@
 # Kufu Monorepo Design Docs
 
-> 最終更新: 2026-08-22
+> 最終更新: 2026-08-23
 
 **Document Status:** Approved
 **Development Status:** In Progress
@@ -160,31 +160,17 @@ Kufu Monorepo はコーポレートサイトの構築・運用を主目的とす
 
 ## アーキテクチャ概観 (Overview)
 
-C4 L1 / L2 の粒度で全体像を示す。feature 内部の component 図や詳細フローは feature doc へ委譲する。
+利用者、リポジトリ、公開基盤、外部サービスの関係を 1 枚で示す。feature 内部の component 図や詳細フローは feature doc へ委譲する。
 
-### System Context (C4 L1) — 誰が・何のために使うか
+![サービス構成図](diagrams/service-architecture.drawio.svg)
 
-利用者視点に絞る。開発プロセス (開発者 / GitHub / docs workflow) は [詳細の所在](#詳細の所在-委譲先) が扱う。
+図の要点:
 
-```mermaid
-flowchart LR
-    Visitor["訪問者<br/>調達 / 保全 / 購買担当者・見込み顧客"] -->|"取扱領域・連絡先を閲覧"| Site["Kufu コーポレートサイト"]
-    Operator["内容更新者<br/>Kufu 側担当者"] -->|"掲載内容を更新・確認"| Site
-    Site -->|"静的サイトを配信"| CF["Cloudflare Pages / CDN"]
-```
-
-### Container (C4 L2) — 主要な実行単位とデータの流れ
-
-図に載せるのは **repo に実装コードが存在する実行単位と、確定済みの配信先** とする。仕様が決まっていても未実装のものは [Future Work](#未実装の計画) へ置く。
-
-```mermaid
-flowchart TD
-    Visitor["訪問者"] -->|"閲覧"| CF["Cloudflare Pages / CDN<br/>配信先"]
-    Corp["apps/corporate-site<br/>Astro 静的生成"] -->|"build artifact"| CF
-    UI["packages/ui<br/>デザイントークン / 共有 UI / Storybook"] --> Corp
-    Config["packages/config<br/>共有 TS / lint / test 設定"] --> Corp
-    E2E["e2e + playwright.config.ts<br/>公開前検証"] --> Corp
-```
+- **破線は未実装である。** `infra/` と Rate Limiting、R2 は #47 で作る。Pages Functions と runtime secret、外部サービスとの連携は別 issue で扱う。実装が進んだら実線へ変える。
+- 訪問者が触れるのは Cloudflare だけである。GitHub は成果物を届ける側にあり、利用者からは見えない。
+- 内容更新者と開発者はどちらも PR を入口とする。コンテンツの更新も実装も、同じ検査 (`ci.yml`) を通る。
+- 本番へ出る経路は 2 本ある。`deploy workflow` がアプリを配り、`infra-apply workflow` が基盤を変える。この 2 本が持つ credential は分かれている。
+- 図には現状の事実と、#47 で確定した構成の両方を含む。**本図は現状事実のみを記載する原則の例外である。**例外の範囲は ADR-0013 の更新節が定める。
 
 ## モジュール責務
 
@@ -298,6 +284,7 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 | 2026-07-26 | Claude | 現状事実化: Phase 語彙と将来記述を全節から排除し Future Work へ集約。C4 L1/L2 を実在の要素のみに再設計               |
 | 2026-08-16 | Claude | Future Work「CI パイプライン」行を現状事実へ更新 (lint / test / docs closeout 検査は稼働中)。ADR-0016 を参照先に追加 |
 | 2026-08-22 | Claude | 参照を括弧からネストした参照行へ移し、本文中の重複リンクを初出 1 回に整理。関連ドキュメント節を新設                  |
+| 2026-08-23 | Claude | アーキテクチャ概観の mermaid C4 L1 / L2 を、利用者を含むサービス構成図 (.drawio.svg) 1 枚へ置き換え                  |
 
 ## 関連ドキュメント
 
@@ -310,3 +297,4 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 - [context/](../context/): 技術規約 / codebase architecture / 運用契約
 - [context/project.yml](../context/project.yml): プロジェクト固有値
 - [design/features/](features/): feature 単位の設計
+- [diagrams/service-architecture.drawio.svg](diagrams/service-architecture.drawio.svg): 本 doc のサービス構成図

@@ -12,10 +12,13 @@
 
 ## 図の一覧
 
-| ファイル                           | 内容                                                | 参照元   |
-| ---------------------------------- | --------------------------------------------------- | -------- |
-| `infra-tool-boundary.drawio.svg`   | Cloudflare リソースの Terraform / Wrangler 管轄境界 | ADR-0020 |
-| `infra-permission-flow.drawio.svg` | credential と実行経路の権限分離                     | ADR-0020 |
+| ファイル                           | 内容                                                      | 参照元              |
+| ---------------------------------- | --------------------------------------------------------- | ------------------- |
+| `service-architecture.drawio.svg`  | 利用者 / GitHub / Cloudflare / 外部サービスのサービス構成 | design/DesignDoc.md |
+| `infra-tool-boundary.drawio.svg`   | Cloudflare リソースの Terraform / Wrangler 管轄境界       | ADR-0020            |
+| `infra-permission-flow.drawio.svg` | credential と実行経路の権限分離                           | ADR-0020            |
+
+`service-architecture.drawio.svg` は破線で未実装を表す。実装が進んだら実線へ変える。
 
 ## 編集手順
 
