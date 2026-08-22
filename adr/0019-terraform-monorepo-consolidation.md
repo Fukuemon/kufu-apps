@@ -2,7 +2,7 @@
 
 ## 状態
 
-提案
+承認 (2026-08-23)。ADR-0020 と同時に承認した
 
 ## 決定日
 
@@ -256,7 +256,7 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 | [design/DesignDoc.md](../design/DesignDoc.md) の `設計上の重要ポイント` 節                | 「Terraform は別 repo 管理とし、アプリ repo に本番基盤の apply 導線を持ち込まない」は本 ADR が覆す規範そのものである。書き換える |
 | [design/DesignDoc.md](../design/DesignDoc.md) の `未決事項` #6                            | 「infra repo と app repo の変更を相互参照する review workflow」は集約により論点が消滅する。クローズする                          |
 
-- ADR-0001 の状態は、本 ADR が承認された時点で「置換」へ変更する。提案の段階では変更しない
+- ADR-0001 の状態は、本 ADR の承認に合わせて「置換」へ変更した (2026-08-23)
 - **ADR-0020 が持つ 2 枚の図は、提案の段階で追加済みである。** 置き場は [design/diagrams/](../design/diagrams/) である。図は ADR 本文の一部であり、ADR と同時に存在すべきだからである。context / DesignDoc の更新を実装完了後とする扱いとの差は、この理由による
 
 ## 関連ドキュメント

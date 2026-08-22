@@ -2,7 +2,7 @@
 
 ## 状態
 
-提案
+承認 (2026-08-23)。ADR-0019 と同時に承認した
 
 ## 決定日
 
@@ -86,8 +86,9 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 
 - Cloudflare の内側は管轄で 2 つに分かれ、それぞれへ入る実線 (管理経路) は 1 本ずつである。同じリソースへ両方のツールから線が入っていないことが、二重管理が生じていないことを表す。
 - 破線は参照であり、管理ではない。`cloudflare_pages_domain` は Wrangler が作った project を名前で参照する。この向きが bootstrap の順序制約を生む。
-- VRT workflow を Cloudflare の外に置いたのは、R2 を消費するだけで管理しないためである。アプリ (Worker) から R2 への binding は存在しない。図は R2 を採用した場合を描いている。
-- **図が描くのは、本決定を実装した後の定常状態である。** 初回のみ必要な `infra/bootstrap/` と state 用 R2 バケットは載せていない (初回の順序は下記「bootstrap 順序の制約」を参照)。Pages Functions は未実装であり、実装されたときの管轄として描いている。
+- **runtime secret だけは、枠へ入る実線の対象外である。** 図では橙の注記で示した。deploy workflow の token は secret 投入権限を持たず、投入は特権経路のみで行う。経路は次の図が描く。
+- 描いた R2 バケットは Terraform state 用の 1 つだけである。VRT baseline 用は保管方式が未確定のため描いていない。R2 を採る場合、Terraform 管轄のバケットが 1 つ増え、GitHub Actions が S3 互換 API で読み書きする。アプリ (Worker) からの binding はどちらの方式でも発生しない。
+- **図が描くのは、本決定を実装した後の定常状態である。** 初回のみ実行する `infra/bootstrap/` は載せていない (初回の順序は下記「bootstrap 順序の制約」を参照)。Pages Functions は未実装であり、実装されたときの管轄として描いている。
 
 ### 権限と実行経路
 

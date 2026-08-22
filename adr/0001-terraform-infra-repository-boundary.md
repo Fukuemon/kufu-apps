@@ -2,7 +2,7 @@
 
 ## 状態
 
-承認
+ADR-0019 により置換 (2026-08-23)。infra code の正本は Kufu Monorepo の `infra/` へ移り、`kufu-infra` はアーカイブする
 
 ## 決定日
 
