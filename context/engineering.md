@@ -36,6 +36,8 @@ Storybook build は CI / PR quality gate の対象とするが、pre-commit の�
 - **CI を最後の砦とする。** pre-commit は `--no-verify` で迂回できるため、`typecheck` / `build` / `knip` / `depcruise` / `e2e` / VRT を CI に載せる。ローカル hook との重複は**意図的な二重化**として許容する。
 - ローカル hook は速いフィードバックを担い、CI は迂回不可能な gate を担う。同じ検査が両方で走ることを問題としない。
 - **CI 実行時間の目標値は置かない。** ジョブ追加後の実測値を記録し、その値を見て Turbo remote cache の要否と required status checks の設定を判断する。
+- **Turbo remote cache は入れない** (2026-08-22 判断)。PR のチェックが揃うまで 2 分 24 秒で、支配しているのは VRT の撮影である。cache が効く build / typecheck / lint を短縮しても critical path は動かない。ジョブ構成が変わったら実測から判断し直す。
+- **required status checks は設定しない** (2026-08-22 判断)。private repo かつ Free plan では branch protection と ruleset の機能自体が使えず (API が 403 `Upgrade to GitHub Pro or make this repository public` を返す)、解除に必要な public 化と GitHub Pro のどちらも採らない。**CI が赤いまま merge できる状態が残る**ため、merge 前に PR のチェック欄を見る運用で担保する。直接コミットの禁止は `lefthook.yml` の `pre-push` が引き続き担う。
 - VRT の撮影と判定は CI 環境に一本化する (ローカルと CI でフォントのレンダリングが異なるため。[ADR-0015](../adr/0015-visual-regression-testing-policy.md))。
 
 ```mermaid

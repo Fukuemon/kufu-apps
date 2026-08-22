@@ -714,13 +714,17 @@ sequenceDiagram
 
 残るのは **実装順序の依存と、実装後の運用判断** の 2 件で、いずれも設計をブロックしない。
 
-| #   | 事項                                                        | 種別         | 決定者   | 解消時期                     | 影響                                                                  |
-| --- | ----------------------------------------------------------- | ------------ | -------- | ---------------------------- | --------------------------------------------------------------------- |
-| U1  | R2 バケット / secret / CI 結線 / **差分レポートの閲覧経路** | 実装順序依存 | #47      | #47 の完了時                 | story 側 VRT の **CI 稼働時期**。#33 のローカル検証はブロックされない |
-| U2  | Turbo remote cache と required status checks                | 運用判断     | ユーザー | D6 / D7 適用後の実測が出た後 | なし (実装後に判断すればよい)                                         |
+| #   | 事項                                                        | 種別         | 決定者   | 解消時期     | 影響                                            |
+| --- | ----------------------------------------------------------- | ------------ | -------- | ------------ | ----------------------------------------------- |
+| U1  | R2 バケット / secret / CI 結線 / **差分レポートの閲覧経路** | 実装順序依存 | #47      | #47 の完了時 | **解消済み**。story 側 VRT から R2 依存が外れた |
+| U2  | Turbo remote cache と required status checks                | 運用判断     | ユーザー | 2026-08-22   | **判断済み**。下記のとおり                      |
 
-- U1: #47 で infra を monorepo へ集約し、Terraform 管理下に R2 を用意する (2026-08-15, ユーザー)。**#33 は R2 を待たず、ローカルの S3 互換ストレージで storycap + reg-suit のパイプラインを構築・検証するところまでを完了とする**。R2 への結線と story 側の CI 稼働は #47 の後
-- U2: 解消には develop の branch protection の現状確認が必要。private repo のため `gh api` が 403 を返すので Web UI 等で確認する
+- U1 (2026-08-22 に解消): ADR-0018 で story 側の baseline を Git 管理 + `reg-cli` へ移したため、R2 バケットも secret も差分レポートの外部閲覧経路も不要になった。#47 完了後に reg-suit + R2 へ乗り換えるかは、そのときの判断とする
+- U2-a **Turbo remote cache は入れない** (2026-08-22, ユーザー)。PR のチェックが揃うまで 2 分 24 秒で、支配しているのは VRT の撮影 (`vrt-story-ui` 138 秒 / `vrt-route` 85 秒) である。Turbo cache が効く `build` 31 秒 / `typecheck` 40 秒 / `lint` 47 秒を短縮しても critical path は動かない
+- U2-b **required status checks は設定しない** (2026-08-22, ユーザー)。private repo かつ Free plan では branch protection と ruleset の**機能自体が使えない** (`branches/develop/protection` と `rulesets` がいずれも 403 `Upgrade to GitHub Pro or make this repository public`)。権限の問題ではないため `gh` の実行者を変えても解消しない。解除するには repo の public 化か GitHub Pro が要るが、**どちらも採らない**
+  - **残る危険**: CI が赤いまま PR を merge できる。GitHub 側で塞ぐ手段が無いため、merge 前に PR のチェック欄を見る運用で担保する
+  - 直接コミットの禁止は別経路で効いている。`lefthook.yml` の `pre-push` が `.protected-branches` (既定 `main` / `master` / `develop`) への push を止める
+  - plan か公開方針が変わった場合に設定する job 名は 8 件。`lint` (`lint.yml`)、`typecheck` / `build` / `analyze` / `e2e` / `vrt-story-ui` / `vrt-story-corporate` / `vrt-route` (`ci.yml`)。`spec-residue.yml` の `check` は PR ゲートにしない ([context/engineering.md](../../context/engineering.md) の判断)、`storybook-pages.yml` は deploy であり検査ではない
 
 ## 上位資料からの変更点
 
@@ -883,3 +887,9 @@ appendix (API / Database / Authorization / Screen spec / testid) はいずれも
 
 - API endpoint / 永続データ層 / ロール権限 / 画面コンポーネントツリーを本 spec では扱わない
 - `data-testid` 一覧は D5 で locator 規約を決めるのみで、個別の testid 設計はジャーニー実装 issue の担当とする
+
+### PR のレビュアー指名 (2026-08-22)
+
+各 prompt の完了条件にある「PR を Ready に変更しレビュアーを指名した」のうち、**レビュアー指名は達成できない**。本リポジトリの collaborator は作者 1 名で、GitHub は作者自身へのレビュー依頼を拒否する (`gh pr edit 48 --add-reviewer Fukuemon` が 422 `Review cannot be requested from pull request author`)。
+
+代わりに各実装フェーズで `multi-agent-review` を回し、指摘と対応を記録した。PR #48 は Ready のままレビュアー未指名で扱う。collaborator が増えた時点で通常の指名運用へ戻す。
