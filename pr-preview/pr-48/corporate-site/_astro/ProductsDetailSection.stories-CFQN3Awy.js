@@ -1,3 +1,0 @@
-const t=()=>{throw new Error("Astro components are rendered server-side by Storybook.")};t.isAstroComponentFactory=!0;t.moduleId="/home/runner/work/kufu-apps/kufu-apps/apps/corporate-site/src/components/sections/products-detail/ProductsDetailSection.astro";const o={viewport:{width:1280,height:800}},r={title:"Sections/ProductsDetail/ProductsDetailSection",component:t,parameters:{vrt:o}},e={args:{}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
-  args: {}
-}`,...e.parameters?.docs?.source}}};const s=["Default"];export{e as Default,s as __namedExportsOrder,r as default};
