@@ -19,7 +19,8 @@
   - [ADR-0009](0009-corporate-site-contact-form-backend.md) — 問い合わせフォームのバックエンド構成を定めた決定
 - Pages Functions は runtime secret として Resend API key、メール宛先、Turnstile secret key を必要とする。
   - [context/infrastructure.md](../context/infrastructure.md) の Infrastructure Contract (app → infra) — app が要求する secret 名を列挙する。実値は repo に保存しないと定める
-- VRT baseline の保管方式は未確定である。#33 は Git 管理を選んで完了しており、R2 へ移すかは #47 で判断する。R2 を採る場合も読み書きするのは GitHub Actions で、S3 互換 API を使う。**アプリ (Worker) からの R2 binding はどちらの方式でも不要である。** Pages project が必要とする binding は決定時点で存在しない。
+- VRT baseline は R2 へ置く。読み書きするのは GitHub Actions であり、S3 互換 API を使う。**アプリ (Worker) からの R2 binding は不要である。** Pages project が必要とする binding は決定時点で存在しない。
+  - [ADR-0021](0021-vrt-baseline-on-r2.md) — VRT baseline を R2 へ移す決定
 - 別リポジトリへの分離を決めたとき、monorepo 同居の欠点として「Terraform apply 権限や Cloudflare credential を app 開発導線に近づけやすくなる」が挙げられた。集約後も残る懸念のため、管轄の分割はこの対処と整合させる必要がある。
 
 ### Pages project が管轄を決めにくい理由
@@ -68,7 +69,7 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 | ------------------------------------- | --------- | ----------------------------------------------------------------- |
 | Zone / DNS record / TLS               | Terraform | deploy と独立し、ドメイン到達性に直結する                         |
 | Pages custom domain 紐付け            | Terraform | 同上。project とは独立した resource として管理できる              |
-| R2 バケット (VRT baseline 用)         | Terraform | 採用する場合のみ。deploy と独立し、CI が消費するだけ              |
+| R2 バケット (VRT baseline 用)         | Terraform | deploy と独立し、CI が消費するだけ                                |
 | R2 バケット (Terraform state 用)      | Terraform | `infra/bootstrap/` が作る。下記「state 用バケットの例外」を参照   |
 | Rate Limiting ルール (`/api/contact`) | Terraform | deploy と独立した濫用制御の設定                                   |
 | Pages project 本体                    | Wrangler  | 下記「Pages project を Wrangler の管轄とする」を参照              |
@@ -78,7 +79,7 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 
 この表の運用上の正本は Infrastructure Contract に置く。リソースが増減したときは同ファイルを更新する。本 ADR の表は決定時点の割り当てであり、後から書き換えない。
 
-**state 用バケットの例外**: 決定時点で確定している R2 バケットは Terraform state 用の 1 つだけである。これは `infra/bootstrap/` が管理し、その state はローカルに置く。VRT baseline 用を採用する場合は `infra/cloudflare/` が管理し、その state は R2 backend に置く。どちらも Terraform 管轄で二重管理は生じないが、**state の置き場が異なる**点で扱いが分かれる。
+**state 用バケットの例外**: R2 バケットは 2 つ存在する。VRT baseline 用は `infra/cloudflare/` が管理し、その state は R2 backend に置く。Terraform state 用は `infra/bootstrap/` が管理し、その state はローカルに置く。どちらも Terraform 管轄で二重管理は生じないが、**state の置き場が異なる**点で扱いが分かれる。
 
 ![Cloudflare リソースの Terraform / Wrangler 管轄境界](../design/diagrams/infra-tool-boundary.drawio.svg)
 
@@ -188,7 +189,6 @@ deploy 経路を作り直す本作業は移行の契機になりうるが、決�
 - Cloudflare Terraform provider は v5 で resource スキーマが変更されている。`cloudflare_pages_project` / `cloudflare_pages_domain` の正確なフィールド名と、`deployment_configs` が secret を含むかは実装時に provider のドキュメントで確認する。本 ADR の判断は「Pages project resource が deployment 設定を内包する」という構造に基づくため、構造が異なっていた場合は代替案 3 を再評価する。
 - **`wrangler pages deploy` が project を自動作成するかは未検証である。** この前提は「Pages project を Wrangler の管轄とする」判断と bootstrap 順序制約の両方を支える。とくに `--project-name` を指定した非対話の CI 実行で自動作成されるかを、実装の最初に確認する。成立しない場合は初回作成を運用者の手動操作 (`wrangler pages project create` または Dashboard) として手順化し、Terraform 管轄には移さない。
 - `wrangler` の設定ファイル形式を `wrangler.toml` と表記しているが、`wrangler.jsonc` 等との比較は行っていない。実装時に決め、Infrastructure Contract に記載する。本 ADR の管轄判断は形式に依存しない。
-- **VRT baseline の保管方式が未確定である。** R2 を採る場合、本 ADR の管轄表の R2 (VRT baseline 用) が有効になり、CI へ渡す S3 互換の資格情報も要る。Git LFS や artifact を採る場合、Cloudflare 側の管轄は増えない。判断は ADR-0019 の「未確認事項」と同じ時点で行う。
 - Cloudflare Secrets Store を Pages Functions から参照できるかは未確認である。参照できれば Terraform が値を持たずに secret の binding を宣言できるため、runtime secret の管轄を再評価する余地がある。
 
 ## 実装・運用への反映
@@ -209,4 +209,5 @@ deploy 経路を作り直す本作業は移行の契機になりうるが、決�
 - [context/architecture.md](../context/architecture.md): Terraform と Wrangler 設定ファイルの配置と依存規約 (実装完了後に追記する)
 - [infra-tool-boundary.drawio.svg](../design/diagrams/infra-tool-boundary.drawio.svg): 管轄境界の図
 - [infra-permission-flow.drawio.svg](../design/diagrams/infra-permission-flow.drawio.svg): credential と実行経路の図
+- [ADR-0021](0021-vrt-baseline-on-r2.md): VRT baseline を R2 へ置く決定 (管轄表の R2 が有効になる)
 - issue: #47 (決定経緯)

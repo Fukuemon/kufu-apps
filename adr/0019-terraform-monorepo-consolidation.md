@@ -18,7 +18,8 @@
 - **未確認**: Dashboard 上に何が実在するかは棚卸ししていない。issue #47 は Pages project / domain / secret があると記す。ただし runtime secret の消費者である Pages Functions は未実装で、`apps/corporate-site/functions/` が存在しない。secret が実在するとは限らない。実在の確定は下記「既存の Dashboard 設定の移行」で行う。
 - テスト戦略と CI パイプラインの整備 (#33) は、当初 VRT baseline の保管先に Cloudflare R2 を選び、R2 が Infrastructure Contract の対象となって空の repo 待ちになった。#33 は 2026-08-22 に、baseline を Git 管理へ移して R2 依存を外すことで完了した。
   - [ADR-0018](0018-story-vrt-on-storybook-test-integrations.md) — story VRT を `reg-cli` と baseline の Git 管理へ移し、外部ストレージを不要にした決定
-- **baseline の保管方式は未確定のまま #47 へ引き継がれた。** Git 管理は PNG を履歴へ積み続けるため (実測で `.git` 54MB のうち PNG blob が 212 個 / 17.8MB)、R2 / Git LFS / artifact のいずれを採るかを infra が整った時点で判断する。論点は issue #47 のコメントにある。
+- **baseline の保管方式は #47 で R2 と決めた。** Git 管理は PNG を履歴へ積み続けるためである (実測で `.git` 60MB のうち VRT の PNG blob が 212 個 / 17.8MB)。
+  - [ADR-0021](0021-vrt-baseline-on-r2.md) — VRT baseline を R2 へ移す決定
 
 ### 判断を分ける事実
 
@@ -108,7 +109,7 @@ Cloudflare が推奨する `cf-terraforming` を使い、既存リソースを T
 | Zone / DNS record / TLS               | `cf-terraforming` で import | 公開中のサイトが依存しており実在する                                                          |
 | Pages custom domain 紐付け            | `cf-terraforming` で import | 同上                                                                                          |
 | Rate Limiting ルール (`/api/contact`) | 新規作成                    | Infrastructure Contract が「設定する」と将来形で書いており未設定。`/api/contact` 自体も未実装 |
-| R2 バケット (VRT baseline 用)         | 保留                        | #33 は baseline を Git 管理へ移したため現時点で不要。保管方式を決めてから作る                 |
+| R2 バケット (VRT baseline 用)         | 新規作成                    | ADR-0021 が baseline の保管先を R2 と定めた                                                   |
 | R2 バケット (Terraform state 用)      | 新規作成                    | `infra/bootstrap/` が作る                                                                     |
 | runtime secret                        | 対象外                      | ADR-0020 が Wrangler 管轄と定める                                                             |
 
@@ -234,7 +235,6 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 ### 未確認事項
 
 - `kufu-infra` に、本 monorepo 側へ引き継ぐべき内容が残っていないかは、アーカイブ実施前に確認する。現時点の確認では PRD / DesignDoc / ADR-0001 のコピーと AI 設定のみであり、いずれも本 repo に正本がある。
-- **VRT baseline の保管方式が未確定である。** R2 を採る場合は Terraform 管轄のリソースが 1 つ増え、CI へ渡す S3 互換の資格情報も要る。Git LFS や artifact を採る場合は infra 側の対象が増えない。保管方式が決まるまで、上記「既存の Dashboard 設定の移行」の R2 (VRT baseline 用) は保留とする。判断材料は issue #47 のコメントにある。
 
 ## 実装・運用への反映
 
@@ -273,4 +273,5 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 - [context/architecture.md](../context/architecture.md): `infra/` のディレクトリ境界と依存規約 (実装完了後に追記する)
 - [context/project.yml](../context/project.yml): repos / commands / domains / decision_priority の正本
 - [design/diagrams/](../design/diagrams/): 構成図の置き場
+- [ADR-0021](0021-vrt-baseline-on-r2.md): VRT baseline を R2 へ置く決定 (R2 バケットが 1 つ増える)
 - issue: #47 (決定経緯)

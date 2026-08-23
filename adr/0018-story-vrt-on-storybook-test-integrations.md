@@ -2,7 +2,7 @@
 
 ## 状態
 
-承認
+承認。ただし baseline の保管先は [ADR-0021](0021-vrt-baseline-on-r2.md) が置換した (2026-08-23)。`storycap-testrun` と `reg-cli` を使う決定は有効である
 
 ## 決定日
 
@@ -109,4 +109,5 @@
 - [ADR-0016](0016-ci-local-hook-responsibility.md): CI とローカル hook の責務分担
 - `context/testing.md`: テスト責務の分担
 - `README.md`: 実行手順
+- [ADR-0021](0021-vrt-baseline-on-r2.md): baseline の保管先を R2 へ移した決定 (本 ADR の保管先を置換)
 - issue: #33 (決定経緯)
