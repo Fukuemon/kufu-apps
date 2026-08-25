@@ -62,6 +62,29 @@ infra/
   - [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/) の「Directory structure」— `provider.tf` / `<subject>.tf` / `vars.tf` の 3 種によるファイル分割を定める
 - **bootstrap を別の root module にする。** state の置き場である R2 バケットを Terraform 自身が作るため、`infra/cloudflare/` だけでは初回が実行できない。`bootstrap/` の state はローカルに置き、commit しない。失った場合は `terraform import` で回復する。
 - **state の key に scope を含める。** `terraform.tfstate` ではなく `cloudflare/main/terraform.tfstate` とする。後から兄弟の state を足すときに、既存 state のリネームを避けられる。
+
+#### state backend の設定 (確認済み 2026-08-25)
+
+R2 は S3 互換だが AWS ではない。`s3` backend は STS / IAM / metadata API を前提にする箇所があるため、検証を切る必要がある。
+
+```hcl
+backend "s3" {
+  bucket = "<state バケット名>"
+  key    = "cloudflare/main/terraform.tfstate"
+  region = "auto"
+
+  endpoints = { s3 = "https://<ACCOUNT_ID>.r2.cloudflarestorage.com" }
+
+  skip_credentials_validation = true # STS が無い
+  skip_region_validation      = true # auto は AWS のリージョン名でない
+  skip_requesting_account_id  = true # IAM / STS / metadata API が無い
+  skip_s3_checksum            = true # R2 のチェックサム対応が限定的
+  use_path_style              = true
+}
+```
+
+**HashiCorp は S3 互換ストレージを best effort とし、Amazon S3 でしかテストしていない。** 上記は各引数の意味から組んだ構成であり、通ることは初回 apply まで確認できない。**未確認**として扱う。
+
 - **環境をディレクトリで分けない** (`envs/staging/` のような構成を採らない)。Cloudflare Terraform Best Practices の「Use separate environments」は、staging / QA / production を別アカウント + 別ドメインで分けるよう定めている。アカウント階層の共有リソース (Load Balancer の monitor / pool など) を同一アカウント内で分離できないためである。
 
 ### モジュールを作らない

@@ -57,7 +57,7 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 | -------------------------------------------------------------------- | --------- | ----------------------------------------------------- |
 | データを保持するリソース (R2 バケット、D1 データベース、KV 名前空間) | Terraform | 消えると復旧できない。deploy では変わらない           |
 | データを保持しない実行リソース (Worker script、deployment)           | Wrangler  | deploy のたびに入れ替わる。作り直しても失うものがない |
-| binding (どの実行リソースがどのデータを参照するか)                   | Wrangler  | アプリの依存宣言であり、`wrangler.toml` を正本とする  |
+| binding (どの実行リソースがどのデータを参照するか)                   | Wrangler  | アプリの依存宣言であり、`wrangler.jsonc` を正本とする |
 
 決定時点では D1 も KV も使っていない。将来 cms や別アプリがこれらを必要としたとき、この規則で管轄が定まる。
 
@@ -65,17 +65,17 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 
 ### 決定時点の管轄
 
-| リソース                              | 管轄      | 判断根拠                                                          |
-| ------------------------------------- | --------- | ----------------------------------------------------------------- |
-| Zone / DNS record / TLS               | Terraform | deploy と独立し、ドメイン到達性に直結する                         |
-| Pages custom domain 紐付け            | Terraform | 同上。project とは独立した resource として管理できる              |
-| R2 バケット (VRT baseline 用)         | Terraform | deploy と独立し、CI が消費するだけ                                |
-| R2 バケット (Terraform state 用)      | Terraform | `infra/bootstrap/` が作る。下記「state 用バケットの例外」を参照   |
-| Rate Limiting ルール (`/api/contact`) | Terraform | deploy と独立した濫用制御の設定                                   |
-| Pages project 本体                    | Wrangler  | 下記「Pages project を Wrangler の管轄とする」を参照              |
-| deployment (preview / production)     | Wrangler  | deploy そのもの。Terraform の管理対象ではない                     |
-| runtime secret (Resend / Turnstile)   | Wrangler  | 下記「runtime secret を Terraform state に載せない」を参照        |
-| binding (R2 / KV など)                | Wrangler  | 決定時点で該当なし。将来必要になった場合は `wrangler.toml` に置く |
+| リソース                              | 管轄      | 判断根拠                                                           |
+| ------------------------------------- | --------- | ------------------------------------------------------------------ |
+| Zone / DNS record / TLS               | Terraform | deploy と独立し、ドメイン到達性に直結する                          |
+| Pages custom domain 紐付け            | Terraform | 同上。project とは独立した resource として管理できる               |
+| R2 バケット (VRT baseline 用)         | Terraform | deploy と独立し、CI が消費するだけ                                 |
+| R2 バケット (Terraform state 用)      | Terraform | `infra/bootstrap/` が作る。下記「state 用バケットの例外」を参照    |
+| Rate Limiting ルール (`/api/contact`) | Terraform | deploy と独立した濫用制御の設定                                    |
+| Pages project 本体                    | Wrangler  | 下記「Pages project を Wrangler の管轄とする」を参照               |
+| deployment (preview / production)     | Wrangler  | deploy そのもの。Terraform の管理対象ではない                      |
+| runtime secret (Resend / Turnstile)   | Wrangler  | 下記「runtime secret を Terraform state に載せない」を参照         |
+| binding (R2 / KV など)                | Wrangler  | 決定時点で該当なし。将来必要になった場合は `wrangler.jsonc` に置く |
 
 この表の運用上の正本は Infrastructure Contract に置く。リソースが増減したときは同ファイルを更新する。本 ADR の表は決定時点の割り当てであり、後から書き換えない。
 
@@ -89,7 +89,7 @@ Terraform の `cloudflare_pages_project` は後者に相当する設定 (環境�
 - 破線は参照であり、管理ではない。`cloudflare_pages_domain` は Wrangler が作った project を名前で参照する。この向きが bootstrap の順序制約を生む。
 - **runtime secret だけは、枠へ入る実線の対象外である。** 図では橙の注記で示した。deploy workflow の token は secret 投入権限を持たず、投入は特権経路のみで行う。経路は次の図が描く。
 - 描いた R2 バケットは Terraform state 用の 1 つだけである。VRT baseline 用は保管方式が未確定のため描いていない。R2 を採る場合、Terraform 管轄のバケットが 1 つ増え、GitHub Actions が S3 互換 API で読み書きする。アプリ (Worker) からの binding はどちらの方式でも発生しない。
-- **図が描くのは、本決定を実装した後の定常状態である。** 初回のみ実行する `infra/bootstrap/` は載せていない (初回の順序は下記「bootstrap 順序の制約」を参照)。Pages Functions は未実装であり、実装されたときの管轄として描いている。
+- **図が描くのは、本決定を実装した後の定常状態である。** 初回のみ実行する `infra/bootstrap/` と、運用者が手で行う project の初回作成は載せていない (初回の順序は下記「bootstrap 順序の制約」を参照)。Pages Functions は未実装であり、実装されたときの管轄として描いている。
 
 ### 権限と実行経路
 
@@ -107,9 +107,29 @@ credential を 2 系統に分け、通常の CI に apply 権限と secret 投�
 
 Terraform が `cloudflare_pages_project` を管理する場合、Wrangler による secret 投入との衝突を避けるために `lifecycle { ignore_changes = [deployment_configs] }` が必要になる。「Terraform が管理しているように見えて実際には管理していない範囲」が生まれ、上記の原則を形骸化させる。
 
-`wrangler pages deploy` は project が存在しない場合に作成するとされ、project の存在は Wrangler が担保できる (この挙動は未検証。下記「未確認事項」を参照)。Terraform は `cloudflare_pages_domain` と DNS record を管理する。これにより、本番影響の大きい「どのドメインでどの project が公開されるか」は Terraform 側に残る。別リポジトリへの分離が守ろうとした影響範囲の分離は、この範囲で満たせる。
+provider 5.24.0 の schema を確認したところ、`cloudflare_pages_project` の `deployment_configs` は `env_vars` (`secret_text` を含み `sensitive` が付く) / `r2_buckets` / `d1_databases` / `kv_namespaces` / `compatibility_date` を内包していた。**本 ADR が前提にした構造は実在する。**
 
-**bootstrap 順序の制約**: `cloudflare_pages_domain` は project の存在を前提とするため、初回のみ Wrangler の deploy を Terraform の apply より先に実行する。この順序は Infrastructure Contract に手順として記載する。
+一方 `cloudflare_pages_domain` の必須項目は `account_id` / `name` / `project_name` の 3 つだけである。project を文字列で参照するため、**project を Terraform が管理しなくても紐付けだけを管理できる。**
+
+Terraform は `cloudflare_pages_domain` と DNS record を管理する。これにより、本番影響の大きい「どのドメインでどの project が公開されるか」は Terraform 側に残る。別リポジトリへの分離が守ろうとした影響範囲の分離は、この範囲で満たせる。
+
+**project の初回作成は運用者の手動操作とする。** `wrangler pages deploy` は project を自動作成しない。非対話 (CI) で project が存在しないと `UserError` を投げて終わる。対話実行のときだけ作成の可否を尋ねる。
+
+```
+if (projectName && !isExistingProject && !isInteractive) {
+  let message = `The Pages project "${projectName}" does not exist.`;
+  ...
+  throw new UserError(message, ...)
+}
+```
+
+初回は `wrangler pages project create <name> --production-branch <branch>` を運用者が実行する。**Terraform 管轄には移さない。** 移すと `deployment_configs` ごと抱えることになり、上記の理由で原則が壊れる。
+
+**bootstrap 順序の制約**: `cloudflare_pages_domain` は project の存在を前提とする。初回は次の順で実行する。この順序は Infrastructure Contract に手順として記載する。
+
+1. 運用者が `wrangler pages project create` で project を作る
+2. deploy workflow が `wrangler pages deploy` で成果物を配る
+3. `terraform apply` が `cloudflare_pages_domain` と DNS record を作る
 
 ### runtime secret を Terraform state に載せない
 
@@ -129,6 +149,13 @@ Cloudflare も credential を平文で保持せず `cf-vault` や Vault のよ�
 配信基盤は Cloudflare Pages を継続する。Workers Static Assets への移行は本決定の対象外とし、別 issue で検討する。
 
 deploy 経路を作り直す本作業は移行の契機になりうるが、決定済みの構成 (Pages Functions を含む) の再設計を伴い、作業範囲が本 issue を大きく超える。移行の是非は、Pages と Workers のどちらを長期的に維持するかという Cloudflare 側の方針に依存するため、本 ADR では判断しない。
+
+**ただし Cloudflare 側の方針は既に表に出ている。** `wrangler pages deploy` が非対話で失敗するときのメッセージは、Workers を繰り返し勧める。
+
+> Workers are the recommended way to deploy all new projects.
+> Otherwise, if you are trying to create a new Pages project, start by running: `wrangler pages project create` (though we strongly recommend using Workers instead).
+
+Pages が廃止されるという告知ではないが、新規は Workers へ寄せる姿勢が CLI の文言に入っている。**移行を検討する別 issue では、この事実を起点にする。**
 
 ## 代替案
 
@@ -180,15 +207,19 @@ deploy 経路を作り直す本作業は移行の契機になりうるが、決�
 ### 悪い影響 / トレードオフ
 
 - 管理ツールが 2 つになり、「どちらが管轄か」を都度判断する必要が生じる。判定手順と表を正本として維持する運用コストがかかる。
-- Pages project の設定 (compatibility date、binding など) が Terraform の差分に現れない。Wrangler の設定ファイルが実質の正本となるため、同ファイルをレビュー対象として扱う必要がある。production branch は設定ファイルではなく `wrangler pages project create --production-branch` と deploy 時の `--branch` で決まるため、手順として残す。
+- Pages project の設定 (compatibility date、binding など) が Terraform の差分に現れない。`wrangler.jsonc` が実質の正本となるため、同ファイルをレビュー対象として扱う必要がある。production branch は設定ファイルではなく `wrangler pages project create --production-branch` と deploy 時の `--branch` で決まるため、手順として残す。
 - 初回構築時に Wrangler deploy → Terraform apply の順序制約がある。手順を誤ると `cloudflare_pages_domain` の apply が失敗する。
 - secret の投入が自動化されないため、値の更新時に手動操作が必要になる。ローテーション手順を運用として残す必要がある。
 
+### 確認済み (2026-08-25)
+
+- **provider は 5.24.0 である。** 認証は `CLOUDFLARE_API_TOKEN` を読む。API key は legacy 扱いであり使わない。
+- **`cloudflare_pages_project` の `deployment_configs` は secret を内包する。** 本 ADR が代替案 3 を退けた根拠は成立している。
+- **`wrangler pages deploy` は project を自動作成しない。** 非対話では失敗する。初回作成を運用者の手動操作とする形へ決定を改めた。
+- **設定ファイルは `wrangler.jsonc` を使う。** Wrangler は `wrangler.json` / `wrangler.jsonc` / `wrangler.toml` を受け付けるが、Cloudflare は新規プロジェクトへ `wrangler.jsonc` を推奨しており、一部の新機能は JSON 形式でのみ使えると明記している。本文の表記もこれに揃えた。
+
 ### 未確認事項
 
-- Cloudflare Terraform provider は v5 で resource スキーマが変更されている。`cloudflare_pages_project` / `cloudflare_pages_domain` の正確なフィールド名と、`deployment_configs` が secret を含むかは実装時に provider のドキュメントで確認する。本 ADR の判断は「Pages project resource が deployment 設定を内包する」という構造に基づくため、構造が異なっていた場合は代替案 3 を再評価する。
-- **`wrangler pages deploy` が project を自動作成するかは未検証である。** この前提は「Pages project を Wrangler の管轄とする」判断と bootstrap 順序制約の両方を支える。とくに `--project-name` を指定した非対話の CI 実行で自動作成されるかを、実装の最初に確認する。成立しない場合は初回作成を運用者の手動操作 (`wrangler pages project create` または Dashboard) として手順化し、Terraform 管轄には移さない。
-- `wrangler` の設定ファイル形式を `wrangler.toml` と表記しているが、`wrangler.jsonc` 等との比較は行っていない。実装時に決め、Infrastructure Contract に記載する。本 ADR の管轄判断は形式に依存しない。
 - Cloudflare Secrets Store を Pages Functions から参照できるかは未確認である。参照できれば Terraform が値を持たずに secret の binding を宣言できるため、runtime secret の管轄を再評価する余地がある。
 
 ## 実装・運用への反映
@@ -196,7 +227,7 @@ deploy 経路を作り直す本作業は移行の契機になりうるが、決�
 - 対象 app / package: `apps/corporate-site`、`e2e` (VRT の baseline 保管方式を決めた場合)、GitHub Actions workflow
 - spec 更新要否: 要。#47 の spec に、ツール別の作業分割と bootstrap 順序を反映する
 - 本節は**本 ADR に由来する更新**を扱う。集約そのものに由来する更新 (`repos.infra` / `repos.layout` / `commands` / `domains` / DesignDoc) は ADR-0019 の同名節を正本とする。更新時期も同 ADR に従い、実装完了後である
-- AI 向け設定更新要否: 要。context/infrastructure.md にツール境界表と bootstrap 手順を追加し、[context/architecture.md](../context/architecture.md) に Terraform と `wrangler.toml` の配置と依存規約を定める
+- AI 向け設定更新要否: 要。context/infrastructure.md にツール境界表と bootstrap 手順を追加し、[context/architecture.md](../context/architecture.md) に Terraform と `wrangler.jsonc` の配置と依存規約を定める
 
 ## 関連ドキュメント
 
