@@ -217,10 +217,11 @@ Pages が廃止されるという告知ではないが、新規は Workers へ�
 - **`cloudflare_pages_project` の `deployment_configs` は secret を内包する。** 本 ADR が代替案 3 を退けた根拠は成立している。
 - **`wrangler pages deploy` は project を自動作成しない。** 非対話では失敗する。初回作成を運用者の手動操作とする形へ決定を改めた。
 - **設定ファイルは `wrangler.jsonc` を使う。** Wrangler は `wrangler.json` / `wrangler.jsonc` / `wrangler.toml` を受け付けるが、Cloudflare は新規プロジェクトへ `wrangler.jsonc` を推奨しており、一部の新機能は JSON 形式でのみ使えると明記している。本文の表記もこれに揃えた。
+- **Cloudflare Secrets Store は Pages Functions から使えない。** Pages の wrangler 設定が受け付ける binding は `vars` / `d1_databases` / `durable_objects` / `hyperdrive` / `kv_namespaces` / `queues.producers` / `r2_buckets` / `vectorize` / `services` / `analytics_engine_datasets` / `ai` の 11 種で、`secrets_store_secrets` は含まれない。Secrets Store 側のドキュメントも Workers 連携しか扱っていない。**runtime secret の管轄を再評価する余地は、現時点では無い。**
 
 ### 未確認事項
 
-- Cloudflare Secrets Store を Pages Functions から参照できるかは未確認である。参照できれば Terraform が値を持たずに secret の binding を宣言できるため、runtime secret の管轄を再評価する余地がある。
+本 ADR の判断を支える未確認事項は残っていない。
 
 ## 実装・運用への反映
 

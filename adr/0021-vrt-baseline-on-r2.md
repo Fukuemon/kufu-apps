@@ -54,6 +54,7 @@ route の baseline を触った commit は **0 件**である。1 度も撮り�
 
 - **reg-suit へは戻さない。** 戻すとキー解決の問題を引き受け直すことになる。`reg-cli` のディレクトリ比較を維持する。
 - **baseline の正は CI で撮った画像とする。** ADR-0018 から変えない。撮り直しは `workflow_dispatch` から行い、成功時に R2 へ送る。
+- **同期には `s5cmd` を使う。** CI の container での導入が 1 秒 / 17MB で、`aws-cli` (24 秒 / 271MB) より安い。VRT job は 3 つあり、導入時間はその数だけ乗る。
 - **バケットは Terraform 管轄とする。** GitHub Actions が使う S3 互換の access key は Terraform 外で発行し、GitHub Actions の secret に登録する。
   - [ADR-0020](0020-cloudflare-terraform-wrangler-boundary.md) — データを保持するリソースを Terraform 管轄と定めた決定
 - **既存の baseline は履歴から削除しない。** 移行後の commit で作業ツリーから消えるだけとする。履歴の書き換えは PR とローカル clone を壊すため行わない。
@@ -103,15 +104,21 @@ Git 管理を外すと、baseline を更新した PR で GitHub の rich diff �
 
 ## 外部依存の健全性
 
-**同期には `aws-cli` v2 を使う。** ローカルの mise 宣言に既に入っており (`aqua:aws/aws-cli`)、追加の宣言が要らない。
+**同期には `s5cmd` を使う。** CI の Playwright container (`mcr.microsoft.com/playwright:v1.59.1-noble`) で 3 つを実測して決めた (2026-08-25)。
 
-| 項目                                                | 採用 (`aws-cli` v2)                        | 代替案 (`rclone`)      |
-| --------------------------------------------------- | ------------------------------------------ | ---------------------- |
-| 手元の版                                            | 2.32.26 (mise 経由で導入済み)              | 未導入                 |
-| 対象バージョンへの対応 (peer dependency / 動作要件) | R2 は S3 互換のため `aws s3 sync` が使える | 同じく使える           |
-| 後継・代替の有無                                    | `rclone` / `s5cmd` / SDK 直呼び            | `aws-cli` / SDK 直呼び |
+| 項目             | 採用 (`s5cmd` 2.3.0)              | `aws-cli` v2        | `rclone` 1.75.0            |
+| ---------------- | --------------------------------- | ------------------- | -------------------------- |
+| container 導入   | **1 秒**                          | 24 秒               | 62 秒                      |
+| 導入後のサイズ   | **17 MB**                         | 271 MB              | 82 MB                      |
+| 取得方法         | tar.gz の静的バイナリ 1 本        | zip + インストーラ  | zip (`unzip` の導入が要る) |
+| 手元の版         | 未導入 (CI でのみ使う)            | 2.32.26 (mise 経由) | 未導入                     |
+| 後継・代替の有無 | `aws-cli` / `rclone` / SDK 直呼び | `s5cmd` / `rclone`  | `s5cmd` / `aws-cli`        |
 
-**未確認**: CI の Playwright container image には同梱されない。job へどう入れるかは実装時に決める。
+VRT job は 3 つあり、導入時間はその数だけ乗る。`aws-cli` なら 1 回の CI で 72 秒、`s5cmd` なら 3 秒である。container image は Playwright が配るものを使うため、こちらでツールを焼き込めない。**導入の安さがそのまま効く。**
+
+`s5cmd` の差分同期を、MinIO を S3 互換の代役として確認した。ディレクトリの送信と取得が往復で一致し、1 枚だけ差し替えた再同期では変更した 1 枚だけが転送された。
+
+`aws-cli` は手元 (mise 宣言) に残す。手動での確認や、CI 以外の作業に使う。
 
 ### R2 を S3 クライアントから使うときの設定
 
@@ -122,6 +129,34 @@ Git 管理を外すと、baseline を更新した PR で GitHub の rich diff �
 | 資格情報 | R2 API token が生む Access Key ID / Secret Access Key |
 
 **R2 は ACL に対応していない。** `--acl` を伴う操作は失敗する。バケットポリシー、バージョニング、ライフサイクル、オブジェクトロックも未実装である。baseline の同期はオブジェクトの読み書きと一覧だけで足りるため、これらの制約には当たらない。
+
+## baseline のキー体系
+
+**`main` の 1 系統だけを持つ。** ブランチごとに分けない。
+
+```
+s3://<bucket>/story/ui/<story>.png
+s3://<bucket>/story/corporate-site/<story>.png
+s3://<bucket>/route/<route>-<viewport>-linux.png
+```
+
+比較対象は常に `main` の baseline とする。ブランチごとに持つと、分岐点の解決という問題が戻ってくる。#33 が reg-suit で踏んだのはこれである。
+
+撮り直しは `workflow_dispatch` からのみ行い、実行後に `main` の baseline を置き換える。PR の中で baseline は変わらない。
+
+## 撮り直しレポート
+
+`reg-cli` が出す HTML レポートを、撮り直しの前後でも使う。**新しい形式は作らない。**
+
+撮り直し job は次の順で動く。
+
+1. R2 から現行 baseline を取得する
+2. 撮影する
+3. **取得した baseline を旧、撮影結果を新として `reg-cli` を回す**
+4. レポートを artifact へ上げる
+5. 撮影結果を R2 へ送る
+
+3 が通常の VRT と同じ処理であるため、レポートの形式も同じになる。人はレポートを見て、意図した変更かを確認する。
 
 ## 影響
 
@@ -146,9 +181,7 @@ Git 管理を外すと、baseline を更新した PR で GitHub の rich diff �
 
 ### 未確認事項
 
-- `aws-cli` を CI の Playwright container へどう入れるかを決めていない。image へ焼くか、job で都度入れるかで実行時間が変わる。
-- 撮り直し時に更新前後を並べるレポートの形式を決めていない。
-- baseline を R2 のどのキー体系で持つかを決めていない。ブランチごとに分けるか、`main` の 1 系統だけを持つかで、PR での比較対象が変わる。
+本 ADR の判断を支える未確認事項は残っていない。
 
 ## 実装・運用への反映
 
@@ -160,7 +193,7 @@ Git 管理を外すと、baseline を更新した PR で GitHub の rich diff �
 | [context/toolchain.md](../context/toolchain.md)           | VRT 行の baseline 管理を「Git 管理」から「R2」へ変更する             |
 | [context/infrastructure.md](../context/infrastructure.md) | R2 バケットと S3 互換 access key を Infrastructure Contract へ加える |
 | `scripts/vrt-story.mjs` / `scripts/vrt-container.mjs`     | 比較前の取得と更新後の送信を足す                                     |
-| `.github/workflows/ci.yml`                                | VRT job へ資格情報と同期の手順を足す                                 |
+| `.github/workflows/ci.yml`                                | VRT job へ `s5cmd` の導入、資格情報、同期の手順を足す                |
 
 - ADR-0018 の状態は、本 ADR の承認に合わせて「一部置換」へ変更した (2026-08-23)。置き換わるのは baseline の保管先だけであり、`storycap-testrun` と `reg-cli` を使う決定は有効である。
 

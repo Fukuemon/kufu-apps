@@ -80,10 +80,15 @@ backend "s3" {
   skip_requesting_account_id  = true # IAM / STS / metadata API が無い
   skip_s3_checksum            = true # R2 のチェックサム対応が限定的
   use_path_style              = true
+  use_lockfile                = true # state ロックを S3 側のオブジェクトで取る
 }
 ```
 
-**HashiCorp は S3 互換ストレージを best effort とし、Amazon S3 でしかテストしていない。** 上記は各引数の意味から組んだ構成であり、通ることは初回 apply まで確認できない。**未確認**として扱う。
+**state ロックは `use_lockfile` で取る。** R2 に DynamoDB は無いが、terraform 1.14.3 は S3 上のロックファイルで排他できる。
+
+MinIO を S3 互換の代役として、terraform 1.14.3 で動作を確認した (2026-08-25)。`init` と `apply` が通り、state が `cloudflare/main/terraform.tfstate` へ書かれ、apply の実行中は `terraform.tfstate.tflock` が現れた。ロックを保持したまま別の apply を走らせると `Error acquiring the state lock` で拒否された。
+
+**ただし MinIO は R2 ではない。** HashiCorp は S3 互換ストレージを best effort とし、Amazon S3 でしかテストしていない。R2 固有の挙動 (とくにチェックサムの扱い) は初回 apply まで確認できない。**この点は未確認として残る。**
 
 - **環境をディレクトリで分けない** (`envs/staging/` のような構成を採らない)。Cloudflare Terraform Best Practices の「Use separate environments」は、staging / QA / production を別アカウント + 別ドメインで分けるよう定めている。アカウント階層の共有リソース (Load Balancer の monitor / pool など) を同一アカウント内で分離できないためである。
 
@@ -254,10 +259,31 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 - 権限分離を repo 境界ではなく、ディレクトリと workflow の組み合わせで実現することになる。repo 境界より弱い分離であり、設定漏れが直接リスクになる。
 - ADR-0001 を前提に書かれた文書の更新が必要になる。対象は下記「実装・運用への反映」の表に挙げる。
 - `kufu-infra` をアーカイブすることで、そこへのリンクを持つ既存文書のリンク先が read-only になる。リンク自体は切れない。
+- `kufu-infra` の既定ブランチは `main` ではなく `develop` である。アーカイブ前に引き継ぎ内容を取り出すときは、参照するブランチを間違えない。
+
+### `kufu-infra` の中身 (確認済み 2026-08-25)
+
+全ブランチ (`develop` / `feature/1`) を確認した。**`.tf` は 1 つも無い。** 追跡ファイル 118 個のうち 97 個は AI 設定 (`.claude/` / `.codex/` / `.cursor/` / `.agents/`) である。既定ブランチは `main` ではなく `develop` である。
+
+**「PRD / DesignDoc は本 repo のコピー」という当初の見立ては誤りだった。** どちらも infra 固有の内容を持つ。
+
+| ファイル                 | 行数 | 扱い                                                        |
+| ------------------------ | ---- | ----------------------------------------------------------- |
+| `PRD.md`                 | 155  | infra 固有の要求。本 ADR と ADR-0020 が判断を引き継いでいる |
+| `design/DesignDoc.md`    | 217  | infra 固有の設計。同上。ただし下記 2 点は引き継げていない   |
+| `adr/0001-...`           | —    | 本 repo の ADR-0001 と実質同じ (表題と決定日だけ違う)       |
+| `hooks/` / `specs/` ほか | —    | 共有プロセス層の配布物。本 repo に正本がある                |
+
+**引き継ぐべき内容が 2 点ある。** どちらも本 repo のどの文書にも書かれていない。
+
+- **preview と production で secret の実値を共有しない。** ADR-0020 は secret を Wrangler 管轄と定めたが、環境間で値を分けることは書いていない。
+- **resource import と state 移動には、rollback と検証手順を spec に残す。** 本 ADR の「既存の Dashboard 設定の移行」は import する対象を定めたが、失敗したときの戻し方を定めていない。
+
+この 2 点は、実装時に context/infrastructure.md と #47 の spec へ書き写す。**書き写しを終えるまでアーカイブしない。**
 
 ### 未確認事項
 
-- `kufu-infra` に、本 monorepo 側へ引き継ぐべき内容が残っていないかは、アーカイブ実施前に確認する。現時点の確認では PRD / DesignDoc / ADR-0001 のコピーと AI 設定のみであり、いずれも本 repo に正本がある。
+本 ADR の判断を支える未確認事項は残っていない。
 
 ## 実装・運用への反映
 
@@ -267,17 +293,18 @@ runtime secret はこの欠点の対象外である。値は PR の差分に現�
 - **更新時期は実装完了後である。** context と DesignDoc は現状事実を記述する文書であり、決定が承認されただけでは記述すべき事実が存在しない。承認時点で行うのは ADR-0001 の状態変更だけである。
 - **例外は `domains` への `infra` 追加である。** これは infra の実装状態ではなく、issue と PR に付けるラベルの体系を定める値であり、実装より前に必要になる。本 issue の作業へ `domain:infra` を付けるため、先に追加した。
 
-| 対象                                                                                      | 更新内容                                                                                                                         |
-| ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| [context/architecture.md](../context/architecture.md)                                     | `infra/` のディレクトリ境界と依存規約                                                                                            |
-| [context/infrastructure.md](../context/infrastructure.md)                                 | Infrastructure Contract の位置づけ変更、ツール境界表、bootstrap 順序、state / secret の扱い                                      |
-| [context/project.yml](../context/project.yml) の `repos.infra`                            | `kufu-infra` の参照を、アーカイブ済みである旨へ変更する                                                                          |
-| [context/project.yml](../context/project.yml) の `repos.layout`                           | `infra/` を追加する                                                                                                              |
-| [context/project.yml](../context/project.yml) の `commands`                               | `infra:plan` / `infra:apply` を追加する (`dev-commands` skill がここを正本として読む)                                            |
-| [context/project.yml](../context/project.yml) の `domains`                                | 対応済み。`infra` を追加した (`domain:infra` ラベルの追加を伴う)                                                                 |
-| [design/DesignDoc.md](../design/DesignDoc.md) の `Related ADRs` 表と `Project Profile` 節 | ADR-0001 を infra repo 境界の正本とする記述を、本 ADR へ差し替える                                                               |
-| [design/DesignDoc.md](../design/DesignDoc.md) の `設計上の重要ポイント` 節                | 「Terraform は別 repo 管理とし、アプリ repo に本番基盤の apply 導線を持ち込まない」は本 ADR が覆す規範そのものである。書き換える |
-| [design/DesignDoc.md](../design/DesignDoc.md) の `未決事項` #6                            | 「infra repo と app repo の変更を相互参照する review workflow」は集約により論点が消滅する。クローズする                          |
+| 対象                                                                                      | 更新内容                                                                                                                          |
+| ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| [context/architecture.md](../context/architecture.md)                                     | `infra/` のディレクトリ境界と依存規約                                                                                             |
+| [context/infrastructure.md](../context/infrastructure.md)                                 | Infrastructure Contract の位置づけ変更、ツール境界表、bootstrap 順序、state / secret の扱い                                       |
+| [context/project.yml](../context/project.yml) の `repos.infra`                            | `kufu-infra` の参照を、アーカイブ済みである旨へ変更する                                                                           |
+| [context/project.yml](../context/project.yml) の `repos.layout`                           | `infra/` を追加する                                                                                                               |
+| [context/project.yml](../context/project.yml) の `commands`                               | `infra:plan` / `infra:apply` を追加する (`dev-commands` skill がここを正本として読む)                                             |
+| [context/project.yml](../context/project.yml) の `domains`                                | 対応済み。`infra` を追加した (`domain:infra` ラベルの追加を伴う)                                                                  |
+| [design/DesignDoc.md](../design/DesignDoc.md) の `Related ADRs` 表と `Project Profile` 節 | ADR-0001 を infra repo 境界の正本とする記述を、本 ADR へ差し替える                                                                |
+| [design/DesignDoc.md](../design/DesignDoc.md) の `設計上の重要ポイント` 節                | 「Terraform は別 repo 管理とし、アプリ repo に本番基盤の apply 導線を持ち込まない」は本 ADR が覆す規範そのものである。書き換える  |
+| [design/DesignDoc.md](../design/DesignDoc.md) の `未決事項` #6                            | 「infra repo と app repo の変更を相互参照する review workflow」は集約により論点が消滅する。クローズする                           |
+| [context/infrastructure.md](../context/infrastructure.md) の Environment Strategy         | `kufu-infra` から引き継ぐ 2 点 (環境間で secret の実値を共有しない / import と state 移動に rollback と検証手順を残す) を書き写す |
 
 - ADR-0001 の状態は、本 ADR の承認に合わせて「置換」へ変更した (2026-08-23)
 - **ADR-0020 が持つ 2 枚の図は、提案の段階で追加済みである。** 置き場は [design/diagrams/](../design/diagrams/) である。図は ADR 本文の一部であり、ADR と同時に存在すべきだからである。context / DesignDoc の更新を実装完了後とする扱いとの差は、この理由による
