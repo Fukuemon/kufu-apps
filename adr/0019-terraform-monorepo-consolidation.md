@@ -15,7 +15,7 @@
 - **2026-08-16 時点で `kufu-infra` は事実上空である。** `.tf` ファイルが 1 つも存在せず、中身は PRD / DesignDoc / ADR-0001 のコピーと AI 設定のみで、最終コミットは 2026-05-08 である。
 - 前提にした Terraform による infra 管理が始まっていない。現状は分離のコスト (別 repo の維持、Infrastructure Contract の同期) だけを払い、利益を受け取っていない。
 - Cloudflare の設定はすべて Dashboard 上にあり、コード管理されていない。この状態は、ADR-0001 が Dashboard 運用の欠点として退けたものと同じである。決定から 3 か月そのまま続いている。
-- **未確認**: Dashboard 上に何が実在するかは棚卸ししていない。issue #47 は Pages project / domain / secret があると記す。ただし runtime secret の消費者である Pages Functions は未実装で、`apps/corporate-site/functions/` が存在しない。secret が実在するとは限らない。実在の確定は下記「既存の Dashboard 設定の移行」で行う。
+- **未確認**: Dashboard 上に何が実在するかは棚卸ししていない。issue #47 は Pages project / domain / secret があると記す。ただし runtime secret の消費者である `/api/contact` は未実装で、`apps/corporate-site/functions/` が存在しない。secret が実在するとは限らない。実在の確定は下記「既存の Dashboard 設定の移行」で行う。
 - テスト戦略と CI パイプラインの整備 (#33) は、当初 VRT baseline の保管先に Cloudflare R2 を選び、R2 が Infrastructure Contract の対象となって空の repo 待ちになった。#33 は 2026-08-22 に、baseline を Git 管理へ移して R2 依存を外すことで完了した。
   - [ADR-0018](0018-story-vrt-on-storybook-test-integrations.md) — story VRT を `reg-cli` と baseline の Git 管理へ移し、外部ストレージを不要にした決定
 - **baseline の保管方式は #47 で R2 と決めた。** Git 管理は PNG を履歴へ積み続けるためである (実測で `.git` 60MB のうち VRT の PNG blob が 212 個 / 17.8MB)。
@@ -135,7 +135,7 @@ Cloudflare が推奨する `cf-terraforming` を使い、既存リソースを T
 | リソース                              | 移行方法                    | 根拠                                                                                          |
 | ------------------------------------- | --------------------------- | --------------------------------------------------------------------------------------------- |
 | Zone / DNS record / TLS               | `cf-terraforming` で import | 公開中のサイトが依存しており実在する                                                          |
-| Pages custom domain 紐付け            | `cf-terraforming` で import | 同上                                                                                          |
+| custom domain 紐付け                  | 新規作成                    | ADR-0022 が配信基盤を Workers へ移すため、既存の Pages 側は import せず張り直す               |
 | Rate Limiting ルール (`/api/contact`) | 新規作成                    | Infrastructure Contract が「設定する」と将来形で書いており未設定。`/api/contact` 自体も未実装 |
 | R2 バケット (VRT baseline 用)         | 新規作成                    | ADR-0021 が baseline の保管先を R2 と定めた                                                   |
 | R2 バケット (Terraform state 用)      | 新規作成                    | `infra/bootstrap/` が作る                                                                     |
@@ -147,13 +147,13 @@ Cloudflare が推奨する `cf-terraforming` を使い、既存リソースを T
 
 別リポジトリへの分離を決めたとき、monorepo 同居の欠点として 5 点が指摘された。集約後もこれらは消えないため、個別に対処を定める。
 
-| 指摘された欠点                                                                 | 対処                                                                                                                                                                                                                          |
-| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| UI 変更と本番 infra 変更が同じ差分面に並び、レビュー観点が混ざる               | Terraform を `infra/` に限定し、差分の所在で判別できるようにする。加えて日常の deploy が Terraform を経由しないため、UI 変更の PR に infra 差分が混ざらない                                                                   |
-| Terraform apply 権限や Cloudflare credential を app 開発導線に近づけやすくなる | credential を 2 系統に分ける。通常の CI は deploy scope に限定した token しか持たず、apply は手動起動 + environment protection rules を通す                                                                                   |
-| DNS、secret、Workers など本番影響の大きい変更が、通常の PR に埋もれやすい      | **Terraform 管轄 (DNS / R2 / Rate Limiting)**: apply が自動実行されない。merge されても apply workflow の手動起動を経なければ本番へ反映されない。**Wrangler 管轄 (Pages Functions / runtime secret)**: 下記「残る欠点」を参照 |
-| どこまで触ってよいかの境界が曖昧になりやすい                                   | 上記「ディレクトリ構成」で境界を定める。実装後、その事実を [context/architecture.md](../context/architecture.md) に記述し、CLAUDE.md 系の生成物から参照させる                                                                 |
-| 将来 Cloudflare 基盤を複数 app / repo で共有する場合、責務が過剰に広がる       | **対処しない (条件付きで再検討)**。現時点で Cloudflare を共有する別 app は存在しない。下記「見直しの条件」に該当したとき再検討する                                                                                            |
+| 指摘された欠点                                                                 | 対処                                                                                                                                                                                                                        |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UI 変更と本番 infra 変更が同じ差分面に並び、レビュー観点が混ざる               | Terraform を `infra/` に限定し、差分の所在で判別できるようにする。加えて日常の deploy が Terraform を経由しないため、UI 変更の PR に infra 差分が混ざらない                                                                 |
+| Terraform apply 権限や Cloudflare credential を app 開発導線に近づけやすくなる | credential を 2 系統に分ける。通常の CI は deploy scope に限定した token しか持たず、apply は手動起動 + environment protection rules を通す                                                                                 |
+| DNS、secret、Workers など本番影響の大きい変更が、通常の PR に埋もれやすい      | **Terraform 管轄 (DNS / R2 / Rate Limiting)**: apply が自動実行されない。merge されても apply workflow の手動起動を経なければ本番へ反映されない。**Wrangler 管轄 (Worker script / runtime secret)**: 下記「残る欠点」を参照 |
+| どこまで触ってよいかの境界が曖昧になりやすい                                   | 上記「ディレクトリ構成」で境界を定める。実装後、その事実を [context/architecture.md](../context/architecture.md) に記述し、CLAUDE.md 系の生成物から参照させる                                                               |
+| 将来 Cloudflare 基盤を複数 app / repo で共有する場合、責務が過剰に広がる       | **対処しない (条件付きで再検討)**。現時点で Cloudflare を共有する別 app は存在しない。下記「見直しの条件」に該当したとき再検討する                                                                                          |
 
 5 行目が前提とする「Cloudflare を共有する別 app が存在しない」は、Phase 1 の対象範囲の決定に基づく。
 
@@ -161,15 +161,15 @@ Cloudflare が推奨する `cf-terraforming` を使い、既存リソースを T
 
 ### 残る欠点: Wrangler 管轄の変更
 
-上表 3 行目のうち、**Pages Functions (Workers) の変更は対処しない。** Pages Functions は Wrangler 管轄であり、push を起点とする deploy workflow で自動的に本番へ反映される。`/api/contact` のコード変更は通常の PR に含まれ、apply workflow のような明示的な行為を挟まない。
+上表 3 行目のうち、**Worker script の変更は対処しない。** Worker script は Wrangler 管轄であり、push を起点とする deploy workflow で自動的に本番へ反映される。`/api/contact` のコード変更は通常の PR に含まれ、apply workflow のような明示的な行為を挟まない。
 
 **ただしこれは集約によって悪化するものではない。**
 
-Pages Functions は 2026-08-16 時点で未実装である。`apps/corporate-site/functions/` が存在せず、issue #26 が open である。したがって自動 deploy された実績はなく、ここで述べるのは過去の記録ではなく構成上の帰結である。
+`/api/contact` は 2026-08-25 時点で未実装である。`apps/corporate-site/functions/` が存在せず、issue #26 が open である。したがって自動 deploy された実績はなく、ここで述べるのは過去の記録ではなく構成上の帰結である。
 
-- [ADR-0013](0013-designdoc-present-facts-only.md) — Design Doc は現状事実のみを記載し、将来計画を Future Work 節へ集約すると定めた決定。Pages Functions が未実装であることを同じく記録している
+- [ADR-0013](0013-designdoc-present-facts-only.md) — Design Doc は現状事実のみを記載し、将来計画を Future Work 節へ集約すると定めた決定。`/api/contact` が未実装であることを同じく記録している
 
-別リポジトリの構成を維持したとしても、Pages Functions を実装すれば app repo への push を起点に Cloudflare Pages が自動 deploy する。Workers のコードは app 側にあるため、この欠点は repo をどう分けても解けない。
+別リポジトリの構成を維持したとしても、`/api/contact` を実装すれば app repo への push を起点に自動 deploy される。Worker のコードは app 側にあるため、この欠点は repo をどう分けても解けない。
 
 緩和は通常の PR レビューと自動テストに依存する。infra の権限分離とは別の問題として扱う。
 

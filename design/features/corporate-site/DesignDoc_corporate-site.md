@@ -1,6 +1,6 @@
 # Feature 設計: コーポレートサイト (apps/corporate-site)
 
-> 最終更新: 2026-08-22 / Status: 設計確定・実装中
+> 最終更新: 2026-08-25 / Status: 設計確定・実装中
 
 IA、デザイントークン体系、問い合わせフォーム仕様、sections 再編と公開面規約は、いずれも決定済みである。決定の一覧は下記「メタ」の関連 ADR に置く。
 
@@ -42,8 +42,9 @@ IA、デザイントークン体系、問い合わせフォーム仕様、sectio
 - コーポレートサイトは Astro の `.astro` コンポーネントを基本にする。
 - React island はフォーム、動的 UI、外部 widget など必要な箇所に限定する。表示専用 UI は `@kufu/ui` の shadcn を静的描画 (`client:*` なし、JS ゼロ) で使う。
   - [ADR-0008](../../../adr/0008-astro-react-island-policy.md) — React island 化の境界と shadcn の消費ポリシーを定めた決定
-- 問い合わせフォームは最初の主要 React island である。送信は静的配信を維持しつつ Cloudflare Pages Functions (Workers) を中継する。機能仕様 (入力項目 / バリデーション / スパム対策 / 通知 / API 契約) の正本は本 doc である。
-  - [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md) — 送信 backend に Pages Functions と Resend を選んだ決定
+- 問い合わせフォームは最初の主要 React island である。送信は静的配信を維持しつつ Worker script を中継する。機能仕様 (入力項目 / バリデーション / スパム対策 / 通知 / API 契約) の正本は本 doc である。
+  - [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md) — 送信 backend に Resend を選び、二重検証とエラー体系を定めた決定
+  - [ADR-0022](../../../adr/0022-workers-static-assets-over-pages.md) — 実行基盤を Workers static assets とした決定
 - コーポレートサイトの画像、フォント、スクリプトは性能予算を意識して管理する。
 - 第一原則は colocation とし、app や section 内で閉じる UI はローカルに置く。
 - 共通 UI の昇格は 2 段階とする。同一 app 内で複数 section / route にまたがるものは `components/common/` へ、**複数 app** にまたがる時点で `packages/ui` へ移す。
@@ -149,7 +150,7 @@ flowchart TD
     Fill --> ClientValid{"client validation OK?"}
     ClientValid -->|"NG"| ClientError["フィールド別エラーを表示<br/>入力値を保持"]
     ClientValid -->|"OK"| Token["Turnstile token を取得"]
-    Token --> Post["POST /api/contact<br/>同一オリジン Pages Functions"]
+    Token --> Post["POST /api/contact<br/>同一オリジンの Worker"]
     Post --> ServerValid{"Workers validation / security OK?"}
     ServerValid -->|"validation_error"| FieldError["400 + フィールド別エラー"]
     ServerValid -->|"turnstile_failed"| SpamError["400 + スパム判定エラー"]
@@ -168,7 +169,7 @@ sequenceDiagram
     actor User as 訪問者
     participant Island as フォーム island
     participant TS as Cloudflare Turnstile
-    participant Fn as Pages Functions /api/contact
+    participant Fn as Worker /api/contact
     participant Resend as Resend API
     participant Mail as 受信箱
 
@@ -204,7 +205,7 @@ API 契約:
 | 項目     | 内容                                                                     |
 | -------- | ------------------------------------------------------------------------ |
 | endpoint | `POST /api/contact`                                                      |
-| runtime  | Cloudflare Pages Functions (Workers)                                     |
+| runtime  | Cloudflare Workers (static assets の Worker script)                      |
 | request  | 上記フォーム項目 + `company_url` + `cf-turnstile-response`               |
 | success  | `200 { "ok": true }`                                                     |
 | error    | `{ "ok": false, "code": string, "message"?: string, "errors"?: object }` |
@@ -224,7 +225,7 @@ API 契約:
 - E2E fixture は成功 (200) / `validation_error` (400) / `turnstile_failed` (400) / `rate_limited` (429) / `send_failed` (502) を用意し、導線・エラー表示・入力値保持を確認する。
 - Turnstile は test mode key を使う。honeypot は正常系で空のままとし、honeypot 命中時の破棄ロジックは Workers unit test で検証する。
 - Workers の validation / honeypot / Turnstile 分岐 / error code mapping は Vitest unit test で検証する。
-- Cloudflare Pages Functions と Resend / secret の実結線は Cloudflare Pages preview で手動スモーク確認する。
+- Worker script と Resend / secret の実結線は Worker の preview URL で手動スモーク確認する。
 
 #### コンテンツ正本 (source of truth)
 
@@ -344,13 +345,13 @@ sequenceDiagram
     Browser->>CDN: 静的ページ要求 (HTML / CSS / 画像)
     CDN-->>Browser: 事前生成済みの静的アセットを返却
     Browser-->>User: ページ表示 (island は必要箇所のみ)
-    Note over User,CDN: 表示は静的配信。フォーム送信は Pages Functions /api/contact が担う
+    Note over User,CDN: 表示は静的 assets。フォーム送信は Worker script /api/contact が担う
 ```
 
 ## テスト観点
 
 - `apps/corporate-site` が build できること。
-- Cloudflare Pages preview deployment で主要ページが表示できること。
+- Worker の preview URL で主要ページが表示できること。
 - コーポレートサイトの主要ページと問い合わせ導線が Playwright で確認できること。
 - 問い合わせ導線の E2E は `/api/contact` を route intercept し、成功・validation error・Turnstile error・rate limit・send failed の主要分岐を確認できること。
 - 問い合わせ送信の Workers ロジックが Vitest で確認できること。
@@ -398,6 +399,7 @@ route をまたぐ到達性を E2E で確認する。規約の正本は context/
 - [ADR-0008](../../../adr/0008-astro-react-island-policy.md): React island 化の境界
 - [ADR-0009](../../../adr/0009-corporate-site-contact-form-backend.md): 問い合わせ送信 backend
 - [ADR-0014](../../../adr/0014-corporate-site-sections-architecture.md): sections の再編と公開面規約
+- [ADR-0022](../../../adr/0022-workers-static-assets-over-pages.md): 配信基盤を Workers static assets とした決定
 - [context/architecture.md](../../../context/architecture.md): package / runtime / state の境界
 - [context/component-design.md](../../../context/component-design.md): component 設計と Storybook 対象
 - [context/design-workflow.md](../../../context/design-workflow.md): デザイン制作フローとトークン正本ガード

@@ -2,7 +2,7 @@
 
 ## 状態
 
-承認
+承認。ただし実行基盤は [ADR-0022](0022-workers-static-assets-over-pages.md) が置換した (2026-08-25)。中継先が Pages Functions から Worker script へ変わる。機能仕様 (入力項目 / validation / スパム対策 / 通知 / API 契約) は変わらない
 
 ## 決定日
 
@@ -74,5 +74,6 @@ corporate-site の問い合わせ送信を **Cloudflare Pages Functions (Workers
 - [ADR-0008](0008-astro-react-island-policy.md): フォームは corporate-site の最初の主要 React island
 - [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md): Phase 1 は corporate-site のみ
 - [context/infrastructure.md](../context/infrastructure.md): Cloudflare Pages / Turnstile / Workers
+- [ADR-0022](0022-workers-static-assets-over-pages.md): 配信基盤を Workers へ移す決定 (中継先が Worker script になる)
 - issue: [#14](https://github.com/Fukuemon/kufu-apps/issues/14) 問い合わせフォーム / Refs #11 / Part of #10
 - [context/architecture.md](../context/architecture.md): Runtime Boundary / Edge API / Error Contract

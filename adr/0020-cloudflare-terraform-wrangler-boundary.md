@@ -2,11 +2,13 @@
 
 ## 状態
 
-承認 (2026-08-23)。ADR-0019 と同時に承認した
+承認 (2026-08-23)。ADR-0019 と同時に承認した。ただし Pages を前提にした部分は ADR-0022 が置換した (2026-08-25)。管轄の原則 (データを保持するリソースは Terraform、実行するリソースは Wrangler) は有効である
 
 ## 決定日
 
 2026-08-16
+
+> **本文のうち Cloudflare Pages を前提にした箇所は、決定当時の記録である。** 現行の配信基盤は Workers static assets である。管轄の原則、credential の 2 系統分離、runtime secret を state に載せない決定は、いずれも有効なまま Workers へ引き継いでいる。置き換わったのは「Pages project を Wrangler の管轄とする」「bootstrap 順序の制約」「Cloudflare Pages を継続する」の 3 節と、管轄表の Pages 行である。現行の構成は [ADR-0022](0022-workers-static-assets-over-pages.md) を参照する。
 
 ## 背景
 
@@ -242,4 +244,5 @@ Pages が廃止されるという告知ではないが、新規は Workers へ�
 - [infra-tool-boundary.drawio.svg](../design/diagrams/infra-tool-boundary.drawio.svg): 管轄境界の図
 - [infra-permission-flow.drawio.svg](../design/diagrams/infra-permission-flow.drawio.svg): credential と実行経路の図
 - [ADR-0021](0021-vrt-baseline-on-r2.md): VRT baseline を R2 へ置く決定 (管轄表の R2 が有効になる)
+- [ADR-0022](0022-workers-static-assets-over-pages.md): 配信基盤を Workers へ移す決定 (Pages 前提の部分を置換)
 - issue: #47 (決定経緯)

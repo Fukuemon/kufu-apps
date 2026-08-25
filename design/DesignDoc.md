@@ -1,6 +1,6 @@
 # Kufu Monorepo Design Docs
 
-> 最終更新: 2026-08-23
+> 最終更新: 2026-08-25
 
 **Document Status:** Approved
 **Development Status:** In Progress
@@ -102,15 +102,15 @@ Package Boundary Violation Count は repository quality gate (`pnpm depcruise` /
 
 ## Related ADRs
 
-| ADR                                                                    | 決定                                                                                                             | 関連ドキュメント                                                                                                                                                                             |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md)         | Cloudflare の Terraform は別 repo (`kufu-infra`) で管理する                                                      | [context/infrastructure.md](../context/infrastructure.md)                                                                                                                                    |
-| [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md)     | app scaffold は公式 create command を優先する                                                                    | [context/toolchain.md](../context/toolchain.md)                                                                                                                                              |
-| [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) | app 実装対象は `apps/corporate-site` のみ。`apps/cms` は後続                                                     | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md), [features/cms/DesignDoc_cms.md](features/cms/DesignDoc_cms.md)                   |
-| [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md)         | 問い合わせ送信は Cloudflare Pages Functions を中継する (仕様決定済み・未実装。[Future Work](#未実装の計画) 参照) | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様), [context/infrastructure.md](../context/infrastructure.md) |
-| [ADR-0011](../adr/0011-specs-closeout-enforcement.md)                  | specs は存続させ closeout (close 時削除) を徹底する                                                              | `CLAUDE.md` Spec Workflow Contract                                                                                                                                                           |
-| [ADR-0012](../adr/0012-design-source-of-truth-implementation.md)       | デザイン正本は実装 (コード + Storybook)。ADR-0004 を置換                                                         | [context/design-workflow.md](../context/design-workflow.md)                                                                                                                                  |
-| [ADR-0013](../adr/0013-designdoc-present-facts-only.md)                | 本 doc は現状事実のみ記載、将来計画は Future Work 節へ一元化                                                     | 本 doc                                                                                                                                                                                       |
+| ADR                                                                    | 決定                                                                                                | 関連ドキュメント                                                                                                                                                                             |
+| ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ADR-0001](../adr/0001-terraform-infra-repository-boundary.md)         | Cloudflare の Terraform は別 repo (`kufu-infra`) で管理する                                         | [context/infrastructure.md](../context/infrastructure.md)                                                                                                                                    |
+| [ADR-0002](../adr/0002-monorepo-scaffold-create-command-policy.md)     | app scaffold は公式 create command を優先する                                                       | [context/toolchain.md](../context/toolchain.md)                                                                                                                                              |
+| [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) | app 実装対象は `apps/corporate-site` のみ。`apps/cms` は後続                                        | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md), [features/cms/DesignDoc_cms.md](features/cms/DesignDoc_cms.md)                   |
+| [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md)         | 問い合わせ送信は Worker script を中継する (仕様決定済み・未実装。[Future Work](#未実装の計画) 参照) | [features/corporate-site/DesignDoc_corporate-site.md](features/corporate-site/DesignDoc_corporate-site.md#問い合わせフォーム仕様), [context/infrastructure.md](../context/infrastructure.md) |
+| [ADR-0011](../adr/0011-specs-closeout-enforcement.md)                  | specs は存続させ closeout (close 時削除) を徹底する                                                 | `CLAUDE.md` Spec Workflow Contract                                                                                                                                                           |
+| [ADR-0012](../adr/0012-design-source-of-truth-implementation.md)       | デザイン正本は実装 (コード + Storybook)。ADR-0004 を置換                                            | [context/design-workflow.md](../context/design-workflow.md)                                                                                                                                  |
+| [ADR-0013](../adr/0013-designdoc-present-facts-only.md)                | 本 doc は現状事実のみ記載、将来計画は Future Work 節へ一元化                                        | 本 doc                                                                                                                                                                                       |
 
 ## Project Profile
 
@@ -166,7 +166,7 @@ Kufu Monorepo はコーポレートサイトの構築・運用を主目的とす
 
 図の要点:
 
-- **破線は未実装である。** `infra/` と Rate Limiting、R2 は #47 で作る。Pages Functions と runtime secret、外部サービスとの連携は別 issue で扱う。実装が進んだら実線へ変える。
+- **破線は未実装である。** `infra/`、Worker、Rate Limiting、R2 は #47 で作る。Worker script と runtime secret、外部サービスとの連携は別 issue で扱う。実装が進んだら実線へ変える。
 - 訪問者が触れるのは Cloudflare だけである。GitHub は成果物を届ける側にあり、利用者からは見えない。
 - 内容更新者と開発者はどちらも PR を入口とする。コンテンツの更新も実装も、同じ検査 (`ci.yml`) を通る。
 - 本番へ出る経路は 2 本ある。`deploy workflow` がアプリを配り、`infra-apply workflow` が基盤を変える。この 2 本が持つ credential は分かれている。
@@ -257,21 +257,21 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 
 | 項目                   | 内容                                                                                                                                                                                                                                                                                                      | 根拠 / 追跡先                                                                                                                 |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| 問い合わせ送信 backend | Cloudflare Pages Functions (`/api/contact`) で送信を中継し、Resend でメール通知する。仕様は決定済み・実装は未着手                                                                                                                                                                                         | [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md)                                                                |
+| 問い合わせ送信 backend | Worker script (`/api/contact`) で送信を中継し、Resend でメール通知する。仕様は決定済み・実装は未着手                                                                                                                                                                                                      | [ADR-0009](../adr/0009-corporate-site-contact-form-backend.md)                                                                |
 | `apps/cms`             | コーポレートサイト掲載投稿を管理する app 候補。責務・公開フロー・データモデル・app shell は未設計 (立ち上げ判断は[未決事項](#未決事項) #4)                                                                                                                                                                | [ADR-0003](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md) / [features/cms/](features/cms/DesignDoc_cms.md)       |
 | CI パイプライン        | 検査は `ci.yml` に集約し、`lint` / `test` / `typecheck` / `build` / `analyze` / `e2e` / story VRT 2 job / route VRT を `needs` なしで並列に回す。docs closeout 検査 (`spec-residue.yml`) と Storybook カタログ公開 (`storybook-pages.yml`) は別 workflow。required status checks は plan 制約で設定しない | [ADR-0016](../adr/0016-ci-local-hook-responsibility.md) / [ADR-0018](../adr/0018-story-vrt-on-storybook-test-integrations.md) |
 
 ### 未決事項
 
-| #   | 論点                                                                                  | 決定者               | 期限                          | 状態 | メモ                                                                               |
-| --- | ------------------------------------------------------------------------------------- | -------------------- | ----------------------------- | ---- | ---------------------------------------------------------------------------------- |
-| 1   | コーポレートサイト公開後の事業 KPI (訪問数、問い合わせ転換率など) をどの指標で見るか  | Kufu owner           | 公開後                        | 未決 | 現時点は build / E2E / 導線確認を成功条件とする                                    |
-| 2   | Lighthouse / bundle size など performance budget の具体値                             | 開発者 + Kufu owner  | 公開前検証                    | 未決 | Astro 静的生成と不要 island 0 件を先に守る                                         |
-| 3   | `packages/ui` を本格共有 package へ移行する判断条件                                   | 開発者 + Kufu owner  | 2 つ目の UI consumer が出る前 | 未決 | 現時点は corporate-site 内 colocation を優先                                       |
-| 4   | `apps/cms` の立ち上げ判断基準                                                         | Kufu owner           | 着手前                        | 未決 | 投稿数、更新頻度、運用者人数、外部編集者の有無で判断する                           |
-| 5   | コーポレートサイトコンテンツ更新の責務分担と承認フロー                                | Kufu owner           | 初回運用開始前                | 未決 | CMS 化前は committed reference と PR review を正本運用にする                       |
-| 6   | infra repo と app repo の変更を相互参照する review workflow                           | 開発者 + infra owner | 本番公開前                    | 未決 | Cloudflare Pages / Terraform 変更の cross-reference 方針                           |
-| 7   | Cloudflare Pages の preview / production に紐づく domain / branch / secret 運用ルール | 開発者 + infra owner | 本番公開前                    | 未決 | 実装方針は [context/infrastructure.md](../context/infrastructure.md) と ADR へ委譲 |
+| #   | 論点                                                                                 | 決定者               | 期限                          | 状態 | メモ                                                                               |
+| --- | ------------------------------------------------------------------------------------ | -------------------- | ----------------------------- | ---- | ---------------------------------------------------------------------------------- |
+| 1   | コーポレートサイト公開後の事業 KPI (訪問数、問い合わせ転換率など) をどの指標で見るか | Kufu owner           | 公開後                        | 未決 | 現時点は build / E2E / 導線確認を成功条件とする                                    |
+| 2   | Lighthouse / bundle size など performance budget の具体値                            | 開発者 + Kufu owner  | 公開前検証                    | 未決 | Astro 静的生成と不要 island 0 件を先に守る                                         |
+| 3   | `packages/ui` を本格共有 package へ移行する判断条件                                  | 開発者 + Kufu owner  | 2 つ目の UI consumer が出る前 | 未決 | 現時点は corporate-site 内 colocation を優先                                       |
+| 4   | `apps/cms` の立ち上げ判断基準                                                        | Kufu owner           | 着手前                        | 未決 | 投稿数、更新頻度、運用者人数、外部編集者の有無で判断する                           |
+| 5   | コーポレートサイトコンテンツ更新の責務分担と承認フロー                               | Kufu owner           | 初回運用開始前                | 未決 | CMS 化前は committed reference と PR review を正本運用にする                       |
+| 6   | infra repo と app repo の変更を相互参照する review workflow                          | 開発者 + infra owner | 本番公開前                    | 未決 | ADR-0019 の集約により論点が消滅する。実装完了時にクローズする                      |
+| 7   | Worker の preview / production に紐づく domain / version / secret 運用ルール         | 開発者 + infra owner | 本番公開前                    | 未決 | 実装方針は [context/infrastructure.md](../context/infrastructure.md) と ADR へ委譲 |
 
 ## 変更履歴
 
@@ -286,6 +286,7 @@ feature 単位の設計 (データ構造・画面・主要シナリオ / フロ�
 | 2026-08-16 | Claude | Future Work「CI パイプライン」行を現状事実へ更新 (lint / test / docs closeout 検査は稼働中)。ADR-0016 を参照先に追加 |
 | 2026-08-22 | Claude | 参照を括弧からネストした参照行へ移し、本文中の重複リンクを初出 1 回に整理。関連ドキュメント節を新設                  |
 | 2026-08-23 | Claude | アーキテクチャ概観の mermaid C4 L1 / L2 を、利用者を含むサービス構成図 (.drawio.svg) 1 枚へ置き換え                  |
+| 2026-08-25 | Claude | 配信基盤を Cloudflare Pages から Workers static assets へ変更 (ADR-0022) し、図と参照先を追随                        |
 
 ## 関連ドキュメント
 
