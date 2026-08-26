@@ -46,9 +46,9 @@ ADR-0020 の原則は変えない。当てはめる先が変わる。
 | リソース                              | 管轄      | 判断根拠                                                 |
 | ------------------------------------- | --------- | -------------------------------------------------------- |
 | Zone / DNS record / TLS               | Terraform | ADR-0020 から変更なし                                    |
-| `cloudflare_worker` (箱)              | Terraform | 名前と観測設定だけを持ち、secret も assets も持たない    |
+| `cloudflare_worker` (箱)              | Terraform | 名前と `tags` だけを持つ。`observability` は設定しない   |
 | `cloudflare_workers_custom_domain`    | Terraform | 必須は `account_id` / `hostname` / `service` の 3 つ     |
-| `cloudflare_workers_script_subdomain` | Terraform | `previews_enabled` で preview URL の有無を宣言できる     |
+| `workers_dev` / `preview_urls`        | Wrangler  | `wrangler.jsonc` に書く。既定値の衝突を避ける            |
 | Rate Limiting ルール (`/api/contact`) | Terraform | ADR-0020 から変更なし                                    |
 | R2 バケット (state / VRT baseline)    | Terraform | ADR-0020 / ADR-0021 から変更なし                         |
 | `cloudflare_worker_version` (中身)    | Wrangler  | assets / bindings / secret を持つ。deploy のたびに変わる |
@@ -69,10 +69,28 @@ Workers では箱を Terraform が作れる。
 
 ### preview
 
-version ごとに preview URL が自動生成される。`cloudflare_workers_script_subdomain` の `previews_enabled` で有無を宣言し、CI では alias を付けて PR 番号から辿れるようにする。
+version ごとに preview URL が自動生成される。有無は `wrangler.jsonc` の `preview_urls` で宣言し、CI では alias を付けて PR 番号から辿れるようにする。**`cloudflare_workers_script_subdomain` は Terraform で管理しない** (下記「wrangler の既定値と競合する設定」を参照)。
 
 - 版の要件: 付き preview URL は `wrangler` 3.74.0 以上、alias 付きは 4.21.0 以上である。
 - 対象: preview URL は 2024-09-25 以降にアップロードした version でのみ使える。新規に作るため問題にならない。
+
+### wrangler の既定値と競合する設定 (確認済み 2026-08-26)
+
+`wrangler` 4.126.0 の同梱 schema と bundle を確認した。**`wrangler.jsonc` に書かなくても、wrangler が既定値を送る設定がある。** これらを Terraform でも持つと deploy のたびに取り合う。
+
+| 設定            | wrangler の既定     | 対応する Terraform                    | 管轄      |
+| --------------- | ------------------- | ------------------------------------- | --------- |
+| `observability` | `{ enabled: true }` | `cloudflare_worker`                   | Wrangler  |
+| `workers_dev`   | `true`              | `cloudflare_workers_script_subdomain` | Wrangler  |
+| `preview_urls`  | `false`             | 同上                                  | Wrangler  |
+| `logpush`       | 未設定 (送らない)   | `cloudflare_worker`                   | Terraform |
+| `tags`          | キーが存在しない    | `cloudflare_worker`                   | Terraform |
+
+**当初の回避方針は成立しない。** 「これらを `wrangler.jsonc` に書かず Terraform 側だけで持つ」と書いていたが、`observability` / `workers_dev` / `preview_urls` は書かなくても既定値が送られる。とくに `preview_urls` の既定は `false` であり、Terraform で `previews_enabled = true` にしても deploy のたびに戻される。
+
+したがって **この 3 つは Wrangler の管轄とする。** `wrangler.jsonc` に明示し、Terraform では扱わない。`logpush` と `tags` は wrangler が触らないため Terraform が持てる。
+
+`cloudflare_worker` に残すのは `name` と `tags` だけになる。箱としての役割は変わらない。
 
 ### 稼働中サイトの移行
 
@@ -142,12 +160,34 @@ Pages の利点として公式が挙げるのは Early Hints のネイティブ�
 - 対象 app / package: `apps/corporate-site`、`e2e`、GitHub Actions workflow、新設する Terraform ディレクトリ
 - spec 更新要否: 要。#47 の spec に、切り替え手順、ダウンタイムの扱い、切り戻し手順を反映する
 
+### SSR へ切り替える場合の adapter (確認済み 2026-08-26)
+
+`@astrojs/cloudflare` は 14.2.5 (2026-08-25 公開) で **Workers を配信先とする adapter になっている** (説明文が "Deploy your site to Cloudflare Workers")。将来 SSR へ移る道は塞がっていない。
+
+ただし peer dependency は `astro ^7.2.0` / `wrangler ^4.125.0` である。本 repo の Astro は 6.3.1 であり、**adapter を入れるなら Astro のメジャー更新が先に要る。** 本決定は `output: "static"` を維持するため、いま影響しない。
+
+### Cloudflare Secrets Store を採らない (確認済み 2026-08-26)
+
+ADR-0020 は「Pages Functions から使えない」ことを確認して runtime secret を Wrangler の管轄に固定した。Workers では使えるため再評価した。**結論は変えない。**
+
+使える形は確認できた。
+
+- Workers の binding key は `secrets_store_secrets` で、`binding` / `store_id` / `secret_name` を取る。
+- 値の投入は `wrangler secrets-store secret create` で行える。**Terraform state に値を載せずに済む。**
+- provider は `cloudflare_secrets_store` (箱。値を持たない) と `cloudflare_secrets_store_secret` (値が required かつ sensitive) に分かれている。箱だけ Terraform が持てる。
+
+採らない理由は 3 つである。
+
+- **open beta である。** 本番の問い合わせフォームが依存する secret の置き場としては早い。
+- **利点が出ない。** Secrets Store の価値はアカウント横断の再利用にある。消費者は Worker 1 つ、secret は 3 つで、共有する相手がいない。
+- **コードが変わる。** 参照が `env.X` から `await env.X.get()` になる。非同期呼び出しが増える。
+
+**見直す条件**: GA になり、かつ secret を共有する 2 つ目の消費者が現れたとき。
+
 ### 未確認事項
 
-- **`wrangler deploy` が箱の設定を書き換えるかは未確認である。** `cloudflare_worker` は `observability` / `subdomain` / `tags` を持つ。`wrangler.jsonc` に同じ設定を書くと、deploy のたびに Terraform と取り合う恐れがある。**回避方針**: これらを `wrangler.jsonc` に書かず Terraform 側だけで持つ。実装の最初に、deploy 後の `terraform plan` が空になることを確認する。
-- 将来 SSR へ切り替える場合の Astro Cloudflare adapter の Workers 対応は未確認である。現在は `output: "static"` のため影響しない。
+- 初回 deploy の後に `terraform plan` が空になることを実測で確かめていない。上表の管轄で衝突は避けられる見込みだが、確認は実装の最初に行う。
 - 切り替え時のダウンタイムの長さを見積もっていない。custom domain の付け替えと DNS の伝播に依存する。
-- **Cloudflare Secrets Store が使えるかを再評価できる。** ADR-0020 は「Pages Functions からは使えない」と確認して runtime secret の管轄を Wrangler で固定した。Secrets Store は Workers 連携を持つため、本決定で前提が変わる。使えるなら Terraform が値を持たずに secret の binding を宣言でき、管轄を見直す余地が生まれる。**実装の前に確認する。**
 
 ## 実装・運用への反映
 
