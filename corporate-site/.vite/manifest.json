@@ -1,12 +1,12 @@
 {
   "../../node_modules/.pnpm/@storybook+addon-docs@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_940e2deed1bcafe17c4b623cd1bac3db/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-6AOWCN3U.js": {
-    "file": "_astro/Color-6AOWCN3U-uPDnEibs.js",
+    "file": "_astro/Color-6AOWCN3U-b7E2fTvE.js",
     "name": "Color-6AOWCN3U",
     "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_940e2deed1bcafe17c4b623cd1bac3db/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-6AOWCN3U.js",
     "isDynamicEntry": true,
     "imports": [
-      "_DocsRenderer-JROSPFPF-Cz1Aqh3l.js",
-      "_iframe-VjAahW76.js",
+      "_DocsRenderer-JROSPFPF-BkUtkmpC.js",
+      "_iframe-B10o4J1S.js",
       "_index-GO7GDrc_.js",
       "_preload-helper-PPVm8Dsz.js",
       "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
@@ -24,12 +24,12 @@
     ]
   },
   "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js": {
-    "file": "_astro/WithTooltip-7X4HQR7L-BOB6lCC_.js",
+    "file": "_astro/WithTooltip-7X4HQR7L-DmDyAXX_.js",
     "name": "WithTooltip-7X4HQR7L",
     "src": "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/WithTooltip-7X4HQR7L.js",
     "isDynamicEntry": true,
     "imports": [
-      "_DocsRenderer-JROSPFPF-Cz1Aqh3l.js",
+      "_DocsRenderer-JROSPFPF-BkUtkmpC.js",
       "_index-GO7GDrc_.js",
       "_preload-helper-PPVm8Dsz.js",
       "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
@@ -37,12 +37,12 @@
     ]
   },
   "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js": {
-    "file": "_astro/formatter-L2YTDE3Q-C4JVGOYx.js",
+    "file": "_astro/formatter-L2YTDE3Q-BF3lYl-2.js",
     "name": "formatter-L2YTDE3Q",
     "src": "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/formatter-L2YTDE3Q.js",
     "isDynamicEntry": true,
     "imports": [
-      "_DocsRenderer-JROSPFPF-Cz1Aqh3l.js",
+      "_DocsRenderer-JROSPFPF-BkUtkmpC.js",
       "_preload-helper-PPVm8Dsz.js",
       "_index-GO7GDrc_.js",
       "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
@@ -50,12 +50,12 @@
     ]
   },
   "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-QEQV7K2Y.js": {
-    "file": "_astro/syntaxhighlighter-QEQV7K2Y-BN97VPtJ.js",
+    "file": "_astro/syntaxhighlighter-QEQV7K2Y-_Zmt5X8o.js",
     "name": "syntaxhighlighter-QEQV7K2Y",
     "src": "../../node_modules/.pnpm/storybook@10.5.9_@emnapi+core@1.10.0_@emnapi+runtime@1.11.1_@types+react@19.2.14_pretti_deb3b226691372941ff4c5e1946e7312/node_modules/storybook/dist/_browser-chunks/syntaxhighlighter-QEQV7K2Y.js",
     "isDynamicEntry": true,
     "imports": [
-      "_DocsRenderer-JROSPFPF-Cz1Aqh3l.js",
+      "_DocsRenderer-JROSPFPF-BkUtkmpC.js",
       "_index-GO7GDrc_.js",
       "_preload-helper-PPVm8Dsz.js",
       "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
@@ -71,8 +71,8 @@
       "_preload-helper-PPVm8Dsz.js"
     ]
   },
-  "_DocsRenderer-JROSPFPF-Cz1Aqh3l.js": {
-    "file": "_astro/DocsRenderer-JROSPFPF-Cz1Aqh3l.js",
+  "_DocsRenderer-JROSPFPF-BkUtkmpC.js": {
+    "file": "_astro/DocsRenderer-JROSPFPF-BkUtkmpC.js",
     "name": "DocsRenderer-JROSPFPF",
     "isDynamicEntry": true,
     "imports": [
@@ -97,12 +97,8 @@
       "_index-GO7GDrc_.js"
     ]
   },
-  "_iframe-BEOkG3RM.css": {
-    "file": "_astro/iframe-BEOkG3RM.css",
-    "src": "_iframe-BEOkG3RM.css"
-  },
-  "_iframe-VjAahW76.js": {
-    "file": "_astro/iframe-VjAahW76.js",
+  "_iframe-B10o4J1S.js": {
+    "file": "_astro/iframe-B10o4J1S.js",
     "name": "iframe",
     "imports": [
       "_preload-helper-PPVm8Dsz.js",
@@ -127,11 +123,15 @@
       "src/components/sections/products-detail/ProductsHero.stories.ts",
       "src/components/sections/products-detail/ProductsSidebarNav.stories.ts",
       "../../node_modules/.pnpm/@storybook+react-dom-shim@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+r_581461c9cd136b45fc0ec723dd99d6ad/node_modules/@storybook/react-dom-shim/dist/react-18.js",
-      "_DocsRenderer-JROSPFPF-Cz1Aqh3l.js"
+      "_DocsRenderer-JROSPFPF-BkUtkmpC.js"
     ],
     "css": [
-      "_astro/iframe-BEOkG3RM.css"
+      "_astro/iframe-CmijuWef.css"
     ]
+  },
+  "_iframe-CmijuWef.css": {
+    "file": "_astro/iframe-CmijuWef.css",
+    "src": "_iframe-CmijuWef.css"
   },
   "_index-GO7GDrc_.js": {
     "file": "_astro/index-GO7GDrc_.js",
