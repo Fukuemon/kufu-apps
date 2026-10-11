@@ -13,7 +13,7 @@
 
 - 1 issue につき 1 ディレクトリを基本とする。
 - 各 spec の最初に読む文書は `index.md` とする。
-- 実装タスクへ分割する場合は `prompts/` を同ディレクトリ配下に置く。
+- 開発プロセスの宣言を置くときは、同じディレクトリの `process.yml` に書く。
 - 追加資料が必要な場合だけ図や補助文書を同ディレクトリ配下へ置く。
 
 ## 必須確認
@@ -34,9 +34,9 @@
 
 1. `PRD.md` で What / Why / Who / 成功条件を確認する。
 2. `design/DesignDoc.md` で app / package の責務、コーポレートサイト優先方針、React 標準、CMS/API の扱いを確認する。
-3. `spec-requirement` で要求を整理し、必要なら issue を起票する。
-4. `spec-lifecycle` を使って 1 issue ごとに 1 spec を起こし、scaffold から prompts まで phase を進める。
-5. 実装可能になったら同 skill の prompts phase で `prompts/` 配下へ対象ドメイン単位に分割する。
+3. 要求を issue にする。要求の起票の雛形（`.github/ISSUE_TEMPLATE/requirements.yml`）を使い、題と本文はスキル write-issue-pr に従う。
+4. 1 issue ごとに `specs/<issue 番号>-<slug>/index.md` を作る。節の構成は、スキル write-design-docs の `references/spec.md` に従う。
+5. 残す設計は、issue を閉じる前に Design Doc、context、ADR へ移す。書き方は、スキル write-design-docs と write-context に従う。
 
 ## Kufu Monorepo での spec 分割指針
 
@@ -61,6 +61,6 @@ issue を close すると、手順 4 の削除 PR は [`.github/workflows/spec-c
 
 ## 関連 Skills
 
-- `spec-requirement`: 要求の整理と issue 起票
-- `spec-lifecycle`: scaffold 〜 prompts の phase 管理と review gate
-- `spec-review`: gate での独立評価
+- `write-issue-pr`: 要求の issue の起票
+- `write-design-docs`: spec、Design Doc、ADR の書き方
+- `write-context`: context の書き方
