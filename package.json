@@ -2,7 +2,7 @@
   "name": "kufu-apps",
   "private": true,
   "scripts": {
-    "prepare": "lefthook install",
+    "prepare": "[ -n \"$CI\" ] || lefthook install",
     "dev": "turbo run dev --parallel",
     "dev:corporate": "turbo run dev --filter=@kufu/corporate-site",
     "build": "turbo run build",
