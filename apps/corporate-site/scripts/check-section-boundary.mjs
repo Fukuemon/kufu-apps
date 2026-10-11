@@ -1,4 +1,4 @@
-// section 境界の機械検査 (規約: context/architecture.md「App 内依存方向」)。
+// section 境界の機械検査 (規約: context/codebase.md「Dependency Rules」)。
 // 相対パス指定のみを解決する (path alias 導入時は要拡張)。
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
@@ -182,7 +182,7 @@ if (isDirectRun) {
       process.stderr.write(`${violation}\n`);
     }
     process.stderr.write(
-      "Section boundary violations found (see context/architecture.md).\n",
+      "Section boundary violations found (see context/codebase.md).\n",
     );
     process.exit(1);
   }

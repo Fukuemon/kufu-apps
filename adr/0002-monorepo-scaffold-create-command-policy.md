@@ -1,79 +1,45 @@
-# ADR-0002: Monorepo app scaffold は公式 create command を優先し Vite+ は見送る
+# ADR-0002: Monorepo の app の scaffold は公式の create command を優先し、Vite+ は見送る
 
-## 状態
+## Status
 
 承認
 
-## 決定日
+## Context
 
-2026-05-08
+- Kufu Monorepo の Phase 1 foundation では、`apps/corporate-site`、`apps/base`、`packages/*`、root の workspace の設定を整備する。
+- 既存の設計は `pnpm workspace` と `Turborepo` を基盤にし、app / package ごとの task を root の script から束ねる構成を採用している。
+- app の scaffold の初期案には、`apps/corporate-site` と `apps/base` のディレクトリを作った後に `pnpm --filter ... add ...` で手動で構成する案もあった。
+- `Astro` と `Vite` は公式の `create` command を持つ。
+  - 初期の構成を正規の scaffold から始めたほうが、不要な差分や設定の抜けを減らせる。
+- `Vite+` は monorepo / app / library を作成できる統合の toolchain である。
+  - runtime、package manager、task の実行、build / check の導線まで含めて、project 全体の契約を再設計する影響が大きい。
 
-## 背景
+## Decision
 
-- issue #3 では Kufu Monorepo の Phase 1 foundation として、`apps/corporate-site`、`apps/base`、`packages/*`、root workspace 設定を整備する。
-- 既存の設計では `pnpm workspace` と `Turborepo` を基盤にし、app / package ごとの task を root script から束ねる構成を採用している。
-- app scaffold の初期案では、`apps/corporate-site` と `apps/base` を directory 作成後に `pnpm --filter ... add ...` で手動構成する案もあった。
-- 一方で `Astro` と `Vite` は公式の `create` command を持っており、初期構成を正規の scaffold から始めたほうが不要な差分や設定漏れを減らせる。
-- `Vite+` は monorepo / app / library を作成できる統合 toolchain だが、runtime、package manager、task 実行、build / check 導線まで含めて project 全体の契約を再設計する影響が大きい。
+- `apps/corporate-site` の初期の scaffold は、`pnpm create astro@latest apps/corporate-site` を正とする。
+- `apps/base` の初期の scaffold は、`pnpm create vite apps/base --template react-ts` を正とする。
+- 生成した後に、package 名、root scripts、typecheck、E2E、shared config など、monorepo の contract へ寄せる調整を行う。
+- Phase 1 foundation では `pnpm workspace` と `Turborepo` を継続して採用し、`Vite+` は導入しない。
+- `Vite+` の採否は、将来 monorepo 全体の toolchain の契約を見直す専用の issue / spec で再検討する。
 
-## 決定
+## Considered Options
 
-- `apps/corporate-site` の初期 scaffold は `pnpm create astro@latest apps/corporate-site` を正とする。
-- `apps/base` の初期 scaffold は `pnpm create vite apps/base --template react-ts` を正とする。
-- 生成後に、package 名、root scripts、typecheck、E2E、shared config など monorepo の contract へ寄せる調整を行う。
-- issue #3 では `pnpm workspace` と `Turborepo` を継続採用し、`Vite+` は導入しない。
-- `Vite+` の採否は、将来 monorepo 全体の toolchain 契約を見直す専用 issue / spec で再検討する。
+| 選択肢                                                                                                      | 強み                                                                                                                                                                                        | 弱み                                                                                                                                                                                                                                                                                                                          |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **採用:** 公式の create command で scaffold し、`pnpm workspace` と `Turborepo` を継続して `Vite+` は見送る | 各 framework の標準の scaffold から開始できる。手動の構成より設定の抜けや初期の不整合を減らしやすい。`pnpm workspace` + `Turborepo` の foundation を保ったまま app の skeleton を整備できる | scaffold の後に monorepo の契約へ寄せる整理が必要になる。生成される初期ファイルの一部は、調整または削除が必要になる                                                                                                                                                                                                           |
+| app を手動で scaffold する                                                                                  | 生成物を最小限に制御しやすい。余分な template file を最初から持ち込まずに済む                                                                                                               | 公式の scaffold が前提にしている標準の設定を取りこぼしやすい。Astro / Vite の更新への追従が手作業になりやすい。初期の設定の妥当性を毎回自分たちで判断し直す必要がある                                                                                                                                                         |
+| Phase 1 foundation で `Vite+` を採用する                                                                    | app の生成、依存管理、check、build、task の実行を統一の toolchain へ寄せられる。将来 monorepo 全体の frontend の toolchain を一元化できる可能性がある                                       | `pnpm workspace` と `Turborepo` を前提にした現行の contract を大きく見直す必要がある。app の scaffold だけでなく、root の command contract まで同時に再設計することになる。Phase 1 foundation の論点を増やし、完了条件が不安定になる。現時点では alpha 段階のため、app の scaffold の都合だけで導入を決めるには影響範囲が広い |
 
-## 代替案
+## Consequences
 
-### 1. app を手動で scaffold する
+### Positive
 
-#### Pros
+- `apps/corporate-site` と `apps/base` を、各 framework の標準の scaffold から開始できる。
+- 手動の構成より、設定の抜けや初期の不整合を減らしやすい。
+- Phase 1 foundation の主目的である `pnpm workspace` + `Turborepo` の foundation を保ったまま、app の skeleton を整備できる。
 
-- 生成物を最小限に制御しやすい。
-- 余分な template file を最初から持ち込まずに済む。
+### Negative
 
-#### Cons
-
-- 公式 scaffold が前提にしている標準設定を取りこぼしやすい。
-- Astro / Vite の更新追従が手作業になりやすい。
-- 初期設定の妥当性を毎回自分たちで再判断する必要がある。
-
-### 2. Vite+ を issue #3 で採用する
-
-#### Pros
-
-- app 生成、依存管理、check、build、task 実行を統一 toolchain へ寄せられる。
-- 将来的に monorepo 全体の frontend toolchain を一元化できる可能性がある。
-
-#### Cons
-
-- `pnpm workspace` と `Turborepo` を前提にした現行 contract を大きく見直す必要がある。
-- app scaffold だけでなく root command contract まで同時に再設計することになる。
-- Phase 1 foundation の論点を増やし、issue #3 の完了条件が不安定になる。
-- 現時点では alpha 段階のため、導入判断を app scaffold の都合だけで決めるには影響範囲が広い。
-
-## 影響
-
-### 良い影響
-
-- `apps/corporate-site` と `apps/base` を各 framework の標準 scaffold から開始できる。
-- 手動構成より設定漏れや初期不整合を減らしやすい。
-- issue #3 の主目的である `pnpm workspace` + `Turborepo` foundation を保ったまま app skeleton を整備できる。
-
-### 悪い影響 / トレードオフ
-
-- scaffold 後に monorepo 契約へ寄せるための整理が必要になる。
+- scaffold の後に、monorepo の契約へ寄せる整理が必要になる。
 - 生成される初期ファイルの一部は、この repo の方針に合わせて調整または削除が必要になる。
-- `Vite+` 採用の議論は後続 issue に持ち越される。
-
-## 実装・運用への反映
-
-- 対象 app / package: `apps/corporate-site`、`apps/base`、root workspace scripts、spec prompt
-- spec 更新要否: 要。app scaffold の install / setup 方針を `create` command ベースへ更新する
-- AI 向け設定更新要否: 不要。repo 全体の基盤方針は `pnpm workspace` + `Turborepo` のまま
-
-## 関連ドキュメント
-
-- `design/DesignDoc.md`: Phase 1 foundation の範囲 (Why/What 節)、monorepo 構成と toolchain 方針
-- [issue #3](https://github.com/Fukuemon/kufu-apps/issues/3): monorepo 基盤の詳細設計と実装の記録
+- `Vite+` の採用の議論は、後続の issue に持ち越される。

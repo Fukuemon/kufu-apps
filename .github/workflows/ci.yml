@@ -72,7 +72,7 @@ jobs:
       - name: Build
         run: pnpm build
 
-  # knip と depcruise は project.yml が pnpm check として 1 組で扱う。
+  # knip と depcruise は、リポジトリの健全さのチェックとして 1 組で扱う（context/tech-stack.md の「ルートのコマンド」）。
   analyze:
     if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
