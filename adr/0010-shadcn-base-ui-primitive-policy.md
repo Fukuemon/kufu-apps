@@ -1,71 +1,67 @@
-# ADR-0010: shadcn の primitive 基盤は Base UI を採用する
+# ADR-0010: shadcn の primitive の基盤に Base UI を採る
 
-## 状態
+## Status
 
 提案
 
-## 決定日
+## Context
 
-2026-06-20
+- `packages/ui` は shadcn/ui を component の source を配る手段として使い、`components.json` は当初 `radix-nova` を指定していた。
+- shadcn/ui は、CLI で component の source を workspace に取り込み、各 project が自分の component library として編集する前提である。
+  - そのため、primitive の基盤の選択は、依存の package だけでなく、生成される component の API、markup、state の attribute、story、Astro での使い方に影響する。
+- shadcn/ui の docs は、Radix UI と Base UI の両方を component library の基盤として扱う。
+  - Base UI 用の component の docs と、Radix と Base UI の比較の UI を提供している。
+  - 新しい project では、`shadcn create` で Radix と Base UI を選べる。
+- Base UI は、Radix、Floating UI、Material UI の team が提供する unstyled な React の component library である。
+  - ARIA Authoring Practices Guide と WCAG 2.2 を前提にした accessibility を特徴にする。
+  - Tailwind、CSS Modules、CSS-in-JS などで自由にスタイルを当てられることを特徴にする。
+  - Combobox、Autocomplete などの複雑な component を特徴にする。
+- Radix UI Primitives は、実績のある unstyled で accessible な React の primitive である。WAI-ARIA、キーボードの操作、focus の管理が成熟している。
+  - 一方で、新しく shadcn の catalog を育てる段階では、shadcn が Base UI への対応を公式の導線として持ち始めていることを優先できる。
+- corporate-site は、表示だけの React の component を Astro で静的に描画し、インタラクティブな primitive だけを `client:*` の island にする。Base UI へ移っても、この方針は保つ必要がある。
+  ADR-0008: [Astro と React island の方針](0008-astro-react-island-policy.md)
 
-## 背景
+## Decision
 
-- `packages/ui` は shadcn/ui を component source の配布手段として使い、`components.json` は当初 `radix-nova` を指定していた。
-- shadcn/ui は CLI で component source を workspace に取り込み、各 project が自分の component library として編集する前提である。したがって primitive 基盤の選択は、依存 package だけでなく、生成される component API / markup / state attribute / story / Astro 消費方針へ影響する。
-- 2026 年時点の shadcn/ui docs は、Radix UI と Base UI の両方を component library foundation として扱い、Base UI 用 component docs と Radix / Base UI の比較 UI を提供している。新規 project では `shadcn create` で Radix / Base UI を選べる。
-- Base UI は Radix / Floating UI / Material UI の team が提供する unstyled React component library で、ARIA Authoring Practices Guide と WCAG 2.2 を前提にした accessibility、Tailwind / CSS Modules / CSS-in-JS 等の styling 自由度、Combobox / Autocomplete 等の複雑 component を特徴にする。
-- Radix UI Primitives は実績のある unstyled accessible React primitives であり、WAI-ARIA / keyboard navigation / focus management の成熟度が高い。一方で、新規に shadcn catalog を育てる段階では、shadcn が Base UI 対応を公式導線として持ち始めていることを優先できる。
-- [ADR-0008](0008-astro-react-island-policy.md) は corporate-site の表示専用 React component を Astro で静的描画し、interactive primitive だけ `client:*` island 化する方針を定めている。Base UI へ移行してもこの方針は維持する必要がある。
+1. **shadcn の primitive の基盤に Base UI を採る。**
+   - 今後 `packages/ui` に shadcn の component を足すときと生成し直すときは、Base UI 版を第一の候補にする。
+2. **Storybook の最初の catalog の対象を Base UI 版へ移す。**
+   - `components.json` を、Base UI を前提にした shadcn の設定に変える。
+   - `Button`、`Badge/Tag`、`Input`、`Select`、`Separator` は、Base UI 版の shadcn の source から作る。
+   - `Card`、`Textarea`、`Label` のように primitive に依存しない component も、同じ shadcn の source の持ち方で catalog に置く。
+3. **shadcn の source を自分で持つ方式を保つ。**
+   - Base UI を採っても、`@base-ui/react` を app から直接あちこちで import しない。
+   - shadcn の CLI で `packages/ui/src/components/` に取り込んだ source を `@kufu/ui` の component の基準として編集し、token に合わせる。
+4. **表示だけの component とインタラクティブな component の境界は、ADR-0008 を引き継ぐ。**
+   - Base UI の component も React の component なので、表示だけの component は Astro の静的な描画で使う。
+   - Dialog、Select、Popover、Tooltip のように client での操作が要る component は、`client:*` の island にする。
+5. **Base UI への移行の完了条件をはっきりさせる。** 少なくとも次を確かめる。
+   - `components.json` が、Base UI を前提にした shadcn の設定になっている。
+   - `Button`、`Badge/Tag`、`Card`、`Label/FormField`、`Input`、`Select`、`Textarea`、`Separator` が、Base UI 版か、Base UI 版の shadcn の source から作られている。
+   - `pnpm --filter @kufu/ui` の `lint`、`typecheck`、`build`、`storybook:build` が通る。
+   - corporate-site で静的に描画する component と island にする component の境界が、pull request に残っている。
 
-## 決定
+## Considered Options
 
-1. **shadcn primitive 基盤は Base UI を採用する**。今後 `packages/ui` に shadcn component を追加・再生成する場合は、Base UI 版を第一候補にする。
-2. **#6 の初期 catalog 対象は Base UI 版へ移行する**。`components.json` を Base UI 前提の shadcn 設定に変更し、`Button`, `Badge/Tag`, `Input`, `Select`, `Separator` は Base UI 版 shadcn source を土台にする。`Card`, `Textarea`, `Label` のように primitive 依存がない component も、同じ shadcn source ownership の下で catalog に置く。
-3. **shadcn source ownership は維持する**。Base UI を採用しても、`@base-ui/react` を直接 app から散在 import しない。shadcn CLI で `packages/ui/src/components/` に取り込んだ source を `@kufu/ui` の component 正本として編集し、token へ合わせる。
-4. **表示専用と interactive の境界は ADR-0008 を継承する**。Base UI component も React component であるため、表示専用 component は Astro static rendering で consume し、Dialog / Select / Popover / Tooltip 等の client interaction を必要とする component は `client:*` island 化する。
-5. **Base UI 移行の完了条件を明示する**。#6 では少なくとも次を確認する:
-   - `components.json` が Base UI 前提の shadcn 設定になっている。
-   - `Button`, `Badge/Tag`, `Card`, `Label/FormField`, `Input`, `Select`, `Textarea`, `Separator` が Base UI 版または Base UI 版 shadcn source を土台にしている。
-   - `pnpm --filter @kufu/ui lint` / `typecheck` / `build` / `storybook:build` が通る。
-   - corporate-site で静的描画する component と island 化する component の境界が PR / spec に残っている。
+| 選択肢                                                                                      | 強み                                                                                                   | 弱み                                                                                                                            |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| **採用:** shadcn の primitive の基盤に Base UI を採り、最初の catalog から Base UI 版にする | shadcn が今サポートする Base UI の導線に揃う。Base UI の複雑な component を将来の実装で使いやすい      | 既存の `radix-nova` の component を生成し直し、差分を調整する作業が要る。Radix と完全には互換でない                             |
+| Radix UI を使い続ける                                                                       | 成熟しており、今の `radix-nova` の設定とも合う。短期の差分が最小                                       | shadcn の新しい project の導線が Base UI も同等に扱う中で、これから作る共有の catalog の基盤を古い前提に固定する理由が弱い      |
+| Radix UI から Base UI へ段階的に移る                                                        | Storybook の catalog を Radix のまま始め、後の issue で Base UI に寄せるので、移行のリスクを分けられる | catalog の初期の段階で primitive の方針が固まらず、後で story と API の差分を調整し直す手戻りが大きい                           |
+| component ごとに Radix と Base UI を混ぜる                                                  | 個別に最適にしやすい                                                                                   | 生成される source の API、data attribute、story の書き方が分かれ、`packages/ui` の保守性が落ちる                                |
+| Base UI を直接 import して独自の wrapper を作る                                             | -                                                                                                      | CLI が生成する source を持つ shadcn の利点を捨てる。token に合わせて編集できる component の基準を repo の中に持つ方針と合わない |
 
-## 代替案
+## Consequences
 
-- **Radix UI を継続採用する**: Radix は成熟しており、現在の `radix-nova` 設定とも整合する。短期の差分は最小だが、shadcn の新規 project 導線が Base UI も同等に扱う状況で、今から作る shared catalog の基盤を旧前提に固定する理由が弱い。不採用。
-- **Radix UI から Base UI へ段階移行する**: #6 の Storybook catalog では Radix のまま始め、後続 issue で Base UI に寄せる。移行リスクを分離できるが、catalog 初期段階で primitive 方針が固まらず、後から story / API 差分を再調整する手戻りが大きい。不採用。
-- **component ごとに Radix / Base UI を混在させる**: 個別最適はしやすいが、生成 source の API / data attribute / story pattern が分裂し、`packages/ui` の保守性が落ちる。不採用。
-- **Base UI を直接 import して独自 wrapper を作る**: CLI 生成 source を持つ shadcn の利点を捨てる。token に合わせて編集可能な component 正本を repo 内に持つ方針と合わないため、不採用。
+### Positive
 
-## 影響
+- 新しい共有の UI の catalog を、shadcn が今サポートする Base UI の導線に揃えられる。
+- Base UI の複雑な component と edge case への対応を、将来の form、navigation、overlay の実装で使いやすい。
+- shadcn の「同じ抽象の API で、primitive だけが違う」という方向に合わせるので、component を足すときに docs と例を参照しやすい。
 
-### 良い影響
+### Negative
 
-- 新規 shared UI catalog を、shadcn が現在サポートする Base UI 導線に揃えられる。
-- Base UI の複雑 component と edge case support を、将来の form / navigation / overlay 実装で利用しやすい。
-- shadcn の「同じ抽象 API、異なる primitive」という方向に合わせることで、将来の component 追加時に docs / examples を参照しやすい。
-
-### 悪い影響 / トレードオフ
-
-- 既存 `radix-nova` component を再生成・差分調整する移行作業が発生する。
-- Base UI は Radix と API が近いが完全互換ではないため、Select / Dialog / Popover など interactive component の story と island 境界を再確認する必要がある。
-- Base UI 採用後も React component であることは変わらない。Astro corporate-site では ADR-0008 の `client:*` ガードを継続しないと、interactive component が静的 HTML だけで表示される footgun が残る。
-
-### 影響範囲
-
-- `packages/ui` への影響: `components.json`、shadcn 生成 component、Storybook story、公開入口の再調整
-- `apps/corporate-site` への影響: `@kufu/ui` consume 時の静的描画 / island 境界の確認
-- `context` への影響: shadcn primitive 基盤を Base UI 優先にする運用契約の追記候補
-- `e2e` への影響: interactive component を導入する issue で必要に応じて追加検証
-
-## 実装・運用への反映
-
-- spec 更新要否: 要。#6 の実装差分と PR 説明で `packages/ui` の Base UI 移行を明示する。
-- context / AI 向け設定更新要否: 要。`context/component-design.md` または `context/engineering.md` に「shadcn component は Base UI 版を優先し、直接 app に primitive import を散在させない」旨を追記する。
-
-## 関連ドキュメント / チケット
-
-- [ADR-0007](0007-design-token-architecture.md): shadcn semantic token を維持する方針
-- [ADR-0008](0008-astro-react-island-policy.md): React component の Astro static rendering / island 境界
-- [context/component-design.md](../context/component-design.md): shared primitive / shared pattern の配置
-- [context/engineering.md](../context/engineering.md): Storybook review / quality gate
-- [issue #6](https://github.com/Fukuemon/kufu-apps/issues/6): Storybook / component catalog の決定経緯
+- 既存の `radix-nova` の component を生成し直し、差分を調整する移行の作業が生じる。
+- Base UI は Radix と API が近いが、完全には互換でない。Select、Dialog、Popover のようなインタラクティブな component の story と island の境界を確かめ直す必要がある。
+- Base UI を採った後も、React の component であることは変わらない。
+  - corporate-site で ADR-0008 の `client:*` の規則を続けないと、インタラクティブな component が静的な HTML だけで表示される誤りが残る。

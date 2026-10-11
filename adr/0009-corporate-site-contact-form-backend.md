@@ -1,73 +1,65 @@
-# ADR-0009: corporate-site の問い合わせ送信を Cloudflare Pages Functions (Workers) 中継にする
+# ADR-0009: corporate-site の問い合わせの送信は Cloudflare Pages Functions（Workers）で中継する
 
-## 状態
+## Status
 
 承認
 
-## 決定日
+## Context
 
-2026-06-17
+- `apps/corporate-site` は Astro の静的な生成（`output: "static"`）で、Cloudflare Pages へ配信する前提にしている。動的なサーバーの処理は持たない。
+  - 出典: [operations.md](../context/operations.md#environments)
+  - ADR-0003: [Phase 1 は corporate-site だけを作る](0003-phase1-corporate-site-only-and-cms-deferred.md)
+- 情報設計で、お問い合わせのページ（`/contact`）に問い合わせフォームを置くと決めた。送信の方式は、情報設計の範囲の外に残した。
+- フォームの送信には、入力の検証、スパムの判定、メールの通知を行うサーバーの処理が要る。静的な配信だけの前提では、その置き場が決まっていなかった。
+- 既存の方針は、ブラウザから第三者の API を直接呼ぶ構成を標準にせず、必要なら Workers を中継点にすると定める。秘密の情報を client の bundle に含めないとも定める。
+  - 出典: [codebase.md](../context/codebase.md#edge-api)
+- 基盤の方針は、bot の対策と API の中継の候補に、Cloudflare Turnstile と Workers を挙げている。
+  - 出典: [operations.md](../context/operations.md#secrets)
 
-## 背景
+## Decision
 
-- `apps/corporate-site` は Astro 静的生成 (`output: "static"`) で Cloudflare Pages へ配信する前提 ([infrastructure.md](../context/infrastructure.md) / [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md))。動的サーバ処理は持たない。
-- IA 設計 ([issue #11](https://github.com/Fukuemon/kufu-apps/issues/11)) で「お問い合わせページ (P6 `/contact`) に問い合わせフォームを設置する」と決定したが、送信処理の方式は IA スコープ外として #14 へ委譲された。
-- フォーム送信を成立させるには、入力検証 / スパム判定 / メール通知を行う server 側処理が必要だが、静的配信のみの前提では置き場所が未確定だった。
-- 既存方針の制約: [architecture.md](../context/architecture.md) Runtime Boundary は「ブラウザから直接第三者 API を叩く構成を標準にせず、必要に応じて Workers を中継点にする」「秘密情報を client bundle に含めない」と定める。[infrastructure.md](../context/infrastructure.md) は Cloudflare Turnstile / Workers を bot 対策・API 中継の候補として挙げている。
+corporate-site の問い合わせの送信を、**Cloudflare Pages Functions（Workers）で中継**して作る。
 
-## 決定
+1. **送信の流れ**: フォーム（React の island）から、同じオリジンの `/api/contact`（Cloudflare Pages Functions、つまり Workers）へ HTTP の POST を送る。ブラウザから第三者の API を直接呼ばない。
+   - ADR-0008: [フォームは corporate-site の最初の主な React の island](0008-astro-react-island-policy.md)
+2. **配信の構成**: 静的な生成（`output: "static"`）を保ち、送信の endpoint だけに Pages Functions を使う。Node.js の常駐するサーバーと専用の VM は、引き続き持たない。
+3. **検証**: Workers が入力をサーバーの側で検証し直し、client を信頼しない。スパムの対策として、Cloudflare Turnstile の token の `siteverify` での検証と、honeypot の判定を行う。
+4. **通知**: 検証を通った後、Workers が Resend の HTTP API でメールを通知する。
+5. **secret**: Resend の API key、Turnstile の secret key、宛先などの秘匿する値は Cloudflare の secret の管理に置き、client の bundle と repo に含めない。送信のドメインで SPF と DKIM を検証できることを前提にする。
+6. **永続化しない範囲**: 問い合わせの内容は、**アプリの側（Workers）で DB、ストレージ、ログに保存せず**、メールで通知するだけにする。個人情報の扱いを最小にするためである。
+   - 永続化しないのはアプリの側に限る。
+   - 通知の仕組み（Resend 経由のメールの送信、受信箱、Resend の側の一時的な保持）には、通知という目的の範囲でデータが残る。
+7. **乱用と連投の対策**: `/api/contact` に Cloudflare Rate Limiting を設定する。Turnstile を通った後の連投で Resend の無料の枠を使い切り、送信できなくなる（可用性を失う）のを防ぐ。
+8. **リプレイと CSRF の対策**: Turnstile の token を 1 回だけ使えるものにし、リクエストの Origin と Referer を自分のサイトに限る。
+9. **メールの生成でのインジェクションの対策**: Resend へ渡す宛先と件名をサーバーの固定値にし、利用者の入力を本文に plain text としてだけ埋め込む。
+10. **API のエラーの契約**: エラーは、すべての code に共通の schema で返す。
 
-corporate-site の問い合わせ送信を **Cloudflare Pages Functions (Workers) 中継**で実装する (決定経緯: [issue #14](https://github.com/Fukuemon/kufu-apps/issues/14))。
+入力の項目、API の契約、セキュリティの細目は [問い合わせフォームの Design Doc](../design/features/contact-form/DesignDoc.md) が持つ。
 
-1. **送信経路**: フォーム (React island) → 同一オリジンの `/api/contact` (Cloudflare Pages Functions = Workers) へ HTTP POST する。ブラウザから第三者 API を直接叩かない。
-2. **配信構成**: 静的生成 (`output: "static"`) を維持しつつ、送信エンドポイントのみ Pages Functions を併用する。Node.js 常駐サーバや専用 VM は引き続き持たない。
-3. **検証**: Workers が入力を server 側で再検証 (client を信頼しない) し、スパム対策として Cloudflare Turnstile token の `siteverify` 検証 + honeypot 判定を行う。
-4. **通知**: 検証通過後、Workers が Resend の HTTP API でメール通知する (送信先は連絡先正本の `fukuura@mist.ocn.ne.jp`)。
-5. **secret**: Resend API key / Turnstile secret key / 宛先などの秘匿値は Cloudflare の secret 管理に置き、client bundle・repo に含めない。送信ドメインの SPF/DKIM 検証を前提とする。
-6. **永続化なし (射程)**: 問い合わせ内容は **アプリ側 (Workers) で DB / ストレージ / ログに保存せず**、メール通知のみとする (個人情報の最小取り扱い)。「永続化なし」の射程はアプリ側に限り、通知経路 (Resend 経由のメール送信 → 受信箱・Resend 側の一時保持) には通知という利用目的の範囲でデータが残る (issue #14 D13)。
-7. **濫用 / 連投対策**: `/api/contact` に Cloudflare Rate Limiting (叩き台: 同一 IP 5 req/min、超過 429) を設定し、Turnstile 通過後の連投による Resend 無料枠枯渇 = 送信不能 (可用性) を防ぐ (issue #14 D8)。
-8. **リプレイ / CSRF 対策**: Turnstile token は単回利用 (`siteverify` の二度目拒否に依拠) とし、Workers で `/api/contact` のリクエスト元 Origin / Referer を自サイトに限定する (issue #14 D12)。
-9. **メール生成時のインジェクション対策**: Resend へ渡す宛先・件名はサーバ固定値とし、ユーザー入力は本文に plain text としてのみ埋め込み、改行・制御文字 (CRLF) を無害化する。email を Reply-To に使う場合も CRLF 除去・単一値に制限する (issue #14 D11)。
-10. **API エラー契約**: エラーは全コード共通スキーマ `{ ok:false, code, message?, errors? }` で返す。`code` は `validation_error` (400) / `turnstile_failed` (400) / `rate_limited` (429) / `send_failed` (502) (issue #14 D9)。
+## Considered Options
 
-## 代替案
+| 選択肢                                                                                | 強み                                                                                              | 弱み                                                                                                                                                                |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **採用:** Cloudflare Pages Functions（Workers）で中継し、Resend でメールを通知する    | secret をサーバーの側に隠せる。第三者の API をブラウザから直接呼ばない。Cloudflare の中で完結する | 静的な配信だけの前提から一歩出て、Workers への依存が増える。Resend への依存と、SPF と DKIM の設定が要る                                                             |
+| 第三者のフォームのサービス（Formspree、Web3Forms など）へ、ブラウザから直接 POST する | 実装が最も短い                                                                                    | 第三者の API をブラウザから直接呼ぶ構成を標準にしない方針に反し、endpoint と token が client に出る。外部の SaaS への依存、無料の枠の制限、ベンダーロックインもある |
+| mailto: のリンクで代える（フォームの送信をやめる）                                    | バックエンドが要らない                                                                            | 情報設計の「フォームを置く」決定を満たさず、UX も劣る                                                                                                               |
+| MailChannels（Workers から無料で送る）                                                | Workers から追加の費用なしで送れた                                                                | 2024 に Cloudflare Workers 向けの無料の提供が終わり、Resend に対する利点がなくなった                                                                                |
+| Workers から SMTP で直接送る                                                          | -                                                                                                 | Workers で生の SMTP は扱いにくく、不安定である                                                                                                                      |
 
-- **第三者フォームサービス (Formspree / Web3Forms 等) へブラウザから直接 POST**: 実装は最短だが、architecture.md の「第三者 API をブラウザから直接叩く構成を標準にしない」に反し、endpoint / token が client に露出する。外部 SaaS 依存・無料枠制限・ベンダーロックインもあり不採用。
-- **mailto: リンク代替 (フォーム送信をやめる)**: バックエンド不要だが、#11 Q4「フォーム設置」の決定に未達で UX も劣るため不採用。
-- **MailChannels (Workers から無料送信)**: 2024 に Cloudflare Workers 向け無料提供が終了し、Resend に対する利点が消失したため不採用。
-- **Workers から直接 SMTP**: Workers での raw SMTP は扱いづらく不安定なため不採用。
+## Consequences
 
-## 影響
+### Positive
 
-### 良い影響
+- secret をサーバー（Workers）の側に隠せ、client の bundle に秘匿する値が漏れない。
+- 同じオリジンを経由して第三者の API を直接呼ぶ構成を避け、[codebase.md](../context/codebase.md#edge-api) の境界と合う。
+- Turnstile のサーバーでの検証と honeypot を Workers にまとめ、スパムの対策が 1 か所で完結する。
+- Cloudflare の中で完結し（Pages Functions と Turnstile）、[判断の優先順位](../design/DesignDoc.md#判断の優先順位)の「一貫性」に合う。
 
-- secret を server (Workers) 側に隠蔽でき、client bundle に秘匿値が漏れない。
-- 同一オリジン経由で第三者 API 直叩きを避け、architecture.md Runtime Boundary と整合する。
-- Turnstile の server 検証と honeypot を Workers に集約でき、スパム対策が一箇所で完結する。
-- Cloudflare 完結 (Pages Functions + Turnstile) で Decision Priority「一貫性」に合致する。
+### Negative
 
-### 悪い影響 / トレードオフ
-
-- 純静的 (`output: "static"`) のみの前提から Pages Functions 併用へ一歩踏み出し、infra 側に Workers 依存が増える。
-- Resend (外部メール送信サービス) への依存と、送信ドメインの SPF/DKIM 設定が必要になる。
-- E2E では実メール送信を避けるため `/api/contact` を route intercept でモックする (Playwright)。Workers のロジック (二重バリデーション / honeypot / Turnstile 分岐 / エラー code マッピング) は Vitest unit、実 Functions 結線は Cloudflare Pages preview で手動確認する (issue #14 D10)。
-
-### 影響範囲
-
-<!-- 対象モジュールは context/project.yml の対象ドメインから選ぶ。固有名を直書きしない。 -->
-
-- 対象モジュール / package: `corporate-site` (フォーム island + `/api/contact` Functions), `e2e` (問い合わせ導線の検証)
-- infra: Cloudflare Pages の Functions 併用 / 必要 secret / SPF・DKIM ([infrastructure.md](../context/infrastructure.md) Infrastructure Contract 経由で `kufu-infra` へ)
-
-## 実装・運用への反映
-
-- spec 更新要否: 要 (機能仕様の正本は feature doc。実装は #10 と協調)
-- context / AI 向け設定更新要否: 要 ([infrastructure.md](../context/infrastructure.md) の Infrastructure Contract / Security に Workers 依存・secret・bot 対策を反映)
-
-## 関連ドキュメント / チケット
-
-- [design/DesignDoc.md](../design/DesignDoc.md): モジュール責務 (`apps/corporate-site`)
-- [ADR-0008](0008-astro-react-island-policy.md): フォームは corporate-site の最初の主要 React island
-- [ADR-0003](0003-phase1-corporate-site-only-and-cms-deferred.md): Phase 1 は corporate-site のみ
-- [context/infrastructure.md](../context/infrastructure.md): Cloudflare Pages / Turnstile / Workers
-- issue: [#14](https://github.com/Fukuemon/kufu-apps/issues/14) 問い合わせフォーム / Refs #11 / Part of #10
+- 静的な生成（`output: "static"`）だけの前提から Pages Functions の併用へ一歩出て、基盤の側に Workers への依存が増える。
+- Resend（外部のメールの送信のサービス）への依存と、送信のドメインの SPF と DKIM の設定が要る。
+- 実際のメールの送信を避けるため、テストの層を分ける必要がある。
+  - E2E では、Playwright の route intercept で `/api/contact` をモックする。
+  - Workers のロジック（二重の検証、honeypot、Turnstile の分岐、エラーの code の対応）は Vitest の unit で確かめる。
+  - Functions との実際の結線は、Cloudflare Pages の preview で手で確かめる。

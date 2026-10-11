@@ -1,74 +1,78 @@
-# ADR-0012: デザイン正本を実装 (コード + Storybook) とし Pencil (.pen) を廃止する
+# ADR-0012: デザインの基準を実装（コードと Storybook）にし、Pencil（.pen）を廃止する
 
-## 状態
+## Status
 
-承認 (本 ADR は [ADR-0004](0004-design-production-workflow.md) を置換する)
+承認
 
-## 決定日
+## Context
 
-2026-07-25
+- ADR-0004 は、デザインの制作を「Claude Design（発散）、Pencil（`.pen` がデザインの基準）、実装」の 3 段にしていた。ADR-0004 の状態は提案のままで、承認されていなかった。
+  - `design/features/corporate-site/index.pen` をデザインの基準として commit する運用を定めていた。
+  - ADR-0004: [デザインの制作の流れを 3 段にする](0004-design-production-workflow.md)
+- `.pen` は実装の更新に追従できず、実態と食い違った。
+  - デザインの基準が `.pen`、実装の基準がコードという 2 つの基準を持つと、実装の側だけが進むたびに、仕組みの上で必ずずれが生じる。
+- corporate-site の主な画面は実装済みで、Storybook（コンポーネントのカタログ）も整っている。
+  - デザインの今の状態を確かめる手段としては、実装と Storybook の方が新しく正確である。
+- `design/features/corporate-site/assets/` は `.pen` に付随するアセットで、同時に design source として実装の側のアセットと二重に管理されていた。両者の中身はバイト単位で一致していた。
 
-## 背景
+## Decision
 
-- ADR-0004 (状態: 提案のまま未承認) は、デザイン制作を「Claude Design (発散) → Pencil (`.pen` = デザイン正本) → 実装」の 3 段構成とし、`design/features/corporate-site/index.pen` をデザイン正本として commit する運用を定めていた。
-- しかし `.pen` は実装の更新に追従できておらず、実態と乖離した。「デザイン正本 = `.pen`」「実装正本 = コード」の二重正本は、実装側だけが進化すると drift が構造的に発生する。
-- corporate-site の主要画面は実装済みで、Storybook (コンポーネントカタログ) も整備されている。デザインの現状を確認する手段としては実装 + Storybook の方が新鮮で正確になっている。
+**デザインの基準を実装（コードと Storybook）にする。** `.pen` を含む中間のデザインの基準を持たない。  
+この ADR は ADR-0004 を置き換える。
 
-## 決定
+### デザインの制作の流れ
 
-- **デザイン正本を実装 (コード + Storybook) とする。** `.pen` を含む中間デザイン正本を持たない。
-- ADR-0004 は **置換 (superseded)** とする。
-- デザイン制作フローは次のとおり簡素化する:
+デザインの制作の流れを、次のように簡素にする。
 
-  | Phase       | ツール             | 目的                                   | 成果の扱い                          |
-  | ----------- | ------------------ | -------------------------------------- | ----------------------------------- |
-  | A0 依頼設計 | 手動 / Claude Code | Claude Design 依頼文を組む             | `.prompt.md` を commit (再現性)     |
-  | A 方向性    | Claude Design      | 方向性プロトを 2〜3 案出して比較・決定 | 使い捨て HTML。commit しない        |
-  | C 実装      | Claude Code 等     | 採用案を参照して直接実装               | `.astro` / React + Storybook (正本) |
+| Phase         | ツール             | 目的                                             | 成果の扱い                                          |
+| ------------- | ------------------ | ------------------------------------------------ | --------------------------------------------------- |
+| A0 依頼の設計 | 手動か Claude Code | Claude Design への依頼文を組む                   | `.prompt.md` を commit する（再現できるようにする） |
+| A 方向性      | Claude Design      | 方向性のプロトタイプを 2〜3 案出し、比べて決める | 使い捨ての HTML にし、commit しない                 |
+| C 実装        | Claude Code など   | 採った案を参照して直接実装する                   | `.astro`、React、Storybook（デザインの基準）        |
 
-  確認・レビューは Storybook と実画面で行う。Pencil (旧 phase B) と import 工程は廃止する。
+- 確認とレビューは、Storybook と実際の画面で行う。
+- Pencil（旧 phase B）と import の工程は廃止する。
 
-- `design/features/corporate-site/index.pen` の実削除と、`context/design-workflow.md` の全面改訂は本判断を根拠に **issue #31 で実施済み** (2026-07-26)。`.pen` 正本前提の §1 正本 / §2 フロー / §4 配置規約を上表のフローへ書き換えた。
-- **画像アセットの置き場を `apps/corporate-site/src/assets/` に一本化する** (2026-07-26 追記)。`design/features/corporate-site/assets/` は `.pen` の付随アセットであると同時に「design source」として二重管理されていたが、両者は現状バイト完全一致であり、正本 = 実装の原則に照らして design 側の重複コピーを削除する。issue #10 で定めた「design source / 配信用コピー」の二重管理ルールは本 ADR に吸収し廃止する。
-- デザイントークンの正本は従来どおり `packages/ui` ([ADR-0007](0007-design-token-architecture.md))。本 ADR はトークン体系を変更しない。
+### 画像のアセットとトークン
 
-## 代替案
+- **画像のアセットの置き場を `apps/corporate-site/src/assets/` の 1 つにする。**
+  - 基準は実装という原則に照らし、design の側の重複したコピーを削除する。
+  - design source と配信用のコピーを分けて持つ取り決めは、この ADR に含めて廃止する。
+- デザイントークンの基準は、これまでどおり `packages/ui` にする。この ADR はトークンの体系を変えない。
+  ADR-0007: [デザイントークンの 2 層と配る entry](0007-design-token-architecture.md)
 
-### 1. `.pen` を実装に追従させて維持する
+### Figma を使う条件
 
-- 利点: canvas 上での pixel 調整と、デザイン意図の構造化データが残る。
-- 欠点: デザイン変更のたびに `.pen` とコードの二重更新が必要で、追従コストが乖離の原因そのもの。Pencil は `.astro` 非対応のため round-trip もできない。
-- 不採用理由: 追従できていない実績があり、二重正本の drift は運用で解消できないため。
+チームが既に Figma を主に使っているか、非エンジニアを含む共同のデザインレビューが要る場合だけ、Figma と Figma MCP Server を採ってよい。
 
-### 2. デザインツールフローを全廃する (Claude Design も使わない)
+- その場合も、基準は `packages/ui` と実装にする。
+- Figma の frame のリンクから MCP で実装へ渡し、デザインの判断は feature の Design Doc へ書き戻す。
+- Figma 由来のトークンも `tokens.css` へ 1 対 1 で写し、トークンを二重に管理しない。
 
-- 利点: 最軽量。
-- 欠点: 非デザイナーが方向性を素早く探索する手段 (phase A の価値) を失う。
-- 不採用理由: Claude Design は Pencil 非依存で、使い捨て運用ならば正本問題を生まないため残す価値がある。
+### Claude Design のプランの扱い
 
-## 影響
+- Claude Design は Pro のプランで使える（research preview）。
+- 使用の上限に当たったら、Max へ上げる。別の購入は要らない。
+- 非エンジニアを含む共同のレビューや本格的なデザインの運用が要るようになったら、Figma と MCP を検討する。
+  - コストだけでは乗り換えない。
 
-### 良い影響
+## Considered Options
 
-- デザインの「今の事実」が実装 + Storybook に一意化され、乖離した中間文書が残らない。
-- デザイン変更が「コードを直す」1 系統になり、二重更新が消える。
+| 選択肢                                                                               | 強み                                                                                                      | 弱み                                                                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **採用:** デザインの基準を実装（コードと Storybook）にし、Pencil（`.pen`）を廃止する | デザインの今の事実を読む場所が実装と Storybook の 1 つに決まる。デザインの変更がコードを直す 1 系統になる | canvas で pixel 単位に調整する工程がなくなる。`.pen` に込めたデザインの意図の構造化されたデータを失う                                                                                                                     |
+| `.pen` を実装に追従させて残す                                                        | canvas で pixel を調整でき、デザインの意図の構造化されたデータが残る                                      | デザインを変えるたびに `.pen` とコードの二重の更新が要り、追従のコストがずれの原因そのものである。Pencil は `.astro` に対応しないので、往復もできない。追従できなかった実績があり、2 つの基準のずれは運用では解消できない |
+| デザインのツールの流れを全廃する（Claude Design も使わない）                         | 最も軽い                                                                                                  | 非デザイナーが方向性を素早く探る手段（phase A の価値）を失う。Claude Design は Pencil に依存せず、使い捨てで運用すれば基準の問題を生まないので、残す価値がある                                                            |
 
-### 悪い影響 / トレードオフ
+## Consequences
 
-- pixel 単位の canvas 調整工程がなくなり、細部の詰めは実装 + Storybook レビューに依存する。
-- 過去の `.pen` に込めたデザイン意図の構造化データは失われる (必要な意図は feature doc に文章で残す)。
+### Positive
 
-## 実装・運用への反映
+- デザインの今の事実を読む場所が実装と Storybook の 1 つに決まり、食い違った中間の文書が残らない。
+- デザインの変更が「コードを直す」1 系統になり、二重の更新がなくなる。
 
-- 対象 app / package: `apps/corporate-site` (実装正本) / `packages/ui` (トークン正本、変更なし)
-- spec 更新要否: 要 (issue #31 の spec に決定経緯を記録済み)
-- AI 向け設定更新要否: 要。context/design-workflow.md の改訂は issue #31 で実施済み。`design-prompt` skill (共有プロセス層) の Pencil 言及の見直しは sdd-template 側の課題として扱う
+### Negative
 
-## 関連ドキュメント
-
-- [ADR-0004](0004-design-production-workflow.md): 本 ADR により置換
-- [ADR-0007](0007-design-token-architecture.md): トークン正本 (変更なし)
-- `context/design-workflow.md`: 改訂済み (issue #31 / 2026-07-26)
-- `context/component-design.md`: 改訂済み (issue #31 / 2026-07-26)
-- `design/features/corporate-site/DesignDoc_corporate-site.md`: `index.pen` 正本参照を改訂済み (issue #31 / 2026-07-26)
-- [issue #31](https://github.com/Fukuemon/kufu-apps/issues/31): 決定経緯
+- canvas で pixel 単位に調整する工程がなくなり、細部の詰めは実装と Storybook でのレビューに頼る。
+- 過去の `.pen` に込めたデザインの意図の構造化されたデータは失われる。
+  - 要る意図は、feature の Design Doc に文章で残す。
