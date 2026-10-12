@@ -6,9 +6,10 @@ pre-commit:
       run: python3 hooks/protected-branch/git_hook.py pre-commit
     # 整形した結果だけを stage_fixed で staging へ戻す。明示的な git add を使うと、
     # 部分 stage したファイルの未 stage 変更まで commit に巻き込む。
+    # ステージしたファイルがすべて整形の対象外（.prettierignore）でも失敗させない
     format:
       glob: "*.{js,cjs,mjs,jsx,ts,tsx,json,md,css,yml,yaml}"
-      run: pnpm exec oxfmt --write {staged_files}
+      run: pnpm exec oxfmt --write --no-error-on-unmatched-pattern {staged_files}
       stage_fixed: true
     lint:
       run: pnpm lint
