@@ -23,6 +23,8 @@ corporate-site の問い合わせの送信を、**Cloudflare Pages Functions（W
 1. **送信の流れ**: フォーム（React の island）から、同じオリジンの `/api/contact`（Cloudflare Pages Functions、つまり Workers）へ HTTP の POST を送る。ブラウザから第三者の API を直接呼ばない。
    - ADR-0008: [フォームは corporate-site の最初の主な React の island](0008-astro-react-island-policy.md)
 2. **配信の構成**: 静的な生成（`output: "static"`）を保ち、送信の endpoint だけに Pages Functions を使う。Node.js の常駐するサーバーと専用の VM は、引き続き持たない。
+   - この判断は ADR-0023 で置き換えた。
+   - ADR-0023: [配信基盤を Cloudflare Pages から Workers static assets へ移す](0023-workers-static-assets-over-pages.md)
 3. **検証**: Workers が入力をサーバーの側で検証し直し、client を信頼しない。スパムの対策として、Cloudflare Turnstile の token の `siteverify` での検証と、honeypot の判定を行う。
 4. **通知**: 検証を通った後、Workers が Resend の HTTP API でメールを通知する。
 5. **secret**: Resend の API key、Turnstile の secret key、宛先などの秘匿する値は Cloudflare の secret の管理に置き、client の bundle と repo に含めない。送信のドメインで SPF と DKIM を検証できることを前提にする。

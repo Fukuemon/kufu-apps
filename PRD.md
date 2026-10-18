@@ -186,8 +186,9 @@ package の境界の違反は、リポジトリのチェック（`pnpm depcruise
 - コーポレートサイトの内容を更新する責務を誰が持ち、どう承認するか。
   - Kufu の owner が、最初の運用を始める前に決める。CMS を入れるまでは、リポジトリの基準の文書と pull request のレビューで運用する。
 - 基盤のリポジトリと app のリポジトリの変更を、互いに参照してレビューする流れをどうするか。
-  - 開発者と基盤の owner が、本番の公開の前に決める。Cloudflare Pages と Terraform の変更を、どう相互に参照するかを決める。
-- Cloudflare Pages の preview と production に結びつく domain、branch、secret の運用の規則をどうするか。
+  - ADR-0020 で infra code を monorepo へ集約するため、この問いはなくなる。集約の実装が終わったときに閉じる。
+  - ADR-0020: [Terraform の infra code を Kufu Monorepo へ集約する](adr/0020-terraform-monorepo-consolidation.md)
+- Worker の preview と production に結びつく domain、version、secret の運用の規則をどうするか。
   - 開発者と基盤の owner が、本番の公開の前に決める。いまの取り決めは [context/operations.md](context/operations.md) にある。
 
 ### Risks

@@ -261,7 +261,7 @@ sequenceDiagram
 次の観点で確かめる。
 
 - `apps/corporate-site` をビルドできる。
-- Cloudflare Pages の preview deployment で、主なページを表示できる。
+- Worker の preview URL で、主なページを表示できる。
 - 主なページと問い合わせへの導線を、Playwright で確かめられる。
 - Astro のページに、不要な React の island と client directive が増えていない。
 

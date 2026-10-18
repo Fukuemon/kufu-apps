@@ -10,8 +10,9 @@ status: draft
 ## Overview
 
 `/contact` の問い合わせフォームから、訪問者の問い合わせを Kufu へメールで知らせる。  
-コーポレートサイトの静的な配信を保ったまま、送信だけを Cloudflare Pages Functions（Workers）で中継する。  
-ADR-0009: [corporate-site の問い合わせフォームの backend](../../../adr/0009-corporate-site-contact-form-backend.md)
+コーポレートサイトの静的な配信を保ったまま、送信だけを Workers static assets の Worker script で中継する。  
+ADR-0009: [corporate-site の問い合わせフォームの backend](../../../adr/0009-corporate-site-contact-form-backend.md)  
+ADR-0023: [配信基盤を Cloudflare Pages から Workers static assets へ移す](../../../adr/0023-workers-static-assets-over-pages.md)
 
 全体像は [design/DesignDoc.md](../../DesignDoc.md) に、フォームを置くページは [コーポレートサイトの Design Doc](../../../apps/corporate-site/DesignDoc.md#問い合わせフォーム) にある。  
 まだ実装していないので、この文書は設計文書のディレクトリに置く。
@@ -61,7 +62,7 @@ flowchart TD
     Fill --> ClientValid{"client の検証を通るか"}
     ClientValid -->|"通らない"| ClientError["項目ごとのエラーを表示<br/>入力した値を保つ"]
     ClientValid -->|"通る"| Token["Turnstile の token を得る"]
-    Token --> Post["POST /api/contact<br/>同一オリジンの Pages Functions"]
+    Token --> Post["POST /api/contact<br/>同一オリジンの Worker"]
     Post --> ServerValid{"Workers の検証とセキュリティを通るか"}
     ServerValid -->|"validation_error"| FieldError["400 と項目ごとのエラー"]
     ServerValid -->|"turnstile_failed"| SpamError["400 とスパムの判定のエラー"]
@@ -73,14 +74,14 @@ flowchart TD
     NotifyResult -->|"失敗"| SendFailed["502 と、ほかの連絡先への案内"]
 ```
 
-island、Pages Functions、外部のサービスの間のやりとりは次のとおり。
+island、Worker、外部のサービスの間のやりとりは次のとおり。
 
 ```mermaid
 sequenceDiagram
     actor User as 訪問者
     participant Island as フォームの island
     participant TS as Cloudflare Turnstile
-    participant Fn as Pages Functions /api/contact
+    participant Fn as Worker /api/contact
     participant Resend as Resend API
     participant Mail as 受信箱
 
@@ -126,7 +127,7 @@ sequenceDiagram
 ## Interface
 
 - endpoint: `POST /api/contact`
-- runtime: Cloudflare Pages Functions（Workers）
+- runtime: Cloudflare Workers（static assets の Worker script）
 - request: [入力の項目と検証](#入力の項目と検証) の項目と、`company_url` と `cf-turnstile-response`
 - 成功: `200 { "ok": true }`
 - 失敗: `{ "ok": false, "code": string, "message"?: string, "errors"?: object }`
@@ -152,4 +153,4 @@ sequenceDiagram
   - 導線、エラーの表示、入力した値が保たれることを確かめる。
 - Turnstile は test mode の key を使う。honeypot は正常な場合に空のままにし、値があるときに捨てる処理は Workers の unit test で確かめる。
 - Workers の検証、honeypot、Turnstile の分岐、エラーのコードの対応づけは、Vitest の unit test で確かめる。
-- Cloudflare Pages Functions と、Resend と secret の実際の結線は、Cloudflare Pages の preview で手で smoke test をする。
+- Worker script と、Resend と secret の実際の結線は、Worker の preview URL で手で smoke test をする。

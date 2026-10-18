@@ -55,17 +55,22 @@ ADR-0019: [コーポレートサイトを Astro の静的な生成で作る](../
 
 ## Architecture
 
-リポジトリにコードがある実行の単位と、配信の先の関係を示す。  
-利用者と外部のシステムの関係（C4 の L1）は、[PRD の Landscape](../PRD.md#landscape) にある。
+利用者、リポジトリ、公開の基盤、外部のサービスの関係を 1 枚で示す。  
+利用者と外部のシステムの関係（C4 の L1）は、[PRD の Landscape](../PRD.md#landscape) にもある。
 
-```mermaid
-flowchart TD
-    Visitor["訪問者"] -->|"閲覧"| CF["Cloudflare Pages と CDN<br/>配信の先"]
-    Corp["apps/corporate-site<br/>Astro の静的な生成"] -->|"build の artifact"| CF
-    UI["packages/ui<br/>デザイントークン、共有の UI、Storybook"] --> Corp
-    Config["packages/config<br/>共有の TypeScript、lint、test の設定"] --> Corp
-    E2E["e2e と playwright.config.ts<br/>公開の前の検証"] --> Corp
-```
+![サービス構成図](diagrams/service-architecture.drawio.svg)
+
+- **破線は未実装である。**
+  `infra/`、Worker、Rate Limiting、R2 は、決まっているがまだ作っていない。
+  ADR-0020: [Terraform の infra code を Kufu Monorepo へ集約する](../adr/0020-terraform-monorepo-consolidation.md)  
+  ADR-0023: [配信基盤を Cloudflare Pages から Workers static assets へ移す](../adr/0023-workers-static-assets-over-pages.md)
+  実装が進んだら実線に変える。
+- 訪問者が触れるのは Cloudflare だけである。GitHub は成果物を届ける側にあり、利用者からは見えない。
+- 内容を更新する担当者と開発者は、どちらも pull request から変更を出す。内容の更新も実装も、同じ CI（`ci.yml`）のチェックを通る。
+- 本番へ変更を出す workflow は 2 本ある。`deploy workflow` がアプリを配り、`infra-apply workflow` が基盤を変える。2 本が持つ credential は分かれている。
+- R2 は、Terraform の state と VRT の baseline の 2 つに使う。baseline は、`ci.yml` が比べる前と後で同期する。
+- この図だけは、今の事実だけを書く原則の例外として、決まっているが未実装の構成を含む。
+  ADR-0013: [Design Doc の各節には今の事実だけを書く](../adr/0013-designdoc-present-facts-only.md)
 
 - `apps/corporate-site` は、`packages/ui` と `packages/config` が公開するエントリポイントだけに依存する。
 - `packages/ui` は `packages/config` に依存してよい。

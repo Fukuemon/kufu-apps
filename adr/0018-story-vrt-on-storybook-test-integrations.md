@@ -35,6 +35,8 @@ ADR-0015: [VRT を story と route の 2 系統で導入する](0015-visual-regr
 - **baseline をリポジトリの Git で管理し、比較を `reg-cli` で行う。**
   外部のストレージと reg-suit のキーの解決を使わない。
   route の側と、保管の方式が揃う。
+  - この判断は ADR-0022 で置き換えた。
+  - ADR-0022: [VRT baseline を Cloudflare R2 へ移す](0022-vrt-baseline-on-r2.md)
 - **story の側の撮影と判定を、CI だけで行う。**
   baseline の基準は CI（ubuntu-latest、amd64）で撮った画像にし、撮り直しは `workflow_dispatch` から行う。
   - ADR-0016: [CI とローカルのフックの分担](0016-ci-local-hook-responsibility.md)
