@@ -40,7 +40,7 @@ Keep Astro-local markup and UI composition in `apps/corporate-site`.
 
 ## Components
 
-Component design rules are defined in [../../context/component-design.md](../../context/component-design.md).
+Component design rules are defined in [../../context/codebase.md](../../context/codebase.md#app-の中の層) and [../../context/conventions.md](../../context/conventions.md#naming). The site design is in [DesignDoc.md](DesignDoc.md).
 
 - Route entries live in `src/pages/`.
 - Section components live in `src/components/sections/<section>/` (one flat level; `<section>` is a domain name such as `business`, `products-category`, `products-detail`, `contact`). Each section exposes only its Section component through `index.ts`; pages import via the directory path (`../components/sections/hero`). Cross-section site components live flat in `src/components/common/`.
