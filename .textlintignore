@@ -1,0 +1,5 @@
+# 英語で書いた文書。日本語の文章の規則の対象外
+apps/corporate-site/README.md
+
+# 掲載する内容のデータ。メーカー名をカンマでつないだ一覧は文ではない
+design/features/corporate-site/reference/**

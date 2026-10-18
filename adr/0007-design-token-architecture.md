@@ -1,97 +1,123 @@
-# ADR-0007: デザイントークンを 2 層構造 + shadcn 語彙で再設計し 3 entry で配信する
+# ADR-0007: デザイントークンを primitive と shadcn の語彙の 2 層に分け、tokens、fonts、theme、全量の entry で配る
 
-## 状態
+## Status
 
 承認
 
-## 決定日
+## Context
 
-2026-06-13
+- `design/features/corporate-site/index.pen` が実質のトークンの源になり、トークンの基準であるべき `packages/ui` の stylesheet と値が食い違っていた。
+  - アクセントは `#006B6B` と `#0f766e` で、背景は寒色と暖色で食い違い、Noto 系のフォントは登録されていなかった。
+  - design-workflow の一方向の原則（`packages/ui` から Pencil へ）に反し、基準が 2 つある状態だった。
+- `.pen` の変数名は比喩（`paper`、`ink`、`photo-tone` など）で、用途が読み取れなかった。
+- CSS の側でも、独自の `--kufu-color-*` と shadcn の semantic の変数（`--primary` など）が整理されないまま並んでいた。
+- corporate-site の本体の実装と Storybook の前提として、トークンの体系を先に固定する必要があった。
+- corporate-site の component は scoped な `<style>` と `var(--token)` で書かれ、Tailwind を使う `packages/ui`（shadcn）と記法が分かれていた。
+- Tailwind v4 は、node_modules と `.gitignore` の対象を走査しない。
+  workspace の package の component の class を生成するには、その package のソースを `@source` で指す必要がある。
+- `.pen` は後に廃止した。
+  トークンの基準は `packages/ui` の実装だけになり、デザインのツールへの同期は要らない。
+  ADR-0012: [デザインの基準を実装にし、Pencil を廃止する](0012-design-source-of-truth-implementation.md)
 
-## 背景
+## Decision
 
-- `design/features/corporate-site/index.pen` が実質のトークン源泉になり、トークン正本であるべき `packages/ui` の stylesheet と値が不一致だった (アクセント `#006B6B` vs `#0f766e`、背景の寒色 / 暖色不一致、Noto 系フォント未登録)。design-workflow の一方向原則 (`packages/ui` → Pencil) に違反した二重正本状態。
-- `.pen` の変数名は比喩的 (`paper` / `ink` / `photo-tone` 等) で用途が読み取れず、CSS 側も `--kufu-color-*` 独自系と shadcn semantic 系 (`--primary` 等) が未整理に併存していた。
-- #10 (corporate-site 本体実装) / #6 (Storybook) の前提として、トークン体系を先に固定する必要があった (issue #13)。
+### 1. トークンを 2 層に分ける
 
-## 決定
+トークンを primitive の層と semantic の層に分ける。
 
-1. **2 層構造**: トークンを primitive 層 (`--kufu-<hue>-<scale>`、例: `--kufu-teal-600` / `--kufu-gray-50`。値を持つ唯一の層) と semantic 層 (shadcn 語彙 `--background` / `--foreground` / `--primary` 等の役割名。primitive への参照のみ) に分離する。`.pen` の比喩名は廃止し、Pencil variables は semantic 名へ rename する。
-2. **shadcn semantic の上書き**: 既存 shadcn semantic 変数の値を kufu primitive への参照に置換し、トークンセットを 1 系統に収束させる。shadcn 語彙に無い用途は役割ベースの追加 semantic 名 (`--photo-overlay` / `--card-overlay` / `--ghost-foreground` / `--primary-soft`) を新設する。これが安全な理由と制約:
-   - **変数名は shadcn の契約**である。コンポーネントは `bg-primary` 等のクラスで `var(--primary)` を参照しており、見ているのは「名前」だけで値の中身は関知しない。よって**値の差し替え (primitive への向け替え) は shadcn 公式のテーマ機構そのもので安全**だが、**名前の改名・削除は契約破りでコンポーネントが壊れる**。
-   - **未使用の shadcn 変数も名前を消さない**: `--chart-*` / `--sidebar-*` / `--destructive` / `--accent` 系は現状 corporate-site で未使用だが、#10 で該当コンポーネント (アラート / チャート / ドロップダウン等) を入れた時に名前が無いと壊れる。デフォルト値のまま温存し、kufu パレット化は #10 で行う。
-   - **`-foreground` ペアの整合を保つ**: shadcn は面 (`--primary`) とその上の文字 (`--primary-foreground`) をペアで使う。面だけ変えてコントラストが崩れないよう、必ずペアで割り当てる。
-   - **追加した独自 semantic (`--primary-soft` 等) を `bg-*` 等のユーティリティで使うには `@theme inline` への追加マッピングが必要** (生 CSS の `var()` 直書きなら不要)。ユーティリティ提供は #10 の実需に応じて行う。
-3. **ダーク面は inverse スコープ**: `.dark` テーマでなく、semantic 変数を上書きするラッパー class (案: `.surface-inverse`) で section 単位のダーク面を表現する。class 内で `--background` / `--foreground` 等を上書きすると、**そのスコープ内の shadcn コンポーネントもカスケードで自動的にダーク面の見た目へ再テーマされる** (`.dark` と同じ機構)。名前を保って値だけ差し替える設計の利点。
-4. **3 entry 配信**: `@kufu/ui/tokens.css` (CSS 変数のみ) / `@kufu/ui/fonts.css` (fontsource font-face) / `@kufu/ui/styles.css` (全量エントリ = `globals.css`。tokens + fonts + Tailwind theme + shadcn 層) に分離する。Astro (corporate-site) は `tokens.css` + `fonts.css` のみ、React app (将来の cms) は `styles.css` を import する。**(2026-06-22 改訂 — 下記「更新」参照)** corporate-site は全量 `styles.css` は取り込まないまま、app-local に lean な Tailwind v4 entry を立てて utility を使えるようにした。不採用にしたのは tw-animate-css / shadcn 層を含む「全量エントリの混入」であり、lean Tailwind 自体ではない。
-5. **実績ベースの最小定義**: type scale / spacing / shadow / breakpoint は独自トークンを作らず Tailwind 標準を使う (spacing は 4px グリッド + 推奨リズム 12/16/24/32/48/80 をガイド文書化)。radius は shadcn `--radius` に一本化する。基準値は `0.25rem` (4px) とし、Button 8px / Tag 4px など component 固有値は `@kufu/ui` の component variant で管理する。当初は `.pen` との二重管理だったが、`.pen` は廃止された。
-   - [ADR-0012](0012-design-source-of-truth-implementation.md) — デザイン正本を実装へ移し `.pen` を廃止した決定
+- primitive の層は `--kufu-<hue>-<scale>`（例: `--kufu-teal-600`、`--kufu-gray-50`）で、値を持つ唯一の層にする。
+- semantic の層は shadcn の語彙の役割名（`--background`、`--foreground`、`--primary` など）で、primitive を参照するだけにする。
+- `.pen` の比喩の名前は廃止する。
 
-## 代替案
+### 2. shadcn の semantic の変数の値を上書きする
 
-- **比喩名を primitive 層として温存し semantic 層のみ新設**: `.pen` の変更は最小だが、わかりにくい名前が残り課題 (命名の可読性) が解決しない。不採用。
-- **shadcn semantic 命名に全面統一 (1 層フラット)**: 変数は最少だが、shadcn 語彙に無い用途 (写真オーバーレイ / ダーク面 6 変数) で場当たり的な名前が増え、テーマ展開の基盤 (primitive) も失う。不採用。
-- **`--kufu-*` 独自 semantic 系と shadcn 系の併存**: corporate-site と React app でトークン系が分裂し、二重正本の再発リスク。不採用。
-- **単一 styles.css 配信の維持**: DX はシンプルだが、Astro 側に React app 向けの層 (tw-animate-css 等) が混入し性能予算を圧迫しうる。不採用 (Decision Priority 1: パフォーマンス)。
+既存の shadcn の semantic の変数の値を kufu の primitive への参照に置き換え、トークンのセットを 1 系統にまとめる。  
+shadcn の語彙にない用途は、役割で名付けた semantic の変数（`--photo-overlay`、`--card-overlay`、`--ghost-foreground`、`--primary-soft`）を新しく作る。  
+この上書きが安全な理由と制約は次のとおり。
 
-## 影響
+- **変数名は shadcn の契約である。**
+  - コンポーネントは `bg-primary` などの class で `var(--primary)` を参照し、名前だけを見て値の中身には関わらない。
+  - **値を primitive へ向け替えるのは shadcn の公式のテーマの仕組みそのもので、安全である。**
+  - **名前を変えたり消したりすると契約を破り、コンポーネントが動かなくなる。**
+- **使っていない shadcn の変数も名前を消さない。**
+  - `--chart-*`、`--sidebar-*`、`--destructive`、`--accent` の系統は、corporate-site で使っていない。
+  - 該当のコンポーネント（アラート、チャート、ドロップダウンなど）を入れたときに名前がないと、そのコンポーネントが動かなくなる。
+  - 既定の値のまま残し、kufu のパレットへの割り当ては該当のコンポーネントを入れるときに行う。
+- **`-foreground` の対を揃える。**
+  - shadcn は面（`--primary`）とその上の文字（`--primary-foreground`）を対で使う。
+  - 面だけを変えてコントラストが崩れないよう、必ず対で割り当てる。
+- **足した独自の semantic の変数（`--primary-soft` など）を `bg-*` などの utility で使うには、`@theme inline` への写像を足す必要がある。**
+  - 生の CSS で `var()` を直接書くなら要らない。
+  - utility は実際に要る分だけ足す。
 
-### 良い影響
+### 3. ダークの面は inverse のスコープで表す
 
-- トークン名から用途が読め、新トークン追加時の命名を機械的に決定できる (primitive はスケール、semantic は役割)。
-- 将来の cms (React + shadcn) が同一トークンを無変換で consume できる。
-- Astro 配信物にトークン + フォントだけが含まれ、不要 CSS が混入しない。
-- `.pen` ↔ CSS の 1:1 対応が回復し、design-workflow の一方向原則とトークンガードが機能する。
+`.dark` のテーマを使わず、semantic の変数を上書きするラッパーの class（案: `.surface-inverse`）で、section ごとのダークの面を表す。  
+class の中で `--background`、`--foreground` などを上書きする。  
+**そのスコープの中の shadcn のコンポーネントも、カスケードで自動的にダークの面の見た目に変わる。**  
+この仕組みは `.dark` と同じで、名前を保って値だけを差し替える設計の利点である。
 
-### 悪い影響 / トレードオフ
+### 4. 用途ごとの entry で配る
 
-- `.pen` variables の一括 rename と再取り込みが必要 (27 変数 → 統合 / rename 後の新体系)。
-- 既存の `--kufu-color-*` / `--kufu-radius-*` / `--kufu-font-*` と TS export (`./tokens` / `./theme` / `./fonts`) を参照するコードは削除・置換が必要 (corporate-site の `--kufu-font-body` 参照は同一変更内で置換する)。
-- design-workflow 等の文書で `globals.css` 参照の全数更新が必要。
+CSS を次の entry に分けて配る。
 
-### 影響範囲
+- `@kufu/ui/tokens.css`: runtime の CSS 変数の実体だけを持つ。値の基準はこのファイルだけにする。
+- `@kufu/ui/fonts.css`: fontsource の font-face を持つ。
+- `@kufu/ui/theme.css`: token から Tailwind の utility への `@theme inline` の写像だけを持つ。
+- `@kufu/ui/styles.css`: 全量の entry（`globals.css`）。tokens、fonts、Tailwind の theme、shadcn の層を含む。
 
-- `packages/ui` への影響: `globals.css` の再設計 (tokens.css / fonts.css 分離)、fontsource 依存追加、旧トークン / TS export の削除 (実装は issue #13 の実装分割)
-- `apps/corporate-site` への影響: import を `tokens.css` + `fonts.css` へ移行、`--kufu-font-body` → `--font-sans` 置換 (本実装は #10)
-- `design/features/corporate-site/index.pen` への影響: variables の semantic 名への rename と再取り込み。これは決定時の想定であり、`.pen` の廃止により不要になった
-- `e2e` への影響: なし (トークンガード検査の仕組み化は実装側で検討)
+React の app（将来の cms）は `styles.css` を import する。  
+corporate-site は全量の `styles.css` を取り込まず、app の中に軽い Tailwind v4 の entry を置いて utility を使う。
 
-## 更新
+- corporate-site の entry（`globals.css`）は、`tailwindcss`、`tokens.css`、`theme.css` を import する。
+  - entry は import、source、variant、base の層だけを持ち、app に固有なのは document の単位の base だけにする。
+- `fonts.css` は document の head から読み込み、フォントの配信を head の側で制御する。
+- `styles.css` と corporate-site の entry は、どちらも `theme.css` を import し、写像を 1 か所にまとめる。
+- Tailwind v4 は `@tailwindcss/vite` で適用し、PostCSS の config は使わない。
 
-### 2026-07-25: `@source` を theme.css へ移動し、motion トークンを追加 (issue #32)
+全量の entry を不採用にした理由は、tw-animate-css と shadcn の層を含む全量の entry が corporate-site の配信物に入ることである。  
+軽い Tailwind の entry はこの層を含まない。  
+Tailwind v4 は検出した utility だけを出力するので、静的な配信の CSS の量は限られる。
 
-- **背景**: corporate-site の `globals.css` に `packages/ui` の component ソースを走査させる `@source` 2 行が入り、「app-local `@source` は置かない」(2026-06-22 更新) と字面上矛盾していた。禁止の意図は app 自身の走査の手動指定であり、workspace package の走査指定は Tailwind v4 の検出仕様 (node_modules / .gitignore を走査しない) 上必要である。また、アニメーション設計 (issue #32 D5) で duration / easing のトークン化が決まった。
-- **決定**: ① `@source` は **`@kufu/ui/theme.css` (実体 `packages/ui/src/styles/theme.css`) が自身の component ソースを `@source "../components"` で指す**形に移動し、app entry (`globals.css`) は `@import` のみに戻す。app entry にあった `packages/ui/src/lib` 向けの `@source` は、`utils.ts` が class 文字列を持たないため移送せず削除する。theme.css を import する全 consumer (corporate-site / 将来の cms) が自動で ui の class を生成できる。② duration / easing の **motion トークンを `tokens.css` に追加**する (「実績ベースの最小定義」への追加トークン層。site 固有演出の keyframes は app-local に置き、値のみトークン参照)。
-- **影響**: `packages/ui/src/styles/theme.css` に `@source` 追加、corporate-site `globals.css` から `@source` 2 行を削除 (動作検証を含め issue #32 のスコープ内で実施)。app の `src/styles/` レイヤ分割の規約は [context/component-design.md](../context/component-design.md) が正本。
-- **記述の訂正 (fonts の読み込み経路)**: 2026-06-22 更新節は corporate-site の `globals.css` が `fonts.css` も `@import` すると記述しているが、実装は `BaseLayout.astro` が `@kufu/ui/fonts.css?url` を preload/link で読み込む形になっている (font 配信を document head 側で制御するための最適化)。現行の実装経路を正とし、`globals.css` は tokens / theme の import に絞る。
+### 5. `@source` は `theme.css` に置く
 
-### 2026-07-26: `.pen` 廃止に伴う参照の整理 (issue #31)
+`theme.css` が、自分の component のソースを `@source "../components"` で指す。  
+app の entry は `@source` を持たず、`@import` だけにする。
 
-- **背景**: 本 ADR は `.pen` (Pencil) をデザイン正本とする前提で、トークンの一方向同期 (`packages/ui` → Pencil) と variables の rename を定めていた。
-- **決定**: デザイン正本は実装 (コード + Storybook) となり `.pen` は廃止された。本 ADR の 2 層構造・3 entry 配信・semantic 語彙は有効なまま、`.pen` 同期に関する記述は歴史的経緯として読む。
-- **影響**: トークン正本は引き続き `packages/ui/src/styles/tokens.css`。消費側は実装のみとなり、デザインツールへの同期は不要になった。
+- `theme.css` を import するすべての消費側（corporate-site と将来の cms）が、ui の class を自動で生成できる。
+- app 自身の走査は Vite の plugin の module graph に任せ、手で指定しない。
 
-### 2026-07-15: radius 基準値を 4px へ改訂 (issue #10)
+### 6. 実績に基づいて最小限だけ定義する
 
-- **背景**: 2026-06-12 時点の `.pen` は全面直角だったが、その後の #6 で Button 8px / Tag 4px がデザイン正本へ追加され、#10 の実装でも主要面に4pxの控えめな角丸を採用した。`tokens.css` が0pxのまま app側で値を上書きすると、トークン正本が分裂する。
-- **決定**: `tokens.css` の `--radius` を4pxへ変更し、app側の同名上書きを削除する。4pxを共通基準とし、Button 8pxなどの例外はcomponent variantが所有する。
-- **影響**: `--radius-*` 派生値を使う共有UIにも新しい基準値が適用される。corporate-siteの現行表示は維持される。
+- type scale、spacing、shadow、breakpoint は独自のトークンを作らず、Tailwind の標準を使う。
+  - spacing は 4px のグリッドを使い、推奨のリズム（12、16、24、32、48、80）を文書にする。
+- radius は shadcn の `--radius` の 1 つにし、基準の値を `0.25rem`（4px）にする。
+  - app の側で同じ名前の変数を上書きしない。上書きすると、トークンの基準が分かれる。
+  - Button の 8px、Tag の 4px のようなコンポーネントに固有の値は、`@kufu/ui` のコンポーネントの variant で持つ。
+- motion の duration と easing は、`tokens.css` のトークンにする。
+  - site に固有の演出の keyframes は app の中に置き、値だけをトークンで参照する。
 
-### 2026-06-22: corporate-site に lean app-local Tailwind v4 を採用 (issue #6)
+## Considered Options
 
-- **背景**: corporate-site の component が scoped `<style>` + `var(--token)` で書かれ、Tailwind を使う `packages/ui` (shadcn) とスタイル記法が分裂していた。決定 2 / 5 で「utility 提供は #10 の実需に応じて」「spacing / type scale は Tailwind 標準を使う」としていた前提を、Storybook catalog の component (#6) を Tailwind へ統一する形で具体化する。
-- **決定**: corporate-site に **lean な Tailwind v4 entry** を立てる。`apps/corporate-site/src/styles/globals.css` で `@import "tailwindcss"` + `@kufu/ui/tokens.css` + `@kufu/ui/fonts.css` を読み込み、token → utility の `@theme inline` 写像は新設の **`@kufu/ui/theme.css`** に一元化し (4 entry 目)、`styles.css` (全量) と corporate-site の lean entry の双方が `@import` する。app 固有なのは document-level base。Tailwind の走査は Vite plugin の module graph に任せ、app-local `@source` は置かない。Tailwind v4 は **`@tailwindcss/vite`** で適用し、Astro は `astro.config.mjs` の `vite.plugins` に設定する。Storybook は `@storybook-astro/framework` が Astro config の Vite plugin を自動ロードする。PostCSS config は使わない。Vite 8 の rolldown resolver が `tsconfigPaths` 欠落で落ちるため、`astro.config.mjs` の `vite.resolve.tsconfigPaths` を `true` にする。
-- **責務分離**: `tokens.css` は runtime CSS 変数の実体のみ、`theme.css` は Tailwind utility へ公開する `@theme inline` mapping のみ、`globals.css` / `styles.css` は import / source / variant / base layer の entry のみに絞る。
-- **不採用との整合**: 「単一 styles.css 配信の維持」を不採用にした理由は tw-animate-css / shadcn 層を含む全量エントリの混入 (性能予算) であり、lean Tailwind はこの層を含まない。Tailwind v4 は検出した使用 utility のみ出力するため、静的配信の CSS payload は限定される。値の正本は引き続き `tokens.css`。
-- **影響**: corporate-site の 5 component (`BusinessFeatureRow` / `FeaturedCategoryCard` / `ContactInfoRow` / `ServicePillar` / `SectionHeading`) を scoped CSS から Tailwind utility へ移行。token ガード (design-workflow §6) は `text-foreground` 等 semantic class で自然に担保される。`ProductCategory` 等の本体実装・追加 utility 写像は #10 で継続。
+| 選択肢                                                                     | 強み                                                                                                     | 弱み                                                                                                                                                                      |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **採用:** primitive と shadcn の語彙の 2 層に分け、用途ごとの entry で配る | 名前から用途が読める。将来の cms が同じトークンを変換せずに使える。Astro の配信物に不要な CSS が入らない | `--kufu-color-*` などの旧トークンと TS の export を参照するコードの置き換えが要る                                                                                         |
+| 比喩の名前を primitive の層として残し、semantic の層だけを新しく作る       | `.pen` の変更が最小で済む                                                                                | 分かりにくい名前が残り、命名の読みやすさの課題が解決しない                                                                                                                |
+| shadcn の semantic の名前に全面的に揃える（1 層）                          | 変数の数が最も少ない                                                                                     | shadcn の語彙にない用途（写真のオーバーレイ、ダークの面の 6 変数）で場当たりの名前が増える。テーマを展開する基盤の primitive を失う                                       |
+| 独自の `--kufu-*` の semantic の系統と shadcn の系統を並べる               | -                                                                                                        | corporate-site と React の app でトークンの系統が分かれ、基準が 2 つになる状態が再び起きうる                                                                              |
+| 単一の `styles.css` での配信を続ける                                       | 開発者の体験が単純                                                                                       | Astro の側に React の app 向けの層（tw-animate-css など）が入り、性能の予算を圧迫しうる。[判断の優先順位](../design/DesignDoc.md#判断の優先順位)の 1 位である性能に反する |
 
-## 関連チケット / PR
+## Consequences
 
-- [issue #13](https://github.com/Fukuemon/kufu-apps/issues/13): デザインシステム基盤の決定経緯
-- issue #17 (論点 D5 で `.pen` パレット昇格を #13 へ移管した経緯)
-- issue #10 (corporate-site 本体実装。本トークン体系を consume)
-- issue #6 (Storybook。本トークン体系を前提とする)
-- feature doc: [design/features/corporate-site/DesignDoc_corporate-site.md](../design/features/corporate-site/DesignDoc_corporate-site.md) (トークン対応表 / ブランド指針の正本)
-- 運用契約: [context/design-workflow.md](../context/design-workflow.md) (正本 path / トークンガード)
-- [ADR-0012](0012-design-source-of-truth-implementation.md): デザイン正本を実装へ移し `.pen` を廃止した決定
-- [context/component-design.md](../context/component-design.md): component 設計とスタイリング規約
+### Positive
+
+- トークンの名前から用途が読め、新しいトークンの名前を機械的に決められる。primitive はスケールで、semantic は役割で名付ける。
+- 将来の cms（React と shadcn）が、同じトークンを変換せずに使える。
+- Astro の配信物には、トークン、フォント、使った utility だけが入り、不要な CSS は入らない。
+- `theme.css` を import するだけで、消費側が ui の class を生成できる。
+
+### Negative
+
+- 既存の `--kufu-color-*`、`--kufu-radius-*`、`--kufu-font-*` と TS の export（`./tokens`、`./theme`、`./fonts`）を参照するコードは、削除か置き換えが要る。
+  - corporate-site の `--kufu-font-body` の参照は、同じ変更の中で置き換える。
+- radius の基準を変えると、`--radius-*` の派生の値を使う共有の UI にも新しい値が適用される。

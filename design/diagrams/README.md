@@ -6,17 +6,17 @@
 
 `.drawio.svg` は 1 ファイルの中に「表示用の SVG」と「編集用の mxfile XML」の両方を持つ。GitHub は SVG として描画し、draw.io はそのまま開いて編集できる。
 
-生成元と生成物が同一ファイルであるため、**両者がずれる余地がない**。図の生成スクリプト、生成コマンドの CI 実行、生成物との差分検査のいずれも不要である。
+生成元と生成物が同一ファイルであるため、**両者がずれる余地がない**。図の生成スクリプト、生成コマンドの CI 実行、生成物との差分の確認のいずれも要らない。
 
-`.drawio` (XML のみ) を別に置かない。置くと正本が 2 つになり、この利点を失う。
+`.drawio` (XML のみ) を別に置かない。置くと編集の元が 2 つになり、この利点を失う。
 
 ## 図の一覧
 
 | ファイル                           | 内容                                                      | 参照元              |
 | ---------------------------------- | --------------------------------------------------------- | ------------------- |
 | `service-architecture.drawio.svg`  | 利用者 / GitHub / Cloudflare / 外部サービスのサービス構成 | design/DesignDoc.md |
-| `infra-tool-boundary.drawio.svg`   | Cloudflare リソースの Terraform / Wrangler 管轄境界       | ADR-0020            |
-| `infra-permission-flow.drawio.svg` | credential と実行経路の権限分離                           | ADR-0020            |
+| `infra-tool-boundary.drawio.svg`   | Cloudflare リソースの Terraform / Wrangler 管轄境界       | ADR-0021            |
+| `infra-permission-flow.drawio.svg` | credential と、実行する workflow の権限の分離             | ADR-0021            |
 
 `service-architecture.drawio.svg` は破線で未実装を表す。実装が進んだら実線へ変える。
 
@@ -31,7 +31,7 @@ drawio --export --format svg --embed-diagram --uncompressed --theme light \
   --output design/diagrams/<name>.drawio.svg design/diagrams/<name>.drawio.svg
 ```
 
-オプションの意味は次のとおりである。省略すると壊れるものを含む。
+省略すると編集できなくなるオプションを含む。各オプションの意味は次のとおり。
 
 | オプション        | 理由                                                                        |
 | ----------------- | --------------------------------------------------------------------------- |
@@ -47,7 +47,7 @@ draw.io の既定はラベルを HTML (`foreignObject`) で出力する。GitHub
 
 図形のスタイルに `html=0` を指定すると、文字は SVG のテキストとして出力される。太字の見出しとグレーの説明文のように書式を分ける場合は、1 つの図形に詰め込まず、テキスト要素を分けて配置する。
 
-書き出した SVG を検査するときは次を使う。
+書き出した SVG を確かめるときは次を使う。
 
 ```sh
 grep -c 'svg-export-text-problems' design/diagrams/<name>.drawio.svg   # 0 以外なら文字が失われている

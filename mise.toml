@@ -1,0 +1,6 @@
+# Node.js と apm のバージョン。pnpm のバージョンは package.json の packageManager にある
+# apm は agent-harness のスキルとフックを配置する
+[tools]
+node = "24"
+uv = "0.12"
+"pipx:apm-cli" = "0.32.0"

@@ -1,76 +1,61 @@
-# ADR-0008: corporate-site の shadcn 消費は静的描画を既定とし、client:\* island はインタラクションに限定する
+# ADR-0008: corporate-site は shadcn を静的に描画して使い、client:\* の island は操作が要るものに限る
 
-## 状態
+## Status
 
 承認
 
-## 決定日
+## Context
 
-2026-06-13
+- `apps/corporate-site` は Astro の静的な生成（`output: "static"`）だけで作り、`@astrojs/react` を入れていなかった。
+- `packages/ui` は shadcn/ui（React と Radix）を基盤に持つ。
+  ADR-0007: [デザイントークンの 2 層と配る entry](0007-design-token-architecture.md)
+- corporate-site の UI を作るにあたり、shadcn（React）を `.astro` でどう使うか、どこから `client:*`（React の island）にするかが決まっていなかった。
+- Astro は React のコンポーネントも**ビルドのときに静的な HTML へ描画し**、`client:*` を付けない限りクライアントの JavaScript を一切配らない。
+  性能のコストが生じるのは、`client:*` を付けて island にし、React のランタイムを配ってハイドレーションするときだけである。
+  この点は誤解されやすい。
+- 既存の方針は「React の island は必要な最小限にする」と定めていたが、shadcn の具体的な使い方は文書になっていなかった。
+  - 定めていた文書は [codebase.md](../context/codebase.md#shadcn-の使い方と-react-island-の境界)、corporate-site の Design Doc、デザインの制作物の取り決め、禁止事項。
+- モバイルのナビの開閉は、`.astro` と最小の script で、開閉、`aria-expanded`、Escape、選んだ後に閉じる動きを扱っている。
 
-## 背景
+## Decision
 
-- `apps/corporate-site` は純 Astro 静的 (`output: "static"`) で、現状 `@astrojs/react` を導入していない。一方 `packages/ui` は shadcn/ui (React + Radix) を基盤に持つ。
-  - [ADR-0007](0007-design-token-architecture.md) — トークン体系に shadcn の semantic 語彙を採り、`packages/ui` を配信の正本とする
-- corporate-site の UI を実装するにあたり、「shadcn(React) を `.astro` でどう消費するか」「どこから `client:*` (React island) にするか」が未確定だった。
-- 誤解されやすい点: Astro は React コンポーネントも **ビルド時に静的 HTML へ描画**し、`client:*` を付けない限りクライアント JS を一切出荷しない。パフォーマンスコストが発生するのは `client:*` を付けて island 化 (React ランタイム出荷 + ハイドレーション) した時だけである。
-- 既存方針は「React island は必要最小限」を定めるが、shadcn の具体的な消費パターンは明文化されていなかった。定めているのは次の 4 つである。
-  - [context/architecture.md](../context/architecture.md) の Runtime Boundary — 「React island は必要最小限とし、配信する JavaScript 量を抑える」と定める
-  - [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md) の設計方針 — React island をフォーム・動的 UI・外部 widget に限ると定める
-  - [context/project.yml](../context/project.yml) の `forbidden` — 「不必要な React 化 (Astro で解決できるものを React island にしない)」を禁止事項に挙げる
-  - [context/design-workflow.md](../context/design-workflow.md) の Phase C: 実装 (Claude Code / Codex) — インタラクションが要る所だけ island にすると定める
+1. **表示だけの UI は、shadcn（React）を静的に描画して直接使う。**
+   - Button（リンクと送信）、Card、Badge、Tag、section のように、クライアントの状態を持たない UI は、`@kufu/ui` の shadcn のコンポーネントを `.astro` の中で **`client:*` なしで**使う。
+   - ビルドのときに HTML になり、JavaScript は配らない。
+   - `.astro` 版を別に作らず、コンポーネントの定義を `@kufu/ui` の 1 か所に保ち、二重の実装を避ける。
+2. **`@astrojs/react` は入れてよい。**
+   - integration を入れること自体には、ランタイムのコストがない。island がなければ JavaScript は配られない。
+   - 最初の island が要る前でも、静的な描画のために入れてよい。
+3. **`client:*` の island は、本当に操作が要るものに限る。**
+   - island にするのは、問い合わせフォームと、Radix のインタラクティブな primitive（Dialog、DropdownMenu、Popover、Tooltip、Accordion、Tabs、Select など）だけにする。
+   - **素の script で足りる開閉のトグルは island にしない。** モバイルのナビの開閉は island にせず、全ページに共通の header に React のランタイムを載せない。
+4. **island の既定のディレクティブは遅延の系統にする。**
+   - `client:visible` か `client:idle` を既定にする。
+   - `client:load` は、above-the-fold で即時の操作が要る箇所だけで使う。
+5. **インタラクティブな Radix の primitive を、`client:*` なしで静的に描画しない。**
+   - 静的に描画すると、見た目だけが出て動かない。必ず island にする。
+6. **`client:*` の総数を予算として管理する。**
+   - [Design Doc](../design/DesignDoc.md) のガードレール「Unnecessary Client JS Count」で監視し、増えたときは island にした妥当性をレビューする。
 
-## 決定
+## Considered Options
 
-1. **表示専用 UI は shadcn(React) を静的描画で直接使う**: Button (link/submit) / Card / Badge / Tag / section 等、クライアント状態を持たない UI は `@kufu/ui` の shadcn コンポーネントを `.astro` 内で **`client:*` なし**で使う。ビルド時に HTML へ焼かれ JS はゼロ。`.astro` 版を別実装せず `@kufu/ui` を単一コンポーネント正本に保つ (二重実装の回避)。
-2. **`@astrojs/react` は導入してよい**: integration の導入自体はランタイムコストを持たない (island が無ければ JS は出荷されない)。最初の島が必要になる前でも、静的描画のために導入してよい。
-3. **`client:*` island は本物のインタラクションに限定する**: モバイルナビ開閉、問い合わせフォーム (#14)、および Radix のインタラクティブ primitive (Dialog / DropdownMenu / Popover / Tooltip / Accordion / Tabs / Select 等) のみ island 化する (改訂あり: 下記 `## 更新`)。
-4. **island の既定ディレクティブは遅延系**: `client:visible` または `client:idle` を既定とし、above-the-fold で即時操作が必要な箇所のみ `client:load` を使う。
-5. **ハードルール (正しさ)**: インタラクティブ Radix primitive を `client:*` なしで静的描画しない。静的描画では見た目だけ出て動作しないため、必ず island 化する。
-6. **予算管理**: `client:*` の総数を [Design Doc](../design/DesignDoc.md) のガードレール「Unnecessary Client JS Count」で監視し、増加時は island 化の妥当性をレビューする。
+| 選択肢                                                                                        | 強み                                                                                                               | 弱み                                                                                                                                    |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **採用:** 表示だけの UI は shadcn を静的に描画し、`client:*` の island は操作が要るものに限る | 表示だけの UI が JavaScript なしで `@kufu/ui` を再利用でき、二重の実装が起きない。性能のコストが island に限られる | `@astrojs/react` の依存とビルドのときの React の SSR が加わる。インタラクティブな primitive を静的に描画する誤りが起こりうる            |
+| `.astro` で shadcn のスタイルを作り直す（React を一切使わない）                               | クライアントの JavaScript がない点は同じ                                                                           | shadcn のコンポーネントと `.astro` 版の二重の実装が生まれ、`@kufu/ui` とずれる。トークンを二重に管理しない方針（ADR-0007）と一貫しない  |
+| すべてを React の island（`client:load`）で作る                                               | 開発者の体験が単純                                                                                                 | 表示だけの UI にまで React のランタイムを配り、性能の予算を圧迫する。corporate-site の主な価値である高速な静的配信に反する              |
+| `@astrojs/react` を入れず、Astro だけで完結させる                                             | 一見、性能の面で安全                                                                                               | shadcn のコンポーネントを corporate-site で再利用できず、二重の実装を強いる。静的な描画にランタイムのコストがない以上、過剰な制約である |
 
-## 代替案
+## Consequences
 
-- **`.astro` で shadcn スタイルを再実装 (React を一切使わない)**: client JS ゼロは同じだが、shadcn コンポーネントと `.astro` 版の二重実装線が生まれ、`@kufu/ui` 正本と drift する。トークンを二重管理しない方針と一貫しないため不採用。
-- **すべて React island (`client:load`) で実装**: DX は単純だが、表示専用 UI にまで React ランタイムを出荷し性能予算を圧迫する。corporate-site の主価値 (高速静的配信) に反するため不採用。
-- **`@astrojs/react` を入れず Astro 完結に固執**: 一見性能に安全だが、shadcn 正本を corporate-site で再利用できず二重実装を強いる。静的描画にランタイムコストが無い以上、過剰な制約のため不採用。
+### Positive
 
-## 影響
+- 表示だけの UI が JavaScript なしのまま、`@kufu/ui` を 1 か所の定義として再利用でき、二重の実装が起きない。
+- 性能のコストが `client:*` の island に限られ、予算の管理の対象がはっきりする。
+- 静的な React は island ではなく、禁止事項の対象外であることを文書にし、判断のぶれをなくす。
 
-### 良い影響
+### Negative
 
-- 表示専用 UI が JS ゼロのまま `@kufu/ui` を単一正本として再利用でき、二重実装が起きない。
-- パフォーマンスコストが `client:*` island に局所化され、予算管理の対象が明確になる。
-- 「静的 React は island ではない = 禁止事項の対象外」を明文化し、判断のぶれを無くす。
-
-### 悪い影響 / トレードオフ
-
-- `@astrojs/react` 依存とビルド時 React SSR が加わる (ランタイムコストは無いがビルドはわずかに増える)。
-- インタラクティブ primitive の静的描画という footgun が残る (ハードルール #5 で防ぐ)。
-- `client:*` の濫用余地が増えるため、ガードレール監視 (#6) が前提になる。
-
-### 影響範囲
-
-- `apps/corporate-site` への影響: `@astrojs/react` 導入、表示専用は静的描画、island は遅延ディレクティブ既定 (実装は #10 / フォームは #14)
-- `packages/ui` への影響: shadcn コンポーネントが Astro 静的描画でも成立すること (SSR セーフ) を前提に整備する
-- `e2e` への影響: island の主要導線 (問い合わせフォーム) と、script で動く導線 (モバイルナビ開閉) を検証対象にする (#10 / #14 で検討)
-
-## 関連チケット / PR
-
-- issue #10 (corporate-site 本体実装。本ポリシーを適用)
-- issue #14 (問い合わせフォーム。最初の主要 island)
-- issue #6 (Storybook。shadcn コンポーネント整備)
-- [ADR-0007](0007-design-token-architecture.md) (デザイントークン体系。二重管理回避の方針を共有)
-- [context/architecture.md](../context/architecture.md) Runtime Boundary (本 ADR を参照)
-- [context/design-workflow.md](../context/design-workflow.md): Phase C の実装出力
-- [context/project.yml](../context/project.yml): `forbidden` (不必要な React 化の禁止)
-- [design/DesignDoc.md](../design/DesignDoc.md): ガードレール Unnecessary Client JS Count
-- [feature doc](../design/features/corporate-site/DesignDoc_corporate-site.md): corporate-site の island 方針
-
-## 更新
-
-### 2026-07-26: モバイルナビ開閉を island の例から除外 (issue #31)
-
-- **背景**: 決定 3 はモバイルナビ開閉を island 化の代表例として挙げていたが、実装 (`apps/corporate-site/src/components/common/SiteHeader.astro`) は `.astro` + 最小 script で開閉・`aria-expanded`・Escape・選択後 close を扱っており、記述と実態が食い違っていた。
-- **決定**: **素の script で足りる開閉トグルは island 化しない**。決定 3 の島の例からモバイルナビ開閉を外し、全ページ共通 header に React ランタイムを載せない。
-- **影響**: 決定 3 の island 対象は問い合わせフォームと Radix インタラクティブ primitive に限られる。`context/architecture.md` の「shadcn 消費と React island の境界」も同じ基準に揃えた。
+- `@astrojs/react` の依存と、ビルドのときの React の SSR が加わる。ランタイムのコストはないが、ビルドはわずかに増える。
+- インタラクティブな primitive を静的に描画する誤りが起こりうる。Decision の 5 で防ぐ。
+- `client:*` を乱用する余地が増えるため、ガードレールでの監視が前提になる。

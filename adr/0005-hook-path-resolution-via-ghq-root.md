@@ -1,36 +1,42 @@
-# ADR-0005: AI エージェントの hook PATH 解決を `$(ghq root)/<repo-path>` ベースに統一する
+# ADR-0005: AI エージェントの hook の PATH の解決を `$(ghq root)/<repo-path>` ベースに統一する
 
-## 状態
+## Status
 
 承認
 
-## 決定日
+## Context
 
-2026-06-06
+- 本リポは AI エージェントの設定を `.rulesync/` を単一の基準として管理し、rulesync で **claudecode / codexcli / cursor** の 3 つのプロバイダへ生成している（`rulesync.jsonc`）。
+  - hook の定義も `.rulesync/hooks.json` が基準で、`.claude/settings.json` / `.codex/hooks.json` / `.cursor/hooks.json` へ**同一のコマンド文字列**として展開される。
+- hook は、リポジトリ直下の `hooks/` 配下のスクリプト（`protected-branch/pre_tool_use.py`、`markdown/format_markdown.sh`、`spec/validate_*.sh`）を呼ぶ。
+  - 各プロバイダの hook runner は実装が異なるが、ソースが 1 つのため、**コマンドはどの runner でも動く素のシェル式**でなければならない。
+- 従来は、hook のスクリプトの絶対パスを `python3 "$(git rev-parse --show-toplevel)/hooks/..."` で解決していた。
+- **観測された障害**: Claude Code の Bash ツールで一度 `cd /tmp` した結果、以後の hook の実行時の cwd が `/tmp`（git repo の外）に固定された。
+  - `$(git rev-parse --show-toplevel)` が失敗し、スクリプトのパスが空になった。
+  - `Edit` / `Write` / `Bash` が全面的にブロックされ、セッション内で自己回復できなくなった。
+- 根本原因は、**hook のコマンドを「実行時の cwd」を起点に評価していること**である。
+  - cwd が repo の外だと解決に失敗する。
+  - cwd が _別の_ git repo 内だと、_エラーを出さずに別の repo の root を返す_ 誤動作も起こりうる。
 
-## 背景
+hook のコマンドは、次の 3 つを同時に満たしたいが、各候補は 2 つしか満たさない（三すくみ）。
 
-- 本リポは AI エージェント設定を `.rulesync/` を単一正本として管理し、rulesync で **claudecode / codexcli / cursor** の3プロバイダへ生成している。hook 定義も `.rulesync/hooks.json` が正本で、`.claude/settings.json` / `.codex/hooks.json` / `.cursor/hooks.json` へ**同一のコマンド文字列**として展開される。
-- hook はリポジトリ直下の [hooks/](../hooks/) 配下のスクリプト（`protected-branch/pre_tool_use.py`、`markdown/format_markdown.sh`、`spec/validate_*.sh`）を呼ぶ。各プロバイダの hook runner は別物だが、単一ソースのため **コマンドはどの runner でも動く素のシェル式**でなければならない。
-- 従来は hook スクリプトの絶対パスを `python3 "$(git rev-parse --show-toplevel)/hooks/..."` で解決していた。
-- **観測された事故 (2026-06-06)**: Claude Code の Bash ツールで一度 `cd /tmp` した結果、以後の hook 実行時 cwd が `/tmp`（git repo 外）に固定され、`$(git rev-parse --show-toplevel)` が失敗 → スクリプトパスが空 → `Edit` / `Write` / `Bash` が全面ブロックされ、セッション内で自己回復不能になった。
-- 根本原因は **hook コマンドを「実行時 cwd」起点で評価していること**。cwd が repo 外だと解決失敗、cwd が _別の_ git repo 内だと _別 repo の root を黙って返す_ 誤動作も起こり得る。
+1. provider に依存しない（単一のソース → 3 つのプロバイダ）。
+2. cwd に依存しない（観測された障害の回避）。
+3. 環境をまたいで動く（CI / ghq を使わないクローン）。
 
-### 解決方式の制約（三すくみ）
+| 候補                                        | ① provider 非依存         | ② cwd 非依存 | ③ 環境ポータブル                        |
+| ------------------------------------------- | ------------------------- | ------------ | --------------------------------------- |
+| `$(git rev-parse --show-toplevel)`（従来）  | 満たす                    | 満たさない   | 満たす                                  |
+| `$CLAUDE_PROJECT_DIR`                       | 満たさない（claude 専用） | 満たす       | 一部                                    |
+| `$(ghq root)/github.com/Fukuemon/kufu-apps` | 満たす                    | 満たす       | 満たさない（ghq が前提・path を直書き） |
 
-hook コマンドは「① provider 非依存（単一ソース → 3プロバイダ）」「② cwd 非依存（本事故の回避）」「③ 環境ポータブル（CI / 非ghqクローン）」を同時に満たしたいが、各候補は2つしか満たさない:
+`$CLAUDE_PROJECT_DIR` は claudecode 以外で空になり、codexcli / cursor の生成物が動かなくなる。  
+そのため、**ソースを 1 つにする恩恵を失う**（rulesync の方針と整合しない）。
 
-| 候補                                        | ① provider 非依存 | ② cwd 非依存 | ③ 環境ポータブル       |
-| ------------------------------------------- | :---------------: | :----------: | :--------------------- |
-| `$(git rev-parse --show-toplevel)`（従来）  |        ✅         |      ❌      | ✅                     |
-| `$CLAUDE_PROJECT_DIR`                       |   ❌ claude専用   |      ✅      | △                      |
-| `$(ghq root)/github.com/Fukuemon/kufu-apps` |        ✅         |      ✅      | ❌ ghq前提・path直書き |
+## Decision
 
-`$CLAUDE_PROJECT_DIR` は claudecode 以外で空になり、codexcli / cursor の生成物が破綻するため **単一ソースの恩恵を失う**（rulesync 方針と非整合）。
-
-## 決定
-
-- hook スクリプトの PATH 解決を **`$(ghq root)/github.com/Fukuemon/kufu-apps/<hook-path>`** ベースに統一する。`.rulesync/hooks.json` の全 hook コマンドを次の形に変更し、rulesync で再生成する。
+- hook のスクリプトの PATH の解決を、**`$(ghq root)/github.com/Fukuemon/kufu-apps/<hook-path>`** ベースに統一する。
+  - `.rulesync/hooks.json` の全 hook のコマンドを次の形に変更し、rulesync で再生成する。
 
   ```text
   python3 "$(ghq root)/github.com/Fukuemon/kufu-apps/hooks/protected-branch/pre_tool_use.py"
@@ -39,46 +45,39 @@ hook コマンドは「① provider 非依存（単一ソース → 3プロバ�
   bash    "$(ghq root)/github.com/Fukuemon/kufu-apps/hooks/spec/validate_prompts.sh"
   ```
 
-- 根拠:
-  - **規約一貫性**: repo path の記法は既に ghq 前提で宣言済みである。hook を ghq ベースにするのは**新規依存の追加ではなく既存規約への一貫化**。
-    - [context/project.yml](../context/project.yml) の `repos.convention` — `$(ghq root)/github.com/<owner>/<repo>` を repo path の記法と定める
-  - **cwd 完全非依存**: `ghq root` は cwd に依存せず固定の管理ルートを返すため、`cd` でどこに逸れても、別 repo 内にいても、常に正しい repo root を解決する（本事故を構造的に排除）。
-  - **provider 非依存**: 素のシェル置換なので claudecode / codexcli / cursor のいずれの runner でも同一に動く。単一ソースを維持。
-  - **ghq 依存の実害が小さい**: これらの hook は **AI エージェントのローカル実行時のみ**発火する。CI は hook を走らせないため「非 ghq な CI 環境」は実害なし。
+- 根拠は次の 4 つ。
+  - **規約との一貫性**: hook を ghq ベースにするのは、**新しい依存の追加ではなく、既存の規約への一貫化**である。
+    - `CLAUDE.md` の Repository Reference Rules が、既に「本プロジェクトは ghq 管理」「path の記載は `$(ghq root)/<repository-path>/...` を優先」と宣言している。
+    - ADR-0001: [infra repo の配置先も ghq を前提にする](0001-terraform-infra-repository-boundary.md)
+  - **cwd に完全に依存しない**: `ghq root` は cwd に依存せず、固定の管理ルートを返す。
+    - `cd` でどこに逸れても、別の repo 内にいても、常に正しい repo root を解決する（観測された障害を構造的に排除する）。
+  - **provider に依存しない**: 素のシェルの置換なので、claudecode / codexcli / cursor のいずれの runner でも同一に動く。
+    - ソースを 1 つに保つ。
+  - **ghq への依存の実害が小さい**: これらの hook は、**AI エージェントのローカルでの実行時だけ**発火する。
+    - CI は hook を実行しないため、「ghq を使わない CI の環境」での実害はない。
 
-## 代替案
+## Considered Options
 
-- **`$CLAUDE_PROJECT_DIR` 単体**: cwd 非依存だが claudecode 専用。codexcli / cursor で空になり破綻 → 却下（rulesync 単一ソース非整合）。
-- **ハイブリッド `${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}`**: 新規依存ゼロで観測事故（Claude の cwd ドリフト）を最小修正できるが、codex/cursor は git フォールバックのまま cwd 安定が前提で潜在的脆さが残る。また Claude 固有トークンが混じり可読性が落ちる → 今回は不採用（将来 ghq 非標準化時の代替候補として保持）。
-- **ハイブリッド `${CLAUDE_PROJECT_DIR:-$(ghq root)/...}`**: 全 provider で cwd 完全非依存かつ Claude は ghq 不要で最も堅牢だが、最も複雑で2機構が混在 → over-engineering と判断し不採用。
-- **生成時に絶対パスを埋め込む**: マシン固有パスが committed になり共有不能 → 却下。
+| 選択肢                                                                             | 強み                                                                               | 弱み                                                                                                                                                                                                               |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **採用:** `$(ghq root)/github.com/Fukuemon/kufu-apps/<hook-path>` ベースに統一する | provider と cwd のどちらにも依存しない。既存の ghq の規約と一貫する                | ghq が必須になる。repo の path をコマンドに直書きする                                                                                                                                                              |
+| `$CLAUDE_PROJECT_DIR` 単体                                                         | cwd に依存しない                                                                   | claudecode 専用。codexcli / cursor で空になり、生成物が動かなくなる。rulesync の単一ソースと整合しないため却下                                                                                                     |
+| ハイブリッド `${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}`             | 新しい依存がゼロで、観測された障害（Claude の cwd のドリフト）を最小の修正で直せる | codex/cursor は git のフォールバックのままで、cwd が安定する前提の潜在的な脆さが残る。Claude 固有のトークンが混じり、可読性が落ちる。今回は不採用とし、将来 ghq を標準にしなくなったときの代替の候補として保持する |
+| ハイブリッド `${CLAUDE_PROJECT_DIR:-$(ghq root)/...}`                              | 全 provider で cwd に完全に依存せず、Claude は ghq が不要で最も堅牢                | 最も複雑で、2 つの機構が混在する。over-engineering と判断し不採用                                                                                                                                                  |
+| 生成時に絶対パスを埋め込む                                                         | 記載なし                                                                           | マシン固有のパスが committed になり、共有できないため却下                                                                                                                                                          |
 
-## 影響
+## Consequences
 
-### 良い影響
+### Positive
 
-- 今回のような cwd ドリフトによる hook 全面ブロックを構造的に排除（自己回復不能の deadlock 解消）。
-- cwd が別 git repo 内のときに別 repo root を誤解決する潜在バグも排除。
-- 既存の ghq 規約・path 表記規約と一貫し、設定の読み手の認知負荷が下がる。
+- cwd のドリフトによる hook の全面的なブロックを、構造的に排除する（自己回復できない deadlock を解消する）。
+- cwd が別の git repo 内にあるとき、別の repo root を誤って解決する潜在的なバグも排除する。
+- 既存の ghq の規約・path の表記の規約と一貫し、設定の読み手の認知負荷が下がる。
 
-### 悪い影響 / トレードオフ
+### Negative
 
-- **ghq 必須**: ghq を使わず手動 clone した環境では `ghq root` が当該 repo を指さず hook が解決失敗する。本リポが ghq 管理を標準化している前提で許容する。
-- **repo path 直書き**: `github.com/Fukuemon/kufu-apps` がコマンドに固定される。**fork / repo リネーム時は `.rulesync/hooks.json` の更新と再生成が必要**である（README / 移行手順に明記する）。
-- ghq のインストールパス / バージョン差で `ghq root` の挙動が変わる可能性（通常は安定）。
-
-## 実装・運用への反映
-
-- 対象 app / package: なし（リポジトリ横断の AI エージェント設定）。変更対象は `.rulesync/hooks.json` と生成物 `.claude/settings.json` / `.codex/hooks.json` / `.cursor/hooks.json` である。
-- 編集は **`rulesync-sync` skill 経由**で `.rulesync/hooks.json` を直し、各プロバイダへ再生成する（生成物の直接編集は禁止）。
-- spec 更新要否: 不要。
-- AI 向け設定更新要否: 要（本 ADR の主対象）。fork / リネーム時の更新手順を README 等に追記する。
-
-## 関連ドキュメント
-
-- `.rulesync/hooks.json`: hook 定義の単一正本。実体は sdd-template repo にあり、本 repo では symlink かつ未追跡である
-- [hooks/](../hooks/): hook スクリプトの実体
-- `CLAUDE.md`: repo ルートの生成物。symlink 配布のため追跡しない。repo path の記法は `context/project.yml` の `repos.convention` へ委ねている
-- `rulesync.jsonc`: 生成ターゲット（cursor / claudecode / codexcli）。実体は sdd-template repo にある
-- [ADR-0001](0001-terraform-infra-repository-boundary.md): ghq 前提のリポジトリ境界
-- [context/project.yml](../context/project.yml): `repos.convention` (repo path の記法)
+- **ghq が必須になる**: ghq を使わず手動で clone した環境では、`ghq root` が当該の repo を指さず、hook の解決に失敗する。
+  - 本リポが ghq 管理を標準にしている前提で許容する。
+- **repo の path を直書きする**: `github.com/Fukuemon/kufu-apps` がコマンドに固定される。
+  - **fork / repo のリネームのときは、`.rulesync/hooks.json` の更新と再生成が必要になる**（README / 移行の手順に明記する）。
+- ghq のインストールのパス / バージョンの差で、`ghq root` の挙動が変わる可能性がある（通常は安定）。
