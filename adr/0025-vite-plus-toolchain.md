@@ -2,7 +2,7 @@
 
 ## Status
 
-提案
+承認
 
 ## Context
 
@@ -27,22 +27,32 @@
 
 - `pnpm-workspace.yaml` の catalog に `vite-plus` を置き、`vite` を `@voidzero-dev/vite-plus-core` に置き換える。バージョンは buddy と同じにする。
 - 整形と lint の設定を、ルートの `vite.config.ts` の `fmt` と `lint` に置く。`.oxfmtrc.json`、`apps/corporate-site/.oxlintrc.json`、`packages/config/oxlint/` を削除する。
+- 型を使う lint の規則は、`lint.options.typeAware` で続ける。
 - unit test と Storybook のテストは `vp test run` で実行する。
+  - `packages/ui` の Storybook のテストは、`vrt:capture` の script のまま、コマンドだけを替える。ブラウザが要るので、`test` の script にしない。
 - `oxlint`、`oxfmt`、`oxlint-tsgolint` を devDependencies から外す。`vitest` は、Vitest を使う workspace の devDependencies に、vite-plus が同梱するバージョンで宣言する。
   - 宣言しないと、Storybook のテストが `vitest` を解決できない。
 - 整形の規則（80 桁、二重引用符、セミコロンあり）は変えない。
+  - buddy は単引用符とセミコロンなしにしている。合わせると全てのファイルに差分が出るので、合わせない。
+- lefthook の pre-commit は、ステージしたファイルを整形して staging に戻す動きを保つ。整形のコマンドを `vp fmt` に、lint のコマンドを `pnpm check` に替える。
 
 ### 2. Turborepo を外し、ルートのコマンドを buddy に合わせる
 
-- 各 workspace は、`check`（`vp check` と、その workspace だけのチェック）、`typecheck`、`test`、`build` の script を持つ。
-- ルートのコマンドは、`pnpm check`、`pnpm typecheck`、`pnpm test`、`pnpm build` にする。workspace のタスクは `pnpm -r` で束ねる。
+- ルートのコマンドは、`pnpm check`、`pnpm typecheck`、`pnpm test`、`pnpm build` にする。
+  - `pnpm check` は、ルートの `vp check` でリポジトリの全体を整形と lint で確認し、続けて `pnpm -r check` を実行する。
+  - `pnpm typecheck`、`pnpm test`、`pnpm build` は、`pnpm -r` で workspace の同じ名前の script を実行する。
+- workspace は、自分に要る script だけを持つ。`check` は、その workspace だけのチェックがある workspace が持つ。
+  - buddy は workspace ごとに `vp check` を実行する。このリポジトリは、ルートのスクリプトと `e2e/` も確認するために、ルートで 1 回実行する。
 - タスクのキャッシュは持たない。workspace が 3 つで、キャッシュで縮む時間が小さいためである。
   - build の時間が問題になったら、fukuemon.dev の ADR-0017 と同じく、build だけを `vp run` のキャッシュに載せる。
+  - Turbo の remote cache を入れるかの判断は、対象がなくなる。
+    - ADR-0016: [CI とローカルのフックの役割を分ける](0016-ci-local-hook-responsibility.md)
 
 ### 3. Astro の開発サーバーと build は、Astro の CLI で実行する
 
 - `astro dev`、`astro build`、`astro check` は変えない。
 - Astro を 7 に上げ、`vite` を `^7` に固定する overrides を外す。
+- Astro 7.4.8 は Node.js 22.23.4 以上を求める。Node.js を 22.12.0 に固定しているワークフローは、24 に上げる。
 
 ### 4. Storybook を 10.6.3 に上げる
 
@@ -51,30 +61,42 @@
 ### 5. 変えないもの
 
 - Node.js と apm のバージョンは `mise.toml` で、pnpm のバージョンは `packageManager` で固定する。`vp env` と `vp install` は使わない。
+  - buddy は pnpm のバージョンを `mise.toml` にも書く。2 か所に書くと片方だけを上げる誤りが起きるので、合わせない。
 - TypeScript は 6 のままにする。7 に上げるのは、`astro check` が TypeScript 7 で動くようになったときにする。
-- knip、dependency-cruiser、`check-section-boundary.mjs`、`check-token-usage.mjs`、textlint、lefthook、commitlint は変えない。
-- app の最初の scaffold は、公式の `create` のコマンドを優先する。ADR-0002 のこの判断は引き継ぐ。
+- knip、dependency-cruiser、`check-section-boundary.mjs`、`check-token-usage.mjs`、textlint、commitlint は変えない。
+  - buddy は knip と dependency-cruiser を使っていない。外す理由がないので、残す。
+
+### 6. app の最初の scaffold は、公式の create のコマンドを優先する
+
+ADR-0002 の scaffold の判断を、変えずに引き継ぐ。
+
+- `apps/corporate-site` の初期の scaffold は、`pnpm create astro@latest apps/corporate-site` を正とする。
+- React の app の初期の scaffold は、`pnpm create vite ... --template react-ts` を正とする。
+- 生成した後に、package 名、ルートの script、typecheck、E2E、共有の設定を、monorepo の取り決めに合わせる。
+
+### 7. Astro を上げた後の VRT の差分は、運営者が画面を見て決める
+
+- Astro を 7 に上げる pull request で、route の VRT と story の VRT を CI で流す。
+- 差分が出たら、HTML の空白を Astro 6 と同じにする設定で、差分が消えるかを確認する。
+- 設定で消えない差分は、運営者が画面を見て、baseline を撮り直すかを決める。
 
 この決定は、ADR-0002 を置き換える。
 
-## 承認の条件
-
-- Astro を 7 に上げた後に、route の VRT と story の VRT を CI で流し、差分がないことを確認する。
-  - 差分が出たときは、運営者が画面を見て baseline を撮り直すかを決める。
-
 ## Verification
 
-2026-11-10 に、develop の 0f4ecf6 の worktree で、Astro 7.4.8、vite-plus 1.4.0、Storybook 10.6.3 に差し替えて確認した。macOS の手元の結果で、CI の Linux では確認していない。
+2026-11-10 に、develop の 0f4ecf6 の worktree で、Astro 7.4.8、vite-plus 1.4.0、Storybook 10.6.3 に差し替えて確認した。macOS の手元の結果で、CI の Linux では確認していない。  
+3 つを同時に差し替えた状態で確認した。Astro だけを上げた状態は確認していない。
 
 - `astro build` は通った。出力のファイルは 277 で、差し替える前と同じ数だった。
   - 3 つのページの HTML は、要素の間の空白の詰め方が変わった。文言と class は変わっていない。
 - `astro check` は、エラー 0、警告 0 で通った。
 - ルートで `vp lint` を流すと、108 ファイルを 2.5 秒で確認した。今の lint が見ていない `scripts/vrt-container.mjs` に、使っていない import を 1 件見つけた。
+  - `lint.options.typeAware` を有効にして流し、エラーなく終わった。型を使う規則が誤りを出すことは、確認していない。
 - `vp fmt --check` は、今の整形の規則のままで、追跡しているコードに差分を出さなかった。
 - `apps/corporate-site` の unit test は、`vp test run`（Vitest 5.0.5）で 4 件が通った。
 - `packages/ui` の Storybook のテストは、`vp test run` で 47 件が通り、story の画像を 47 枚撮った。
   - `packages/ui` に `vitest` を宣言しないと、`vitest` の `./internal/traces` を解決できずに止まった。
-- route の VRT と、corporate-site の story の VRT（`@storybook/test-runner`）は、確認していない。
+- route の VRT、corporate-site の Storybook の build、corporate-site の story の VRT（`@storybook/test-runner`）は、確認していない。
   - `pnpm vrt:route` は、worktree では、コンテナの中の `pnpm install` が `lefthook install` で失敗して止まった。Astro のバージョンとは関係がない。
 
 ## Considered Options

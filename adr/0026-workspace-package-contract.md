@@ -2,7 +2,7 @@
 
 ## Status
 
-提案
+承認
 
 ## Context
 
@@ -14,7 +14,7 @@
 - `astro check` は、`tsc -b` と project references を使わない。
 - buddy の `packages/ui` は、`src/` を export し、build の script を持たない。buddy に、設定を配る package はない。各 package が `tsconfig.json` を自分で持ち、lint と整形の設定はルートの `vite.config.ts` にある。project references は使っていない。
   - 出典: [buddy の packages/ui/package.json](https://github.com/Fukuemon/buddy/blob/c53390a6e64f4ef39d468dedd529425ae4aca0e5/packages/ui/package.json#L5-L16)
-- lint と整形の設定をルートの `vite.config.ts` に移すと、`packages/config` に残るのは、3 つの `tsconfig` と 8 行の `vitest/base.ts` になる。
+- lint と整形の設定をルートの `vite.config.ts` に移すと、`packages/config` に残るのは、3 つの `tsconfig` と 9 行の `vitest/base.ts` になる。
   - ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](0025-vite-plus-toolchain.md)
 - `packages/ui` のコンポーネントとトークンは、デザインシステムの要求（#61）で作り直す。
 
@@ -32,6 +32,7 @@
 ### 2. app は、`exports` に名前で書いたエントリだけを import する
 
 - `exports` にワイルドカードのエントリを足さない。
+  - 今ある 3 つのワイルドカードのエントリ（`./components/*`、`./hooks/*`、`./lib/*`）は、デザインシステムの設計で `packages/ui` を作り直すときに消す。
 - エントリの一覧は `package.json` の `exports` を正とする。`packages/ui` のエントリをどう分けるかは、デザインシステムの設計で決める。
 
 ### 3. project references を入れない
