@@ -1,6 +1,6 @@
 {
   "../../node_modules/.pnpm/@mdx-js+react@3.1.1_@types+react@19.2.14_react@19.2.6/node_modules/@mdx-js/react/index.js": {
-    "file": "_astro/react-Bno5s0_1.js",
+    "file": "_astro/react-Pc1mPiwt.js",
     "name": "react",
     "src": "../../node_modules/.pnpm/@mdx-js+react@3.1.1_@types+react@19.2.14_react@19.2.6/node_modules/@mdx-js/react/index.js",
     "isDynamicEntry": true,
@@ -9,7 +9,7 @@
     ]
   },
   "../../node_modules/.pnpm/@storybook+addon-docs@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_9d6bae179927231b655d0b1852bf5285/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-6AOWCN3U.js": {
-    "file": "_astro/Color-6AOWCN3U-CEo3UZt6.js",
+    "file": "_astro/Color-6AOWCN3U-CNbO2pnV.js",
     "name": "Color-6AOWCN3U",
     "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_9d6bae179927231b655d0b1852bf5285/node_modules/@storybook/addon-docs/dist/_browser-chunks/Color-6AOWCN3U.js",
     "isDynamicEntry": true,
@@ -23,7 +23,7 @@
     ]
   },
   "../../node_modules/.pnpm/@storybook+addon-docs@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_9d6bae179927231b655d0b1852bf5285/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js": {
-    "file": "_astro/DocsRenderer-JROSPFPF-DZK1mMN9.js",
+    "file": "_astro/DocsRenderer-JROSPFPF--s26o_IR.js",
     "name": "DocsRenderer-JROSPFPF",
     "src": "../../node_modules/.pnpm/@storybook+addon-docs@10.5.9_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_9d6bae179927231b655d0b1852bf5285/node_modules/@storybook/addon-docs/dist/_browser-chunks/DocsRenderer-JROSPFPF.js",
     "isDynamicEntry": true,
@@ -187,7 +187,7 @@
     ]
   },
   "iframe.html": {
-    "file": "_astro/iframe-B5RdY-zG.js",
+    "file": "_astro/iframe-axJQUSVH.js",
     "name": "iframe",
     "src": "iframe.html",
     "isEntry": true,
@@ -321,7 +321,7 @@
     ]
   },
   "src/components/sections/products-category/FeaturedCategoryCarousel.stories.ts": {
-    "file": "_astro/FeaturedCategoryCarousel.stories-xr0t8bk3.js",
+    "file": "_astro/FeaturedCategoryCarousel.stories-Bp5QRudu.js",
     "name": "FeaturedCategoryCarousel.stories",
     "src": "src/components/sections/products-category/FeaturedCategoryCarousel.stories.ts",
     "isDynamicEntry": true,
@@ -339,7 +339,7 @@
     ]
   },
   "src/components/sections/products-detail/ProductsCategoryAccordionList.stories.ts": {
-    "file": "_astro/ProductsCategoryAccordionList.stories-BkGNwBGH.js",
+    "file": "_astro/ProductsCategoryAccordionList.stories-RN2D8ofR.js",
     "name": "ProductsCategoryAccordionList.stories",
     "src": "src/components/sections/products-detail/ProductsCategoryAccordionList.stories.ts",
     "isDynamicEntry": true,
@@ -366,7 +366,7 @@
     ]
   },
   "src/components/sections/products-detail/ProductsSidebarNav.stories.ts": {
-    "file": "_astro/ProductsSidebarNav.stories-DHukWcdd.js",
+    "file": "_astro/ProductsSidebarNav.stories-CS3w4ajO.js",
     "name": "ProductsSidebarNav.stories",
     "src": "src/components/sections/products-detail/ProductsSidebarNav.stories.ts",
     "isDynamicEntry": true,
