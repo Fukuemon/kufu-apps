@@ -28,32 +28,11 @@ issue 60 の受け入れ条件を使う。
 
 ## Open Points
 
-設計のレビューで出た論点。運営者が決める。
-
-### Storybook を上げたときの story の VRT の差分
-
-- T4 で Storybook を 10.6.3 に上げると、story の VRT に差分が出ることがある。
-- 案 A（推奨）: 論点 6 と同じに扱う。運営者が差分を見て、baseline を撮り直すかを決める。
-- 案 B: 差分が出たら、Storybook を上げるのをやめ、Storybook のテストだけ Vitest 4 に残す。
-- 決まらないと進めない作業: T4 のマージ。T1 から T3 は進められる。
-
-### baseline を撮り直したときの、受け入れ条件 6 の読み方
-
-- issue 60 の受け入れ条件は「route の VRT が差分なしで通る」である。baseline を撮り直すと、移す前の baseline とは比べていない。
-- 案 A（推奨）: 運営者が差分を見て撮り直した baseline で通れば、満たしたとする。issue 60 の受け入れ条件に、この読み方を 1 行足す。
-- 案 B: 差分を消せなければ、Astro 7 と Vite+ をやめる。
-- 決まらないと進めない作業: T2 で差分が出て、設定で消せなかったときのマージ。
-
-### app のデータが持つ出典のパスの文字列
-
-- `apps/corporate-site/src/content/` のデータ、テスト、story は、出典を `design/features/corporate-site/reference/…` の文字列で持つ。文書を移すと、実在しないパスになる。
-- 案 A（推奨）: T1 で、文字列を移した後のパスに直す。
-- 案 B: パスをやめ、出典の識別子（`company-profile`、`manufacturers`）に替える。次に文書を移しても、データを直さずに済む。データの形とテストが変わる。
-- 決まらないと進めない作業: T1。
+なし。設計のレビューで出た 3 つの論点は、運営者が 2026-11-11 に決めた。Decisions の論点 7 から 9 にある。
 
 ## Decisions
 
-運営者が、2026-11-10 に、6 つの論点をどれも「採用」の案に決めた。
+運営者が、2026-11-10 に論点 1 から 6 を、2026-11-11 に論点 7 から 9 を、どれも「採用」の案に決めた。
 
 ### 論点 1: Turborepo、oxlint、oxfmt を Vite+ に置き換えるか
 
@@ -118,6 +97,24 @@ issue 60 の受け入れ条件を使う。
 - 受け入れ条件は「route の VRT が差分なしで通る」である。
 - Astro 7 は、HTML の要素の間の空白の詰め方が Astro 6 と違う。インラインの要素の間の空白が消えると、文字の間隔が変わることがある。
 - 決定: T2 で CI の VRT を流す。差分が出たら、空白を戻す設定で差分を消せるかを確認し、消せなければ運営者が画面を見て baseline を撮り直すかを決める。
+
+### 論点 7: Storybook を上げたときの story の VRT の差分
+
+- T4 で Storybook を 10.6.3 に上げると、story の VRT に差分が出ることがある。
+- 案 A（採用）: 論点 6 と同じに扱う。運営者が差分を見て、baseline を撮り直すかを決める。
+- 案 B: 差分が出たら、Storybook を上げるのをやめ、Storybook のテストだけ Vitest 4 に残す。
+
+### 論点 8: baseline を撮り直したときの、受け入れ条件 6 の読み方
+
+- issue 60 の受け入れ条件は「route の VRT が差分なしで通る」である。baseline を撮り直すと、移す前の baseline とは比べていない。
+- 案 A（採用）: 運営者が差分を見て撮り直した baseline で通れば、満たしたとする。issue 60 の受け入れ条件に、この読み方を 1 行足した。
+- 案 B: 差分を消せなければ、Astro 7 と Vite+ をやめる。
+
+### 論点 9: app のデータが持つ出典のパスの文字列
+
+- `apps/corporate-site/src/content/` のデータ、テスト、story は、出典を `design/features/corporate-site/reference/…` の文字列で持つ。文書を移すと、実在しないパスになる。
+- 案 A（採用）: T1 で、文字列を移した後のパスに直す。
+- 案 B: パスをやめ、出典の識別子（`company-profile`、`manufacturers`）に替える。次に文書を移しても、データを直さずに済む。データの形とテストが変わる。
 
 ## Design
 
@@ -258,7 +255,7 @@ workspace は、自分に要る script だけを持つ。
 - T1 は、ほかのタスクに依存しない。PR #49 は、T1 の後に書き直すと、ADR を足す場所が `docs/adr/` になる。
 - T4 は、デザインシステムの実装より前に行う。デザインシステムの実装が、上げた後の Storybook と Vitest の上で書けるようにするためである。
 - T2 から T6 は、同じファイル（`package.json`、`pnpm-lock.yaml`、CI のワークフロー）を変えるので、順に 1 つずつ行う。
-- T2 の状態（Astro 7、Storybook 10.5.9、Vitest 4）は、手元で確認していない。T2 で動かなければ、T2 から T4 を 1 つの pull request にまとめる。
+- T2 の状態（Astro 7、Storybook 10.5.9、Vitest 4）は、PR #68 の CI で動くことを確認した。T2 は単独の pull request にする。
 - issue 60 は、T1 から T6 のうち最後にマージする pull request で閉じる。その pull request で、この spec を削除する。
 
 ## Verification
