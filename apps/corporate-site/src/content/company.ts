@@ -6,7 +6,7 @@ const streetAddress = "兵庫県加古郡稲美町国安973番地の10";
 export const companyProfile = {
   sourceReferences: [companyProfileSource],
   name: "有限会社フクウラ",
-  tagline: "機械工具と関連機器 / 販売・加工",
+  tagline: "機械工具と関連機器 / 販売・加工・小規模工事",
   postalCode,
   streetAddress,
   founded: "1996年（平成8年）6月",
@@ -20,7 +20,7 @@ export const companyProfile = {
     ["資本金", "300万円"],
     [
       "事業内容",
-      "機械工具・関連機器の販売／各種機械加工・樹脂成型・板金溶接・ゴム製品加工",
+      "機械工具・関連機器の販売／各種機械加工・樹脂成型・板金溶接・ゴム製品加工／小規模工事",
     ],
     ["創立", "1996年（平成8年）6月"],
     ["所在地", `${postalCode} ${streetAddress}`],
