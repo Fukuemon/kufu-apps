@@ -1,6 +1,6 @@
 ---
 type: design-doc
-title: Kufu Monorepo Design Doc
+title: kufu-apps Design Doc
 description: コーポレートサイトと共有の UI、設定、E2E の monorepo の全体像。C4 の L2、構成要素の責務と依存、設計の方針と判断の優先順位、ディレクトリの構成
 status: stable
 governs:
@@ -10,12 +10,12 @@ governs:
 verified_commit: unverified
 ---
 
-# Kufu Monorepo Design Doc
+# kufu-apps Design Doc
 
 ## Overview
 
 Kufu Monorepo は、Kufu のコーポレートサイトと、共通の UI、設定、テストの基盤を pnpm workspace で管理する。  
-コーポレートサイトの訪問者は取扱領域と連絡先を閲覧し、内容を更新する担当者は掲載する内容を更新して確かめる。  
+コーポレートサイトの訪問者は取扱領域と連絡先を閲覧し、内容を更新する担当者は掲載する内容を更新して確認する。  
 誰のどの課題を解くかは [PRD](../PRD.md) にある。
 
 コーポレートサイトは Astro で静的に生成し、Cloudflare から配信する。  
@@ -29,7 +29,7 @@ ADR-0019: [コーポレートサイトを Astro の静的な生成で作る](../
 - `apps/corporate-site` を、Astro の静的な生成によるコーポレートサイトとして作り、保守する。
 - `packages/ui` に、デザイントークンと、共有の UI の primitive を置く。
 - `packages/config` に、TypeScript、lint、format などの共有の設定を置く。
-- ルートで管理する E2E で、コーポレートサイトの主な導線を公開の前に確かめる。
+- ルートで管理する E2E で、コーポレートサイトの主な導線を公開の前に確認する。
 - AI エージェント向けの設定（`AGENTS.md`、`CLAUDE.md`、`.agents`、`.codex`、`.claude`）を、monorepo の方針に合わせる。
 
 意図して作らないものは次のとおり。
@@ -56,7 +56,7 @@ ADR-0019: [コーポレートサイトを Astro の静的な生成で作る](../
 ## Architecture
 
 リポジトリにコードがある実行の単位と、配信の先の関係を示す。  
-利用者と外部のシステムの関係（C4 の L1）は、[PRD の Landscape](../PRD.md#landscape) にある。
+利用者と外部のシステムの関係（C4 の L1）は、[PRD の System Context](../PRD.md#system-context) にある。
 
 ```mermaid
 flowchart TD
@@ -150,7 +150,7 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 ### 取り決めの所在
 
 横断の取り決めは [context/](../context/index.md) にある。  
-環境、公開の条件、秘密情報の置き場は [context/operations.md](../context/operations.md) に、チェックの実行点は [context/conventions.md](../context/conventions.md#チェックの実行点) にある。
+環境、公開の条件、シークレットの置き場は [context/operations.md](../context/operations.md) に、チェックの実行点は [context/conventions.md](../context/conventions.md#チェックの実行点) にある。
 
 ## Repository Layout
 
