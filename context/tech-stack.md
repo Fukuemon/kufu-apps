@@ -27,7 +27,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - Astro: コーポレートサイトの framework として使う。
 - TypeScript: 言語として使う。
 - oxlint: lint に使う。TypeScript を含む workspace では、`oxlint-tsgolint` で type-aware に実行する。
-  - eslint は、oxlint で足りないことを確かめた場合だけ、段階的に併用する。
+  - eslint は、oxlint で足りないことを確認した場合だけ、段階的に併用する。
 - oxfmt: format に使う。prettier は入れない。
 - Vitest: unit test に使う。
 - Storybook: `packages/ui` と、app の presentation のコンポーネントのレビューに使う。
@@ -45,7 +45,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 
 使う前に先に決めておく候補は次のとおり。
 
-- Rolldown: bundler の候補にする。`apps/cms` を実装するときの build の構成で、採否を確かめる。
+- Rolldown: bundler の候補にする。`apps/cms` を実装するときの build の構成で、採否を確認する。
 - React Compiler: React の app を入れるときの標準にする。`packages/ui` と、`apps/cms` を実装するときに使う。
   - React Compiler に対応していないライブラリと実装の扱いは [CMS の Design Doc](../design/features/cms/DesignDoc.md) にある。
 - Hono、Inertia、React: CMS の app の候補にする。実装していない。採否は ADR か spec で決める。
@@ -59,15 +59,15 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - `pnpm build`: すべての workspace をビルドする。
 - `pnpm lint`: lint を実行する。
 - `pnpm typecheck`: 型をチェックする。
-- `pnpm format:check`: format を確かめる。書き換えるときは `pnpm format` を使う。
+- `pnpm format:check`: format を確認する。書き換えるときは `pnpm format` を使う。
 - `pnpm test`: unit test を実行する。
-- `pnpm e2e`: E2E を実行する。既定の対象は corporate-site である。
+- `pnpm e2e`: E2E を実行する。デフォルトの対象は corporate-site である。
 - `pnpm storybook`: Storybook を起動する。`packages/ui` だけなら `pnpm storybook:ui`、corporate-site だけなら `pnpm storybook:corporate` を使う。
 - `pnpm storybook:build`: Storybook をビルドする。GitHub Pages の artifact は `pnpm storybook:pages` が作る。
 - `pnpm vrt:story`: story の VRT を実行する。baseline の撮り直しは `pnpm vrt:story:update` を使う。
 - `pnpm vrt:route`: route の VRT を Playwright の公式の container で実行する。baseline の撮り直しは `pnpm vrt:route:update` を使う。
 - `pnpm knip && pnpm depcruise`: リポジトリの健全さをチェックする。
-- `pnpm check:specs`: close した issue の spec が残っていないかを確かめる。実行の時期は [conventions.md](conventions.md#チェックの実行点) にある。
+- `pnpm check:specs`: close した issue の spec が残っていないかを確認する。実行の時期は [conventions.md](conventions.md#チェックの実行点) にある。
 - 依存の追加: `pnpm --filter @kufu/<module> add <package>` を使う。
 
 テストのコマンドの使い分けは [testing.md](testing.md) にある。
@@ -85,11 +85,10 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 ## Scaffolding
 
 app の最初の scaffold は、公式の `create` のコマンドを優先する。  
-ADR-0002: [monorepo の scaffold に create のコマンドを使う](../adr/0002-monorepo-scaffold-create-command-policy.md)
+ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](../adr/0025-vite-plus-toolchain.md)
 
 - `apps/corporate-site`: `pnpm create astro@latest apps/corporate-site`
 - React の app: `pnpm create vite ... --template react-ts`
 - 作った後に、package の名前、ルートの script、typecheck、E2E、共有の設定を、monorepo の取り決めに合わせる。
   - 名前は [conventions.md](conventions.md#naming) に、共有の設定は [conventions.md](conventions.md#shared-configuration) にある。
   - E2E の対象にする手順は [testing.md](testing.md#runtime-requirements) にある。
-- Vite+ は入れない。入れるかは、専用の issue か spec で考え直す。
