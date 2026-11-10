@@ -11,7 +11,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT_YML="$ROOT/context/project.yml"
 
-# docs.spec (例: `specs`) を取り出す
+# docs.spec (例: `docs/specs`) を取り出す
 resolve_specs_dir() {
   local value=""
   if [ -f "$PROJECT_YML" ]; then
@@ -19,13 +19,13 @@ resolve_specs_dir() {
     value="${value%%<*}"                                  # <issue-id> 以降を落とす
     value="$(printf '%s' "$value" | tr -d '"'"'"' ' | sed 's:/*$::')"
   fi
-  printf '%s' "${value:-specs}"
+  printf '%s' "${value:-docs/specs}"
 }
 
 SPECS_REL="$(resolve_specs_dir)"
 SPECS_DIR="$ROOT/$SPECS_REL"
 
-# specs/ 自体が無いのは、closeout がすべて完了した (または spec をまだ 1 つも
+# docs/specs/ 自体が無いのは、closeout がすべて完了した (または spec をまだ 1 つも
 # 作っていない) 定常状態。残存ゼロが事実として成立しているため、検査不能 (exit 2)
 # ではなく成功として扱う。これは意図した挙動 (issue #16)。
 [ -d "$SPECS_DIR" ] || { echo "no $SPECS_REL/; 残存なし (specs dir 自体が無い)"; exit 0; }

@@ -34,7 +34,7 @@ PR では `pr-preview/pr-<number>/` へ、`develop` への push 後は Pages roo
 
 ## Visual Regression Testing (VRT)
 
-story 側と route 側の 2 系統がある。方針の基準は [adr/0018](adr/0018-story-vrt-on-storybook-test-integrations.md) と [adr/0015](adr/0015-visual-regression-testing-policy.md)、責務分担は [context/testing.md](context/testing.md)。ここには実行手順だけを書く。
+story 側と route 側の 2 系統がある。方針の基準は [docs/adr/0018](docs/adr/0018-story-vrt-on-storybook-test-integrations.md) と [docs/adr/0015](docs/adr/0015-visual-regression-testing-policy.md)、責務分担は [context/testing.md](context/testing.md)。ここには実行手順だけを書く。
 
 | 系統  | 撮影対象                              | 撮影                          | 実行             |
 | ----- | ------------------------------------- | ----------------------------- | ---------------- |
@@ -107,11 +107,12 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 │   ├── ui/              # 共通 UI / デザイントークン / フォント
 │   └── config/          # 共通 tsconfig / lint / test 設定
 ├── e2e/                 # ルート管理の Playwright テスト
-├── design/              # 設計文書
 ├── context/             # 技術規約 / 運用契約
-├── adr/                 # 意思決定記録
-├── specs/               # Issue 単位の作業 spec
-└── PRD.md               # プロダクト要求
+└── docs/
+    ├── PRD.md           # プロダクト要求
+    ├── design/          # 設計文書
+    ├── adr/             # 意思決定記録
+    └── specs/           # Issue 単位の作業 spec
 ```
 
 ### Package Boundaries
@@ -127,22 +128,22 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 
 確認順は上から。
 
-| 層             | 文書                                       | 役割                                                                             |
-| -------------- | ------------------------------------------ | -------------------------------------------------------------------------------- |
-| Why / What     | [PRD.md](PRD.md)                           | 誰のどの課題を、なぜ・何で解決するか                                             |
-| How: 全体像    | [design/DesignDoc.md](design/DesignDoc.md) | 全体像 / モジュール責務 / 横断方針                                               |
-| How: feature   | 対象コードの隣の `DesignDoc.md`            | feature 単位の設計。一覧は [design/DesignDoc.md](design/DesignDoc.md#components) |
-| How: 技術規約  | [context/](context/index.md)               | 技術スタック規約 / codebase architecture / 運用契約                              |
-| Decision       | [adr/](adr/)                               | 長期参照する意思決定                                                             |
-| Issue 作業文書 | [specs/](specs/)                           | Issue / 機能単位の要求・設計・テスト観点                                         |
+| 層             | 文書                                                 | 役割                                                                                       |
+| -------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Why / What     | [docs/PRD.md](docs/PRD.md)                           | 誰のどの課題を、なぜ・何で解決するか                                                       |
+| How: 全体像    | [docs/design/DesignDoc.md](docs/design/DesignDoc.md) | 全体像 / モジュール責務 / 横断方針                                                         |
+| How: feature   | 対象コードの隣の `DesignDoc.md`                      | feature 単位の設計。一覧は [docs/design/DesignDoc.md](docs/design/DesignDoc.md#components) |
+| How: 技術規約  | [context/](context/index.md)                         | 技術スタック規約 / codebase architecture / 運用契約                                        |
+| Decision       | [docs/adr/](docs/adr/)                               | 長期参照する意思決定                                                                       |
+| Issue 作業文書 | [docs/specs/](docs/specs/)                           | Issue / 機能単位の要求・設計・テスト観点                                                   |
 
 AI エージェント向けの操作契約 (`AGENTS.md` / `CLAUDE.md` / `.codex/` / `.claude/` / `.cursor/`) は sdd-template が定め、symlink で接続する。本リポジトリでは追跡しないため、clone しただけの状態では存在しない。接続は sdd-template 側で `bash scripts/link.sh <このリポジトリ>`、確認は `bash scripts/doctor.sh`。
 
 ## Workflow
 
 1. [Documentation](#documentation) の順に基準の文書を確認する。
-2. feature 作業では `specs/<issue-number>-<slug>/` に Issue 単位の spec を作成・更新する。
-3. Issue を越えて残る判断は feature doc、`context/`、`adr/` へ反映する。
+2. feature 作業では `docs/specs/<issue-number>-<slug>/` に Issue 単位の spec を作成・更新する。
+3. Issue を越えて残る判断は feature doc、`context/`、`docs/adr/` へ反映する。
 4. PR 作成・更新前に、対象範囲に応じた品質チェックを実行する。
 
 コマンドの対象範囲判断と E2E 実行の詳細は [context/conventions.md](context/conventions.md#ルートのタスク) / [context/testing.md](context/testing.md) を参照。

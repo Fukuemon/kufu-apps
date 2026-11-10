@@ -14,7 +14,7 @@
   静的なサイトの実態（ページは section の集まり）と合っていなかった。
 - pages から feature の中の任意のファイルを import できた。
   公開面（どこから使ってよいか）は規約でしか表されず、規約から外れる余地があった。
-- app の中の component の間の依存の境界は、[コードベースの構造](../context/codebase.md#module-boundaries)の app の間と package の境界の規則では決まっていなかった。
+- app の中の component の間の依存の境界は、[コードベースの構造](../../context/codebase.md#module-boundaries)の app の間と package の境界の規則では決まっていなかった。
 - 検討の初めは、route の層でまとめる構成（`sections/<route>/<section>/`）を採ろうとした。
   しかし、実際の import の関係を確認すると、その前提が成り立たなかった。
   - `pages/index.astro`（`/`）が `ProductsCategorySection` を import しており、products の domain の section が home の route の構成要素になっている。
@@ -30,7 +30,7 @@
    route の層は設けない。
    domain のまとまりは、ディレクトリ名の接頭辞（`products-category`、`products-detail`）で表す。
    ページとの対応は、corporate-site の Design Doc の section の構成の表を基準にする。
-   - [corporate-site の Design Doc: section の構成](../apps/corporate-site/DesignDoc.md#section-の構成)
+   - [corporate-site の Design Doc: section の構成](../../apps/corporate-site/DesignDoc.md#section-の構成)
 2. **section の中はフラットにし、公開面を `index.ts` にする。**
    section のディレクトリの直下に、`index.ts`、Section の assembly、presentation、story を並べる。
    `index.ts` は Section component だけを再輸出する。
@@ -78,7 +78,7 @@
   - ADR-0006: [corporate-site の IA を 3 route に統合する](0006-corporate-site-three-route-ia.md)
 - 公開面を機械でチェックでき、規約から外れたことをチェックで検出できる。
 - Storybook の title の階層（`Sections/<Section>/<Component>`）を、ディレクトリから機械的に決められる。
-  - [規約: Storybook の title](../context/conventions.md#storybook-の-title)
+  - [規約: Storybook の title](../../context/conventions.md#storybook-の-title)
 
 ### Negative
 

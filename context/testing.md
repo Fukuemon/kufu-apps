@@ -34,7 +34,7 @@ corporate-site で E2E が担うジャーニーは [コーポレートサイト�
 
 play テストの対象は `packages/ui` に限る。  
 Astro の静的なコンポーネントは E2E で確認する。  
-ADR-0017: [UI のテストの構成](../adr/0017-ui-test-structure-policy.md)
+ADR-0017: [UI のテストの構成](../docs/adr/0017-ui-test-structure-policy.md)
 
 - React の island の play テストの対象の基準は未定。最初の island を足すときに決める。
 
@@ -44,8 +44,8 @@ E2E は、route をまたいだ到達を見る。
 ### VRT
 
 VRT は、story と route の 2 系統で撮る。  
-ADR-0015: [VRT の方針](../adr/0015-visual-regression-testing-policy.md)  
-ADR-0018: [Storybook の test の仕組みの上の story の VRT](../adr/0018-story-vrt-on-storybook-test-integrations.md)
+ADR-0015: [VRT の方針](../docs/adr/0015-visual-regression-testing-policy.md)  
+ADR-0018: [Storybook の test の仕組みの上の story の VRT](../docs/adr/0018-story-vrt-on-storybook-test-integrations.md)
 
 | 系統  | 撮る対象                                        | 撮る手段                         | baseline の置き場 | コマンド         |
 | ----- | ----------------------------------------------- | -------------------------------- | ----------------- | ---------------- |
@@ -61,7 +61,7 @@ ADR-0018: [Storybook の test の仕組みの上の story の VRT](../adr/0018-s
   - Playwright の baseline はファイル名に platform を含み、ホスト（macOS）で撮った画像は CI では使われない。
   - `pnpm vrt:route` を通さない実行は skip される。
 - story は container を使わず、CI だけで撮る。撮影が Vite の bundle を伴い、エミュレーションの下の container の実行と両立しないため。
-  - ADR-0018: [Storybook の test の仕組みの上の story の VRT](../adr/0018-story-vrt-on-storybook-test-integrations.md)
+  - ADR-0018: [Storybook の test の仕組みの上の story の VRT](../docs/adr/0018-story-vrt-on-storybook-test-integrations.md)
 - VRT を外部のサービスの応答に依存させない。外部の埋め込みと画像はリクエストごと止め、残る枠はマスクする。
 
 手順とコマンドの詳細は、[README.md](../README.md#visual-regression-testing-vrt) の VRT の節にある。
@@ -104,7 +104,7 @@ Cloudflare Pages Functions か Workers を伴う feature は、ローカルの E
   - fixture は story の中に限り、代表のケースだけでよい。variant を網羅する主な対象は presentation である。
 - すべての story に autodocs を適用する。`.storybook/preview` の `tags: ['autodocs']` で掛け、例外は story の側で `!autodocs` を指定する。
 - 公開の判断には、deploy の成功だけでなく、preview での導線の確認を含める。条件は [operations.md](operations.md#deployment-conditions) にある。
-- `apps/cms` を足すときの採用判断のテストの観点は [CMS の Design Doc](../design/features/cms/DesignDoc.md) にある。
+- `apps/cms` を足すときの採用判断のテストの観点は [CMS の Design Doc](../docs/design/features/cms/DesignDoc.md) にある。
 
 ### Page Object と locator
 

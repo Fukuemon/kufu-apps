@@ -22,7 +22,7 @@
   - スクリプトは、spec のディレクトリの issue の番号とトラッカーの issue の状態を照らし合わせ、CLOSED の issue の spec が残っていれば失敗する。
   - 実行は手動（コマンドの登録）にし、CI での常設化は CI のパイプラインの方針で判断する。
   - lefthook（pre-commit、pre-push）には入れない。`gh` を呼ぶので、オフラインのときと速度に影響するのを避ける。
-- チェックの仕組みは**このリポジトリの中に閉じる**（スクリプト、コマンドの登録、[conventions.md](../context/conventions.md#チェックの実行点) への記載）。
+- チェックの仕組みは**このリポジトリの中に閉じる**（スクリプト、コマンドの登録、[conventions.md](../../context/conventions.md#チェックの実行点) への記載）。
   - 他のリポジトリにも広がる共有の closeout の手順へチェックの実行を足す改修は、このリポジトリでは行わない。
 - issue の close を契機に、GitHub Actions が **spec を削除する pull request を起票する**。
   - bot は候補を示すだけにし、**削除してよいかは、その pull request を merge するかどうかで人が決める。**

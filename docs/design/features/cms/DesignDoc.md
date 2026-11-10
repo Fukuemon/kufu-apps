@@ -44,12 +44,12 @@ ADR-0003: [Phase 1 は corporate-site だけを実装する](../../../adr/0003-p
 | React の最適化 | React Compiler  | 採る時点の公式の互換性を確認する。対応しないライブラリと実装のパターンがあれば、spec か ADR で回避の方法を決める      |
 
 - 追加のライブラリ（axios など）は、標準の Web API、framework の機能、TanStack Query で足りない理由を spec に書いたときだけ採る。
-- URL で表せる状態は router の側に置く。状態の置き場の規則は [context/codebase.md](../../../context/codebase.md#state-ownership) にある。
+- URL で表せる状態は router の側に置く。状態の置き場の規則は [context/codebase.md](../../../../context/codebase.md#state-ownership) にある。
 
 ### 内容の管理
 
 - コーポレートサイトの内容を CMS へ移す時期と、内容の更新の責務とレビューの観点は、実装に着手するときの spec で決める。
-- 認証、権限、公開の流れ、プレビューの環境のセキュリティの要件は、[context/operations.md](../../../context/operations.md#secrets) を踏まえて spec で設計する。
+- 認証、権限、公開の流れ、プレビューの環境のセキュリティの要件は、[context/operations.md](../../../../context/operations.md#secrets) を踏まえて spec で設計する。
 
 ### 採るときに残すもの
 

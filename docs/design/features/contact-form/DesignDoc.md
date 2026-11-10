@@ -13,7 +13,7 @@ status: draft
 コーポレートサイトの静的な配信を保ったまま、送信だけを Cloudflare Pages Functions（Workers）で中継する。  
 ADR-0009: [corporate-site の問い合わせフォームの backend](../../../adr/0009-corporate-site-contact-form-backend.md)
 
-全体像は [design/DesignDoc.md](../../DesignDoc.md) に、フォームを置くページは [コーポレートサイトの Design Doc](../../../apps/corporate-site/DesignDoc.md#問い合わせフォーム) にある。  
+全体像は [design/DesignDoc.md](../../DesignDoc.md) に、フォームを置くページは [コーポレートサイトの Design Doc](../../../../apps/corporate-site/DesignDoc.md#問い合わせフォーム) にある。  
 まだ実装していないので、この文書は設計文書のディレクトリに置く。
 
 ## Scope
@@ -27,9 +27,9 @@ ADR-0009: [corporate-site の問い合わせフォームの backend](../../../ad
 持たないものは次のとおり。
 
 - 問い合わせの内容の保存。アプリの側（Workers）で DB、ストレージ、ログに残さない。
-  - 扱いの規則は [context/codebase.md](../../../context/codebase.md#state-ownership) にある。
-- 基盤の設定（secret、Rate Limiting のルール、送信のドメイン）。基盤に求めるものは [context/operations.md](../../../context/operations.md#問い合わせフォームが基盤に求めるもの) にある。
-- Edge API に共通の契約。[context/codebase.md](../../../context/codebase.md#edge-api) にある。
+  - 扱いの規則は [context/codebase.md](../../../../context/codebase.md#state-ownership) にある。
+- 基盤の設定（secret、Rate Limiting のルール、送信のドメイン）。基盤に求めるものは [context/operations.md](../../../../context/operations.md#問い合わせフォームが基盤に求めるもの) にある。
+- Edge API に共通の契約。[context/codebase.md](../../../../context/codebase.md#edge-api) にある。
 
 ## Design
 
@@ -145,7 +145,7 @@ sequenceDiagram
 ## Verification
 
 確認する範囲は次のとおり。  
-置き換え方の共通の規則は [context/testing.md](../../../context/testing.md#mocking-and-test-data) にある。
+置き換え方の共通の規則は [context/testing.md](../../../../context/testing.md#mocking-and-test-data) にある。
 
 - Playwright の E2E は `/api/contact` を route の intercept で fixture にし、実際のメールの送信と Cloudflare の実行環境に依存しない。
 - E2E の fixture は、成功（200）、`validation_error`（400）、`turnstile_failed`（400）、`rate_limited`（429）、`send_failed`（502）を用意する。

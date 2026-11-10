@@ -72,18 +72,18 @@ title は物理的な配置から機械的に決め、story を作るときに�
 
 ## Documents
 
-feature の Design Doc は、対象のコードと同じディレクトリの `DesignDoc.md` に置く。コードがまだないときは `design/features/<feature>/DesignDoc.md` に置き、コードができたら隣へ移す。  
-掲載する内容の一次情報は `design/features/<feature>/reference/` に置く。
+feature の Design Doc は、対象のコードと同じディレクトリの `DesignDoc.md` に置く。コードがまだないときは `docs/design/features/<feature>/DesignDoc.md` に置き、コードができたら隣へ移す。  
+掲載する内容の一次情報は `docs/design/features/<feature>/reference/` に置く。
 
 ### デザインの制作物
 
-デザインの制作物（依頼文と内容の一次情報）は `design/features/<feature>/` に置く。  
+デザインの制作物（依頼文と内容の一次情報）は `docs/design/features/<feature>/` に置く。  
 デザインの実体は実装の側にある。  
-ADR-0012: [デザインの基準を実装にする](../adr/0012-design-source-of-truth-implementation.md)
+ADR-0012: [デザインの基準を実装にする](../docs/adr/0012-design-source-of-truth-implementation.md)
 
-- Claude Design への依頼文は `design/features/<feature>/<screen>.prompt.md` に置き、commit する。
+- Claude Design への依頼文は `docs/design/features/<feature>/<screen>.prompt.md` に置き、commit する。
   - 採用した方向の依頼文だけを残す。却下した方向の依頼文は残さない。
-- Claude Design が出した standalone HTML は `design/.staging/` に置き、commit しない。HTML をデザインの基準にしない。
+- Claude Design が出した standalone HTML は `docs/design/.staging/` に置き、commit しない。HTML をデザインの基準にしない。
 - 画像のアセットは `apps/<app>/src/assets/` に置き、Astro Image か import で最適化する。
 - IA、layout の方針、ブランドの指針のように残す判断は、feature の Design Doc と `packages/ui` のトークンへ書き戻す。
 - デザインのツールは `packages/ui` のトークンとコンポーネントを使うだけにし、写して分岐させない。
@@ -120,7 +120,7 @@ subpath は `tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`oxlint/base
 
 ローカルの Git のフックは速く知らせることを、CI は飛ばせないチェックを受け持つ。  
 pre-commit は `--no-verify` で飛ばせるので、CI を最後のチェックにする。  
-ADR-0016: [CI とローカルのフックの分担](../adr/0016-ci-local-hook-responsibility.md)
+ADR-0016: [CI とローカルのフックの分担](../docs/adr/0016-ci-local-hook-responsibility.md)
 
 - `typecheck`、`build`、`knip`、`depcruise`、`e2e`、VRT を CI で実行する。
 - 同じチェックがローカルのフックと CI の両方で動くのは、意図した二重化として認める。
@@ -134,8 +134,8 @@ ADR-0016: [CI とローカルのフックの分担](../adr/0016-ci-local-hook-re
   - CI が赤いまま merge できる状態が残るので、merge の前に pull request のチェックの欄を見る。
 - VRT を CI だけで撮って判定する理由は [testing.md](testing.md#test-types-and-guarantees) にある。
 
-`pnpm check:specs` は、close した issue の spec のディレクトリが `specs/` に残っていないかを確認する。  
-ADR-0011: [spec の後始末の強制](../adr/0011-specs-closeout-enforcement.md)
+`pnpm check:specs` は、close した issue の spec のディレクトリが `docs/specs/` に残っていないかを確認する。  
+ADR-0011: [spec の後始末の強制](../docs/adr/0011-specs-closeout-enforcement.md)
 
 - issue を close した直後と、文書を整理する pull request で実行する。
   - close する前に実行しても、対象の issue はまだ OPEN なので、その spec の消し忘れは検出できない。
@@ -143,7 +143,7 @@ ADR-0011: [spec の後始末の強制](../adr/0011-specs-closeout-enforcement.md
 - CI では `.github/workflows/spec-residue.yml` が同じチェックを実行する。
   - デフォルトのブランチへの push、週に 1 回の cron、手動で動く。
   - pull request のチェックにはしない。別の pull request で spec を消す運用では、issue は閉じたが spec が残っている間、関係のない pull request が失敗するため。
-- 残っていたら、[specs/README.md](../specs/README.md) の手順で消す。
+- 残っていたら、[CONTRIBUTING.md](../CONTRIBUTING.md#spec-を閉じるとき) の手順で消す。
 
 ### スタイリングの共有と書き方
 
@@ -174,4 +174,4 @@ pull request では、[PULL_REQUEST_TEMPLATE.md](../.github/PULL_REQUEST_TEMPLAT
 - トークンの直接の記述のチェックは、サイズと余白の arbitrary value を対象にしない。
 - `space-*` は CSS のトークンを持たず、Tailwind の標準のスケール（4px のグリッド）への写像として扱う。トークンの記述のチェックの対象にしない。
   - 写像は [コーポレートサイトの Design Doc](../apps/corporate-site/DesignDoc.md#デザイントークン) のデザイントークンの節にある。
-  - ADR-0007: [デザイントークンの構成](../adr/0007-design-token-architecture.md)
+  - ADR-0007: [デザイントークンの構成](../docs/adr/0007-design-token-architecture.md)

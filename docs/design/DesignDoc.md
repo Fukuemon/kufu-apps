@@ -70,7 +70,7 @@ flowchart TD
 - `apps/corporate-site` は、`packages/ui` と `packages/config` が公開するエントリポイントだけに依存する。
 - `packages/ui` は `packages/config` に依存してよい。
 - app の間で直接依存しない。
-- 依存の規則とチェックの方法は [context/codebase.md](../context/codebase.md#dependency-rules) にある。
+- 依存の規則とチェックの方法は [context/codebase.md](../../context/codebase.md#dependency-rules) にある。
 
 ## Components
 
@@ -81,7 +81,7 @@ Astro によるコーポレートサイト。
 app の中の Storybook で、section のコンポーネントをレビューする。
 
 - 持たないもの: デザイントークンとフォントの定義、複数の app で使う UI、本番の基盤の設定
-- 設計: [コーポレートサイトの Design Doc](../apps/corporate-site/DesignDoc.md)
+- 設計: [コーポレートサイトの Design Doc](../../apps/corporate-site/DesignDoc.md)
 - 問い合わせフォームの設計: [問い合わせフォームの Design Doc](features/contact-form/DesignDoc.md)
 
 ### packages/ui
@@ -91,14 +91,14 @@ Storybook で共有のカタログを提供する。
 ADR-0007: [デザイントークンの構成](../adr/0007-design-token-architecture.md)
 
 - 持たないもの: ページの section、業務の文言を持つコンポーネント、app のデータの形に依存するコンポーネント
-- 置いてよいものの規則は [context/codebase.md](../context/codebase.md#app-の中の層) にある。
+- 置いてよいものの規則は [context/codebase.md](../../context/codebase.md#app-の中の層) にある。
 
 ### packages/config
 
 TypeScript、oxlint、Vitest のような、共有する価値の高い設定を集める。
 
 - 持たないもの: knip と dependency-cruiser の設定。リポジトリの全体を見るので、ルートに置く。
-- subpath の一覧は [context/conventions.md](../context/conventions.md#shared-configuration) にある。
+- subpath の一覧は [context/conventions.md](../../context/conventions.md#shared-configuration) にある。
 
 ### e2e
 
@@ -106,7 +106,7 @@ TypeScript、oxlint、Vitest のような、共有する価値の高い設定を
 route の VRT もここで撮る。
 
 - 持たないもの: 1 つのコンポーネントの中で閉じる操作の検証。Storybook の play が担う。
-- テストの種類ごとの責務は [context/testing.md](../context/testing.md#test-types-and-guarantees) にある。
+- テストの種類ごとの責務は [context/testing.md](../../context/testing.md#test-types-and-guarantees) にある。
 
 ### apps/cms（候補）
 
@@ -118,11 +118,11 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 
 - `@kufu/ui` は、コンポーネント、hooks、utility と、スタイルシートの 4 つのエントリ（`styles.css`、`tokens.css`、`theme.css`、`fonts.css`）を export する。
   - 一覧は `packages/ui/package.json` の `exports` にある。
-  - スタイルシートの使い分けは [context/codebase.md](../context/codebase.md#スタイルのファイル) にある。
+  - スタイルシートの使い分けは [context/codebase.md](../../context/codebase.md#スタイルのファイル) にある。
 - `@kufu/config` は、用途別の subpath で共有の設定を export する。
-- ルートのコマンドは [context/tech-stack.md](../context/tech-stack.md#ルートのコマンド) にある。
-- E2E の環境変数と、app が持つ script の取り決めは [context/testing.md](../context/testing.md#runtime-requirements) にある。
-- Edge API の共通の契約は [context/codebase.md](../context/codebase.md#edge-api) にある。
+- ルートのコマンドは [context/tech-stack.md](../../context/tech-stack.md#ルートのコマンド) にある。
+- E2E の環境変数と、app が持つ script の取り決めは [context/testing.md](../../context/testing.md#runtime-requirements) にある。
+- Edge API の共通の契約は [context/codebase.md](../../context/codebase.md#edge-api) にある。
 
 ## Cross-Cutting Concerns
 
@@ -149,14 +149,13 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 
 ### 取り決めの所在
 
-横断の取り決めは [context/](../context/index.md) にある。  
-環境、公開の条件、シークレットの置き場は [context/operations.md](../context/operations.md) に、チェックの実行点は [context/conventions.md](../context/conventions.md#チェックの実行点) にある。
+横断の取り決めは [context/](../../context/index.md) にある。  
+環境、公開の条件、シークレットの置き場は [context/operations.md](../../context/operations.md) に、チェックの実行点は [context/conventions.md](../../context/conventions.md#チェックの実行点) にある。
 
 ## Repository Layout
 
 ```text
 .
-├── PRD.md
 ├── apps/
 │   └── corporate-site/   # Astro のコーポレートサイト。DesignDoc.md を持つ
 ├── packages/
@@ -164,11 +163,13 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 │   └── config/           # 共有の TypeScript、oxlint、Vitest の設定
 ├── e2e/                  # Playwright の E2E と route の VRT
 ├── playwright.config.ts
-├── design/
-│   ├── DesignDoc.md      # この文書
-│   └── features/         # コードがまだない機能の Design Doc と、掲載する内容の一次情報
-├── adr/
+├── docs/
+│   ├── PRD.md
+│   ├── design/
+│   │   ├── DesignDoc.md  # この文書
+│   │   └── features/     # コードがまだない機能の Design Doc と、掲載する内容の一次情報
+│   ├── adr/
+│   └── specs/            # issue ごとの作業の文書。issue を閉じるときに消す
 ├── context/
-├── specs/                # issue ごとの作業の文書。issue を閉じるときに消す
 └── scripts/              # リポジトリのチェックと VRT のスクリプト
 ```

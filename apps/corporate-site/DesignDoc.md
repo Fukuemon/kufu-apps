@@ -13,7 +13,7 @@ verified_commit: unverified
 ## Overview
 
 Astro によるコーポレートサイトを、高い表示の速さと保守のしやすさで公開する。  
-全体像は [design/DesignDoc.md](../../design/DesignDoc.md) に、横断の取り決めは [context/](../../context/index.md) にある。
+全体像は [docs/design/DesignDoc.md](../../docs/design/DesignDoc.md) に、横断の取り決めは [context/](../../context/index.md) にある。
 
 ## Scope
 
@@ -27,8 +27,8 @@ Astro によるコーポレートサイトを、高い表示の速さと保守�
 持たないものは次のとおり。
 
 - Astro で完結できる機能の React 化
-- CMS による内容の管理。候補は [CMS の Design Doc](../../design/features/cms/DesignDoc.md) にある。
-- 問い合わせフォームの入力の項目、送信、API の設計。[問い合わせフォームの Design Doc](../../design/features/contact-form/DesignDoc.md) にある。
+- CMS による内容の管理。候補は [CMS の Design Doc](../../docs/design/features/cms/DesignDoc.md) にある。
+- 問い合わせフォームの入力の項目、送信、API の設計。[問い合わせフォームの Design Doc](../../docs/design/features/contact-form/DesignDoc.md) にある。
 - デザイントークンの値。`packages/ui` の stylesheet にある。
 
 ## Design
@@ -38,11 +38,11 @@ Astro によるコーポレートサイトを、高い表示の速さと保守�
 - Astro の `.astro` のコンポーネントを基本にする。
 - React の island は、フォーム、動的な UI、外部の widget のように操作が要る箇所に限る。
   - 表示だけの UI は、`@kufu/ui` の shadcn のコンポーネントを `client:*` なしで静的に描画する。
-  - ADR-0008: [Astro と React island の方針](../../adr/0008-astro-react-island-policy.md)
+  - ADR-0008: [Astro と React island の方針](../../docs/adr/0008-astro-react-island-policy.md)
 - 画像、フォント、スクリプトは、性能予算を意識して管理する。
 - コンポーネントは `components/sections/<section>/` の 1 階層に並べ、各 section の公開面は `index.ts` の再輸出だけにする。
   - 層と依存の向き、共有へ移す条件は [context/codebase.md](../../context/codebase.md#app-の中の層) にある。
-  - ADR-0014: [corporate-site の sections 構成](../../adr/0014-corporate-site-sections-architecture.md)
+  - ADR-0014: [corporate-site の sections 構成](../../docs/adr/0014-corporate-site-sections-architecture.md)
 - `src/styles/` のファイルの分け方は [context/codebase.md](../../context/codebase.md#スタイルのファイル) にある。
 - 画像は `src/assets/` に置き、Astro Image か import で扱う。
   - build の asset graph に載せ、width、height、lazy loading、形式の最適化を適用する。
@@ -52,7 +52,7 @@ Astro によるコーポレートサイトを、高い表示の速さと保守�
 ### ページの構成
 
 3 つの route と、全ページに共通の layout で構成する。  
-ADR-0006: [corporate-site の IA を 3 route にする](../../adr/0006-corporate-site-three-route-ia.md)
+ADR-0006: [corporate-site の IA を 3 route にする](../../docs/adr/0006-corporate-site-three-route-ia.md)
 
 | ページ         | route       | 主な section                                                                                                                      |
 | -------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------- |
@@ -146,7 +146,7 @@ flowchart TD
 
 section と、その公開面、使うページの対応は次のとおり。  
 section の名前はドメインで付けるので、ページとの対応はディレクトリから読めず、この表で表す。  
-ADR-0014: [corporate-site の sections 構成](../../adr/0014-corporate-site-sections-architecture.md)
+ADR-0014: [corporate-site の sections 構成](../../docs/adr/0014-corporate-site-sections-architecture.md)
 
 | section             | 公開面（`index.ts` が再輸出する） | 内部の presentation                                                                     | 使うページ  |
 | ------------------- | --------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
@@ -165,10 +165,10 @@ ADR-0014: [corporate-site の sections 構成](../../adr/0014-corporate-site-sec
 
 ### コンテンツの一次情報
 
-掲載する内容の一次情報は、リポジトリの [design/features/corporate-site/reference/](../../design/features/corporate-site/reference/) に置く。
+掲載する内容の一次情報は、リポジトリの [docs/design/features/corporate-site/reference/](../../docs/design/features/corporate-site/reference/) に置く。
 
-- [company-profile.md](../../design/features/corporate-site/reference/company-profile.md): 会社概要、業務の内容、取扱製品のカテゴリ 18 区分
-- [manufacturers.md](../../design/features/corporate-site/reference/manufacturers.md): 取扱メーカー、延べ約 320 社
+- [company-profile.md](../../docs/design/features/corporate-site/reference/company-profile.md): 会社概要、業務の内容、取扱製品のカテゴリ 18 区分
+- [manufacturers.md](../../docs/design/features/corporate-site/reference/manufacturers.md): 取扱メーカー、延べ約 320 社
 - `.ai-out/` は AI エージェントが取り込むための未追跡の作業場所で、一次情報にしない。
 - 取扱製品は、カテゴリ（18 区分）から、そのカテゴリの取扱メーカーの一覧へ進むモデルで示す。
   - 同じメーカーが複数のカテゴリに出ることは、取扱の範囲として認める。
@@ -181,7 +181,7 @@ ADR-0014: [corporate-site の sections 構成](../../adr/0014-corporate-site-sec
 
 `/contact` の問い合わせフォームは、連絡先（TEL、FAX、メール）と並ぶ補助の導線である。  
 フォームの送信に失敗しても、電話、FAX、メールで連絡できる構成にする。  
-入力の項目、検証、送信の流れ、API の契約、セキュリティの規則は、[問い合わせフォームの Design Doc](../../design/features/contact-form/DesignDoc.md) にある。
+入力の項目、検証、送信の流れ、API の契約、セキュリティの規則は、[問い合わせフォームの Design Doc](../../docs/design/features/contact-form/DesignDoc.md) にある。
 
 ### デザイントークン
 
@@ -192,7 +192,7 @@ ADR-0014: [corporate-site の sections 構成](../../adr/0014-corporate-site-sec
 - トークンを utility へ写す `@theme inline`: `packages/ui/src/styles/theme.css`（`@kufu/ui/theme.css`）
 - React の app 用のすべてを含むエントリ: `packages/ui/src/styles/globals.css`（`@kufu/ui/styles.css`）
 - 体系（2 層の構成、shadcn の語彙、inverse のスコープ）
-  - ADR-0007: [デザイントークンの構成](../../adr/0007-design-token-architecture.md)
+  - ADR-0007: [デザイントークンの構成](../../docs/adr/0007-design-token-architecture.md)
 
 CSS のトークンを持たないガイドは、次の 3 つ。
 
@@ -270,7 +270,7 @@ sequenceDiagram
 
 route をまたいだ到達を、E2E で確認する。  
 テストの規約は [context/testing.md](../../context/testing.md#test-types-and-guarantees) にある。  
-ADR-0017: [UI のテストの構成](../../adr/0017-ui-test-structure-policy.md)
+ADR-0017: [UI のテストの構成](../../docs/adr/0017-ui-test-structure-policy.md)
 
 - 回遊: `/` から `/products` へ進み、カテゴリを検索し（URL に検索の条件が残る）、`/contact` に着く。
 - ナビゲーション: ヘッダーとフッターのリンクと、モバイルのナビの開閉から、各 route へ着ける。
@@ -280,7 +280,7 @@ ADR-0017: [UI のテストの構成](../../adr/0017-ui-test-structure-policy.md)
 
 ### VRT の対象
 
-ADR-0015: [VRT の方針](../../adr/0015-visual-regression-testing-policy.md)
+ADR-0015: [VRT の方針](../../docs/adr/0015-visual-regression-testing-policy.md)
 
 - 3 つの route（`/`、`/products`、`/contact`）を、desktop と mobile の 2 つの幅で撮り、baseline との差分を検出する。
 - app の Storybook の story も撮る。

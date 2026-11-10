@@ -108,7 +108,7 @@ ADR-0006: [corporate-site の IA を 3 route にする](adr/0006-corporate-site-
 - お問い合わせ（`/contact`）: 電話、FAX、メールの連絡先と、問い合わせのフォームを載せる。
 - 全ページに共通: ヘッダーのナビゲーションと問い合わせへの導線を持ち、どのページからも問い合わせ先へ着ける。
 
-ページの構成と、情報をどこに置くかは [コーポレートサイトの Design Doc](apps/corporate-site/DesignDoc.md#ページの構成) にある。
+ページの構成と、情報をどこに置くかは [コーポレートサイトの Design Doc](../apps/corporate-site/DesignDoc.md#ページの構成) にある。
 
 ### 問い合わせフォーム
 
@@ -149,7 +149,7 @@ ADR-0003: [Phase 1 は corporate-site だけを実装する](adr/0003-phase1-cor
 - Astro の静的な生成と、island を最小にする方針を守る。
   - 表示だけの UI に、不要な island を 1 件も足さない。client directive と React の island をレビューで確認し、要るときは bundle と Lighthouse で確認する。
 - 掲載する内容の基準と掲載箇所を追える。
-  - 会社概要、取扱製品、メーカーの情報について、基準の文書へのリンクを保つ。`design/features/corporate-site/reference/` とコーポレートサイトの Design Doc の対応で確認する。
+  - 会社概要、取扱製品、メーカーの情報について、基準の文書へのリンクを保つ。`docs/design/features/corporate-site/reference/` とコーポレートサイトの Design Doc の対応で確認する。
 - AI エージェントと開発者が、責務の境界を参照できる。
   - 実装の前に、Design Doc、ADR、context の基準の文書へのリンクを確認できる。
 
@@ -188,7 +188,7 @@ package の境界の違反は、リポジトリのチェック（`pnpm depcruise
 - 基盤のリポジトリと app のリポジトリの変更を、互いに参照してレビューする流れをどうするか。
   - 開発者と基盤の owner が、本番の公開の前に決める。Cloudflare Pages と Terraform の変更を、どう相互に参照するかを決める。
 - Cloudflare Pages の preview と production に結びつく domain、branch、secret の運用の規則をどうするか。
-  - 開発者と基盤の owner が、本番の公開の前に決める。いまの取り決めは [context/operations.md](context/operations.md) にある。
+  - 開発者と基盤の owner が、本番の公開の前に決める。いまの取り決めは [context/operations.md](../context/operations.md) にある。
 
 ### Risks
 

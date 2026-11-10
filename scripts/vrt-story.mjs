@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // story 側 VRT。Storybook を撮影し、reg-cli で baseline と比べる。
-// 手順と設計の理由は README.md の VRT 節、判断は adr/0018。
+// 手順と設計の理由は README.md の VRT 節、判断は docs/adr/0018。
 //
 //   node scripts/vrt-story.mjs [--update] [--target=ui|corporate-site]
 //
@@ -102,7 +102,7 @@ async function captureCorporate() {
   }
 }
 
-// 許容 diff は 0 (adr/0015)。matchingThreshold だけ 0.02 にしているのは、角丸の
+// 許容 diff は 0 (docs/adr/0015)。matchingThreshold だけ 0.02 にしているのは、角丸の
 // アンチエイリアスが 1 チャンネルあたり ±1 で揺れるため。差分ピクセル数は 0 のまま。
 function compare(target) {
   const actual = join(repoRoot, ".vrt/actual", target);

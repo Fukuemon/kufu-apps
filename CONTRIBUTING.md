@@ -36,6 +36,38 @@ node .claude/hooks/docs/hooks/check-links.mjs
 
 `verified_commit` の後に実装が変わった文書は、`node .claude/hooks/docs/hooks/list-drift.mjs` で一覧する。実装と読み比べてから `verified_commit` を進める。
 
+## spec を書くとき
+
+spec の節の構成と書き方は、スキル write-design-docs が持つ。このリポジトリだけの取り決めを次に書く。
+
+### 名前
+
+- ディレクトリ名は `docs/specs/<issue 番号>-<slug>/` にする。slug は英小文字、数字、ハイフンで書く。
+- 最初に読む文書は `index.md` にする。開発プロセスの宣言を置くときは、同じディレクトリの `process.yml` に書く。
+- issue の番号がない一時の下書きだけ、`docs/specs/draft-<yyyymmdd>-<slug>/` に置く。番号がついたら、正式な名前に改める。
+
+### 必須の確認
+
+新しい spec を作るときは、次を確認する。
+
+- Design Doc の更新が要るか。
+- ADR の起票が要るか。
+- コーポレートサイトの performance に影響するか。
+- UI を共通化するか。app と feature の中で閉じる UI は、`packages/ui` へ寄せない。複数の feature か app にまたがる再利用が明確なものだけを共通化する。
+- React Compiler と互換か。
+- E2E、Storybook、unit test が要るか。
+
+### spec を閉じるとき
+
+spec は issue の作業文書なので、issue を閉じるときに削除する。判断の根拠は [ADR-0011](docs/adr/0011-specs-closeout-enforcement.md) にある。次の順に進める。
+
+1. 残す設計（IA、データモデル、フロー、アーキテクチャの判断）が、Design Doc、context、ADR に反映済みかを確認する。
+2. 反映していない分を反映する。選択肢を比べて決めた判断は ADR にする。
+3. 削除する spec を指すリンクを、issue のリンクなどに置き換える。削除した spec を基準の文書として扱わない。
+4. spec のディレクトリを削除し、`pnpm check:specs` で残りがないことを確認する。
+
+手順 1 から 3 を終えるまで削除しない。issue を閉じると、手順 4 の削除の pull request を [`.github/workflows/spec-closeout.yml`](.github/workflows/spec-closeout.yml) が起票する。その pull request をマージするかどうかが削除の判断であり、手順 1 から 3 の確認は本文のチェックリストで行う。閉じる pull request に spec の削除を含めた場合は起票されない。
+
 ## コミットするとき
 
 コミットと push の前に、lefthook が次を確認する。設定は `lefthook.yml` にある。
