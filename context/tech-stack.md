@@ -27,7 +27,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - Astro: コーポレートサイトの framework として使う。
 - TypeScript: 言語として使う。
 - oxlint: lint に使う。TypeScript を含む workspace では、`oxlint-tsgolint` で type-aware に実行する。
-  - eslint は、oxlint で足りないことを確かめた場合だけ、段階的に併用する。
+  - eslint は、oxlint で足りないことを確認した場合だけ、段階的に併用する。
 - oxfmt: format に使う。prettier は入れない。
 - Vitest: unit test に使う。
 - Storybook: `packages/ui` と、app の presentation のコンポーネントのレビューに使う。
@@ -45,7 +45,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 
 使う前に先に決めておく候補は次のとおり。
 
-- Rolldown: bundler の候補にする。`apps/cms` を実装するときの build の構成で、採否を確かめる。
+- Rolldown: bundler の候補にする。`apps/cms` を実装するときの build の構成で、採否を確認する。
 - React Compiler: React の app を入れるときの標準にする。`packages/ui` と、`apps/cms` を実装するときに使う。
   - React Compiler に対応していないライブラリと実装の扱いは [CMS の Design Doc](../design/features/cms/DesignDoc.md) にある。
 - Hono、Inertia、React: CMS の app の候補にする。実装していない。採否は ADR か spec で決める。
@@ -59,25 +59,21 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - `pnpm build`: すべての workspace をビルドする。
 - `pnpm lint`: lint を実行する。
 - `pnpm typecheck`: 型をチェックする。
-- `pnpm format:check`: format を確かめる。書き換えるときは `pnpm format` を使う。
+- `pnpm format:check`: format を確認する。書き換えるときは `pnpm format` を使う。
 - `pnpm test`: unit test を実行する。
-- `pnpm e2e`: E2E を実行する。既定の対象は corporate-site である。
+- `pnpm e2e`: E2E を実行する。デフォルトの対象は corporate-site である。
 - `pnpm storybook`: Storybook を起動する。`packages/ui` だけなら `pnpm storybook:ui`、corporate-site だけなら `pnpm storybook:corporate` を使う。
 - `pnpm storybook:build`: Storybook をビルドする。GitHub Pages の artifact は `pnpm storybook:pages` が作る。
 - `pnpm vrt:story`: story の VRT を実行する。baseline の撮り直しは `pnpm vrt:story:update` を使う。
 - `pnpm vrt:route`: route の VRT を Playwright の公式の container で実行する。baseline の撮り直しは `pnpm vrt:route:update` を使う。
 - `pnpm knip && pnpm depcruise`: リポジトリの健全さをチェックする。
-- `pnpm check:specs`: close した issue の spec が残っていないかを確かめる。実行の時期は [conventions.md](conventions.md#チェックの実行点) にある。
+- `pnpm check:specs`: close した issue の spec が残っていないかを確認する。実行の時期は [conventions.md](conventions.md#チェックの実行点) にある。
 - 依存の追加: `pnpm --filter @kufu/<module> add <package>` を使う。
 
 テストのコマンドの使い分けは [testing.md](testing.md) にある。
 
 ## Upgrade Checks
 
-- vite は、ルートの `package.json` の `pnpm.overrides` で `^7` に固定している。
-  - Astro 6 が Vite 7 を前提にするためである。app と package が宣言する `vite ^8` より、overrides が優先される。
-  - 依存に vite 8 が入ると、dev server の plugin の context が動かなくなる。
-  - Astro が Vite 8 に対応したら、overrides を外す。
 - `.ts` の設定ファイル（`packages/config/vitest/base.ts` など）の import は、Node.js 23.6 以上でだけ、そのまま動く。23.6 から type stripping が初めから有効になるためである。
   - CI の Node.js は 24 以上にする。22.12 では `ERR_UNKNOWN_FILE_EXTENSION` で失敗する。
 - それ以外のツールで、バージョンを上げるときに動かなくなりやすい箇所と確認の方法は、未定。
