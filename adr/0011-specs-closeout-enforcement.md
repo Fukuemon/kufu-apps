@@ -26,7 +26,7 @@
   - 他のリポジトリにも広がる共有の closeout の手順へチェックの実行を足す改修は、このリポジトリでは行わない。
 - issue の close を契機に、GitHub Actions が **spec を削除する pull request を起票する**。
   - bot は候補を示すだけにし、**削除してよいかは、その pull request を merge するかどうかで人が決める。**
-  - pull request の本文に、設計の成果を移し終えたかを確かめるチェックリストを載せ、人のレビューとして判断を残す。
+  - pull request の本文に、設計の成果を移し終えたかを確認するチェックリストを載せ、人のレビューとして判断を残す。
   - 対象の spec がなければ何もしない。同じブランチの pull request が既に open なら、起票し直さない。
   - `workflow_dispatch` で issue の番号を指定して、手でも実行できる。workflow が障害を起こしたときの逃げ道にする。
   - pull request を close すれば spec は残り、`pnpm check:specs` は残っているものとして検出し続ける。

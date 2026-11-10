@@ -16,7 +16,7 @@
   公開面（どこから使ってよいか）は規約でしか表されず、規約から外れる余地があった。
 - app の中の component の間の依存の境界は、[コードベースの構造](../context/codebase.md#module-boundaries)の app の間と package の境界の規則では決まっていなかった。
 - 検討の初めは、route の層でまとめる構成（`sections/<route>/<section>/`）を採ろうとした。
-  しかし、実際の import の関係を確かめると、その前提が成り立たなかった。
+  しかし、実際の import の関係を確認すると、その前提が成り立たなかった。
   - `pages/index.astro`（`/`）が `ProductsCategorySection` を import しており、products の domain の section が home の route の構成要素になっている。
   - `ProductsHero` は `/products` の独立した section ではなく、`ProductsDetailSection` の内部の component だった。
 - 公開面を機械でチェックするのに想定した dependency-cruiser は、`.astro` を解析の対象にしていない。

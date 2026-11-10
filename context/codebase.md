@@ -128,7 +128,7 @@ ADR-0008: [Astro と React island の方針](../adr/0008-astro-react-island-poli
 - `client:*` の island は、操作が要るものに限る。
   - 対象は、問い合わせフォームと、Radix のインタラクティブな primitive（Dialog、Dropdown、Popover、Tooltip、Accordion、Tabs、Select など）である。
   - モバイルのナビの開閉のように素の script で足りるものは、`.astro` と最小の script で作り、island にしない。
-- island の既定のディレクティブは `client:visible` か `client:idle` にする。
+- island のデフォルトのディレクティブは `client:visible` か `client:idle` にする。
   - `client:load` は、above-the-fold で即時の操作が要るときだけ使う。
 - インタラクティブな Radix の primitive を、`client:*` なしで静的に描画しない。見た目だけ出て動かない。
 - Astro で解決できるものを React の island にしない。
@@ -141,7 +141,7 @@ ADR-0008: [Astro と React island の方針](../adr/0008-astro-react-island-poli
   - server の状態、client の状態、URL の状態を分けて扱う。標準の候補は [CMS の Design Doc](../design/features/cms/DesignDoc.md) にある。
 - corporate-site の表示する内容は、`content` 層が持つ。
 - 環境変数は、build-time に閉じるものと実行時に参照するものを分けて扱う。
-- 秘密情報を client の bundle に含めない。置き場は [operations.md](operations.md#secrets) にある。
+- シークレットを client の bundle に含めない。置き場は [operations.md](operations.md#secrets) にある。
 - 問い合わせフォームの内容は、アプリ側（Workers）で永続化しない。DB、ストレージ、ログに残さず、メールで通知するだけにする。
   - フォームの近くに利用目的を示す。
   - 永続化しないのはアプリ側に限る。通知の流れ（Resend からのメールの送信、受信箱、Resend 側の一時的な保持）には、通知という目的の範囲でデータが残る。

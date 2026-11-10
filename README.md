@@ -85,7 +85,7 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 - **image tag は `@playwright/test` の版から導出する**。二重管理だとブラウザ版だけ取り残される
 - **アーキテクチャも固定する**。CI の runner は amd64 で、arm64 で撮った画像とは一致しない (測ると 6 枚中 2 枚が変わった)
 - container 内でホストとは別に `pnpm install` をやり直す。`node_modules` は名前付き volume に隔離する。掃除は `docker volume ls | grep kufu-e2e` から `docker volume rm`
-- `pnpm vrt:route` を経由しない実行は skip される。6 件すべての実行を JSON レポートで確かめる
+- `pnpm vrt:route` を経由しない実行は skip される。6 件すべての実行を JSON レポートで確認する
 
 **Linux ホストでの注意**: container は root でリポジトリを read-write に bind mount する。生成物が root 所有で残り、以降のホスト実行が失敗しうる。
 

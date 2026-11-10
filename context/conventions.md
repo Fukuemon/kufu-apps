@@ -48,7 +48,7 @@ verified_commit: 81f85da2744f320f44040307f1ec854f705f7c79
 - `Tag`、`Category`、`Information`、`Summary` のように抽象度の高い語は、`ProductCategoryList`、`ProductsSidebarNav` のように対象と表す UI を明示する。
 - 複数形だけの名前を避ける。リストは `ProductList`、`ManufacturerList` のように `List` を Base にする。
 - 派生や条件は、後ろに付ける `With`、`For`、`By` で明示してよい。
-  - 乱用せず、先に Domain、Base、Case で表せないかを確かめる。
+  - 乱用せず、先に Domain、Base、Case で表せないかを確認する。
 
 feature は `Domain + Case` を基本に切る。  
 corporate-site のような静的なサイトでは、route、section、内容のまとまりが実装の単位になる場合がある。
@@ -90,7 +90,7 @@ ADR-0012: [デザインの基準を実装にする](../adr/0012-design-source-of
   - 新しいトークンが要るときは、先にレビューを経て `packages/ui` へ足す。
 - 実装するときは、プロトタイプの構造をそのまま持ち込まず、`@kufu/ui` のコンポーネントとセマンティックな HTML へ写す。
   - プロトタイプの HTML になくても、状態（hover、focus、error、empty）、データ量の違い、検索と絞り込みの結果、レスポンシブを実装で補う。
-  - 表示は実データ（company-profile、manufacturers）で確かめる。
+  - 表示は実データ（company-profile、manufacturers）で確認する。
 - 制作のフローを変えるときは、先に ADR-0012 を更新する。
 
 ## Shared Configuration
@@ -134,14 +134,14 @@ ADR-0016: [CI とローカルのフックの分担](../adr/0016-ci-local-hook-re
   - CI が赤いまま merge できる状態が残るので、merge の前に pull request のチェックの欄を見る。
 - VRT を CI だけで撮って判定する理由は [testing.md](testing.md#test-types-and-guarantees) にある。
 
-`pnpm check:specs` は、close した issue の spec のディレクトリが `specs/` に残っていないかを確かめる。  
+`pnpm check:specs` は、close した issue の spec のディレクトリが `specs/` に残っていないかを確認する。  
 ADR-0011: [spec の後始末の強制](../adr/0011-specs-closeout-enforcement.md)
 
 - issue を close した直後と、文書を整理する pull request で実行する。
   - close する前に実行しても、対象の issue はまだ OPEN なので、その spec の消し忘れは検出できない。
 - lefthook には入れない。`gh` で issue の状態を問い合わせるので、オフラインのときに失敗し、commit が遅くなる。
 - CI では `.github/workflows/spec-residue.yml` が同じチェックを実行する。
-  - 既定のブランチへの push、週に 1 回の cron、手動で動く。
+  - デフォルトのブランチへの push、週に 1 回の cron、手動で動く。
   - pull request のチェックにはしない。別の pull request で spec を消す運用では、issue は閉じたが spec が残っている間、関係のない pull request が失敗するため。
 - 残っていたら、[specs/README.md](../specs/README.md) の手順で消す。
 
@@ -166,7 +166,7 @@ ADR-0011: [spec の後始末の強制](../adr/0011-specs-closeout-enforcement.md
 - app の Storybook でも Tailwind を適用するため、`.storybook/preview.ts` で `globals.css` を import する。
   - `@storybook-astro/framework` は `astro.config.mjs` の Vite plugin を読み込むので、Tailwind v4 は Astro と同じ `@tailwindcss/vite` の設定で動く。
 
-pull request では、[PULL_REQUEST_TEMPLATE.md](../.github/PULL_REQUEST_TEMPLATE.md) の Design Guard のチェックリストでトークンの参照を確かめる。
+pull request では、[PULL_REQUEST_TEMPLATE.md](../.github/PULL_REQUEST_TEMPLATE.md) の Design Guard のチェックリストでトークンの参照を確認する。
 
 ## Check Exclusions
 
