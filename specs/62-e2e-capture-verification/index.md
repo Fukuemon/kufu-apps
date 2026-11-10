@@ -40,7 +40,7 @@ issue 62 の受け入れ条件を使う。
 - 案 B: 写さず、apm が配置したスキルのディレクトリのファイルを、設定から直接読む。lint と E2E の CI の job に、apm の配置とトークンが要る。fork からの pull request では動かない。
 - 案 C: buddy と同じ npm の `@fukuemon/e2e-kit` 0.2.1 を使う。パッケージ e2e の今のバージョンは kit を持たず、スキルの手順と合わない。
 - 録画を mp4 にまとめるスクリプトは、写さずに、apm が配置したスキルのディレクトリのものを使う。apm を使えない人は、mp4 を作れない。
-- 詳細は、[ADR-0032](../../adr/0032-eslint-for-e2e-authoring-rule.md) と [ADR-0036](../../adr/0036-capture-evidence-with-playwright.md) にある。
+- 詳細は、[ADR-0032](../../adr/0032-oxlint-js-plugin-for-e2e-authoring-rule.md) と [ADR-0036](../../adr/0036-capture-evidence-with-playwright.md) にある。
 
 ### 論点 1: Playwright を上げるか
 
@@ -66,7 +66,7 @@ issue 62 の受け入れ条件を使う。
   - 規則は、lint を流すディレクトリからの相対パスで、テストのディレクトリを判定する。流す場所がずれると、報告が 0 件のまま成功する。
 - 案 A（元の推奨）: E2E の workspace にだけ ESLint と parser を入れ、書き方の規則だけを掛ける。スキルと buddy と同じ形で、alpha の機能に頼らない。lint のツールが 2 つになり、依存が 2 つ増える。
 - 案 C: 規則を入れない。受け入れ条件 1 を満たせない。
-- 流す場所の固め方、規則を更新するときのテスト、違反で失敗することの確認、ESLint に戻す条件は、[ADR-0032](../../adr/0032-eslint-for-e2e-authoring-rule.md) にある。
+- 流す場所の固め方、規則を更新するときのテスト、違反で失敗することの確認、ESLint に戻す条件は、[ADR-0032](../../adr/0032-oxlint-js-plugin-for-e2e-authoring-rule.md) にある。
 - 決定に合わせて、次の 2 つも決めた。
   - T1 の順: T1 の前提から構成とツールチェーンの要求の T6 を外し、`vp check` のタスク（issue 71）の前に進める。T1 は今のコマンド（`pnpm lint`、`pnpm typecheck`）で書く。issue 71 の実施内容と完了の条件に、`e2e/.oxlintrc.json` をルートの `lint.overrides` に移し、わざと書いた違反でルートと `e2e/` の両方で失敗することを確認する作業を足す。
     - 別の案: T1 を T6 の後に置き、初めからルートの `lint.overrides` に書く。設定の移動は無いが、決定の「`e2e/.oxlintrc.json` で始める」と違い、issue 7 が構成とツールチェーンの要求の全てを待つ。
@@ -127,6 +127,10 @@ issue 62 の受け入れ条件を使う。
 - Playwright の project の名前: `e2e`、`route-vrt`
 - spec のディレクトリとファイルの名前（Design の「spec の分け方」）
 - アクターの名前: `visitor`
+- 書き方の規則の置き場: `e2e/lint/`（規則の `e2e-authoring-rule.mjs` と、oxlint に読ませる `plugin.mjs`）
+- oxlint の入れ方: `e2e/package.json` の devDependencies に足す
+- `e2e/` で規則を流す script: `@kufu/e2e` の `lint`（issue 71 で消す）
+- ADR-0032 のファイル名: `0032-oxlint-js-plugin-for-e2e-authoring-rule.md`
 
 ## Design
 
