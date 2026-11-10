@@ -165,13 +165,13 @@ VRT の撮影と判定は CI だけで行うので、T2 から T4 の VRT は pu
 
 ### ルートのコマンドと workspace の script
 
-| 今                               | 変えた後           | ルートの script が実行するもの         |
-| -------------------------------- | ------------------ | -------------------------------------- |
-| `pnpm lint`、`pnpm format:check` | `pnpm check`       | `vp check && pnpm -r check`            |
-| `pnpm format`                    | `pnpm check --fix` | `vp check --fix`                       |
-| `pnpm typecheck`                 | `pnpm typecheck`   | ルートの `tsc` と、`pnpm -r typecheck` |
-| `pnpm test`                      | `pnpm test`        | `pnpm -r test`                         |
-| `pnpm build`                     | `pnpm build`       | `pnpm -r build`                        |
+| 今                               | 変えた後         | ルートの script が実行するもの         |
+| -------------------------------- | ---------------- | -------------------------------------- |
+| `pnpm lint`、`pnpm format:check` | `pnpm check`     | `vp check && pnpm -r check`            |
+| `pnpm format`                    | `pnpm check:fix` | `vp check --fix`                       |
+| `pnpm typecheck`                 | `pnpm typecheck` | ルートの `tsc` と、`pnpm -r typecheck` |
+| `pnpm test`                      | `pnpm test`      | `pnpm -r test`                         |
+| `pnpm build`                     | `pnpm build`     | `pnpm -r build`                        |
 
 workspace は、自分に要る script だけを持つ。
 
@@ -245,20 +245,21 @@ workspace は、自分に要る script だけを持つ。
 種別 refactoring のプリセットに従い、子のタスクは実装の 6 件にする。文書の更新は、各タスクの pull request に含める。
 どのタスクも、CI の全ての job と Storybook Pages の build が通ることを、完了の条件に含める。
 
-| #   | タスク                                                                           | タスクごとの完了の条件                                                                                                                                                                                  | 前提                |
-| --- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| T1  | 文書を `docs/` に移す                                                            | `context/project.yml` の `docs` が `docs/` を指す。移す前のパスの文字列が、検索でリポジトリにない。`check-links.mjs`、`pnpm check:specs`、`pnpm test`、`pnpm build` が通る                              | PR #57 のマージの後 |
-| T2  | Astro を 7 に上げ、`vite` の overrides を外す                                    | `pnpm build`、`astro check`、`pnpm storybook:build`、E2E の smoke が通る。route と story の VRT に差分がないか、運営者が差分を見て決めている。Node.js を 22.12.0 に固定したワークフローがない           | なし                |
-| T3  | Vite+ を入れ、整形と lint を `vp check` に替える                                 | `pnpm check` が通る。`.oxfmtrc.json`、`.oxlintrc.json`、`packages/config/oxlint/` がない。lefthook と CI が `pnpm check` を呼ぶ。型を使う規則が誤りを出すことを、わざと書いた誤りで確認している         | T2                  |
-| T4  | unit test と Storybook のテストを `vp test` に替え、Storybook を 10.6.3 に上げる | `pnpm test` が通る。story の VRT に差分がないか、運営者が差分を見て決めている                                                                                                                           | T3                  |
-| T5  | Turborepo を外し、ルートのコマンドを `pnpm -r` に替える                          | `turbo.json` と turbo の依存がない。`context/tech-stack.md` と `CONTRIBUTING.md` のコマンドが、`package.json` の script と一致する                                                                      | T3                  |
-| T6  | `packages/ui` の build と `packages/config` を削除し、package の契約を文書に書く | `pnpm build`、`pnpm typecheck`、`pnpm knip`、`pnpm depcruise` が通る。Design Doc の Assumptions and Constraints から ADR-0026 へリンクしている。issue 8、issue 9、issue 60 を閉じ、この spec を削除する | T4、T5              |
+| #   | タスク                                                                           | タスクごとの完了の条件                                                                                                                                                                                                                           | 前提                |
+| --- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------- |
+| T1  | 文書を `docs/` に移す                                                            | `context/project.yml` の `docs` が `docs/` を指す。移す前のパスの文字列が、検索でリポジトリにない。`check-links.mjs`、`pnpm check:specs`、`pnpm test`、`pnpm build` が通る                                                                       | PR #57 のマージの後 |
+| T2  | Astro を 7 に上げ、`vite` の overrides を外す                                    | `pnpm build`、`astro check`、`pnpm storybook:build`、E2E の smoke が通る。route と story の VRT に差分がないか、運営者が差分を見て決めている。Node.js を 22.12.0 に固定したワークフローがない                                                    | なし                |
+| T3  | Vite+ を入れ、整形と lint を `vp check` に替える                                 | `pnpm check` が通る。`.oxfmtrc.json`、`.oxlintrc.json`、`packages/config/oxlint/` がない。lefthook と CI が `pnpm check` を呼ぶ。Markdown を `vp fmt` の対象にするかを決めている。型を使う規則が誤りを出すことを、わざと書いた誤りで確認している | T2                  |
+| T4  | unit test と Storybook のテストを `vp test` に替え、Storybook を 10.6.3 に上げる | `pnpm test` が通る。story の VRT に差分がないか、運営者が差分を見て決めている                                                                                                                                                                    | T3                  |
+| T5  | Turborepo を外し、ルートのコマンドを `pnpm -r` に替える                          | `turbo.json` と turbo の依存がない。`context/tech-stack.md` と `CONTRIBUTING.md` のコマンドが、`package.json` の script と一致する                                                                                                               | T3                  |
+| T6  | `packages/ui` の build と `packages/config` を削除し、package の契約を文書に書く | `pnpm build`、`pnpm typecheck`、`pnpm knip`、`pnpm depcruise` が通る。Design Doc の Assumptions and Constraints から ADR-0026 へリンクしている。issue 8 と issue 9 を閉じる                                                                      | T4、T5              |
 
 - T1 が触るのは、文書だけではない。`apps/corporate-site/src/content/` のデータ、テスト、story が、出典として `design/features/corporate-site/reference/…` の文字列を持つ。
 - T1 は、ほかのタスクに依存しない。PR #49 は、T1 の後に書き直すと、ADR を足す場所が `docs/adr/` になる。
 - T4 は、デザインシステムの実装より前に行う。デザインシステムの実装が、上げた後の Storybook と Vitest の上で書けるようにするためである。
 - T2 から T6 は、同じファイル（`package.json`、`pnpm-lock.yaml`、CI のワークフロー）を変えるので、順に 1 つずつ行う。
 - T2 の状態（Astro 7、Storybook 10.5.9、Vitest 4）は、手元で確認していない。T2 で動かなければ、T2 から T4 を 1 つの pull request にまとめる。
+- issue 60 は、T1 から T6 のうち最後にマージする pull request で閉じる。その pull request で、この spec を削除する。
 
 ## Verification
 

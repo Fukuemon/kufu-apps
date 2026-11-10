@@ -31,7 +31,7 @@
 - unit test と Storybook のテストは `vp test run` で実行する。
   - `packages/ui` の Storybook のテストは、`vrt:capture` の script のまま、コマンドだけを替える。ブラウザが要るので、`test` の script にしない。
 - `oxlint`、`oxfmt`、`oxlint-tsgolint` を devDependencies から外す。`vitest` は、Vitest を使う workspace の devDependencies に、vite-plus が同梱するバージョンで宣言する。
-  - 宣言しないと、Storybook のテストが `vitest` を解決できない。
+  - 手元の試行では、別のバージョンの `vitest` が上位のディレクトリにあると、Storybook のテストがそれを解決して止まった。宣言が要るかは、実装で確認する。
 - 整形の規則（80 桁、二重引用符、セミコロンあり）は変えない。
   - buddy は単引用符とセミコロンなしにしている。合わせると全てのファイルに差分が出るので、合わせない。
 - lefthook の pre-commit は、ステージしたファイルを整形して staging に戻す動きを保つ。整形のコマンドを `vp fmt` に、lint のコマンドを `pnpm check` に替える。
@@ -40,7 +40,8 @@
 
 - ルートのコマンドは、`pnpm check`、`pnpm typecheck`、`pnpm test`、`pnpm build` にする。
   - `pnpm check` は、ルートの `vp check` でリポジトリの全体を整形と lint で確認し、続けて `pnpm -r check` を実行する。
-  - `pnpm typecheck`、`pnpm test`、`pnpm build` は、`pnpm -r` で workspace の同じ名前の script を実行する。
+  - `pnpm typecheck` は、ルートの `tsc` と `pnpm -r typecheck` を実行する。`pnpm test` と `pnpm build` は、`pnpm -r` で workspace の同じ名前の script を実行する。
+  - 整形と lint の自動の修正は、`pnpm check:fix`（`vp check --fix`）で実行する。
 - workspace は、自分に要る script だけを持つ。`check` は、その workspace だけのチェックがある workspace が持つ。
   - buddy は workspace ごとに `vp check` を実行する。このリポジトリは、ルートのスクリプトと `e2e/` も確認するために、ルートで 1 回実行する。
 - タスクのキャッシュは持たない。workspace が 3 つで、キャッシュで縮む時間が小さいためである。
@@ -92,10 +93,10 @@ ADR-0002 の scaffold の判断を、変えずに引き継ぐ。
 - `astro check` は、エラー 0、警告 0 で通った。
 - ルートで `vp lint` を流すと、108 ファイルを 2.5 秒で確認した。今の lint が見ていない `scripts/vrt-container.mjs` に、使っていない import を 1 件見つけた。
   - `lint.options.typeAware` を有効にして流し、エラーなく終わった。型を使う規則が誤りを出すことは、確認していない。
-- `vp fmt --check` は、今の整形の規則のままで、追跡しているコードに差分を出さなかった。
+- `vp fmt --check` は、今の整形の規則のままで、追跡しているコードに差分を出さなかった。Markdown は対象から外して流したので、確認していない。
 - `apps/corporate-site` の unit test は、`vp test run`（Vitest 5.0.5）で 4 件が通った。
 - `packages/ui` の Storybook のテストは、`vp test run` で 47 件が通り、story の画像を 47 枚撮った。
-  - `packages/ui` に `vitest` を宣言しないと、`vitest` の `./internal/traces` を解決できずに止まった。
+  - `packages/ui` に `vitest` を宣言する前は、上位のディレクトリの Vitest 4 を解決し、`./internal/traces` が見つからずに止まった。worktree が元のチェックアウトの中にあるために起きた可能性がある。
 - route の VRT、corporate-site の Storybook の build、corporate-site の story の VRT（`@storybook/test-runner`）は、確認していない。
   - `pnpm vrt:route` は、worktree では、コンテナの中の `pnpm install` が `lefthook install` で失敗して止まった。Astro のバージョンとは関係がない。
 
