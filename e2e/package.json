@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "e2e": "playwright test --project=e2e",
-    "vrt:route:run": "playwright test --project=route-vrt --reporter=list --retries=0",
+    "vrt:route:run": "playwright test --project=route-vrt --retries=0",
     "lint": "oxlint --config .oxlintrc.json tests",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
