@@ -49,7 +49,7 @@
 - 改修前と比べるときは、改修前のブランチの worktree で `build` し、成果物を別の port で配信する。その URL を `BASE_URL` で渡す。
 
   ```sh
-  VARIANT=改修前 BASE_URL=http://127.0.0.1:<port> pnpm exec playwright test -c playwright.capture.config.ts --grep @compare --workers=1
+  VARIANT=改修前 BASE_URL=http://127.0.0.1:<port> pnpm exec playwright test -c playwright.capture.config.ts --project=e2e --grep @compare --workers=1
   ```
 
 - `BASE_URL` を渡したときは、Playwright は app を起動しない。

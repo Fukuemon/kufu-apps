@@ -35,6 +35,8 @@ issue 62 の受け入れ条件を使う。
 - 案 A（推奨）: 運営者が認めたうえで、3 つのファイルを写してコミットする。CI と、fork からの pull request が、apm と GitHub App のトークンなしで動く。
 - 案 B: 写さず、apm が配置したスキルのディレクトリのファイルを、設定から直接読む。lint と E2E の CI の job に、apm の配置とトークンが要る。fork からの pull request では動かない。
 - 案 C: buddy と同じ npm の `@fukuemon/e2e-kit` 0.2.1 を使う。パッケージ e2e の今のバージョンは kit を持たず、スキルの手順と合わない。
+- 録画を mp4 にまとめるスクリプトは、写さずに、apm が配置したスキルのディレクトリのものを使う案にした。apm を使えない人は、mp4 を作れない。このスクリプトも写すかを、合わせて決める。
+- 比較は、[ADR-0032](../../adr/0032-eslint-for-e2e-authoring-rule.md) と [ADR-0036](../../adr/0036-capture-evidence-with-playwright.md) の「承認の条件」にある。
 - 決まらないと進めない作業: T1 の規則の組み込みと、T4。
 
 ### 論点 1: Playwright を上げるか
@@ -43,7 +45,7 @@ issue 62 の受け入れ条件を使う。
 - 案 A の別のバージョン: 最新の 1.65.0 にする。手元で確認していない。
 - 案 B: E2E だけ 1.64.1 にし、VRT は 1.59.1 のままにする。
 - 案 C: 上げない。受け入れ条件 2 を満たせない。
-- 比較と試行の結果は、[ADR-0034](../../adr/0034-playwright-upgrade-and-capture.md) にある。
+- 比較と試行の結果は、[ADR-0034](../../adr/0034-playwright-upgrade.md) にある。
 - 決まらないと進めない作業: T3、T4、T5。T1 と T2 は進められる。
 
 ### 論点 2: ページ単位の Page Object を、パッケージ e2e の層に置き換えるか
@@ -68,6 +70,9 @@ issue 62 の受け入れ条件を使う。
 - 案 A（推奨）: ルートの `e2e/` のまま、workspace の package（`@kufu/e2e`）にする。route の VRT のファイルと baseline は動かさない。
 - 案 B: buddy と同じ `packages/e2e` に移す。
 - 案 C: ルートの `e2e/` のまま、workspace にしない。
+- 案 A は、承認済みの取り決めを 2 つ変える。合わせて決める。
+  - ルートの `tsc` を外す。確認する対象が `e2e/` に移り、ルートに残らないためである。構成とツールチェーンの要求の ADR-0025 は、`pnpm typecheck` でルートの `tsc` も実行するとしている。
+  - `E2E_TARGET` は、起動する app と port を選ぶ値として残し、テストのディレクトリ（`e2e/<target>/`）は切り替えない。2 つ目の app を E2E の対象にするときに、spec の分け方を決める。別の案は、`e2e/<target>/tests/` のように、app ごとに層のディレクトリを持つ形である。規則を流す設定が、app ごとに要る。
 - 比較は、[ADR-0033](../../adr/0033-e2e-workspace-at-root.md) にある。
 - 決まらないと進めない作業: T1。
 
@@ -76,6 +81,10 @@ issue 62 の受け入れ条件を使う。
 - 案 A（推奨）: 検証の設計とシナリオを `docs/verification/<要求の issue>-<主題>/` に置く。撮る spec を `e2e/tests/verification/` に置き、CI の E2E でも字幕なしで流す。動画と静止画は Git に入れず、pull request に載せる。撮る環境は、ローカルの build と preview にする。
 - 案 B: 動画と静止画を `docs/verification/` にコミットする。
 - 案 C: 動画と静止画を外部のストレージに置く。
+- 案 A は、次のことも含む。違う扱いにするなら、合わせて決める。
+  - 検証の設計とシナリオの文書を、要求を閉じた後も残す。次の改修で、同じシナリオを撮り直すためである。
+  - 検証の spec を、CI の E2E で流し続ける。流さない案では、markup の変更で spec が動かなくなっても、撮るときまで気づかない。
+  - pull request に上げた動画と静止画は、誰でも開ける。
 - 比較は、[ADR-0035](../../adr/0035-verification-scenarios-and-evidence.md) にある。
 - 決まらないと進めない作業: T4 の `context/testing/evidence.md` と、T5。
 
@@ -100,7 +109,16 @@ issue 62 の受け入れ条件を使う。
 - 撮影のスキルは、改修前のアプリの URL を `BASE_URL` で渡す。今の取り決めは `E2E_BASE_URL` である。
 - 案 A（推奨）: `BASE_URL` に改める。渡したときは app を起動しない。
 - 案 B: `E2E_BASE_URL` を残し、`BASE_URL` も読む。向ける先を渡す名前が 2 つになる。
+- 比較は、[ADR-0036](../../adr/0036-capture-evidence-with-playwright.md) にある。
 - 決まらないと進めない作業: T4。
+
+### 論点 9: エビデンスを付ける pull request の範囲
+
+- issue 62 は、エビデンスを残せるようにすることを求めている。どの pull request に付けるかは、決めていない。`context/testing/evidence.md` の Evidence Scope に書く値である。
+- 案 A（推奨）: 画面の振る舞いか見た目を変える pull request に付ける。文書、スキル、設定だけの pull request には付けない。画面が変わりうる依存の更新には付ける。見た目だけの変更で、VRT の差分の画像で確認できるものは、録画を省いてよい。
+- 案 B: 検証のタスクの pull request にだけ付ける。機能の pull request には、求めない。
+- 案 C: 付けるかを、pull request ごとに運営者が決める。
+- 決まらないと進めない作業: T4 の `context/testing/evidence.md` の Evidence Scope。
 
 ## Decisions
 
@@ -123,7 +141,7 @@ issue 62 の受け入れ条件を使う。
 
 ```text
 e2e/
-├── package.json                  # @kufu/e2e。@playwright/test、eslint、parser を持つ
+├── package.json                  # @kufu/e2e。@playwright/test、eslint、parser、typescript、@types/node を持つ
 ├── playwright.config.ts          # project は e2e と route-vrt
 ├── playwright.capture.config.ts  # エビデンスを撮るときの設定（T4）
 ├── eslint.config.mjs
@@ -146,11 +164,15 @@ e2e/
 T1 で、次の箇所を直す。
 
 - ルートの `playwright.config.ts` を `e2e/` に移す。`testDir` を project ごとに持たせ、`e2e` の project の `testMatch` に `.e2e.ts` を渡す。
-- ルートの `tsconfig.json` を `e2e/tsconfig.json` に移す。ルートの `typecheck` の script から、ルートの `tsc` を外す。
-- ルートの `package.json` の `@playwright/test` を、`e2e/package.json` に移す。
+  - `route-vrt` の project には、baseline のパスの形（`snapshotPathTemplate`）を渡し、ファイル名から project の名前を外す。
+  - CI が所要時間をログに出すよう、reporter に `list` を渡す。
+- ルートの `tsconfig.json` を `e2e/tsconfig.json` に移す。ルートの `typecheck` の script から、ルートの `tsc` を外す（論点 4）。
+  - `.dependency-cruiser.cjs` の `tsConfig.fileName` が、ルートの `tsconfig.json` を指している。指す先を直す。
+- ルートの `package.json` の `@playwright/test` を、`e2e/package.json` に移す。`e2e/` の設定とテストが使う `typescript` と `@types/node` も、`e2e/package.json` に書く。
 - ルートの script
-  - `e2e`: `playwright test smoke` を、`@kufu/e2e` の `test`（`playwright test --project=e2e`）を呼ぶ形に替える。
-  - `vrt:route:run`: `playwright test route-vrt` を、`@kufu/e2e` の script（`playwright test --project=route-vrt`）を呼ぶ形に替える。
+  - `e2e`: `playwright test smoke` を、`@kufu/e2e` の `e2e`（`playwright test --project=e2e`）を呼ぶ形に替える。
+  - `vrt:route:run`: `playwright test route-vrt` を、`@kufu/e2e` の `vrt:route:run`（`playwright test --project=route-vrt`）を呼ぶ形に替える。
+  - `@kufu/e2e` に `test` の script を置かない。ルートの `pnpm test` は、ブラウザのない CI の job で、workspace の `test` を流す。
 - `scripts/vrt-container.mjs`
   - Playwright のバージョンを読むパスを、`e2e/node_modules/@playwright/test` に替える。
   - container の中で隠す `node_modules` の一覧に、`e2e/node_modules` を足す。
@@ -162,7 +184,12 @@ T1 で、次の箇所を直す。
 - `.gitignore`: `e2e/evidence/` を足す（T4）。
 - 今の `e2e/corporate-site/smoke.spec.ts` と `pages/` は、`e2e/tests/` の層に移して削除する。`route-vrt.spec.ts` は、`smoke.spec.ts` の幅を参照するコメントだけを直す。
 
-route の VRT の project は、`testDir` を `corporate-site` にする。テストのファイルの場所が変わらないので、baseline のパスも変わらない。変わらないことは、T1 の CI の `vrt-route` の job が、baseline を撮り直さずに通ることで確認する。
+route の VRT の baseline は、次の 2 つで、今と同じパスになる。
+
+- project の `testDir` を `corporate-site` にする。baseline のディレクトリは、テストのファイルの場所から決まる。
+- Playwright は、名前のある project では、baseline のファイル名に project の名前を足す。今の設定は project を持たない。`route-vrt` の project に、名前を足さないパスの形を渡す。
+
+同じパスになることは、T1 の CI の `vrt-route` の job が、baseline を撮り直さずに通ることで確認する。Playwright 1.59.1 のコードで確認した動きで、動かしては確認していない。
 
 ### spec の分け方
 
@@ -171,9 +198,9 @@ route の VRT の project は、`testDir` を `corporate-site` にする。テ�
 | spec（`e2e/tests/specs/` の下）     | 持つもの                                                  | タスク |
 | ----------------------------------- | --------------------------------------------------------- | ------ |
 | `routes/render.e2e.ts`              | 3 つの route の題と主な領域の表示（今の smoke の 1 件目） | T1     |
-| `browsing/home-to-contact.e2e.ts`   | 回遊。`/` から `/products`、検索と URL、`/contact` まで   | T2     |
-| `navigation/site-navigation.e2e.ts` | ヘッダー、フッター、モバイルのナビからの到達              | T2     |
-| `no-javascript/core-content.e2e.ts` | JavaScript が無効のときの、主な領域と問い合わせ先         | T2     |
+| `browsing/home-to-contact.e2e.ts`   | 回遊。`/` から `/products`、検索と URL、`/contact` まで   | T1、T2 |
+| `navigation/site-navigation.e2e.ts` | ヘッダー、フッター、モバイルのナビからの到達              | T1、T2 |
+| `no-javascript/core-content.e2e.ts` | JavaScript が無効のときの、主な領域と問い合わせ先         | T1、T2 |
 
 - T1 は、今の 5 件を、中身を変えずに層に移す。5 件を 4 つのファイルに分けて置き、足りないケースは T2 で足す。
 - `selectors/` は、今の 3 つの Page Object の、role、文言、CSS のセレクタでの指し方を、route ごとのファイルに移す。testid での指し方は、spec に書く。
@@ -190,13 +217,17 @@ route の VRT の project は、`testDir` を `corporate-site` にする。テ�
 - Runtime Requirements: 正とする設定を `e2e/playwright.config.ts` に、読む場所を `e2e/tests/` の下の spec に替える（T1）。環境変数の `E2E_BASE_URL` を `BASE_URL` に替える（T4）。
 - Required Tests の「Page Object と locator」: 見出しを locator の規約に替え、Page Object の 2 行を、層と `selectors/` の規約に替える。詳細は `context/testing/e2e.md` へリンクする（T1）。
 - frontmatter の `governs`: `playwright.config.ts` を `e2e/` の下のパスに替える（T1）。
+- frontmatter の `description` と、ADR-0017 へのリンク: Page Object の規約を、層と locator の規約に替え、リンクを ADR-0031 に替える（T1）。`context/index.md` の同じ説明も替える。
 
 ### ほかの文書の変更の案
 
-- 全体の Design Doc の e2e のセクション、Architecture の図、Repository Layout: ルートの Playwright の記述を、workspace の package に替える。エビデンスの撮影と、検証のシナリオの spec を持つことを足す（T1、T4）。
+- 全体の Design Doc: ルートの Playwright の記述を、workspace の package に替える。対象は、frontmatter の `governs`、e2e のセクション、Architecture の図、Repository Layout である。エビデンスの撮影と、検証のシナリオの spec を持つことを足す（T1、T4）。
 - corporate-site の Design Doc の「E2E が担うジャーニー」: ADR-0017 へのリンクを、ADR-0031 に替える（T1）。
-- `e2e/README.md`: 構成と Page Object のセクションを、層の説明に替える。ジャーニーの定義は、corporate-site の Design Doc と重なるので、リンクにする（T1）。
-- `README.md` と `CONTRIBUTING.md`: E2E のコマンド、ffmpeg、エビデンスの撮り方へのリンクを足す（T1、T4）。
+- `e2e/README.md`: 構成と Page Object のセクションを、層の説明に替える。ADR-0017 へのリンクを、ADR-0031 に替える。ジャーニーの定義は、corporate-site の Design Doc と重なるので、リンクにする（T1）。
+- `context/conventions.md`: 「`e2e` は、package のタスクではなく、ルートで直接実行する」を、workspace の script を呼ぶ形に替える（T1）。
+- `context/tech-stack.md`: Playwright を「ルートで管理する」とした記述と、`pnpm e2e` の説明を替える（T1）。Playwright のバージョンの所在を替える（T1、T3）。
+- `context/project.yml`: `e2e.dir` を足す（T1）。
+- `README.md` と `CONTRIBUTING.md`: E2E の置き場とコマンド（T1）、ffmpeg とエビデンスの撮り方へのリンク（T4）を直す。
 - `adr/0017-ui-test-structure-policy.md`: ADR-0031 を承認したときに、Status を「ADR-0031 に置換」にする。
 - 文書のパスは、構成とツールチェーンの要求の T1 で `docs/` の下に移る。この spec と ADR は、移す前のパスで書いた。`docs/verification/` は、移した後にできる。
 
@@ -208,19 +239,20 @@ route の VRT の project は、`testDir` を `corporate-site` にする。テ�
 - docs は、起票しない。context と文書の更新は、実装のタスクの pull request に含める。
 - どのタスクも、CI の全ての job が通ることを、完了の条件に含める。
 
-| #   | 種類   | タスク                                                             | タスクごとの完了の条件                                                                                                                                                                                                                                                               | 前提                                             |
-| --- | ------ | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
-| T1  | impl   | E2E を workspace にし、層と書き方の規則を入れる                    | 今の smoke の 5 件が、`e2e/tests/` の層で通る。Page Object のクラスがない。`pnpm check` が書き方の規則を流し、わざと書いた違反で失敗する。route の VRT が、baseline を変えずに通る。`context/testing/e2e.md` の Test Tool、Test IDs、Lint Rule Options、Running Tests が埋まっている | 構成とツールチェーンの要求の T6。論点 0、2、3、4 |
-| T2  | impl   | corporate-site の 3 ジャーニーを E2E に実装する（issue 7）         | テスト設計の必須のケース（C1 から C10）が `e2e/tests/specs/` にあり、`pnpm e2e` と CI の `e2e` の job で通る。それぞれの spec で、期待を逆にすると落ちることを確認している                                                                                                           | T1。論点 6                                       |
-| T3  | impl   | Playwright を 1.64.1 に上げる                                      | `@playwright/test`、`packages/ui` の `playwright`、CI の 4 つの image が 1.64.1 である。lockfile の Playwright が 1 つのバージョンである。E2E が通る。route と story の VRT に差分がないか、運営者が差分を見て決めている                                                             | 構成とツールチェーンの要求の T4。論点 1          |
-| T4  | impl   | 撮影の設定と字幕の関数を入れ、エビデンスを撮って載せる手順を決める | 撮影の設定で既にある spec を 1 本撮り、mp4 ができる。字幕つきの spec を 1 本撮り、この pull request のコメントに載せて再生できる。`BASE_URL` で向ける先を変えられる。`context/testing/evidence.md` の Verification Scenarios のほかが埋まっている                                    | T1、T3。論点 0、5、8                             |
-| T5  | verify | 受け入れ条件を検証し、3 つの route のシナリオのエビデンスを残す    | `docs/verification/62-…/` に検証の設計とシナリオがある。シナリオの spec が `e2e/tests/verification/62/` にあり、CI で通る。エビデンスが検証の pull request にある。2 つの context の `status` が `stable` である。issue 62 の受け入れ条件を確認している                              | T2、T4。構成とツールチェーンの要求の T1。論点 5  |
+| #   | 種類   | タスク                                                             | タスクごとの完了の条件                                                                                                                                                                                                                                                                                                                                        | 前提                                             |
+| --- | ------ | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| T1  | impl   | E2E を workspace にし、層と書き方の規則を入れる                    | 今の smoke の 5 件が、`e2e/tests/` の層で通る。Page Object のクラスがない。`pnpm check` が書き方の規則を流し、わざと書いた違反で失敗する。route の VRT が、baseline を変えずに通る。CI の `e2e` の job のログに、テストごとの所要時間が出る。`context/testing/e2e.md` の全てのセクションが埋まっている。違反で失敗した結果を、pull request の本文に書いている | 構成とツールチェーンの要求の T6。論点 0、2、3、4 |
+| T2  | impl   | corporate-site の 3 ジャーニーを E2E に実装する（issue 7）         | テスト設計の必須のケース（C1 から C10）が `e2e/tests/specs/` にあり、`pnpm e2e` と CI の `e2e` の job で通る。それぞれの spec で、期待を逆にすると落ちることを確認し、結果を pull request の本文に書いている                                                                                                                                                  | T1。論点 6                                       |
+| T3  | impl   | Playwright を 1.64.1 に上げる                                      | `@playwright/test`、`packages/ui` の `playwright`、CI の 4 つの image が 1.64.1 である。lockfile の Playwright が 1 つのバージョンである。E2E が通る。route と story の VRT に差分がないか、運営者が差分を見て決めている                                                                                                                                      | 構成とツールチェーンの要求の T4。論点 1          |
+| T4  | impl   | 撮影の設定と字幕の関数を入れ、エビデンスを撮って載せる手順を決める | 撮影の設定で既にある spec を 1 本撮り、mp4 ができる。字幕つきの spec を 1 本撮り、この pull request のコメントに載せて再生できる。Git で追跡しない下書きのディレクトリに置いた spec を、撮影の設定で流せる。`BASE_URL` で向ける先を変えられる。`context/testing/evidence.md` の Verification Scenarios のほかが埋まっている                                   | T1、T3。論点 0、5、8、9                          |
+| T5  | verify | 受け入れ条件を検証し、3 つの route のシナリオのエビデンスを残す    | `docs/verification/62-…/` に検証の設計とシナリオがある。シナリオの spec が `e2e/tests/verification/62/` にあり、CI で通る。エビデンスが検証の pull request にある。2 つの context の `status` が `stable` である。issue 62 の受け入れ条件を確認している                                                                                                       | T2、T4。構成とツールチェーンの要求の T1。論点 5  |
 
 - T1 を、構成とツールチェーンの要求の T6 の後にするのは、同じファイルを変えるためである。その要求の T2 から T6 が、`package.json`、`pnpm-lock.yaml`、CI のワークフロー、ルートの script を順に変える。
-  - T6 の後は、ルートのコマンドが `pnpm check` と `pnpm -r` になっている。`@kufu/e2e` の `check` と `typecheck` は、そのまま束ねられる。
+  - T6 の後は、ルートのコマンドが `pnpm check` と `pnpm -r` になっている。`@kufu/e2e` の `check` と `typecheck` は、そのまま束ねられる。`test` は束ねられると困るので、持たない。
   - 先に進めたいときは、T1 を今のコマンド（`pnpm lint`、`pnpm typecheck`）で書き、その要求の T3 と T5 で直すことになる。
 - T3 は、T1 に依存しない。T1 より前に行うときは、ルートの `package.json` の `@playwright/test` を上げる。`packages/ui` の `playwright` は、どちらの順でも T3 で上げる。
-- T3 を、デザインシステムの要求の、見た目を変えないタスク（色のトークンとコンポーネントの書き直し）と同時に進めない。どちらも「VRT に差分がない」を確認に使う。
+- T3 の pull request を、デザインシステムの要求の、baseline に関わるタスクの pull request と同時に開かない。見た目を変えないタスクは「VRT に差分がない」を確認に使い、見た目を変えるタスクは baseline を撮り直す。
+- T1 と、デザインシステムの要求の最初の実装のタスクは、どちらも構成とツールチェーンの要求の T6 の後で、`package.json` と lockfile を変える。順は、運営者がタスクを起票するときに決める。後からマージする方が、lockfile を作り直す。
 - T2 は、Playwright を上げなくても進められる。T1 が終われば始められる。
 - 子の数は、issue 7 を含めて 5 件である。
 - issue 62 は、T5 の検証の pull request で閉じる。その pull request で、この spec を削除する。
@@ -241,20 +273,23 @@ route の VRT の project は、`testDir` を `corporate-site` にする。テ�
 
 ## Verification
 
-| 受け入れ条件                                                         | タスク | 確認の方法                                                                                               |
-| -------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------- |
-| 1. 書き方の規則が、E2E のコードに lint として掛かり、CI で動く       | T1     | CI の lint の job のログに、規則の実行がある。わざと書いた違反で `pnpm check` が失敗する                 |
-| 2. 撮影の設定があり、E2E から録画と字幕のエビデンスを作れる          | T4     | 字幕つきの spec を撮り、mp4 と判定の静止画ができる。T4 の pull request のコメントで再生できる            |
-| 3. 検証のシナリオがあり、corporate-site の 3 つの route を確認できる | T5     | シナリオの文と spec の対応を、エビデンスの一覧で読む。検証の pull request の動画を、運営者が見て判定する |
-| 4. 2 つの context が埋まり、`status` が `stable` になっている        | T5     | 案内のコメントが残っていない。書いたコマンドを、T1、T4、T5 で実行している                                |
-| 5. 3 ジャーニーが E2E にあり、CI の `e2e` の job で通る              | T2     | テスト設計の必須のケースと spec の対応を読む。CI の `e2e` の job                                         |
-| 6. route と story の VRT が、Playwright を上げた後も CI で通る       | T3     | T3 の pull request の CI の `vrt-route`、`vrt-story-ui`、`vrt-story-corporate` の job                    |
+| 受け入れ条件                                                         | タスク | 確認の方法                                                                                                            |
+| -------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------- |
+| 1. 書き方の規則が、E2E のコードに lint として掛かり、CI で動く       | T1     | CI の lint の job のログに、規則の実行がある。わざと書いた違反で `pnpm check` が失敗する                              |
+| 2. 撮影の設定があり、E2E から録画と字幕のエビデンスを作れる          | T4     | 字幕つきの spec を撮り、mp4 と判定の静止画ができる。T4 の pull request のコメントで再生できる                         |
+| 3. 検証のシナリオがあり、corporate-site の 3 つの route を確認できる | T5     | シナリオの文と spec の対応を、エビデンスの一覧で読む。検証の pull request の動画を、運営者が見て判定する              |
+| 4. 2 つの context が埋まり、`status` が `stable` になっている        | T5     | 案内のコメントが残っていない。frontmatter の `status` が `stable` である。書いたコマンドを、T1、T4、T5 で実行している |
+| 5. 3 ジャーニーが E2E にあり、CI の `e2e` の job で通る              | T2     | テスト設計の必須のケースと spec の対応を読む。CI の `e2e` の job                                                      |
+| 6. route と story の VRT が、Playwright を上げた後も CI で通る       | T3     | T3 の pull request の CI の `vrt-route`、`vrt-story-ui`、`vrt-story-corporate` の job                                 |
 
 - 受け入れ条件 6 の「通る」は、baseline を撮り直したときは、運営者が差分を見て撮り直した baseline で通ることとする。構成とツールチェーンの要求の、同じ論点の決定に合わせる。
 
 ## Carry Over
 
-- ADR-0031 から ADR-0035: 「提案」の状態で `adr/` にある。運営者が承認したら、Status を替える。ADR-0031 を承認したら、ADR-0017 の Status を「ADR-0031 に置換」にする。
+- ADR-0031 から ADR-0036: 「提案」の状態で `adr/` にある。運営者が承認したら、Status を替える。ADR-0031 を承認したら、ADR-0017 の Status を「ADR-0031 に置換」にする。
 - `context/testing/e2e.md` と `context/testing/evidence.md`: 埋める案のとおりに、T1、T4、T5 で書く。
-- `context/testing.md`、全体の Design Doc、corporate-site の Design Doc、`e2e/README.md`: 「ほかの文書の変更の案」のとおりに、タスクごとに変える。
+- ほかの文書: 「context を埋める案」と「ほかの文書の変更の案」のとおりに、タスクごとに変える。
+  - `context/testing.md`、`context/conventions.md`、`context/tech-stack.md`、`context/project.yml`
+  - 全体の Design Doc、corporate-site の Design Doc
+  - `e2e/README.md`、`README.md`、`CONTRIBUTING.md`
 - 3 ジャーニーのテスト設計: T2 で spec にした後は、spec のテストの名前が観点を持つ。文書としては残さない。

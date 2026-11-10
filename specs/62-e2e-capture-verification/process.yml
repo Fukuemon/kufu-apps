@@ -1,4 +1,5 @@
-# issue 62 の開発プロセスの宣言。種別 feature のプリセット（context/project.yml）のとおり
+# issue 62 の開発プロセスの宣言。種別 feature のプリセット（context/project.yml）から、tasks の docs を外した。
+# 文書の更新は、実装のタスクの pull request に含める
 preset: feature
 processes:
   - requirements

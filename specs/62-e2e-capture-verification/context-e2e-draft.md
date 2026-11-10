@@ -25,10 +25,11 @@
 
 ## Test IDs
 
-- 形は、小文字の英語と `-` で、`<ページか共通のコンポーネント>-<種類>-<名前>` にする。
-  - ページは `home`、`products`、`contact`。共通のコンポーネントは `site`、`company`。
-  - 種類は、領域が `section`、導線のリンクが `link`、ナビの項目が `nav`。
-  - 例: `home-section-hero`、`home-link-contact`、`site-nav-products`
+- testid は、小文字の英語と `-` で書く。先頭は、ページ（`home`、`products`、`contact`）か、共通のコンポーネント（`site`、`company`）の名前である。
+  - 今ある testid には、種類の語を挟むものと、挟まないものがある。今ある testid は改名しない。
+    - 挟むもの: `home-section-hero`、`home-link-contact`、`site-nav-products`
+    - 挟まないもの: `site-header`、`contact-form-slot`、`products-category-list`
+  - 新しく付けるときは、領域に `section`、導線のリンクに `link`、ナビの項目に `nav` を挟む。
 - 同じ要素が並ぶものは、末尾に ID を付ける。例: `products-category-<カテゴリの id>`
 - testid を付けるのは、セクションとページの領域と、ヘッダーとフッターで文言が重なる操作の対象である。
 - ほかの操作の対象（ボタン、リンク、入力欄）は、testid を付けず、role と名前で拾う。拾う関数は `e2e/tests/selectors/` に置く。
@@ -52,7 +53,7 @@
 
 ## Running Tests
 
-- E2E は、ルートの `pnpm e2e` で流す。`@kufu/e2e` の `test` の script を呼び、Playwright の project `e2e` を流す。
+- E2E は、ルートの `pnpm e2e` で流す。`@kufu/e2e` の `e2e` の script を呼び、Playwright の project `e2e` を流す。
 - Playwright の project は 2 つある。
   - `e2e`: `tests/` の下の `.e2e.ts`。回帰の spec（`tests/specs/`）と、検証のシナリオの spec（`tests/verification/`）を流す。
   - `route-vrt`: route の VRT。`pnpm vrt:route` で流す（[テスト](../../context/testing.md#vrt)）。

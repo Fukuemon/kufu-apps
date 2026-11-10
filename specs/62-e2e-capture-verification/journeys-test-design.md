@@ -28,7 +28,7 @@
 | 要求       | issue 7、`e2e/README.md` の「E2E が担うジャーニー」                                               | 3 本のジャーニーの手順                                                                                  |
 | 実装       | `apps/corporate-site/src/components/common/SiteHeader.astro:14-37`                                | ナビの項目は、トップ、事業内容（`/#business`）、取扱製品（`/products`）、会社情報（`/#company`）の 4 つ |
 | 実装       | `apps/corporate-site/src/components/common/SiteHeader.astro:108`                                  | ナビの中に、`/contact` への「お問い合わせ」がある                                                       |
-| 実装       | `apps/corporate-site/src/components/common/SiteHeader.astro:116-152`                              | 開閉のボタン、ナビの中のリンク、Escape のキーで、開閉の状態が変わる                                     |
+| 実装       | `apps/corporate-site/src/components/common/SiteHeader.astro:117-153`                              | 開閉のボタン、ナビの中のリンク、Escape のキーで、開閉の状態が変わる                                     |
 | 実装       | `apps/corporate-site/src/components/common/SiteFooter.astro:18`、`:51-66`                         | リンクを持つフッターは `full` だけである。`compact` はリンクを持たない                                  |
 | 実装       | `apps/corporate-site/src/pages/index.astro:13`、`products.astro:9`、`contact.astro:9`             | `full` のフッターは `/` だけが使う                                                                      |
 | 実装       | `apps/corporate-site/src/components/sections/products-detail/ProductsDetailSection.astro:198-233` | 検索の語を `q` のパラメータに書き、読み込みのときと履歴の移動のときに、URL から入力欄へ戻す             |
@@ -41,7 +41,7 @@
 /（index.astro）
 ├── SiteHeader                                   全 route で同じ
 │   ├── ナビの項目 4 つ + お問い合わせ           :14-37, :108
-│   └── 開閉の script（モバイルの幅だけで使う）  :116-152
+│   └── 開閉の script（モバイルの幅だけで使う）  :117-153
 ├── Hero の CTA → /contact                       home-link-contact
 ├── ProductsCategorySection の CTA → /products   home-link-products
 └── SiteFooter（full）
