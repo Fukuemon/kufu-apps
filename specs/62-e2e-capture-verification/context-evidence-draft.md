@@ -1,6 +1,6 @@
 # context/testing/evidence.md を埋める案
 
-`context/testing/evidence.md` の本文の案。[index.md](index.md) の論点が推奨のとおりに決まったときの中身である。  
+`context/testing/evidence.md` の本文の案。[index.md](index.md) の Decisions に合わせた中身である。  
 撮影の仕組みを入れるタスクが、1 本撮って pull request に載せるところまで動かしてから書く。コマンドの細部は、動かした結果で直す。
 
 ## Evidence Scope

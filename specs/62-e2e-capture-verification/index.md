@@ -26,104 +26,101 @@ issue 62 の受け入れ条件を使う。
 
 ## Open Points
 
-運営者が決める論点。ADR は、推奨の案を「提案」の状態で書いた。
+論点 3 の決定に合わせて、次の 2 つを決める。
+
+- T1 を、構成とツールチェーンの要求の `vp check` のタスク（issue 71）の前に進めるか。今の T1 の前提は、その要求の T6 で、T6 は issue 71 の後である。このままでは、`e2e/.oxlintrc.json` で始める段階が起きない。
+- ルートの `lint.overrides` に移した後に、規則を流す場所をどう固めるか。options を `import.meta.dirname` から絶対パスで渡すか、ルートでだけ流すか。
+
+## Decisions
+
+運営者が、2026-11-11 に論点 0 から 9 を決めた。論点 3 は、比べた案のうち oxlint の JS プラグインの案に決めた。ほかの論点は、どれも「採用」の案に決めた。
 
 ### 論点 0: private の agent-harness のファイルを、このリポジトリに写してよいか
 
 - スキル setup-e2e-lint と playwright-capture は、3 つのファイルを利用者のリポジトリに写して使う。書き方の規則、撮影の設定、字幕の関数である。
 - agent-harness は private で、このリポジトリは public である。
-- 案 A（推奨）: 運営者が認めたうえで、3 つのファイルを写してコミットする。CI と、fork からの pull request が、apm と GitHub App のトークンなしで動く。
+- 案 A（採用）: 運営者が認めたうえで、3 つのファイルを写してコミットする。CI と、fork からの pull request が、apm と GitHub App のトークンなしで動く。
 - 案 B: 写さず、apm が配置したスキルのディレクトリのファイルを、設定から直接読む。lint と E2E の CI の job に、apm の配置とトークンが要る。fork からの pull request では動かない。
 - 案 C: buddy と同じ npm の `@fukuemon/e2e-kit` 0.2.1 を使う。パッケージ e2e の今のバージョンは kit を持たず、スキルの手順と合わない。
-- 録画を mp4 にまとめるスクリプトは、写さずに、apm が配置したスキルのディレクトリのものを使う案にした。apm を使えない人は、mp4 を作れない。このスクリプトも写すかを、合わせて決める。
-- 比較は、[ADR-0032](../../adr/0032-eslint-for-e2e-authoring-rule.md) と [ADR-0036](../../adr/0036-capture-evidence-with-playwright.md) の「承認の条件」にある。
-- 決まらないと進めない作業: T1 の規則の組み込みと、T4。
+- 録画を mp4 にまとめるスクリプトは、写さずに、apm が配置したスキルのディレクトリのものを使う。apm を使えない人は、mp4 を作れない。
+- 詳細は、[ADR-0032](../../adr/0032-eslint-for-e2e-authoring-rule.md) と [ADR-0036](../../adr/0036-capture-evidence-with-playwright.md) にある。
 
 ### 論点 1: Playwright を上げるか
 
-- 案 A（推奨）: 1.64.1 に上げる。ほかの変更を含まない pull request で上げ、CI の VRT を今の baseline と比べる。差分が出たら、運営者が差分を見て撮り直すかを決める。
+- 案 A（採用）: 1.64.1 に上げる。ほかの変更を含まない pull request で上げ、CI の VRT を今の baseline と比べる。差分が出たら、運営者が差分を見て撮り直すかを決める。
 - 案 A の別のバージョン: 最新の 1.65.0 にする。手元で確認していない。
 - 案 B: E2E だけ 1.64.1 にし、VRT は 1.59.1 のままにする。
 - 案 C: 上げない。受け入れ条件 2 を満たせない。
 - 比較と試行の結果は、[ADR-0034](../../adr/0034-playwright-upgrade.md) にある。撮影の試行の結果は、[ADR-0036](../../adr/0036-capture-evidence-with-playwright.md) にある。
-- 決まらないと進めない作業: T3、T4、T5。T1 と T2 は進められる。
 
 ### 論点 2: ページ単位の Page Object を、パッケージ e2e の層に置き換えるか
 
-- 案 A（推奨）: 置き換える。クラスをやめ、`specs/`、`selectors/`、`fixtures/` に分ける。操作の対象は role と名前で拾い、拾う関数を `selectors/` に置く。production の markup は変えない。
+- 案 A（採用）: 置き換える。クラスをやめ、`specs/`、`selectors/`、`fixtures/` に分ける。操作の対象は role と名前で拾い、拾う関数を `selectors/` に置く。production の markup は変えない。
 - 案 A の別の形: 操作の対象にも testid を足し、testid だけで拾う。production の markup に testid を足す。
 - 案 B: Page Object のクラスを残し、規則が止める拾い方だけを `selectors/` に移す。
 - 案 C: Page Object を残し、規則を掛けない。受け入れ条件 1 を満たせない。
 - 比較は、[ADR-0031](../../adr/0031-e2e-test-code-layers.md) にある。ADR-0031 は、ADR-0017 の全体を置き換える。play の対象、locator の使い分け、ジャーニーの定義は、変えずに引き継ぐ。
-- 決まらないと進めない作業: T1、T2。
 
-### 論点 3: E2E にだけ ESLint を入れるか
+### 論点 3: テストの書き方の規則を、何で流すか
 
-- 案 A（推奨）: E2E の workspace にだけ ESLint と parser を入れ、書き方の規則だけを掛ける。
-- 案 B: ESLint を入れず、規則を oxlint の JS プラグインとして `vp lint` で流す。手元で、要素の拾い方の 11 件は同じに報告した。ほかの報告と、`vp lint` の設定で渡せるかは、確認していない。
+- 採用: ESLint を入れず、規則を oxlint の JS プラグインとして流す。
+  - 今は、`e2e/.oxlintrc.json` の `jsPlugins` で規則を読む。構成とツールチェーンの要求の `vp check` のタスク（issue 71）で、ルートの `vite.config.ts` の `lint.overrides` に移す。
+  - 規則の配布元のテスト 81 件は、oxlint の RuleTester でも通った。規則の 17 種類の報告を含む写しで、ESLint と oxlint の報告は 40 件ずつで、ファイル、行、列、文が一致した。
+  - 規則は、lint を流すディレクトリからの相対パスで、テストのディレクトリを判定する。流す場所がずれると、報告が 0 件のまま成功する。
+- 案 A（元の推奨）: E2E の workspace にだけ ESLint と parser を入れ、書き方の規則だけを掛ける。スキルと buddy と同じ形で、alpha の機能に頼らない。lint のツールが 2 つになり、依存が 2 つ増える。
 - 案 C: 規則を入れない。受け入れ条件 1 を満たせない。
-- 比較は、[ADR-0032](../../adr/0032-eslint-for-e2e-authoring-rule.md) にある。
-- 決まらないと進めない作業: T1。
+- 流す場所の固め方、規則を更新するときのテスト、違反で失敗することの確認、ESLint に戻す条件は、[ADR-0032](../../adr/0032-eslint-for-e2e-authoring-rule.md) にある。
+- 決定に合わせて決める 2 つの問いは、Open Points にある。
 
 ### 論点 4: E2E の置き場
 
-- 案 A（推奨）: ルートの `e2e/` のまま、workspace の package（`@kufu/e2e`）にする。route の VRT のファイルと baseline は動かさない。
+- 案 A（採用）: ルートの `e2e/` のまま、workspace の package（`@kufu/e2e`）にする。route の VRT のファイルと baseline は動かさない。
 - 案 B: buddy と同じ `packages/e2e` に移す。
 - 案 C: ルートの `e2e/` のまま、workspace にしない。
-- 案 A は、承認済みの取り決めを 2 つ変える。合わせて決める。
+- 案 A で、承認済みの取り決めを 2 つ変える。
   - ルートの `tsc` を外す。確認する対象が `e2e/` に移り、ルートに残らないためである。構成とツールチェーンの要求の ADR-0025 は、`pnpm typecheck` でルートの `tsc` も実行するとしている。
-  - `E2E_TARGET` は、起動する app と port を選ぶ値として残し、テストのディレクトリ（`e2e/<target>/`）は切り替えない。2 つ目の app を E2E の対象にするときに、spec の分け方を決める。別の案は、`e2e/<target>/tests/` のように、app ごとに層のディレクトリを持つ形である。規則を流す設定が、app ごとに要る。
+  - `E2E_TARGET` は、起動する app と port を選ぶ値として残し、テストのディレクトリ（`e2e/<target>/`）は切り替えない。2 つ目の app を E2E の対象にするときに、spec の分け方を決める。
 - 比較は、[ADR-0033](../../adr/0033-e2e-workspace-at-root.md) にある。
-- 決まらないと進めない作業: T1。
 
 ### 論点 5: 検証のシナリオとエビデンスの置き場
 
-- 案 A（推奨）: 検証の設計とシナリオを `docs/verification/<要求の issue>-<主題>/` に置く。撮る spec を `e2e/tests/verification/` に置き、CI の E2E でも字幕なしで流す。動画と静止画は Git に入れず、pull request に載せる。撮る環境は、ローカルの build と preview にする。
+- 案 A（採用）: 検証の設計とシナリオを `docs/verification/<要求の issue>-<主題>/` に置く。撮る spec を `e2e/tests/verification/` に置き、CI の E2E でも字幕なしで流す。動画と静止画は Git に入れず、pull request に載せる。撮る環境は、ローカルの build と preview にする。
+  - 検証の設計とシナリオの文書を、要求を閉じた後も残す。次の改修で、同じシナリオを撮り直すためである。
+  - 検証の spec を、CI の E2E で流し続ける。
+  - pull request に上げた動画と静止画は、誰でも開ける。
 - 案 B: 動画と静止画を `docs/verification/` にコミットする。
 - 案 C: 動画と静止画を外部のストレージに置く。
-- 案 A は、次のことも含む。違う扱いにするなら、合わせて決める。
-  - 検証の設計とシナリオの文書を、要求を閉じた後も残す。次の改修で、同じシナリオを撮り直すためである。
-  - 検証の spec を、CI の E2E で流し続ける。流さない案では、markup の変更で spec が動かなくなっても、撮るときまで気づかない。
-  - pull request に上げた動画と静止画は、誰でも開ける。
 - 比較は、[ADR-0035](../../adr/0035-verification-scenarios-and-evidence.md) にある。
-- 決まらないと進めない作業: T4 の `context/testing/evidence.md` と、T5。
 
 ### 論点 6: 3 ジャーニーをどの形で書くか
 
-- 案 A（推奨）: 回帰の E2E として `e2e/tests/specs/` に書く。字幕は付けない。今の smoke の 5 件を、3 ジャーニーと表示の確認に組み替える。受け入れ条件 3 の検証のシナリオは、T5 で別に書き、同じ `selectors/` を使う。
-- 案 B: 3 ジャーニーを字幕つきの検証の spec として書き、E2E と兼ねる。コードは 1 組で済む。テストの名前と置き場が、閉じる要求の番号に結び付く。
+- 案 A（採用）: 回帰の E2E として `e2e/tests/specs/` に書く。字幕は付けない。今の smoke の 5 件を、3 ジャーニーと表示の確認に組み替える。受け入れ条件 3 の検証のシナリオは、T5 で別に書き、同じ `selectors/` を使う。
+- 案 B: 3 ジャーニーを字幕つきの検証の spec として書き、E2E と兼ねる。
 - 案 C: 字幕つきと字幕なしの両方を、同じ 3 本ずつ書く。
-- 案 A の理由: 回帰のテストは振る舞いの名前で残り、検証の spec は要求に結び付く。字幕は、人が録画を見て判定する spec だけに要る。
-- 決まらないと進めない作業: T2。
+- 採用の理由: 回帰のテストは振る舞いの名前で残り、検証の spec は要求に結び付く。字幕は、人が録画を見て判定する spec だけに要る。
 
 ### 論点 7: section のアクセシビリティと、レイアウトの規則を E2E で確認するか
 
-- デザインシステムの要求の ADR-0029（提案）は、section のアクセシビリティを E2E のテストの設計で扱うとしている。同じ要求の spec は、`LAYOUT-OVERFLOW` と `MOTION-REDUCE` を E2E で確認するかも、E2E のテストの設計で決めるとしている。
-  - 出典: [ADR-0029](https://github.com/Fukuemon/kufu-apps/blob/0fdeb7b62f8f4cf98d667156492603c6bc456b2b/adr/0029-storybook-catalog.md)
-- 案 A（推奨）: この要求の範囲に入れない。デザインシステムの要求の論点が決まった後に、別の issue にする。issue 62 の受け入れ条件にない。入れるときの置き場は、`e2e/tests/specs/` の下の機能のディレクトリになる。
-- 案 B: この要求に含め、3 つの route にアクセシビリティの自動の確認を足すタスクを作る。確認に使うライブラリの依存が増える。
-- 決まらないと進めない作業: なし。
+- デザインシステムの要求の [ADR-0029](../../adr/0029-storybook-catalog.md) は、section のアクセシビリティを E2E のテストの設計で扱うとしている。同じ要求の spec は、`LAYOUT-OVERFLOW` と `MOTION-REDUCE` を E2E で確認するかも、E2E のテストの設計で決めるとしている。
+- 案 A（採用）: この要求の範囲に入れない。デザインシステムの要求の論点が決まった後に、別の issue にする。issue 62 の受け入れ条件にない。入れるときの置き場は、`e2e/tests/specs/` の下の機能のディレクトリになる。
+- 案 B: この要求に含め、3 つの route にアクセシビリティの自動の確認を足すタスクを作る。
 
 ### 論点 8: 環境変数の名前
 
-- 撮影のスキルは、改修前のアプリの URL を `BASE_URL` で渡す。今の取り決めは `E2E_BASE_URL` である。
-- 案 A（推奨）: `BASE_URL` に改める。渡したときは app を起動しない。
-- 案 B: `E2E_BASE_URL` を残し、`BASE_URL` も読む。向ける先を渡す名前が 2 つになる。
+- 案 A（採用）: `E2E_BASE_URL` を `BASE_URL` に改める。渡したときは app を起動しない。撮影のスキルが、改修前のアプリの URL を `BASE_URL` で渡すためである。
+- 案 B: `E2E_BASE_URL` を残し、`BASE_URL` も読む。
 - 比較は、[ADR-0036](../../adr/0036-capture-evidence-with-playwright.md) にある。
-- 決まらないと進めない作業: T4。
 
 ### 論点 9: エビデンスを付ける pull request の範囲
 
-- issue 62 は、エビデンスを残せるようにすることを求めている。どの pull request に付けるかは、決めていない。`context/testing/evidence.md` の Evidence Scope に書く値である。
-- 案 A（推奨）: 画面の振る舞いか見た目を変える pull request に付ける。文書、スキル、設定だけの pull request には付けない。画面が変わりうる依存の更新には付ける。見た目だけの変更で、VRT の差分の画像で確認できるものは、録画を省いてよい。
-- 案 B: 検証のタスクの pull request にだけ付ける。機能の pull request には、求めない。
+- 案 A（採用）: 画面の振る舞いか見た目を変える pull request に付ける。文書、スキル、設定だけの pull request には付けない。画面が変わりうる依存の更新には付ける。見た目だけの変更で、VRT の差分の画像で確認できるものは、録画を省いてよい。
+- 案 B: 検証のタスクの pull request にだけ付ける。
 - 案 C: 付けるかを、pull request ごとに運営者が決める。
-- 決まらないと進めない作業: T4 の `context/testing/evidence.md` の Evidence Scope。
+- `context/testing/evidence.md` の Evidence Scope に書く。
 
-## Decisions
+### 内部の名前
 
-論点は、どれも決まっていない。  
-次のものは、内部の名前なので、推奨の案で書いた。変えてよい。
+次のものは、内部の名前なので、推奨の案で書いた。
 
 - workspace の package の名前: `@kufu/e2e`
 - Playwright の project の名前: `e2e`、`route-vrt`
@@ -228,7 +225,6 @@ route の VRT の baseline は、次の 2 つで、今と同じパスになる�
 - `context/tech-stack.md`: Playwright を「ルートで管理する」とした記述と、`pnpm e2e` の説明を替える（T1）。Playwright のバージョンの所在を替える（T1、T3）。
 - `context/project.yml`: `e2e.dir` を足す（T1）。
 - `README.md` と `CONTRIBUTING.md`: E2E の置き場とコマンド（T1）、ffmpeg とエビデンスの撮り方へのリンク（T4）を直す。
-- `adr/0017-ui-test-structure-policy.md`: ADR-0031 を承認したときに、Status を「ADR-0031 に置換」にする。
 - 文書のパスは、構成とツールチェーンの要求の T1 で `docs/` の下に移る。この spec と ADR は、移す前のパスで書いた。`docs/verification/` は、移した後にできる。
 
 ### 実装のタスクの分け方
@@ -259,7 +255,7 @@ route の VRT の baseline は、次の 2 つで、今と同じパスになる�
 
 ### issue 7 の本文の変更の案
 
-論点 2 と 6 が推奨のとおりに決まったときに、issue 7 の本文を次のように直す。
+論点 2 と 6 の決定に合わせて、issue 7 の本文を次のように直す。
 
 - 実施内容: 置き場を `e2e/corporate-site/` から `e2e/tests/specs/` に替える。観点とケースは、テスト設計の表を写す。
 - 制約
@@ -286,7 +282,6 @@ route の VRT の baseline は、次の 2 つで、今と同じパスになる�
 
 ## Carry Over
 
-- ADR-0031 から ADR-0036: 「提案」の状態で `adr/` にある。運営者が承認したら、Status を替える。ADR-0031 を承認したら、ADR-0017 の Status を「ADR-0031 に置換」にする。
 - `context/testing/e2e.md` と `context/testing/evidence.md`: 埋める案のとおりに、T1、T4、T5 で書く。
 - ほかの文書: 「context を埋める案」と「ほかの文書の変更の案」のとおりに、タスクごとに変える。
   - `context/testing.md`、`context/conventions.md`、`context/tech-stack.md`、`context/project.yml`

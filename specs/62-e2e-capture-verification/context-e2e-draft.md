@@ -1,6 +1,6 @@
 # context/testing/e2e.md を埋める案
 
-`context/testing/e2e.md` の本文の案。[index.md](index.md) の論点が推奨のとおりに決まったときの中身である。  
+`context/testing/e2e.md` の本文の案。[index.md](index.md) の Decisions に合わせた中身である。  
 実装のタスクが、動かして確認してから `context/testing/e2e.md` に書き、案内のコメントを消す。frontmatter の `status` は、最後のタスクで `stable` にする。
 
 ## Test Tool
