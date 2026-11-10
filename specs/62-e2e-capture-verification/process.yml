@@ -1,0 +1,24 @@
+# issue 62 の開発プロセスの宣言。種別 feature のプリセット（context/project.yml）のとおり
+preset: feature
+processes:
+  - requirements
+  - design
+  - implementation
+  - verification-design
+  - verification
+  - integration
+  - release
+reflect_at: design
+breakdown_at: design
+review: [requirements, design, integration]
+tasks: [design, impl, verify]
+
+progress:
+  requirements: done
+  design: in-review
+  breakdown: drafted
+  implementation: not-started
+  verification-design: not-started
+  verification: not-started
+  integration: not-started
+  release: not-started
