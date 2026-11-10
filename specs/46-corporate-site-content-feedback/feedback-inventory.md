@@ -65,7 +65,7 @@ FB は括弧を半角 `(株)` で書いているが、**括弧は現行の全角
 | B-14 | power-transmission-supplies        | （株）セイサ                         | 住友重機械ギヤボックス（株）             |
 | B-15 | power-transmission-supplies        | 神鋼電機（株）                       | シンフォニアテクノロジー（株）           |
 | B-16 | power-transmission-supplies        | 日本ギヤー工業（株）                 | 日本ギア工業（株）                       |
-| B-17 | power-transmission-supplies        | （株）昌和発条製作所                 | （株）昌和發條製作所                     |
+| B-17 | power-transmission-supplies        | （株）昌和発条製作所                 | （株）昌和発條製作所                     |
 | B-18 | power-transmission-supplies        | 東洋ゴム工業（株）                   | TOYO TIRE（株）                          |
 | B-19 | pneumatic-hydraulic                | （株）妙徳                           | （株）コンバム                           |
 | B-20 | pneumatic-hydraulic                | クロダニューマテイクス（株）         | クロダニューマティクス（株）             |
