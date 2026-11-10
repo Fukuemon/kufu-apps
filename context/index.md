@@ -7,8 +7,8 @@
 - [業務の知識](domain.md) — コーポレートサイト、app、package、island、セマンティックトークンの用語と、コードの識別子との対応。状態と不変条件を持つ概念は未定（draft）
 - [基盤と運用](operations.md) — 環境ごとの用途、Cloudflare に任せること、kufu-infra へ渡す取り決め、問い合わせフォームが基盤に求めるもの、公開の条件、観測点、シークレットの置き場（draft）
 - [技術スタック](tech-stack.md) — 採用しているツールの役割とバージョンの所在、先に決めておく採用の候補、ルートのコマンド、vite と Node.js のバージョンの制約、新しい app の作り始め。バージョンそのものと選んだ理由は書かない（draft）
-- [テスト](testing.md) — unit test、play、E2E、VRT の責務と置き場、VRT の撮影の環境、E2E の環境変数、API の置き換え方、story と Page Object の規約、変更ごとに足すテスト（draft）
-- [E2E のテスト](testing/e2e.md) — E2E のテストのツールでの書き方、testid の名前、lint の規則に渡す値、流すコマンドと環境、テストデータ、待つ時間の決め方（draft）
+- [テスト](testing.md) — unit test、play、E2E、VRT の責務と置き場、VRT の撮影の環境、E2E の環境変数、API の置き換え方、story と E2E の層と locator の規約、変更ごとに足すテスト（draft）
+- [E2E のテスト](testing/e2e.md) — E2E のテストのツールでの書き方、testid の名前、lint の規則に渡す値と規則の更新の手順、流すコマンドと環境、テストデータ、待つ時間の決め方（draft）
 - [エビデンス](testing/evidence.md) — エビデンスを付ける変更、元のファイルの置き場と公開の範囲、撮影の手段、撮る環境、ログインとテストデータ、pull request への添付とスレッドと本文の更新の仕方、検証のシナリオの置き場（draft）
 
 ## Design Doc

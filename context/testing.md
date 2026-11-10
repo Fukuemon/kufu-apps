@@ -1,10 +1,9 @@
 ---
 type: context
 title: テスト
-description: unit test、play、E2E、VRT の責務と置き場、VRT の撮影の環境、E2E の環境変数、API の置き換え方、story と Page Object の規約、変更ごとに足すテスト
+description: unit test、play、E2E、VRT の責務と置き場、VRT の撮影の環境、E2E の環境変数、API の置き換え方、story と E2E の層と locator の規約、変更ごとに足すテスト
 status: draft
 governs:
-  - playwright.config.ts
   - e2e/
   - scripts/vrt-story.mjs
   - scripts/vrt-container.mjs
@@ -26,7 +25,7 @@ corporate-site で E2E が担うジャーニーは [コーポレートサイト�
 | --------- | ------------------------------------------- | ---------------------------------------------------------- |
 | unit test | 各 app と package（Vitest）                 | ロジック、共有の UI、共有の設定を使えること                |
 | play      | 各コンポーネントの story（Storybook）       | 1 つのコンポーネントの中で閉じる操作                       |
-| E2E       | ルートの `e2e/`（Playwright）               | 公開の前の検証、route をまたいだ到達、回帰                 |
+| E2E       | `e2e/tests/`（`@kufu/e2e`、Playwright）     | 公開の前の検証、route をまたいだ到達、回帰                 |
 | VRT       | story は Storybook、route はルートの `e2e/` | 見た目の回帰。要素があるかではなく、見た目の差分を検出する |
 
 - `packages/ui` の共有の UI は、Storybook か unit test で確認できる状態にする。
@@ -34,7 +33,7 @@ corporate-site で E2E が担うジャーニーは [コーポレートサイト�
 
 play テストの対象は `packages/ui` に限る。  
 Astro の静的なコンポーネントは E2E で確認する。  
-ADR-0017: [UI のテストの構成](../docs/adr/0017-ui-test-structure-policy.md)
+ADR-0031: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../docs/adr/0031-e2e-test-code-layers.md)
 
 - React の island の play テストの対象の基準は未定。最初の island を足すときに決める。
 
@@ -68,15 +67,15 @@ ADR-0018: [Storybook の test の仕組みの上の story の VRT](../docs/adr/0
 
 ## Runtime Requirements
 
-`pnpm e2e` は、ルートの `playwright.config.ts` を正とし、`e2e/<target>/` の下の suite を読む。
+`pnpm e2e` は、`e2e/playwright.config.ts` を正とし、`e2e/tests/` の下の spec を読む。
 
-- ルートの環境変数は `E2E_TARGET`、`E2E_PORT`、`E2E_BASE_URL` の 3 つにする。
+- 環境変数は `E2E_TARGET`、`E2E_PORT`、`E2E_BASE_URL` の 3 つにする。
 - `E2E_TARGET` のデフォルトは `corporate-site` にする。
 - 各 app の preview の port は、衝突を避けるためこの取り決めで固定する。`corporate-site` は 4321、`cms` は 4173 にする。
-- 対象の app は `build`、`preview`、`e2e:serve` の 3 つの script を持つ。ルートの Playwright は `e2e:serve` だけを呼ぶ。
+- 対象の app は `build`、`preview`、`e2e:serve` の 3 つの script を持つ。`e2e/playwright.config.ts` は `e2e:serve` だけを呼ぶ。
   - `apps/corporate-site` の `e2e:serve` は、`build` の後に `preview` を起動する。
   - app 固有の preview のコマンドをルートに書かず、workspace の script の取り決めでつなぐ。
-- 新しい app を E2E の対象にするときは、3 つの script を実装し、`playwright.config.ts` の対象に足す。
+- 新しい app を E2E の対象にするときは、3 つの script を実装し、`e2e/playwright.config.ts` の対象に足す。
 
 ## Mocking and Test Data
 
@@ -106,9 +105,11 @@ Cloudflare Pages Functions か Workers を伴う feature は、ローカルの E
 - 公開の判断には、deploy の成功だけでなく、preview での導線の確認を含める。条件は [operations.md](operations.md#deployment-conditions) にある。
 - `apps/cms` を足すときの採用判断のテストの観点は [CMS の Design Doc](../docs/design/features/cms/DesignDoc.md) にある。
 
-### Page Object と locator
+### E2E の層と locator
 
-- E2E は、ページごとの Page Object にセレクタと操作を集め、テストの本体にはシナリオだけを書く。
-- locator は用途で使い分ける。Page Object の中にも同じ規約を適用する。
-  - セクションとページのような領域の特定には、`data-testid` を使う。
+- E2E のテストのコードは、`e2e/tests/` の `specs/`、`selectors/`、`fixtures/` の層に分け、Page Object のクラスを作らない。
+- testid を持たない要素の指し方は、ページを引数に取る関数で `selectors/` に置く。確認と手順は spec に書く。
+- locator は用途で使い分ける。
+  - セクションとページのような領域の特定には、`data-testid` を使う。spec に直接書いてよい。
   - ボタン、リンク、入力欄のような操作の対象には、`getByRole` を優先する。
+- 層、testid の名前、書き方の規則の詳細は [E2E のテスト](testing/e2e.md) にある。

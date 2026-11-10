@@ -29,7 +29,7 @@ ADR-0019: [コーポレートサイトを Astro の静的な生成で作る](../
 - `apps/corporate-site` を、Astro の静的な生成によるコーポレートサイトとして作り、保守する。
 - `packages/ui` に、デザイントークンと、共有の UI の primitive を置く。
 - `packages/config` に、TypeScript、lint、format などの共有の設定を置く。
-- ルートで管理する E2E で、コーポレートサイトの主な導線を公開の前に確認する。
+- E2E の workspace（`e2e/`、`@kufu/e2e`）で、コーポレートサイトの主な導線を公開の前に確認する。
 - AI エージェント向けの設定（`AGENTS.md`、`CLAUDE.md`、`.agents`、`.codex`、`.claude`）を、monorepo の方針に合わせる。
 
 意図して作らないものは次のとおり。
@@ -64,7 +64,7 @@ flowchart TD
     Corp["apps/corporate-site<br/>Astro の静的な生成"] -->|"build の artifact"| CF
     UI["packages/ui<br/>デザイントークン、共有の UI、Storybook"] --> Corp
     Config["packages/config<br/>共有の TypeScript、lint、test の設定"] --> Corp
-    E2E["e2e と playwright.config.ts<br/>公開の前の検証"] --> Corp
+    E2E["e2e（@kufu/e2e）<br/>公開の前の検証"] --> Corp
 ```
 
 - `apps/corporate-site` は、`packages/ui` と `packages/config` が公開するエントリポイントだけに依存する。
@@ -102,8 +102,10 @@ TypeScript、oxlint、Vitest のような、共有する価値の高い設定を
 
 ### e2e
 
-ルートで管理する Playwright で、公開の前の検証と、主な導線の回帰のテストを担う。  
-route の VRT もここで撮る。
+workspace の package `@kufu/e2e` で、Playwright による公開の前の検証と、主な導線の回帰のテストを担う。  
+route の VRT もここで撮る。  
+テストのコードは `e2e/tests/` の層に置き、書き方の規則を oxlint の JS プラグインで掛ける。  
+ADR-0033: [E2E をルートの e2e/ に置いたまま、workspace の package にする](../adr/0033-e2e-workspace-at-root.md)
 
 - 持たないもの: 1 つのコンポーネントの中で閉じる操作の検証。Storybook の play が担う。
 - テストの種類ごとの責務は [context/testing.md](../../context/testing.md#test-types-and-guarantees) にある。
@@ -161,8 +163,7 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 ├── packages/
 │   ├── ui/               # デザイントークン、共有の UI、Storybook
 │   └── config/           # 共有の TypeScript、oxlint、Vitest の設定
-├── e2e/                  # Playwright の E2E と route の VRT
-├── playwright.config.ts
+├── e2e/                  # @kufu/e2e。Playwright の設定、E2E のテストのコード、書き方の規則、route の VRT
 ├── docs/
 │   ├── PRD.md
 │   ├── design/

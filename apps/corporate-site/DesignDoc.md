@@ -270,7 +270,7 @@ sequenceDiagram
 
 route をまたいだ到達を、E2E で確認する。  
 テストの規約は [context/testing.md](../../context/testing.md#test-types-and-guarantees) にある。  
-ADR-0017: [UI のテストの構成](../../docs/adr/0017-ui-test-structure-policy.md)
+ADR-0031: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../../docs/adr/0031-e2e-test-code-layers.md)
 
 - 回遊: `/` から `/products` へ進み、カテゴリを検索し（URL に検索の条件が残る）、`/contact` に着く。
 - ナビゲーション: ヘッダーとフッターのリンクと、モバイルのナビの開閉から、各 route へ着ける。
