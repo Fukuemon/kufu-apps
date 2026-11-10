@@ -100,13 +100,13 @@ jobs:
       - uses: ./.github/actions/setup
       - name: E2E
         run: pnpm e2e
-      # trace を PR から辿れるようにする。playwright-report/ は reporter 未指定のため出ない。
+      # trace を PR から辿れるようにする。playwright-report/ は reporter が list のため出ない。
       - name: Upload E2E artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: e2e-artifacts
-          path: test-results/
+          path: e2e/test-results/
           retention-days: 7
           if-no-files-found: ignore
 
@@ -215,6 +215,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: vrt-route-diff
-          path: test-results/
+          path: e2e/test-results/
           retention-days: 7
           if-no-files-found: ignore

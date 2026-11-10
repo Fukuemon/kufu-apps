@@ -66,13 +66,10 @@ module.exports = {
     exclude: {
       path: "(^|/)(node_modules|dist|coverage|storybook-static|\\.astro|\\.turbo|\\.pnpm-store|__fixtures__)(/|$)",
     },
-    includeOnly: "^((apps|packages)/|e2e/|playwright\\.config\\.ts$)",
+    includeOnly: "^((apps|packages|e2e)/)",
     enhancedResolveOptions: {
       conditionNames: ["import", "require", "node", "default"],
       exportsFields: ["exports"],
-    },
-    tsConfig: {
-      fileName: "tsconfig.json",
     },
   },
 };

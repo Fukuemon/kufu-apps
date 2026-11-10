@@ -7,6 +7,9 @@ docs:
   adr: docs/adr
   spec: docs/specs
 
+e2e:
+  dir: e2e
+
 process:
   defaults:
     processes:
