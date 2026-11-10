@@ -1,7 +1,7 @@
 ---
 type: context
 title: 基盤と運用
-description: 環境ごとの用途、Cloudflare に任せること、kufu-infra へ渡す取り決め、問い合わせフォームが基盤に求めるもの、公開の条件、観測点、秘密情報の置き場
+description: 環境ごとの用途、Cloudflare に任せること、kufu-infra へ渡す取り決め、問い合わせフォームが基盤に求めるもの、公開の条件、観測点、シークレットの置き場
 status: draft
 governs:
   - .github/workflows/
@@ -27,13 +27,13 @@ ADR-0001: [Terraform を基盤のリポジトリに分ける](../adr/0001-terraf
 
 環境と用途は次のとおり。
 
-- local: 開発者が手元で確かめる。`pnpm dev` で app を起動し、Cloudflare への依存を持ち込まない。
-- preview: pull request とブランチごとに確かめる。Cloudflare Pages の preview deployment で、実際のページを確かめる。
+- local: 開発者が手元で確認する。`pnpm dev` で app を起動し、Cloudflare への依存を持ち込まない。
+- preview: pull request とブランチごとに確認する。Cloudflare Pages の preview deployment で、実際のページを確認する。
 - production: 公開するサイト。Cloudflare Pages の production deployment を正とする。
 
 preview と production は、Cloudflare Pages の上で同じ build の流れを通る。  
 preview の URL で、layout の崩れ、リンク、フォームの導線、SEO の metadata をレビューする。  
-ブランチの単位で安全に確かめられることを、コーポレートサイトの改修の標準の流れに含める。
+ブランチの単位で安全に確認できることを、コーポレートサイトの改修の標準の流れに含める。
 
 ### kufu-infra へ渡す取り決め
 
@@ -65,7 +65,7 @@ ADR-0009: [corporate-site の問い合わせフォームの backend](../adr/0009
 - preview でのレビュー（layout、リンク、フォーム、SEO）を通らない pull request は merge しない。
 - 公開の判断には、deploy の成功だけでなく、preview での導線の確認を含める。
 - production への deploy は、`develop` から `main` への merge を起点にする。手で deploy する流れを標準にしない。
-- コーポレートサイトのアセットは、ライセンスと利用の許諾を確かめてから使う。
+- コーポレートサイトのアセットは、ライセンスと利用の許諾を確認してから使う。
 
 ## Health and Monitoring
 
