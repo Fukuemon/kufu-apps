@@ -2,7 +2,7 @@
 
 ## Status
 
-提案
+承認
 
 ## Context
 
@@ -24,16 +24,13 @@
 ## Decision
 
 - エビデンスは、E2E の spec を撮影の設定で流して撮る。
-- 撮影の設定は `e2e/playwright.capture.config.ts` に、字幕の関数は `e2e/tests/fixtures/caption.ts` に写す。
+- 撮影の設定は `e2e/playwright.capture.config.ts` に、字幕の関数は `e2e/tests/fixtures/caption.ts` に写してコミットする。
+  - 運営者が、private の agent-harness の 2 つのファイルを、public のこのリポジトリに写すことを認めた。
 - 撮影の出力（`e2e/evidence/`）は、Git で追跡しない。
 - E2E の設定の `baseURL` は、環境変数 `BASE_URL` で上書きできるようにする。`BASE_URL` を渡したときは、app を起動しない。
   - 今の `E2E_BASE_URL` は、`BASE_URL` に改める。向ける先を渡す名前を 1 つにするためである。
 - 録画を mp4 にまとめるスクリプトは、スキルのディレクトリのものを使い、写さない。撮る人は、apm でスキルを配置し、ffmpeg を入れておく。
 - 字幕を付けるのは、検証のシナリオの spec と、pull request の動作確認の spec だけにする。回帰の E2E の spec には付けない。
-
-## 承認の条件
-
-- private の agent-harness の 2 つのファイルを、public のこのリポジトリに写してコミットすることを、運営者が認める。
 
 ## Verification
 

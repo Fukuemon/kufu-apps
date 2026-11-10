@@ -2,7 +2,7 @@
 
 ## Status
 
-提案
+承認
 
 ## Context
 
@@ -17,7 +17,7 @@
 - story の VRT の baseline を Git で管理したとき、PNG の履歴でリポジトリが大きくなった。
   - ADR-0018: [story の側の VRT を Storybook の公式のテストの基盤に載せ、baseline をリポジトリで管理する](0018-story-vrt-on-storybook-test-integrations.md)
 - 構成とツールチェーンの要求の ADR-0024 は、文書を `docs/` の下に集める。
-  - 出典: [ADR-0024](https://github.com/Fukuemon/kufu-apps/blob/48380362a729fe2d5090af0fa25649d6a95adf75/adr/0024-documents-under-docs.md)
+  - ADR-0024: [PRD、Design Doc、ADR、spec を `docs/` の下に集める](0024-documents-under-docs.md)
 - buddy は、検証の設計とシナリオを `docs/verification/<要求の番号>-<主題>/` に置く。
   - 出典: [buddy の docs/verification](https://github.com/Fukuemon/buddy/tree/c53390a6e64f4ef39d468dedd529425ae4aca0e5/docs/verification)
 - エビデンスは、Playwright の録画と字幕で撮る。
@@ -35,6 +35,7 @@
   - `scenarios.md`: 検証のシナリオ。前提、もし、ならばの文で書く
   - `README.md`: シナリオと spec の対応、spec を置かないシナリオ、撮影のための操作
 - 要求を閉じた後も残す。次の改修で、同じシナリオを撮り直すためである。
+- `docs/verification/` は、文書を `docs/` の下に移した後に作る。
 
 ### 2. エビデンスを撮る spec は、E2E の workspace に置いてコミットする
 
@@ -48,17 +49,13 @@
 - 検証のシナリオのエビデンスは、検証の pull request に載せる。実施の結果も、検証の pull request に記録する。
 - 機能の pull request の動作確認は、先にコメントに載せ、運営者が確認してから本文の「検証とエビデンス」の表に並べる。
 - 画面に写すのは、公開のサイトと同じ内容だけにする。
+- pull request に上げた動画と静止画は、誰でも開ける。運営者が、この状態で置くことを認めた。
 
 ### 4. 撮る環境は、ローカルの build と preview にする
 
 - `build` した成果物を `preview` で配信して撮る。CI の E2E と同じ起動の方法である。
 - 改修前と比べるときは、改修前のブランチの成果物を別の port で配信し、`BASE_URL` で渡す。
 - 配信の基盤が決まった後に、公開の前の環境で撮るかを決め直す。
-
-## 承認の条件
-
-- pull request に上げた動画と静止画を、誰でも開ける状態で置くことを、運営者が認める。
-- `docs/verification/` は、構成とツールチェーンの要求が文書を `docs/` の下に移した後に作る。
 
 ## Considered Options
 

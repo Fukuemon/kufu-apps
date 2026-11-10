@@ -2,7 +2,7 @@
 
 ## Status
 
-提案
+承認
 
 ## Context
 
@@ -25,10 +25,6 @@
   - 差分が無ければ、baseline を変えない。
   - 差分が出たら、運営者が差分を見て、baseline を撮り直すかを決める。許す差分は緩めない。
 - 上げる時点は、Storybook を上げるタスクの後にする。デザインシステムの要求の、baseline に関わるタスクの pull request と同時に開かない。
-
-## 承認の条件
-
-- 上げた pull request の CI で、route と story の VRT の結果を確認する。
 
 ## Verification
 

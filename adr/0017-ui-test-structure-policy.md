@@ -2,7 +2,7 @@
 
 ## Status
 
-承認
+[ADR-0031](0031-e2e-test-code-layers.md) に置換
 
 ## Context
 
@@ -24,7 +24,7 @@
 
 - **play テストの対象は `packages/ui` に限る。**
   corporate-site に React の island がないので、island の対象の基準は、island ができるとき（問い合わせフォームの実装）に決める。
-  Astro の静的なコンポーネントは E2E で確かめる。
+  Astro の静的なコンポーネントは E2E で確認する。
 - **E2E に、ページ単位の Page Object を入れる。**
   セレクタと操作を Page Object に集め、テストの本体にはシナリオだけを書く。
   今の規模では、3 つの route に対応する 3 つほどのクラスに収まる。

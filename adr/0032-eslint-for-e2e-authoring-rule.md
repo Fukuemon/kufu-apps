@@ -7,7 +7,7 @@
 ## Context
 
 - lint は oxlint だけで実行している。構成とツールチェーンの要求の ADR-0025 は、整形と lint を Vite+ の `vp check` に替える。
-  - 出典: [ADR-0025](https://github.com/Fukuemon/kufu-apps/blob/48380362a729fe2d5090af0fa25649d6a95adf75/adr/0025-vite-plus-toolchain.md)
+  - ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](0025-vite-plus-toolchain.md)
 - agent-harness のパッケージ e2e は、テストの書き方の規則を、ESLint の規則のファイル 1 つで配る。スキル setup-e2e-lint は、このファイルを利用者のリポジトリに写して使う。
   - 規則が使う依存は、ESLint と、TypeScript を読む parser だけである。
   - 規則は、ESLint を流すディレクトリから見たテストのディレクトリの下だけを見る。ほかのディレクトリから流すと、違反があっても報告しない。
