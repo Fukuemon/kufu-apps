@@ -6,6 +6,8 @@ import supplyImage from "../../../assets/corporate-products-supply.png";
 import { businessContent } from "../../../content/business.js";
 
 const featureImages = [supplyImage, machiningImage] as const;
+// FB の原本では、小規模工事の事例を別作・特注対応のパネルの直後に同じ形で置いている
+const panels = [businessContent.customOrder, businessContent.smallWorks];
 ---
 
 <section
@@ -39,27 +41,31 @@ const featureImages = [supplyImage, machiningImage] as const;
       }
     </div>
 
-    <div class="custom-order-panel grid border border-border bg-card md:grid-cols-[13.125rem_1fr]">
-      <div class="border-b border-border px-5 py-5 md:border-b-0 md:border-r md:px-7 md:py-6">
-        <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
-          {businessContent.customOrder.eyebrow}
-        </p>
-        <p class="mt-2 font-serif text-xl font-semibold leading-normal">
-          {businessContent.customOrder.title}
-        </p>
-      </div>
-      <div class="grid gap-x-7 gap-y-3 px-5 py-6 md:grid-cols-3 md:px-7">
-        {
-          businessContent.customOrder.items.map((item) => (
-            <div class="flex items-center gap-2.5">
-              <span class="h-0.5 w-3.5 bg-primary" aria-hidden="true"></span>
-              <p class="min-w-0 text-[0.8125rem] leading-normal text-foreground">
-                {item}
+    <div class="grid gap-6">
+      {
+        panels.map((panel) => (
+          <div class="custom-order-panel grid border border-border bg-card md:grid-cols-[13.125rem_1fr]">
+            <div class="border-b border-border px-5 py-5 md:border-b-0 md:border-r md:px-7 md:py-6">
+              <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
+                {panel.eyebrow}
+              </p>
+              <p class="mt-2 font-serif text-xl font-semibold leading-normal break-keep">
+                {panel.title}
               </p>
             </div>
-          ))
-        }
-      </div>
+            <div class="grid gap-x-7 gap-y-3 px-5 py-6 md:grid-cols-3 md:px-7">
+              {panel.items.map((item) => (
+                <div class="flex items-center gap-2.5">
+                  <span class="h-0.5 w-3.5 bg-primary" aria-hidden="true"></span>
+                  <p class="min-w-0 text-[0.8125rem] leading-normal text-foreground">
+                    {item}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>
