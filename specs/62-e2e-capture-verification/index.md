@@ -26,10 +26,7 @@ issue 62 の受け入れ条件を使う。
 
 ## Open Points
 
-論点 3 の決定に合わせて、次の 2 つを決める。
-
-- T1 を、構成とツールチェーンの要求の `vp check` のタスク（issue 71）の前に進めるか。今の T1 の前提は、その要求の T6 で、T6 は issue 71 の後である。このままでは、`e2e/.oxlintrc.json` で始める段階が起きない。
-- ルートの `lint.overrides` に移した後に、規則を流す場所をどう固めるか。options を `import.meta.dirname` から絶対パスで渡すか、ルートでだけ流すか。
+なし。論点 3 の決定に合わせて出た 2 つの問いは、運営者が 2026-11-11 に決めた。Decisions の論点 3 にある。
 
 ## Decisions
 
@@ -70,7 +67,11 @@ issue 62 の受け入れ条件を使う。
 - 案 A（元の推奨）: E2E の workspace にだけ ESLint と parser を入れ、書き方の規則だけを掛ける。スキルと buddy と同じ形で、alpha の機能に頼らない。lint のツールが 2 つになり、依存が 2 つ増える。
 - 案 C: 規則を入れない。受け入れ条件 1 を満たせない。
 - 流す場所の固め方、規則を更新するときのテスト、違反で失敗することの確認、ESLint に戻す条件は、[ADR-0032](../../adr/0032-eslint-for-e2e-authoring-rule.md) にある。
-- 決定に合わせて決める 2 つの問いは、Open Points にある。
+- 決定に合わせて、次の 2 つも決めた。
+  - T1 の順: T1 の前提から構成とツールチェーンの要求の T6 を外し、`vp check` のタスク（issue 71）の前に進める。T1 は今のコマンド（`pnpm lint`、`pnpm typecheck`）で書く。issue 71 の実施内容と完了の条件に、`e2e/.oxlintrc.json` をルートの `lint.overrides` に移し、わざと書いた違反でルートと `e2e/` の両方で失敗することを確認する作業を足す。
+    - 別の案: T1 を T6 の後に置き、初めからルートの `lint.overrides` に書く。設定の移動は無いが、決定の「`e2e/.oxlintrc.json` で始める」と違い、issue 7 が構成とツールチェーンの要求の全てを待つ。
+  - 移した後の流す場所: options を `import.meta.dirname` から絶対パスにして渡す。ルートと `e2e/` のどちらで流しても、同じ報告が出る。待つ時間の報告の文に、手元の絶対パスが出る。
+    - 別の案: ルートでだけ流すと決め、ルートからの相対パスを渡す。`e2e/` で流すと、報告が 0 件のまま成功する。
 
 ### 論点 4: E2E の置き場
 
@@ -138,11 +139,11 @@ issue 62 の受け入れ条件を使う。
 
 ```text
 e2e/
-├── package.json                  # @kufu/e2e。@playwright/test、eslint、parser、typescript、@types/node を持つ
+├── package.json                  # @kufu/e2e。@playwright/test、oxlint、typescript、@types/node を持つ
 ├── playwright.config.ts          # project は e2e と route-vrt
 ├── playwright.capture.config.ts  # エビデンスを撮るときの設定（T4）
-├── eslint.config.mjs
-├── eslint/e2e-authoring-rule.mjs # テストの書き方の規則
+├── .oxlintrc.json                # 書き方の規則の設定。issue 71 でルートの vite.config.ts に移す
+├── lint/                         # e2e-authoring-rule.mjs と、JS プラグインとして読ませる plugin.mjs
 ├── tsconfig.json
 ├── tests/
 │   ├── specs/<機能>/<振る舞い>.e2e.ts
@@ -170,6 +171,8 @@ T1 で、次の箇所を直す。
   - `e2e`: `playwright test smoke` を、`@kufu/e2e` の `e2e`（`playwright test --project=e2e`）を呼ぶ形に替える。
   - `vrt:route:run`: `playwright test route-vrt` を、`@kufu/e2e` の `vrt:route:run`（`playwright test --project=route-vrt`）を呼ぶ形に替える。
   - `@kufu/e2e` に `test` の script を置かない。ルートの `pnpm test` は、ブラウザのない CI の job で、workspace の `test` を流す。
+  - `@kufu/e2e` の `lint` で、`e2e/.oxlintrc.json` を渡して oxlint を流す。ルートの `pnpm lint`（`turbo run lint`）と lefthook と CI の lint の job が、この script を流す。
+  - `@kufu/e2e` の `typecheck` で、`e2e/tsconfig.json` の `tsc --noEmit` を流す。ルートの `pnpm typecheck` が、`turbo run typecheck` で流す。
 - `scripts/vrt-container.mjs`
   - Playwright のバージョンを読むパスを、`e2e/node_modules/@playwright/test` に替える。
   - container の中で隠す `node_modules` の一覧に、`e2e/node_modules` を足す。
@@ -235,20 +238,20 @@ route の VRT の baseline は、次の 2 つで、今と同じパスになる�
 - docs は、起票しない。context と文書の更新は、実装のタスクの pull request に含める。
 - どのタスクも、CI の全ての job が通ることを、完了の条件に含める。
 
-| #   | 種類   | タスク                                                             | タスクごとの完了の条件                                                                                                                                                                                                                                                                                                                                                                                  | 前提                                             |
-| --- | ------ | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| T1  | impl   | E2E を workspace にし、層と書き方の規則を入れる                    | 今の smoke の 5 件が、`e2e/tests/` の層で通る。Page Object のクラスがない。`pnpm check` が書き方の規則を流し、わざと書いた違反で失敗する。route の VRT が、baseline を変えずに通る。CI の `e2e` の job のログに、テストごとの所要時間が出る。`context/testing/e2e.md` の全てのセクションが埋まっている（撮影の字幕の関数に関わる行は T4 で足す）。違反で失敗した結果を、pull request の本文に書いている | 構成とツールチェーンの要求の T6。論点 0、2、3、4 |
-| T2  | impl   | corporate-site の 3 ジャーニーを E2E に実装する（issue 7）         | テスト設計の必須のケース（C1 から C10）が `e2e/tests/specs/` にあり、`pnpm e2e` と CI の `e2e` の job で通る。それぞれの spec で、期待を逆にすると落ちることを確認し、結果を pull request の本文に書いている                                                                                                                                                                                            | T1。論点 6                                       |
-| T3  | impl   | Playwright を 1.64.1 に上げる                                      | `@playwright/test`、`packages/ui` の `playwright`、CI の 4 つの image が 1.64.1 である。lockfile の Playwright が 1 つのバージョンである。E2E が通る。route と story の VRT に差分がないか、運営者が差分を見て決めている                                                                                                                                                                                | 構成とツールチェーンの要求の T4。論点 1          |
-| T4  | impl   | 撮影の設定と字幕の関数を入れ、エビデンスを撮って載せる手順を決める | 撮影の設定で既にある spec を 1 本撮り、mp4 ができる。字幕つきの spec を 1 本撮り、この pull request のコメントに載せて再生できる。Git で追跡しない下書きのディレクトリに置いた spec を、撮影の設定で流せる。`BASE_URL` で向ける先を変えられる。`context/testing/evidence.md` の Verification Scenarios のほかが埋まっている                                                                             | T1、T3。論点 0、5、8、9                          |
-| T5  | verify | 受け入れ条件を検証し、3 つの route のシナリオのエビデンスを残す    | `docs/verification/62-…/` に検証の設計とシナリオがある。シナリオの spec が `e2e/tests/verification/62/` にあり、CI で通る。エビデンスが検証の pull request にある。2 つの context の `status` が `stable` である。issue 62 の受け入れ条件を確認している                                                                                                                                                 | T2、T4。構成とツールチェーンの要求の T1。論点 5  |
+| #   | 種類   | タスク                                                             | タスクごとの完了の条件                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | 前提                                            |
+| --- | ------ | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| T1  | impl   | E2E を workspace にし、層と書き方の規則を入れる                    | 今の smoke の 5 件が、`e2e/tests/` の層で通る。Page Object のクラスがない。`pnpm lint` が書き方の規則を流し、わざと書いた違反で、ルートと `e2e/` の両方で失敗する。ルートの `tsc` が無く、`pnpm typecheck` が `e2e/` を確認する。route の VRT が、baseline を変えずに通る。CI の `e2e` の job のログに、テストごとの所要時間が出る。`context/testing/e2e.md` の全てのセクションが埋まっている（撮影の字幕の関数に関わる行は T4 で足す）。違反で失敗した結果を、pull request の本文に書いている | 論点 0、2、3、4。issue 71 の前に行う            |
+| T2  | impl   | corporate-site の 3 ジャーニーを E2E に実装する（issue 7）         | テスト設計の必須のケース（C1 から C10）が `e2e/tests/specs/` にあり、`pnpm e2e` と CI の `e2e` の job で通る。それぞれの spec で、期待を逆にすると落ちることを確認し、結果を pull request の本文に書いている                                                                                                                                                                                                                                                                                   | T1。論点 6                                      |
+| T3  | impl   | Playwright を 1.64.1 に上げる                                      | `@playwright/test`、`packages/ui` の `playwright`、CI の 4 つの image が 1.64.1 である。lockfile の Playwright が 1 つのバージョンである。E2E が通る。route と story の VRT に差分がないか、運営者が差分を見て決めている                                                                                                                                                                                                                                                                       | 構成とツールチェーンの要求の T4。論点 1         |
+| T4  | impl   | 撮影の設定と字幕の関数を入れ、エビデンスを撮って載せる手順を決める | 撮影の設定で既にある spec を 1 本撮り、mp4 ができる。字幕つきの spec を 1 本撮り、この pull request のコメントに載せて再生できる。Git で追跡しない下書きのディレクトリに置いた spec を、撮影の設定で流せる。`BASE_URL` で向ける先を変えられる。`context/testing/evidence.md` の Verification Scenarios のほかが埋まっている                                                                                                                                                                    | T1、T3。論点 0、5、8、9                         |
+| T5  | verify | 受け入れ条件を検証し、3 つの route のシナリオのエビデンスを残す    | `docs/verification/62-…/` に検証の設計とシナリオがある。シナリオの spec が `e2e/tests/verification/62/` にあり、CI で通る。エビデンスが検証の pull request にある。2 つの context の `status` が `stable` である。issue 62 の受け入れ条件を確認している                                                                                                                                                                                                                                        | T2、T4。構成とツールチェーンの要求の T1。論点 5 |
 
-- T1 を、構成とツールチェーンの要求の T6 の後にするのは、同じファイルを変えるためである。その要求の T2 から T6 が、`package.json`、`pnpm-lock.yaml`、CI のワークフロー、ルートの script を順に変える。
-  - T6 の後は、ルートのコマンドが `pnpm check` と `pnpm -r` になっている。`@kufu/e2e` の `check` と `typecheck` は、そのまま束ねられる。`test` は束ねられると困るので、持たない。
-  - 先に進めたいときは、T1 を今のコマンド（`pnpm lint`、`pnpm typecheck`）で書き、その要求の T3 と T5 で直すことになる。
+- T1 は、構成とツールチェーンの要求の `vp check` のタスク（issue 71）の前に行い、今のコマンド（`pnpm lint`、`pnpm typecheck`）で書く。書き方の規則を `e2e/.oxlintrc.json` で始めるためである（論点 3）。
+  - issue 71 は、`e2e/.oxlintrc.json` をルートの `lint.overrides` に移し、`@kufu/e2e` の `lint` を消す。options は `import.meta.dirname` から絶対パスで渡し、わざと書いた違反でルートと `e2e/` の両方で失敗することを確認する。
+  - その要求の T3 から T6 は、`package.json`、`pnpm-lock.yaml`、CI のワークフロー、ルートの script を順に変える。T1 と同じファイルを変えるので、後からマージする方が lockfile を作り直す。`@kufu/e2e` の `typecheck` は、T6 の後の `pnpm -r typecheck` にそのまま束ねられる。`test` は束ねられると困るので、持たない。
 - T3 は、T1 に依存しない。T1 より前に行うときは、ルートの `package.json` の `@playwright/test` を上げる。`packages/ui` の `playwright` は、どちらの順でも T3 で上げる。
 - T3 の pull request を、デザインシステムの要求の、baseline に関わるタスクの pull request と同時に開かない。見た目を変えないタスクは「VRT に差分がない」を確認に使い、見た目を変えるタスクは baseline を撮り直す。
-- T1 と、デザインシステムの要求の最初の実装のタスクは、どちらも構成とツールチェーンの要求の T6 の後で、`package.json` と lockfile を変える。順は、運営者がタスクを起票するときに決める。後からマージする方が、lockfile を作り直す。
+- T1 と、デザインシステムの要求の実装のタスクは、どちらも `package.json` と lockfile を変える。後からマージする方が、lockfile を作り直す。
 - T2 は、Playwright を上げなくても進められる。T1 が終われば始められる。
 - 子の数は、issue 7 を含めて 5 件である。
 - issue 62 は、T5 の検証の pull request で閉じる。その pull request で、この spec を削除する。
@@ -264,14 +267,14 @@ route の VRT の baseline は、次の 2 つで、今と同じパスになる�
   - 「Page Object と E2E のヘルパを `packages/*` へ昇格させない」を、「E2E のコードを `packages/*` に置かない」に替える。
 - 完了条件
   - 「テスト本体に生の locator が無い（Page Object 経由）」を、「書き方の規則の指摘がない」に替える。
-  - 「`pnpm lint` / `pnpm typecheck` が通る」を、「`pnpm check` と `pnpm typecheck` が通る」に替える。
+  - 「`pnpm lint` / `pnpm typecheck` が通る」を、「ルートの lint のコマンド（issue 71 の前は `pnpm lint`、後は `pnpm check`）と `pnpm typecheck` が通る」に替える。
 - 依存関係: T1 の issue の番号を足す。
 
 ## Verification
 
 | 受け入れ条件                                                         | タスク | 確認の方法                                                                                                            |
 | -------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------- |
-| 1. 書き方の規則が、E2E のコードに lint として掛かり、CI で動く       | T1     | CI の lint の job のログに、規則の実行がある。わざと書いた違反で `pnpm check` が失敗する                              |
+| 1. 書き方の規則が、E2E のコードに lint として掛かり、CI で動く       | T1     | CI の lint の job のログに、規則の実行がある。わざと書いた違反で、ルートと `e2e/` の両方でチェックが失敗する          |
 | 2. 撮影の設定があり、E2E から録画と字幕のエビデンスを作れる          | T4     | 字幕つきの spec を撮り、mp4 と判定の静止画ができる。T4 の pull request のコメントで再生できる                         |
 | 3. 検証のシナリオがあり、corporate-site の 3 つの route を確認できる | T5     | シナリオの文と spec の対応を、エビデンスの一覧で読む。検証の pull request の動画を、運営者が見て判定する              |
 | 4. 2 つの context が埋まり、`status` が `stable` になっている        | T5     | 案内のコメントが残っていない。frontmatter の `status` が `stable` である。書いたコマンドを、T1、T4、T5 で実行している |

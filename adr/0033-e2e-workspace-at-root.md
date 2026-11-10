@@ -23,7 +23,7 @@
 ## Decision
 
 - `e2e/` を、workspace の package `@kufu/e2e` にする。`pnpm-workspace.yaml` に `e2e` を足す。
-- Playwright の設定、撮影の設定、ESLint の設定、TypeScript の設定、E2E の依存を、`e2e/` に置く。ルートの `playwright.config.ts` は削除する。
+- Playwright の設定、撮影の設定、書き方の規則と lint の設定、TypeScript の設定、E2E の依存を、`e2e/` に置く。ルートの `playwright.config.ts` は削除する。
 - テストのコードは `e2e/tests/` の層に置く。route の VRT のファイルと baseline は、`e2e/corporate-site/` から動かさない。
 
   ```text
@@ -31,8 +31,8 @@
   ├── package.json                  # @kufu/e2e
   ├── playwright.config.ts
   ├── playwright.capture.config.ts  # エビデンスを撮るときの設定
-  ├── eslint.config.mjs
-  ├── eslint/                       # テストの書き方の規則
+  ├── .oxlintrc.json                # 書き方の規則の設定。vp check の後はルートに移す
+  ├── lint/                         # テストの書き方の規則
   ├── tsconfig.json
   ├── tests/
   │   ├── specs/<機能>/<振る舞い>.e2e.ts
@@ -45,7 +45,7 @@
 - Playwright の project を 2 つに分ける。
   - `e2e`: `tests/` の下の `.e2e.ts` を流す。
   - `route-vrt`: `corporate-site/route-vrt.spec.ts` を流す。baseline のファイル名に project の名前が入らないよう、baseline のパスの形を設定で渡す。baseline の 6 枚は、改名も撮り直しもしない。
-- `@kufu/e2e` は、`e2e`、`vrt:route:run`、`check`、`typecheck` の script を持つ。`test` の script は持たない。
+- `@kufu/e2e` は、`e2e`、`vrt:route:run`、`typecheck` の script を持つ。構成とツールチェーンの要求の `vp check` のタスクまでは、書き方の規則を流す `lint` も持つ。`test` の script は持たない。
   - ルートの `pnpm test` は、ブラウザのない job で workspace の `test` を流す。E2E が入ると、その job が失敗する。
   - ルートの `pnpm e2e` と `pnpm vrt:route` は、名前を変えずに、この workspace の script を呼ぶ。
 - 型のチェックは、`@kufu/e2e` の `typecheck` に移す。ルートの `tsc` は、対象がなくなるので外す。
@@ -57,12 +57,12 @@
 
 ## Considered Options
 
-| 選択肢                                                        | 強み                                                                                                                 | 弱み                                                                                                      |
-| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| **採用:** ルートの `e2e/` のまま、workspace の package にする | 規則を流すディレクトリが決まる。`pnpm -r check` と `pnpm -r typecheck` に入る。route の VRT の baseline を動かさない | ルートの設定を `e2e/` に移し、参照するスクリプトと CI を直す。置き場が buddy と違う                       |
-| buddy と同じ `packages/e2e` に移す                            | 置き場が buddy と同じになる                                                                                          | baseline、CI の artifact のパス、文書のパスがすべて変わる。`packages/` に、app が import しないものが入る |
-| ルートの `e2e/` のまま、workspace にしない                    | 設定の移動が少ない                                                                                                   | 規則を流すディレクトリを、ルートの script で毎回指定する。誤ると違反を見逃す。E2E の依存がルートに増える  |
-| route の VRT も `e2e/tests/` の下に移す                       | テストのファイルが 1 つのディレクトリに集まる                                                                        | baseline の置き場が変わる。VRT のファイルに、E2E の書き方の規則が掛かる                                   |
+| 選択肢                                                        | 強み                                                                                                                          | 弱み                                                                                                      |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **採用:** ルートの `e2e/` のまま、workspace の package にする | 規則を流すディレクトリが決まる。ルートのコマンドから、workspace の script として流れる。route の VRT の baseline を動かさない | ルートの設定を `e2e/` に移し、参照するスクリプトと CI を直す。置き場が buddy と違う                       |
+| buddy と同じ `packages/e2e` に移す                            | 置き場が buddy と同じになる                                                                                                   | baseline、CI の artifact のパス、文書のパスがすべて変わる。`packages/` に、app が import しないものが入る |
+| ルートの `e2e/` のまま、workspace にしない                    | 設定の移動が少ない                                                                                                            | 規則を流すディレクトリを、ルートの script で毎回指定する。誤ると違反を見逃す。E2E の依存がルートに増える  |
+| route の VRT も `e2e/tests/` の下に移す                       | テストのファイルが 1 つのディレクトリに集まる                                                                                 | baseline の置き場が変わる。VRT のファイルに、E2E の書き方の規則が掛かる                                   |
 
 ## Consequences
 
