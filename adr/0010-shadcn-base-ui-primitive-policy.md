@@ -2,7 +2,7 @@
 
 ## Status
 
-提案
+[ADR-0028](0028-ui-components-native-elements.md) に置換
 
 ## Context
 
@@ -35,7 +35,7 @@
 4. **表示だけの component とインタラクティブな component の境界は、ADR-0008 を引き継ぐ。**
    - Base UI の component も React の component なので、表示だけの component は Astro の静的な描画で使う。
    - Dialog、Select、Popover、Tooltip のように client での操作が要る component は、`client:*` の island にする。
-5. **Base UI への移行の完了条件をはっきりさせる。** 少なくとも次を確かめる。
+5. **Base UI への移行の完了条件をはっきりさせる。** 少なくとも次を確認する。
    - `components.json` が、Base UI を前提にした shadcn の設定になっている。
    - `Button`、`Badge/Tag`、`Card`、`Label/FormField`、`Input`、`Select`、`Textarea`、`Separator` が、Base UI 版か、Base UI 版の shadcn の source から作られている。
    - `pnpm --filter @kufu/ui` の `lint`、`typecheck`、`build`、`storybook:build` が通る。
@@ -62,6 +62,6 @@
 ### Negative
 
 - 既存の `radix-nova` の component を生成し直し、差分を調整する移行の作業が生じる。
-- Base UI は Radix と API が近いが、完全には互換でない。Select、Dialog、Popover のようなインタラクティブな component の story と island の境界を確かめ直す必要がある。
+- Base UI は Radix と API が近いが、完全には互換でない。Select、Dialog、Popover のようなインタラクティブな component の story と island の境界を確認し直す必要がある。
 - Base UI を採った後も、React の component であることは変わらない。
   - corporate-site で ADR-0008 の `client:*` の規則を続けないと、インタラクティブな component が静的な HTML だけで表示される誤りが残る。
