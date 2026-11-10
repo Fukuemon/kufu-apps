@@ -69,17 +69,13 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
           <div class="grid max-w-[40.5rem] gap-4 text-[0.9375rem] leading-[1.75] text-muted-foreground">
             {
               companyProfile.greeting.map((paragraph) => (
-                <p>
-                  {paragraph.map((segment) =>
-                    "emphasis" in segment && segment.emphasis ? (
-                      <strong class="font-semibold text-foreground">
-                        {segment.text}
-                      </strong>
-                    ) : (
-                      segment.text
-                    ),
-                  )}
-                </p>
+                <p>{paragraph.map((segment) =>
+                  "emphasis" in segment && segment.emphasis ? (
+                    <strong class="font-semibold text-foreground">{segment.text}</strong>
+                  ) : (
+                    segment.text
+                  ),
+                )}</p>
               ))
             }
           </div>
