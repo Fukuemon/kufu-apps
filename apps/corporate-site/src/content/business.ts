@@ -5,9 +5,9 @@ export const businessContent = {
   heading: {
     number: "01",
     eyebrow: "BUSINESS / 事業内容",
-    title: "販売と加工、二つの柱",
+    title: "販売と加工、小規模工事の三本柱",
     description:
-      "必要な「もの」を確かなメーカー網で届ける販売と、図面・現物一個から請け負う加工。\n仕入れから特注対応まで一社で完結します。",
+      "必要な「もの」を確かなメーカー網で届ける販売と、図面・現物一個から請け負う加工。各種工事に対応。\n仕入れから特注対応まで一社で完結します。",
   },
   features: [
     {
@@ -33,12 +33,7 @@ export const businessContent = {
       title: "加工",
       description:
         "図面一枚、現物一個から。別作・特注の加工を一括して請け負う。",
-      items: [
-        "各種機械加工",
-        "樹脂成型加工",
-        "板金・溶接加工",
-        "各種ゴム製品加工",
-      ],
+      items: ["各種機械加工", "樹脂加工", "板金・溶接加工", "各種ゴム製品加工"],
       mediaLabel: "加工イメージ",
       mediaCaption: "加工相談の対応領域",
       mediaPosition: "left",
@@ -54,6 +49,16 @@ export const businessContent = {
       "別作マシンキー・バネ製作",
       "別作ゴム・ウレタンゴム・ライニング成型加工",
       "別作樹脂成型加工",
+    ],
+  },
+  smallWorks: {
+    eyebrow: "SMALL WORKS",
+    title: "小規模工事　事例",
+    items: [
+      "各種小規模装置製作",
+      "制御盤製作から配線工事",
+      "工場改修工事",
+      "剪定、草刈り",
     ],
   },
 } as const;
