@@ -15,7 +15,10 @@
   - ADR-0008: [corporate-site は shadcn を静的に描画して使い、client:\* の island は操作が要るものに限る](0008-astro-react-island-policy.md)
 - Base UI を import するのは、`packages/ui` の 5 つ（button、input、select、separator、badge）である。corporate-site が使うのは、`Button`、`Tag`、`LinkButton`、`DefinitionRow` の 4 つである。入力のコンポーネントは、問い合わせフォームの要求が使う予定である。
 - `class-variance-authority` は、`packages/ui` の 3 つと、corporate-site の Astro のコンポーネントの 3 つが使う。`tailwind-merge` は、`cn` だけが使う。
-- 呼び出す側から `@kufu/ui` のコンポーネントに class を渡しているのは、`ContactSection.astro` の `Tag` の 9 か所である。
+- 呼び出す側が、`@kufu/ui` のコンポーネントの見た目を上書きしている箇所がある。
+  - class を渡す箇所: `ContactSection.astro` の `Tag` の 8 か所と `Button` の 1 か所、`ContactCtaLink.astro` の `LinkButton`（3 つの大きさ）
+  - app の CSS のセレクタ: `base.css` の `button` や `input` への角丸と `[data-contact-cta]` の文字の色、`components.css` の `.contact-badge`
+- `/contact` の入力欄は、`@kufu/ui` のコンポーネントを使わず、素の `input`、`select`、`textarea` で書いている。
 - 運営者は、shadcn、Base UI、`class-variance-authority`、`tailwind-merge` を外し、class の組み立てを `clsx` だけにすると決めた。見た目の変え方は `variant` のような props で決め、呼び出す側から class で上書きしない。
 - 手本の 2 つは、shadcn と Base UI を使わない。buddy の `packages/ui` の依存は `clsx` だけで、コンポーネントを BCD Design で Base と Case に分ける。
   - 出典: [buddy の ADR-0014](https://github.com/Fukuemon/buddy/blob/83472b52b3e4e7ecb7c450b4c5bc21fa2025098b/docs/adr/0014-ui-components.md)
@@ -30,11 +33,13 @@
 ### 1. コンポーネントを、ネイティブの要素と clsx で書く
 
 - `packages/ui` のコンポーネントは、React と、ネイティブの HTML の要素（`button`、`a`、`input`、`select`、`textarea`、`hr`、`dl`）で書く。
-- 依存から、`shadcn`、`@base-ui/react`、`class-variance-authority`、`tailwind-merge`、`tw-animate-css` を外す。`components.json` を消す。
+- 依存から、`shadcn`、`@base-ui/react`、`class-variance-authority`、`tailwind-merge` を外す。`components.json` を消す。
+  - `tw-animate-css` と `lucide-react` も外す。`tw-animate-css` は shadcn の全量の entry だけが読み、`lucide-react` は Base UI の `Select` だけが使う。
 - class の組み立ては `clsx` だけにする。変種ごとの class は、変種の名前から class への対応を持つオブジェクトに書く。
 - 見た目の変え方は、`variant`、`size`、`tone` のような props で決める。コンポーネントは `className` を受け取らない。
   - 置く位置と余白は、呼び出す側が、コンポーネントを包む要素で決める。
   - 今の props で表せない見た目が要るときは、コンポーネントに変種を足す。
+  - app の CSS のセレクタで、コンポーネントの見た目を上書きしない。
 
 ### 2. コンポーネントを、Base と Case に分けて置く
 
@@ -85,7 +90,7 @@
 - ワイルドカードのエントリ（`./components/*`、`./hooks/*`、`./lib/*`）と、`./components`、`./hooks`、`./lib`、`./lib/utils` を消す。
 - `package.json` の `imports`（`#components/*` など）を消し、相対パスで import する。
 
-この決定は、ADR-0010 を置き換える。承認したときに、ADR-0010 の Status を「ADR-0028 に置換」にする。
+この決定は、ADR-0010 を置き換える。ADR-0010 の Status は「提案」のままなので、この ADR を承認したときに、「ADR-0028 に置換」にするか「却下」にするかを運営者が決める。
 
 ## Considered Options
 
@@ -108,7 +113,8 @@
 ### Negative
 
 - `packages/ui` の 11 個のコンポーネントと story を書き直す。
-- `ContactSection.astro` の `Tag` の 9 か所は、class の上書きを `Tag` の変種に置き換える。
-- shadcn と Base UI を前提にした文書の語を直す。ADR-0008 は、決定を変えずに、語だけを直す。
-  - 対象は、ADR-0008、`context/` の 4 つの文書（codebase、conventions、domain、tech-stack）、corporate-site の Design Doc である。
-- ネイティブの `select` の見た目は、ブラウザごとに違う部分が残る。
+- class の上書きと、セレクタでの上書きを、`Tag`、`Button`、`LinkButton` の変種に置き換える。
+- shadcn と Base UI を前提にした文書を直す。
+  - 対象は、`context/` の 5 つの文書（codebase、conventions、domain、tech-stack、testing）と、corporate-site の Design Doc である。
+  - ADR-0008 は、決定が shadcn と Radix の primitive を名指ししている。island の方針を、新しい ADR に書き直して置き換える。
+- `Select` は、Base UI の独自の選択肢の一覧から、ネイティブの `select` に替わり、見た目が変わる。ブラウザごとに違う部分も残る。
