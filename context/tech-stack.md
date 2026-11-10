@@ -74,12 +74,11 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 
 ## Upgrade Checks
 
-- vite は、ルートの `package.json` の `pnpm.overrides` で `^7` に固定している。
-  - Astro 6 が Vite 7 を前提にするためである。app と package が宣言する `vite ^8` より、overrides が優先される。
-  - 依存に vite 8 が入ると、dev server の plugin の context が動かなくなる。
-  - Astro が Vite 8 に対応したら、overrides を外す。
 - `.ts` の設定ファイル（`packages/config/vitest/base.ts` など）の import は、Node.js 23.6 以上でだけ、そのまま動く。23.6 から type stripping が初めから有効になるためである。
   - CI の Node.js は 24 以上にする。22.12 では `ERR_UNKNOWN_FILE_EXTENSION` で失敗する。
+- Astro 7 の `astro preview` は、コーディングエージェントの中で動いていると判定すると、バックグラウンドに回ってすぐ終了する。
+  - E2E の `e2e:serve` は、`--ignore-lock` を付けて前面で動かす。付けないと、Playwright の `webServer` が「exited early」で失敗する。
+  - Astro を上げたときは、エージェントのセッションから `pnpm e2e` を流して確認する。
 - それ以外のツールで、バージョンを上げるときに動かなくなりやすい箇所と確認の方法は、未定。
 
 ## Scaffolding
