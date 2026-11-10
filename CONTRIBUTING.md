@@ -9,7 +9,8 @@ pnpm install
 
 `pnpm install` は、`prepare` で lefthook の Git のフックを入れる。
 
-スキルとフックは apm で配置し、Git で追跡しない。clone した後の最初のセッションで、セッションの開始のフックが配置する。手で配置するときは次を実行する。
+スキルとフックは apm で配置し、Git で追跡しない。  
+clone した後の最初のセッションで、セッションの開始のフックが配置する。手で配置するときは次を実行する。
 
 ```sh
 apm install --frozen
@@ -23,7 +24,7 @@ apm lifecycle trust
 
 ## 文書を直すとき
 
-文章の規則は textlint で、経緯の混入とリンクは docs のスクリプトで確かめる。指摘された語は言い換え、`--fix` は使わない。
+文章の規則は textlint で、経緯の混入とリンクは docs のスクリプトで確認する。指摘された語は言い換え、`--fix` は使わない。
 
 ```sh
 pnpm exec textlint <直した Markdown>
@@ -37,25 +38,25 @@ node .claude/hooks/docs/hooks/check-links.mjs
 
 ## コミットするとき
 
-コミットと push の前に、lefthook が次を確かめる。設定は `lefthook.yml` にある。
+コミットと push の前に、lefthook が次を確認する。設定は `lefthook.yml` にある。
 
 - 保護するブランチへの直接のコミットと push を止める。
 - ステージしたファイルを oxfmt で整形し、`pnpm lint` を実行し、Markdown に textlint を掛ける。
-- commit-msg のフックで、commitlint がメッセージの形式を確かめる。規則は `commitlint.config.mjs` にある。
+- commit-msg のフックで、commitlint がメッセージの形式を確認する。規則は `commitlint.config.mjs` にある。
 
 - 変更の分け方とメッセージの書き方は、スキル write-commit に従う。
 
 ## ブランチとリリース
 
-<!-- 次は既定の運用。運用が違えば本文と図を書き換える -->
+<!-- 次はデフォルトの運用。運用が違えば本文と図を書き換える -->
 
 ブランチは、`main`、`develop`、issue ごとの作業用のブランチにする。
 
 - `main` はリリース済みの状態を指す。`develop` は次のリリースに向けて変更を集める。
-- 作業用のブランチは `develop` から切る。名前は `feature/<issue 番号>` にし、不具合は `fix/<issue 番号>` にする。`develop` へは、pull request を通して取り込む。
-- リリースは、`develop` を `main` へ pull request で取り込み、`main` のコミットにタグを付ける。バージョンはセマンティック バージョニングに従う。
-- リリース後の緊急の修正は、`main` から `hotfix/<issue 番号>` を切り、`main` と `develop` の両方へ取り込む。
-- 保護するブランチは `main`、`develop` である。直接はコミットせず、pull request を通して取り込む。直接コミットを許す場面があれば、この行の下に場面と理由を書く。
+- 作業用のブランチは `develop` から切る。名前は `feature/<issue 番号>` にし、不具合は `fix/<issue 番号>` にする。`develop` へは、pull request を通してマージする。
+- リリースは、`develop` を `main` へ pull request でマージし、`main` のコミットにタグを付ける。バージョンはセマンティック バージョニングに従う。
+- リリース後の緊急の修正は、`main` から `hotfix/<issue 番号>` を切り、`main` と `develop` の両方へマージする。
+- 保護するブランチは `main`、`develop` である。直接はコミットせず、pull request を通してマージする。直接コミットを許す場面があれば、この行の下に場面と理由を書く。
 
 <!-- 次のバージョンを何から決めるか。コミットメッセージからなら release-please、変更ごとの記述からなら changesets -->
 
