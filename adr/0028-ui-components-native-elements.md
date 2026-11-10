@@ -2,7 +2,7 @@
 
 ## Status
 
-提案
+承認
 
 ## Context
 
@@ -90,7 +90,7 @@
 - ワイルドカードのエントリ（`./components/*`、`./hooks/*`、`./lib/*`）と、`./components`、`./hooks`、`./lib`、`./lib/utils` を消す。
 - `package.json` の `imports`（`#components/*` など）を消し、相対パスで import する。
 
-この決定は、ADR-0010 を置き換える。ADR-0010 の Status は「提案」のままなので、この ADR を承認したときに、「ADR-0028 に置換」にするか「却下」にするかを運営者が決める。
+この決定は、ADR-0010 を置き換える。
 
 ## Considered Options
 

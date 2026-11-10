@@ -2,7 +2,7 @@
 
 ## Status
 
-提案
+承認
 
 ## Context
 
@@ -96,7 +96,7 @@ kufu-apps のデザインシステムを、デジタル庁デザインシステ�
 - `fonts.css` は、今と同じく document の head から読む。
 - `./tokens.css` と `./styles.css`（shadcn の層を含む全量の entry）の export を消す。
 
-この決定は、ADR-0007 を置き換える。承認したときに、ADR-0007 の Status を「ADR-0027 に置換」にする。
+この決定は、ADR-0007 を置き換える。
 
 ## Considered Options
 
