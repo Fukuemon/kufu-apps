@@ -255,7 +255,7 @@ scripts/
 | `accent`、`chart-*`、`sidebar-*`、`.dark` のブロック    | なし       | 消す                          | なし                        | なし                                   |
 
 - テーマ変数に無いプリミティブトークンの名前のユーティリティが、画面のコードにある。`text-kufu-gray-200`、`text-kufu-gray-500`、`border-kufu-gray-300` である。
-  - CSS が生成されず、親の色を引き継いでいる見込みである。ビルドの結果は、確認していない。T2 の最初に確認する。
+  - この 3 つは、`astro build` の出力の CSS に無い。フッターの補足の文字などは、親の色を引き継いで描かれている。
   - T2 は、今の描画を保つ。書いた人が意図した色にするのは、見た目が変わるので T7 で行う。
 - `ProductsDetailSection.astro` には、`.surface-inverse` のスコープを使わない暗い面がある。T2 でスコープに替えるときに、描画が変わらないことを VRT で確認する。
 - `base.css` と `components.css` が直に参照する変数（`var(--primary)`、`var(--radius)` など）と、`components.css` の `color-mix()` の 16 か所も、T2 で付け替える。
