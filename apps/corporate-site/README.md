@@ -6,7 +6,7 @@
 
 This app consumes design tokens and fonts from `@kufu/ui`, and runs its own lean
 Tailwind v4 entry (it does NOT import the full `@kufu/ui/styles.css`, which carries
-React/shadcn-only layers — see [ADR-0007](../../adr/0007-design-token-architecture.md)).
+React/shadcn-only layers — see [ADR-0007](../../docs/adr/0007-design-token-architecture.md)).
 
 `src/styles/` is split by role; `globals.css` is an import-only entry:
 

@@ -2,4 +2,4 @@
 apps/corporate-site/README.md
 
 # 掲載する内容のデータ。メーカー名をカンマでつないだ一覧は文ではない
-design/features/corporate-site/reference/**
+docs/design/features/corporate-site/reference/**

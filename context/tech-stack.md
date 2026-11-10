@@ -18,7 +18,7 @@ verified_commit: 81f85da2744f320f44040307f1ec854f705f7c79
 npm のパッケージのバージョンは、各 package の `package.json` と `pnpm-lock.yaml` に書いてある。  
 pnpm のバージョンは、ルートの `package.json` の `packageManager` に書いてある。  
 Node.js のバージョンは、`mise.toml` に書いてある。  
-採否の判断は [adr/](../adr/) が持つ。
+採否の判断は [docs/adr/](../docs/adr/) が持つ。
 
 ツールごとの役割は次のとおり。
 
@@ -38,7 +38,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - tsdown: ライブラリをビルドする。
 - Tailwind CSS v4 と `@tailwindcss/vite`: スタイリングに使う。
 - shadcn/ui: `packages/ui` の共有のコンポーネントの元にする。
-  - ADR-0010: [shadcn の primitive に Base UI を採る](../adr/0010-shadcn-base-ui-primitive-policy.md)
+  - ADR-0010: [shadcn の primitive に Base UI を採る](../docs/adr/0010-shadcn-base-ui-primitive-policy.md)
 - `@astrojs/react`: React のコンポーネントを Astro で描画する。使い方は [codebase.md](codebase.md#shadcn-の使い方と-react-island-の境界) にある。
 - lefthook: Git のフックからチェックを実行する。
 - textlint: Markdown の文章をチェックする。
@@ -47,7 +47,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 
 - Rolldown: bundler の候補にする。`apps/cms` を実装するときの build の構成で、採否を確認する。
 - React Compiler: React の app を入れるときの標準にする。`packages/ui` と、`apps/cms` を実装するときに使う。
-  - React Compiler に対応していないライブラリと実装の扱いは [CMS の Design Doc](../design/features/cms/DesignDoc.md) にある。
+  - React Compiler に対応していないライブラリと実装の扱いは [CMS の Design Doc](../docs/design/features/cms/DesignDoc.md) にある。
 - Hono、Inertia、React: CMS の app の候補にする。実装していない。採否は ADR か spec で決める。
 
 ### ルートのコマンド
@@ -84,7 +84,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 ## Scaffolding
 
 app の最初の scaffold は、公式の `create` のコマンドを優先する。  
-ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](../adr/0025-vite-plus-toolchain.md)
+ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](../docs/adr/0025-vite-plus-toolchain.md)
 
 - `apps/corporate-site`: `pnpm create astro@latest apps/corporate-site`
 - React の app: `pnpm create vite ... --template react-ts`

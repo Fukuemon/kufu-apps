@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-// route 側 VRT。3 route × desktop / mobile = 6 枚を撮る (adr/0015)。
+// route 側 VRT。3 route × desktop / mobile = 6 枚を撮る (docs/adr/0015)。
 // baseline は Git 管理し、差分が PR レビューに乗るようにする。手順は README.md の VRT 節。
 
 const routes = [
@@ -20,7 +20,7 @@ for (const viewport of viewports) {
     // full-page 撮影は合成に時間がかかり、root の 30 秒では足りない。
     test.describe.configure({ timeout: 120_000 });
 
-    // 撮影環境は container に固定する (adr/0015)。ROUTE_VRT_CONTAINER は
+    // 撮影環境は container に固定する (docs/adr/0015)。ROUTE_VRT_CONTAINER は
     // scripts/vrt-container.mjs だけが渡す。
     test.skip(
       process.env["ROUTE_VRT_CONTAINER"] !== "1",

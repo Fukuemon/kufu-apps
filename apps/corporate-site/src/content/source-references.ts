@@ -1,5 +1,5 @@
 export const companyProfileSource =
-  "design/features/corporate-site/reference/company-profile.md";
+  "docs/design/features/corporate-site/reference/company-profile.md";
 
 export const manufacturersSource =
-  "design/features/corporate-site/reference/manufacturers.md";
+  "docs/design/features/corporate-site/reference/manufacturers.md";

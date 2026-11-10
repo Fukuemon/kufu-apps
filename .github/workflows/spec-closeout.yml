@@ -3,7 +3,7 @@ name: Spec closeout
 # issue の close 時に spec ディレクトリが残っていれば、削除を提案する PR を起票する。
 # 自動では消さない: 削除の前提 (durable な成果が design / context / ADR へ sync 済みか) は
 # 機械判定できないため、可否は PR のマージで人が決める。spec の取り決めは agent-harness の
-# write-design-docs の references/spec.md にある。本 repo で強制する判断の根拠は adr/0011-specs-closeout-enforcement.md。
+# write-design-docs の references/spec.md にある。本 repo で強制する判断の根拠は docs/adr/0011-specs-closeout-enforcement.md。
 #
 # 前提: Settings → Actions → General で "Allow GitHub Actions to create and approve pull requests"
 # を有効にする (未設定は Open deletion PR step が検出して案内する)。Workflow permissions
@@ -45,14 +45,14 @@ jobs:
         id: config
         run: |
           set -euo pipefail
-          # 固有値は直書きせず docs.spec (例: specs) を使う
+          # 固有値は直書きせず docs.spec (例: docs/specs) を使う
           specs_dir=""
           if [ -f context/project.yml ]; then
             specs_dir="$(sed -n '/^docs:/,/^[^[:space:]#]/s/^[[:space:]]*spec:[[:space:]]*\([^#]*\).*/\1/p' context/project.yml | head -1)"
             specs_dir="${specs_dir%%<*}"
             specs_dir="$(printf '%s' "$specs_dir" | tr -d '"'"'"' ' | sed 's:/*$::')"
           fi
-          echo "specs_dir=${specs_dir:-specs}" >> "$GITHUB_OUTPUT"
+          echo "specs_dir=${specs_dir:-docs/specs}" >> "$GITHUB_OUTPUT"
 
       - name: Resolve target spec
         id: target

@@ -23,7 +23,7 @@
 - `apps/cms` の責務は、「コーポレートサイトに掲載する投稿を管理する app の候補」として扱う。
 - `apps/cms` の技術選定は、別の spec / ADR で行う。
   - 初期の候補として Hono + Inertia + React を比較の対象に含めるが、この ADR では採用を確定しない。
-- root script、E2E contract、shared config は、`apps/corporate-site` を既定の対象として成立させ、将来 `apps/cms` を追加できる拡張の余地だけを残す。
+- root script、E2E contract、shared config は、`apps/corporate-site` をデフォルトの対象として成立させ、将来 `apps/cms` を追加できる拡張の余地だけを残す。
 
 ## Considered Options
 

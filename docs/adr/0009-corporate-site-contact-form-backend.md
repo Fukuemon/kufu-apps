@@ -7,14 +7,14 @@
 ## Context
 
 - `apps/corporate-site` は Astro の静的な生成（`output: "static"`）で、Cloudflare Pages へ配信する前提にしている。動的なサーバーの処理は持たない。
-  - 出典: [operations.md](../context/operations.md#environments)
+  - 出典: [operations.md](../../context/operations.md#environments)
   - ADR-0003: [Phase 1 は corporate-site だけを作る](0003-phase1-corporate-site-only-and-cms-deferred.md)
 - 情報設計で、お問い合わせのページ（`/contact`）に問い合わせフォームを置くと決めた。送信の方式は、情報設計の範囲の外に残した。
 - フォームの送信には、入力の検証、スパムの判定、メールの通知を行うサーバーの処理が要る。静的な配信だけの前提では、その置き場が決まっていなかった。
-- 既存の方針は、ブラウザから第三者の API を直接呼ぶ構成を標準にせず、必要なら Workers を中継点にすると定める。秘密の情報を client の bundle に含めないとも定める。
-  - 出典: [codebase.md](../context/codebase.md#edge-api)
+- 既存の方針は、ブラウザから第三者の API を直接呼ぶ構成を標準にせず、必要なら Workers を中継点にすると定める。シークレットを client の bundle に含めないとも定める。
+  - 出典: [codebase.md](../../context/codebase.md#edge-api)
 - 基盤の方針は、bot の対策と API の中継の候補に、Cloudflare Turnstile と Workers を挙げている。
-  - 出典: [operations.md](../context/operations.md#secrets)
+  - 出典: [operations.md](../../context/operations.md#secrets)
 
 ## Decision
 
@@ -51,7 +51,7 @@ corporate-site の問い合わせの送信を、**Cloudflare Pages Functions（W
 ### Positive
 
 - secret をサーバー（Workers）の側に隠せ、client の bundle に秘匿する値が漏れない。
-- 同じオリジンを経由して第三者の API を直接呼ぶ構成を避け、[codebase.md](../context/codebase.md#edge-api) の境界と合う。
+- 同じオリジンを経由して第三者の API を直接呼ぶ構成を避け、[codebase.md](../../context/codebase.md#edge-api) の境界と合う。
 - Turnstile のサーバーでの検証と honeypot を Workers にまとめ、スパムの対策が 1 か所で完結する。
 - Cloudflare の中で完結し（Pages Functions と Turnstile）、[判断の優先順位](../design/DesignDoc.md#判断の優先順位)の「一貫性」に合う。
 
@@ -61,5 +61,5 @@ corporate-site の問い合わせの送信を、**Cloudflare Pages Functions（W
 - Resend（外部のメールの送信のサービス）への依存と、送信のドメインの SPF と DKIM の設定が要る。
 - 実際のメールの送信を避けるため、テストの層を分ける必要がある。
   - E2E では、Playwright の route intercept で `/api/contact` をモックする。
-  - Workers のロジック（二重の検証、honeypot、Turnstile の分岐、エラーの code の対応）は Vitest の unit で確かめる。
-  - Functions との実際の結線は、Cloudflare Pages の preview で手で確かめる。
+  - Workers のロジック（二重の検証、honeypot、Turnstile の分岐、エラーの code の対応）は Vitest の unit で確認する。
+  - Functions との実際の結線は、Cloudflare Pages の preview で手で確認する。

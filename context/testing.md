@@ -29,12 +29,12 @@ corporate-site で E2E が担うジャーニーは [コーポレートサイト�
 | E2E       | ルートの `e2e/`（Playwright）               | 公開の前の検証、route をまたいだ到達、回帰                 |
 | VRT       | story は Storybook、route はルートの `e2e/` | 見た目の回帰。要素があるかではなく、見た目の差分を検出する |
 
-- `packages/ui` の共有の UI は、Storybook か unit test で確かめられる状態にする。
+- `packages/ui` の共有の UI は、Storybook か unit test で確認できる状態にする。
 - `packages/config` の共有の設定は、各 app と package が使える状態にする。
 
 play テストの対象は `packages/ui` に限る。  
-Astro の静的なコンポーネントは E2E で確かめる。  
-ADR-0017: [UI のテストの構成](../adr/0017-ui-test-structure-policy.md)
+Astro の静的なコンポーネントは E2E で確認する。  
+ADR-0017: [UI のテストの構成](../docs/adr/0017-ui-test-structure-policy.md)
 
 - React の island の play テストの対象の基準は未定。最初の island を足すときに決める。
 
@@ -44,8 +44,8 @@ E2E は、route をまたいだ到達を見る。
 ### VRT
 
 VRT は、story と route の 2 系統で撮る。  
-ADR-0015: [VRT の方針](../adr/0015-visual-regression-testing-policy.md)  
-ADR-0018: [Storybook の test の仕組みの上の story の VRT](../adr/0018-story-vrt-on-storybook-test-integrations.md)
+ADR-0015: [VRT の方針](../docs/adr/0015-visual-regression-testing-policy.md)  
+ADR-0018: [Storybook の test の仕組みの上の story の VRT](../docs/adr/0018-story-vrt-on-storybook-test-integrations.md)
 
 | 系統  | 撮る対象                                        | 撮る手段                         | baseline の置き場 | コマンド         |
 | ----- | ----------------------------------------------- | -------------------------------- | ----------------- | ---------------- |
@@ -61,7 +61,7 @@ ADR-0018: [Storybook の test の仕組みの上の story の VRT](../adr/0018-s
   - Playwright の baseline はファイル名に platform を含み、ホスト（macOS）で撮った画像は CI では使われない。
   - `pnpm vrt:route` を通さない実行は skip される。
 - story は container を使わず、CI だけで撮る。撮影が Vite の bundle を伴い、エミュレーションの下の container の実行と両立しないため。
-  - ADR-0018: [Storybook の test の仕組みの上の story の VRT](../adr/0018-story-vrt-on-storybook-test-integrations.md)
+  - ADR-0018: [Storybook の test の仕組みの上の story の VRT](../docs/adr/0018-story-vrt-on-storybook-test-integrations.md)
 - VRT を外部のサービスの応答に依存させない。外部の埋め込みと画像はリクエストごと止め、残る枠はマスクする。
 
 手順とコマンドの詳細は、[README.md](../README.md#visual-regression-testing-vrt) の VRT の節にある。
@@ -71,7 +71,7 @@ ADR-0018: [Storybook の test の仕組みの上の story の VRT](../adr/0018-s
 `pnpm e2e` は、ルートの `playwright.config.ts` を正とし、`e2e/<target>/` の下の suite を読む。
 
 - ルートの環境変数は `E2E_TARGET`、`E2E_PORT`、`E2E_BASE_URL` の 3 つにする。
-- `E2E_TARGET` の既定は `corporate-site` にする。
+- `E2E_TARGET` のデフォルトは `corporate-site` にする。
 - 各 app の preview の port は、衝突を避けるためこの取り決めで固定する。`corporate-site` は 4321、`cms` は 4173 にする。
 - 対象の app は `build`、`preview`、`e2e:serve` の 3 つの script を持つ。ルートの Playwright は `e2e:serve` だけを呼ぶ。
   - `apps/corporate-site` の `e2e:serve` は、`build` の後に `preview` を起動する。
@@ -80,12 +80,12 @@ ADR-0018: [Storybook の test の仕組みの上の story の VRT](../adr/0018-s
 
 ## Mocking and Test Data
 
-Cloudflare Pages Functions か Workers を伴う feature は、ローカルの E2E の実行環境と Cloudflare の実行環境の違いを前提に、確かめる範囲を分ける。
+Cloudflare Pages Functions か Workers を伴う feature は、ローカルの E2E の実行環境と Cloudflare の実行環境の違いを前提に、確認する範囲を分ける。
 
-- Playwright の E2E は、導線、表示、client の分岐を確かめる。
+- Playwright の E2E は、導線、表示、client の分岐を確認する。
   - 外部への送信と実際のメールの送信を避けるため、同一オリジンの API は route の intercept で fixture にする。
   - fixture は、feature の Design Doc の API とエラーの契約に従い、成功、validation のエラー、セキュリティのエラー、rate limit、外部への送信の失敗などの主な分岐を固定する。
-- Workers の validation、セキュリティ、error code の対応づけは、Vitest の unit test で確かめる。
+- Workers の validation、セキュリティ、error code の対応づけは、Vitest の unit test で確認する。
 - Cloudflare Pages Functions と、実際の secret と外部のサービスの結線は、preview deployment で手で smoke test をする。
   - CI の E2E を Cloudflare の実行環境に依存させない。
 - story は固定の props と fixture で状態の差を表す。本番の secret、実際の送信、外部の API の呼び出しを伴う story を作らない。
@@ -100,11 +100,11 @@ Cloudflare Pages Functions か Workers を伴う feature は、ローカルの E
 - presentation のコンポーネントには、次の 2 つの story を必須にする。
   - 見た目の variant（cva の variants か、markup の分岐による variant）のすべての組み合わせを args で並べる story
   - edge state（長い文、空のデータ、最小の構成）の story
-- section assembly の story は、ページの文脈で確かめるために catalog に入れてよい。
+- section assembly の story は、ページの文脈で確認するために catalog に入れてよい。
   - fixture は story の中に限り、代表のケースだけでよい。variant を網羅する主な対象は presentation である。
 - すべての story に autodocs を適用する。`.storybook/preview` の `tags: ['autodocs']` で掛け、例外は story の側で `!autodocs` を指定する。
 - 公開の判断には、deploy の成功だけでなく、preview での導線の確認を含める。条件は [operations.md](operations.md#deployment-conditions) にある。
-- `apps/cms` を足すときの採用判断のテストの観点は [CMS の Design Doc](../design/features/cms/DesignDoc.md) にある。
+- `apps/cms` を足すときの採用判断のテストの観点は [CMS の Design Doc](../docs/design/features/cms/DesignDoc.md) にある。
 
 ### Page Object と locator
 

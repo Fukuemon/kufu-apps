@@ -13,7 +13,7 @@ verified_commit: 81f85da2744f320f44040307f1ec854f705f7c79
 
 # コードベースの構造
 
-全体の構成とモジュールの責務は [design/DesignDoc.md](../design/DesignDoc.md) にある。
+全体の構成とモジュールの責務は [docs/design/DesignDoc.md](../docs/design/DesignDoc.md) にある。
 
 ## Module Boundaries
 
@@ -26,7 +26,7 @@ app や feature の中で閉じる UI と utility は、その中に置く。
 移す条件は [Placement Rules](#placement-rules) にある。
 
 デザインシステムの資産は、資産の種類ごとに置き場と移す条件を決める。  
-ADR-0007: [デザイントークンの構成](../adr/0007-design-token-architecture.md)
+ADR-0007: [デザイントークンの構成](../docs/adr/0007-design-token-architecture.md)
 
 | 資産の種類                     | 置き場                             | 移す条件                                   |
 | ------------------------------ | ---------------------------------- | ------------------------------------------ |
@@ -37,14 +37,14 @@ ADR-0007: [デザイントークンの構成](../adr/0007-design-token-architect
 
 実装のコードと Storybook を、デザインの基準にする。  
 中間のデザインファイルを基準にしない。  
-ADR-0012: [デザインの基準を実装にする](../adr/0012-design-source-of-truth-implementation.md)
+ADR-0012: [デザインの基準を実装にする](../docs/adr/0012-design-source-of-truth-implementation.md)
 
 ### app の中の層
 
 Astro の app は、`content`、section、`common`、`pages` に分ける。  
 section は `components/sections/<section>/` の 1 階層に並べ、route の層を作らない。  
 IA を変えてもディレクトリを動かさずに済むよう、構造をページの構成から切り離すためである。  
-ADR-0014: [corporate-site の sections 構成](../adr/0014-corporate-site-sections-architecture.md)
+ADR-0014: [corporate-site の sections 構成](../docs/adr/0014-corporate-site-sections-architecture.md)
 
 ロジックと UI は、`content` 層、section assembly、presentation の 3 つで分ける。  
 末端のコンポーネントごとに Container を被せない。
@@ -80,7 +80,7 @@ package の間の依存の向きは次のとおり。
   - チェックはルートの `.dependency-cruiser.cjs` が行う。
 
 app の中のコンポーネントの依存は、`pages` → section の `index.ts` → `common` → `@kufu/ui` の 1 方向にする。  
-ADR-0014: [corporate-site の sections 構成](../adr/0014-corporate-site-sections-architecture.md)
+ADR-0014: [corporate-site の sections 構成](../docs/adr/0014-corporate-site-sections-architecture.md)
 
 - `pages` から section の内部のファイルを直接 import しない。各 section の `index.ts` を通す。
   - ディレクトリを指定した named import（`.../sections/hero`）で書き、`.../hero/index` や `.../hero/index.ts` は書かない。チェックを単純に保つため、形式を 1 つに固定する。
@@ -119,7 +119,7 @@ app の `package.json` に `class-variance-authority` を直接足さない。
 
 Astro は React と shadcn のコンポーネントもビルド時に静的な HTML へ描画し、`client:*` を付けない限りクライアントの JavaScript を配らない。  
 JavaScript を配るのは island にしたときだけである。  
-ADR-0008: [Astro と React island の方針](../adr/0008-astro-react-island-policy.md)
+ADR-0008: [Astro と React island の方針](../docs/adr/0008-astro-react-island-policy.md)
 
 - `apps/corporate-site` は静的な配信を基本にする。
 - 表示だけの UI（リンクのボタン、Card、Badge、Tag、section など）は、`@kufu/ui` の shadcn のコンポーネントを `.astro` の中で `client:*` なしで使う。
@@ -128,24 +128,24 @@ ADR-0008: [Astro と React island の方針](../adr/0008-astro-react-island-poli
 - `client:*` の island は、操作が要るものに限る。
   - 対象は、問い合わせフォームと、Radix のインタラクティブな primitive（Dialog、Dropdown、Popover、Tooltip、Accordion、Tabs、Select など）である。
   - モバイルのナビの開閉のように素の script で足りるものは、`.astro` と最小の script で作り、island にしない。
-- island の既定のディレクティブは `client:visible` か `client:idle` にする。
+- island のデフォルトのディレクティブは `client:visible` か `client:idle` にする。
   - `client:load` は、above-the-fold で即時の操作が要るときだけ使う。
 - インタラクティブな Radix の primitive を、`client:*` なしで静的に描画しない。見た目だけ出て動かない。
 - Astro で解決できるものを React の island にしない。
-- `client:*` の総数は、[PRD](../PRD.md#success-metrics) の悪化させない指標「不要なクライアントの JavaScript の数」で監視する。
+- `client:*` の総数は、[PRD](../docs/PRD.md#success-metrics) の悪化させない指標「不要なクライアントの JavaScript の数」で監視する。
 
 ## State Ownership
 
 - React の app では、URL を状態の一部として扱い、TanStack Router の route の状態に置く。
   - URL で表せる状態を、client の状態（Zustand など）でグローバルに持たない。
-  - server の状態、client の状態、URL の状態を分けて扱う。標準の候補は [CMS の Design Doc](../design/features/cms/DesignDoc.md) にある。
+  - server の状態、client の状態、URL の状態を分けて扱う。標準の候補は [CMS の Design Doc](../docs/design/features/cms/DesignDoc.md) にある。
 - corporate-site の表示する内容は、`content` 層が持つ。
 - 環境変数は、build-time に閉じるものと実行時に参照するものを分けて扱う。
-- 秘密情報を client の bundle に含めない。置き場は [operations.md](operations.md#secrets) にある。
+- シークレットを client の bundle に含めない。置き場は [operations.md](operations.md#secrets) にある。
 - 問い合わせフォームの内容は、アプリ側（Workers）で永続化しない。DB、ストレージ、ログに残さず、メールで通知するだけにする。
   - フォームの近くに利用目的を示す。
   - 永続化しないのはアプリ側に限る。通知の流れ（Resend からのメールの送信、受信箱、Resend 側の一時的な保持）には、通知という目的の範囲でデータが残る。
-  - ADR-0009: [corporate-site の問い合わせフォームの backend](../adr/0009-corporate-site-contact-form-backend.md)
+  - ADR-0009: [corporate-site の問い合わせフォームの backend](../docs/adr/0009-corporate-site-contact-form-backend.md)
 
 ## Placement Rules
 
@@ -195,7 +195,7 @@ content 層の方式は、内容の性質で選ぶ。
 
 - トークンを Tailwind の utility へ写す `@theme` は、`@kufu/ui/theme.css` だけに置く。`styles.css` と app の entry の両方がこれを import する。
 - corporate-site は `@kufu/ui/styles.css` の全体を取り込まず、app の Tailwind v4 の entry `src/styles/globals.css` を持つ。
-  - ADR-0007: [デザイントークンの構成](../adr/0007-design-token-architecture.md)
+  - ADR-0007: [デザイントークンの構成](../docs/adr/0007-design-token-architecture.md)
 - Tailwind の走査は Vite plugin の module graph に任せ、app のソースへの `@source` を app に置かない。
   - `packages/ui` のソースの走査は、`@kufu/ui/theme.css`（実体は `packages/ui/src/styles/theme.css`）が `@source "../components"` で指す。app の entry に書かない。
 - app の `src/styles/` は役割で分け、`globals.css` は `@import` だけの entry にする。
@@ -211,7 +211,7 @@ content 層の方式は、内容の性質で選ぶ。
 
 Cloudflare Pages Functions か Workers で app の API を足すときは、次に従う。  
 endpoint ごとの request、response、error code は feature の Design Doc が持つ。  
-問い合わせフォームの契約とセキュリティの規則は [問い合わせフォームの Design Doc](../design/features/contact-form/DesignDoc.md) にある。
+問い合わせフォームの契約とセキュリティの規則は [問い合わせフォームの Design Doc](../docs/design/features/contact-form/DesignDoc.md) にある。
 
 - API は同一オリジンの `/api/*` に置く。ブラウザから第三者の API を直接呼ぶ構成を標準にしない。Workers を中継点にする。
 - secret、token、API key、宛先などの秘匿する値は Workers 側で参照し、client の bundle と repo に含めない。

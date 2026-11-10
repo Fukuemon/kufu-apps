@@ -13,7 +13,7 @@ status: draft
 コーポレートサイトの静的な配信を保ったまま、送信だけを Cloudflare Pages Functions（Workers）で中継する。  
 ADR-0009: [corporate-site の問い合わせフォームの backend](../../../adr/0009-corporate-site-contact-form-backend.md)
 
-全体像は [design/DesignDoc.md](../../DesignDoc.md) に、フォームを置くページは [コーポレートサイトの Design Doc](../../../apps/corporate-site/DesignDoc.md#問い合わせフォーム) にある。  
+全体像は [design/DesignDoc.md](../../DesignDoc.md) に、フォームを置くページは [コーポレートサイトの Design Doc](../../../../apps/corporate-site/DesignDoc.md#問い合わせフォーム) にある。  
 まだ実装していないので、この文書は設計文書のディレクトリに置く。
 
 ## Scope
@@ -27,9 +27,9 @@ ADR-0009: [corporate-site の問い合わせフォームの backend](../../../ad
 持たないものは次のとおり。
 
 - 問い合わせの内容の保存。アプリの側（Workers）で DB、ストレージ、ログに残さない。
-  - 扱いの規則は [context/codebase.md](../../../context/codebase.md#state-ownership) にある。
-- 基盤の設定（secret、Rate Limiting のルール、送信のドメイン）。基盤に求めるものは [context/operations.md](../../../context/operations.md#問い合わせフォームが基盤に求めるもの) にある。
-- Edge API に共通の契約。[context/codebase.md](../../../context/codebase.md#edge-api) にある。
+  - 扱いの規則は [context/codebase.md](../../../../context/codebase.md#state-ownership) にある。
+- 基盤の設定（secret、Rate Limiting のルール、送信のドメイン）。基盤に求めるものは [context/operations.md](../../../../context/operations.md#問い合わせフォームが基盤に求めるもの) にある。
+- Edge API に共通の契約。[context/codebase.md](../../../../context/codebase.md#edge-api) にある。
 
 ## Design
 
@@ -47,7 +47,7 @@ ADR-0009: [corporate-site の問い合わせフォームの backend](../../../ad
 | Turnstile の token | `cf-turnstile-response` | 必須 | hidden   | Workers が Cloudflare Turnstile の `siteverify` で検証する |
 
 - 検証は client と Workers の両方で行う。Workers は client の結果を信頼せず、同じスキーマで検証し直す。
-- フォームの全体を 1 つの React の island にし、既定のディレクティブは `client:visible` にする。`/contact` の `client:*` は 1 個に収める。
+- フォームの全体を 1 つの React の island にし、デフォルトのディレクティブは `client:visible` にする。`/contact` の `client:*` は 1 個に収める。
 - フォームの近くに、入力した情報を問い合わせへの対応にだけ使うことと、送信をもって同意とみなすことを表示する。同意の checkbox は置かない。
 - 通知の流れ（Resend と受信箱）には、利用目的の範囲でデータが残る。
 
@@ -144,12 +144,12 @@ sequenceDiagram
 
 ## Verification
 
-確かめる範囲は次のとおり。  
-置き換え方の共通の規則は [context/testing.md](../../../context/testing.md#mocking-and-test-data) にある。
+確認する範囲は次のとおり。  
+置き換え方の共通の規則は [context/testing.md](../../../../context/testing.md#mocking-and-test-data) にある。
 
 - Playwright の E2E は `/api/contact` を route の intercept で fixture にし、実際のメールの送信と Cloudflare の実行環境に依存しない。
 - E2E の fixture は、成功（200）、`validation_error`（400）、`turnstile_failed`（400）、`rate_limited`（429）、`send_failed`（502）を用意する。
-  - 導線、エラーの表示、入力した値が保たれることを確かめる。
-- Turnstile は test mode の key を使う。honeypot は正常な場合に空のままにし、値があるときに捨てる処理は Workers の unit test で確かめる。
-- Workers の検証、honeypot、Turnstile の分岐、エラーのコードの対応づけは、Vitest の unit test で確かめる。
+  - 導線、エラーの表示、入力した値が保たれることを確認する。
+- Turnstile は test mode の key を使う。honeypot は正常な場合に空のままにし、値があるときに捨てる処理は Workers の unit test で確認する。
+- Workers の検証、honeypot、Turnstile の分岐、エラーのコードの対応づけは、Vitest の unit test で確認する。
 - Cloudflare Pages Functions と、Resend と secret の実際の結線は、Cloudflare Pages の preview で手で smoke test をする。

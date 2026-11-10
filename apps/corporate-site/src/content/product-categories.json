@@ -7,7 +7,7 @@
     "groupId": "drive-transmission",
     "featuredImage": "https://images.unsplash.com/photo-1723022323088-ca3d68fae5db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -17,7 +17,7 @@
     "summary": "軸受、直動部品、シャフト、シール関連の取扱カテゴリ。",
     "groupId": "drive-transmission",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -27,7 +27,7 @@
     "summary": "FA、制御、ロボット、計測制御など省力化に関わる機器。",
     "groupId": "drive-transmission",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -37,7 +37,7 @@
     "summary": "チェーン、ベルト、スプロケット、歯車と周辺部品。",
     "groupId": "drive-transmission",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -47,7 +47,7 @@
     "summary": "カップリング、ばね、伝動用品など設備保全に使う機器。",
     "groupId": "drive-transmission",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -58,7 +58,7 @@
     "groupId": "fluid-piping",
     "featuredImage": "https://images.unsplash.com/photo-1581092335331-5e00ac65e934?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -68,7 +68,7 @@
     "summary": "バルブ、継手、配管材、ホース、ノズル関連のカテゴリ。",
     "groupId": "fluid-piping",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -78,7 +78,7 @@
     "summary": "各種ポンプ、真空、洗浄、化工機などポンプ周辺機器。",
     "groupId": "fluid-piping",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -88,7 +88,7 @@
     "summary": "コンベア、搬送、吊り上げ、キャスターなど荷役搬送機器。",
     "groupId": "conveyance-facility",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -99,7 +99,7 @@
     "groupId": "conveyance-facility",
     "featuredImage": "https://images.unsplash.com/photo-1695603414659-4d573962b517?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -109,7 +109,7 @@
     "summary": "送風、集塵、コンプレッサー、加熱機器など産業機器。",
     "groupId": "conveyance-facility",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -119,7 +119,7 @@
     "summary": "測定工具、計量、計測機器、センサー類のカテゴリ。",
     "groupId": "tooling-measurement-materials",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -129,7 +129,7 @@
     "summary": "電動工具、油空圧工具、作業用工具メーカーのカテゴリ。",
     "groupId": "tooling-measurement-materials",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -140,7 +140,7 @@
     "groupId": "tooling-measurement-materials",
     "featuredImage": "https://images.unsplash.com/photo-1707304472925-c9f0fda4d7a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -150,7 +150,7 @@
     "summary": "治具、保持具、ツーリング、マグネット機器など加工周辺品。",
     "groupId": "tooling-measurement-materials",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -160,7 +160,7 @@
     "summary": "砥石、研磨材、研磨工具、仕上げ用品のカテゴリ。",
     "groupId": "tooling-measurement-materials",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -170,7 +170,7 @@
     "summary": "レンチ、作業工具、ペンチ、ハンマーなど手工具。",
     "groupId": "tooling-measurement-materials",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   },
   {
@@ -180,7 +180,7 @@
     "summary": "材料、樹脂素材、鋳物、ボルト、ねじ関連のカテゴリ。",
     "groupId": "tooling-measurement-materials",
     "sourceReferences": [
-      "design/features/corporate-site/reference/company-profile.md"
+      "docs/design/features/corporate-site/reference/company-profile.md"
     ]
   }
 ]

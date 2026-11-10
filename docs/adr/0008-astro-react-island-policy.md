@@ -14,7 +14,7 @@
   性能のコストが生じるのは、`client:*` を付けて island にし、React のランタイムを配ってハイドレーションするときだけである。
   この点は誤解されやすい。
 - 既存の方針は「React の island は必要な最小限にする」と定めていたが、shadcn の具体的な使い方は文書になっていなかった。
-  - 定めていた文書は [codebase.md](../context/codebase.md#shadcn-の使い方と-react-island-の境界)、corporate-site の Design Doc、デザインの制作物の取り決め、禁止事項。
+  - 定めていた文書は [codebase.md](../../context/codebase.md#shadcn-の使い方と-react-island-の境界)、corporate-site の Design Doc、デザインの制作物の取り決め、禁止事項。
 - モバイルのナビの開閉は、`.astro` と最小の script で、開閉、`aria-expanded`、Escape、選んだ後に閉じる動きを扱っている。
 
 ## Decision
@@ -29,8 +29,8 @@
 3. **`client:*` の island は、本当に操作が要るものに限る。**
    - island にするのは、問い合わせフォームと、Radix のインタラクティブな primitive（Dialog、DropdownMenu、Popover、Tooltip、Accordion、Tabs、Select など）だけにする。
    - **素の script で足りる開閉のトグルは island にしない。** モバイルのナビの開閉は island にせず、全ページに共通の header に React のランタイムを載せない。
-4. **island の既定のディレクティブは遅延の系統にする。**
-   - `client:visible` か `client:idle` を既定にする。
+4. **island のデフォルトのディレクティブは遅延の系統にする。**
+   - `client:visible` か `client:idle` をデフォルトにする。
    - `client:load` は、above-the-fold で即時の操作が要る箇所だけで使う。
 5. **インタラクティブな Radix の primitive を、`client:*` なしで静的に描画しない。**
    - 静的に描画すると、見た目だけが出て動かない。必ず island にする。

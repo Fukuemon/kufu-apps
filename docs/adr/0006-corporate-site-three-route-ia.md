@@ -25,7 +25,7 @@
 - `/services` と `/company` の単独の route は設けない。
   - 事業内容・会社情報への直接の導線は、LP 内のアンカーで提供する。
 - IA の基準は、引き続き feature doc の「ページ構成」とする。
-  - 出典: [ページの構成](../apps/corporate-site/DesignDoc.md#ページの構成)
+  - 出典: [ページの構成](../../apps/corporate-site/DesignDoc.md#ページの構成)
 - デザインの基準は、実装（コード + Storybook）とする。
   - ADR-0012: [デザインの基準を実装とし、Pencil（`.pen`）を廃止する](0012-design-source-of-truth-implementation.md)
 

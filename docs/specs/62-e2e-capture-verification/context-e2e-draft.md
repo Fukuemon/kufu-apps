@@ -58,16 +58,16 @@
 - E2E は、ルートの `pnpm e2e` で流す。`@kufu/e2e` の `e2e` の script を呼び、Playwright の project `e2e` を流す。
 - Playwright の project は 2 つある。
   - `e2e`: `tests/` の下の `.e2e.ts`。回帰の spec（`tests/specs/`）と、検証のシナリオの spec（`tests/verification/`）を流す。
-  - `route-vrt`: route の VRT。`pnpm vrt:route` で流す（[テスト](../../context/testing.md#vrt)）。
+  - `route-vrt`: route の VRT。`pnpm vrt:route` で流す（[テスト](../../../context/testing.md#vrt)）。
 - 向ける先は、corporate-site を `build` して `preview` で配信した `http://127.0.0.1:4321` である。Playwright が、`e2e:serve` の script で起動する。
-  - `e2e:serve` は、`preview` に `--ignore-lock` を付けて前面で動かす。付けないと、コーディングエージェントの中で流したときに、Playwright の `webServer` が「exited early」で失敗する（[技術スタック](../../context/tech-stack.md#upgrade-checks)）。
+  - `e2e:serve` は、`preview` に `--ignore-lock` を付けて前面で動かす。付けないと、コーディングエージェントの中で流したときに、Playwright の `webServer` が「exited early」で失敗する（[技術スタック](../../../context/tech-stack.md#upgrade-checks)）。
   - 環境変数 `BASE_URL` を渡すと、その URL に向け、app を起動しない。
   - `E2E_TARGET` と `E2E_PORT` は、起動する app と port を変える。
 - worker の数は、Playwright のデフォルトのままにする。spec が共有する状態（ログイン、テストデータ）がないためである。
 - 書き方の規則は `pnpm lint` で、型のチェックは `pnpm typecheck` で流す。E2E だけを見るときは、`pnpm --filter @kufu/e2e lint` と `pnpm --filter @kufu/e2e typecheck` を使う。構成とツールチェーンの要求の実装の後は、`pnpm check` に替わる。
 - CI は、`e2e` の job で `pnpm e2e` を流す。
-- 通信を差し替える spec は、まだない。問い合わせフォームの E2E を足すときに、[テスト](../../context/testing.md#mocking-and-test-data) の取り決めで書く。
-- エビデンスを撮る撮影の設定は、`e2e/playwright.capture.config.ts` にある（[エビデンス](../../context/testing/evidence.md)）。
+- 通信を差し替える spec は、まだない。問い合わせフォームの E2E を足すときに、[テスト](../../../context/testing.md#mocking-and-test-data) の取り決めで書く。
+- エビデンスを撮る撮影の設定は、`e2e/playwright.capture.config.ts` にある（[エビデンス](../../../context/testing/evidence.md)）。
 
 ## Test Data and Login
 

@@ -1,6 +1,6 @@
 # E2E Test Conventions
 
-`pnpm e2e` が読む Playwright suite の実装側の申し合わせ。取り決めは [context/testing.md](../context/testing.md) と [ADR-0017](../adr/0017-ui-test-structure-policy.md) が持ち、食い違ったらそちらに従う。
+`pnpm e2e` が読む Playwright suite の実装側の申し合わせ。取り決めは [context/testing.md](../context/testing.md) と [ADR-0017](../docs/adr/0017-ui-test-structure-policy.md) が持ち、食い違ったらそちらに従う。
 
 ## 構成
 

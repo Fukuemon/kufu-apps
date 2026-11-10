@@ -10,7 +10,7 @@ const category = (id: string, order: number, name: string) => ({
     summary: "",
     groupId: "drive-transmission",
     sourceReferences: [
-      "design/features/corporate-site/reference/company-profile.md",
+      "docs/design/features/corporate-site/reference/company-profile.md",
     ],
   },
 });
