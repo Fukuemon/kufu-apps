@@ -6,7 +6,7 @@
 
 ## Context
 
-- `@playwright/test` は 1.59.1 に固定している。E2E、route の VRT、story の VRT の 4 つの CI の job は、同じバージョンの Playwright の公式の image で動く。ローカルの route の VRT は、入っている `@playwright/test` のバージョンから image を決める。
+- ルートの `@playwright/test` と、`packages/ui` の `playwright` は、1.59.1 に固定している。lockfile にある Playwright は、この 1 つのバージョンだけである。E2E、route の VRT、story の VRT の 4 つの CI の job は、同じバージョンの Playwright の公式の image で動く。ローカルの route の VRT は、入っている `@playwright/test` のバージョンから image を決める。
 - VRT の baseline は、CI で撮った画像を基準にする。許す差分は 0 から始め、差分が出たら CI を失敗させる。
   - ADR-0015: [VRT を story と route の 2 系統で導入する](0015-visual-regression-testing-policy.md)
   - ADR-0018: [story の側の VRT を Storybook の公式のテストの基盤に載せ、baseline をリポジトリで管理する](0018-story-vrt-on-storybook-test-integrations.md)
@@ -25,7 +25,8 @@
 
 ### 1. Playwright を 1.64.1 に上げる
 
-- `@playwright/test` を 1.64.1 に固定する。CI の 4 つの job の image も、同じ pull request で 1.64.1 にする。
+- `@playwright/test` と、`packages/ui` の `playwright` を、1.64.1 に固定する。CI の 4 つの job の image も、同じ pull request で 1.64.1 にする。
+  - 上げた後の lockfile に、Playwright のバージョンが 1 つだけあることを確認する。corporate-site の story の VRT は、依存を通して同じ Playwright を使う。
 - 上げる pull request は、ほかの変更を含めない。差分が出たときに、ブラウザのバージョンの差だと分かるようにするためである。
 - 上げた pull request で、route と story の VRT を、今の baseline と比べて CI で流す。
   - 差分が無ければ、baseline を変えない。

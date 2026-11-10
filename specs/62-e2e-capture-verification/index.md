@@ -193,7 +193,7 @@ route の VRT の project は、`testDir` を `corporate-site` にする。テ�
 
 ### ほかの文書の変更の案
 
-- 全体の Design Doc の e2e のセクション: 「ルートで管理する Playwright」を、workspace の package に替える。エビデンスの撮影と、検証のシナリオの spec を持つことを足す（T1、T4）。
+- 全体の Design Doc の e2e のセクション、Architecture の図、Repository Layout: ルートの Playwright の記述を、workspace の package に替える。エビデンスの撮影と、検証のシナリオの spec を持つことを足す（T1、T4）。
 - corporate-site の Design Doc の「E2E が担うジャーニー」: ADR-0017 へのリンクを、ADR-0031 に替える（T1）。
 - `e2e/README.md`: 構成と Page Object のセクションを、層の説明に替える。ジャーニーの定義は、corporate-site の Design Doc と重なるので、リンクにする（T1）。
 - `README.md` と `CONTRIBUTING.md`: E2E のコマンド、ffmpeg、エビデンスの撮り方へのリンクを足す（T1、T4）。
@@ -212,14 +212,14 @@ route の VRT の project は、`testDir` を `corporate-site` にする。テ�
 | --- | ------ | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
 | T1  | impl   | E2E を workspace にし、層と書き方の規則を入れる                    | 今の smoke の 5 件が、`e2e/tests/` の層で通る。Page Object のクラスがない。`pnpm check` が書き方の規則を流し、わざと書いた違反で失敗する。route の VRT が、baseline を変えずに通る。`context/testing/e2e.md` の Test Tool、Test IDs、Lint Rule Options、Running Tests が埋まっている | 構成とツールチェーンの要求の T6。論点 0、2、3、4 |
 | T2  | impl   | corporate-site の 3 ジャーニーを E2E に実装する（issue 7）         | テスト設計の必須のケース（C1 から C10）が `e2e/tests/specs/` にあり、`pnpm e2e` と CI の `e2e` の job で通る。それぞれの spec で、期待を逆にすると落ちることを確認している                                                                                                           | T1。論点 6                                       |
-| T3  | impl   | Playwright を 1.64.1 に上げる                                      | `@playwright/test` と CI の 4 つの image が 1.64.1 である。E2E が通る。route と story の VRT に差分がないか、運営者が差分を見て決めている                                                                                                                                            | 構成とツールチェーンの要求の T4。論点 1          |
+| T3  | impl   | Playwright を 1.64.1 に上げる                                      | `@playwright/test`、`packages/ui` の `playwright`、CI の 4 つの image が 1.64.1 である。lockfile の Playwright が 1 つのバージョンである。E2E が通る。route と story の VRT に差分がないか、運営者が差分を見て決めている                                                             | 構成とツールチェーンの要求の T4。論点 1          |
 | T4  | impl   | 撮影の設定と字幕の関数を入れ、エビデンスを撮って載せる手順を決める | 撮影の設定で既にある spec を 1 本撮り、mp4 ができる。字幕つきの spec を 1 本撮り、この pull request のコメントに載せて再生できる。`BASE_URL` で向ける先を変えられる。`context/testing/evidence.md` の Verification Scenarios のほかが埋まっている                                    | T1、T3。論点 0、5、8                             |
 | T5  | verify | 受け入れ条件を検証し、3 つの route のシナリオのエビデンスを残す    | `docs/verification/62-…/` に検証の設計とシナリオがある。シナリオの spec が `e2e/tests/verification/62/` にあり、CI で通る。エビデンスが検証の pull request にある。2 つの context の `status` が `stable` である。issue 62 の受け入れ条件を確認している                              | T2、T4。構成とツールチェーンの要求の T1。論点 5  |
 
 - T1 を、構成とツールチェーンの要求の T6 の後にするのは、同じファイルを変えるためである。その要求の T2 から T6 が、`package.json`、`pnpm-lock.yaml`、CI のワークフロー、ルートの script を順に変える。
   - T6 の後は、ルートのコマンドが `pnpm check` と `pnpm -r` になっている。`@kufu/e2e` の `check` と `typecheck` は、そのまま束ねられる。
   - 先に進めたいときは、T1 を今のコマンド（`pnpm lint`、`pnpm typecheck`）で書き、その要求の T3 と T5 で直すことになる。
-- T3 は、T1 に依存しない。T1 より前に行うときは、ルートの `package.json` の `@playwright/test` を上げる。
+- T3 は、T1 に依存しない。T1 より前に行うときは、ルートの `package.json` の `@playwright/test` を上げる。`packages/ui` の `playwright` は、どちらの順でも T3 で上げる。
 - T3 を、デザインシステムの要求の、見た目を変えないタスク（色のトークンとコンポーネントの書き直し）と同時に進めない。どちらも「VRT に差分がない」を確認に使う。
 - T2 は、Playwright を上げなくても進められる。T1 が終われば始められる。
 - 子の数は、issue 7 を含めて 5 件である。
