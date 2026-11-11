@@ -37,8 +37,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - name: Install ripgrep # check-token-usage.mjs が使う (runner 標準に無い)
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ripgrep
       - name: Check
         run: pnpm check
 
