@@ -1,28 +1,28 @@
-import * as React from "react";
+import type * as React from "react";
 
 import { Label } from "./label.js";
-import { cn } from "#lib/utils";
 
+type FormFieldProps = Omit<React.ComponentProps<"div">, "className"> & {
+  label: React.ReactNode;
+  /** 見出しを結び付ける欄の `id`。 */
+  htmlFor?: string;
+  /** 欄の下に出す補足の文。 */
+  description?: React.ReactNode;
+  /** 欄の下に出す誤りの文。`role="alert"` で読み上げる。 */
+  error?: React.ReactNode;
+};
+
+/** 入力欄に、見出し、補足の文、誤りの文を添える枠。欄は `children` に渡す。 */
 function FormField({
-  className,
   label,
   htmlFor,
   description,
   error,
   children,
   ...props
-}: React.ComponentProps<"div"> & {
-  label: React.ReactNode;
-  htmlFor?: string;
-  description?: React.ReactNode;
-  error?: React.ReactNode;
-}) {
+}: FormFieldProps) {
   return (
-    <div
-      data-slot="form-field"
-      className={cn("grid gap-2", className)}
-      {...props}
-    >
+    <div data-slot="form-field" className="grid gap-2" {...props}>
       <Label htmlFor={htmlFor}>{label}</Label>
       {children}
       {description ? (
@@ -38,3 +38,4 @@ function FormField({
 }
 
 export { FormField };
+export type { FormFieldProps };

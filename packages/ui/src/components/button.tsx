@@ -1,58 +1,69 @@
-import { Button as ButtonPrimitive } from "@base-ui/react/button";
-import { cva, type VariantProps } from "class-variance-authority";
+import { clsx } from "clsx";
+import type * as React from "react";
 
-import { cn } from "#lib/utils";
+/**
+ * ボタンの面の種類。default は hover で面を薄くする塗りで、cta は問い合わせへの導線の塗りで、面の色を変えない。
+ */
+type ButtonVariant = "default" | "cta";
 
-const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-[8px] border border-transparent bg-clip-padding text-sm font-medium leading-5 whitespace-nowrap transition-all outline-none select-none focus-visible:border-focus-outline focus-visible:ring-3 focus-visible:ring-focus-halo/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-danger aria-invalid:ring-3 aria-invalid:ring-danger/20 dark:aria-invalid:border-danger/50 dark:aria-invalid:ring-danger/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-  {
-    variants: {
-      variant: {
-        default: "bg-primary text-text-inverse hover:bg-primary/80",
-        outline:
-          "border-divider bg-surface-canvas hover:bg-surface-subtle hover:text-text aria-expanded:bg-surface-subtle aria-expanded:text-text dark:border-field dark:bg-field/30 dark:hover:bg-field/50",
-        secondary:
-          "bg-surface-subtle text-text hover:bg-surface-subtle-hover aria-expanded:bg-surface-subtle aria-expanded:text-text",
-        ghost:
-          "hover:bg-surface-subtle hover:text-text aria-expanded:bg-surface-subtle aria-expanded:text-text dark:hover:bg-surface-subtle/50",
-        destructive:
-          "bg-danger/10 text-danger hover:bg-danger/20 focus-visible:border-danger/40 focus-visible:ring-danger/20 dark:bg-danger/20 dark:hover:bg-danger/30 dark:focus-visible:ring-danger/40",
-        link: "text-primary underline-offset-4 hover:underline",
-      },
-      size: {
-        default:
-          "h-12 gap-2.5 px-[22px] has-data-[icon=inline-end]:pr-[22px] has-data-[icon=inline-start]:pl-[22px]",
-        xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-12 gap-2.5 px-[22px] has-data-[icon=inline-end]:pr-[22px] has-data-[icon=inline-start]:pl-[22px]",
-        icon: "size-12",
-        "icon-xs":
-          "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm":
-          "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
-        "icon-lg": "size-9",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
-  },
-);
+/**
+ * ボタンの大きさ。default は 48px の高さの汎用のボタンである。
+ * cta- の 4 つは、問い合わせへの導線の大きさで、最小の高さは sm が 40px、md が 48px、lg が 52px、hero が 54px である。
+ */
+type ButtonSize = "default" | "cta-sm" | "cta-md" | "cta-lg" | "cta-hero";
 
-function Button({
-  className,
+type ButtonStyleOptions = {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+};
+
+const variantClassName: Record<ButtonVariant, string> = {
+  default: "bg-primary text-text-inverse hover:bg-primary/80",
+  cta: "bg-primary text-text-inverse",
+};
+
+// cta- の大きさのうち、リンクで使う 3 つは hover で全体を薄くする。md は送信のボタンで使い、hover で変えない
+const sizeClassName: Record<ButtonSize, string> = {
+  default:
+    "h-12 gap-2.5 rounded-8 border-transparent px-[22px] text-sm leading-5 font-medium",
+  "cta-sm":
+    "h-auto min-h-10 gap-2 rounded-4 border-transparent px-5 text-[0.8125rem] font-semibold hover:opacity-90",
+  "cta-md":
+    "h-auto min-h-12 gap-2 rounded-4 border-transparent px-5 text-sm font-semibold",
+  "cta-lg":
+    "h-auto min-h-13 gap-3 rounded-4 border-transparent px-6 text-[0.9375rem] font-semibold hover:opacity-90",
+  "cta-hero":
+    "h-auto min-h-[3.375rem] gap-0 rounded-4 border-primary px-6 text-[0.9375rem] font-medium hover:opacity-90",
+};
+
+/** Button と同じ見た目のクラス名を返す。リンクのようにボタンでない要素を、ボタンの見た目にするときに使う。 */
+function buttonClassName({
   variant = "default",
   size = "default",
-  ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+}: ButtonStyleOptions = {}) {
+  return clsx(
+    "inline-flex shrink-0 items-center justify-center border bg-clip-padding whitespace-nowrap transition-all outline-none select-none",
+    "focus-visible:border-focus-outline focus-visible:ring-3 focus-visible:ring-focus-halo/50",
+    "active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50",
+    variantClassName[variant],
+    sizeClassName[size],
+  );
+}
+
+type ButtonProps = Omit<React.ComponentProps<"button">, "className"> &
+  ButtonStyleOptions;
+
+/** 操作のボタン。type のデフォルトは button である。 */
+function Button({ variant, size, type = "button", ...props }: ButtonProps) {
   return (
-    <ButtonPrimitive
+    <button
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+      type={type}
+      className={buttonClassName({ variant, size })}
       {...props}
     />
   );
 }
 
-export { Button, buttonVariants };
+export { Button, buttonClassName };
+export type { ButtonProps, ButtonSize, ButtonVariant };

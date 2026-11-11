@@ -2,13 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { FormField } from "./form-field.js";
 import { Input } from "./input.js";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./select.js";
+import { Select } from "./select.js";
 import { Textarea } from "./textarea.js";
 
 const meta = {
@@ -77,29 +71,19 @@ export const InputError: Story = {
 
 export const SelectDefault: Story = {
   render: () => (
-    <Select defaultValue="option-a">
-      <SelectTrigger className="w-full">
-        <SelectValue placeholder="Select an option" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="option-a">Option A</SelectItem>
-        <SelectItem value="option-b">Option B</SelectItem>
-        <SelectItem value="option-c">Option C</SelectItem>
-      </SelectContent>
+    <Select defaultValue="option-a" aria-label="Field label">
+      <option value="option-a">Option A</option>
+      <option value="option-b">Option B</option>
+      <option value="option-c">Option C</option>
     </Select>
   ),
 };
 
 export const SelectDisabled: Story = {
   render: () => (
-    <Select defaultValue="option-a" disabled>
-      <SelectTrigger className="w-full">
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="option-a">Option A</SelectItem>
-        <SelectItem value="option-b">Option B</SelectItem>
-      </SelectContent>
+    <Select defaultValue="option-a" disabled aria-label="Field label">
+      <option value="option-a">Option A</option>
+      <option value="option-b">Option B</option>
     </Select>
   ),
 };

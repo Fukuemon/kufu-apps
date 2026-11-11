@@ -17,29 +17,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const Variants: Story = {
-  render: () => (
-    <div className="flex flex-wrap gap-3">
-      <LinkButton href="#">Default</LinkButton>
-      <LinkButton href="#" variant="secondary">
-        Secondary
-      </LinkButton>
-      <LinkButton href="#" variant="outline">
-        Outline
-      </LinkButton>
-      <LinkButton href="#" variant="ghost">
-        Ghost
-      </LinkButton>
-      <LinkButton href="#" variant="destructive">
-        Destructive
-      </LinkButton>
-      <LinkButton href="#" variant="link">
-        Link
-      </LinkButton>
-    </div>
-  ),
-};
-
 export const Disabled: Story = {
   args: {
     disabled: true,
@@ -51,4 +28,20 @@ export const LongLabel: Story = {
   args: {
     children: "図面が固まっていない段階の相談も受け付けているリンクボタン",
   },
+};
+
+export const Cta: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-3">
+      <LinkButton href="#" variant="cta" size="cta-sm">
+        cta-sm
+      </LinkButton>
+      <LinkButton href="#" variant="cta" size="cta-lg">
+        cta-lg
+      </LinkButton>
+      <LinkButton href="#" variant="cta" size="cta-hero">
+        cta-hero
+      </LinkButton>
+    </div>
+  ),
 };

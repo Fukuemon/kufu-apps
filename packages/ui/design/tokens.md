@@ -22,21 +22,23 @@
 | 文字       | `text-inverse`                         | `text-inverse`         | `primary` と `action-strong` の面の上の文字、写真の上の文字                                  |
 | 文字       | `text-inverse-secondary`               | なし（CSS の変数だけ） | 暗い面の上のリンクの文字                                                                     |
 | 文字       | `text-ghost`                           | `text-ghost`           | ウォーターマークの数字。読ませる文字には使わない                                             |
+| 文字       | `text-secondary-tint`                  | `text-secondary-tint`  | 任意の印の面                                                                                 |
 | 枠         | `border`                               | `divider`              | 飾りの区切りの線。入力欄と押せるものの枠には使わない                                         |
 | 枠         | `border-field`                         | `field`                | 入力欄と押せるものの枠。区切りの線には使わない                                               |
 | 操作       | `primary`                              | `primary`              | 主のボタンの面、リンクの文字、選んだ状態                                                     |
 | 操作       | `primary-soft`                         | `primary-soft`         | 暗い面の上の、主の色の文字                                                                   |
+| 操作       | `primary-tint`                         | `primary-tint`         | 必須の印の面                                                                                 |
 | 操作       | `action-strong`、`action-strong-hover` | なし（CSS の変数だけ） | 明るい面に置く、暗い色のリンクのボタンの面と、マウスを乗せたときの面                         |
 | フォーカス | `focus-outline`                        | `focus-outline`        | フォーカスの表示の枠と outline                                                               |
 | フォーカス | `focus-halo`                           | `focus-halo`           | フォーカスの表示の ring                                                                      |
 | 状態       | `danger`                               | `danger`               | エラーの文字、枠、印                                                                         |
 
 - 枠の 2 つは、ユーティリティの名前を `divider` と `field` にしている。テーマ変数をセマンティックトークンと同じ名前にすると、`border` が 2 回並ぶユーティリティの名前になるためである。
-- 次の 12 個は、corporate-site の演出の線、影、色の付いた面で、CSS の変数だけで使う。値は `:root` で決まるので、暗い面の中で使っても暗い面の値にならない。
+- 次の 10 個は、corporate-site の演出の線、影、色の付いた面で、CSS の変数だけで使う。値は `:root` で決まるので、暗い面の中で使っても暗い面の値にならない。
   - 方眼の線: `grid-line`、`grid-line-subtle`、`media-grid-line`、`media-ruler`
   - 影: `shadow-media`、`shadow-floating`
-  - 主の色を薄くしたもの: `primary-glow`、`primary-hairline`、`primary-connector`、`primary-tint`
-  - そのほか: `text-secondary-tint`（任意の印の面）、`scrollbar-thumb`（スクロールできる一覧のつまみ）
+  - 主の色を薄くしたもの: `primary-glow`、`primary-hairline`、`primary-connector`
+  - そのほか: `scrollbar-thumb`（スクロールできる一覧のつまみ）
 - プリミティブトークンの名前のユーティリティ（`text-kufu-gray-200` など）は、テーマ変数に無いので CSS にならない。corporate-site のフッターなどに残るものは、親の色で描かれている。
 
 ## テーマ
@@ -52,13 +54,13 @@
 
 ### コントラストのチェックから外している組
 
-| 組                                                                                                   | 条件     | 比         | 外す理由                                                                                                               | 戻す時期                                               |
-| ---------------------------------------------------------------------------------------------------- | -------- | ---------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| `border-field` と `surface`、`surface-canvas`                                                        | 通常の面 | 1.53、1.44 | 入力欄の枠が `gray-300` のままで、3:1 に届かない                                                                       | 枠を `gray-600` に替えるとき（#81）                    |
-| `text-secondary` と `surface`、`surface-subtle`                                                      | 暗い面   | 3.69、3.20 | 暗い面の `text-secondary` は `gray-500` で、明るい面に載せると 4.5:1 に届かない。今の暗い面の中に明るい面はない        | `gray-500` の文字を暗い面だけで使うよう直すとき（#81） |
-| `focus-outline` と `surface-canvas`                                                                  | 暗い面   | 2.80       | フォーカスの表示が `teal-600` で、暗い面（`gray-950`）の上で 3:1 に届かない。フッターのリンクのフォーカスの表示に出る  | DADS の黄と黒の 2 重の表示に替えるとき（#80）          |
-| `danger` の組                                                                                        | 通常の面 | 未確認     | 値が `oklch()` で、チェックのスクリプトが色に解決できない                                                              | DADS の赤の 16 進の値に替えるとき（#81）               |
-| `color-mix()` の式を持つ組（`overlay-panel`、`overlay-photo`、`text-ghost`、`surface-subtle-hover`） | 通常の面 | 未確認     | チェックのスクリプトが `color-mix()` を色に解決できない。`text-ghost` は、ウォーターマークの数字で読ませる文字ではない | 未定                                                   |
+| 組                                                                                                                                          | 条件     | 比         | 外す理由                                                                                                               | 戻す時期                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `border-field` と `surface`、`surface-canvas`                                                                                               | 通常の面 | 1.53、1.44 | 入力欄の枠が `gray-300` のままで、3:1 に届かない                                                                       | 枠を `gray-600` に替えるとき（#81）                    |
+| `text-secondary` と `surface`、`surface-subtle`                                                                                             | 暗い面   | 3.69、3.20 | 暗い面の `text-secondary` は `gray-500` で、明るい面に載せると 4.5:1 に届かない。今の暗い面の中に明るい面はない        | `gray-500` の文字を暗い面だけで使うよう直すとき（#81） |
+| `focus-outline` と `surface-canvas`                                                                                                         | 暗い面   | 2.80       | フォーカスの表示が `teal-600` で、暗い面（`gray-950`）の上で 3:1 に届かない。フッターのリンクのフォーカスの表示に出る  | DADS の黄と黒の 2 重の表示に替えるとき（#80）          |
+| `danger` の組                                                                                                                               | 通常の面 | 未確認     | 値が `oklch()` で、チェックのスクリプトが色に解決できない                                                              | DADS の赤の 16 進の値に替えるとき（#81）               |
+| `color-mix()` の式を持つ組（`overlay-panel`、`overlay-photo`、`text-ghost`、`surface-subtle-hover`、`primary-tint`、`text-secondary-tint`） | 通常の面 | 未確認     | チェックのスクリプトが `color-mix()` を色に解決できない。`text-ghost` は、ウォーターマークの数字で読ませる文字ではない | 未定                                                   |
 
 ## 文字
 

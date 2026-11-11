@@ -1,21 +1,25 @@
-"use client";
+import { clsx } from "clsx";
+import type * as React from "react";
 
-import { Separator as SeparatorPrimitive } from "@base-ui/react/separator";
+type SeparatorProps = Omit<
+  React.ComponentProps<"hr">,
+  "className" | "children"
+> & {
+  /** 線の向き。vertical は、横に並べた要素の間に、親の高さの縦の線を引く。 */
+  orientation?: "horizontal" | "vertical";
+};
 
-import { cn } from "#lib/utils";
-
-function Separator({
-  className,
-  orientation = "horizontal",
-  ...props
-}: SeparatorPrimitive.Props) {
+/** 内容の区切りの線。 */
+function Separator({ orientation = "horizontal", ...props }: SeparatorProps) {
   return (
-    <SeparatorPrimitive
+    <hr
       data-slot="separator"
-      orientation={orientation}
-      className={cn(
-        "shrink-0 bg-divider data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch",
-        className,
+      aria-orientation={orientation}
+      className={clsx(
+        "shrink-0 overflow-visible border-0 bg-divider",
+        orientation === "horizontal"
+          ? "h-px w-full"
+          : "h-auto w-px self-stretch",
       )}
       {...props}
     />
@@ -23,3 +27,4 @@ function Separator({
 }
 
 export { Separator };
+export type { SeparatorProps };
