@@ -10,8 +10,13 @@ const VRT_STYLE = `
   * { caret-color: transparent !important; }
 `;
 
+// vitest.config.ts の viewport と揃える。描画側の幅を決めるのはこちら。
+// @storybook/addon-vitest 10.6 は、story ごとに page.viewport を 1200x900 で呼ぶ。
+// 呼び出しを固定の値に置き換え、幅と高さ (storycap-testrun が内容に合わせて伸ばす) を保つ。
+const setViewport = page.viewport.bind(page);
+page.viewport = () => setViewport(1280, 10);
+
 beforeEach(async () => {
-  // vitest.config.ts の viewport と揃える。描画側の幅を決めるのはこちら。
   await page.viewport(1280, 10);
 
   if (!document.getElementById("vrt-style")) {
