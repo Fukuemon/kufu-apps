@@ -8,6 +8,7 @@ dependencies:
     - Fukuemon/agent-harness/packages/e2e#e2e-v0.3.0
     - Fukuemon/agent-harness/packages/capture#capture-v0.1.0
     - Fukuemon/agent-harness/packages/verification#verification-v0.4.0
+    - Fukuemon/agent-harness/packages/design-system#design-system-v0.3.1
     - Fukuemon/agent-playbooks/packages/playbooks#playbooks-v0.3.1
     - Fukuemon/agent-playbooks/packages/sessions#sessions-v0.1.0
     - Fukuemon/agent-playbooks/packages/review#review-v0.1.1
