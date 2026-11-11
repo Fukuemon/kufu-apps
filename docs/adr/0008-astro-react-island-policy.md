@@ -2,7 +2,7 @@
 
 ## Status
 
-承認
+[ADR-0038](0038-corporate-site-island-policy.md) に置換
 
 ## Context
 
