@@ -104,12 +104,11 @@
 /*
  * 動きを減らす設定のときの止め方。画面とコンポーネントのコードに、この設定の条件を書かない（MOTION-REDUCE）。
  * アニメーションは全て止め、遷移は透明度だけを残す。時間を 0 にする書き方は、残す透明度の変化も止めるので使わない。
- * app の CSS が書いた animation と transition より優先させるため、!important を付ける。
- * :root は、app の base.css の html の scroll-behavior より詳細度が高い。
+ * app の CSS が書いた animation、transition、scroll-behavior より優先させるため、!important を付ける。
  */
 @media (prefers-reduced-motion: reduce) {
   :root {
-    scroll-behavior: auto;
+    scroll-behavior: auto !important;
   }
 
   *,

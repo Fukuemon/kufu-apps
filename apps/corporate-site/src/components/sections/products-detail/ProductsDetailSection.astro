@@ -287,7 +287,8 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
     sectionObserver.observe(categoryGroups);
 
     backtop.addEventListener("click", () => {
-      indexTop.scrollIntoView({ behavior: "smooth", block: "start" });
+      // behavior を書かず、html の scroll-behavior に従わせる。動きを減らす設定のときは theme.css が滑らかなスクロールを止める
+      indexTop.scrollIntoView({ block: "start" });
     });
   }
 </script>
