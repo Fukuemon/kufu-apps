@@ -64,7 +64,7 @@ module.exports = {
       path: "node_modules",
     },
     exclude: {
-      path: "(^|/)(node_modules|dist|coverage|storybook-static|\\.astro|\\.turbo|\\.pnpm-store|__fixtures__)(/|$)",
+      path: "(^|/)(node_modules|dist|coverage|storybook-static|\\.astro|\\.pnpm-store|__fixtures__)(/|$)",
     },
     includeOnly: "^((apps|packages|e2e)/)",
     enhancedResolveOptions: {

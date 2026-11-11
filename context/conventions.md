@@ -5,7 +5,6 @@ description: 命名、Storybook の title、デザインの制作物の置き場
 status: draft
 governs:
   - package.json
-  - turbo.json
   - lefthook.yml
   - knip.json
   - .dependency-cruiser.cjs
@@ -107,7 +106,7 @@ subpath は `tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`vitest/base
 
 ### ルートのタスク
 
-- workspace のタスクは、ルートの script から `turbo run` で束ねる。
+- workspace のタスクは、ルートの script から `pnpm -r` と `pnpm --filter` で束ねる。`pnpm -r` は依存の順に流す。
   - `dev`、`dev:corporate`、`build`、`typecheck`、`test` が当たる。
 - `typecheck` の実体は各 workspace が持ち、ルートは集めるだけにする。
   - corporate-site は `astro check`、packages と `e2e` は `tsc --noEmit` を実行する。ルートは `tsc` を実行しない。
@@ -131,8 +130,7 @@ ADR-0016: [CI とローカルのフックの分担](../docs/adr/0016-ci-local-ho
   - 動いているフックは `lefthook.yml` にある。
 - Storybook の build は、CI と pull request のチェックにし、pre-commit の必須のチェックに含めない。
 - CI の実行時間の目標値は置かない。
-  - ジョブを足したら実行時間を測り、その値を見て Turbo の remote cache と required status checks の要否を判断し直す。
-- Turbo の remote cache は入れない。
+  - ジョブを足したら実行時間を測り、その値を見て required status checks の要否を判断し直す。
 - required status checks は設定しない。
   - CI が赤いまま merge できる状態が残るので、merge の前に pull request のチェックの欄を見る。
 - VRT を CI だけで撮って判定する理由は [testing.md](testing.md#test-types-and-guarantees) にある。

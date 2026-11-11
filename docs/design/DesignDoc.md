@@ -51,7 +51,7 @@ ADR-0019: [コーポレートサイトを Astro の静的な生成で作る](../
   - ADR-0007: [デザイントークンの構成](../adr/0007-design-token-architecture.md)
 - 整形と lint の設定はルートの `vite.config.ts` に置く。
   - ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](../adr/0025-vite-plus-toolchain.md)
-- pnpm workspace と Turborepo を使い、app と package の単位でタスクを実行する。
+- pnpm workspace を使い、workspace のタスクは `pnpm -r` で束ねる。
 - 基盤は Cloudflare の標準の機能で閉じ、独自のサーバーの運用を前提にしない。
 
 ## Architecture
