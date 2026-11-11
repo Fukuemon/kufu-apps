@@ -1,6 +1,5 @@
 ---
 import { LinkButton } from "@kufu/ui";
-import { cva } from "@kufu/ui/lib";
 
 export interface Props {
   href: string;
@@ -8,27 +7,19 @@ export interface Props {
   "data-testid"?: string;
 }
 
-const { href, size, "data-testid": testId } = Astro.props;
+const { href, size = "lg", "data-testid": testId } = Astro.props;
 
-// 色/hover は全サイズ共通の base に固定し、size variant は外形寸法のみ持つ
-const contactCtaVariants = cva("h-auto bg-primary hover:bg-primary hover:opacity-90", {
-  variants: {
-    size: {
-      sm: "min-h-10 gap-2 px-5 text-[0.8125rem] font-semibold",
-      hero: "min-h-[3.375rem] gap-0 border-primary px-6 text-[0.9375rem] font-medium",
-      lg: "min-h-13 gap-3 px-6 text-[0.9375rem] font-semibold",
-    },
-  },
-  defaultVariants: {
-    size: "lg",
-  },
-});
+const linkButtonSize = {
+  sm: "cta-sm",
+  hero: "cta-hero",
+  lg: "cta-lg",
+} as const;
 ---
 
 <LinkButton
   href={href}
-  className={contactCtaVariants({ size })}
-  data-contact-cta
+  variant="cta"
+  size={linkButtonSize[size]}
   data-testid={testId}
 >
   <slot />

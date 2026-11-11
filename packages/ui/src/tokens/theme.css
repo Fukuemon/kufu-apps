@@ -27,11 +27,13 @@
   --color-text-secondary: var(--kufu-color-text-secondary);
   --color-text-inverse: var(--kufu-color-text-inverse);
   --color-text-ghost: var(--kufu-color-text-ghost);
+  --color-text-secondary-tint: var(--kufu-color-text-secondary-tint);
   /* 枠の色は、名前の頭に border を付けない。border のユーティリティの名前に border が 2 回並ぶのを避けるためである */
   --color-divider: var(--kufu-color-border);
   --color-field: var(--kufu-color-border-field);
   --color-primary: var(--kufu-color-primary);
   --color-primary-soft: var(--kufu-color-primary-soft);
+  --color-primary-tint: var(--kufu-color-primary-tint);
   --color-focus-outline: var(--kufu-color-focus-outline);
   --color-focus-halo: var(--kufu-color-focus-halo);
   --color-danger: var(--kufu-color-danger);

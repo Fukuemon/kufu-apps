@@ -16,24 +16,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const Variants: Story = {
-  render: () => (
-    <div className="flex flex-wrap gap-2">
-      <Tag>製品カテゴリ</Tag>
-      <Tag variant="secondary">メーカー</Tag>
-      <Tag variant="destructive">要確認</Tag>
-      <Tag variant="outline">加工・組立</Tag>
-      <Tag variant="ghost">補足</Tag>
-      <Tag variant="link">リンク</Tag>
-    </div>
-  ),
-};
-
-export const Compact: Story = {
+export const Tones: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-2">
-      <Tag size="sm">必須</Tag>
-      <Tag size="sm" variant="secondary">
+      <Tag size="sm">既定</Tag>
+      <Tag size="sm" tone="required">
+        必須
+      </Tag>
+      <Tag size="sm" tone="optional">
         任意
       </Tag>
     </div>

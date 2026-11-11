@@ -12,18 +12,23 @@
   );
 }
 
-/* ボタン・フォーム・チップ・主要パネルに 4px の radius を付与
+/* 素のボタンとフォームの要素に 4px の radius を付与する。
+   @layer base に置き、@kufu/ui のコンポーネントの角丸のユーティリティを上書きしない */
+@layer base {
+  button,
+  input,
+  select,
+  textarea {
+    border-radius: var(--radius-4);
+  }
+}
+
+/* 主要パネルとサイト固有のボタンに 4px の radius を付与
    (面取り済みの business-media や円形ノードは対象外) */
-button,
-input,
-select,
-textarea,
-[data-contact-cta],
 .products-control-btn,
 .featured-carousel-arrow,
 .products-accordion-icon,
 .products-backtop,
-.contact-badge,
 .site-nav-toggle,
 .featured-category-card,
 .catalog-board,
@@ -60,12 +65,9 @@ section[id],
   }
 }
 
-a {
+/* @layer の外に置くので、サイトのリンクの文字の色のユーティリティより強い。
+   @kufu/ui のコンポーネント（data-slot を持つ）は、自身の文字の色を使うので外す。:where() で、詳細度を a と同じに保つ */
+a:where(:not([data-slot])) {
   color: inherit;
   text-decoration: none;
-}
-
-[data-contact-cta],
-[data-contact-cta] * {
-  color: var(--kufu-color-text-inverse) !important;
 }

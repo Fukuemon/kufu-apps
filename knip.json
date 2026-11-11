@@ -26,7 +26,7 @@
       "ignore": ["scripts/__fixtures__/**"]
     },
     "packages/ui": {
-      "project": ["src/**/*.{ts,tsx,css}", "components.json"]
+      "project": ["src/**/*.{ts,tsx,css}"]
     }
   },
   "ignoreDependencies": [

@@ -1,17 +1,11 @@
-/* @kufu/ui full stylesheet entry. */
+/* @kufu/ui の Storybook の CSS の entry。 */
 
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 @import "../tokens/fonts.css";
 @import "../tokens/theme.css";
 
 @source "../components";
-@source "../hooks";
-@source "../lib";
 @source "../../.storybook";
-
-@custom-variant dark (&:is(.dark *));
 
 @layer base {
   * {

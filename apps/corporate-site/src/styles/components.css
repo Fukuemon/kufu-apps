@@ -604,23 +604,6 @@
   color: var(--kufu-color-primary-soft);
 }
 
-/* 必須/任意バッジの書体 (mono + tracking) はこのサイトの固有表現のため app 側で保持。
-   サイズ/形状/配色トーンは @kufu/ui の Tag size="sm" が担う */
-.contact-badge {
-  font-family: var(--font-mono);
-  letter-spacing: 0.08em;
-}
-
-.contact-badge--required {
-  background: var(--kufu-color-primary-tint);
-  color: var(--kufu-color-primary);
-}
-
-.contact-badge--optional {
-  background: var(--kufu-color-text-secondary-tint);
-  color: var(--kufu-color-text-secondary);
-}
-
 .products-summary-cta {
   background: var(--kufu-color-action-strong);
   color: var(--kufu-color-text-inverse);
