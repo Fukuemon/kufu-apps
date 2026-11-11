@@ -32,7 +32,6 @@ function Badge({ size = "default", tone = "default", ...props }: BadgeProps) {
       data-slot="badge"
       className={clsx(
         "inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap transition-all",
-        "focus-visible:border-focus-outline focus-visible:ring-[3px] focus-visible:ring-focus-halo/50",
         toneClassName[tone],
         sizeClassName[size],
       )}

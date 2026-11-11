@@ -15,7 +15,7 @@ const { categoryGroups, makerCountById } = Astro.props;
 
 <aside class="products-nav-rail reveal-section lg:sticky lg:top-28 lg:self-start">
   <details class="products-nav border border-divider bg-surface" open data-products-nav>
-    <summary class="products-nav-summary flex cursor-pointer items-center justify-between gap-3 px-5 py-4 lg:hidden">
+    <summary class="focus-ring products-nav-summary flex cursor-pointer items-center justify-between gap-3 px-5 py-4 lg:hidden">
       <span class="flex items-baseline gap-3">
         <span class="font-mono text-eyebrow font-medium tracking-[0.2em] text-primary">INDEX</span>
         <span class="text-label font-semibold">カテゴリを探す</span>
@@ -34,7 +34,7 @@ const { categoryGroups, makerCountById } = Astro.props;
           <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-label text-text-secondary" aria-hidden="true">⌕</span>
           <input
             type="search"
-            class="min-h-11 w-full border border-divider bg-surface-canvas pl-9 pr-3 text-body-dense"
+            class="focus-ring min-h-11 w-full border border-divider bg-surface-canvas pl-9 pr-3 text-body-dense"
             placeholder="カテゴリ・メーカー名で検索"
             aria-controls="products-category-groups"
             data-products-search
@@ -45,8 +45,8 @@ const { categoryGroups, makerCountById } = Astro.props;
       <div class="flex items-center justify-between gap-3">
         <p class="text-caption text-text-secondary" data-products-result aria-live="polite" hidden></p>
         <div class="ml-auto flex gap-2">
-          <button type="button" class="products-control-btn" data-expand-all>すべて開く</button>
-          <button type="button" class="products-control-btn" data-collapse-all>すべて閉じる</button>
+          <button type="button" class="focus-ring products-control-btn" data-expand-all>すべて開く</button>
+          <button type="button" class="focus-ring products-control-btn" data-collapse-all>すべて閉じる</button>
         </div>
       </div>
 
@@ -67,7 +67,7 @@ const { categoryGroups, makerCountById } = Astro.props;
                 {group.items.map(({ category }) => (
                   <li>
                     <a
-                      class="products-nav-link grid grid-cols-[1.75rem_1fr_auto] items-center gap-2 py-1.5 hover:text-primary"
+                      class="focus-ring products-nav-link grid grid-cols-[1.75rem_1fr_auto] items-center gap-2 py-1.5 hover:text-primary"
                       href={`#${category.id}`}
                       data-nav-target={category.id}
                     >

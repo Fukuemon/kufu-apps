@@ -55,9 +55,9 @@
   --kufu-color-action-strong: var(--kufu-primitive-color-gray-950);
   --kufu-color-action-strong-hover: var(--kufu-primitive-color-gray-800);
 
-  /* フォーカス */
-  --kufu-color-focus-outline: var(--kufu-primitive-color-teal-600);
-  --kufu-color-focus-halo: var(--kufu-primitive-color-teal-600);
+  /* フォーカス: 黒の outline と、Yellow-300 の影の 2 重。黒は明るい面で、黄は暗い面で見分けられる（packages/ui/design/tokens.md） */
+  --kufu-color-focus-outline: var(--kufu-primitive-color-neutral-black);
+  --kufu-color-focus-halo: var(--kufu-primitive-color-primitive-yellow-300);
 
   /* 状態 */
   --kufu-color-danger: var(--kufu-primitive-color-red-legacy);

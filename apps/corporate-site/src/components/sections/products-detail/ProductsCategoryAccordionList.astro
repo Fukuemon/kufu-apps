@@ -42,7 +42,7 @@ const { categoryGroups } = Astro.props;
             data-category-name={category.data.name}
           >
             <details class="products-accordion" open>
-              <summary class="products-accordion-summary grid cursor-pointer grid-cols-[2.75rem_1fr_auto] items-center gap-3 py-5 md:gap-5 md:py-6">
+              <summary class="focus-ring products-accordion-summary grid cursor-pointer grid-cols-[2.75rem_1fr_auto] items-center gap-3 py-5 md:gap-5 md:py-6">
                 <span class="font-mono text-eyebrow font-medium tracking-[0.08em] text-primary">
                   {String(category.data.order).padStart(2, "0")}
                 </span>

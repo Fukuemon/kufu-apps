@@ -86,6 +86,20 @@
   --radius-lg: var(--kufu-primitive-border-radius-4);
 }
 
+/*
+ * フォーカスの表示。操作できる要素は、このユーティリティだけでフォーカスの表示を付ける（FOCUS-ONE）。
+ * DADS の黒の outline（4px、2px 離す）と、その間を埋める Yellow-300 の 2px の影の 2 重にする。
+ * outline の太さと位置はコンポーネントごとに変えない。
+ * :focus-visible を 2 回書くのは、詳細度を上げるためである。エラーの状態の ring（aria-invalid:ring-3）も box-shadow を使い、同じ詳細度だと後に出る側が影を上書きして黄が消える。
+ */
+@utility focus-ring {
+  &:focus-visible:focus-visible {
+    outline: 4px solid var(--kufu-color-focus-outline);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--kufu-color-focus-halo);
+  }
+}
+
 /* 写真の上に重ねる色。テーマ変数の --color-overlay-photo が background-color を、このユーティリティが background-image を塗り、2 枚を重ねた濃さで描く */
 @utility bg-overlay-photo {
   background-image: linear-gradient(

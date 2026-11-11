@@ -42,8 +42,8 @@ function buttonClassName({
   size = "default",
 }: ButtonStyleOptions = {}) {
   return clsx(
-    "inline-flex shrink-0 items-center justify-center border bg-clip-padding whitespace-nowrap transition-all outline-none select-none",
-    "focus-visible:border-focus-outline focus-visible:ring-3 focus-visible:ring-focus-halo/50",
+    "inline-flex shrink-0 items-center justify-center border bg-clip-padding whitespace-nowrap transition-all select-none",
+    "focus-ring",
     "active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50",
     variantClassName[variant],
     sizeClassName[size],
