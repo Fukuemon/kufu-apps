@@ -104,8 +104,7 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 ├── apps/
 │   └── corporate-site/  # Astro コーポレートサイト
 ├── packages/
-│   ├── ui/              # 共通 UI / デザイントークン / フォント
-│   └── config/          # 共通 tsconfig / lint / test 設定
+│   └── ui/              # 共通 UI / デザイントークン / フォント
 ├── e2e/                 # E2E の workspace（@kufu/e2e）。Playwright の設定とテスト
 ├── context/             # 技術規約 / 運用契約
 └── docs/
@@ -119,7 +118,6 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 
 - `apps/corporate-site`: Astro のページ、ルーティング、コンテンツ構成、必要最小限の island
 - `packages/ui`: 共通デザイン基盤 (token / font / stylesheet entry / 再利用が明確な UI)
-- `packages/config`: TypeScript / lint / test の共有設定
 - `e2e`: E2E の workspace（`@kufu/e2e`）。Playwright の設定、`tests/` の層のテストのコード、書き方の規則、route の VRT
 
 禁止: 再利用すべき UI の app 内重複、app 間の直接依存、コーポレートサイトでの不要な React island、実装コードでの token 値直書き。

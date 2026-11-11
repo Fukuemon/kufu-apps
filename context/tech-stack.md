@@ -39,7 +39,6 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - storycap-testrun と reg-cli: Storybook の story を撮影して比べる。
 - knip: 使っていないコードと export を検出する。ルートで管理する。
 - dependency-cruiser: 依存を解析する。ルートで管理する。
-- tsdown: ライブラリをビルドする。
 - Tailwind CSS v4 と `@tailwindcss/vite`: スタイリングに使う。
 - shadcn/ui: `packages/ui` の共有のコンポーネントの元にする。
   - ADR-0010: [shadcn の primitive に Base UI を採る](../docs/adr/0010-shadcn-base-ui-primitive-policy.md)
@@ -60,7 +59,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 役割は次のとおり。
 
 - `pnpm dev`: すべての app を起動する。コーポレートサイトだけなら `pnpm dev:corporate` を使う。
-- `pnpm build`: すべての workspace をビルドする。
+- `pnpm build`: `build` の script を持つ workspace をビルドする。今は corporate-site だけが持つ。
 - `pnpm check`: ルートの `vp check` で全体の整形と lint を確認し、続けて `pnpm -r check` で workspace ごとのチェックを実行する。自動の修正は `pnpm check:fix`（`vp check --fix`）を使う。
 - `pnpm typecheck`: 型をチェックする。
 - `pnpm test`: unit test を実行する。
@@ -77,8 +76,6 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 
 ## Upgrade Checks
 
-- `.ts` の設定ファイル（`packages/config/vitest/base.ts` など）の import は、Node.js 23.6 以上でだけ、そのまま動く。23.6 から type stripping が初めから有効になるためである。
-  - CI の Node.js は 24 以上にする。22.12 では `ERR_UNKNOWN_FILE_EXTENSION` で失敗する。
 - Astro 7 の `astro preview` は、コーディングエージェントの中で動いていると判定すると、バックグラウンドに回ってすぐ終了する。
   - E2E の `e2e:serve` は、`--ignore-lock` を付けて前面で動かす。付けないと、Playwright の `webServer` が「exited early」で失敗する。
   - Astro を上げたときは、エージェントのセッションから `pnpm e2e` を流して確認する。
@@ -92,6 +89,6 @@ ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外�
 
 - `apps/corporate-site`: `pnpm create astro@latest apps/corporate-site`
 - React の app: `pnpm create vite ... --template react-ts`
-- 作った後に、package の名前、ルートの script、typecheck、E2E、共有の設定を、monorepo の取り決めに合わせる。
-  - 名前は [conventions.md](conventions.md#naming) に、共有の設定は [conventions.md](conventions.md#shared-configuration) にある。
+- 作った後に、package の名前、ルートの script、typecheck、E2E、`tsconfig.json` を、monorepo の取り決めに合わせる。
+  - 名前は [conventions.md](conventions.md#naming) に、`tsconfig.json` と script の取り決めは [conventions.md](conventions.md#shared-configuration) にある。
   - E2E の対象にする手順は [testing.md](testing.md#runtime-requirements) にある。
