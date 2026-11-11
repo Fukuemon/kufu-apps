@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { within } from "storybook/test";
+import { expect, userEvent, within } from "storybook/test";
 
 import { Select } from "./Select.js";
 import { expectTargetSize } from "../../test/target-size.js";
@@ -73,4 +73,35 @@ export const LongItems: Story = {
       </option>
     </Select>
   ),
+};
+
+// マウスを乗せた状態。storybook-addon-pseudo-states で :hover の見た目を出す。
+export const Hover: Story = {
+  render: () => (
+    <Select defaultValue="option-a" aria-label="選択肢">
+      <option value="option-a">Option A</option>
+      <option value="option-b">Option B</option>
+    </Select>
+  ),
+  parameters: { pseudo: { hover: true } },
+  // 枠の色の transition が終わるのを待つ
+  play: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+  },
+};
+
+// Tab キーでフォーカスした状態。focus-ring の表示を、VRT で見る。
+export const Focused: Story = {
+  render: () => (
+    <Select defaultValue="option-a" aria-label="選択肢">
+      <option value="option-a">Option A</option>
+      <option value="option-b">Option B</option>
+    </Select>
+  ),
+  play: async ({ canvasElement }) => {
+    await userEvent.tab();
+    await expect(within(canvasElement).getByRole("combobox")).toHaveFocus();
+    // 表示の transition が終わるのを待つ
+    await new Promise((resolve) => setTimeout(resolve, 400));
+  },
 };

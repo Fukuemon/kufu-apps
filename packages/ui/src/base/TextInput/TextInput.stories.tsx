@@ -84,3 +84,12 @@ export const LongValue: Story = {
       "入力値が入力欄の幅を超えたときのスクロールと省略の挙動を確認するための長い文字列を入れている",
   },
 };
+
+// マウスを乗せた状態。storybook-addon-pseudo-states で :hover の見た目を出す。
+export const Hover: Story = {
+  parameters: { pseudo: { hover: true } },
+  // 枠の色の transition が終わるのを待つ
+  play: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+  },
+};

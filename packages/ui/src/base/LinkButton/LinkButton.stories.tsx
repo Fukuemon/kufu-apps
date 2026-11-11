@@ -81,3 +81,12 @@ export const FocusedOnInverse: Story = {
     await new Promise((resolve) => setTimeout(resolve, 400));
   },
 };
+
+// 押している状態。storybook-addon-pseudo-states で :active の見た目を出す。
+export const Active: Story = {
+  parameters: { pseudo: { active: true } },
+  // 表示の transition が終わるのを待つ
+  play: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+  },
+};
