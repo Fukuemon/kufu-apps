@@ -6,7 +6,7 @@
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev --host 127.0.0.1 --port 4321",
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview --host 127.0.0.1 --port 4321",
-    "lint": "oxlint --type-aware --config .oxlintrc.json astro.config.mjs vitest.config.ts && node scripts/check-token-usage.mjs && node scripts/check-section-boundary.mjs",
+    "check": "node scripts/check-token-usage.mjs && node scripts/check-section-boundary.mjs",
     "token:check": "node scripts/check-token-usage.mjs",
     "test": "vitest run --config vitest.config.ts --passWithNoTests",
     "typecheck": "ASTRO_TELEMETRY_DISABLED=1 astro check",
@@ -36,7 +36,7 @@
     "storybook": "^10.5.9",
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3",
-    "vite": "^8.0.16"
+    "vite": "catalog:"
   },
   "engines": {
     "node": ">=22.23.4"

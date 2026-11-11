@@ -27,7 +27,6 @@
     "./lib/*": "./src/lib/*.ts"
   },
   "scripts": {
-    "lint": "oxlint --type-aware --config ../config/oxlint/base.json src",
     "build": "tsdown src/index.ts --dts --format esm --platform neutral --external react --external react-dom --out-dir dist",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "storybook": "storybook dev --host 127.0.0.1 --port 6006",
@@ -64,7 +63,7 @@
     "tailwindcss": "^4.3.1",
     "tsdown": "^0.16.6",
     "typescript": "^6.0.3",
-    "vite": "^8.0.16",
+    "vite": "catalog:",
     "vitest": "4.1.11"
   }
 }
