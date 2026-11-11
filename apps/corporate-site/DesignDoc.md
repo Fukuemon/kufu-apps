@@ -54,14 +54,17 @@ Astro によるコーポレートサイトを、高い表示の速さと保守�
 3 つの route と、全ページに共通の layout で構成する。  
 ADR-0006: [corporate-site の IA を 3 route にする](../../docs/adr/0006-corporate-site-three-route-ia.md)
 
-| ページ         | route       | 主な section                                                                                                                      |
-| -------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| トップ         | `/`         | hero（理念と事業の要約）、事業の紹介（販売と加工のジグザグの構成と、小規模工事の事例）、取扱製品の索引（18 カテゴリ）、会社の情報 |
-| 取扱製品       | `/products` | 18 カテゴリの詳細（INDEX のパネルと、カテゴリごとの全メーカーの一覧）                                                             |
-| お問い合わせ   | `/contact`  | 連絡先（TEL、FAX、メール）と問い合わせフォーム                                                                                    |
-| 全ページに共通 | なし        | ヘッダー（ナビと CTA）。フッターはトップがフル（サイトマップ付き）、下層がコンパクト（ブランドと連絡先）                          |
+| ページ         | route       | 主な section                                                                                                                                                                 |
+| -------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| トップ         | `/`         | hero（理念と事業の要約）、相談の内容、事業の紹介（販売と加工のジグザグの構成と、小規模工事の事例）、取扱製品の索引（写真のカードと 18 カテゴリ）、会社の情報、問い合わせの帯 |
+| 取扱製品       | `/products` | 18 カテゴリの詳細（索引のパネルと、カテゴリごとの全メーカーの一覧）、問い合わせの帯                                                                                          |
+| お問い合わせ   | `/contact`  | 連絡先（TEL、FAX、メール）と問い合わせフォーム                                                                                                                               |
+| 全ページに共通 | なし        | ヘッダー（ナビと CTA）と、サイトマップ付きのフッター                                                                                                                         |
 
+- 画面ごとの要素、操作、幅による配置は、画面仕様書（[site-home](../../docs/screens/site-home_トップ/index.md)、[product-list](../../docs/screens/product-list_取扱製品/index.md)、[contact-info](../../docs/screens/contact-info_お問い合わせ/index.md)）にある。
 - 事業の内容と会社の情報は、トップの section に入れ、単独の route を作らない。直接の導線は、トップの中のアンカーで提供する。
+- トップと取扱製品の末尾には、同じ形の問い合わせの帯（暗い面）を置く。帯は、見出し、リード、`/contact` へのボタン、電話の番号と受付時間を持ち、section の外でページが並べる。
+- 取扱製品の写真のカードは、自動では動かさない。矢印とスワイプで送る。
 - コンテナの幅と横の余白は、全ページで 1440px と横の padding 56 に揃える。実装は 1 つの max-width と共通の padding にする。
 - 3 つの route それぞれに、desktop とモバイルの表示を用意する。
   - hover、focus、フォームのエラーのような状態は `@kufu/ui` の規約に従って実装し、Storybook で確認する。
@@ -98,23 +101,30 @@ flowchart TD
     Header["全ページに共通のヘッダー（ナビと問い合わせの CTA）"]
     subgraph P1 ["トップ /"]
         Hero["hero（理念と事業の要約）"]
+        Consultation["相談の内容"]
         Business["事業の紹介"]
         Index["取扱製品の索引（18 カテゴリ）"]
         Company["会社の情報"]
+        Band1["問い合わせの帯"]
     end
-    P3["取扱製品 /products"]
+    subgraph P3 ["取扱製品 /products"]
+        Detail["18 カテゴリの詳細"]
+        Band3["問い合わせの帯"]
+    end
     P6["お問い合わせ /contact"]
-    Footer["フッター（トップはフル、下層はコンパクト）"]
+    Footer["フッター（全ページでサイトマップ付き）"]
 
     Header -->|"アンカー"| Business
     Header -->|"アンカー"| Company
-    Header --> P3
+    Header --> Detail
     Header --> P6
-    Hero --> Business --> Index --> Company
-    Index -->|"カテゴリの詳細へ"| P3
-    P1 -->|"CTA"| P6
-    P3 -->|"CTA"| P6
-    Footer -->|"連絡先"| P6
+    Hero --> Consultation --> Business --> Index --> Company --> Band1
+    Index -->|"カテゴリの詳細へ"| Detail
+    Detail --> Band3
+    Hero -->|"CTA"| P6
+    Band1 -->|"CTA と電話"| P6
+    Band3 -->|"CTA と電話"| P6
+    Footer -->|"サイトマップと連絡先"| P6
 ```
 
 訪問者が知りたい情報から問い合わせまで進む流れは次のとおり。
@@ -133,11 +143,12 @@ flowchart TD
     Company --> ContentCheck{"沿革と挨拶が決まっているか"}
     ContentCheck -->|"決まっていない"| Placeholder["placeholder の section を表示"]
 
+    MapEmbed --> Band["問い合わせの帯: ボタンと電話"]
+    MapLink --> Band
+    Placeholder --> Band
+    Products --> Band
+    Band --> Contact
     Services --> Contact
-    Products --> Contact
-    MapEmbed --> Contact
-    MapLink --> Contact
-    Placeholder --> Contact
     Hero -.->|"全ページに共通の導線"| Contact
     Contact(["お問い合わせ: 連絡先とフォーム"]) --> Goal(["電話、FAX、メール、フォームで連絡する"])
 ```
@@ -159,7 +170,7 @@ ADR-0014: [corporate-site の sections 構成](../../docs/adr/0014-corporate-sit
 | `contact`           | `ContactSection.astro`            | なし                                                                                    | `/contact`  |
 
 - 複数の section かページで使う site のコンポーネントは、`components/common/` の直下に平らに置く。
-  - 例は `BaseLayout`、`SiteHeader`、`SiteFooter`、`SectionHeading`、`ContactCtaLink`。
+  - 例は `BaseLayout`、`SiteHeader`、`SiteFooter`、`SectionHeading`、`ContactCtaLink`、`ContactBand`。
 - `products-category` は products のドメインのデータ（`productCategories` と `categoryMakers` の collection）を扱うが、載せる先は `/` である。
   - ドメインと載せるページが一致しないので、ディレクトリはドメインで分け、ページとの対応はこの表で表す。
 
@@ -210,12 +221,13 @@ CSS のトークンを持たないガイドは、次の 3 つ。
 - 書体の役割
   - `--font-serif`（Noto Serif JP、weight 600）: 見出し、経営理念、ブランド名。信頼感の中心にする。
   - `--font-sans`（Noto Sans JP）: 本文、リード、UI の文字
-  - `--font-mono`（Geist Mono）: eyebrow、ラベル、番号、連絡先。letter-spacing を広め（1〜2.2px）にして、工業的なアクセントにする。
+  - `--font-mono`（Geist Mono）: 番号、値の種類のラベル（Tel、Fax、E-mail）、連絡先。letter-spacing を広め（1〜2.2px）にして、工業的なアクセントにする。和文を含むラベルには使わない。
+    - ADR-0037: [Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせ、見出しの上のラベルを日本語だけにする](../../docs/adr/0037-kufu-identity-japanese-labels.md)
   - 読み込みは `@fontsource-variable/*`（可変フォント）を使う。日本語は unicode-range で分けたサブセットにし、すべての glyph を一度に読み込まない。`font-display: swap`（FOUT を許す）にする。
   - `components/common/BaseLayout.astro` が `@kufu/ui/fonts.css?url` を preload と link で読み込み、フォントの配信を document の head の側で制御する。
 - 見出しの階層（type scale は Tailwind の標準で、トークンにしない）
   - hero の見出し: serif の 48〜56px、行間 1.2
-  - section の見出し: serif の 34〜44px。mono の eyebrow（10〜12px と tracking）と番号を並べる。
+  - section の見出し: serif の 34〜44px。mono の番号と、見出しにない情報を持つ和文のラベル（sans）を並べる。見出しと同じ意味のラベルと、英字だけのラベルは置かない。
   - カードの見出し: serif の 20px。本文: sans の 13.5〜17px、行間 1.7〜1.85
 - 装飾の語彙
   - 大きなウォーターマークの数字（`--ghost-foreground`、140px の mono）
@@ -223,9 +235,12 @@ CSS のトークンを持たないガイドは、次の 3 つ。
   - 写真の上のキャプションのパネル（`--card-overlay`）
 - 面の構成: 明るい面は `--background` と `--muted` を交互に置いて、section のリズムを作る。フッターと強い CTA の帯は暗い面（inverse のスコープ）に切り替え、アクセントの文字は `--primary-soft` を使う。
 - 余白: [デザイントークン](#デザイントークン) の spacing のガイドに従う。section の縦の padding は 80、横は 56（コンテナの幅 1440）にする。
-- アクセントの使いどころ: CTA のボタン（`--primary` の塗りと白の文字）、eyebrow、理念の強調の語だけに使う。面積を絞り、信頼感を優先する。
+- アクセントの使いどころ: CTA のボタン（`--primary` の塗りと白の文字）、番号と見出しの上のラベル、理念の強調の語だけに使う。面積を絞り、信頼感を優先する。
 - 使わない表現
   - 飾りの em-dash。区切りは `/` を使う。
+  - 順も索引も表さない並びの番号。番号は、セクション、手順、カテゴリのように順か索引の意味があるものにだけ付ける。
+  - 内容を持たない飾りの面。背景の方眼、写真の上の目盛、霧のような背景、タグの下の短い線、「SCROLL」のリンク。
+  - 自動で動き続ける表示。カルーセルは、訪問者の操作でだけ送る。
   - 数字を大きく並べる stat のカード。事実は文章の中で述べる。
   - カテゴリごとに、代表のメーカーを強調したうえで全メーカーを載せる二重の掲載。全メーカーの 1 つのリストに揃える。
   - 暗い面のトーンは 1 つに揃える。
