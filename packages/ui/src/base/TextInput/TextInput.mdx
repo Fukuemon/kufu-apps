@@ -1,0 +1,54 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks";
+
+import { TextInput } from "./TextInput";
+import * as Stories from "./TextInput.stories";
+
+<Meta of={Stories} />
+
+# TextInput
+
+1 行の文字の入力欄。誤りの状態は `aria-invalid` で表す。`FormField` の中では、`id` と関連付けの属性を `FormField` から受ける。
+
+## 規則
+
+規則の本文は、デザインシステムの文書の次のセクションにある。
+
+- 変種、状態、使う場面、内容の制約: コンポーネントの文書（`packages/ui/design/components.md`）の「TextInput と Textarea」
+- 当たる原則: DESIGN.md の「画面を作るときの原則」の次の ID
+  - `STATE-NOT-COLOR-ONLY`
+  - `FOCUS-ONE`
+  - `TARGET-SIZE`
+
+## 状態
+
+### デフォルト
+
+<Canvas of={Stories.Default} />
+
+### hover
+
+<Canvas of={Stories.Hover} />
+
+### フォーカス
+
+<Canvas of={Stories.Focused} />
+
+### エラー
+
+<Canvas of={Stories.Invalid} />
+
+### エラーの欄のフォーカス
+
+<Canvas of={Stories.InvalidFocused} />
+
+### 無効
+
+<Canvas of={Stories.Disabled} />
+
+### 長い値
+
+<Canvas of={Stories.LongValue} />
+
+## props
+
+<ArgTypes of={TextInput} />

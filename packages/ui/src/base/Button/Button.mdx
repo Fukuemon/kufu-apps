@@ -1,0 +1,54 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks";
+
+import { Button } from "./Button";
+import * as Stories from "./Button.stories";
+
+<Meta of={Stories} />
+
+# Button
+
+操作のボタン。`variant` で塗りと問い合わせへの導線を、`size` で汎用の大きさと CTA の 4 つの大きさを選ぶ。
+
+## 規則
+
+規則の本文は、デザインシステムの文書の次のセクションにある。
+
+- 変種、状態、キーボードの操作: コンポーネントの文書（`packages/ui/design/components.md`）の「Button」
+- 当たる原則: DESIGN.md の「画面を作るときの原則」の次の ID
+  - `PRIMARY-ACTION-ONE`
+  - `FOCUS-ONE`
+  - `TARGET-SIZE`
+
+## 状態
+
+### デフォルト
+
+<Canvas of={Stories.Default} />
+
+### hover
+
+<Canvas of={Stories.Hover} />
+
+### 押下
+
+<Canvas of={Stories.Active} />
+
+### フォーカス
+
+<Canvas of={Stories.Focused} />
+
+### 無効
+
+<Canvas of={Stories.Disabled} />
+
+### CTA の大きさ
+
+<Canvas of={Stories.Cta} />
+
+### 長い文字
+
+<Canvas of={Stories.LongLabel} />
+
+## props
+
+<ArgTypes of={Button} />

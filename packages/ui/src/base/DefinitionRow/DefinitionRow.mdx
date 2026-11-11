@@ -1,0 +1,38 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks";
+
+import { DefinitionRow } from "./DefinitionRow";
+import * as Stories from "./DefinitionRow.stories";
+
+<Meta of={Stories} />
+
+# DefinitionRow
+
+説明リストの 1 行。`dl` の中に置き、見出しを `dt`、値を `dd` で出す。`layout` で見出しの列の幅を選ぶ。
+
+## 規則
+
+規則の本文は、デザインシステムの文書の次のセクションにある。
+
+- 変種と状態: コンポーネントの文書（`packages/ui/design/components.md`）の「DefinitionRow」
+
+## 状態
+
+### デフォルト
+
+<Canvas of={Stories.Default} />
+
+### 複数の行
+
+<Canvas of={Stories.MultipleRows} />
+
+### 詰めた並び
+
+<Canvas of={Stories.Compact} />
+
+### 長い値
+
+<Canvas of={Stories.LongValue} />
+
+## props
+
+<ArgTypes of={DefinitionRow} />

@@ -1,0 +1,110 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="トークン/文字" />
+
+# 文字
+
+文字の大きさは、次のユーティリティで、大きさと行高をまとめて決める（`TEXT-MIN-SIZE`）。
+使う場面と、DADS から外れる点は、トークンの文書（`packages/ui/design/tokens.md`）の「文字」にある。値は `src/tokens/semantic.css` の `--kufu-text-*` にある。
+
+## 書体
+
+<div className="sb-unstyled grid gap-4">
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>font-sans</code>
+    </div>
+    <div className="font-sans text-body">工業製品と機械工具の取扱領域</div>
+  </div>
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>font-serif</code>
+    </div>
+    <div className="font-serif text-body">工業製品と機械工具の取扱領域</div>
+  </div>
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>font-mono</code>
+    </div>
+    <div className="font-mono text-body">PRODUCTS 01</div>
+  </div>
+</div>
+
+## ユーティリティ
+
+<div className="sb-unstyled grid gap-6">
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>text-display-57</code>、<code>text-display-48</code>
+    </div>
+    <div className="text-display-57">ものづくりを支える</div>
+    <div className="text-display-48">ものづくりを支える</div>
+  </div>
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>text-heading-45</code>、<code>text-heading-36</code>
+    </div>
+    <div className="text-heading-45">事業内容</div>
+    <div className="text-heading-36">事業内容</div>
+  </div>
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>text-heading-32</code>、<code>text-heading-28</code>、
+      <code>text-heading-26</code>、<code>text-heading-24</code>、
+      <code>text-heading-22</code>
+    </div>
+    <div className="text-heading-32">取扱製品</div>
+    <div className="text-heading-28">取扱製品</div>
+    <div className="text-heading-26">取扱製品</div>
+    <div className="text-heading-24">取扱製品</div>
+    <div className="text-heading-22">取扱製品</div>
+  </div>
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>text-heading-20</code>、<code>text-heading-17</code>、
+      <code>text-heading-16</code>
+    </div>
+    <div className="text-heading-20">空圧・油圧・真空機器</div>
+    <div className="text-heading-17">空圧・油圧・真空機器</div>
+    <div className="text-heading-16">空圧・油圧・真空機器</div>
+  </div>
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>text-body</code>
+    </div>
+    <div className="text-body">
+      工業製品と機械工具の取扱領域と連絡先を、短い時間で確認できるようにする。
+    </div>
+  </div>
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>text-body-dense</code>
+    </div>
+    <div className="text-body-dense">株式会社サンプル</div>
+  </div>
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>text-label</code>
+    </div>
+    <div className="text-label">お問い合わせ</div>
+  </div>
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>text-caption</code>
+    </div>
+    <div className="text-caption">平日 9:00 から 17:00 に受け付ける</div>
+  </div>
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>text-eyebrow</code>（DADS から外れる 12px）
+    </div>
+    <div className="font-mono text-eyebrow">BUSINESS 02</div>
+  </div>
+  <div>
+    <div className="text-caption text-text-secondary">
+      <code>text-watermark-140</code>、<code>text-watermark-120</code>
+    </div>
+    <div className="font-mono text-watermark-140 text-text-ghost">01</div>
+    <div className="font-mono text-watermark-120 text-text-ghost">02</div>
+  </div>
+</div>

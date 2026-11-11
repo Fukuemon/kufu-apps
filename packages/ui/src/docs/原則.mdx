@@ -1,0 +1,36 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="はじめに/原則" />
+
+# Kufu のデザインシステム
+
+Kufu のコーポレートサイトの画面を作る人が、画面を作る前に読むカタログ。
+`packages/ui` のトークンとコンポーネントの使い方を、story で示す。規則はデジタル庁デザインシステム（DADS）を元にし、Kufu の色、書体、ロゴを残した。
+規則の正本は、`packages/ui` の DESIGN.md と、`design/` のトークン、コンポーネントとパターン、カタログの 3 つの文書である。このカタログはその見本である。
+
+## カタログのページ
+
+- **はじめに**: 原則とアクセシビリティの基準
+- **トークン**: 色、文字、余白と角丸
+- **コンポーネント**: `packages/ui` の Base のコンポーネント。変種と状態の例
+- **画面**: corporate-site の section と、app の共通のコンポーネント
+
+## 画面を作るときの原則
+
+原則の本文と確認の方法は、DESIGN.md の「画面を作るときの原則」にある。
+チェックとレビューの指摘は、次の ID で原則を指す。
+
+- `COLOR-TOKEN`
+- `STATE-NOT-COLOR-ONLY`
+- `TEXT-MIN-SIZE`
+- `PRIMARY-ACTION-ONE`
+- `FOCUS-ONE`
+- `TARGET-SIZE`
+- `SPACING-SCALE`
+- `LAYOUT-OVERFLOW`
+- `MOTION-TOKEN`
+- `MOTION-REDUCE`
+
+## カタログに載せてよいもの
+
+カタログは誰でも開ける。載せてよいものは、カタログの文書（`packages/ui/design/catalog.md`）の「カタログに載せてよいもの」にある。

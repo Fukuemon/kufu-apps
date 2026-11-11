@@ -53,7 +53,7 @@
 - `FOCUS-ONE`: フォーカスの表示は 1 つのユーティリティ（`focus-ring`）だけで付け、コンポーネントごとに色や太さを変えない。リンク、ボタン、入力欄、`summary`、`tabindex` を付けた要素のように、操作できる要素の全てに付ける。表示は DADS の黒の outline と Yellow-300 の影の 2 重で、DADS が変えないとする要件である（[ADR-0037](../../docs/adr/0037-kufu-identity-japanese-labels.md)）。`focus`、`focus-visible`、`focus-within` の変種、`outline` のユーティリティ、フォーカスのトークンの色（`focus-outline`、`focus-halo`）を、ほかに書かない。
   - 確認: `pnpm check:design` の中の `node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md`。操作できる要素に `focus-ring` が付いているかは、レビューで見る。
 - `TARGET-SIZE`: 押せる領域は 44×44 CSS px 以上にする。WCAG 2.2 の AA（2.5.8）の 24×24 より厳しい、AAA（2.5.5）の値を選んでいる。見た目を小さくするときは、見た目の外に押せる領域を広げる。
-  - 確認: `packages/ui` の押せるコンポーネントの story の play が、描画した幅と高さを `expectTargetSize` で確認する。対象は `Button`、`LinkButton`、`Input`、`Select`、`Textarea` で、関数は `packages/ui/src/components/target-size.ts` にある。
+  - 確認: `packages/ui` の押せるコンポーネントの story の play が、描画した幅と高さを `expectTargetSize` で確認する。対象は `Button`、`LinkButton`、`TextInput`、`Select`、`Textarea` で、関数は `packages/ui/src/test/target-size.ts` にある。
   - play は `pnpm --filter @kufu/ui vrt:capture` と CI の vrt-story-ui で流れる。カタログのアクセシビリティの自動チェックは、押せる領域の大きさを確認しない。corporate-site の画面で作る押せる要素は、レビューで見る。
 - `SPACING-SCALE`: 余白は、トークンの文書の「レイアウト、角丸、影、動き」の表の余白の段のユーティリティだけで書く。任意値（`p-[13px]` のような書き方）を書かない。
   - 確認: <check-utilities.mjs を流すコマンド>

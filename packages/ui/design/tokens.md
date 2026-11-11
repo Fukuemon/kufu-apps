@@ -8,30 +8,30 @@
 
 画面のコードでは、テーマ変数のユーティリティ（`bg-surface`、`text-text-secondary` など）で書く。`packages/ui` の外の CSS で色を書くときは、セマンティックトークンの変数（`var(--kufu-color-primary)`）で書く。名前と、どのプリミティブトークンを指すかは `packages/ui/src/tokens/semantic.css` にある。
 
-| 種類       | セマンティックトークン                 | ユーティリティの名前     | 使う場面                                                                                     |
-| ---------- | -------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------- |
-| 面         | `surface-canvas`                       | `surface-canvas`         | 画面の背景。暗い面（`.surface-inverse`）の中では暗い面の背景                                 |
-| 面         | `surface`                              | `surface`                | カード、パネル、入力欄の面                                                                   |
-| 面         | `surface-subtle`                       | `surface-subtle`         | 副の面。副のボタン、強調しない帯、hover の面                                                 |
-| 面         | `surface-subtle-hover`                 | `surface-subtle-hover`   | 副のボタンにマウスを乗せたときの面                                                           |
-| 面         | `surface-media`                        | `surface-media`          | 写真と図を置く枠の、画像が読み込まれる前の面                                                 |
-| 面         | `overlay-panel`                        | `overlay-panel`          | 写真の上に置く、文字を載せるパネル                                                           |
-| 面         | `overlay-photo`                        | `overlay-photo`          | 写真の上に重ねる色。`bg-overlay-photo` は background-color と background-image の 2 枚で塗る |
-| 文字       | `text`                                 | `text`                   | 本文と見出し。暗い面の中では白                                                               |
-| 文字       | `text-secondary`                       | `text-secondary`         | 補足の文字                                                                                   |
-| 文字       | `text-inverse`                         | `text-inverse`           | `primary` と `action-strong` の面の上の文字、写真の上の文字                                  |
-| 文字       | `text-inverse-secondary`               | `text-inverse-secondary` | 暗い面の上のリンクと補足の文字。`text-secondary` より明るく、暗い面で目立たせたい補足に使う  |
-| 文字       | `text-ghost`                           | `text-ghost`             | ウォーターマークの数字。読ませる文字には使わない                                             |
-| 文字       | `text-secondary-tint`                  | `text-secondary-tint`    | 任意の印の面                                                                                 |
-| 枠         | `border`                               | `divider`                | 飾りの区切りの線。入力欄と押せるものの枠には使わない                                         |
-| 枠         | `border-field`                         | `field`                  | 入力欄と押せるものの枠。区切りの線と、面の色には使わない。マウスを乗せた入力欄の枠は `text`  |
-| 操作       | `primary`                              | `primary`                | 主のボタンの面、リンクの文字、選んだ状態                                                     |
-| 操作       | `primary-soft`                         | `primary-soft`           | 暗い面の上の、主の色の文字                                                                   |
-| 操作       | `primary-tint`                         | `primary-tint`           | 必須の印の面                                                                                 |
-| 操作       | `action-strong`、`action-strong-hover` | なし（CSS の変数だけ）   | 明るい面に置く、暗い色のリンクのボタンの面と、マウスを乗せたときの面                         |
-| フォーカス | `focus-outline`                        | `focus-outline`          | フォーカスの表示の黒の outline。`focus-ring` が使う。明るい面で見分けられる                  |
-| フォーカス | `focus-halo`                           | `focus-halo`             | フォーカスの表示の Yellow-300 の影。`focus-ring` が使う。暗い面で見分けられる                |
-| 状態       | `danger`                               | `danger`                 | エラーの文字、枠、印                                                                         |
+| 種類       | セマンティックトークン                 | ユーティリティの名前     | 使う場面                                                                                                                                                                                      |
+| ---------- | -------------------------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 面         | `surface-canvas`                       | `surface-canvas`         | 画面の背景。暗い面（`.surface-inverse`）の中では暗い面の背景                                                                                                                                  |
+| 面         | `surface`                              | `surface`                | カード、パネル、入力欄の面                                                                                                                                                                    |
+| 面         | `surface-subtle`                       | `surface-subtle`         | 副の面。副のボタン、強調しない帯、hover の面                                                                                                                                                  |
+| 面         | `surface-subtle-hover`                 | `surface-subtle-hover`   | 副のボタンにマウスを乗せたときの面                                                                                                                                                            |
+| 面         | `surface-media`                        | `surface-media`          | 写真と図を置く枠の、画像が読み込まれる前の面                                                                                                                                                  |
+| 面         | `overlay-panel`                        | `overlay-panel`          | 写真の上に置く、文字を載せるパネル                                                                                                                                                            |
+| 面         | `overlay-photo`                        | `overlay-photo`          | 写真の上に重ねる色。`bg-overlay-photo` は background-color と background-image の 2 枚で塗る                                                                                                  |
+| 文字       | `text`                                 | `text`                   | 本文と見出し。暗い面の中では白                                                                                                                                                                |
+| 文字       | `text-secondary`                       | `text-secondary`         | 補足の文字                                                                                                                                                                                    |
+| 文字       | `text-inverse`                         | `text-inverse`           | `primary` と `action-strong` の面の上の文字、写真の上の文字                                                                                                                                   |
+| 文字       | `text-inverse-secondary`               | `text-inverse-secondary` | 暗い面の上のリンクと補足の文字。`text-secondary` より明るく、暗い面で目立たせたい補足に使う                                                                                                   |
+| 文字       | `text-ghost`                           | `text-ghost`             | ウォーターマークの数字。読ませる文字には使わない                                                                                                                                              |
+| 文字       | `text-secondary-tint`                  | `text-secondary-tint`    | 任意の印の面                                                                                                                                                                                  |
+| 枠         | `border`                               | `divider`                | 飾りの区切りの線。入力欄と押せるものの枠には使わない                                                                                                                                          |
+| 枠         | `border-field`                         | `field`                  | 入力欄と押せるものの枠。区切りの線と、面の色には使わない。マウスを乗せた入力欄の枠は `text`                                                                                                   |
+| 操作       | `primary`                              | `primary`                | 主のボタンの面、リンクの文字、選んだ状態                                                                                                                                                      |
+| 操作       | `primary-soft`                         | `primary-soft`           | 暗い面の上の、主の色の文字                                                                                                                                                                    |
+| 操作       | `primary-tint`                         | `primary-tint`           | 必須の印の面                                                                                                                                                                                  |
+| 操作       | `action-strong`、`action-strong-hover` | `action-strong-hover`    | 明るい面に置く、暗い色のリンクのボタンの面と、マウスを乗せたときの面。`action-strong-hover` は `Button` と `LinkButton` の `default` の hover の面にも使う。`action-strong` は CSS の変数だけ |
+| フォーカス | `focus-outline`                        | `focus-outline`          | フォーカスの表示の黒の outline。`focus-ring` が使う。明るい面で見分けられる                                                                                                                   |
+| フォーカス | `focus-halo`                           | `focus-halo`             | フォーカスの表示の Yellow-300 の影。`focus-ring` が使う。暗い面で見分けられる                                                                                                                 |
+| 状態       | `danger`                               | `danger`                 | エラーの文字、枠、印                                                                                                                                                                          |
 
 - `danger` は、DADS のエラーの色のうち Error-2（Red-900）に当てている。Error-1（Red-800）は、`surface-canvas` の上で 4.33、`surface-subtle` の上で 3.99 で、文字の 4.5:1 に届かない。
 - 枠の 2 つは、ユーティリティの名前を `divider` と `field` にしている。テーマ変数をセマンティックトークンと同じ名前にすると、`border` が 2 回並ぶユーティリティの名前になるためである。

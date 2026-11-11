@@ -1,0 +1,18 @@
+/* @kufu/ui の Storybook の CSS の entry。 */
+
+@import "tailwindcss";
+@import "../src/tokens/fonts.css";
+@import "../src/tokens/theme.css";
+
+/* コンポーネントの story と、はじめにとトークンのページの MDX が使うクラスを生成する */
+@source "../src";
+@source ".";
+
+@layer base {
+  * {
+    @apply border-divider;
+  }
+  body {
+    @apply bg-surface-canvas text-text;
+  }
+}

@@ -1,0 +1,38 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks";
+
+import { Tag } from "./Tag";
+import * as Stories from "./Tag.stories";
+
+<Meta of={Stories} />
+
+# Tag
+
+事業の分類や入力の項目に添える、短い文字の印。`size` で大きさを、`tone` で色の意味を選ぶ。
+
+## 規則
+
+規則の本文は、デザインシステムの文書の次のセクションにある。
+
+- 変種と状態: コンポーネントの文書（`packages/ui/design/components.md`）の「Tag」
+
+## 状態
+
+### デフォルト
+
+<Canvas of={Stories.Default} />
+
+### 小さな印
+
+<Canvas of={Stories.Small} />
+
+### 色の意味
+
+<Canvas of={Stories.Tones} />
+
+### 長い文字
+
+<Canvas of={Stories.LongLabel} />
+
+## props
+
+<ArgTypes of={Tag} />

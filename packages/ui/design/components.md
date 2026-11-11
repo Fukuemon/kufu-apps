@@ -4,7 +4,7 @@
 
 ## コンポーネント
 
-コンポーネントは `packages/ui/src/components/` に置き、ネイティブの HTML の要素と `clsx` で書く（[ADR-0028](../../../docs/adr/0028-ui-components-native-elements.md)）。  
+コンポーネントは `packages/ui/src/base/<名前>/` に置き、ネイティブの HTML の要素と `clsx` で書く（[ADR-0028](../../../docs/adr/0028-ui-components-native-elements.md)）。  
 見た目は `variant`、`size`、`tone`、`layout` の props で変え、コンポーネントは `className` を受け取らない。今の props で表せない見た目が要るときは、コンポーネントに変種を足す。置く位置と余白は、呼び出す側が包む要素で決める。
 
 <!-- 使う場面、使わない場面、内容の制約は、デザインシステムの文書を埋めるタスクで書く。ここには、今のコードにある変種と状態だけを書いている -->
@@ -12,7 +12,7 @@
 ### Button
 
 - 変種
-  - `variant`: `default`（塗り。hover で面を薄くする）、`cta`（問い合わせへの導線の塗り。hover で面を変えない）
+  - `variant`: `default`（塗り。hover で面を `action-strong-hover` の暗い色にする）、`cta`（問い合わせへの導線の塗り。hover で面を変えない）
   - `size`: `default`（高さ 48px、角丸 8px）、`cta-sm`（最小の高さ 44px）、`cta-md`（48px）、`cta-lg`（52px）、`cta-hero`（54px）。`cta-` の 4 つは角丸 4px で、`cta-md` を除き hover で全体を薄くする
 - 状態: デフォルト、hover、押下、フォーカス、無効
 - キーボード: ブラウザの `button` の操作（Tab でフォーカスし、Enter と Space で押す）
@@ -23,9 +23,7 @@
 - 状態: デフォルト、hover、押下、フォーカス、無効。無効のときは `aria-disabled` を付け、タブの順から外す
 - キーボード: ブラウザの `a` の操作（Tab でフォーカスし、Enter で移る）
 
-### Badge と Tag
-
-`Tag` は `Badge` を包み、見た目は同じである。
+### Tag
 
 - 変種
   - `size`: `default`（高さ 30px）、`sm`（入力の項目の見出しの横に置く小さな印）
@@ -37,14 +35,14 @@
 - 変種: `layout` の `default`（見出しの列 12rem）、`compact`（見出しの列 6.5rem、等幅の小さな見出し）
 - 状態: デフォルト
 
-### Separator
+### Divider
 
 - 変種: `orientation` の `horizontal`、`vertical`
 - 状態: デフォルト
 
-### FormField と Label
+### FormField
 
-入力欄（`Input`、`Select`、`Textarea`）に、見出し、補足の文、誤りの文、必須と任意の印を添える。欄は `FormField` の中に置く。`FormField` は React の context で欄に値を渡すので、欄は同じ React の木の中に置く。
+入力欄（`TextInput`、`Select`、`Textarea`）に、見出し、補足の文、誤りの文、必須と任意の印を添える。欄は `FormField` の中に置く。`FormField` は React の context で欄に値を渡すので、欄は同じ React の木の中に置く。
 
 - 変種
   - `required`: 見出しの横に「必須」の印（`Tag` の `tone="required"`）を出し、欄に `required` を付ける
@@ -61,18 +59,18 @@
   - 欄に自分で `id`、`aria-describedby`、`aria-invalid`、`required` を渡したときは、渡した値を先にする。`aria-describedby` は `FormField` の値を後ろに足す
   - `htmlFor` は省略できる。省略すると、`FormField` が決めた `id` を見出しと欄に付ける
 
-### Input と Textarea
+### TextInput と Textarea
 
 - 変種: なし
 - 状態: デフォルト、hover（枠を `text` の色にする。無効と誤りの欄では変えない）、フォーカス、無効、エラー（`aria-invalid`）
-- 使う場面: 1 行の入力は `Input`、複数行の入力は `Textarea` にする
+- 使う場面: 1 行の入力は `TextInput`、複数行の入力は `Textarea` にする
 - 内容の制約: 誤りの状態の色は、誤りの文と合わせて使う。単独で誤りの状態にするときは、近くに誤りの文を置き、`aria-describedby` で結ぶ。`FormField` の中では、`FormField` が `aria-invalid`、`aria-describedby`、`required` を付ける
 
 ### Select
 
 - 変種: なし
 - 状態: デフォルト、hover（枠を `text` の色にする。無効と誤りの欄では変えない）、フォーカス、無効、エラー（`aria-invalid`）。値が空の選択肢を選んでいる間は、文字を補足の色で出す
-- 使う場面: 決まった選択肢から 1 つを選ぶとき。`FormField` の中では、`Input` と同じく `FormField` が関連付けの属性を付ける
+- 使う場面: 決まった選択肢から 1 つを選ぶとき。`FormField` の中では、`TextInput` と同じく `FormField` が関連付けの属性を付ける
 - 内容の制約: 必須の `Select` は、先頭に値が空の選択肢（「選択してください」のような文）を置く。値が空のままだと、ブラウザは必須の欄が未入力と判定する
 - キーボード: ブラウザの `select` の操作。選択肢の一覧の開き方と見た目は、ブラウザと OS ごとに違う
 

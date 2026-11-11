@@ -1,0 +1,31 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks";
+
+import { Divider } from "./Divider";
+import * as Stories from "./Divider.stories";
+
+<Meta of={Stories} />
+
+# Divider
+
+内容の区切りの線。`orientation` で横と縦を選ぶ。
+
+## 規則
+
+規則の本文は、デザインシステムの文書の次のセクションにある。
+
+- 変種と状態: コンポーネントの文書（`packages/ui/design/components.md`）の「Divider」
+- 線の色: トークンの文書（`packages/ui/design/tokens.md`）の「色」の `border`
+
+## 状態
+
+### 横の線
+
+<Canvas of={Stories.Default} />
+
+### 縦の線
+
+<Canvas of={Stories.Vertical} />
+
+## props
+
+<ArgTypes of={Divider} />

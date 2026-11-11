@@ -1,6 +1,8 @@
 import { screenshot } from "@storycap-testrun/browser";
 import { afterEach, beforeEach } from "vitest";
 import { page } from "vitest/browser";
+import { STORY_RENDERED } from "storybook/internal/core-events";
+import { addons } from "storybook/preview-api";
 
 // 撮影時だけ当てる。スクロールバーは表示の有無が撮影ごとに揺れ、キャレットは点滅する。
 // どちらも画像の端で差分になり、許容 diff 0 と両立しない (実測)。
@@ -16,8 +18,14 @@ const VRT_STYLE = `
 const setViewport = page.viewport.bind(page);
 page.viewport = () => setViewport(1280, 10);
 
+// storybook-addon-pseudo-states は、hover と押下の見た目を、#storybook-root に付けるクラスと、
+// STORY_RENDERED のイベントで書き換えるスタイルシートで出す。Vitest の描画には、どちらも無い (実測)。
+// body をクラスの付け先にし、story を描く前にイベントを送って、スタイルシートを書き換えさせる。
+document.body.id = "storybook-root";
+
 beforeEach(async () => {
   await page.viewport(1280, 10);
+  addons.getChannel().emit(STORY_RENDERED);
 
   if (!document.getElementById("vrt-style")) {
     const style = document.createElement("style");
