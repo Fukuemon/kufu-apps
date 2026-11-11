@@ -10,6 +10,7 @@ governs:
   - knip.json
   - .dependency-cruiser.cjs
   - packages/config/
+  - vite.config.ts
   - .github/workflows/
 verified_commit: 81f85da2744f320f44040307f1ec854f705f7c79
 ---
@@ -95,10 +96,11 @@ ADR-0012: [デザインの基準を実装にする](../docs/adr/0012-design-sour
 
 ## Shared Configuration
 
-`packages/config` は、`tsconfig`、`oxlint`、`vitest` の共有の設定を用途別の subpath で export する。  
-subpath は `tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`oxlint/base`、`vitest/base` である。
+`packages/config` は、`tsconfig` と `vitest` の共有の設定を用途別の subpath で export する。  
+subpath は `tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`vitest/base` である。
 
-- oxfmt は設定ファイルをほとんど持たず、ルートの script と実行の規則を正とする。
+- 整形と lint の設定は、ルートの `vite.config.ts` の `fmt` と `lint` に置く。ルートの `vp check` がリポジトリの全体を 1 回で確認する。
+  - workspace の `check` の script は、その workspace だけのチェックを持つ。`@kufu/e2e` の `check` は、`e2e/` で `pnpm check` を流しても書き方の規則が掛かるよう、`vp check` を実行する。
 - knip と dependency-cruiser は workspace の全体を見るので、ルートの設定とルートの script を正とする。
   - knip の設定はルートの `knip.json` に置き、workspace ごとの `project` と `entry` を持つ。
   - dependency-cruiser の設定はルートの `.dependency-cruiser.cjs` に置く。少なくとも、循環する依存、宣言していない依存、devDependency の流入、app の間の直接の依存をチェックする。
@@ -106,11 +108,11 @@ subpath は `tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`oxlint/base
 ### ルートのタスク
 
 - workspace のタスクは、ルートの script から `turbo run` で束ねる。
-  - `dev`、`dev:corporate`、`build`、`lint`、`typecheck`、`test` が当たる。
+  - `dev`、`dev:corporate`、`build`、`typecheck`、`test` が当たる。
 - `typecheck` の実体は各 workspace が持ち、ルートは集めるだけにする。
   - corporate-site は `astro check`、packages と `e2e` は `tsc --noEmit` を実行する。ルートは `tsc` を実行しない。
   - TypeScript の project references は、workspace が増えるまで入れない。
-- `format`、`knip`、`depcruise` は、package のタスクではなくリポジトリのタスクとして、ルートで直接実行する。
+- `check`、`knip`、`depcruise` は、package のタスクではなくリポジトリのタスクとして、ルートで直接実行する。`check` は `vp check` の後に `pnpm -r check` を実行する。
 - `e2e` と `vrt:route:run` は、ルートの script から `pnpm --filter @kufu/e2e` で、E2E の workspace の script を呼ぶ。
 - Storybook の起動はルートから対象へ委ねる。
   - `storybook` は共有と app の両方を並べて起動する。`storybook:ui` は `packages/ui` を、`storybook:corporate` は `apps/corporate-site` を対象にする。

@@ -30,7 +30,7 @@
       "ignoreDependencies": ["@kufu/config"]
     },
     "packages/config": {
-      "project": ["tsconfig/**/*.json", "oxlint/**/*.json", "vitest/**/*.ts"]
+      "project": ["tsconfig/**/*.json", "vitest/**/*.ts"]
     }
   },
   "ignoreDependencies": [

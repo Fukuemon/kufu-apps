@@ -19,12 +19,12 @@ pnpm install
 
 一覧と役割は [context/tech-stack.md](context/tech-stack.md#ルートのコマンド) にある。主要コマンドのみ抜粋:
 
-| コマンド                       | 内容                     |
-| ------------------------------ | ------------------------ |
-| `pnpm dev:corporate`           | コーポレートサイトを起動 |
-| `pnpm build`                   | ビルド                   |
-| `pnpm lint` / `pnpm typecheck` | lint / 型チェック        |
-| `pnpm test` / `pnpm e2e`       | 単体テスト / E2E         |
+| コマンド                        | 内容                     |
+| ------------------------------- | ------------------------ |
+| `pnpm dev:corporate`            | コーポレートサイトを起動 |
+| `pnpm build`                    | ビルド                   |
+| `pnpm check` / `pnpm typecheck` | 整形と lint / 型チェック |
+| `pnpm test` / `pnpm e2e`        | 単体テスト / E2E         |
 
 開発サーバーは `http://127.0.0.1:4321` で起動する。
 

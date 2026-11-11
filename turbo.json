@@ -9,10 +9,6 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "build/**", ".astro/**"]
     },
-    "lint": {
-      "dependsOn": ["^lint"],
-      "outputs": []
-    },
     "typecheck": {
       "dependsOn": ["^typecheck"],
       "outputs": []

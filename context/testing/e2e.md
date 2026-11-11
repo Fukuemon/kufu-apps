@@ -44,7 +44,8 @@ status: draft
 
 - テストの書き方の規則は、`e2e/lint/e2e-authoring-rule.mjs` にある。スキル setup-e2e-lint の規則を、変えずに写したものである。ESLint は入れず、oxlint の JS プラグインとして流す。
   - ADR-0032: [テストの書き方の規則を、ESLint を入れずに oxlint の JS プラグインで流す](../../docs/adr/0032-oxlint-js-plugin-for-e2e-authoring-rule.md)
-- 規則は `e2e/lint/plugin.mjs` で JS プラグインにし、`e2e/.oxlintrc.json` の `jsPlugins` で読む。`e2e/.oxlintrc.json` は、この規則のほかの oxlint の規則を掛けない。
+- 規則は `e2e/lint/plugin.mjs` で JS プラグインにし、ルートの `vite.config.ts` の `lint.jsPlugins` で読む。`lint.overrides` で、`e2e/tests/` の下のファイルにだけ掛ける。
+- `e2e/` のファイルには、ほかのファイルと同じ oxlint の組み込みの規則（`correctness` と型を使う規則）も掛かる。
 - 規則に渡す値は、次のとおり。
 
 | 値                                | 渡すもの                       |
@@ -55,21 +56,22 @@ status: draft
 | 画面 ID の形                      | 渡さない。画面 ID の体系がない |
 | 本物の backend につなぐ spec の形 | 渡さない。backend がない       |
 
-- 渡す値は `e2e/` からの相対パスなので、規則は `e2e/` で流したときだけ `tests/` を見る。ルートから `e2e/.oxlintrc.json` を渡して oxlint を直接流すと、違反があっても通る。`pnpm lint` か `pnpm --filter @kufu/e2e lint` で流す。
-- 構成とツールチェーンの要求の `vp check` のタスクで、設定をルートの `vite.config.ts` の `lint.overrides` に移し、渡す値を `import.meta.dirname` から絶対パスにする。このセクションは、そのタスクで書き直す。
+- 表のパスは `e2e/` からの相対パスで書いた。`vite.config.ts` は、`import.meta.dirname` から絶対パスにして渡す。相対パスで渡すと、`vp check` を流すディレクトリによって規則が `tests/` を見なくなり、違反があっても通る。
+- 規則は、ルートの `pnpm check` か、`e2e/` の `pnpm check`（`vp check`）で流す。
+  - `e2e/` で `vp lint` を直接流すと、`options.typeAware is only supported in the root config` で設定の読み込みが止まる。`vp check` は止まらない。
 - route の VRT のファイル（`e2e/corporate-site/`）は、規則の対象の外にある。
-- `e2e/lint/e2e-authoring-rule.mjs` は、配布元と `diff` で比べるため、`.prettierignore` で整形の対象から外している。
+- `e2e/lint/e2e-authoring-rule.mjs` は、配布元と `diff` で比べるため、`vite.config.ts` の `fmt.ignorePatterns` で整形の対象から外している。
 
 ### 規則の新しいバージョンを取り込むとき
 
 配布元のテストは ESLint の RuleTester で書かれている。import の 3 行を替えて、oxlint の RuleTester で流す。
 
 1. `diff .claude/skills/setup-e2e-lint/references/e2e-authoring-rule.mjs e2e/lint/e2e-authoring-rule.mjs` で差分を見て、規則のファイルを写す。
-2. 配布元のテストを `e2e/lint/` に写し、import の 3 行を替える。`oxlint/plugins-dev` は `e2e/` の依存から解決するので、`e2e/` の外に写すと流せない。
+2. 配布元のテストを `e2e/lint/` に写し、import の 3 行を替える。RuleTester は、ルートの依存の `vite-plus/lint/plugins-dev` から読む。
 
    ```sh
    cp .claude/skills/setup-e2e-lint/references/e2e-authoring-rule.test.mjs e2e/lint/
-   perl -0pi -e "s/^import tsParser.*\n//m; s/from 'eslint'/from 'oxlint\/plugins-dev'/; s/languageOptions: \{ parser: tsParser, ecmaVersion: 2022, sourceType: 'module' \}/eslintCompat: true, cwd: process.cwd(), languageOptions: { sourceType: 'module' }/" e2e/lint/e2e-authoring-rule.test.mjs
+   perl -0pi -e "s/^import tsParser.*\n//m; s/from 'eslint'/from 'vite-plus\/lint\/plugins-dev'/; s/languageOptions: \{ parser: tsParser, ecmaVersion: 2022, sourceType: 'module' \}/eslintCompat: true, cwd: process.cwd(), languageOptions: { sourceType: 'module' }/" e2e/lint/e2e-authoring-rule.test.mjs
    ```
 
 3. `e2e/` でテストを流し、`fail 0` を確認する。
@@ -79,7 +81,7 @@ status: draft
    ```
 
 4. 写したテストを `rm e2e/lint/e2e-authoring-rule.test.mjs` で消す。テストはコミットしない。
-5. `e2e/tests/specs/` の下に、`page.locator(".row")` と `page.waitForTimeout(1000)` を書いた spec を一時的に置く。ルートの `pnpm lint` と、`e2e/` の `pnpm lint` の両方が、終了コード 1 で失敗することを確認してから消す。
+5. `e2e/tests/specs/` の下に、`page.locator(".row")` と `page.waitForTimeout(1000)` を書いた spec を一時的に置く。ルートの `pnpm check` と、`e2e/` の `pnpm check` の両方が、終了コード 1 で失敗することを確認してから消す。
 
 ## Running Tests
 
@@ -92,7 +94,7 @@ status: draft
   - 環境変数 `E2E_BASE_URL` を渡すと、その URL に向ける。
   - `E2E_TARGET` と `E2E_PORT` は、起動する app と port を変える。
 - worker の数は、Playwright のデフォルトのままにする。spec が共有する状態（ログイン、テストデータ）がないためである。
-- 書き方の規則は `pnpm lint` で、型のチェックは `pnpm typecheck` で流す。E2E だけを見るときは、`pnpm --filter @kufu/e2e lint` と `pnpm --filter @kufu/e2e typecheck` を使う。
+- 書き方の規則は `pnpm check` で、型のチェックは `pnpm typecheck` で流す。E2E だけを見るときは、`pnpm --filter @kufu/e2e check` と `pnpm --filter @kufu/e2e typecheck` を使う。
 - `@kufu/e2e` は `test` の script を持たない。ルートの `pnpm test` は、ブラウザのない CI の job で流れるためである。
 - CI は、`e2e` の job で `pnpm e2e` を流す。
 - 通信を差し替える spec は、まだない。問い合わせフォームの E2E を足すときに、[テスト](../testing.md#mocking-and-test-data) の取り決めで書く。

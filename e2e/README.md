@@ -8,9 +8,8 @@ ADR-0033: [E2E をルートの e2e/ に置いたまま、workspace の package �
 
 ```text
 e2e/
-├── package.json          # @kufu/e2e。e2e、vrt:route:run、lint、typecheck の script
+├── package.json          # @kufu/e2e。e2e、vrt:route:run、check、typecheck の script
 ├── playwright.config.ts  # project は e2e と route-vrt
-├── .oxlintrc.json        # 書き方の規則の設定
 ├── lint/                 # 書き方の規則（e2e-authoring-rule.mjs）と、oxlint に読ませる plugin.mjs
 ├── tsconfig.json
 ├── tests/
