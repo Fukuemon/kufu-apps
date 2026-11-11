@@ -45,11 +45,14 @@ const RULES = [
     id: "MOTION-REDUCE",
     label: "画面とコンポーネントのコードの、動きを減らす設定の条件",
     // 止め方は theme.css（EXCLUDES の tokens の下）の 1 か所に置く。次の 2 つを見る。
-    //   motion-reduce: と motion-safe: の変種の付いたユーティリティ
+    //   motion-reduce: と motion-safe: の変種（not-motion-safe: のように前に付けたものを含む）と、任意の変種に書いた prefers-reduced-motion の付いたユーティリティ
     //   CSS の @media と JavaScript の matchMedia に書いた prefers-reduced-motion の条件（( の後ろの 1 語として読む）
     test: (variants, utility) =>
-      variants.some((v) => /^motion-(?:reduce|safe)$/.test(v)) ||
-      /prefers-reduced-motion/.test(utility),
+      variants.some(
+        (v) =>
+          /(?:^|-)motion-(?:reduce|safe)$/.test(v) ||
+          /prefers-reduced-motion/.test(v),
+      ) || /prefers-reduced-motion/.test(utility),
   },
   {
     id: "FOCUS-ONE",

@@ -35,7 +35,7 @@
   --kufu-color-text: var(--kufu-primitive-color-gray-900);
   --kufu-color-text-secondary: var(--kufu-primitive-color-gray-600);
   --kufu-color-text-inverse: var(--kufu-primitive-color-white);
-  /* 暗い面の上のリンクの文字 */
+  /* 暗い面の上のリンクと補足の文字 */
   --kufu-color-text-inverse-secondary: var(--kufu-primitive-color-gray-200);
   /* ウォーターマークの数字。読ませる文字ではない */
   --kufu-color-text-ghost: color-mix(

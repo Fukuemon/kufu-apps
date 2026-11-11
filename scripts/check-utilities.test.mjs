@@ -274,7 +274,7 @@ await test("focus-ring のほかのフォーカスの書き方を、FOCUS-ONE �
 await test("動きを減らす設定の条件を、MOTION-REDUCE と一緒に出して 1", () => {
   const r = run({
     [`${UI}/a.tsx`]:
-      '<div className="motion-reduce:animate-none motion-safe:transition md:motion-reduce:hidden" />\n',
+      '<div className="motion-reduce:animate-none motion-safe:transition md:motion-reduce:hidden not-motion-safe:animate-spin [@media(prefers-reduced-motion:reduce)]:animate-none" />\n',
     [`${SITE}/b.css`]:
       "@media (prefers-reduced-motion: reduce) {\n  .a {\n    animation: none;\n  }\n}\n",
     [`${SITE}/c.astro`]:
@@ -285,6 +285,12 @@ await test("動きを減らす設定の条件を、MOTION-REDUCE と一緒に出
     ["packages/ui/src/a.tsx", 1, "motion-reduce:animate-none"],
     ["packages/ui/src/a.tsx", 1, "motion-safe:transition"],
     ["packages/ui/src/a.tsx", 1, "md:motion-reduce:hidden"],
+    ["packages/ui/src/a.tsx", 1, "not-motion-safe:animate-spin"],
+    [
+      "packages/ui/src/a.tsx",
+      1,
+      "[@media(prefers-reduced-motion:reduce)]:animate-none",
+    ],
     ["apps/corporate-site/src/b.css", 1, "(prefers-reduced-motion:"],
     ["apps/corporate-site/src/c.astro", 2, "(prefers-reduced-motion:"],
   ]) {
@@ -298,7 +304,7 @@ await test("動きを減らす設定の条件を、MOTION-REDUCE と一緒に出
       token,
     );
   }
-  assert.match(r.stdout, /5 か所/);
+  assert.match(r.stdout, /7 か所/);
 });
 
 await test("トークンの層の動きの止め方と、動きのユーティリティは MOTION-REDUCE で 0", () => {

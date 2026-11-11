@@ -24,7 +24,7 @@ const SOURCES = [
 ];
 // セマンティックトークンの接頭辞。組の名前に付けて CSS の変数の名前にする
 const PREFIX = "--kufu-color-";
-// --root を渡したときは、暗い面に載る組だけを確かめる。暗い面の中に白の面を置かず（tokens.md の「テーマ」）、暗い面の文字の色は primary-soft である
+// --root を渡したときは、暗い面に載る組だけを確かめる。暗い面の中に明るい面を置かず（tokens.md の「テーマ」）、暗い面の文字の色は primary-soft である
 const INVERSE = process.argv.includes("--root");
 
 // 文字と、その下の面の組。4.5:1 以上
