@@ -1,3 +1,0 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";var t;function n(){return(n=e((()=>{t=()=>{throw Error(`Astro components are rendered server-side by Storybook.`)},t.isAstroComponentFactory=!0,t.moduleId=`/home/runner/work/kufu-apps/kufu-apps/apps/corporate-site/src/components/sections/products-detail/ProductsDetailSection.astro`})))()}var r,i,a;function o(){return(o=e((()=>{n(),r={title:`Sections/ProductsDetail/ProductsDetailSection`,component:t,parameters:{vrt:{viewport:{width:1280,height:800}}}},i={args:{}},i.parameters={...i.parameters,docs:{...i.parameters?.docs,source:{originalSource:`{
-  args: {}
-}`,...i.parameters?.docs?.source}}},a=[`Default`]})))()}o();export{i as Default,a as __namedExportsOrder,r as default};
