@@ -1,0 +1,78 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks";
+
+import { FormField } from "./FormField";
+import * as Stories from "./FormField.stories";
+
+<Meta of={Stories} />
+
+# FormField
+
+入力欄に、見出し、補足の文、誤りの文、必須と任意の印を添える枠。欄（`TextInput`、`Select`、`Textarea`）は `children` に渡す。
+
+## 規則
+
+規則の本文は、デザインシステムの文書の次のセクションにある。
+
+- 変種、状態、使う場面、内容の制約: コンポーネントの文書（`packages/ui/design/components.md`）の「FormField」
+- 誤りの文の読み上げ: DESIGN.md の「アクセシビリティ」の「入力の誤りの伝え方」
+- 当たる原則: DESIGN.md の「画面を作るときの原則」の次の ID
+  - `STATE-NOT-COLOR-ONLY`
+  - `SPACING-SCALE`
+
+## 状態
+
+### デフォルト（補足の文）
+
+<Canvas of={Stories.Default} />
+
+### エラー
+
+<Canvas of={Stories.Error} />
+
+### 補足とエラー
+
+<Canvas of={Stories.ErrorWithDescription} />
+
+### 必須
+
+<Canvas of={Stories.Required} />
+
+### 任意
+
+<Canvas of={Stories.Optional} />
+
+### 無効の欄
+
+<Canvas of={Stories.Disabled} />
+
+### 長い見出し
+
+<Canvas of={Stories.LongLabel} />
+
+### Select の必須とエラー
+
+<Canvas of={Stories.SelectRequiredError} />
+
+### Textarea の必須とエラー
+
+<Canvas of={Stories.TextareaRequiredError} />
+
+### 枠の外の欄
+
+`FormField` の外に置いた欄の見た目。
+
+<Canvas of={Stories.InputDefault} />
+
+<Canvas of={Stories.InputError} />
+
+<Canvas of={Stories.SelectDefault} />
+
+<Canvas of={Stories.SelectDisabled} />
+
+<Canvas of={Stories.TextareaDefault} />
+
+<Canvas of={Stories.TextareaError} />
+
+## props
+
+<ArgTypes of={FormField} />

@@ -1,0 +1,58 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks";
+
+import { LinkButton } from "./LinkButton";
+import * as Stories from "./LinkButton.stories";
+
+<Meta of={Stories} />
+
+# LinkButton
+
+ボタンの見た目のリンク。見た目の種類と大きさは `Button` と同じである。
+
+## 規則
+
+規則の本文は、デザインシステムの文書の次のセクションにある。
+
+- 変種、状態、キーボードの操作: コンポーネントの文書（`packages/ui/design/components.md`）の「LinkButton」
+- 当たる原則: DESIGN.md の「画面を作るときの原則」の次の ID
+  - `PRIMARY-ACTION-ONE`
+  - `FOCUS-ONE`
+  - `TARGET-SIZE`
+
+## 状態
+
+### デフォルト
+
+<Canvas of={Stories.Default} />
+
+### hover
+
+<Canvas of={Stories.Hover} />
+
+### 押下
+
+<Canvas of={Stories.Active} />
+
+### フォーカス
+
+<Canvas of={Stories.Focused} />
+
+### 暗い面の上のフォーカス
+
+<Canvas of={Stories.FocusedOnInverse} />
+
+### 無効
+
+<Canvas of={Stories.Disabled} />
+
+### CTA の大きさ
+
+<Canvas of={Stories.Cta} />
+
+### 長い文字
+
+<Canvas of={Stories.LongLabel} />
+
+## props
+
+<ArgTypes of={LinkButton} />

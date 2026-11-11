@@ -3,7 +3,6 @@ import "./preview.css";
 import type { Preview } from "@storybook/react-vite";
 
 const preview: Preview = {
-  tags: ["autodocs"],
   parameters: {
     // a11y のアドオンの違反を、story のテストの失敗にする
     a11y: { test: "error" },
