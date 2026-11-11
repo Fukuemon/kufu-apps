@@ -1,8 +1,7 @@
 # git hooks。有効化: pnpm install (prepare が lefthook install を実行する)
 
 pre-commit:
-  # commands は名前の順に流れる。pnpm check は整形を確かめるので、priority で format の後に流す
-  piped: true
+  # commands は名前の順に流れる。pnpm check は整形を確認するので、priority で format の後に流す
   commands:
     protected-branch:
       priority: 1
