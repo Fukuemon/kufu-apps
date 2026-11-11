@@ -39,6 +39,15 @@ export const Placeholder: Story = {
   ),
 };
 
+export const Invalid: Story = {
+  render: () => (
+    <Select defaultValue="option-a" aria-invalid aria-label="選択肢">
+      <option value="option-a">Option A</option>
+      <option value="option-b">Option B</option>
+    </Select>
+  ),
+};
+
 export const Disabled: Story = {
   render: () => (
     <Select defaultValue="option-a" disabled aria-label="選択肢">
