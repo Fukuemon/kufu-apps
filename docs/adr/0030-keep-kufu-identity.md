@@ -2,7 +2,7 @@
 
 ## Status
 
-承認
+[ADR-0037](0037-kufu-identity-japanese-labels.md) に置換
 
 ## Context
 
