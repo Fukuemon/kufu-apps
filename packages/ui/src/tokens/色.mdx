@@ -1,0 +1,163 @@
+import { ColorItem, ColorPalette, Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="トークン/色" />
+
+# 色
+
+画面とコンポーネントは、セマンティックトークンのユーティリティだけを使う（`COLOR-TOKEN`）。
+名前と使う場面は、トークンの文書（`packages/ui/design/tokens.md`）の「色」の表にある。値は `src/tokens/semantic.css` が `src/tokens/primitive.css` を参照して決める。
+
+## 面
+
+<ColorPalette>
+  <ColorItem
+    title="surface-canvas"
+    subtitle="bg-surface-canvas"
+    colors={{ "surface-canvas": "var(--kufu-color-surface-canvas)" }}
+  />
+  <ColorItem
+    title="surface"
+    subtitle="bg-surface"
+    colors={{ surface: "var(--kufu-color-surface)" }}
+  />
+  <ColorItem
+    title="surface-subtle"
+    subtitle="bg-surface-subtle"
+    colors={{ "surface-subtle": "var(--kufu-color-surface-subtle)" }}
+  />
+  <ColorItem
+    title="surface-subtle-hover"
+    subtitle="bg-surface-subtle-hover"
+    colors={{
+      "surface-subtle-hover": "var(--kufu-color-surface-subtle-hover)",
+    }}
+  />
+  <ColorItem
+    title="surface-media"
+    subtitle="bg-surface-media"
+    colors={{ "surface-media": "var(--kufu-color-surface-media)" }}
+  />
+  <ColorItem
+    title="overlay-panel"
+    subtitle="bg-overlay-panel"
+    colors={{ "overlay-panel": "var(--kufu-color-overlay-panel)" }}
+  />
+</ColorPalette>
+
+## 文字
+
+<ColorPalette>
+  <ColorItem
+    title="text"
+    subtitle="text-text"
+    colors={{ text: "var(--kufu-color-text)" }}
+  />
+  <ColorItem
+    title="text-secondary"
+    subtitle="text-text-secondary"
+    colors={{ "text-secondary": "var(--kufu-color-text-secondary)" }}
+  />
+  <ColorItem
+    title="text-inverse"
+    subtitle="text-text-inverse"
+    colors={{ "text-inverse": "var(--kufu-color-text-inverse)" }}
+  />
+  <ColorItem
+    title="text-inverse-secondary"
+    subtitle="text-text-inverse-secondary"
+    colors={{
+      "text-inverse-secondary": "var(--kufu-color-text-inverse-secondary)",
+    }}
+  />
+  <ColorItem
+    title="text-ghost"
+    subtitle="text-text-ghost"
+    colors={{ "text-ghost": "var(--kufu-color-text-ghost)" }}
+  />
+  <ColorItem
+    title="text-secondary-tint"
+    subtitle="bg-text-secondary-tint"
+    colors={{
+      "text-secondary-tint": "var(--kufu-color-text-secondary-tint)",
+    }}
+  />
+</ColorPalette>
+
+## 枠
+
+<ColorPalette>
+  <ColorItem
+    title="border"
+    subtitle="border-divider"
+    colors={{ border: "var(--kufu-color-border)" }}
+  />
+  <ColorItem
+    title="border-field"
+    subtitle="border-field"
+    colors={{ "border-field": "var(--kufu-color-border-field)" }}
+  />
+</ColorPalette>
+
+## 操作
+
+<ColorPalette>
+  <ColorItem
+    title="primary"
+    subtitle="bg-primary、text-primary"
+    colors={{ primary: "var(--kufu-color-primary)" }}
+  />
+  <ColorItem
+    title="primary-soft"
+    subtitle="text-primary-soft"
+    colors={{ "primary-soft": "var(--kufu-color-primary-soft)" }}
+  />
+  <ColorItem
+    title="primary-tint"
+    subtitle="bg-primary-tint"
+    colors={{ "primary-tint": "var(--kufu-color-primary-tint)" }}
+  />
+  <ColorItem
+    title="action-strong"
+    subtitle="CSS の変数だけ"
+    colors={{
+      "action-strong": "var(--kufu-color-action-strong)",
+      "action-strong-hover": "var(--kufu-color-action-strong-hover)",
+    }}
+  />
+</ColorPalette>
+
+## フォーカスと状態
+
+フォーカスの色は、`focus-ring` のユーティリティだけが使う（`FOCUS-ONE`）。
+
+<ColorPalette>
+  <ColorItem
+    title="focus-outline"
+    subtitle="focus-ring の outline"
+    colors={{ "focus-outline": "var(--kufu-color-focus-outline)" }}
+  />
+  <ColorItem
+    title="focus-halo"
+    subtitle="focus-ring の影"
+    colors={{ "focus-halo": "var(--kufu-color-focus-halo)" }}
+  />
+  <ColorItem
+    title="danger"
+    subtitle="text-danger、border-danger"
+    colors={{ danger: "var(--kufu-color-danger)" }}
+  />
+</ColorPalette>
+
+## 暗い面
+
+要素に `.surface-inverse` を付けると、その中のセマンティックトークンが暗い面の値になる。使い方は、トークンの文書の「テーマ」にある。
+
+<div className="sb-unstyled surface-inverse grid gap-2 rounded-8 bg-surface-canvas p-6">
+  <p className="text-body text-text">暗い面の本文（text）</p>
+  <p className="text-caption text-text-secondary">
+    暗い面の補足（text-secondary）
+  </p>
+  <p className="text-caption text-text-inverse-secondary">
+    暗い面のリンクと補足（text-inverse-secondary）
+  </p>
+</div>

@@ -1,0 +1,42 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="トークン/余白と角丸" />
+
+# 余白と角丸
+
+使う場面は、トークンの文書（`packages/ui/design/tokens.md`）の「レイアウト、角丸、影、動き」にある。値は `src/tokens/theme.css` と `src/tokens/primitive.css` にある。
+
+## 余白
+
+余白は Tailwind のデフォルトの段（1 段 4px）で書く（`SPACING-SCALE`）。
+
+<div className="sb-unstyled grid gap-2">
+  {[2, 4, 6, 8].map((step) => (
+    <div className="flex items-center gap-4" key={step}>
+      <code className="w-16 text-caption">{`gap-${step}`}</code>
+      <span className="h-4 bg-primary" style={{ width: `${step * 4}px` }} />
+      <span className="text-caption text-text-secondary">{`${step * 4}px`}</span>
+    </div>
+  ))}
+</div>
+
+## 角丸
+
+<div className="sb-unstyled flex flex-wrap gap-6">
+  <div className="grid justify-items-center gap-2">
+    <div className="size-16 rounded-4 border border-field bg-surface" />
+    <code className="text-caption">rounded-4</code>
+  </div>
+  <div className="grid justify-items-center gap-2">
+    <div className="size-16 rounded-8 border border-field bg-surface" />
+    <code className="text-caption">rounded-8</code>
+  </div>
+  <div className="grid justify-items-center gap-2">
+    <div className="size-16 rounded-lg border border-field bg-surface" />
+    <code className="text-caption">rounded-lg</code>
+  </div>
+  <div className="grid justify-items-center gap-2">
+    <div className="size-16 rounded-md border border-field bg-surface" />
+    <code className="text-caption">rounded-md</code>
+  </div>
+</div>

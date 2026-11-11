@@ -218,7 +218,13 @@ export const InputDefault: Story = {
 };
 
 export const InputError: Story = {
-  render: () => <TextInput aria-invalid="true" defaultValue="Invalid value" />,
+  render: () => (
+    <TextInput
+      aria-invalid="true"
+      aria-label="Field label"
+      defaultValue="Invalid value"
+    />
+  ),
 };
 
 export const SelectDefault: Story = {
@@ -245,5 +251,11 @@ export const TextareaDefault: Story = {
 };
 
 export const TextareaError: Story = {
-  render: () => <Textarea aria-invalid="true" defaultValue="Invalid value" />,
+  render: () => (
+    <Textarea
+      aria-invalid="true"
+      aria-label="Field label"
+      defaultValue="Invalid value"
+    />
+  ),
 };
