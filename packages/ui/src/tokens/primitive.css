@@ -72,6 +72,10 @@
   --kufu-primitive-font-size-120: 7.5rem;
   --kufu-primitive-font-size-140: 8.75rem;
 
+  /* DADS の値: フォーカスの表示の色（黒と Yellow-300） */
+  --kufu-primitive-color-neutral-black: #000000;
+  --kufu-primitive-color-primitive-yellow-300: #ffd43d;
+
   /* DADS の値: 文字の大きさ */
   --kufu-primitive-font-size-14: 0.875rem;
   --kufu-primitive-font-size-16: 1rem;

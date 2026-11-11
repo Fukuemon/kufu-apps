@@ -52,16 +52,16 @@ const isFull = variant === "full";
       <p class="font-mono text-eyebrow font-normal tracking-[0.18em] text-kufu-gray-500">
         SITEMAP
       </p>
-      <a class="footer-link" href="/#business">
+      <a class="focus-ring footer-link" href="/#business">
         事業内容
       </a>
-      <a class="footer-link" href="/products">
+      <a class="focus-ring footer-link" href="/products">
         取扱製品
       </a>
-      <a class="footer-link" href="/#company">
+      <a class="focus-ring footer-link" href="/#company">
         会社概要
       </a>
-      <a class="footer-link" href="/contact">
+      <a class="focus-ring footer-link" href="/contact">
         お問い合わせ・お見積り
       </a>
     </nav>
@@ -76,11 +76,11 @@ const isFull = variant === "full";
       <p class="text-caption leading-7 text-kufu-gray-200">
         {companyProfile.streetAddress}
       </p>
-      <a class="footer-link" href={`tel:${contactInfo.tel.replaceAll("-", "")}`}>
+      <a class="focus-ring footer-link" href={`tel:${contactInfo.tel.replaceAll("-", "")}`}>
         TEL {contactInfo.tel}
       </a>
       <p class="text-caption leading-7 text-kufu-gray-200">FAX {contactInfo.fax}</p>
-      <a class="footer-link" href={`mailto:${contactInfo.email}`}>
+      <a class="focus-ring footer-link" href={`mailto:${contactInfo.email}`}>
         {contactInfo.email}
       </a>
     </div>

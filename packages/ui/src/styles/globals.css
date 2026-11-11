@@ -9,7 +9,7 @@
 
 @layer base {
   * {
-    @apply border-divider outline-focus-outline/50;
+    @apply border-divider;
   }
   body {
     @apply bg-surface-canvas text-text;

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { expect, userEvent, within } from "storybook/test";
+
 import { Button } from "./button.js";
 
 const meta = {
@@ -46,4 +48,14 @@ export const Cta: Story = {
       </Button>
     </div>
   ),
+};
+
+// Tab キーでフォーカスした状態。focus-ring の黒と黄の 2 重の表示を、VRT で見る。
+export const Focused: Story = {
+  play: async ({ canvasElement }) => {
+    await userEvent.tab();
+    await expect(within(canvasElement).getByRole("button")).toHaveFocus();
+    // 表示の transition が終わるのを待つ
+    await new Promise((resolve) => setTimeout(resolve, 400));
+  },
 };

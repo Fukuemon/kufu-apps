@@ -50,8 +50,8 @@
   - 確認: `pnpm check:design` の中の `node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md`。`eyebrow` の使い道は、レビューで見る。
 - `PRIMARY-ACTION-ONE`: 主のボタンは、1 つの画面かダイアログに 1 つまでにする。
   - 確認: レビューで、画面の主の操作が 1 つに決まるかを見る。
-- `FOCUS-ONE`: フォーカスの表示は 1 つのユーティリティだけを使い、コンポーネントごとに色や太さを変えない。
-  - 確認: <check-utilities.mjs を流すコマンド>
+- `FOCUS-ONE`: フォーカスの表示は 1 つのユーティリティ（`focus-ring`）だけで付け、コンポーネントごとに色や太さを変えない。リンク、ボタン、入力欄、`summary`、`tabindex` を付けた要素のように、操作できる要素の全てに付ける。表示は DADS の黒の outline と Yellow-300 の影の 2 重で、DADS が変えないとする要件である（[ADR-0037](../../docs/adr/0037-kufu-identity-japanese-labels.md)）。`focus`、`focus-visible`、`focus-within` の変種、`outline` のユーティリティ、フォーカスのトークンの色（`focus-outline`、`focus-halo`）を、ほかに書かない。
+  - 確認: `pnpm check:design` の中の `node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md`。操作できる要素に `focus-ring` が付いているかは、レビューで見る。
 - `TARGET-SIZE`: 押せる領域は 44×44 CSS px 以上にする。WCAG 2.2 の AA（2.5.8）の 24×24 より厳しい、AAA（2.5.5）の値を選んでいる。見た目を小さくするときは、見た目の外に押せる領域を広げる。
   - 確認: <コンポーネントのテストの名前>。カタログのアクセシビリティの自動チェックは、押せる領域の大きさを確認しない
 - `SPACING-SCALE`: 余白は、トークンの文書の「レイアウト、角丸、影、動き」の表の余白の段のユーティリティだけで書く。任意値（`p-[13px]` のような書き方）を書かない。
@@ -75,7 +75,7 @@
 | `STATE-NOT-COLOR-ONLY` | レビュー                           |                                                                                                                                             |
 | `TEXT-MIN-SIZE`        | `check-utilities.mjs`              | クラスの名前を文字列の連結で組み立てた書き方。`packages/ui` の外の CSS に書いた `font-size`。`eyebrow` を文や操作の文字に使った箇所         |
 | `PRIMARY-ACTION-ONE`   | レビュー                           |                                                                                                                                             |
-| `FOCUS-ONE`            | <check-utilities.mjs の名前>       | クラスの名前を文字列の連結で組み立てた書き方                                                                                                |
+| `FOCUS-ONE`            | `check-utilities.mjs`              | クラスの名前を文字列の連結で組み立てた書き方。`focus-ring` を付け忘れた操作できる要素。JavaScript で描いたフォーカスの表示                  |
 | `TARGET-SIZE`          | <コンポーネントのテストの名前>     |                                                                                                                                             |
 | `SPACING-SCALE`        | <check-utilities.mjs の名前>       | 任意値でない段の選び方。入力欄と近くの文字の間の段                                                                                          |
 | `LAYOUT-OVERFLOW`      | <描画した画面の確認のテストの名前> | 内側の領域で切れた文字とボタン。見た目の崩れ                                                                                                |
@@ -107,7 +107,7 @@
 | <生成物のずれのチェックのコマンド>                                                                                         | 静的なファイル用のトークンの CSS が、セマンティックトークンと合っているか |                                                                                |
 | `node scripts/check-contrast.mjs` と、暗い面の条件で流す同じスクリプト（CONTRIBUTING.md の「デザインシステムを直すとき」） | セマンティックトークンの組のコントラスト比                                |                                                                                |
 | `node scripts/check-raw-values.mjs`                                                                                        | 画面のコードの色の値とプリミティブトークンの名前                          | `COLOR-TOKEN`                                                                  |
-| `node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md`                                                             | 画面のコードの、原則に反するユーティリティ。規則の ID がこの文書にあるか  | `TEXT-MIN-SIZE`。`FOCUS-ONE`、`SPACING-SCALE`、`MOTION-TOKEN` の規則はまだ無い |
+| `node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md`                                                             | 画面のコードの、原則に反するユーティリティ。規則の ID がこの文書にあるか  | `TEXT-MIN-SIZE`、`FOCUS-ONE`。`SPACING-SCALE`、`MOTION-TOKEN` の規則はまだ無い |
 | <描画した画面の確認のコマンド>                                                                                             | 幅とテーマごとのページの横方向のオーバーフロー。撮った画像の置き場        | `LAYOUT-OVERFLOW`                                                              |
 
 ### 受け入れ条件

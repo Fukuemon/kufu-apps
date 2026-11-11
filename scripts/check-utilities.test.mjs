@@ -173,7 +173,7 @@ await test("--doc に packages/ui の DESIGN.md を渡すと、RULES の id が�
 await test("--doc の文書に RULES の id がコードスパンで出れば、コードを読んで結果を返す", () => {
   const r = run(
     {
-      "docs/d.md": "- `TEXT-MIN-SIZE`: 小さい文字\n",
+      "docs/d.md": "- `TEXT-MIN-SIZE`: 小さい文字\n- `FOCUS-ONE`: フォーカス\n",
       [`${UI}/a.tsx`]: '<p className="text-xs" />\n',
     },
     ["--doc", "docs/d.md"],
@@ -185,19 +185,20 @@ await test("--doc の文書に RULES の id がコードスパンで出れば、
 await test("--doc の文書に無い id を出して 2。コードスパンでない語は数えない", () => {
   const r = run(
     {
-      "docs/d.md": "- TEXT-MIN-SIZE は小さい文字\n",
+      "docs/d.md": "- `FOCUS-ONE`\n- TEXT-MIN-SIZE は小さい文字\n",
       [`${UI}/a.tsx`]: '<p className="text-body" />\n',
     },
     ["--doc", "docs/d.md"],
   );
   assert.equal(r.status, 2, r.stdout + r.stderr);
   assert.match(r.stderr, /文書に無い原則の ID: TEXT-MIN-SIZE/);
+  assert.doesNotMatch(r.stderr, /文書に無い原則の ID: FOCUS-ONE/);
   assert.equal(r.stdout, "");
 });
 
 await test("--doc はパスの前でも後でも効き、文書のファイルをコードとして読まない", () => {
   const files = {
-    "docs/d.md": "- `TEXT-MIN-SIZE`\n\n`text-xs` は使わない\n",
+    "docs/d.md": "- `TEXT-MIN-SIZE`\n- `FOCUS-ONE`\n\n`text-xs` は使わない\n",
     [`${UI}/a.tsx`]: '<p className="text-xs" />\n',
   };
   for (const args of [
@@ -220,6 +221,52 @@ await test("--doc の文書が読めないか、値が無いときは 2", () => 
     assert.equal(r.status, 2);
     assert.match(r.stderr, /--doc の次に値が要る/);
   }
+});
+
+await test("focus-ring だけなら FOCUS-ONE は 0。エラーの ring と focusin は見ない", () => {
+  const r = run({
+    [`${UI}/a.tsx`]:
+      '<input className="focus-ring aria-invalid:ring-3 aria-invalid:ring-danger/20" />\n',
+    [`${SITE}/a.astro`]:
+      '<a class="focus-ring hover:text-primary" href="/">x</a>\n<script>carousel.addEventListener("focusin", () => el.focus());</script>\n',
+  });
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+});
+
+await test("focus-ring のほかのフォーカスの書き方を、FOCUS-ONE と一緒に出して 1", () => {
+  const r = run({
+    [`${UI}/a.tsx`]:
+      '<button className="focus-visible:ring-3 focus:outline-none outline-none" />\n<input className="focus-visible:border-focus-outline ring-focus-halo/50 outline-2 outline-offset-2" />\n<a className="group-focus-visible:underline focus-within:bg-surface has-[:focus-visible]:block" />\n',
+    [`${SITE}/b.css`]:
+      ".a:focus-visible {\n  color: red;\n}\n.b:focus,\n.c:focus-within::after {\n  color: red;\n}\n",
+  });
+  assert.equal(r.status, 1, r.stdout + r.stderr);
+  for (const [file, line, token] of [
+    ["packages/ui/src/a.tsx", 1, "focus-visible:ring-3"],
+    ["packages/ui/src/a.tsx", 1, "focus:outline-none"],
+    ["packages/ui/src/a.tsx", 1, "outline-none"],
+    ["packages/ui/src/a.tsx", 2, "focus-visible:border-focus-outline"],
+    ["packages/ui/src/a.tsx", 2, "ring-focus-halo/50"],
+    ["packages/ui/src/a.tsx", 2, "outline-2"],
+    ["packages/ui/src/a.tsx", 2, "outline-offset-2"],
+    ["packages/ui/src/a.tsx", 3, "group-focus-visible:underline"],
+    ["packages/ui/src/a.tsx", 3, "focus-within:bg-surface"],
+    ["packages/ui/src/a.tsx", 3, "has-[:focus-visible]:block"],
+    ["apps/corporate-site/src/b.css", 1, ".a:focus-visible"],
+    ["apps/corporate-site/src/b.css", 4, ".b:focus"],
+    ["apps/corporate-site/src/b.css", 5, ".c:focus-within::after"],
+  ]) {
+    const escaped = token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    assert.match(
+      r.stdout,
+      new RegExp(
+        `${file.replace(/\./g, "\\.")}:${line}: FOCUS-ONE .* ${escaped}$`,
+        "m",
+      ),
+      token,
+    );
+  }
+  assert.match(r.stdout, /13 か所/);
 });
 
 await test("読めないパスは 2", () => {

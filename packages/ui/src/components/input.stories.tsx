@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { expect, userEvent, within } from "storybook/test";
+
 import { Input } from "./input.js";
 
 const meta = {
@@ -20,6 +22,26 @@ export const Invalid: Story = {
   args: {
     "aria-invalid": true,
     defaultValue: "invalid@value",
+  },
+};
+
+// Tab キーでフォーカスした状態。focus-ring の表示を、VRT で見る。
+export const Focused: Story = {
+  play: async ({ canvasElement }) => {
+    await userEvent.tab();
+    await expect(within(canvasElement).getByRole("textbox")).toHaveFocus();
+  },
+};
+
+// エラーの欄でも、黄の影が aria-invalid の ring に上書きされないことを、VRT で見る。
+export const InvalidFocused: Story = {
+  args: {
+    "aria-invalid": true,
+    defaultValue: "invalid@value",
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.tab();
+    await expect(within(canvasElement).getByRole("textbox")).toHaveFocus();
   },
 };
 

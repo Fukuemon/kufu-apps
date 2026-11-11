@@ -54,8 +54,9 @@ const TEXT_PAIRS = INVERSE
 
 // 文字でないもの（入力欄と押せるものの枠、フォーカスの表示）と、その下の面の組。3:1 以上
 // 枠の色を状態（hover、押下、エラー）で替えるときは、替えた後の色も組に入れる
+// フォーカスの表示は黒の outline と黄の影の 2 重で、明るい面では黒（focus-outline）が、暗い面では黄（focus-halo）が見分けられる。暗い面の中の黒は 1.18:1 で見分けられないので、暗い面の組は focus-halo にする
 const NON_TEXT_PAIRS = INVERSE
-  ? []
+  ? [["focus-halo", "surface-canvas"]]
   : [
       ["primary", "surface"],
       ["focus-outline", "surface"],
