@@ -90,3 +90,12 @@ export const Active: Story = {
     await new Promise((resolve) => setTimeout(resolve, 400));
   },
 };
+
+// マウスを乗せた状態。storybook-addon-pseudo-states で :hover の見た目を出す。
+export const Hover: Story = {
+  parameters: { pseudo: { hover: true } },
+  // 表示の transition が終わるのを待つ
+  play: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+  },
+};

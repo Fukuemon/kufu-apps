@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import type * as React from "react";
 
 /**
- * ボタンの面の種類。default は hover で面を薄くする塗りで、cta は問い合わせへの導線の塗りで、面の色を変えない。
+ * ボタンの面の種類。default は hover で面を暗い色（action-strong-hover）にする塗りで、cta は問い合わせへの導線の塗りで、面の色を変えない。
  */
 type ButtonVariant = "default" | "cta";
 
@@ -18,7 +18,7 @@ type ButtonStyleOptions = {
 };
 
 const variantClassName: Record<ButtonVariant, string> = {
-  default: "bg-primary text-text-inverse hover:bg-primary/80",
+  default: "bg-primary text-text-inverse hover:bg-action-strong-hover",
   cta: "bg-primary text-text-inverse",
 };
 

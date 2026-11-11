@@ -35,6 +35,7 @@
   --color-primary: var(--kufu-color-primary);
   --color-primary-soft: var(--kufu-color-primary-soft);
   --color-primary-tint: var(--kufu-color-primary-tint);
+  --color-action-strong-hover: var(--kufu-color-action-strong-hover);
   --color-focus-outline: var(--kufu-color-focus-outline);
   --color-focus-halo: var(--kufu-color-focus-halo);
   --color-danger: var(--kufu-color-danger);

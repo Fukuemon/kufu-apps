@@ -12,7 +12,7 @@
 ### Button
 
 - 変種
-  - `variant`: `default`（塗り。hover で面を薄くする）、`cta`（問い合わせへの導線の塗り。hover で面を変えない）
+  - `variant`: `default`（塗り。hover で面を `action-strong-hover` の暗い色にする）、`cta`（問い合わせへの導線の塗り。hover で面を変えない）
   - `size`: `default`（高さ 48px、角丸 8px）、`cta-sm`（最小の高さ 44px）、`cta-md`（48px）、`cta-lg`（52px）、`cta-hero`（54px）。`cta-` の 4 つは角丸 4px で、`cta-md` を除き hover で全体を薄くする
 - 状態: デフォルト、hover、押下、フォーカス、無効
 - キーボード: ブラウザの `button` の操作（Tab でフォーカスし、Enter と Space で押す）
