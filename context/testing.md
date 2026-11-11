@@ -23,13 +23,12 @@ corporate-site で E2E が担うジャーニーは [コーポレートサイト�
 
 | 種類      | 置き場                                             | 保証すること                                               |
 | --------- | -------------------------------------------------- | ---------------------------------------------------------- |
-| unit test | 各 app と package（Vitest）                        | ロジック、共有の UI、共有の設定を使えること                |
+| unit test | 各 app と package（Vitest）                        | ロジック、共有の UI                                        |
 | play      | 各コンポーネントの story（Storybook）              | 1 つのコンポーネントの中で閉じる操作                       |
 | E2E       | `e2e/tests/`（`@kufu/e2e`、Playwright）            | 公開の前の検証、route をまたいだ到達、回帰                 |
 | VRT       | story は Storybook、route は `e2e/corporate-site/` | 見た目の回帰。要素があるかではなく、見た目の差分を検出する |
 
 - `packages/ui` の共有の UI は、Storybook か unit test で確認できる状態にする。
-- `packages/config` の共有の設定は、各 app と package が使える状態にする。
 
 play テストの対象は `packages/ui` に限る。  
 Astro の静的なコンポーネントは E2E で確認する。  

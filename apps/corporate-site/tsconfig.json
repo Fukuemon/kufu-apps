@@ -1,8 +1,15 @@
 {
-  "extends": "@kufu/config/tsconfig/astro",
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "allowJs": false
   },
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist", "scripts/__fixtures__"]

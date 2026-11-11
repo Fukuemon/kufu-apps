@@ -8,7 +8,6 @@ governs:
   - lefthook.yml
   - knip.json
   - .dependency-cruiser.cjs
-  - packages/config/
   - vite.config.ts
   - .github/workflows/
 verified_commit: 81f85da2744f320f44040307f1ec854f705f7c79
@@ -95,9 +94,11 @@ ADR-0012: [デザインの基準を実装にする](../docs/adr/0012-design-sour
 
 ## Shared Configuration
 
-`packages/config` は、`tsconfig` と `vitest` の共有の設定を用途別の subpath で export する。  
-subpath は `tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`vitest/base` である。
+設定を配る package は置かない。  
+ADR-0026: [workspace の package はソースを export し、ビルドの成果物、project references、packages/config を持たない](../docs/adr/0026-workspace-package-contract.md)
 
+- `tsconfig.json` と Vitest の設定のファイルは、各 workspace が自分で持ち、ほかの workspace の設定を `extends` も import もしない。
+  - 共通の値（`target`、`strict`、`skipLibCheck`、`noEmit`）を変えるときは、全ての workspace の `tsconfig.json` を直す。
 - 整形と lint の設定は、ルートの `vite.config.ts` の `fmt` と `lint` に置く。ルートの `vp check` がリポジトリの全体を 1 回で確認する。
   - workspace の `check` の script は、その workspace だけのチェックを持つ。`@kufu/e2e` の `check` は、`e2e/` で `pnpm check` を流しても書き方の規則が掛かるよう、`vp check` を実行する。
 - knip と dependency-cruiser は workspace の全体を見るので、ルートの設定とルートの script を正とする。
@@ -108,9 +109,20 @@ subpath は `tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`vitest/base
 
 - workspace のタスクは、ルートの script から `pnpm -r` と `pnpm --filter` で束ねる。`pnpm -r` は依存の順に流す。
   - `dev`、`dev:corporate`、`build`、`typecheck`、`test` が当たる。
+- workspace は、自分に要る script だけを持つ。`pnpm -r` は、その script を持たない workspace を飛ばす。
+
+| workspace             | `check`                                                 | `typecheck`    | `test`        | `build`       |
+| --------------------- | ------------------------------------------------------- | -------------- | ------------- | ------------- |
+| `apps/corporate-site` | `check-token-usage.mjs` と `check-section-boundary.mjs` | `astro check`  | `vp test run` | `astro build` |
+| `packages/ui`         | なし                                                    | `tsc --noEmit` | なし          | なし          |
+| `e2e`                 | `vp check`                                              | `tsc --noEmit` | なし          | なし          |
+
+- `packages/ui` は `build` を持たない。利用者のバンドラーがソースを変換する。
+- `packages/ui` の Storybook のテストは、ブラウザが要るので `test` に入れず、`vrt:capture` で流す。CI の test の job にはブラウザがない。
 - `typecheck` の実体は各 workspace が持ち、ルートは集めるだけにする。
   - corporate-site は `astro check`、packages と `e2e` は `tsc --noEmit` を実行する。ルートは `tsc` を実行しない。
-  - TypeScript の project references は、workspace が増えるまで入れない。
+  - package はソースを export するので、利用者の `typecheck` が、import した package のソースも一緒に確認する。
+  - TypeScript の project references は入れない。CI の型のチェックが 60 秒を超えたときか、`dist/` を export する package ができたときに、入れるかを決め直す。
 - `check`、`knip`、`depcruise` は、package のタスクではなくリポジトリのタスクとして、ルートで直接実行する。`check` は `vp check` の後に `pnpm -r check` を実行する。
 - `e2e` と `vrt:route:run` は、ルートの script から `pnpm --filter @kufu/e2e` で、E2E の workspace の script を呼ぶ。
 - Storybook の起動はルートから対象へ委ねる。

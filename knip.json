@@ -26,11 +26,7 @@
       "ignore": ["scripts/__fixtures__/**"]
     },
     "packages/ui": {
-      "project": ["src/**/*.{ts,tsx,css}", "components.json"],
-      "ignoreDependencies": ["@kufu/config"]
-    },
-    "packages/config": {
-      "project": ["tsconfig/**/*.json", "vitest/**/*.ts"]
+      "project": ["src/**/*.{ts,tsx,css}", "components.json"]
     }
   },
   "ignoreDependencies": [

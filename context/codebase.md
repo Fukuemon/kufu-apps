@@ -75,7 +75,7 @@ package の間の依存の向きは次のとおり。
 
 - `apps/*` は、`packages/*` が公開するエントリポイントだけに依存する。
 - `apps/*` の間で直接依存しない。
-- `packages/ui` は `packages/config` に依存してよい。
+- app は、`packages/*` の `package.json` の `exports` に名前で書いたエントリだけを import する。`exports` にワイルドカードのエントリを足さない。
 - 循環する依存、宣言していない依存、devDependency の実行時のコードへの流入を禁じる。
   - チェックはルートの `.dependency-cruiser.cjs` が行う。
 

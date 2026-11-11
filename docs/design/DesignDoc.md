@@ -1,7 +1,7 @@
 ---
 type: design-doc
 title: kufu-apps Design Doc
-description: コーポレートサイトと共有の UI、設定、E2E の monorepo の全体像。C4 の L2、構成要素の責務と依存、設計の方針と判断の優先順位、ディレクトリの構成
+description: コーポレートサイトと共有の UI、E2E の monorepo の全体像。C4 の L2、構成要素の責務と依存、設計の方針と判断の優先順位、ディレクトリの構成
 status: stable
 governs:
   - apps/
@@ -14,7 +14,7 @@ verified_commit: unverified
 
 ## Overview
 
-Kufu Monorepo は、Kufu のコーポレートサイトと、共通の UI、設定、テストの基盤を pnpm workspace で管理する。  
+Kufu Monorepo は、Kufu のコーポレートサイトと、共通の UI、テストの基盤を pnpm workspace で管理する。  
 コーポレートサイトの訪問者は取扱領域と連絡先を閲覧し、内容を更新する担当者は掲載する内容を更新して確認する。  
 誰のどの課題を解くかは [PRD](../PRD.md) にある。
 
@@ -28,7 +28,6 @@ ADR-0019: [コーポレートサイトを Astro の静的な生成で作る](../
 
 - `apps/corporate-site` を、Astro の静的な生成によるコーポレートサイトとして作り、保守する。
 - `packages/ui` に、デザイントークンと、共有の UI の primitive を置く。
-- `packages/config` に、TypeScript、lint、format などの共有の設定を置く。
 - E2E の workspace（`e2e/`、`@kufu/e2e`）で、コーポレートサイトの主な導線を公開の前に確認する。
 - AI エージェント向けの設定（`AGENTS.md`、`CLAUDE.md`、`.agents`、`.codex`、`.claude`）を、monorepo の方針に合わせる。
 
@@ -52,6 +51,9 @@ ADR-0019: [コーポレートサイトを Astro の静的な生成で作る](../
 - 整形と lint の設定はルートの `vite.config.ts` に置く。
   - ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](../adr/0025-vite-plus-toolchain.md)
 - pnpm workspace を使い、workspace のタスクは `pnpm -r` で束ねる。
+- `tsconfig.json` は各 workspace が持つ。
+- workspace の package はソースを export し、ビルドの成果物を持たない。
+  - ADR-0026: [workspace の package はソースを export し、ビルドの成果物、project references、packages/config を持たない](../adr/0026-workspace-package-contract.md)
 - 基盤は Cloudflare の標準の機能で閉じ、独自のサーバーの運用を前提にしない。
 
 ## Architecture
@@ -64,12 +66,10 @@ flowchart TD
     Visitor["訪問者"] -->|"閲覧"| CF["Cloudflare Pages と CDN<br/>配信の先"]
     Corp["apps/corporate-site<br/>Astro の静的な生成"] -->|"build の artifact"| CF
     UI["packages/ui<br/>デザイントークン、共有の UI、Storybook"] --> Corp
-    Config["packages/config<br/>共有の TypeScript、lint、test の設定"] --> Corp
     E2E["e2e（@kufu/e2e）<br/>公開の前の検証"] --> Corp
 ```
 
-- `apps/corporate-site` は、`packages/ui` と `packages/config` が公開するエントリポイントだけに依存する。
-- `packages/ui` は `packages/config` に依存してよい。
+- `apps/corporate-site` は、`packages/ui` が公開するエントリポイントだけに依存する。
 - app の間で直接依存しない。
 - 依存の規則とチェックの方法は [context/codebase.md](../../context/codebase.md#dependency-rules) にある。
 
@@ -94,13 +94,6 @@ ADR-0007: [デザイントークンの構成](../adr/0007-design-token-architect
 - 持たないもの: ページの section、業務の文言を持つコンポーネント、app のデータの形に依存するコンポーネント
 - 置いてよいものの規則は [context/codebase.md](../../context/codebase.md#app-の中の層) にある。
 
-### packages/config
-
-TypeScript と Vitest の、共有する価値の高い設定を集める。
-
-- 持たないもの: 整形、lint、knip、dependency-cruiser の設定。リポジトリの全体を見るので、ルートに置く。
-- subpath の一覧は [context/conventions.md](../../context/conventions.md#shared-configuration) にある。
-
 ### e2e
 
 workspace の package `@kufu/e2e` で、Playwright による公開の前の検証と、主な導線の回帰のテストを担う。  
@@ -122,7 +115,6 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 - `@kufu/ui` は、コンポーネント、hooks、utility と、スタイルシートの 4 つのエントリ（`styles.css`、`tokens.css`、`theme.css`、`fonts.css`）を export する。
   - 一覧は `packages/ui/package.json` の `exports` にある。
   - スタイルシートの使い分けは [context/codebase.md](../../context/codebase.md#スタイルのファイル) にある。
-- `@kufu/config` は、用途別の subpath で共有の設定を export する。
 - ルートのコマンドは [context/tech-stack.md](../../context/tech-stack.md#ルートのコマンド) にある。
 - E2E の環境変数と、app が持つ script の取り決めは [context/testing.md](../../context/testing.md#runtime-requirements) にある。
 - Edge API の共通の契約は [context/codebase.md](../../context/codebase.md#edge-api) にある。
@@ -162,8 +154,7 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 ├── apps/
 │   └── corporate-site/   # Astro のコーポレートサイト。DesignDoc.md を持つ
 ├── packages/
-│   ├── ui/               # デザイントークン、共有の UI、Storybook
-│   └── config/           # 共有の TypeScript と Vitest の設定
+│   └── ui/               # デザイントークン、共有の UI、Storybook
 ├── e2e/                  # @kufu/e2e。Playwright の設定、E2E のテストのコード、書き方の規則、route の VRT
 ├── docs/
 │   ├── PRD.md
