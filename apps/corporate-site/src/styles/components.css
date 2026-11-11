@@ -518,6 +518,8 @@
   top: 4.5rem;
   left: 0;
   right: 0;
+  /* リンクのフォーカスの表示（外へ 6px 広がる）が、画面の端で切れないよう内側に寄せる */
+  padding-inline: 0.375rem;
   border-bottom: 1px solid var(--kufu-color-border);
   background: var(--kufu-color-surface-canvas);
 }
@@ -652,6 +654,7 @@
     position: static;
     align-items: center;
     gap: 1rem;
+    padding-inline: 0;
     border-bottom: 0;
     background: transparent;
   }

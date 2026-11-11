@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { expect, userEvent, within } from "storybook/test";
+
 import { LinkButton } from "./link-button.js";
 
 const meta = {
@@ -44,4 +46,28 @@ export const Cta: Story = {
       </LinkButton>
     </div>
   ),
+};
+
+// Tab キーでフォーカスした状態。focus-ring の表示を、VRT で見る。
+export const Focused: Story = {
+  play: async ({ canvasElement }) => {
+    await userEvent.tab();
+    await expect(within(canvasElement).getByRole("link")).toHaveFocus();
+    // 表示の transition が終わるのを待つ
+    await new Promise((resolve) => setTimeout(resolve, 400));
+  },
+};
+
+// 暗い面（.surface-inverse）の上でフォーカスした状態。黄の影が暗い面で見分けられることを、VRT で見る。
+export const FocusedOnInverse: Story = {
+  render: (args) => (
+    <div className="surface-inverse bg-surface-canvas p-8">
+      <LinkButton {...args} variant="cta" />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    await userEvent.tab();
+    await expect(within(canvasElement).getByRole("link")).toHaveFocus();
+    await new Promise((resolve) => setTimeout(resolve, 400));
+  },
 };
