@@ -32,7 +32,10 @@ Node.js のバージョンは、`mise.toml` に書いてある。
   - Markdown も整形の対象にする。
   - eslint は、oxlint で足りないことを確認した場合だけ、段階的に併用する。prettier は入れない。
   - バージョンは、`pnpm-workspace.yaml` の catalog にある。`vite` も catalog で `@voidzero-dev/vite-plus-core` に置き換える。
-- Vitest: unit test に使う。
+- Vite+ の `vp test`: unit test を同梱の Vitest で流す。`packages/ui` の Storybook のテストは、ブラウザが要るので `vrt:capture` から `vp test run --project=storybook` で流す。
+  - vite-plus と Vitest は一緒に上げる。Vitest のバージョンは、vite-plus の依存が決める。
+  - `vitest`、`@vitest/browser`、`@vitest/browser-playwright` は、vite-plus が使う Vitest と同じバージョンに固定する。
+  - Storybook は、`@storybook/addon-vitest` の peer が Vitest の範囲を決めるので、vite-plus を上げるときに合わせて上げる。
 - Storybook: `packages/ui` と、app の presentation のコンポーネントのレビューに使う。
 - Playwright: E2E と、route の VRT（`toHaveScreenshot`）に使う。E2E の workspace（`e2e/`、`@kufu/e2e`）で管理し、バージョンは `e2e/package.json` にある。
 - storycap-testrun と reg-cli: Storybook の story を撮影して比べる。
