@@ -35,14 +35,25 @@
               data-testid="site-nav-menu"
               data-panel="nav"
             >
-              <a data-go="../../site-home_トップ/mocks/01-initial.html"
+              <a
+                data-testid="site-nav-home"
+                data-go="../../site-home_トップ/mocks/01-initial.html"
                 >トップ</a
               >
-              <a data-go="../../site-home_トップ/mocks/01-initial.html"
+              <a
+                data-testid="site-nav-business"
+                data-go="../../site-home_トップ/mocks/01-initial.html"
                 >事業内容</a
               >
-              <a aria-current="page" data-go="01-initial.html">取扱製品</a>
-              <a data-go="../../site-home_トップ/mocks/01-initial.html"
+              <a
+                data-testid="site-nav-products"
+                aria-current="page"
+                data-go="01-initial.html"
+                >取扱製品</a
+              >
+              <a
+                data-testid="site-nav-company"
+                data-go="../../site-home_トップ/mocks/01-initial.html"
                 >会社情報</a
               >
               <a
@@ -79,7 +90,7 @@
               </div>
               <div class="wf-box cs-photo">写真</div>
             </section>
-            <section class="cs-section">
+            <section class="cs-section" data-testid="products-section-index">
               <div class="wf-split">
                 <aside class="wf-panel cs-pad wf-stack" data-m="9">
                   <button
@@ -101,14 +112,19 @@
                         すべて閉じる
                       </button>
                     </div>
-                    <a data-m="13">01 カテゴリ <small>00社</small></a>
-                    <a data-m="13">02 カテゴリ <small>00社</small></a>
-                    <a data-m="13">03 カテゴリ <small>00社</small></a>
-                    <a data-m="13">… 18 まで</a>
+                    <div class="wf-stack" data-testid="products-category-list">
+                      <a data-m="13">01 カテゴリ <small>00社</small></a>
+                      <a data-m="13">02 カテゴリ <small>00社</small></a>
+                      <a data-m="13">03 カテゴリ <small>00社</small></a>
+                      <a data-m="13">… 18 まで</a>
+                    </div>
                   </div>
                 </aside>
                 <div class="wf-stack">
-                  <div class="wf-panel cs-pad">
+                  <div
+                    class="wf-panel cs-pad"
+                    data-testid="products-category-{カテゴリの ID}"
+                  >
                     <button
                       type="button"
                       class="wf-btn wf-btn--text cs-category"
@@ -121,6 +137,7 @@
                     <div
                       class="wf-chips cs-makers"
                       data-m="15"
+                      data-testid="products-maker-list-{カテゴリの ID}"
                       data-panel="cat1"
                     >
                       <span class="wf-chip">メーカー</span
@@ -129,7 +146,10 @@
                       ><span class="wf-chip">メーカー</span>
                     </div>
                   </div>
-                  <div class="wf-panel cs-pad">
+                  <div
+                    class="wf-panel cs-pad"
+                    data-testid="products-category-{カテゴリの ID}"
+                  >
                     <button
                       type="button"
                       class="wf-btn wf-btn--text cs-category"
@@ -142,6 +162,7 @@
                     <div
                       class="wf-chips cs-makers"
                       data-m="15"
+                      data-testid="products-maker-list-{カテゴリの ID}"
                       data-panel="cat2"
                     >
                       <span class="wf-chip">メーカー</span
@@ -150,7 +171,10 @@
                       ><span class="wf-chip">メーカー</span>
                     </div>
                   </div>
-                  <div class="wf-panel cs-pad">
+                  <div
+                    class="wf-panel cs-pad"
+                    data-testid="products-category-{カテゴリの ID}"
+                  >
                     <button
                       type="button"
                       class="wf-btn wf-btn--text cs-category"
@@ -163,6 +187,7 @@
                     <div
                       class="wf-chips cs-makers"
                       data-m="15"
+                      data-testid="products-maker-list-{カテゴリの ID}"
                       data-panel="cat3"
                     >
                       <span class="wf-chip">メーカー</span

@@ -35,12 +35,23 @@
               data-testid="site-nav-menu"
               data-panel="nav"
             >
-              <a aria-current="page" data-go="01-initial.html">トップ</a>
-              <a data-go="01-initial.html">事業内容</a>
-              <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+              <a
+                data-testid="site-nav-home"
+                aria-current="page"
+                data-go="01-initial.html"
+                >トップ</a
+              >
+              <a data-testid="site-nav-business" data-go="01-initial.html"
+                >事業内容</a
+              >
+              <a
+                data-testid="site-nav-products"
+                data-go="../../product-list_取扱製品/mocks/01-initial.html"
                 >取扱製品</a
               >
-              <a data-go="01-initial.html">会社情報</a>
+              <a data-testid="site-nav-company" data-go="01-initial.html"
+                >会社情報</a
+              >
               <a
                 class="wf-btn wf-btn--primary"
                 data-m="4"
@@ -199,7 +210,7 @@
                 <p><span class="wf-text wf-text--full"></span></p>
                 <p><span class="wf-text wf-text--l"></span></p>
               </div>
-              <div class="cs-cards">
+              <div class="cs-cards" data-testid="home-products-carousel">
                 <a
                   class="wf-panel cs-card"
                   data-m="14"
