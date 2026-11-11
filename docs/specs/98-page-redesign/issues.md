@@ -16,11 +16,14 @@
 
 重要な順に並べる。観点は、導線、情報の並び、モバイルでの見え方、読みやすさ、セクションの分け方である。
 
-### トップの hero より下に、問い合わせへのボタンがない（導線）
+### 768px 未満のトップで、hero より下に問い合わせへのボタンが出ない（導線、モバイル）
 
 - トップで `/contact` へ進むリンクは、ヘッダー、hero、フッターの 3 か所だけである。相談の内容、事業の紹介、取扱製品、会社概要の 4 つのセクションは、`/contact` へのリンクを持たない。
   - `apps/corporate-site/src/components/sections/hero/Hero.astro:80-95` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/hero/Hero.astro#L80-L95)
   - `apps/corporate-site/src/components/common/SiteFooter.astro:64-66` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/common/SiteFooter.astro#L64-L66)
+- 768px 以上では、画面の上に留まるヘッダーに、問い合わせへのボタンが常に出る。課題は 768px 未満に限る。
+  - `apps/corporate-site/src/components/common/SiteHeader.astro:40-42` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/common/SiteHeader.astro#L40-L42)
+  - `apps/corporate-site/src/styles/components.css:645-653` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/styles/components.css#L645-L653)
 - 390px では、ヘッダーのナビはボタンで開くまで表示されない。hero のボタン（上から約 1250px）を過ぎると、フッター（約 10000px）まで、問い合わせへのボタンが画面に出ない。
   - `apps/corporate-site/src/styles/components.css:513-525` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/styles/components.css#L513-L525)
 - 会社概要まで読んで信頼できると判断した訪問者が、その場で連絡へ進めない。PRD の「見込み顧客が、どのページからも問い合わせ先へ着ける」に対して、道筋が遠い。
@@ -63,7 +66,7 @@
 - カルーセルは、写真を持つカテゴリだけを、自動で流して示す。カードは `article` で、リンクを持たない。写真を見て押しても、どこにも進まない。
   - `apps/corporate-site/src/components/sections/products-category/FeaturedCategoryCard.astro:12-36` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/products-category/FeaturedCategoryCard.astro#L12-L36)
 - 直下の索引は、同じカテゴリを含む 18 カテゴリを、リンク付きで示す。
-- カルーセルのスクリプトは約 170 行で、トップのクライアントの JavaScript の大半を占める。
+- カルーセルのスクリプトは約 170 行で、行数では、トップのスクリプトのうち最も長い。配る JavaScript の量は測っていない。
   - `apps/corporate-site/src/components/sections/products-category/FeaturedCategoryCarousel.astro:60-233` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/products-category/FeaturedCategoryCarousel.astro#L60-L233)
 
 ### お問い合わせのページで、送れないフォームの枠が画面の大半を占め、電話が目立たない（導線）
@@ -74,13 +77,13 @@
   - `apps/corporate-site/src/components/sections/contact/ContactSection.astro:29-44` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/contact/ContactSection.astro#L29-L44)
 - フォームの実装は、問い合わせフォームの要求が扱う。この要求が扱えるのは、連絡先とフォームの置き方である。
 
-### 取扱製品の hero で、写真がリードの文字に重なる（読みやすさ）
+### 取扱製品の hero で、背面の写真の上のリードが読みにくい（読みやすさ）
 
-- 1280px では、hero の写真が左へ伸び、リードの「全18カテゴリ・延べ約320社」の文字の上に重なる。
+- 1280px では、hero の写真が文字の背面で左へ伸び、リードの「全18カテゴリ・延べ約320社」の文字の背景になる。写真を文字の背面へ薄く広げるのは、スタイルのコメントにある、意図した表現である。トップの hero も同じ作りだが、トップでは文字に掛かっていない。
   - 画面: [current-products-1280](current-products-1280.webp) の上端から 430〜470px
-  - `apps/corporate-site/src/components/sections/products-detail/ProductsHero.astro:10-36` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/products-detail/ProductsHero.astro#L10-L36)
+  - `apps/corporate-site/src/styles/components.css:39-86` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/styles/components.css#L39-L86)
 
-### 見出しが、390px で語の途中か 1 文字で折り返す（読みやすさ、モバイル）
+### 見出しが、390px で語の途中か 2 文字で折り返す（読みやすさ、モバイル）
 
 - hero の見出しは「機械工具の調達」「と、」と、2 文字だけの行ができる。セクションの見出しは「こんな相談に対応でき / ます」「販売と加工、小規模工 / 事の三本柱」と、語の途中で折り返す。
   - 画面: [current-home-390](current-home-390.webp) の上端から 150〜330px、1560〜1640px、3060〜3150px
@@ -111,7 +114,7 @@
 
 `apps/corporate-site/src/` の中で、セクションを足す、並べ替える、ページを足すときに困る点を、重要な順に並べる。
 
-### 文言と連絡先が、content 層の外の 6 つのファイルに直接書いてある
+### 文言と連絡先が、content 層の外の 9 つのファイルに直接書いてある
 
 - `context/codebase.md` は、文言とリストを content 層に置くと決めている。次のファイルは、見出し、リード、連絡先をコンポーネントに直接書いている。
   - `apps/corporate-site/src/components/sections/contact/ContactSection.astro:13-54` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/contact/ContactSection.astro#L13-L54)
@@ -121,6 +124,10 @@
   - `apps/corporate-site/src/components/sections/products-detail/ProductsDetailSection.astro:67-107` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/products-detail/ProductsDetailSection.astro#L67-L107)
   - `apps/corporate-site/src/components/sections/products-category/ProductsCategorySection.astro:35-40` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/products-category/ProductsCategorySection.astro#L35-L40)
   - `apps/corporate-site/src/components/common/SiteFooter.astro:46-48` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/common/SiteFooter.astro#L46-L48)
+  - `apps/corporate-site/src/components/sections/hero/Hero.astro:52-54` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/hero/Hero.astro#L52-L54)
+  - `apps/corporate-site/src/components/sections/consultation/ConsultationSection.astro:42-47` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/consultation/ConsultationSection.astro#L42-L47)
+  - `apps/corporate-site/src/components/common/SiteHeader.astro:14-37` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/common/SiteHeader.astro#L14-L37)
+- `/contact` へのリンクの文言は、「お見積り・お問い合わせ」「お問い合わせ」「お問い合わせ・お見積り」「製品について相談する」の 4 通りある。
 - 電話と FAX の番号は、`content/contact.ts`、`content/company.ts` の `rows`、`CompanySection.astro` の 115 行、`ContactSection.astro` の 4 か所にある。番号が変わると 4 か所を直す。
 - `content/contact.ts` の `contactInfo.rows` は、どのコンポーネントも使っていない。お問い合わせのページは、同じ内容を直接書いている。
   - `apps/corporate-site/src/content/contact.ts:8-23` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/content/contact.ts#L8-L23)
@@ -145,19 +152,19 @@
 
 ### セクションの外枠（面、余白、幅）を、セクションごとに書き写している
 
-- 全てのセクションが、`mx-auto w-full max-w-360 px-5 sm:px-8 lg:px-14` と縦の余白、下の罫線、面の色を、自分で書いている。縦の余白は `py-14 md:py-20`、`md:py-18`、`pb-18 pt-12`、`py-12 md:py-16` と、少しずつ違う。
+- セクションはどれも、`mx-auto w-full max-w-360 px-5 sm:px-8 lg:px-14` と縦の余白、面の色を、自分で書いている。下の罫線は、書くセクションと書かないセクションがある。縦の余白は `py-14 md:py-20`、`md:py-18`、`pb-18 pt-12`、`py-12 md:py-16` と、少しずつ違う。
   - `apps/corporate-site/src/components/sections/consultation/ConsultationSection.astro:6-11` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/consultation/ConsultationSection.astro#L6-L11)
   - `apps/corporate-site/src/components/sections/business/BusinessSection.astro:13-18` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/business/BusinessSection.astro#L13-L18)
   - `apps/corporate-site/src/components/sections/contact/ContactSection.astro:5-6` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/contact/ContactSection.astro#L5-L6)
 - 面の色をセクションが自分で決めるので、並べ替えると同じ面が続く。今も、相談の内容と事業の紹介は、どちらも `bg-surface` である。Design Doc は、明るい面を交互に置くと決めている。
-- eyebrow と h3 の組は、`CompanySection` だけで 4 回、同じクラスで書き写している。`SectionHeading` は h2 の形だけを持つ。
+- eyebrow と h3 の組は、`CompanySection` だけで 3 回、同じクラスで書き写している。`SectionHeading` は h2 の形だけを持つ。
   - `apps/corporate-site/src/components/sections/company/CompanySection.astro:40-47` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/company/CompanySection.astro#L40-L47)
 
 ### セクションのスタイルが、664 行の 1 つのファイルにまとまっている
 
 - `styles/components.css` は、hero、事業、相談、カルーセル、索引、アコーディオン、ナビ、フッターのクラスを 1 つのファイルに持つ。セクションを消しても、スタイルが残っていることに気づけない。セクションを足すと、離れたファイルにクラスを足す。
   - `apps/corporate-site/src/styles/components.css:1-664` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/styles/components.css#L1-L664)
-- `context/codebase.md` は、このファイルを utility へ移して減らし、最後は消すと決めている。移す先と順は決まっていない。
+- `context/codebase.md` は、このファイルを cva と utility へ移して減らし、最後は消すと決めている。移す順は決まっていない。
 
 ### reveal の対象を、共通の layout がセクションのクラス名で持っている
 
