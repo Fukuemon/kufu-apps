@@ -13,7 +13,7 @@
 
 - 変種
   - `variant`: `default`（塗り。hover で面を薄くする）、`cta`（問い合わせへの導線の塗り。hover で面を変えない）
-  - `size`: `default`（高さ 48px、角丸 8px）、`cta-sm`（最小の高さ 40px）、`cta-md`（48px）、`cta-lg`（52px）、`cta-hero`（54px）。`cta-` の 4 つは角丸 4px で、`cta-md` を除き hover で全体を薄くする
+  - `size`: `default`（高さ 48px、角丸 8px）、`cta-sm`（最小の高さ 44px）、`cta-md`（48px）、`cta-lg`（52px）、`cta-hero`（54px）。`cta-` の 4 つは角丸 4px で、`cta-md` を除き hover で全体を薄くする
 - 状態: デフォルト、hover、押下、フォーカス、無効
 - キーボード: ブラウザの `button` の操作（Tab でフォーカスし、Enter と Space で押す）
 
@@ -64,14 +64,14 @@
 ### Input と Textarea
 
 - 変種: なし
-- 状態: デフォルト、フォーカス、無効、エラー（`aria-invalid`）
+- 状態: デフォルト、hover（枠を `text` の色にする。無効と誤りの欄では変えない）、フォーカス、無効、エラー（`aria-invalid`）
 - 使う場面: 1 行の入力は `Input`、複数行の入力は `Textarea` にする
 - 内容の制約: 誤りの状態の色は、誤りの文と合わせて使う。単独で誤りの状態にするときは、近くに誤りの文を置き、`aria-describedby` で結ぶ。`FormField` の中では、`FormField` が `aria-invalid`、`aria-describedby`、`required` を付ける
 
 ### Select
 
 - 変種: なし
-- 状態: デフォルト、フォーカス、無効、エラー（`aria-invalid`）。値が空の選択肢を選んでいる間は、文字を補足の色で出す
+- 状態: デフォルト、hover（枠を `text` の色にする。無効と誤りの欄では変えない）、フォーカス、無効、エラー（`aria-invalid`）。値が空の選択肢を選んでいる間は、文字を補足の色で出す
 - 使う場面: 決まった選択肢から 1 つを選ぶとき。`FormField` の中では、`Input` と同じく `FormField` が関連付けの属性を付ける
 - 内容の制約: 必須の `Select` は、先頭に値が空の選択肢（「選択してください」のような文）を置く。値が空のままだと、ブラウザは必須の欄が未入力と判定する
 - キーボード: ブラウザの `select` の操作。選択肢の一覧の開き方と見た目は、ブラウザと OS ごとに違う
