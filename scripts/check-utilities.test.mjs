@@ -173,7 +173,8 @@ await test("--doc に packages/ui の DESIGN.md を渡すと、RULES の id が�
 await test("--doc の文書に RULES の id がコードスパンで出れば、コードを読んで結果を返す", () => {
   const r = run(
     {
-      "docs/d.md": "- `TEXT-MIN-SIZE`: 小さい文字\n- `FOCUS-ONE`: フォーカス\n",
+      "docs/d.md":
+        "- `TEXT-MIN-SIZE`: 小さい文字\n- `FOCUS-ONE`: フォーカス\n- `MOTION-REDUCE`: 動き\n",
       [`${UI}/a.tsx`]: '<p className="text-xs" />\n',
     },
     ["--doc", "docs/d.md"],
@@ -185,7 +186,8 @@ await test("--doc の文書に RULES の id がコードスパンで出れば、
 await test("--doc の文書に無い id を出して 2。コードスパンでない語は数えない", () => {
   const r = run(
     {
-      "docs/d.md": "- `FOCUS-ONE`\n- TEXT-MIN-SIZE は小さい文字\n",
+      "docs/d.md":
+        "- `FOCUS-ONE`\n- `MOTION-REDUCE`\n- TEXT-MIN-SIZE は小さい文字\n",
       [`${UI}/a.tsx`]: '<p className="text-body" />\n',
     },
     ["--doc", "docs/d.md"],
@@ -198,7 +200,8 @@ await test("--doc の文書に無い id を出して 2。コードスパンで�
 
 await test("--doc はパスの前でも後でも効き、文書のファイルをコードとして読まない", () => {
   const files = {
-    "docs/d.md": "- `TEXT-MIN-SIZE`\n- `FOCUS-ONE`\n\n`text-xs` は使わない\n",
+    "docs/d.md":
+      "- `TEXT-MIN-SIZE`\n- `FOCUS-ONE`\n- `MOTION-REDUCE`\n\n`text-xs` は使わない\n",
     [`${UI}/a.tsx`]: '<p className="text-xs" />\n',
   };
   for (const args of [
@@ -267,6 +270,45 @@ await test("focus-ring のほかのフォーカスの書き方を、FOCUS-ONE �
     );
   }
   assert.match(r.stdout, /13 か所/);
+});
+
+await test("動きを減らす設定の条件を、MOTION-REDUCE と一緒に出して 1", () => {
+  const r = run({
+    [`${UI}/a.tsx`]:
+      '<div className="motion-reduce:animate-none motion-safe:transition md:motion-reduce:hidden" />\n',
+    [`${SITE}/b.css`]:
+      "@media (prefers-reduced-motion: reduce) {\n  .a {\n    animation: none;\n  }\n}\n",
+    [`${SITE}/c.astro`]:
+      '<script>\n  const q = window.matchMedia("(prefers-reduced-motion: reduce)");\n</script>\n',
+  });
+  assert.equal(r.status, 1, r.stdout + r.stderr);
+  for (const [file, line, token] of [
+    ["packages/ui/src/a.tsx", 1, "motion-reduce:animate-none"],
+    ["packages/ui/src/a.tsx", 1, "motion-safe:transition"],
+    ["packages/ui/src/a.tsx", 1, "md:motion-reduce:hidden"],
+    ["apps/corporate-site/src/b.css", 1, "(prefers-reduced-motion:"],
+    ["apps/corporate-site/src/c.astro", 2, "(prefers-reduced-motion:"],
+  ]) {
+    const escaped = token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    assert.match(
+      r.stdout,
+      new RegExp(
+        `${file.replace(/\./g, "\\.")}:${line}: MOTION-REDUCE .* ${escaped}$`,
+        "m",
+      ),
+      token,
+    );
+  }
+  assert.match(r.stdout, /5 か所/);
+});
+
+await test("トークンの層の動きの止め方と、動きのユーティリティは MOTION-REDUCE で 0", () => {
+  const r = run({
+    "packages/ui/src/tokens/theme.css":
+      "@media (prefers-reduced-motion: reduce) {\n  * {\n    animation: none !important;\n  }\n}\n",
+    [`${UI}/a.tsx`]: '<div className="transition-opacity animate-none" />\n',
+  });
+  assert.equal(r.status, 0, r.stdout + r.stderr);
 });
 
 await test("読めないパスは 2", () => {

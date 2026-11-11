@@ -100,6 +100,25 @@
   }
 }
 
+/*
+ * 動きを減らす設定のときの止め方。画面とコンポーネントのコードに、この設定の条件を書かない（MOTION-REDUCE）。
+ * アニメーションは全て止め、遷移は透明度だけを残す。時間を 0 にする書き方は、残す透明度の変化も止めるので使わない。
+ * app の CSS が書いた animation と transition より優先させるため、!important を付ける。
+ * :root は、app の base.css の html の scroll-behavior より詳細度が高い。
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation: none !important;
+    transition-property: opacity !important;
+  }
+}
+
 /* 写真の上に重ねる色。テーマ変数の --color-overlay-photo が background-color を、このユーティリティが background-image を塗り、2 枚を重ねた濃さで描く */
 @utility bg-overlay-photo {
   background-image: linear-gradient(

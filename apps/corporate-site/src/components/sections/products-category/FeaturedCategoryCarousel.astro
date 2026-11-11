@@ -62,7 +62,7 @@ const { categories, makerCountsByCategoryId } = Astro.props;
   const track = carousel?.querySelector<HTMLElement>("[data-carousel-track]");
 
   if (carousel && track && track.children.length > 0) {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)"); // design-system-allow: requestAnimationFrame の自動の流れは CSS で止められない（MOTION-REDUCE）
     // 3コピー分を並べ、中央コピーを基準に前後どちらへも無限ループさせる
     const setCount = track.children.length / 3;
 
