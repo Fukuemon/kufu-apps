@@ -26,10 +26,10 @@ function FormField({
       <Label htmlFor={htmlFor}>{label}</Label>
       {children}
       {description ? (
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="text-sm text-text-secondary">{description}</p>
       ) : null}
       {error ? (
-        <p className="text-sm font-medium text-destructive" role="alert">
+        <p className="text-sm font-medium text-danger" role="alert">
           {error}
         </p>
       ) : null}

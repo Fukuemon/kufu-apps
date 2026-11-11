@@ -5,7 +5,7 @@ import { consultationContent } from "../../../content/consultation.js";
 
 <section
   id="consultation"
-  class="consultation-industrial reveal-section border-b border-border bg-card"
+  class="consultation-industrial reveal-section border-b border-divider bg-surface"
   data-testid="home-section-consultation"
 >
   <div class="mx-auto grid w-full max-w-360 gap-10 px-5 py-14 sm:px-8 md:gap-12 md:py-18 lg:px-14">
@@ -20,7 +20,7 @@ import { consultationContent } from "../../../content/consultation.js";
       <div class="grid content-start">
         {
           consultationContent.cases.map((item, index) => (
-            <article class="consultation-case grid gap-2 border-t border-border py-6 last:border-b sm:grid-cols-[4rem_1fr] sm:gap-5">
+            <article class="consultation-case grid gap-2 border-t border-divider py-6 last:border-b sm:grid-cols-[4rem_1fr] sm:gap-5">
               <p class="font-mono text-[0.75rem] font-medium tracking-[0.18em] text-primary">
                 {String(index + 1).padStart(2, "0")}
               </p>
@@ -28,7 +28,7 @@ import { consultationContent } from "../../../content/consultation.js";
                 <p class="font-serif text-[1.0625rem] font-semibold leading-[1.55]">
                   {item.title}
                 </p>
-                <p class="max-w-170 text-[0.875rem] leading-[1.8] text-muted-foreground">
+                <p class="max-w-170 text-[0.875rem] leading-[1.8] text-text-secondary">
                   {item.description}
                 </p>
               </div>
@@ -37,12 +37,12 @@ import { consultationContent } from "../../../content/consultation.js";
         }
       </div>
 
-      <aside class="flow-panel grid content-start border border-border bg-muted">
-        <div class="flex items-baseline justify-between gap-4 border-b border-border px-5 py-5 md:px-6">
+      <aside class="flow-panel grid content-start border border-divider bg-surface-subtle">
+        <div class="flex items-baseline justify-between gap-4 border-b border-divider px-5 py-5 md:px-6">
           <h3 class="font-serif text-[1.5rem] font-semibold leading-normal">
             相談から納品まで
           </h3>
-          <span class="font-mono text-[0.625rem] font-medium tracking-[0.2em] text-muted-foreground">
+          <span class="font-mono text-[0.625rem] font-medium tracking-[0.2em] text-text-secondary">
             全4ステップ
           </span>
         </div>
@@ -59,7 +59,7 @@ import { consultationContent } from "../../../content/consultation.js";
                   <p class="font-serif text-[1rem] font-semibold leading-normal">
                     {item.title}
                   </p>
-                  <p class="text-[0.8125rem] leading-[1.75] text-muted-foreground">
+                  <p class="text-[0.8125rem] leading-[1.75] text-text-secondary">
                     {item.description}
                   </p>
                 </div>

@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "#lib/utils";
 
-const definitionRowVariants = cva("grid gap-1 border-border text-sm", {
+const definitionRowVariants = cva("grid gap-1 border-divider text-sm", {
   variants: {
     layout: {
       default: "border-b py-3 sm:grid-cols-[12rem_1fr] sm:gap-6",
@@ -18,9 +18,9 @@ const definitionRowVariants = cva("grid gap-1 border-border text-sm", {
 const definitionRowTermVariants = cva("", {
   variants: {
     layout: {
-      default: "font-medium text-muted-foreground",
+      default: "font-medium text-text-secondary",
       compact:
-        "font-mono text-[0.6875rem] font-normal leading-6 tracking-[0.12em] text-muted-foreground",
+        "font-mono text-[0.6875rem] font-normal leading-6 tracking-[0.12em] text-text-secondary",
     },
   },
   defaultVariants: {
@@ -28,7 +28,7 @@ const definitionRowTermVariants = cva("", {
   },
 });
 
-const definitionRowValueVariants = cva("text-foreground", {
+const definitionRowValueVariants = cva("text-text", {
   variants: {
     layout: {
       default: "",

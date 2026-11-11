@@ -111,11 +111,11 @@ ADR-0026: [workspace の package はソースを export し、ビルドの成果
   - `dev`、`dev:corporate`、`build`、`typecheck`、`test` が当たる。
 - workspace は、自分に要る script だけを持つ。`pnpm -r` は、その script を持たない workspace を飛ばす。
 
-| workspace             | `check`                                                 | `typecheck`    | `test`        | `build`       |
-| --------------------- | ------------------------------------------------------- | -------------- | ------------- | ------------- |
-| `apps/corporate-site` | `check-token-usage.mjs` と `check-section-boundary.mjs` | `astro check`  | `vp test run` | `astro build` |
-| `packages/ui`         | なし                                                    | `tsc --noEmit` | なし          | なし          |
-| `e2e`                 | `vp check`                                              | `tsc --noEmit` | なし          | なし          |
+| workspace             | `check`                      | `typecheck`    | `test`        | `build`       |
+| --------------------- | ---------------------------- | -------------- | ------------- | ------------- |
+| `apps/corporate-site` | `check-section-boundary.mjs` | `astro check`  | `vp test run` | `astro build` |
+| `packages/ui`         | なし                         | `tsc --noEmit` | なし          | なし          |
+| `e2e`                 | `vp check`                   | `tsc --noEmit` | なし          | なし          |
 
 - `packages/ui` は `build` を持たない。利用者のバンドラーがソースを変換する。
 - `packages/ui` の Storybook のテストは、ブラウザが要るので `test` に入れず、`vrt:capture` で流す。CI の test の job にはブラウザがない。

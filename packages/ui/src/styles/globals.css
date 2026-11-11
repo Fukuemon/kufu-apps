@@ -3,9 +3,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "./tokens.css";
-@import "./fonts.css";
-@import "./theme.css";
+@import "../tokens/fonts.css";
+@import "../tokens/theme.css";
 
 @source "../components";
 @source "../hooks";
@@ -16,9 +15,9 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-divider outline-focus-outline/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-surface-canvas text-text;
   }
 }

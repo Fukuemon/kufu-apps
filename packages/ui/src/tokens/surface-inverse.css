@@ -1,0 +1,11 @@
+/*
+ * 暗い面のセマンティックトークン。section の要素に .surface-inverse を付けると、その中の面、文字、枠の参照先を替える。ダークモードは持たない。
+ * コントラストのチェックを、通常の面（primitive.css と semantic.css）と暗い面（3 つのファイルと --root .surface-inverse）に分けて流すため、semantic.css から分けて置く。
+ */
+
+.surface-inverse {
+  --kufu-color-surface-canvas: var(--kufu-primitive-color-gray-950);
+  --kufu-color-text: var(--kufu-primitive-color-white);
+  --kufu-color-text-secondary: var(--kufu-primitive-color-gray-500);
+  --kufu-color-border: var(--kufu-primitive-color-gray-800);
+}

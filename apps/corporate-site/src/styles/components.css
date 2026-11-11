@@ -2,16 +2,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(
-      to right,
-      color-mix(in srgb, var(--border) 52%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--border) 52%, transparent) 1px,
-      transparent 1px
-    );
+    linear-gradient(to right, var(--kufu-color-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--kufu-color-grid-line) 1px, transparent 1px);
   background-size: 4rem 4rem;
   content: "";
   mask-image: linear-gradient(to bottom, black, transparent 75%);
@@ -23,8 +15,7 @@
 }
 
 .hero-media {
-  box-shadow: 0 2rem 5rem
-    color-mix(in srgb, var(--kufu-gray-950) 12%, transparent);
+  box-shadow: 0 2rem 5rem var(--kufu-color-shadow-media);
 }
 
 .hero-media img {
@@ -39,7 +30,7 @@
   width: 1px;
   background: repeating-linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--kufu-white) 60%, transparent) 0 0.75rem,
+    var(--kufu-color-media-ruler) 0 0.75rem,
     transparent 0.75rem 1.5rem
   );
   opacity: 0.6;
@@ -131,7 +122,7 @@
   background-image: linear-gradient(
     90deg,
     transparent,
-    color-mix(in srgb, var(--primary) 7%, transparent),
+    var(--kufu-color-primary-glow),
     transparent
   );
 }
@@ -140,7 +131,7 @@
   width: 4.5rem;
   height: 2px;
   margin-top: 0.5rem;
-  background: var(--primary);
+  background: var(--kufu-color-primary);
   content: "";
   transform-origin: left;
   transform: scaleX(0);
@@ -153,7 +144,7 @@
 }
 
 .business-tag {
-  border-left: 2px solid var(--primary);
+  border-left: 2px solid var(--kufu-color-primary);
 }
 
 .business-media {
@@ -181,12 +172,12 @@
   background-image:
     linear-gradient(
       to right,
-      color-mix(in srgb, var(--kufu-white) 20%, transparent) 1px,
+      var(--kufu-color-media-grid-line) 1px,
       transparent 1px
     ),
     linear-gradient(
       to bottom,
-      color-mix(in srgb, var(--kufu-white) 20%, transparent) 1px,
+      var(--kufu-color-media-grid-line) 1px,
       transparent 1px
     );
   background-size: 3.25rem 3.25rem;
@@ -194,8 +185,7 @@
 }
 
 .custom-order-panel {
-  box-shadow: inset 0 0 0 1px
-    color-mix(in srgb, var(--primary) 12%, transparent);
+  box-shadow: inset 0 0 0 1px var(--kufu-color-primary-hairline);
 }
 
 .consultation-flow-marker {
@@ -212,10 +202,10 @@
   justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
-  border: 1px solid var(--primary);
+  border: 1px solid var(--kufu-color-primary);
   border-radius: 50%;
-  background: var(--background);
-  color: var(--primary);
+  background: var(--kufu-color-surface-canvas);
+  color: var(--kufu-color-primary);
 }
 
 .consultation-flow-step:not(:last-child) .consultation-flow-marker::after {
@@ -224,7 +214,7 @@
   bottom: -1.75rem;
   left: 50%;
   width: 2px;
-  background: color-mix(in srgb, var(--primary) 35%, var(--border));
+  background: var(--kufu-color-primary-connector);
   content: "";
   transform: translateX(-50%);
 }
@@ -237,7 +227,7 @@
 }
 
 .featured-category-card:hover {
-  border-color: var(--primary);
+  border-color: var(--kufu-color-primary);
   transform: translateY(-0.35rem);
 }
 
@@ -292,9 +282,9 @@
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid var(--border);
-  background: var(--background);
-  color: var(--foreground);
+  border: 1px solid var(--kufu-color-border);
+  background: var(--kufu-color-surface-canvas);
+  color: var(--kufu-color-text);
   font-family: var(--font-mono);
   font-size: 1.125rem;
   transform: translateY(-50%);
@@ -305,8 +295,8 @@
 }
 
 .featured-carousel-arrow:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+  border-color: var(--kufu-color-primary);
+  color: var(--kufu-color-primary);
 }
 
 .featured-carousel-arrow--prev {
@@ -331,12 +321,12 @@
   background-image:
     linear-gradient(
       to right,
-      color-mix(in srgb, var(--border) 42%, transparent) 1px,
+      var(--kufu-color-grid-line-subtle) 1px,
       transparent 1px
     ),
     linear-gradient(
       to bottom,
-      color-mix(in srgb, var(--border) 42%, transparent) 1px,
+      var(--kufu-color-grid-line-subtle) 1px,
       transparent 1px
     );
   background-size: 2.75rem 2.75rem;
@@ -352,7 +342,7 @@
   bottom: -1px;
   left: 0;
   height: 1px;
-  background: var(--primary);
+  background: var(--kufu-color-primary);
   content: "";
   transform: scaleX(0);
   transform-origin: left;
@@ -372,7 +362,7 @@
 }
 
 .products-accordion-summary:hover .font-serif {
-  color: var(--primary);
+  color: var(--kufu-color-primary);
 }
 
 .products-accordion-icon {
@@ -384,28 +374,28 @@
 
 .products-accordion[open] > summary .products-accordion-icon {
   transform: rotate(45deg);
-  border-color: var(--primary);
-  color: var(--primary);
+  border-color: var(--kufu-color-primary);
+  color: var(--kufu-color-primary);
 }
 
 .products-control-btn {
   display: inline-flex;
   align-items: center;
   min-height: 2.5rem;
-  border: 1px solid var(--border);
-  background: var(--background);
+  border: 1px solid var(--kufu-color-border);
+  background: var(--kufu-color-surface-canvas);
   padding: 0 0.875rem;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--foreground);
+  color: var(--kufu-color-text);
   transition:
     border-color var(--kufu-motion-fast) var(--kufu-ease),
     color var(--kufu-motion-fast) var(--kufu-ease);
 }
 
 .products-control-btn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+  border-color: var(--kufu-color-primary);
+  color: var(--kufu-color-primary);
 }
 
 .products-nav-link {
@@ -422,7 +412,7 @@
   left: 0;
   width: 2px;
   height: 1rem;
-  background: var(--primary);
+  background: var(--kufu-color-primary);
   content: "";
   opacity: 0;
   transform: translateY(-50%);
@@ -430,7 +420,7 @@
 }
 
 .products-nav-link.is-active {
-  color: var(--primary);
+  color: var(--kufu-color-primary);
 }
 
 .products-nav-link.is-active::before {
@@ -449,22 +439,21 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  border: 1px solid var(--border);
-  background: var(--background);
+  border: 1px solid var(--kufu-color-border);
+  background: var(--kufu-color-surface-canvas);
   padding: 0.625rem 0.875rem;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--foreground);
-  box-shadow: 0 0.5rem 1.5rem
-    color-mix(in srgb, var(--kufu-gray-950) 14%, transparent);
+  color: var(--kufu-color-text);
+  box-shadow: 0 0.5rem 1.5rem var(--kufu-color-shadow-floating);
   transition:
     border-color var(--kufu-motion-fast) var(--kufu-ease),
     color var(--kufu-motion-fast) var(--kufu-ease);
 }
 
 .products-backtop:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+  border-color: var(--kufu-color-primary);
+  color: var(--kufu-color-primary);
 }
 
 .products-backtop[hidden] {
@@ -498,8 +487,7 @@
 
 .products-nav-list {
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--border) 80%, transparent)
-    transparent;
+  scrollbar-color: var(--kufu-color-scrollbar-thumb) transparent;
 }
 
 .products-nav-list::-webkit-scrollbar {
@@ -507,7 +495,7 @@
 }
 
 .products-nav-list::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--border) 80%, transparent);
+  background: var(--kufu-color-scrollbar-thumb);
   border-radius: 3px;
 }
 
@@ -528,8 +516,8 @@
   top: 4.5rem;
   left: 0;
   right: 0;
-  border-bottom: 1px solid var(--border);
-  background: var(--background);
+  border-bottom: 1px solid var(--kufu-color-border);
+  background: var(--kufu-color-surface-canvas);
 }
 
 .site-nav-menu[data-open="true"] {
@@ -539,9 +527,9 @@
 .site-nav-link {
   display: grid;
   gap: 0.125rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--kufu-color-border);
   padding: 1rem 1.25rem;
-  color: var(--foreground);
+  color: var(--kufu-color-text);
   font-size: 0.8125rem;
   font-weight: 500;
 }
@@ -558,7 +546,7 @@
   font-size: 0.5625rem;
   font-weight: 500;
   line-height: 1;
-  color: var(--muted-foreground);
+  color: var(--kufu-color-text-secondary);
   transition:
     color var(--kufu-motion-fast) var(--kufu-ease),
     transform var(--kufu-motion-fast) var(--kufu-ease);
@@ -566,12 +554,12 @@
 
 .site-nav-link--page:hover .site-nav-page-icon,
 .site-nav-link--page[aria-current="page"] .site-nav-page-icon {
-  color: var(--primary);
+  color: var(--kufu-color-primary);
   transform: translate(0.0625rem, -0.0625rem);
 }
 
 .site-nav-sub-label {
-  color: var(--muted-foreground);
+  color: var(--kufu-color-text-secondary);
   font-family: var(--font-mono);
   font-size: 0.53125rem;
   font-weight: 400;
@@ -580,7 +568,7 @@
 
 .site-nav-link:hover,
 .site-nav-link[aria-current="page"] {
-  color: var(--primary);
+  color: var(--kufu-color-primary);
 }
 
 .site-nav-toggle-line {
@@ -607,13 +595,13 @@
 }
 
 .footer-link {
-  color: var(--kufu-gray-200);
+  color: var(--kufu-color-text-inverse-secondary);
   font-size: 0.875rem;
   line-height: 1.75rem;
 }
 
 .footer-link:hover {
-  color: var(--primary-soft);
+  color: var(--kufu-color-primary-soft);
 }
 
 /* 必須/任意バッジの書体 (mono + tracking) はこのサイトの固有表現のため app 側で保持。
@@ -624,22 +612,22 @@
 }
 
 .contact-badge--required {
-  background: color-mix(in srgb, var(--primary) 14%, transparent);
-  color: var(--primary);
+  background: var(--kufu-color-primary-tint);
+  color: var(--kufu-color-primary);
 }
 
 .contact-badge--optional {
-  background: color-mix(in srgb, var(--muted-foreground) 14%, transparent);
-  color: var(--muted-foreground);
+  background: var(--kufu-color-text-secondary-tint);
+  color: var(--kufu-color-text-secondary);
 }
 
 .products-summary-cta {
-  background: var(--kufu-gray-950);
-  color: var(--kufu-white);
+  background: var(--kufu-color-action-strong);
+  color: var(--kufu-color-text-inverse);
 }
 
 .products-summary-cta:hover {
-  background: var(--kufu-gray-800);
+  background: var(--kufu-color-action-strong-hover);
 }
 
 .scroll-cue-icon {

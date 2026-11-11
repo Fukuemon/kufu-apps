@@ -1,0 +1,141 @@
+/*
+ * Kufu のセマンティックトークン。役割の名前を持ち、値はプリミティブトークン（primitive.css）を参照するだけにする。
+ * プリミティブトークンを color-mix() で混ぜた色は、ここに式を持つ（docs/adr/0027-design-tokens-three-layers.md）。
+ * コンポーネントと画面は、この層をテーマ変数（theme.css）のユーティリティか var() で使い、プリミティブトークンの名前を直に書かない。
+ * 使う場面は packages/ui/design/tokens.md にある。
+ */
+
+@import "./primitive.css";
+@import "./surface-inverse.css";
+
+:root {
+  /* 面 */
+  --kufu-color-surface-canvas: var(--kufu-primitive-color-gray-50);
+  --kufu-color-surface: var(--kufu-primitive-color-white);
+  --kufu-color-surface-subtle: var(--kufu-primitive-color-gray-100);
+  --kufu-color-surface-subtle-hover: color-mix(
+    in oklch,
+    var(--kufu-color-surface-subtle),
+    var(--kufu-color-text) 5%
+  );
+  /* 写真と図を置く枠の、画像が読み込まれる前の面 */
+  --kufu-color-surface-media: var(--kufu-primitive-color-gray-800);
+  --kufu-color-overlay-panel: color-mix(
+    in srgb,
+    var(--kufu-primitive-color-white) 90%,
+    transparent
+  );
+  --kufu-color-overlay-photo: color-mix(
+    in srgb,
+    var(--kufu-primitive-color-teal-900) 12%,
+    transparent
+  );
+
+  /* 文字 */
+  --kufu-color-text: var(--kufu-primitive-color-gray-900);
+  --kufu-color-text-secondary: var(--kufu-primitive-color-gray-600);
+  --kufu-color-text-inverse: var(--kufu-primitive-color-white);
+  /* 暗い面の上のリンクの文字 */
+  --kufu-color-text-inverse-secondary: var(--kufu-primitive-color-gray-200);
+  /* ウォーターマークの数字。読ませる文字ではない */
+  --kufu-color-text-ghost: color-mix(
+    in srgb,
+    var(--kufu-primitive-color-gray-900) 5%,
+    transparent
+  );
+
+  /* 枠: border は飾りの区切りの線、border-field は入力欄と押せるものの枠 */
+  --kufu-color-border: var(--kufu-primitive-color-gray-300);
+  --kufu-color-border-field: var(--kufu-primitive-color-gray-300);
+
+  /* 操作 */
+  --kufu-color-primary: var(--kufu-primitive-color-teal-600);
+  --kufu-color-primary-soft: var(--kufu-primitive-color-teal-300);
+  /* 明るい面に置く、暗い色のリンクのボタン */
+  --kufu-color-action-strong: var(--kufu-primitive-color-gray-950);
+  --kufu-color-action-strong-hover: var(--kufu-primitive-color-gray-800);
+
+  /* フォーカス */
+  --kufu-color-focus-outline: var(--kufu-primitive-color-teal-600);
+  --kufu-color-focus-halo: var(--kufu-primitive-color-teal-600);
+
+  /* 状態 */
+  --kufu-color-danger: var(--kufu-primitive-color-red-legacy);
+
+  /*
+   * site の演出の線、影、色の付いた面。:root で値を決めるので、.surface-inverse の中で使っても暗い面の値にならない。
+   * 暗い面で使うときは、.surface-inverse のブロックにも同じ名前で式を書く。
+   */
+  /* hero の背景の方眼 */
+  --kufu-color-grid-line: color-mix(
+    in srgb,
+    var(--kufu-color-border) 52%,
+    transparent
+  );
+  /* 取扱製品の一覧の背景の方眼 */
+  --kufu-color-grid-line-subtle: color-mix(
+    in srgb,
+    var(--kufu-color-border) 42%,
+    transparent
+  );
+  /* 写真の上の方眼 */
+  --kufu-color-media-grid-line: color-mix(
+    in srgb,
+    var(--kufu-primitive-color-white) 20%,
+    transparent
+  );
+  /* 写真の上の目盛りの破線 */
+  --kufu-color-media-ruler: color-mix(
+    in srgb,
+    var(--kufu-primitive-color-white) 60%,
+    transparent
+  );
+  /* hero の写真の影 */
+  --kufu-color-shadow-media: color-mix(
+    in srgb,
+    var(--kufu-primitive-color-gray-950) 12%,
+    transparent
+  );
+  /* 画面に浮かせるボタンの影 */
+  --kufu-color-shadow-floating: color-mix(
+    in srgb,
+    var(--kufu-primitive-color-gray-950) 14%,
+    transparent
+  );
+  /* 事業内容の section の背景の帯 */
+  --kufu-color-primary-glow: color-mix(
+    in srgb,
+    var(--kufu-color-primary) 7%,
+    transparent
+  );
+  /* 主の色の細い内側の枠 */
+  --kufu-color-primary-hairline: color-mix(
+    in srgb,
+    var(--kufu-color-primary) 12%,
+    transparent
+  );
+  /* 相談の流れの、段の間の線 */
+  --kufu-color-primary-connector: color-mix(
+    in srgb,
+    var(--kufu-color-primary) 35%,
+    var(--kufu-color-border)
+  );
+  /* 必須の印の面 */
+  --kufu-color-primary-tint: color-mix(
+    in srgb,
+    var(--kufu-color-primary) 14%,
+    transparent
+  );
+  /* 任意の印の面 */
+  --kufu-color-text-secondary-tint: color-mix(
+    in srgb,
+    var(--kufu-color-text-secondary) 14%,
+    transparent
+  );
+  /* スクロールできる一覧のつまみ */
+  --kufu-color-scrollbar-thumb: color-mix(
+    in srgb,
+    var(--kufu-color-border) 80%,
+    transparent
+  );
+}

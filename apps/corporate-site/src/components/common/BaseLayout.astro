@@ -32,7 +32,7 @@ const currentPath = Astro.url.pathname;
     <link rel="preload" as="style" href={fontsHref} onload="this.rel='stylesheet'" />
     <noscript><link rel="stylesheet" href={fontsHref} /></noscript>
   </head>
-  <body class="bg-background text-foreground antialiased">
+  <body class="bg-surface-canvas text-text antialiased">
     <SiteHeader currentPath={currentPath} />
     <main>
       <slot />

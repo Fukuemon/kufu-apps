@@ -26,14 +26,14 @@ app や feature の中で閉じる UI と utility は、その中に置く。
 移す条件は [Placement Rules](#placement-rules) にある。
 
 デザインシステムの資産は、資産の種類ごとに置き場と移す条件を決める。  
-ADR-0007: [デザイントークンの構成](../docs/adr/0007-design-token-architecture.md)
+ADR-0027: [トークンの 3 つの層](../docs/adr/0027-design-tokens-three-layers.md)
 
-| 資産の種類                     | 置き場                             | 移す条件                                   |
-| ------------------------------ | ---------------------------------- | ------------------------------------------ |
-| デザイントークン               | 常に `packages/ui`（`tokens.css`） | 移さない。app の配下で定義しない           |
-| フォントと共有のスタイルシート | 常に `packages/ui`                 | 移さない。app の配下で定義しない           |
-| UI コンポーネント              | app の中                           | 複数の app か feature で再利用が明確になる |
-| utility                        | app の中                           | 必要性が明確な場合だけ package にする      |
+| 資産の種類                     | 置き場                              | 移す条件                                   |
+| ------------------------------ | ----------------------------------- | ------------------------------------------ |
+| デザイントークン               | 常に `packages/ui`（`src/tokens/`） | 移さない。app の配下で定義しない           |
+| フォントと共有のスタイルシート | 常に `packages/ui`                  | 移さない。app の配下で定義しない           |
+| UI コンポーネント              | app の中                            | 複数の app か feature で再利用が明確になる |
+| utility                        | app の中                            | 必要性が明確な場合だけ package にする      |
 
 実装のコードと Storybook を、デザインの基準にする。  
 中間のデザインファイルを基準にしない。  
@@ -152,7 +152,7 @@ ADR-0008: [Astro と React island の方針](../docs/adr/0008-astro-react-island
 ### デザインシステムの文書と 3 つの層
 
 - デザインシステムの文書は `packages/ui/DESIGN.md` と、`packages/ui/design/` の `tokens.md`、`components.md`、`catalog.md` に置く。
-- トークンの 3 つの層は `packages/ui/src/tokens/` に置く。
+- トークンの 3 つの層は `packages/ui/src/tokens/` に置く。暗い面（`.surface-inverse`）のセマンティックトークンは、同じディレクトリの `surface-inverse.css` に置く。
   - プリミティブトークンは `primitive.css` に置く。接頭辞は `--kufu-primitive-` である。
   - セマンティックトークンは `semantic.css` に置く。接頭辞は `--kufu-color-` である。
   - テーマ変数は `theme.css` に置く。
@@ -175,7 +175,7 @@ ADR-0008: [Astro と React island の方針](../docs/adr/0008-astro-react-island
 shadcn/ui はコードを repo に写して所有するモデルなので、次の順に試す。  
 別のデザインシステムを並べず、`packages/ui` だけを元にして、トークン、primitive、独自のコンポーネントの順に積む。
 
-1. 配色、radius、spacing、typography は、`tokens.css` のセマンティックトークンを上書きして変える。コンポーネントは書き換えない。
+1. 配色、radius、spacing、typography は、`semantic.css` のセマンティックトークンを上書きして変える。コンポーネントは書き換えない。
 2. 既存のコンポーネントを直接編集する。CVA の variant を足すか、markup を変える。
 3. 既存のコンポーネントにロジックや layout を足すときは、base を変えずに wrapper で包む。
 4. 独自のコンポーネントを `packages/ui` に足す。shadcn の流儀（CVA の variants、セマンティックトークン、a11y は Radix の primitive）に沿う。
@@ -205,16 +205,16 @@ content 層の方式は、内容の性質で選ぶ。
 
 - トークンを Tailwind の utility へ写す `@theme` は、`@kufu/ui/theme.css` だけに置く。`styles.css` と app の entry の両方がこれを import する。
 - corporate-site は `@kufu/ui/styles.css` の全体を取り込まず、app の Tailwind v4 の entry `src/styles/globals.css` を持つ。
-  - ADR-0007: [デザイントークンの構成](../docs/adr/0007-design-token-architecture.md)
+  - ADR-0027: [トークンの 3 つの層](../docs/adr/0027-design-tokens-three-layers.md)
 - Tailwind の走査は Vite plugin の module graph に任せ、app のソースへの `@source` を app に置かない。
-  - `packages/ui` のソースの走査は、`@kufu/ui/theme.css`（実体は `packages/ui/src/styles/theme.css`）が `@source "../components"` で指す。app の entry に書かない。
+  - `packages/ui` のソースの走査は、`@kufu/ui/theme.css`（実体は `packages/ui/src/tokens/theme.css`）が `@source "../components"` で指す。app の entry に書かない。
 - app の `src/styles/` は役割で分け、`globals.css` は `@import` だけの entry にする。
   - `base.css` は、`:root` のカスタムプロパティと、要素セレクタへの base のスタイルを持つ。
   - `components.css` は、クラスセレクタを持つ。cva と utility へ移して減らし、最後は消す。
   - `animations.css` は、`@keyframes` を持つ。
   - `utilities.css` は、`@utility` の拡張が要るときに足す。使う前に空のファイルを作らない。
 - 分けるときはファイルを動かすだけにし、`@layer` で包まない。素のセレクタの CSS を `@layer components` に入れると、Tailwind の utility との優先順位が変わり、表示が崩れる。
-- motion の duration と easing のトークンは `@kufu/ui/tokens.css` に置く。
+- motion の duration と easing のトークンは `packages/ui/src/tokens/primitive.css` に置く。
 - site 固有の演出の keyframes は app の `src/styles/animations.css` に置く。複数の app での再利用が明確になったら `@kufu/ui` へ移す。
 
 ### Edge API
