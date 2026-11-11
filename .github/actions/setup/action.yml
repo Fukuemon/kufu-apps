@@ -7,8 +7,7 @@ runs:
     - uses: pnpm/action-setup@v4
     - uses: actions/setup-node@v4
       with:
-        # 24 以上: vitest 設定が import する .ts (packages/config) の
-        # type stripping が既定で有効 (22.12 では ERR_UNKNOWN_FILE_EXTENSION)
+        # 手元と同じにするため、mise.toml の node と同じ値にする
         node-version: 24
         cache: pnpm
     - name: Install dependencies

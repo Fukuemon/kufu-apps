@@ -1,11 +1,10 @@
-import baseConfig from "@kufu/config/vitest/base";
-import { defineConfig, mergeConfig } from "vitest/config";
+import { defineConfig } from "vitest/config";
 
-export default mergeConfig(
-  baseConfig,
-  defineConfig({
-    test: {
-      include: ["src/**/*.test.{ts,tsx}", "scripts/**/*.test.ts"],
-    },
-  }),
-);
+export default defineConfig({
+  test: {
+    environment: "node",
+    globals: true,
+    include: ["src/**/*.test.{ts,tsx}", "scripts/**/*.test.ts"],
+    exclude: ["**/node_modules/**", "**/dist/**"],
+  },
+});
