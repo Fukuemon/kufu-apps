@@ -48,14 +48,15 @@ status: draft
 - `e2e/` のファイルには、ほかのファイルと同じ oxlint の組み込みの規則（`correctness` と型を使う規則）も掛かる。
 - 規則に渡す値は、次のとおり。
 
-| 値                                | 渡すもの                       |
-| --------------------------------- | ------------------------------ |
-| テストのディレクトリ              | `tests`                        |
-| 固定の待ちを許すファイル          | `tests/fixtures/caption.ts`    |
-| 待つ時間の名前を置くファイル      | `tests/fixtures/timeouts.ts`   |
-| 画面 ID の形                      | 渡さない。画面 ID の体系がない |
-| 本物の backend につなぐ spec の形 | 渡さない。backend がない       |
+| 値                                | 渡すもの                     |
+| --------------------------------- | ---------------------------- |
+| テストのディレクトリ              | `tests`                      |
+| 固定の待ちを許すファイル          | `tests/fixtures/caption.ts`  |
+| 待つ時間の名前を置くファイル      | `tests/fixtures/timeouts.ts` |
+| 画面 ID の形                      | 渡さない。下の注を参照       |
+| 本物の backend につなぐ spec の形 | 渡さない。backend がない     |
 
+- 画面 ID の形を渡さないのは、規則が画面 ID を探すのが `widgets/` の下だけで、`widgets/` がないためである。画面仕様書の画面 ID（`site-home`、`product-list`、`contact-info`）は、testid の接頭辞（`home`、`products`、`contact`）と違う語で、テストのコードに書かない。`widgets/` を足すときに、渡すかを決める。
 - 表のパスは `e2e/` からの相対パスで書いた。`vite.config.ts` は、`import.meta.dirname` から絶対パスにして渡す。相対パスで渡すと、`vp check` を流すディレクトリによって規則が `tests/` を見なくなり、違反があっても通る。
 - 規則は、ルートの `pnpm check` か、`e2e/` の `pnpm check`（`vp check`）で流す。
   - `e2e/` で `vp lint` を直接流すと、`options.typeAware is only supported in the root config` で設定の読み込みが止まる。`vp check` は止まらない。
