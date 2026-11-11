@@ -15,7 +15,7 @@ const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 // image の版は @playwright/test から導出する。二重管理だとブラウザ版だけ取り残される。
 const playwrightVersion = JSON.parse(
   readFileSync(
-    join(repoRoot, "node_modules/@playwright/test/package.json"),
+    join(repoRoot, "e2e/node_modules/@playwright/test/package.json"),
     "utf8",
   ),
 ).version;
@@ -57,6 +57,8 @@ function workspaceModulePaths() {
       }
     }
   }
+  // volume の名前は一覧の順番で決まる。途中に足すと既にある volume が別のパスに付くので、末尾に足す。
+  paths.push("/work/e2e/node_modules");
   return paths;
 }
 

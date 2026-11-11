@@ -18,7 +18,7 @@ module.exports = {
       from: {
         orphan: true,
         pathNot:
-          "(^|/)(astro\\.config\\.mjs|index\\.(ts|tsx)|README\\.md|package\\.json|playwright\\.config\\.ts|vitest\\.config\\.ts)$|^e2e/|(^|/)\\.storybook/|(^|/)scripts/.*\\.mjs$|\\.d\\.ts$|\\.astro$",
+          "(^|/)(astro\\.config\\.mjs|index\\.(ts|tsx)|README\\.md|package\\.json|vitest\\.config\\.ts)$|^e2e/|(^|/)\\.storybook/|(^|/)scripts/.*\\.mjs$|\\.d\\.ts$|\\.astro$",
       },
       to: {},
     },
@@ -66,13 +66,10 @@ module.exports = {
     exclude: {
       path: "(^|/)(node_modules|dist|coverage|storybook-static|\\.astro|\\.turbo|\\.pnpm-store|__fixtures__)(/|$)",
     },
-    includeOnly: "^((apps|packages)/|e2e/|playwright\\.config\\.ts$)",
+    includeOnly: "^((apps|packages|e2e)/)",
     enhancedResolveOptions: {
       conditionNames: ["import", "require", "node", "default"],
       exportsFields: ["exports"],
-    },
-    tsConfig: {
-      fileName: "tsconfig.json",
     },
   },
 };

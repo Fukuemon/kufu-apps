@@ -31,7 +31,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - oxfmt: format に使う。prettier は入れない。
 - Vitest: unit test に使う。
 - Storybook: `packages/ui` と、app の presentation のコンポーネントのレビューに使う。
-- Playwright: E2E と、route の VRT（`toHaveScreenshot`）に使う。ルートで管理する。
+- Playwright: E2E と、route の VRT（`toHaveScreenshot`）に使う。E2E の workspace（`e2e/`、`@kufu/e2e`）で管理し、バージョンは `e2e/package.json` にある。
 - storycap-testrun と reg-cli: Storybook の story を撮影して比べる。
 - knip: 使っていないコードと export を検出する。ルートで管理する。
 - dependency-cruiser: 依存を解析する。ルートで管理する。
@@ -61,7 +61,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - `pnpm typecheck`: 型をチェックする。
 - `pnpm format:check`: format を確認する。書き換えるときは `pnpm format` を使う。
 - `pnpm test`: unit test を実行する。
-- `pnpm e2e`: E2E を実行する。デフォルトの対象は corporate-site である。
+- `pnpm e2e`: E2E を実行する。`@kufu/e2e` の `e2e` の script を呼ぶ。デフォルトの対象は corporate-site である。
 - `pnpm storybook`: Storybook を起動する。`packages/ui` だけなら `pnpm storybook:ui`、corporate-site だけなら `pnpm storybook:corporate` を使う。
 - `pnpm storybook:build`: Storybook をビルドする。GitHub Pages の artifact は `pnpm storybook:pages` が作る。
 - `pnpm vrt:story`: story の VRT を実行する。baseline の撮り直しは `pnpm vrt:story:update` を使う。

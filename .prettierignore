@@ -7,3 +7,6 @@
 apm.yml
 apm.lock.yaml
 pnpm-lock.yaml
+
+# スキル setup-e2e-lint から写した規則。配布元と diff で比べるため、配布元のままの書式で残す
+e2e/lint/e2e-authoring-rule.mjs

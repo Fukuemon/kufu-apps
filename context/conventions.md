@@ -108,9 +108,10 @@ subpath は `tsconfig/base`、`tsconfig/react`、`tsconfig/astro`、`oxlint/base
 - workspace のタスクは、ルートの script から `turbo run` で束ねる。
   - `dev`、`dev:corporate`、`build`、`lint`、`typecheck`、`test` が当たる。
 - `typecheck` の実体は各 workspace が持ち、ルートは集めるだけにする。
-  - corporate-site は `astro check`、packages は `tsc --noEmit` を実行する。
+  - corporate-site は `astro check`、packages と `e2e` は `tsc --noEmit` を実行する。ルートは `tsc` を実行しない。
   - TypeScript の project references は、workspace が増えるまで入れない。
-- `format`、`e2e`、`knip`、`depcruise` は、package のタスクではなくリポジトリのタスクとして、ルートで直接実行する。
+- `format`、`knip`、`depcruise` は、package のタスクではなくリポジトリのタスクとして、ルートで直接実行する。
+- `e2e` と `vrt:route:run` は、ルートの script から `pnpm --filter @kufu/e2e` で、E2E の workspace の script を呼ぶ。
 - Storybook の起動はルートから対象へ委ねる。
   - `storybook` は共有と app の両方を並べて起動する。`storybook:ui` は `packages/ui` を、`storybook:corporate` は `apps/corporate-site` を対象にする。
 - Storybook の build は本番の `build` に混ぜず、専用のチェック `storybook:build` として扱う。

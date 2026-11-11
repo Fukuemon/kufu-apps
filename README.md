@@ -82,7 +82,7 @@ route 側と違って container で撮らない。`@storybook/addon-vitest` が�
 
 Playwright の baseline はファイル名に platform を含み、macOS で撮った `-darwin.png` は CI では使われない。Playwright 公式 container (`linux/amd64`) に固定する。`scripts/vrt-container.mjs` が指定した pnpm script を container で回す。
 
-- **image tag は `@playwright/test` の版から導出する**。二重管理だとブラウザ版だけ取り残される
+- **image tag は `e2e/package.json` の `@playwright/test` の版から導出する**。二重管理だとブラウザ版だけ取り残される
 - **アーキテクチャも固定する**。CI の runner は amd64 で、arm64 で撮った画像とは一致しない (測ると 6 枚中 2 枚が変わった)
 - container 内でホストとは別に `pnpm install` をやり直す。`node_modules` は名前付き volume に隔離する。掃除は `docker volume ls | grep kufu-e2e` から `docker volume rm`
 - `pnpm vrt:route` を経由しない実行は skip される。6 件すべての実行を JSON レポートで確認する
@@ -95,7 +95,7 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 - 地図 iframe は通信を落としても枠が残るため `mask` で隠す
 - reveal とカルーセルの自動スクロールは、既存実装が持つ `prefers-reduced-motion` の分岐で止める
 
-差分画像は `test-results/` に出る。`.gitignore` 済み。
+差分画像は `e2e/test-results/` に出る。`.gitignore` 済み。
 
 ## Project Structure
 
@@ -106,7 +106,7 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 ├── packages/
 │   ├── ui/              # 共通 UI / デザイントークン / フォント
 │   └── config/          # 共通 tsconfig / lint / test 設定
-├── e2e/                 # ルート管理の Playwright テスト
+├── e2e/                 # E2E の workspace（@kufu/e2e）。Playwright の設定とテスト
 ├── context/             # 技術規約 / 運用契約
 └── docs/
     ├── PRD.md           # プロダクト要求
@@ -120,7 +120,7 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 - `apps/corporate-site`: Astro のページ、ルーティング、コンテンツ構成、必要最小限の island
 - `packages/ui`: 共通デザイン基盤 (token / font / stylesheet entry / 再利用が明確な UI)
 - `packages/config`: TypeScript / lint / test の共有設定
-- `e2e`: ルート管理の Playwright テスト
+- `e2e`: E2E の workspace（`@kufu/e2e`）。Playwright の設定、`tests/` の層のテストのコード、書き方の規則、route の VRT
 
 禁止: 再利用すべき UI の app 内重複、app 間の直接依存、コーポレートサイトでの不要な React island、実装コードでの token 値直書き。
 

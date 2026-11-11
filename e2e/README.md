@@ -1,63 +1,37 @@
-# E2E Test Conventions
+# @kufu/e2e
 
-`pnpm e2e` が読む Playwright suite の実装側の申し合わせ。取り決めは [context/testing.md](../context/testing.md) と [ADR-0017](../docs/adr/0017-ui-test-structure-policy.md) が持ち、食い違ったらそちらに従う。
+`pnpm e2e` と `pnpm vrt:route` が読む Playwright の workspace。取り決めは [context/testing.md](../context/testing.md) と [context/testing/e2e.md](../context/testing/e2e.md) が持ち、食い違ったらそちらに従う。  
+ADR-0031: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../docs/adr/0031-e2e-test-code-layers.md)  
+ADR-0033: [E2E をルートの e2e/ に置いたまま、workspace の package にする](../docs/adr/0033-e2e-workspace-at-root.md)
 
 ## 構成
 
 ```text
 e2e/
-└── <target>/                  # E2E_TARGET (既定 corporate-site)
-    ├── pages/                 # route ごとの Page Object
-    ├── smoke.spec.ts          # 主要 route の到達性と表示
-    └── route-vrt.spec.ts      # route 側 VRT (README.md の VRT 節)
+├── package.json          # @kufu/e2e。e2e、vrt:route:run、lint、typecheck の script
+├── playwright.config.ts  # project は e2e と route-vrt
+├── .oxlintrc.json        # 書き方の規則の設定
+├── lint/                 # 書き方の規則（e2e-authoring-rule.mjs）と、oxlint に読ませる plugin.mjs
+├── tsconfig.json
+├── tests/
+│   ├── specs/<機能>/<振る舞い>.e2e.ts
+│   └── selectors/        # testid を持たない要素の指し方
+└── corporate-site/       # route の VRT（route-vrt.spec.ts）と baseline
 ```
 
-Page Object と VRT のヘルパは `e2e/` 配下に置く。`packages/*` へ昇格させない。
+E2E のテストのコードは `packages/*` に置かない。
 
-## Page Object
+## 層
 
-- **page 単位**で 1 クラスとし、route が増えたときだけ増やす。先回りの抽象化を作らない。
-- セレクタと操作を Page Object へ集約し、テスト本体はシナリオだけを書く。
-- locator は用途で使い分ける。**この規約は Page Object の内部にも適用する。**
-
-| 用途                                | 使うもの      |
-| ----------------------------------- | ------------- |
-| 領域の特定 (セクション / ページ)    | `data-testid` |
-| 操作対象 (ボタン / リンク / 入力欄) | `getByRole`   |
-
-- 規約へ寄せられない箇所は、**理由をコメントで残す**。現状の例外は次の 3 分類。
-  - **ヘッダー / フッターで文言が重複する操作対象**: 同じ名前のリンクが両方にあり role では一意にならないため `data-testid` で引く
-  - **件数を数える locator**: `getByRole` は `href` の無いアンカーやアクセシビリティツリー上の非表示要素を除くため、DOM 上の件数を数える用途では意味が変わる。CSS セレクタのまま残す
-  - **role も testid も持たない要素**: `[data-products-result]` (`aria-live` の `<p>`)。規約へ寄せるには production の markup を変える必要があり、別 issue で扱う
-- 表示内容そのものの確認 (メーカー名など) は、領域の特定でも操作対象でもないため locator 規約の対象外。文言で探してよい。
-- 引数を取らない locator は `readonly` プロパティにし、引数を取るものだけメソッドにする。
+- `specs/` は、確認と、1 本か 2 本の spec だけが使う操作を持つ。領域は `data-testid` で拾い、spec に直接書く。
+- `selectors/` は、role、文言、CSS のセレクタでの指し方を、ページを引数に取る関数で持つ。
+- Page Object のクラスは作らない。
+- 層の分け方と規則が止める書き方は、[context/testing/e2e.md](../context/testing/e2e.md) とスキル write-e2e-test にある。
 
 ## E2E が担うジャーニー
 
-**route をまたぐ到達性**を見る。単一コンポーネント内で閉じる操作は play が担う。以下は定義で、テストコードの実装は別 issue。
-
-### 1. 回遊
-
-1. `/` を開く
-2. 取扱製品への導線から `/products` へ到達する
-3. カテゴリ・メーカー名で検索し、**検索条件が URL に保持される**ことを確認する
-4. 問い合わせへの導線から `/contact` へ到達する
-
-### 2. ナビゲーション
-
-1. ヘッダーのリンクから `/products` / `/contact` へ到達する
-2. フッターのリンクから各 route へ到達する
-3. モバイル幅でナビゲーションを開閉し、開いた状態から各 route へ到達する
-
-### 3. JS 無効時
-
-1. 3 route の主要セクションが表示される
-2. 問い合わせ先 (電話 / メール) に到達できる
-
-### 対象外
-
-- **問い合わせフォームの送信**。`ContactSection.astro` に `<form>` は無く、`contact-form-slot` は「デザイン確認用のフォーム枠」と明記されている。実体ができた時点 (#26) で追加する。
+ジャーニーの定義は、[コーポレートサイトの Design Doc](../apps/corporate-site/DesignDoc.md#e2e-が担うジャーニー) にある。
 
 ## VRT
 
-route 側 VRT は [README.md](../README.md) の「route 側 VRT」節。
+route の VRT は [README.md](../README.md) の「route 側」のセクションにある。

@@ -36,6 +36,18 @@ node .claude/hooks/docs/hooks/check-links.mjs
 
 `verified_commit` の後に実装が変わった文書は、`node .claude/hooks/docs/hooks/list-drift.mjs` で一覧する。実装と読み比べてから `verified_commit` を進める。
 
+## E2E のテストを直すとき
+
+E2E は、workspace の `@kufu/e2e`（`e2e/`）にある。テストのコードは `e2e/tests/` の層に置き、書き方の規則は `pnpm lint` が流す。
+
+```sh
+pnpm e2e
+pnpm lint
+pnpm typecheck
+```
+
+層、testid の名前、書き方の規則の更新の手順は、[context/testing/e2e.md](context/testing/e2e.md) にある。
+
 ## spec を書くとき
 
 spec の節の構成と書き方は、スキル write-design-docs が持つ。このリポジトリだけの取り決めを次に書く。

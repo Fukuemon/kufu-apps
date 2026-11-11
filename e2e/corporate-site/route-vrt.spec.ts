@@ -9,7 +9,7 @@ const routes = [
   { name: "contact", path: "/contact" },
 ] as const;
 
-// mobile の 390x900 は smoke.spec.ts のモバイルナビ検証と揃えている。
+// mobile の 390x900 は tests/specs/navigation/site-navigation.e2e.ts のモバイルナビ検証と揃えている。
 const viewports = [
   { name: "desktop", width: 1280, height: 800 },
   { name: "mobile", width: 390, height: 900 },

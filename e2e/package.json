@@ -1,0 +1,17 @@
+{
+  "name": "@kufu/e2e",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "e2e": "playwright test --project=e2e",
+    "vrt:route:run": "playwright test --project=route-vrt --retries=0",
+    "lint": "oxlint --config .oxlintrc.json tests",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.59.1",
+    "@types/node": "^25.6.2",
+    "oxlint": "^1.63.0",
+    "typescript": "^6.0.3"
+  }
+}
