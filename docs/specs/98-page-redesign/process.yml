@@ -1,0 +1,25 @@
+# issue 98 の開発プロセスの宣言。種別 screen のプリセット（context/project.yml）のとおり
+preset: screen
+processes:
+  - requirements
+  - design
+  - implementation
+  - verification-design
+  - verification
+  - integration
+  - release
+reflect_at: design
+breakdown_at: design
+review: [requirements, design, integration]
+tasks: [design, impl, verify]
+
+progress:
+  requirements: done
+  # 課題の調査と改善案まで。運営者が案を選んだ後に、選んだ案の画面の設計と分解を行う
+  design: in-review
+  breakdown: not-started
+  implementation: not-started
+  verification-design: not-started
+  verification: not-started
+  integration: not-started
+  release: not-started
