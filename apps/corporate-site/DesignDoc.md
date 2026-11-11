@@ -64,7 +64,7 @@ ADR-0006: [corporate-site の IA を 3 route にする](../../docs/adr/0006-corp
 - 画面ごとの要素、操作、幅による配置は、画面仕様書（[site-home](../../docs/screens/site-home_トップ/index.md)、[product-list](../../docs/screens/product-list_取扱製品/index.md)、[contact-info](../../docs/screens/contact-info_お問い合わせ/index.md)）にある。
 - 事業の内容と会社の情報は、トップの section に入れ、単独の route を作らない。直接の導線は、トップの中のアンカーで提供する。
 - トップと取扱製品の末尾には、同じ形の問い合わせの帯（暗い面）を置く。帯は、見出し、リード、`/contact` へのボタン、電話の番号と受付時間を持ち、section の外でページが並べる。
-- 取扱製品の写真のカードは、自動では動かさない。矢印とスワイプで送る。
+- 取扱製品の写真のカードは、自動では動かさない。矢印とスワイプで送り、端で止める。
 - コンテナの幅と横の余白は、全ページで 1440px と横の padding 56 に揃える。実装は 1 つの max-width と共通の padding にする。
 - 3 つの route それぞれに、desktop とモバイルの表示を用意する。
   - hover、focus、フォームのエラーのような状態は `@kufu/ui` の規約に従って実装し、Storybook で確認する。
