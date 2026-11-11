@@ -42,7 +42,7 @@ const mediaPositionClass = {
     {
       number ? (
         <span
-          class="pointer-events-none absolute -top-8.5 -left-2.5 z-0 font-mono text-[7.5rem] font-medium leading-none text-text-ghost md:text-[8.75rem]"
+          class="pointer-events-none absolute -top-8.5 -left-2.5 z-0 font-mono text-watermark-120 font-medium leading-none text-text-ghost md:text-watermark-140"
           aria-hidden="true"
         >
           {number}
@@ -50,24 +50,24 @@ const mediaPositionClass = {
       ) : null
     }
     <p
-      class="relative z-1 text-primary font-mono text-xs font-normal leading-[1.4] tracking-[0.16em]"
+      class="relative z-1 text-primary font-mono text-eyebrow font-normal tracking-[0.16em]"
     >
       {eyebrow}
     </p>
     <h3
-      class="relative z-1 font-serif text-[1.875rem] font-semibold leading-[1.45]"
+      class="relative z-1 font-serif text-heading-28 font-semibold leading-[1.45]"
     >
       {title}
     </h3>
     <p
-      class="relative z-1 text-text-secondary text-[0.9375rem] leading-[1.75]"
+      class="relative z-1 text-text-secondary text-body leading-[1.75]"
     >
       {description}
     </p>
     <ul class="relative z-1 flex flex-wrap gap-2 pt-1.5 list-none">
       {
         items.map((item) => (
-          <li class="business-tag bg-surface-subtle px-3 py-1.5 text-[0.78125rem] leading-[1.4] text-text">
+          <li class="business-tag bg-surface-subtle px-3 py-1.5 text-caption leading-[1.4] text-text">
             {item}
           </li>
         ))
@@ -97,7 +97,7 @@ const mediaPositionClass = {
     }
     <div class="absolute inset-0 bg-overlay-photo" aria-hidden="true"></div>
     <div class="business-media-grid" aria-hidden="true"></div>
-    <span class="surface-inverse relative z-1 border border-kufu-gray-300/40 bg-surface-canvas/70 px-3 py-2 font-mono text-xs font-medium tracking-[0.13em] text-text">
+    <span class="surface-inverse relative z-1 border border-kufu-gray-300/40 bg-surface-canvas/70 px-3 py-2 font-mono text-caption font-medium tracking-[0.13em] text-text">
       {mediaLabel}
     </span>
   </div>

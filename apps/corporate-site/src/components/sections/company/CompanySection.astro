@@ -22,14 +22,14 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
         title="会社概要"
       />
       <div class="grid gap-4 md:max-w-[38.75rem]">
-        <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
+        <p class="font-mono text-eyebrow font-medium tracking-[0.2em] text-primary">
           PHILOSOPHY / 経営理念
         </p>
-        <p class="font-serif text-[1.75rem] font-semibold leading-[1.65] md:text-[2.25rem]">
+        <p class="font-serif text-heading-28 font-semibold leading-[1.65] md:text-heading-36">
           <span class="text-primary">「創意」</span>と
           <span class="text-primary">「誠意」</span>で真心奉仕
         </p>
-        <p class="whitespace-pre-line text-[0.9375rem] leading-[1.75] text-text-secondary">
+        <p class="whitespace-pre-line text-body leading-[1.75] text-text-secondary">
           {companyProfile.philosophyLead}
         </p>
       </div>
@@ -38,10 +38,10 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
     <div class="grid gap-10 lg:grid-cols-[30rem_1fr] lg:gap-14">
       <div class="grid content-start">
         <div class="pb-4">
-          <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
+          <p class="font-mono text-eyebrow font-medium tracking-[0.2em] text-primary">
             PROFILE / 基本情報
           </p>
-          <h3 class="mt-2 font-serif text-[1.75rem] font-semibold leading-normal">
+          <h3 class="mt-2 font-serif text-heading-28 font-semibold leading-normal">
             基本情報
           </h3>
         </div>
@@ -59,14 +59,14 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
       <div class="grid gap-9">
         <div class="grid gap-5 border-b border-divider pb-9">
           <div>
-            <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
+            <p class="font-mono text-eyebrow font-medium tracking-[0.2em] text-primary">
               MESSAGE / 代表挨拶
             </p>
-            <h3 class="mt-2 font-serif text-[1.75rem] font-semibold leading-normal">
+            <h3 class="mt-2 font-serif text-heading-28 font-semibold leading-normal">
               ご挨拶
             </h3>
           </div>
-          <div class="grid max-w-[40.5rem] gap-4 text-[0.9375rem] leading-[1.75] text-text-secondary">
+          <div class="grid max-w-[40.5rem] gap-4 text-body leading-[1.75] text-text-secondary">
             {
               companyProfile.greeting.map((paragraph) => (
                 <p>{paragraph.map((segment) =>
@@ -80,12 +80,12 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
             }
           </div>
           <div class="flex items-center gap-4">
-            <div class="grid size-24 place-items-center border border-divider bg-surface font-mono text-[0.6875rem] tracking-[0.16em] text-text-secondary">
+            <div class="grid size-24 place-items-center border border-divider bg-surface font-mono text-caption tracking-[0.16em] text-text-secondary">
               顔写真
             </div>
             <div class="grid gap-1.5">
-              <p class="text-sm font-semibold">福浦 崇志</p>
-              <p class="text-[0.71875rem] tracking-[0.16em] text-text-secondary">
+              <p class="text-body font-semibold">福浦 崇志</p>
+              <p class="text-caption tracking-[0.16em] text-text-secondary">
                 代表取締役
               </p>
             </div>
@@ -94,10 +94,10 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
 
         <div class="grid gap-5">
           <div>
-            <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
+            <p class="font-mono text-eyebrow font-medium tracking-[0.2em] text-primary">
               ACCESS / アクセス
             </p>
-            <h3 class="mt-2 font-serif text-[1.75rem] font-semibold leading-normal">
+            <h3 class="mt-2 font-serif text-heading-28 font-semibold leading-normal">
               アクセス
             </h3>
           </div>
@@ -110,8 +110,8 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
             allowfullscreen
             data-testid="company-access-map"
           ></iframe>
-          <p class="text-sm leading-7 text-text">{companyProfile.address}</p>
-          <p class="font-mono text-xs leading-7 tracking-[0.12em] text-text-secondary">
+          <p class="text-body leading-7 text-text">{companyProfile.address}</p>
+          <p class="font-mono text-caption leading-7 tracking-[0.12em] text-text-secondary">
             TEL 079-492-6465 ／ FAX 079-492-6429
           </p>
         </div>

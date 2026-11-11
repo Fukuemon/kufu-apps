@@ -59,12 +59,12 @@ function FormField({
         </Label>
         {children}
         {description ? (
-          <p id={descriptionId} className="text-sm text-text-secondary">
+          <p id={descriptionId} className="text-caption text-text-secondary">
             {description}
           </p>
         ) : null}
         {error ? (
-          <p id={errorId} className="text-sm font-medium text-danger">
+          <p id={errorId} className="text-caption font-medium text-danger">
             {error}
           </p>
         ) : null}

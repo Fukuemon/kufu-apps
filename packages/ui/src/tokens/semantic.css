@@ -138,4 +138,44 @@
     var(--kufu-color-border) 80%,
     transparent
   );
+
+  /* 文字のスタイル。名前の数字は DADS の文字の大きさの段（px）で、画面の幅で段を替えるときは md: などで名前を替える */
+  --kufu-text-display-57-font-size: var(--kufu-primitive-font-size-57);
+  --kufu-text-display-57-line-height: var(--kufu-primitive-line-height-140);
+  --kufu-text-display-48-font-size: var(--kufu-primitive-font-size-48);
+  --kufu-text-display-48-line-height: var(--kufu-primitive-line-height-140);
+  --kufu-text-heading-45-font-size: var(--kufu-primitive-font-size-45);
+  --kufu-text-heading-45-line-height: var(--kufu-primitive-line-height-140);
+  --kufu-text-heading-36-font-size: var(--kufu-primitive-font-size-36);
+  --kufu-text-heading-36-line-height: var(--kufu-primitive-line-height-140);
+  --kufu-text-heading-32-font-size: var(--kufu-primitive-font-size-32);
+  --kufu-text-heading-32-line-height: var(--kufu-primitive-line-height-150);
+  --kufu-text-heading-28-font-size: var(--kufu-primitive-font-size-28);
+  --kufu-text-heading-28-line-height: var(--kufu-primitive-line-height-150);
+  --kufu-text-heading-26-font-size: var(--kufu-primitive-font-size-26);
+  --kufu-text-heading-26-line-height: var(--kufu-primitive-line-height-150);
+  --kufu-text-heading-24-font-size: var(--kufu-primitive-font-size-24);
+  --kufu-text-heading-24-line-height: var(--kufu-primitive-line-height-150);
+  --kufu-text-heading-22-font-size: var(--kufu-primitive-font-size-22);
+  --kufu-text-heading-22-line-height: var(--kufu-primitive-line-height-150);
+  --kufu-text-heading-20-font-size: var(--kufu-primitive-font-size-20);
+  --kufu-text-heading-20-line-height: var(--kufu-primitive-line-height-150);
+  --kufu-text-heading-17-font-size: var(--kufu-primitive-font-size-17);
+  --kufu-text-heading-17-line-height: var(--kufu-primitive-line-height-160);
+  --kufu-text-heading-16-font-size: var(--kufu-primitive-font-size-16);
+  --kufu-text-heading-16-line-height: var(--kufu-primitive-line-height-160);
+  --kufu-text-body-font-size: var(--kufu-primitive-font-size-16);
+  --kufu-text-body-line-height: var(--kufu-primitive-line-height-170);
+  --kufu-text-body-dense-font-size: var(--kufu-primitive-font-size-16);
+  --kufu-text-body-dense-line-height: var(--kufu-primitive-line-height-130);
+  --kufu-text-label-font-size: var(--kufu-primitive-font-size-16);
+  --kufu-text-label-line-height: var(--kufu-primitive-line-height-100);
+  --kufu-text-caption-font-size: var(--kufu-primitive-font-size-14);
+  --kufu-text-caption-line-height: var(--kufu-primitive-line-height-170);
+  --kufu-text-eyebrow-font-size: var(--kufu-primitive-font-size-12);
+  --kufu-text-eyebrow-line-height: var(--kufu-primitive-line-height-140);
+  --kufu-text-watermark-140-font-size: var(--kufu-primitive-font-size-140);
+  --kufu-text-watermark-140-line-height: var(--kufu-primitive-line-height-100);
+  --kufu-text-watermark-120-font-size: var(--kufu-primitive-font-size-120);
+  --kufu-text-watermark-120-line-height: var(--kufu-primitive-line-height-100);
 }

@@ -14,11 +14,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => (
     <div className="grid max-w-md gap-4">
-      <p className="text-sm text-text-secondary">
+      <p className="text-body text-text-secondary">
         Content above the separator.
       </p>
       <Separator />
-      <p className="text-sm text-text-secondary">
+      <p className="text-body text-text-secondary">
         Content below the separator.
       </p>
     </div>
@@ -27,7 +27,7 @@ export const Default: Story = {
 
 export const Vertical: Story = {
   render: () => (
-    <div className="flex h-12 items-center gap-4 text-sm text-text-secondary">
+    <div className="flex h-12 items-center gap-4 text-body text-text-secondary">
       <span>First</span>
       <Separator orientation="vertical" />
       <span>Second</span>

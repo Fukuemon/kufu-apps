@@ -168,9 +168,10 @@ ADR-0011: [spec の後始末の強制](../docs/adr/0011-specs-closeout-enforceme
 - 色とフォントは、セマンティックトークンの utility で指定する。
   - 例は `text-foreground`、`bg-secondary`、`text-muted-foreground`、`border-border`、`font-mono`、`font-serif`。
 - 実装のコードにトークンの値を直接書かない。raw hex と、色の arbitrary value（`text-[#fff]` など）を書かない。
-  - サイズと余白の arbitrary value は書いてよい。例は、`min-h-95` で表せない `text-[8.75rem]`。
+  - サイズと余白の arbitrary value は書いてよい。例は、`h-[4.1875rem]`。
+  - 文字の大きさは、文字のスタイル（`text-body`、`text-heading-36` など）で指定する。arbitrary value（`text-[8.75rem]` など）は書かない。`pnpm check:design` の `TEXT-MIN-SIZE` のチェックが止める。文字のスタイルの表は [tokens.md](../packages/ui/design/tokens.md) にある。
 - spacing は、Tailwind のスケール（0.25rem のグリッド）の canonical な書き方を優先する。例は、`gap-[1.125rem]` より `gap-4.5`。
-  - スケールにない font-size、line-height、letter-spacing は arbitrary value でよい。
+  - スケールにない line-height と letter-spacing は arbitrary value でよい。
 - class の差で表せる見た目の variant と状態の分岐を持つコンポーネントは、cva で variants を定義し、frontmatter で class を条件つきで組み立てる書き方を置き換える。
   - markup の構造ごと分岐する見た目の variant（`SiteFooter` の `full` と `compact` など）は cva の対象にせず、条件分岐のまま保つ。
   - variant のない固定の class のコンポーネントは、Tailwind の utility を直接書いてよい。
@@ -184,7 +185,7 @@ pull request では、[PULL_REQUEST_TEMPLATE.md](../.github/PULL_REQUEST_TEMPLAT
 ## Check Exclusions
 
 - knip と dependency-cruiser は、誤検出を避けるため、生成されたファイルとルートが管理する設定ファイルをルートの設定で除外する。
-- トークンの直接の記述のチェックは、サイズと余白の arbitrary value を対象にしない。
+- トークンの直接の記述のチェック（`check-raw-values.mjs`）は、サイズと余白の arbitrary value を対象にしない。文字の大きさの arbitrary value は、`check-utilities.mjs` の `TEXT-MIN-SIZE` が止める。
 - `space-*` は CSS のトークンを持たず、Tailwind の標準のスケール（4px のグリッド）への写像として扱う。トークンの記述のチェックの対象にしない。
   - 写像は [コーポレートサイトの Design Doc](../apps/corporate-site/DesignDoc.md#デザイントークン) のデザイントークンの節にある。
   - ADR-0007: [デザイントークンの構成](../docs/adr/0007-design-token-architecture.md)

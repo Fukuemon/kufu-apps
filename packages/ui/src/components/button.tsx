@@ -25,15 +25,15 @@ const variantClassName: Record<ButtonVariant, string> = {
 // cta- の大きさのうち、リンクで使う 3 つは hover で全体を薄くする。md は送信のボタンで使い、hover で変えない
 const sizeClassName: Record<ButtonSize, string> = {
   default:
-    "h-12 gap-2.5 rounded-8 border-transparent px-[22px] text-sm leading-5 font-medium",
+    "h-12 gap-2.5 rounded-8 border-transparent px-[22px] text-label leading-5 font-medium",
   "cta-sm":
-    "h-auto min-h-10 gap-2 rounded-4 border-transparent px-5 text-[0.8125rem] font-semibold hover:opacity-90",
+    "h-auto min-h-10 gap-2 rounded-4 border-transparent px-5 text-label font-semibold hover:opacity-90",
   "cta-md":
-    "h-auto min-h-12 gap-2 rounded-4 border-transparent px-5 text-sm font-semibold",
+    "h-auto min-h-12 gap-2 rounded-4 border-transparent px-5 text-label font-semibold",
   "cta-lg":
-    "h-auto min-h-13 gap-3 rounded-4 border-transparent px-6 text-[0.9375rem] font-semibold hover:opacity-90",
+    "h-auto min-h-13 gap-3 rounded-4 border-transparent px-6 text-label font-semibold hover:opacity-90",
   "cta-hero":
-    "h-auto min-h-[3.375rem] gap-0 rounded-4 border-primary px-6 text-[0.9375rem] font-medium hover:opacity-90",
+    "h-auto min-h-[3.375rem] gap-0 rounded-4 border-primary px-6 text-label font-medium hover:opacity-90",
 };
 
 /** Button と同じ見た目のクラス名を返す。リンクのようにボタンでない要素を、ボタンの見た目にするときに使う。 */

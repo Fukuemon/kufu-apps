@@ -154,7 +154,8 @@ ADR-0008: [Astro と React island の方針](../docs/adr/0008-astro-react-island
 - デザインシステムの文書は `packages/ui/DESIGN.md` と、`packages/ui/design/` の `tokens.md`、`components.md`、`catalog.md` に置く。
 - トークンの 3 つの層は `packages/ui/src/tokens/` に置く。暗い面（`.surface-inverse`）のセマンティックトークンは、同じディレクトリの `surface-inverse.css` に置く。
   - プリミティブトークンは `primitive.css` に置く。接頭辞は `--kufu-primitive-` である。
-  - セマンティックトークンは `semantic.css` に置く。接頭辞は `--kufu-color-` である。
+  - セマンティックトークンは `semantic.css` に置く。色の接頭辞は `--kufu-color-` である。
+  - 文字のスタイルの大きさと行高も、`semantic.css` に `--kufu-text-<名前>-font-size` と `--kufu-text-<名前>-line-height` で置く。プリミティブトークンを参照し、`theme.css` のテーマ変数と、`packages/ui` の外の CSS（`components.css` など）から読む。外の CSS はプリミティブトークンを読めないためである。
   - テーマ変数は `theme.css` に置く。
 - 層の分け方は ADR-0027: [デザイントークンの 3 つの層](../docs/adr/0027-design-tokens-three-layers.md)にある。
 

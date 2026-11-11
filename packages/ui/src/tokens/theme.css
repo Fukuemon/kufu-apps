@@ -38,6 +38,47 @@
   --color-focus-halo: var(--kufu-color-focus-halo);
   --color-danger: var(--kufu-color-danger);
 
+  /* 文字のスタイル。Tailwind のデフォルトの文字の大きさを消し、ここに書いた名前だけを使えるようにする */
+  --text-*: initial;
+  --text-display-57: var(--kufu-text-display-57-font-size);
+  --text-display-57--line-height: var(--kufu-text-display-57-line-height);
+  --text-display-48: var(--kufu-text-display-48-font-size);
+  --text-display-48--line-height: var(--kufu-text-display-48-line-height);
+  --text-heading-45: var(--kufu-text-heading-45-font-size);
+  --text-heading-45--line-height: var(--kufu-text-heading-45-line-height);
+  --text-heading-36: var(--kufu-text-heading-36-font-size);
+  --text-heading-36--line-height: var(--kufu-text-heading-36-line-height);
+  --text-heading-32: var(--kufu-text-heading-32-font-size);
+  --text-heading-32--line-height: var(--kufu-text-heading-32-line-height);
+  --text-heading-28: var(--kufu-text-heading-28-font-size);
+  --text-heading-28--line-height: var(--kufu-text-heading-28-line-height);
+  --text-heading-26: var(--kufu-text-heading-26-font-size);
+  --text-heading-26--line-height: var(--kufu-text-heading-26-line-height);
+  --text-heading-24: var(--kufu-text-heading-24-font-size);
+  --text-heading-24--line-height: var(--kufu-text-heading-24-line-height);
+  --text-heading-22: var(--kufu-text-heading-22-font-size);
+  --text-heading-22--line-height: var(--kufu-text-heading-22-line-height);
+  --text-heading-20: var(--kufu-text-heading-20-font-size);
+  --text-heading-20--line-height: var(--kufu-text-heading-20-line-height);
+  --text-heading-17: var(--kufu-text-heading-17-font-size);
+  --text-heading-17--line-height: var(--kufu-text-heading-17-line-height);
+  --text-heading-16: var(--kufu-text-heading-16-font-size);
+  --text-heading-16--line-height: var(--kufu-text-heading-16-line-height);
+  --text-body: var(--kufu-text-body-font-size);
+  --text-body--line-height: var(--kufu-text-body-line-height);
+  --text-body-dense: var(--kufu-text-body-dense-font-size);
+  --text-body-dense--line-height: var(--kufu-text-body-dense-line-height);
+  --text-label: var(--kufu-text-label-font-size);
+  --text-label--line-height: var(--kufu-text-label-line-height);
+  --text-caption: var(--kufu-text-caption-font-size);
+  --text-caption--line-height: var(--kufu-text-caption-line-height);
+  --text-eyebrow: var(--kufu-text-eyebrow-font-size);
+  --text-eyebrow--line-height: var(--kufu-text-eyebrow-line-height);
+  --text-watermark-140: var(--kufu-text-watermark-140-font-size);
+  --text-watermark-140--line-height: var(--kufu-text-watermark-140-line-height);
+  --text-watermark-120: var(--kufu-text-watermark-120-font-size);
+  --text-watermark-120--line-height: var(--kufu-text-watermark-120-line-height);
+
   /* 角丸は DADS の 4px と 8px。md と lg は、packages/ui のコンポーネントが使う段で、4px から計算する */
   --radius-4: var(--kufu-primitive-border-radius-4);
   --radius-8: var(--kufu-primitive-border-radius-8);

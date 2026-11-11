@@ -12,7 +12,7 @@ const rowClassName: Record<DefinitionRowLayout, string> = {
 const termClassName: Record<DefinitionRowLayout, string> = {
   default: "font-medium text-text-secondary",
   compact:
-    "font-mono text-[0.6875rem] font-normal leading-6 tracking-[0.12em] text-text-secondary",
+    "font-mono text-caption font-normal leading-6 tracking-[0.12em] text-text-secondary",
 };
 
 const valueClassName: Record<DefinitionRowLayout, string> = {
@@ -35,7 +35,7 @@ function DefinitionRow({
   return (
     <div
       data-slot="definition-row"
-      className={clsx("grid border-divider text-sm", rowClassName[layout])}
+      className={clsx("grid border-divider text-body", rowClassName[layout])}
       {...props}
     >
       <dt className={termClassName[layout]}>{term}</dt>
