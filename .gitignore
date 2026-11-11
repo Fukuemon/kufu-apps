@@ -82,3 +82,5 @@ apm_modules/
 /.agents/skills/write-design-system/
 /.claude/skills/setup-design-system/
 /.claude/skills/write-design-system/
+/.agents/skills/write-screen-spec/
+/.claude/skills/write-screen-spec/

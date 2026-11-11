@@ -70,6 +70,22 @@ pnpm check:design
 
 チェックから外している組と理由は、[packages/ui/design/tokens.md](packages/ui/design/tokens.md) にある。
 
+## 画面仕様書を直すとき
+
+画面仕様書は `docs/screens/` にある。書き方の規則は [docs/screens/rules.md](docs/screens/rules.md) に、進める順はスキル write-screen-spec にある。
+
+画面仕様書かモックを直したときは、規約の点検を流す。CI の docs の job も、このコマンドを流す。
+
+```sh
+pnpm check:screens
+```
+
+`docs/screens/_common/` と `docs/screens/_template/` は、スキル write-screen-spec から写したファイルである。整形の対象から外している。パッケージ screens を上げた後は、次のコマンドで共通の処理を取り込む。
+
+```sh
+node .claude/skills/write-screen-spec/scripts/copy-screen-templates.mjs
+```
+
 ## spec を書くとき
 
 spec の節の構成と書き方は、スキル write-design-docs が持つ。このリポジトリだけの取り決めを次に書く。
