@@ -114,9 +114,9 @@
 
 `apps/corporate-site/src/` の中で、セクションを足す、並べ替える、ページを足すときに困る点を、重要な順に並べる。
 
-### 文言と連絡先が、content 層の外の 9 つのファイルに直接書いてある
+### 文言と連絡先が、content 層の外の、主な 9 つのファイルに直接書いてある
 
-- `context/codebase.md` は、文言とリストを content 層に置くと決めている。次のファイルは、見出し、リード、連絡先をコンポーネントに直接書いている。
+- `context/codebase.md` は、文言とリストを content 層に置くと決めている。次のファイルは、見出し、リード、連絡先をコンポーネントに直接書いている。取扱製品の索引と一覧のコンポーネントにも、操作の文言がある。全ては数えていない。
   - `apps/corporate-site/src/components/sections/contact/ContactSection.astro:13-54` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/contact/ContactSection.astro#L13-L54)
   - `apps/corporate-site/src/components/sections/company/CompanySection.astro:8-30` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/company/CompanySection.astro#L8-L30)
   - `apps/corporate-site/src/components/sections/company/CompanySection.astro:87-115` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/company/CompanySection.astro#L87-L115)
