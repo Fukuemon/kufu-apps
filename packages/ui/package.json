@@ -31,7 +31,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "storybook": "storybook dev --host 127.0.0.1 --port 6006",
     "storybook:build": "storybook build",
-    "vrt:capture": "vitest run --project=storybook"
+    "vrt:capture": "vp test run --project=storybook"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -49,21 +49,20 @@
   },
   "devDependencies": {
     "@kufu/config": "workspace:*",
-    "@storybook/addon-docs": "10.5.9",
-    "@storybook/addon-vitest": "10.5.9",
-    "@storybook/react-vite": "^10.5.9",
+    "@storybook/addon-docs": "10.6.3",
+    "@storybook/addon-vitest": "10.6.3",
+    "@storybook/react-vite": "10.6.3",
     "@storycap-testrun/browser": "2.1.1",
     "@tailwindcss/vite": "^4.3.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "@vitest/browser": "4.1.11",
-    "@vitest/browser-playwright": "4.1.11",
+    "@vitest/browser": "5.0.5",
+    "@vitest/browser-playwright": "5.0.5",
     "playwright": "1.59.1",
-    "storybook": "^10.5.9",
+    "storybook": "10.6.3",
     "tailwindcss": "^4.3.1",
     "tsdown": "^0.16.6",
     "typescript": "^6.0.3",
-    "vite": "catalog:",
-    "vitest": "4.1.11"
+    "vite": "catalog:"
   }
 }
