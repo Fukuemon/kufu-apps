@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{i as t,r as n}from"./react-YokVTUP9.js";import{t as r}from"./jsx-runtime-MKhVqBIO.js";import{c as i,s as a}from"./blocks-T2XO9MED.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,p:`p`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`トークン/余白と角丸`}),`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{i as t,r as n}from"./react-ulw0kEkw.js";import{t as r}from"./jsx-runtime-MKhVqBIO.js";import{c as i,s as a}from"./blocks-DfzLIqix.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,p:`p`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`トークン/余白と角丸`}),`
 `,(0,c.jsx)(n.h1,{id:`余白と角丸`,children:`余白と角丸`}),`
 `,(0,c.jsxs)(n.p,{children:[`使う場面は、トークンの文書（`,(0,c.jsx)(n.code,{children:`packages/ui/design/tokens.md`}),`）の「レイアウト、角丸、影、動き」にある。値は `,(0,c.jsx)(n.code,{children:`src/tokens/theme.css`}),` と `,(0,c.jsx)(n.code,{children:`src/tokens/primitive.css`}),` にある。`]}),`
 `,(0,c.jsx)(n.h2,{id:`余白`,children:`余白`}),`

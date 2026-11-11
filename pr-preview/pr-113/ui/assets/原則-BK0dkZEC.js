@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{i as t,r as n}from"./react-YokVTUP9.js";import{t as r}from"./jsx-runtime-MKhVqBIO.js";import{c as i,s as a}from"./blocks-T2XO9MED.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,li:`li`,p:`p`,strong:`strong`,ul:`ul`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`はじめに/原則`}),`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{i as t,r as n}from"./react-ulw0kEkw.js";import{t as r}from"./jsx-runtime-MKhVqBIO.js";import{c as i,s as a}from"./blocks-DfzLIqix.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,li:`li`,p:`p`,strong:`strong`,ul:`ul`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`はじめに/原則`}),`
 `,(0,c.jsx)(n.h1,{id:`kufu-のデザインシステム`,children:`Kufu のデザインシステム`}),`
 `,(0,c.jsxs)(n.p,{children:[`Kufu のコーポレートサイトの画面を作る人が、画面を作る前に読むカタログ。
 `,(0,c.jsx)(n.code,{children:`packages/ui`}),` のトークンとコンポーネントの使い方を、story で示す。規則はデジタル庁デザインシステム（DADS）を元にし、Kufu の色、書体、ロゴを残した。

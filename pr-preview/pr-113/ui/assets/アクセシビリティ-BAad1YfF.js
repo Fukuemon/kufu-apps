@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{i as t,r as n}from"./react-YokVTUP9.js";import{t as r}from"./jsx-runtime-MKhVqBIO.js";import{c as i,s as a}from"./blocks-T2XO9MED.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,li:`li`,p:`p`,ul:`ul`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`はじめに/アクセシビリティ`}),`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{i as t,r as n}from"./react-ulw0kEkw.js";import{t as r}from"./jsx-runtime-MKhVqBIO.js";import{c as i,s as a}from"./blocks-DfzLIqix.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,li:`li`,p:`p`,ul:`ul`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`はじめに/アクセシビリティ`}),`
 `,(0,c.jsx)(n.h1,{id:`アクセシビリティ`,children:`アクセシビリティ`}),`
 `,(0,c.jsx)(n.p,{children:`基準と確認の方法は、DESIGN.md の「アクセシビリティ」の表にある。表は次の項目を持つ。`}),`
 `,(0,c.jsxs)(n.ul,{children:[`

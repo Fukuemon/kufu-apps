@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{i as t,r as n}from"./react-YokVTUP9.js";import{t as r}from"./jsx-runtime-MKhVqBIO.js";import{c as i,s as a}from"./blocks-T2XO9MED.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,p:`p`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`トークン/文字`}),`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{i as t,r as n}from"./react-ulw0kEkw.js";import{t as r}from"./jsx-runtime-MKhVqBIO.js";import{c as i,s as a}from"./blocks-DfzLIqix.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,p:`p`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`トークン/文字`}),`
 `,(0,c.jsx)(n.h1,{id:`文字`,children:`文字`}),`
 `,(0,c.jsxs)(n.p,{children:[`文字の大きさは、次のユーティリティで、大きさと行高をまとめて決める（`,(0,c.jsx)(n.code,{children:`TEXT-MIN-SIZE`}),`）。
 使う場面と、DADS から外れる点は、トークンの文書（`,(0,c.jsx)(n.code,{children:`packages/ui/design/tokens.md`}),`）の「文字」にある。値は `,(0,c.jsx)(n.code,{children:`src/tokens/semantic.css`}),` の `,(0,c.jsx)(n.code,{children:`--kufu-text-*`}),` にある。`]}),`

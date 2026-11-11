@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{i as t,r as n}from"./react-YokVTUP9.js";import{t as r}from"./jsx-runtime-MKhVqBIO.js";import{c as i,i as a,r as o,s}from"./blocks-T2XO9MED.js";function c(e){let n={code:`code`,h1:`h1`,h2:`h2`,p:`p`,...t(),...e.components};return(0,u.jsxs)(u.Fragment,{children:[(0,u.jsx)(s,{title:`トークン/色`}),`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{i as t,r as n}from"./react-ulw0kEkw.js";import{t as r}from"./jsx-runtime-MKhVqBIO.js";import{c as i,i as a,r as o,s}from"./blocks-DfzLIqix.js";function c(e){let n={code:`code`,h1:`h1`,h2:`h2`,p:`p`,...t(),...e.components};return(0,u.jsxs)(u.Fragment,{children:[(0,u.jsx)(s,{title:`トークン/色`}),`
 `,(0,u.jsx)(n.h1,{id:`色`,children:`色`}),`
 `,(0,u.jsxs)(n.p,{children:[`画面とコンポーネントは、セマンティックトークンのユーティリティだけを使う（`,(0,u.jsx)(n.code,{children:`COLOR-TOKEN`}),`）。
 名前と使う場面は、トークンの文書（`,(0,u.jsx)(n.code,{children:`packages/ui/design/tokens.md`}),`）の「色」の表にある。値は `,(0,u.jsx)(n.code,{children:`src/tokens/semantic.css`}),` が `,(0,u.jsx)(n.code,{children:`src/tokens/primitive.css`}),` を参照して決める。`]}),`
