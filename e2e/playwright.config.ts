@@ -40,6 +40,10 @@ export default defineConfig({
       name: "route-vrt",
       testDir: "./corporate-site",
       testMatch: "route-vrt.spec.ts",
+      // full-page 撮影は合成に時間がかかり、全体の 30 秒では足りない
+      timeout: 120_000,
+      // toHaveScreenshot は連続 2 枚が一致するまで撮り直すため、既定の 5 秒では足りなかった (実測)
+      expect: { timeout: 30_000 },
       // 既定の形はファイル名に project の名前を足す。project を分ける前に撮った baseline の名前のまま比べる
       snapshotPathTemplate:
         "{snapshotDir}/{testFileDir}/{testFileName}-snapshots/{arg}{-snapshotSuffix}{ext}",
