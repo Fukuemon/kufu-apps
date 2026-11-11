@@ -38,8 +38,24 @@ const ALLOW_MARK = "design-system-allow";
 
 // 見つけるユーティリティ。id はデザインシステムの文書の原則の ID、label は違反の行に出す説明。
 // test は、変種の配列（focus-visible:ring-2 なら ["focus-visible"]）と、変種を除いたユーティリティ（ring-2）を受け取る。
-// FOCUS-ONE は #80 で足す。SPACING-SCALE と MOTION-TOKEN は、DESIGN.md の確認の方法を決めるまで足さない
+// SPACING-SCALE と MOTION-TOKEN は、DESIGN.md の確認の方法を決めるまで足さない
 const RULES = [
+  {
+    id: "FOCUS-ONE",
+    label: "focus-ring のほかのフォーカスの書き方",
+    // 次の 4 つを見る。focus-ring は通す。
+    //   フォーカスの変種（focus:、focus-visible:、focus-within:、group-focus:、has-[:focus-visible]: など）の付いたユーティリティ
+    //   CSS のセレクタの :focus、:focus-visible、:focus-within（変種を除くと、この名前だけが残る）
+    //   outline のユーティリティ（outline-none、outline-2、outline-offset-2、outline-focus-outline など）。outline はフォーカスの表示にだけ使う
+    //   フォーカスのセマンティックトークンの色（border-focus-outline、ring-focus-halo/50 など）。この色は focus-ring だけが使う
+    // 見ないもの: ring-*（エラーの状態の ring を含むので、名前では止めない）と、JavaScript の focusin、.focus() の呼び出し
+    test: (variants, utility) =>
+      utility !== "focus-ring" &&
+      (variants.some((v) => /\bfocus(?:-visible|-within)?\b/.test(v)) ||
+        /^focus(?:-visible|-within)?$/.test(utility) ||
+        /^-?outline(?:-|$)/.test(utility) ||
+        /(?:^|-)focus-(?:outline|halo)(?:\/|$)/.test(utility)),
+  },
   {
     id: "TEXT-MIN-SIZE",
     label: "14px より小さい文字か、テーマ変数に無い文字の大きさ",

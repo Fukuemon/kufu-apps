@@ -67,7 +67,7 @@ pnpm check:design
 - `node scripts/check-contrast.mjs`: 通常の面のセマンティックトークンの組のコントラスト
 - `node scripts/check-contrast.mjs --root .surface-inverse <3 つのファイル>`: 暗い面の組のコントラスト
 - `node scripts/check-raw-values.mjs`: corporate-site と `packages/ui` のコードの、色の値とプリミティブトークンの名前
-- `node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md`: コードの、原則に反するユーティリティ。今の規則は `TEXT-MIN-SIZE` だけ
+- `node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md`: コードの、原則に反するユーティリティ。今の規則は `TEXT-MIN-SIZE` と `FOCUS-ONE`
 
 `check-utilities.mjs` の規則を直したら、`pnpm test` でテスト（`scripts/check-utilities.test.mjs`）も流す。
 
