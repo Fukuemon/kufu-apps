@@ -1,1 +1,0 @@
-import{t as e}from"./iframe-BMWM_Fuo.js";e();
