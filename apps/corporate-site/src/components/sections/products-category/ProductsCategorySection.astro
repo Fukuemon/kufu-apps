@@ -27,7 +27,7 @@ const categoryColumns = Array.from({ length: columnCount }, (_, index) =>
 
 <section
   id="products"
-  class="products-catalog reveal-section border-b border-border bg-muted"
+  class="products-catalog reveal-section border-b border-divider bg-surface-subtle"
   data-testid="home-section-products"
 >
   <div class="mx-auto grid w-full max-w-360 gap-14 px-5 py-14 sm:px-8 md:gap-16 md:py-20 lg:px-14">
@@ -46,7 +46,7 @@ const categoryColumns = Array.from({ length: columnCount }, (_, index) =>
         makerCountsByCategoryId={makerCountsByCategoryId}
       />
 
-      <div class="catalog-board border border-border bg-card p-4 md:p-7">
+      <div class="catalog-board border border-divider bg-surface p-4 md:p-7">
         <ol
           class="grid list-none gap-7 md:grid-cols-3 md:gap-12"
           data-testid="products-category-list"
@@ -56,7 +56,7 @@ const categoryColumns = Array.from({ length: columnCount }, (_, index) =>
               <li>
                 <ol class="grid list-none">
                   {column.map((category) => (
-                    <li class="border-t border-border last:border-b">
+                    <li class="border-t border-divider last:border-b">
                       <a
                         class="catalog-row group grid min-h-11 grid-cols-[4.5rem_1fr_auto] items-center gap-3 py-3 hover:text-primary"
                         href={`/products#${category.id}`}
@@ -67,7 +67,7 @@ const categoryColumns = Array.from({ length: columnCount }, (_, index) =>
                         <span class="font-serif text-[0.9375rem] font-semibold leading-normal">
                           {category.data.name}
                         </span>
-                        <span class="text-right text-[0.71875rem] text-muted-foreground">
+                        <span class="text-right text-[0.71875rem] text-text-secondary">
                           {makerCountsByCategoryId[category.id] ?? 0}社
                         </span>
                       </a>

@@ -15,9 +15,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./styles.css": "./src/styles/globals.css",
-    "./tokens.css": "./src/styles/tokens.css",
-    "./theme.css": "./src/styles/theme.css",
-    "./fonts.css": "./src/styles/fonts.css",
+    "./theme.css": "./src/tokens/theme.css",
+    "./fonts.css": "./src/tokens/fonts.css",
     "./components": "./src/components/index.ts",
     "./components/*": "./src/components/*.tsx",
     "./hooks": "./src/hooks/index.ts",

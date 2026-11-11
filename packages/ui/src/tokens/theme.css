@@ -1,0 +1,52 @@
+/*
+ * セマンティックトークンとプリミティブトークンを、Tailwind CSS v4 のユーティリティにする。
+ * 色は Tailwind のデフォルトを消し、ここに書いた名前だけを使えるようにする。色はセマンティックトークンだけを参照する。
+ * 使う側の CSS は `@import "tailwindcss";` の後にこのファイルを読み込む。
+ */
+
+@import "./semantic.css";
+
+/* 使う側の Tailwind に、packages/ui のコンポーネントが使うクラスを生成させる */
+@source "../components";
+
+@theme inline {
+  --font-sans: var(--kufu-primitive-font-family-sans);
+  --font-serif: var(--kufu-primitive-font-family-serif);
+  --font-mono: var(--kufu-primitive-font-family-mono);
+  --font-heading: var(--kufu-primitive-font-family-serif);
+
+  --color-*: initial;
+  --color-surface-canvas: var(--kufu-color-surface-canvas);
+  --color-surface: var(--kufu-color-surface);
+  --color-surface-subtle: var(--kufu-color-surface-subtle);
+  --color-surface-subtle-hover: var(--kufu-color-surface-subtle-hover);
+  --color-surface-media: var(--kufu-color-surface-media);
+  --color-overlay-panel: var(--kufu-color-overlay-panel);
+  --color-overlay-photo: var(--kufu-color-overlay-photo);
+  --color-text: var(--kufu-color-text);
+  --color-text-secondary: var(--kufu-color-text-secondary);
+  --color-text-inverse: var(--kufu-color-text-inverse);
+  --color-text-ghost: var(--kufu-color-text-ghost);
+  /* 枠の色は、名前の頭に border を付けない。border のユーティリティの名前に border が 2 回並ぶのを避けるためである */
+  --color-divider: var(--kufu-color-border);
+  --color-field: var(--kufu-color-border-field);
+  --color-primary: var(--kufu-color-primary);
+  --color-primary-soft: var(--kufu-color-primary-soft);
+  --color-focus-outline: var(--kufu-color-focus-outline);
+  --color-focus-halo: var(--kufu-color-focus-halo);
+  --color-danger: var(--kufu-color-danger);
+
+  /* 角丸は DADS の 4px と 8px。md と lg は、packages/ui のコンポーネントが使う段で、4px から計算する */
+  --radius-4: var(--kufu-primitive-border-radius-4);
+  --radius-8: var(--kufu-primitive-border-radius-8);
+  --radius-md: calc(var(--kufu-primitive-border-radius-4) * 0.8);
+  --radius-lg: var(--kufu-primitive-border-radius-4);
+}
+
+/* 写真の上に重ねる色。テーマ変数の --color-overlay-photo が background-color を、このユーティリティが background-image を塗り、2 枚を重ねた濃さで描く */
+@utility bg-overlay-photo {
+  background-image: linear-gradient(
+    var(--kufu-color-overlay-photo),
+    var(--kufu-color-overlay-photo)
+  );
+}

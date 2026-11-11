@@ -7,7 +7,7 @@
   --hero-bleed-mask: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.5) 22%,
+    rgba(0, 0, 0, 0.5) 22% /* design-system-allow: マスクの不透明度 */,
     black 44%
   );
 }
@@ -35,7 +35,7 @@ textarea,
 [data-testid="contact-section-info"],
 [data-testid="contact-form-slot"],
 [data-testid="company-access-map"] {
-  border-radius: var(--radius);
+  border-radius: var(--radius-4);
 }
 
 body {
@@ -67,5 +67,5 @@ a {
 
 [data-contact-cta],
 [data-contact-cta] * {
-  color: var(--primary-foreground) !important;
+  color: var(--kufu-color-text-inverse) !important;
 }

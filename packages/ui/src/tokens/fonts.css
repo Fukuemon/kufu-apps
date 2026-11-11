@@ -1,4 +1,4 @@
-/* Font-face imports for tokens.css font families. */
+/* primitive.css の書体の font-face を読み込む。document の head から読む。 */
 
 @import "@fontsource-variable/noto-sans-jp";
 @import "@fontsource-variable/noto-serif-jp";

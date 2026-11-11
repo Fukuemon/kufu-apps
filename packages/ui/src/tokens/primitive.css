@@ -1,0 +1,73 @@
+/*
+ * Kufu のプリミティブトークン。セマンティックトークン（semantic.css）とテーマ変数（theme.css）が参照する値だけを持つ。
+ * 値の出どころは 2 つあり、見出しのコメントで分ける（docs/adr/0027-design-tokens-three-layers.md）。
+ *   Kufu の値: Kufu の色、書体、動きの時間と緩急。
+ *   DADS の値: デジタル庁デザインシステムの @digital-go-jp/design-tokens 2.1.0 の dist/tokens.css からコピーした値。
+ *     DADS の --<名前> は --kufu-primitive-<名前> にした。新しい値が要るときは、DADS の同じバージョンから同じ規則の名前で足す。
+ * 出典: https://github.com/digital-go-jp/design-tokens
+ *
+ * MIT License
+ *
+ * Copyright (c) 2023 デジタル庁
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+:root {
+  /* Kufu の値: 色 */
+  --kufu-primitive-color-white: #ffffff;
+  --kufu-primitive-color-gray-50: #f7f8fa;
+  --kufu-primitive-color-gray-100: #eceff3;
+  --kufu-primitive-color-gray-200: #d7dee6;
+  --kufu-primitive-color-gray-300: #cbd2da;
+  --kufu-primitive-color-gray-500: #7c8694;
+  --kufu-primitive-color-gray-600: #5b6472;
+  --kufu-primitive-color-gray-800: #26323a;
+  --kufu-primitive-color-gray-900: #1f2933;
+  --kufu-primitive-color-gray-950: #111827;
+  --kufu-primitive-color-teal-300: #7cc6b6;
+  --kufu-primitive-color-teal-600: #006b6b;
+  --kufu-primitive-color-teal-900: #0a3d4a;
+  /* エラーの色。DADS の赤の階調に替えるまで、shadcn の既定の destructive の値を残す */
+  --kufu-primitive-color-red-legacy: oklch(0.577 0.245 27.325);
+
+  /* Kufu の値: 書体 */
+  --kufu-primitive-font-family-sans:
+    "Noto Sans JP Variable", system-ui, sans-serif;
+  --kufu-primitive-font-family-serif:
+    "Noto Serif JP Variable", "Hiragino Mincho ProN", serif;
+  --kufu-primitive-font-family-mono:
+    "Geist Mono Variable", ui-monospace, monospace;
+
+  /* Kufu の値: 動きの時間と緩急。DADS は motion のトークンを持たない */
+  --kufu-motion-fast: 0.2s;
+  --kufu-motion-medium: 0.35s;
+  --kufu-motion-slow: 0.7s;
+  --kufu-motion-drift: 0.9s; /* 大きい要素の緩やかな transform */
+  --kufu-motion-glide: 1.2s; /* carousel 等の移動 */
+  --kufu-motion-cue: 1.8s; /* ループ演出 */
+  --kufu-motion-stagger: 0.12s; /* 段差 delay */
+  --kufu-ease: ease;
+  --kufu-ease-out: ease-out;
+  --kufu-ease-in-out: ease-in-out;
+
+  /* DADS の値: 角丸 */
+  --kufu-primitive-border-radius-4: 0.25rem;
+  --kufu-primitive-border-radius-8: 0.5rem;
+}

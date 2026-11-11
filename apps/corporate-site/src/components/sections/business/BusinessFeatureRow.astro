@@ -30,7 +30,7 @@ const {
   imageLoading = "lazy",
 } = Astro.props;
 const mediaVariants = cva(
-  "business-media relative flex min-h-[18.75rem] items-end overflow-hidden bg-kufu-gray-800 p-5 min-[760px]:min-h-[27.5rem] min-[760px]:flex-[1_1_auto]",
+  "business-media relative flex min-h-[18.75rem] items-end overflow-hidden bg-surface-media p-5 min-[760px]:min-h-[27.5rem] min-[760px]:flex-[1_1_auto]",
   {
     variants: {
       mediaPosition: {
@@ -44,7 +44,7 @@ const mediaClass = mediaVariants({ mediaPosition });
 ---
 
 <article
-  class="business-row flex w-full flex-col gap-6 border-t border-border py-8 text-foreground last:border-b min-[760px]:min-h-[32rem] min-[760px]:flex-row min-[760px]:items-center min-[760px]:gap-14 min-[760px]:py-14"
+  class="business-row flex w-full flex-col gap-6 border-t border-divider py-8 text-text last:border-b min-[760px]:min-h-[32rem] min-[760px]:flex-row min-[760px]:items-center min-[760px]:gap-14 min-[760px]:py-14"
 >
   <div
     class="business-row-copy relative flex flex-col gap-4 min-[760px]:flex-[0_0_30rem] min-[760px]:w-120"
@@ -52,7 +52,7 @@ const mediaClass = mediaVariants({ mediaPosition });
     {
       number ? (
         <span
-          class="pointer-events-none absolute -top-8.5 -left-2.5 z-0 font-mono text-[7.5rem] font-medium leading-none text-ghost-foreground md:text-[8.75rem]"
+          class="pointer-events-none absolute -top-8.5 -left-2.5 z-0 font-mono text-[7.5rem] font-medium leading-none text-text-ghost md:text-[8.75rem]"
           aria-hidden="true"
         >
           {number}
@@ -70,14 +70,14 @@ const mediaClass = mediaVariants({ mediaPosition });
       {title}
     </h3>
     <p
-      class="relative z-1 text-muted-foreground text-[0.9375rem] leading-[1.75]"
+      class="relative z-1 text-text-secondary text-[0.9375rem] leading-[1.75]"
     >
       {description}
     </p>
     <ul class="relative z-1 flex flex-wrap gap-2 pt-1.5 list-none">
       {
         items.map((item) => (
-          <li class="business-tag bg-secondary px-3 py-1.5 text-[0.78125rem] leading-[1.4] text-foreground">
+          <li class="business-tag bg-surface-subtle px-3 py-1.5 text-[0.78125rem] leading-[1.4] text-text">
             {item}
           </li>
         ))
@@ -100,9 +100,9 @@ const mediaClass = mediaVariants({ mediaPosition });
         />
       ) : null
     }
-    <div class="absolute inset-0 bg-photo-overlay" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-overlay-photo" aria-hidden="true"></div>
     <div class="business-media-grid" aria-hidden="true"></div>
-    <span class="relative z-1 border border-kufu-gray-300/40 bg-kufu-gray-950/70 px-3 py-2 font-mono text-xs font-medium tracking-[0.13em] text-kufu-white">
+    <span class="surface-inverse relative z-1 border border-kufu-gray-300/40 bg-surface-canvas/70 px-3 py-2 font-mono text-xs font-medium tracking-[0.13em] text-text">
       {mediaLabel}
     </span>
   </div>

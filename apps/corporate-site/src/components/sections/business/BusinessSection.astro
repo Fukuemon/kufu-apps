@@ -12,7 +12,7 @@ const panels = [businessContent.customOrder, businessContent.smallWorks];
 
 <section
   id="business"
-  class="business-industrial reveal-section border-b border-border bg-card"
+  class="business-industrial reveal-section border-b border-divider bg-surface"
   data-testid="home-section-business"
 >
   <div class="mx-auto grid w-full max-w-360 gap-16 px-5 py-14 sm:px-8 md:gap-20 md:py-20 lg:px-14">
@@ -44,8 +44,8 @@ const panels = [businessContent.customOrder, businessContent.smallWorks];
     <div class="grid gap-6">
       {
         panels.map((panel) => (
-          <div class="custom-order-panel grid border border-border bg-card md:grid-cols-[13.125rem_1fr]">
-            <div class="border-b border-border px-5 py-5 md:border-b-0 md:border-r md:px-7 md:py-6">
+          <div class="custom-order-panel grid border border-divider bg-surface md:grid-cols-[13.125rem_1fr]">
+            <div class="border-b border-divider px-5 py-5 md:border-b-0 md:border-r md:px-7 md:py-6">
               <p class="font-mono text-[0.6875rem] font-medium tracking-[0.2em] text-primary">
                 {panel.eyebrow}
               </p>
@@ -57,7 +57,7 @@ const panels = [businessContent.customOrder, businessContent.smallWorks];
               {panel.items.map((item) => (
                 <div class="flex items-center gap-2.5">
                   <span class="h-0.5 w-3.5 bg-primary" aria-hidden="true"></span>
-                  <p class="min-w-0 text-[0.8125rem] leading-normal text-foreground">
+                  <p class="min-w-0 text-[0.8125rem] leading-normal text-text">
                     {item}
                   </p>
                 </div>

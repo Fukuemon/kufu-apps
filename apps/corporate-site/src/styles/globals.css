@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "@kufu/ui/tokens.css";
 @import "@kufu/ui/theme.css";
 @import "./base.css";
 @import "./components.css";
