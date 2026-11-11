@@ -33,10 +33,10 @@
 | 9    | 相談の内容             | `home-section-consultation` |
 | 11   | 事業の紹介             | `home-section-business`     |
 | 13   | 取扱製品カテゴリ       | `home-section-products`     |
-| 15   | カテゴリの索引         | `products-category-list`    |
-| 16   | 取扱製品ページへ       | `home-link-products`        |
-| 17   | 会社概要               | `home-section-company`      |
-| 18   | アクセスの地図         | `company-access-map`        |
-| 22   | フッター               | `site-footer`               |
+| 16   | カテゴリの索引         | `products-category-list`    |
+| 17   | 取扱製品ページへ       | `home-link-products`        |
+| 18   | 会社概要               | `home-section-company`      |
+| 19   | アクセスの地図         | `company-access-map`        |
+| 23   | フッター               | `site-footer`               |
 
 最初の画面のセクションの `home-section-hero` は、番号のない入れ物に付けているので、表に載せない。
