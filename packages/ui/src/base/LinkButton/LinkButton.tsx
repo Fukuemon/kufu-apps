@@ -5,7 +5,7 @@ import {
   buttonClassName,
   type ButtonSize,
   type ButtonVariant,
-} from "./button.js";
+} from "../Button/Button.js";
 
 type LinkButtonProps = Omit<React.ComponentProps<"a">, "className"> & {
   variant?: ButtonVariant;

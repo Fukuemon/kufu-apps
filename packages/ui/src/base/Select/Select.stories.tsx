@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { within } from "storybook/test";
 
-import { Select } from "./select.js";
-import { expectTargetSize } from "./target-size.js";
+import { Select } from "./Select.js";
+import { expectTargetSize } from "../../test/target-size.js";
 
 const meta = {
-  title: "UI/Select",
+  title: "コンポーネント/Base/Select",
   component: Select,
   decorators: [
     (Story) => (

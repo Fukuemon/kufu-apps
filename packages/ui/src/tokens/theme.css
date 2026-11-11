@@ -7,7 +7,7 @@
 @import "./semantic.css";
 
 /* 使う側の Tailwind に、packages/ui のコンポーネントが使うクラスを生成させる */
-@source "../components";
+@source "../base";
 
 @theme inline {
   --font-sans: var(--kufu-primitive-font-family-sans);

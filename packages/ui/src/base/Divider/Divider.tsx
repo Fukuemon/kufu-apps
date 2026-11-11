@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import type * as React from "react";
 
-type SeparatorProps = Omit<
+type DividerProps = Omit<
   React.ComponentProps<"hr">,
   "className" | "children"
 > & {
@@ -10,10 +10,10 @@ type SeparatorProps = Omit<
 };
 
 /** 内容の区切りの線。 */
-function Separator({ orientation = "horizontal", ...props }: SeparatorProps) {
+function Divider({ orientation = "horizontal", ...props }: DividerProps) {
   return (
     <hr
-      data-slot="separator"
+      data-slot="divider"
       aria-orientation={orientation}
       className={clsx(
         "shrink-0 overflow-visible border-0 bg-divider",
@@ -26,5 +26,5 @@ function Separator({ orientation = "horizontal", ...props }: SeparatorProps) {
   );
 }
 
-export { Separator };
-export type { SeparatorProps };
+export { Divider };
+export type { DividerProps };

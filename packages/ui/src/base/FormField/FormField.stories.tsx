@@ -1,17 +1,17 @@
 import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 
-import { FormField } from "./form-field.js";
-import { Input } from "./input.js";
-import { Select } from "./select.js";
-import { Textarea } from "./textarea.js";
+import { FormField } from "./FormField.js";
+import { TextInput } from "../TextInput/TextInput.js";
+import { Select } from "../Select/Select.js";
+import { Textarea } from "../Textarea/Textarea.js";
 
 const meta = {
-  title: "UI/FormField",
+  title: "コンポーネント/Base/FormField",
   component: FormField,
   args: {
     label: "Field label",
-    children: <Input placeholder="Input value" />,
+    children: <TextInput placeholder="Input value" />,
   },
   decorators: [
     (Story) => (
@@ -41,7 +41,7 @@ export const Default: Story = {
       htmlFor="field-default"
       description="Short help text for the input."
     >
-      <Input id="field-default" placeholder="Input value" />
+      <TextInput id="field-default" placeholder="Input value" />
     </FormField>
   ),
   // 補足だけがあるとき、欄の説明は補足の文になり、誤りと必須の状態は付かない。
@@ -64,7 +64,7 @@ export const Error: Story = {
       htmlFor="field-error"
       error="Enter a valid value."
     >
-      <Input id="field-error" defaultValue="Invalid value" />
+      <TextInput id="field-error" defaultValue="Invalid value" />
     </FormField>
   ),
   // 誤りだけがあるとき、欄に aria-invalid が付き、欄の説明は誤りの文になる。
@@ -80,7 +80,7 @@ export const Error: Story = {
 export const Disabled: Story = {
   render: () => (
     <FormField label="Field label" htmlFor="field-disabled">
-      <Input id="field-disabled" disabled placeholder="Disabled input" />
+      <TextInput id="field-disabled" disabled placeholder="Disabled input" />
     </FormField>
   ),
   // 補足も誤りも無いとき、aria-describedby を出さない。
@@ -101,7 +101,7 @@ export const ErrorWithDescription: Story = {
       description="Short help text for the input."
       error="Enter a valid value."
     >
-      <Input defaultValue="Invalid value" />
+      <TextInput defaultValue="Invalid value" />
     </FormField>
   ),
   // 補足と誤りの両方があるとき、欄の説明は補足の文に続けて誤りの文を読む。htmlFor を渡さなくても結ばれる。
@@ -124,7 +124,7 @@ export const Required: Story = {
       description="Short help text for the input."
       required
     >
-      <Input placeholder="Input value" />
+      <TextInput placeholder="Input value" />
     </FormField>
   ),
   // 必須は「必須」の文字で示し、欄に required を付ける。
@@ -141,7 +141,7 @@ export const Optional: Story = {
   decorators: [withBottomSpace],
   render: () => (
     <FormField label="Field label" optional>
-      <Input placeholder="Input value" />
+      <TextInput placeholder="Input value" />
     </FormField>
   ),
   play: async ({ canvasElement }) => {
@@ -151,6 +151,15 @@ export const Optional: Story = {
       canvas.getByRole("textbox", { name: /Field label/ }),
     ).not.toBeRequired();
   },
+};
+
+export const LongLabel: Story = {
+  decorators: [withBottomSpace],
+  render: () => (
+    <FormField label="ラベルが長文になった場合の折り返しを確認するための項目名 (必須・全角 40 文字程度)">
+      <TextInput placeholder="Input value" />
+    </FormField>
+  ),
 };
 
 export const SelectRequiredError: Story = {
@@ -205,11 +214,11 @@ export const TextareaRequiredError: Story = {
 };
 
 export const InputDefault: Story = {
-  render: () => <Input placeholder="Input value" />,
+  render: () => <TextInput placeholder="Input value" />,
 };
 
 export const InputError: Story = {
-  render: () => <Input aria-invalid="true" defaultValue="Invalid value" />,
+  render: () => <TextInput aria-invalid="true" defaultValue="Invalid value" />,
 };
 
 export const SelectDefault: Story = {

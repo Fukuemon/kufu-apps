@@ -1,9 +1,8 @@
 import { useId } from "react";
 import type * as React from "react";
 
-import { FormFieldContext } from "./form-field-context.js";
-import { Label } from "./label.js";
-import { Tag } from "./tag.js";
+import { FormFieldContext } from "./FormFieldContext.js";
+import { Tag } from "../Tag/Tag.js";
 
 type FormFieldProps = Omit<React.ComponentProps<"div">, "className"> & {
   label: React.ReactNode;
@@ -21,7 +20,7 @@ type FormFieldProps = Omit<React.ComponentProps<"div">, "className"> & {
 
 /**
  * 入力欄に、見出し、補足の文、誤りの文、必須と任意の印を添える枠。
- * 欄（`Input`、`Select`、`Textarea`）は `children` に渡す。属性は React の context で渡すので、欄は同じ React の木の中に置く。
+ * 欄（`TextInput`、`Select`、`Textarea`）は `children` に渡す。属性は React の context で渡すので、欄は同じ React の木の中に置く。
  */
 function FormField({
   label,
@@ -45,7 +44,11 @@ function FormField({
       value={{ controlId, describedBy, invalid: Boolean(error), required }}
     >
       <div data-slot="form-field" className="grid gap-2" {...props}>
-        <Label htmlFor={controlId}>
+        <label
+          data-slot="label"
+          htmlFor={controlId}
+          className="flex items-center gap-2 text-label font-medium select-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
+        >
           {label}
           {required ? (
             <Tag size="sm" tone="required">
@@ -56,7 +59,7 @@ function FormField({
               任意
             </Tag>
           ) : null}
-        </Label>
+        </label>
         {children}
         {description ? (
           <p id={descriptionId} className="text-caption text-text-secondary">

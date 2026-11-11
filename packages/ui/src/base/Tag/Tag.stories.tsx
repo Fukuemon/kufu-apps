@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Tag } from "./tag.js";
+import { Tag } from "./Tag.js";
 
 const meta = {
-  title: "UI/Tag",
+  title: "コンポーネント/Base/Tag",
   component: Tag,
   args: {
     children: "製品カテゴリ",
@@ -15,6 +15,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const Small: Story = {
+  args: {
+    size: "sm",
+  },
+};
 
 export const Tones: Story = {
   render: () => (

@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import { useFormFieldControl } from "./form-field-context.js";
+import { useFormFieldControl } from "../FormField/FormFieldContext.js";
 
 type TextareaProps = Omit<React.ComponentProps<"textarea">, "className">;
 

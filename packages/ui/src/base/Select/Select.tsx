@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import { useFormFieldControl } from "./form-field-context.js";
+import { useFormFieldControl } from "../FormField/FormFieldContext.js";
 
 type SelectProps = Omit<
   React.ComponentProps<"select">,

@@ -2,16 +2,16 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { expect, userEvent, within } from "storybook/test";
 
-import { Input } from "./input.js";
-import { expectTargetSize } from "./target-size.js";
+import { TextInput } from "./TextInput.js";
+import { expectTargetSize } from "../../test/target-size.js";
 
 const meta = {
-  title: "UI/Input",
-  component: Input,
+  title: "コンポーネント/Base/TextInput",
+  component: TextInput,
   args: {
     placeholder: "会社名を入力",
   },
-} satisfies Meta<typeof Input>;
+} satisfies Meta<typeof TextInput>;
 
 export default meta;
 

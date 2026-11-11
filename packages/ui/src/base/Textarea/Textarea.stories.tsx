@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { within } from "storybook/test";
 
-import { expectTargetSize } from "./target-size.js";
-import { Textarea } from "./textarea.js";
+import { expectTargetSize } from "../../test/target-size.js";
+import { Textarea } from "./Textarea.js";
 
 const meta = {
-  title: "UI/Textarea",
+  title: "コンポーネント/Base/Textarea",
   component: Textarea,
   args: {
     placeholder: "相談内容を入力",

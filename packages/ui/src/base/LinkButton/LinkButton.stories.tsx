@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { expect, userEvent, within } from "storybook/test";
 
-import { LinkButton } from "./link-button.js";
-import { expectTargetSize } from "./target-size.js";
+import { LinkButton } from "./LinkButton.js";
+import { expectTargetSize } from "../../test/target-size.js";
 
 const meta = {
-  title: "UI/LinkButton",
+  title: "コンポーネント/Base/LinkButton",
   component: LinkButton,
   args: {
     href: "#",

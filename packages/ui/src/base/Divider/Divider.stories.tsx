@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Separator } from "./separator.js";
+import { Divider } from "./Divider.js";
 
 const meta = {
-  title: "UI/Separator",
-  component: Separator,
-} satisfies Meta<typeof Separator>;
+  title: "コンポーネント/Base/Divider",
+  component: Divider,
+} satisfies Meta<typeof Divider>;
 
 export default meta;
 
@@ -17,7 +17,7 @@ export const Default: Story = {
       <p className="text-body text-text-secondary">
         Content above the separator.
       </p>
-      <Separator />
+      <Divider />
       <p className="text-body text-text-secondary">
         Content below the separator.
       </p>
@@ -29,7 +29,7 @@ export const Vertical: Story = {
   render: () => (
     <div className="flex h-12 items-center gap-4 text-body text-text-secondary">
       <span>First</span>
-      <Separator orientation="vertical" />
+      <Divider orientation="vertical" />
       <span>Second</span>
     </div>
   ),

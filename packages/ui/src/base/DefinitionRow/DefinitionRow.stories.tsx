@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { DefinitionRow } from "./definition-row.js";
+import { DefinitionRow } from "./DefinitionRow.js";
 
 const meta = {
-  title: "UI/DefinitionRow",
+  title: "コンポーネント/Base/DefinitionRow",
   component: DefinitionRow,
   args: {
     term: "Label",
