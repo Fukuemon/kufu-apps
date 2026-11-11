@@ -39,7 +39,7 @@ const currentPath = Astro.url.pathname;
     </main>
     <SiteFooter variant={footerVariant} />
     <script>
-      const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)"); // design-system-allow: 表示のきっかけ（IntersectionObserver）は CSS で止められない（MOTION-REDUCE）
       const revealTargets = document.querySelectorAll<HTMLElement>(
         ".reveal-section, .consultation-case, .business-row, .featured-category-card, .catalog-board, .custom-order-panel",
       );

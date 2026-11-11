@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 
 import { LinkButton } from "./link-button.js";
+import { expectTargetSize } from "./target-size.js";
 
 const meta = {
   title: "UI/LinkButton",
@@ -17,7 +18,11 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    await expectTargetSize(within(canvasElement).getByRole("link"));
+  },
+};
 
 export const Disabled: Story = {
   args: {
@@ -46,6 +51,11 @@ export const Cta: Story = {
       </LinkButton>
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    for (const link of within(canvasElement).getAllByRole("link")) {
+      await expectTargetSize(link);
+    }
+  },
 };
 
 // Tab キーでフォーカスした状態。focus-ring の表示を、VRT で見る。

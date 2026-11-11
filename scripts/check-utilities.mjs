@@ -39,7 +39,21 @@ const ALLOW_MARK = "design-system-allow";
 // 見つけるユーティリティ。id はデザインシステムの文書の原則の ID、label は違反の行に出す説明。
 // test は、変種の配列（focus-visible:ring-2 なら ["focus-visible"]）と、変種を除いたユーティリティ（ring-2）を受け取る。
 // SPACING-SCALE と MOTION-TOKEN は、DESIGN.md の確認の方法を決めるまで足さない
+// TARGET-SIZE は、描画した大きさを見ないと分からないので足さない。packages/ui の story の play で見る
 const RULES = [
+  {
+    id: "MOTION-REDUCE",
+    label: "画面とコンポーネントのコードの、動きを減らす設定の条件",
+    // 止め方は theme.css（EXCLUDES の tokens の下）の 1 か所に置く。次の 2 つを見る。
+    //   motion-reduce: と motion-safe: の変種（not-motion-safe: のように前に付けたものを含む）と、任意の変種に書いた prefers-reduced-motion の付いたユーティリティ
+    //   CSS の @media と JavaScript の matchMedia に書いた prefers-reduced-motion の条件（( の後ろの 1 語として読む）
+    test: (variants, utility) =>
+      variants.some(
+        (v) =>
+          /(?:^|-)motion-(?:reduce|safe)$/.test(v) ||
+          /prefers-reduced-motion/.test(v),
+      ) || /prefers-reduced-motion/.test(utility),
+  },
   {
     id: "FOCUS-ONE",
     label: "focus-ring のほかのフォーカスの書き方",
@@ -48,7 +62,7 @@ const RULES = [
     //   CSS のセレクタの :focus、:focus-visible、:focus-within（変種を除くと、この名前だけが残る）
     //   outline のユーティリティ（outline-none、outline-2、outline-offset-2、outline-focus-outline など）。outline はフォーカスの表示にだけ使う
     //   フォーカスのセマンティックトークンの色（border-focus-outline、ring-focus-halo/50 など）。この色は focus-ring だけが使う
-    // 見ないもの: ring-*（エラーの状態の ring を含むので、名前では止めない）と、JavaScript の focusin、.focus() の呼び出し
+    // 見ないもの: フォーカスの変種の無い ring-*（名前では、フォーカスの表示かを見分けられない）と、JavaScript の focusin、.focus() の呼び出し
     test: (variants, utility) =>
       utility !== "focus-ring" &&
       (variants.some((v) => /\bfocus(?:-visible|-within)?\b/.test(v)) ||

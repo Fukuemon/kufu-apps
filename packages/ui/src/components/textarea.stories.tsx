@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { within } from "storybook/test";
+
+import { expectTargetSize } from "./target-size.js";
 import { Textarea } from "./textarea.js";
 
 const meta = {
@@ -14,7 +17,11 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    await expectTargetSize(within(canvasElement).getByRole("textbox"));
+  },
+};
 
 export const Invalid: Story = {
   args: {

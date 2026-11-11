@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { within } from "storybook/test";
+
 import { Select } from "./select.js";
+import { expectTargetSize } from "./target-size.js";
 
 const meta = {
   title: "UI/Select",
@@ -26,6 +29,9 @@ export const Default: Story = {
       <option value="option-c">Option C</option>
     </Select>
   ),
+  play: async ({ canvasElement }) => {
+    await expectTargetSize(within(canvasElement).getByRole("combobox"));
+  },
 };
 
 export const Placeholder: Story = {

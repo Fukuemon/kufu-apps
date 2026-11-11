@@ -26,6 +26,7 @@
   --color-text: var(--kufu-color-text);
   --color-text-secondary: var(--kufu-color-text-secondary);
   --color-text-inverse: var(--kufu-color-text-inverse);
+  --color-text-inverse-secondary: var(--kufu-color-text-inverse-secondary);
   --color-text-ghost: var(--kufu-color-text-ghost);
   --color-text-secondary-tint: var(--kufu-color-text-secondary-tint);
   /* 枠の色は、名前の頭に border を付けない。border のユーティリティの名前に border が 2 回並ぶのを避けるためである */
@@ -90,13 +91,31 @@
  * フォーカスの表示。操作できる要素は、このユーティリティだけでフォーカスの表示を付ける（FOCUS-ONE）。
  * DADS の黒の outline（4px、2px 離す）と、その間を埋める Yellow-300 の 2px の影の 2 重にする。
  * outline の太さと位置はコンポーネントごとに変えない。
- * :focus-visible を 2 回書くのは、詳細度を上げるためである。エラーの状態の ring（aria-invalid:ring-3）も box-shadow を使い、同じ詳細度だと後に出る側が影を上書きして黄が消える。
+ * 影は box-shadow で描く。同じ要素に、@layer の外の CSS か、詳細度の高いセレクタで box-shadow を付けると、黄の影が上書きされて消える。
  */
 @utility focus-ring {
-  &:focus-visible:focus-visible {
+  &:focus-visible {
     outline: 4px solid var(--kufu-color-focus-outline);
     outline-offset: 2px;
     box-shadow: 0 0 0 2px var(--kufu-color-focus-halo);
+  }
+}
+
+/*
+ * 動きを減らす設定のときの止め方。画面とコンポーネントのコードに、この設定の条件を書かない（MOTION-REDUCE）。
+ * アニメーションは全て止め、遷移は透明度だけを残す。時間を 0 にする書き方は、残す透明度の変化も止めるので使わない。
+ * app の CSS が書いた animation、transition、scroll-behavior より優先させるため、!important を付ける。
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation: none !important;
+    transition-property: opacity !important;
   }
 }
 
