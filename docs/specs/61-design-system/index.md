@@ -263,6 +263,10 @@ scripts/
 | `eyebrow`    | mono の eyebrow と番号のラベル | 12px（DADS から外れる。論点 6） | 10〜12px     |
 | `watermark`  | ウォーターマークの数字         | Kufu の値（140px と 120px）     | 120px、140px |
 
+- T5 で決めた名前と段は、`packages/ui/design/tokens.md` の「文字」にある。名前は、`heading-36` のように DADS の段の px を付けた形にした。
+- 文字のスタイルの大きさと行高は、`semantic.css` に `--kufu-text-<名前>-font-size` と `--kufu-text-<名前>-line-height` で置き、プリミティブトークンを参照する。`theme.css` のテーマ変数は、この変数を参照する。
+  - ADR-0027 の層の表は、テーマ変数の文字がプリミティブトークンを直に参照するとしている。T5 では、`packages/ui` の外の CSS（`components.css`）から文字の大きさを読む名前が要るので、セマンティックトークンの層を挟んだ。外の CSS は、`check-raw-values.mjs` によりプリミティブトークンの名前を書けない。
+
 ### コンポーネントの一覧
 
 書き方と置き場の規則は、ADR-0028 にある。
