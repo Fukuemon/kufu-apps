@@ -64,13 +64,13 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
 <section class="bg-surface-subtle" data-testid="products-section-index">
   <div class="mx-auto grid w-full max-w-360 gap-8 px-5 py-14 sm:px-8 md:gap-10 md:py-20 lg:px-14">
     <div class="grid gap-4">
-      <p class="font-mono text-[0.6875rem] font-medium tracking-[0.22em] text-primary">
+      <p class="font-mono text-eyebrow font-medium tracking-[0.22em] text-primary">
         CATEGORY INDEX
       </p>
-      <h2 class="font-serif text-[2rem] font-semibold leading-[1.45] md:text-[2.625rem]">
+      <h2 class="font-serif text-heading-32 font-semibold leading-[1.45] md:text-heading-45">
         取扱製品カテゴリ
       </h2>
-      <p class="max-w-180 text-[0.9375rem] leading-[1.75] text-text-secondary">
+      <p class="max-w-180 text-body leading-[1.75] text-text-secondary">
         製造現場の調達で相談が多い領域を18のカテゴリに整理し、各カテゴリの取扱メーカーを一覧にまとめています。
       </p>
     </div>
@@ -88,7 +88,7 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
     aria-label="カテゴリ一覧の先頭へ戻る"
     hidden
   >
-    <span class="font-mono text-base leading-none" aria-hidden="true">↑</span>
+    <span class="font-mono text-label leading-none" aria-hidden="true">↑</span>
     <span class="products-backtop-label">カテゴリ先頭へ</span>
   </button>
 </section>
@@ -96,19 +96,19 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
 <section class="surface-inverse bg-surface-canvas text-text">
   <div class="mx-auto grid w-full max-w-360 gap-8 px-5 py-16 sm:px-8 md:grid-cols-[1fr_auto] md:items-center lg:px-14">
     <div class="grid gap-3">
-      <p class="font-mono text-[0.6875rem] font-medium tracking-[0.22em] text-primary-soft">
+      <p class="font-mono text-eyebrow font-medium tracking-[0.22em] text-primary-soft">
         MAKER SEARCH
       </p>
-      <h2 class="font-serif text-[2rem] font-semibold leading-normal">
+      <h2 class="font-serif text-heading-32 font-semibold leading-normal">
         掲載のないメーカー・型番も確認します。
       </h2>
-      <p class="max-w-180 text-sm leading-[1.8] text-kufu-gray-200">
+      <p class="max-w-180 text-body leading-[1.8] text-kufu-gray-200">
         メーカー名、型番、数量、希望納期が分かる場合は、問い合わせ時にご記入ください。代替品や別作加工の可否も含めて確認します。
       </p>
     </div>
     <ContactCtaLink href="/contact" size="lg">
       お問い合わせ・お見積り
-      <span class="font-mono text-xs" aria-hidden="true">→</span>
+      <span class="font-mono" aria-hidden="true">→</span>
     </ContactCtaLink>
   </div>
 </section>

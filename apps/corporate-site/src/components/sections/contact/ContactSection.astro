@@ -5,18 +5,18 @@ import { Button, Tag } from "@kufu/ui";
 <section class="bg-surface-canvas">
   <div class="mx-auto grid w-full max-w-360 gap-8 px-5 pb-18 pt-12 sm:px-8 md:gap-10 lg:px-14">
     <div class="grid gap-4">
-      <nav class="flex gap-2 font-mono text-[0.6875rem] tracking-[0.14em] text-text-secondary" aria-label="パンくず">
+      <nav class="flex gap-2 font-mono text-label tracking-[0.14em] text-text-secondary" aria-label="パンくず">
         <a href="/">ホーム</a>
         <span>/</span>
         <span>お問い合わせ</span>
       </nav>
-      <h1 class="font-serif text-[2.5rem] font-semibold leading-tight md:text-[3.375rem]">
+      <h1 class="font-serif text-heading-36 font-semibold leading-tight md:text-display-57">
         お問い合わせ・お見積り
       </h1>
-      <p class="font-mono text-xs tracking-[0.2em] text-primary">
+      <p class="font-mono text-eyebrow tracking-[0.2em] text-primary">
         Contact &amp; Estimate
       </p>
-      <p class="max-w-190 text-base leading-[1.75] text-text-secondary">
+      <p class="max-w-190 text-body leading-[1.75] text-text-secondary">
         製品のお見積り、加工のご相談、掲載のないメーカー・製品のお取り寄せまで。お電話・FAX・メール・フォームよりお気軽にご連絡ください。
       </p>
     </div>
@@ -27,28 +27,28 @@ import { Button, Tag } from "@kufu/ui";
         data-testid="contact-section-info"
       >
         <div class="grid gap-1.5">
-          <p class="font-mono text-[0.6875rem] tracking-[0.16em] text-primary">Tel</p>
-          <a class="text-[0.9375rem] leading-[1.7]" href="tel:0794926465">
+          <p class="font-mono text-eyebrow tracking-[0.16em] text-primary">Tel</p>
+          <a class="text-body leading-[1.7]" href="tel:0794926465">
             079-492-6465
           </a>
         </div>
         <div class="grid gap-1.5">
-          <p class="font-mono text-[0.6875rem] tracking-[0.16em] text-primary">Fax</p>
-          <p class="text-[0.9375rem] leading-[1.7]">079-492-6429</p>
+          <p class="font-mono text-eyebrow tracking-[0.16em] text-primary">Fax</p>
+          <p class="text-body leading-[1.7]">079-492-6429</p>
         </div>
         <div class="grid gap-1.5">
-          <p class="font-mono text-[0.6875rem] tracking-[0.16em] text-primary">E-mail</p>
-          <a class="text-[0.9375rem] leading-[1.7]" href="mailto:fukuura@mist.ocn.ne.jp">
+          <p class="font-mono text-eyebrow tracking-[0.16em] text-primary">E-mail</p>
+          <a class="text-body leading-[1.7]" href="mailto:fukuura@mist.ocn.ne.jp">
             fukuura&#64;mist.ocn.ne.jp
           </a>
         </div>
         <div class="grid gap-1.5">
-          <p class="font-mono text-[0.6875rem] tracking-[0.16em] text-primary">所在地</p>
-          <p class="text-[0.9375rem] leading-[1.7]">
+          <p class="font-mono text-caption tracking-[0.16em] text-primary">所在地</p>
+          <p class="text-body leading-[1.7]">
             〒675-1114<br />兵庫県加古郡稲美町国安973番地の10
           </p>
         </div>
-        <p class="pt-2 text-sm leading-[1.75] text-text-secondary">
+        <p class="pt-2 text-caption leading-[1.75] text-text-secondary">
           受付時間 / 平日 9:00-18:00<br />
           お見積りはお電話・FAX・メールでも承ります。図面がある場合はメール添付いただくとスムーズです。
         </p>
@@ -60,49 +60,49 @@ import { Button, Tag } from "@kufu/ui";
         aria-label="問い合わせフォーム"
       >
         <div class="grid gap-4 md:grid-cols-2">
-          <label class="grid gap-2 text-[0.8125rem]">
+          <label class="grid gap-2 text-label">
             <span class="flex items-center gap-2">会社名<Tag size="sm" tone="required">必須</Tag></span>
-            <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-sm" type="text" name="company" required aria-required="true" />
+            <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-body-dense" type="text" name="company" required aria-required="true" />
           </label>
-          <label class="grid gap-2 text-[0.8125rem]">
+          <label class="grid gap-2 text-label">
             <span class="flex items-center gap-2">ご担当者名<Tag size="sm" tone="required">必須</Tag></span>
-            <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-sm" type="text" name="name" required aria-required="true" />
+            <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-body-dense" type="text" name="name" required aria-required="true" />
           </label>
         </div>
         <div class="grid gap-4 md:grid-cols-2">
-          <label class="grid gap-2 text-[0.8125rem]">
+          <label class="grid gap-2 text-label">
             <span class="flex items-center gap-2">メールアドレス<Tag size="sm" tone="required">必須</Tag></span>
-            <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-sm" type="email" name="email" required aria-required="true" />
+            <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-body-dense" type="email" name="email" required aria-required="true" />
           </label>
-          <label class="grid gap-2 text-[0.8125rem]">
+          <label class="grid gap-2 text-label">
             <span class="flex items-center gap-2">電話番号<Tag size="sm" tone="required">必須</Tag></span>
-            <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-sm" type="tel" name="phone" required aria-required="true" />
+            <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-body-dense" type="tel" name="phone" required aria-required="true" />
           </label>
         </div>
-        <label class="grid gap-2 text-[0.8125rem]">
+        <label class="grid gap-2 text-label">
           <span class="flex items-center gap-2">住所<Tag size="sm" tone="required">必須</Tag></span>
-          <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-sm" type="text" name="address" autocomplete="street-address" placeholder="〒675-1114 兵庫県加古郡稲美町国安973番地の10" required aria-required="true" />
+          <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-body-dense" type="text" name="address" autocomplete="street-address" placeholder="〒675-1114 兵庫県加古郡稲美町国安973番地の10" required aria-required="true" />
         </label>
         <div class="grid gap-4 md:grid-cols-2">
-          <label class="grid gap-2 text-[0.8125rem]">
+          <label class="grid gap-2 text-label">
             <span class="flex items-center gap-2">FAX番号<Tag size="sm" tone="optional">任意</Tag></span>
-            <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-sm" type="tel" name="fax" autocomplete="fax" />
+            <input class="min-h-12 border border-divider bg-surface-canvas px-3 text-body-dense" type="tel" name="fax" autocomplete="fax" />
           </label>
-          <label class="grid gap-2 text-[0.8125rem]">
+          <label class="grid gap-2 text-label">
             <span class="flex items-center gap-2">お問い合わせ種別<Tag size="sm" tone="optional">任意</Tag></span>
-            <select class="min-h-12 border border-divider bg-surface-canvas px-3 text-sm text-text-secondary" name="category">
+            <select class="min-h-12 border border-divider bg-surface-canvas px-3 text-body-dense text-text-secondary" name="category">
               <option>お見積り依頼（販売）</option>
               <option>加工のご相談</option>
               <option>その他</option>
             </select>
           </label>
         </div>
-        <label class="grid gap-2 text-[0.8125rem]">
+        <label class="grid gap-2 text-label">
           <span class="flex items-center gap-2">お問い合わせ内容<Tag size="sm" tone="required">必須</Tag></span>
-          <textarea class="min-h-40 border border-divider bg-surface-canvas p-3 text-sm leading-[1.75] text-text-secondary" name="message" required aria-required="true">製品名・型番・数量、加工内容（図面の有無）などをご記入ください。</textarea>
+          <textarea class="min-h-40 border border-divider bg-surface-canvas p-3 text-body-dense leading-[1.75] text-text-secondary" name="message" required aria-required="true">製品名・型番・数量、加工内容（図面の有無）などをご記入ください。</textarea>
         </label>
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <p class="text-[0.8125rem] text-text-secondary">
+          <p class="text-caption text-text-secondary">
             ※ こちらはデザイン確認用のフォーム枠です。
           </p>
           <Button type="button" variant="cta" size="cta-md">

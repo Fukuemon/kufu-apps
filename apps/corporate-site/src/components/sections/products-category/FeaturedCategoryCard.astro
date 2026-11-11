@@ -19,17 +19,17 @@ const { category, count, title, image } = Astro.props;
     {/* count の有無でフォントサイズ差による行高ずれが出ないよう leading-4 固定 */}
     <div class="flex items-center justify-between leading-4">
       <p
-        class="font-mono text-[0.6875rem] font-medium tracking-[0.09em] text-primary"
+        class="font-mono text-eyebrow font-medium tracking-[0.09em] text-primary"
       >
         {category}
       </p>
       {
         count ? (
-          <p class="text-[0.71875rem] text-text-secondary">{count}</p>
+          <p class="text-caption text-text-secondary">{count}</p>
         ) : null
       }
     </div>
-    <p class="text-[0.9375rem] font-semibold leading-normal text-text">
+    <p class="text-heading-16 font-semibold leading-normal text-text">
       {title}
     </p>
   </div>

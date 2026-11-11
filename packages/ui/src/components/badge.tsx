@@ -9,8 +9,8 @@ type BadgeTone = "default" | "required" | "optional";
 
 const sizeClassName: Record<BadgeSize, string> = {
   default:
-    "h-[30px] rounded-[4px] border border-transparent px-3 py-1.5 text-xs font-medium leading-[18px]",
-  sm: "h-auto rounded-[4px] border-0 px-1.5 py-[0.0625rem] text-[0.625rem] font-semibold leading-[1.4]",
+    "h-[30px] rounded-[4px] border border-transparent px-3 py-1.5 text-caption font-medium leading-[18px]",
+  sm: "h-auto rounded-[4px] border-0 px-1.5 py-[0.0625rem] text-caption font-semibold leading-[1.4]",
 };
 
 const toneClassName: Record<BadgeTone, string> = {
