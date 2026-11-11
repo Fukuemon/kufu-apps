@@ -8,7 +8,7 @@ type ButtonVariant = "default" | "cta";
 
 /**
  * ボタンの大きさ。default は 48px の高さの汎用のボタンである。
- * cta- の 4 つは、問い合わせへの導線の大きさで、最小の高さは sm が 40px、md が 48px、lg が 52px、hero が 54px である。
+ * cta- の 4 つは、問い合わせへの導線の大きさで、最小の高さは sm が 44px、md が 48px、lg が 52px、hero が 54px である。
  */
 type ButtonSize = "default" | "cta-sm" | "cta-md" | "cta-lg" | "cta-hero";
 
@@ -27,7 +27,7 @@ const sizeClassName: Record<ButtonSize, string> = {
   default:
     "h-12 gap-2.5 rounded-8 border-transparent px-[22px] text-label leading-5 font-medium",
   "cta-sm":
-    "h-auto min-h-10 gap-2 rounded-4 border-transparent px-5 text-label font-semibold hover:opacity-90",
+    "h-auto min-h-11 gap-2 rounded-4 border-transparent px-5 text-label font-semibold hover:opacity-90",
   "cta-md":
     "h-auto min-h-12 gap-2 rounded-4 border-transparent px-5 text-label font-semibold",
   "cta-lg":

@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 
 import { Input } from "./input.js";
+import { expectTargetSize } from "./target-size.js";
 
 const meta = {
   title: "UI/Input",
@@ -16,7 +17,11 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    await expectTargetSize(within(canvasElement).getByRole("textbox"));
+  },
+};
 
 export const Invalid: Story = {
   args: {
@@ -33,7 +38,8 @@ export const Focused: Story = {
   },
 };
 
-// エラーの欄でも、黄の影が aria-invalid の ring に上書きされないことを、VRT で見る。
+// エラーの欄でも、フォーカスの黒の線と黄の影が aria-invalid の ring に上書きされないことを確かめる。
+// 表示は欄の外へ広がり、内容の大きさで切る story の画像には写らないので、VRT ではなく計算したスタイルで見る。
 export const InvalidFocused: Story = {
   args: {
     "aria-invalid": true,
@@ -41,9 +47,29 @@ export const InvalidFocused: Story = {
   },
   play: async ({ canvasElement }) => {
     await userEvent.tab();
-    await expect(within(canvasElement).getByRole("textbox")).toHaveFocus();
+    const input = within(canvasElement).getByRole("textbox");
+    await expect(input).toHaveFocus();
+    // transition-colors が線の色を変える遷移の、終わりの色を見る
+    await Promise.all(input.getAnimations().map((a) => a.finished));
+    const line = resolveColor("--kufu-color-focus-outline"); // design-system-allow: focus-ring が出した色と比べる
+    const halo = resolveColor("--kufu-color-focus-halo"); // design-system-allow: focus-ring が出した色と比べる
+    const style = getComputedStyle(input);
+    await expect(style.outlineStyle).toBe("solid");
+    await expect(style.outlineWidth).toBe("4px");
+    await expect(style.outlineColor).toBe(line);
+    await expect(style.boxShadow).toContain(halo);
   },
 };
+
+// セマンティックトークンの色を、getComputedStyle が返す rgb() の形にする
+function resolveColor(token: string) {
+  const probe = document.createElement("span");
+  probe.style.color = `var(${token})`;
+  document.body.append(probe);
+  const color = getComputedStyle(probe).color;
+  probe.remove();
+  return color;
+}
 
 export const Disabled: Story = {
   args: {
