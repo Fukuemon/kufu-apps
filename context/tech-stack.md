@@ -7,7 +7,6 @@ governs:
   - mise.toml
   - package.json
   - pnpm-workspace.yaml
-  - turbo.json
   - vite.config.ts
 verified_commit: 81f85da2744f320f44040307f1ec854f705f7c79
 ---
@@ -24,7 +23,6 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 ツールごとの役割は次のとおり。
 
 - pnpm workspace: package を管理する。
-- Turborepo: ルートの script から `turbo run` で workspace のタスクを束ねる。
 - Astro: コーポレートサイトの framework として使う。
 - TypeScript: 言語として使う。
 - Vite+（`vite-plus`）: 同梱の oxfmt で整形し、同梱の oxlint で lint を掛ける。設定はルートの `vite.config.ts` の `fmt` と `lint` にある。
