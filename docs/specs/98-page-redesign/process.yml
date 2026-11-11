@@ -15,7 +15,7 @@ tasks: [design, impl, verify]
 
 progress:
   requirements: done
-  # 課題の調査と改善案まで。運営者が案を選んだ後に、選んだ案の画面の設計と分解を行う
+  # 運営者が案 A を選んだ。整えた案と画面仕様書を出し、残る論点の答えを待つ。答えの後に分解を行う
   design: in-review
   breakdown: not-started
   implementation: not-started
