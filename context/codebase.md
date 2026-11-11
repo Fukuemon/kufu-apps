@@ -96,7 +96,7 @@ dependency-cruiser と oxlint はどちらも `.astro` を解析しないため�
 - チェックは、上の 4 つ（`pages` から内部、section の間、`common` から `sections`、`index.ts` の公開面）を対象にする。
 - 対象の拡張子、構文、既知の非検出の範囲は、スクリプトと fixture のテストを正とする。
 - dependency-cruiser は、`.ts` と `.js` の層の package の境界、循環、宣言していない依存を受け持つ。
-- チェックは corporate-site の `lint` に含め、ルートの `pnpm lint`、lefthook の pre-commit、CI の 3 か所で実行する。
+- チェックは corporate-site の `check` に含め、ルートの `pnpm check`、lefthook の pre-commit、CI の 3 か所で実行する。
   - pre-commit は `--no-verify` で飛ばせるので、必ず通すチェックは CI である。
 
 層ごとに、してはいけないことは次のとおり。

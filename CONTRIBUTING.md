@@ -38,11 +38,11 @@ node .claude/hooks/docs/hooks/check-links.mjs
 
 ## E2E のテストを直すとき
 
-E2E は、workspace の `@kufu/e2e`（`e2e/`）にある。テストのコードは `e2e/tests/` の層に置き、書き方の規則は `pnpm lint` が流す。
+E2E は、workspace の `@kufu/e2e`（`e2e/`）にある。テストのコードは `e2e/tests/` の層に置き、書き方の規則は `pnpm check` が流す。
 
 ```sh
 pnpm e2e
-pnpm lint
+pnpm check
 pnpm typecheck
 ```
 
@@ -85,7 +85,7 @@ spec は issue の作業文書なので、issue を閉じるときに削除す�
 コミットと push の前に、lefthook が次を確認する。設定は `lefthook.yml` にある。
 
 - 保護するブランチへの直接のコミットと push を止める。
-- ステージしたファイルを oxfmt で整形し、`pnpm lint` を実行し、Markdown に textlint を掛ける。
+- ステージしたファイルを `vp fmt` で整形し、`pnpm check` を実行し、Markdown に textlint を掛ける。
 - commit-msg のフックで、commitlint がメッセージの形式を確認する。規則は `commitlint.config.mjs` にある。
 
 - 変更の分け方とメッセージの書き方は、スキル write-commit に従う。

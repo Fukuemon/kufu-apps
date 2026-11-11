@@ -8,6 +8,7 @@ governs:
   - package.json
   - pnpm-workspace.yaml
   - turbo.json
+  - vite.config.ts
 verified_commit: 81f85da2744f320f44040307f1ec854f705f7c79
 ---
 
@@ -26,9 +27,11 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - Turborepo: ルートの script から `turbo run` で workspace のタスクを束ねる。
 - Astro: コーポレートサイトの framework として使う。
 - TypeScript: 言語として使う。
-- oxlint: lint に使う。TypeScript を含む workspace では、`oxlint-tsgolint` で type-aware に実行する。
-  - eslint は、oxlint で足りないことを確認した場合だけ、段階的に併用する。
-- oxfmt: format に使う。prettier は入れない。
+- Vite+（`vite-plus`）: 同梱の oxfmt で整形し、同梱の oxlint で lint を掛ける。設定はルートの `vite.config.ts` の `fmt` と `lint` にある。
+  - 型を使う規則は、`lint.options.typeAware` で掛ける。
+  - Markdown も整形の対象にする。
+  - eslint は、oxlint で足りないことを確認した場合だけ、段階的に併用する。prettier は入れない。
+  - バージョンは、`pnpm-workspace.yaml` の catalog にある。`vite` も catalog で `@voidzero-dev/vite-plus-core` に置き換える。
 - Vitest: unit test に使う。
 - Storybook: `packages/ui` と、app の presentation のコンポーネントのレビューに使う。
 - Playwright: E2E と、route の VRT（`toHaveScreenshot`）に使う。E2E の workspace（`e2e/`、`@kufu/e2e`）で管理し、バージョンは `e2e/package.json` にある。
@@ -57,9 +60,8 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 
 - `pnpm dev`: すべての app を起動する。コーポレートサイトだけなら `pnpm dev:corporate` を使う。
 - `pnpm build`: すべての workspace をビルドする。
-- `pnpm lint`: lint を実行する。
+- `pnpm check`: ルートの `vp check` で全体の整形と lint を確認し、続けて `pnpm -r check` で workspace ごとのチェックを実行する。自動の修正は `pnpm check:fix`（`vp check --fix`）を使う。
 - `pnpm typecheck`: 型をチェックする。
-- `pnpm format:check`: format を確認する。書き換えるときは `pnpm format` を使う。
 - `pnpm test`: unit test を実行する。
 - `pnpm e2e`: E2E を実行する。`@kufu/e2e` の `e2e` の script を呼ぶ。デフォルトの対象は corporate-site である。
 - `pnpm storybook`: Storybook を起動する。`packages/ui` だけなら `pnpm storybook:ui`、corporate-site だけなら `pnpm storybook:corporate` を使う。
@@ -79,6 +81,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - Astro 7 の `astro preview` は、コーディングエージェントの中で動いていると判定すると、バックグラウンドに回ってすぐ終了する。
   - E2E の `e2e:serve` は、`--ignore-lock` を付けて前面で動かす。付けないと、Playwright の `webServer` が「exited early」で失敗する。
   - Astro を上げたときは、エージェントのセッションから `pnpm e2e` を流して確認する。
+- vite-plus を上げると、同梱の oxlint と oxfmt も一緒に上がる。上げたときは `pnpm check`、`pnpm test`、`pnpm build`、`pnpm storybook:build` を流して確認する。
 - それ以外のツールで、バージョンを上げるときに動かなくなりやすい箇所と確認の方法は、未定。
 
 ## Scaffolding

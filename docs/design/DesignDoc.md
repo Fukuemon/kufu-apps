@@ -49,7 +49,8 @@ ADR-0019: [コーポレートサイトを Astro の静的な生成で作る](../
 - UI はコーポレートサイトの中に置くことを第一の原則にし、複数の利用者がはっきりしたものを `packages/ui` へ移す。
   - デザイントークンは、最初から `packages/ui` を基準にする。
   - ADR-0007: [デザイントークンの構成](../adr/0007-design-token-architecture.md)
-- TypeScript、lint、format、test の設定は `packages/config` に集める。
+- 整形と lint の設定はルートの `vite.config.ts` に置く。
+  - ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](../adr/0025-vite-plus-toolchain.md)
 - pnpm workspace と Turborepo を使い、app と package の単位でタスクを実行する。
 - 基盤は Cloudflare の標準の機能で閉じ、独自のサーバーの運用を前提にしない。
 
@@ -95,9 +96,9 @@ ADR-0007: [デザイントークンの構成](../adr/0007-design-token-architect
 
 ### packages/config
 
-TypeScript、oxlint、Vitest のような、共有する価値の高い設定を集める。
+TypeScript と Vitest の、共有する価値の高い設定を集める。
 
-- 持たないもの: knip と dependency-cruiser の設定。リポジトリの全体を見るので、ルートに置く。
+- 持たないもの: 整形、lint、knip、dependency-cruiser の設定。リポジトリの全体を見るので、ルートに置く。
 - subpath の一覧は [context/conventions.md](../../context/conventions.md#shared-configuration) にある。
 
 ### e2e
@@ -162,7 +163,7 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 │   └── corporate-site/   # Astro のコーポレートサイト。DesignDoc.md を持つ
 ├── packages/
 │   ├── ui/               # デザイントークン、共有の UI、Storybook
-│   └── config/           # 共有の TypeScript、oxlint、Vitest の設定
+│   └── config/           # 共有の TypeScript と Vitest の設定
 ├── e2e/                  # @kufu/e2e。Playwright の設定、E2E のテストのコード、書き方の規則、route の VRT
 ├── docs/
 │   ├── PRD.md
@@ -172,5 +173,6 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 │   ├── adr/
 │   └── specs/            # issue ごとの作業の文書。issue を閉じるときに消す
 ├── context/
-└── scripts/              # リポジトリのチェックと VRT のスクリプト
+├── scripts/              # リポジトリのチェックと VRT のスクリプト
+└── vite.config.ts        # 整形と lint の設定（Vite+）
 ```
