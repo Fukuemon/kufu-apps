@@ -49,6 +49,12 @@
     <link href="./sb-addons/storybook-core-server-presets-0/common-manager-bundle.js" rel="modulepreload" />
     
     <link href="./sb-addons/docs-1/manager-bundle.js" rel="modulepreload" />
+    
+    <link href="./sb-addons/a11y-2/manager-bundle.js" rel="modulepreload" />
+    
+    <link href="./sb-addons/vitest-3/manager-bundle.js" rel="modulepreload" />
+    
+    <link href="./sb-addons/pseudo-states-4/manager-bundle.js" rel="modulepreload" />
        
 
     <style>
@@ -87,7 +93,14 @@
         
       
         
-          window['REFS'] = {};
+          window['REFS'] = {
+  "corporate-site": {
+    "title": "画面",
+    "url": "../corporate-site",
+    "id": "corporate-site",
+    "type": "unknown"
+  }
+};
         
       
         
@@ -140,6 +153,12 @@
         import './sb-addons/storybook-core-server-presets-0/common-manager-bundle.js';
       
         import './sb-addons/docs-1/manager-bundle.js';
+      
+        import './sb-addons/a11y-2/manager-bundle.js';
+      
+        import './sb-addons/vitest-3/manager-bundle.js';
+      
+        import './sb-addons/pseudo-states-4/manager-bundle.js';
       
 
       import './sb-manager/runtime.js';
