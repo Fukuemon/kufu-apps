@@ -55,9 +55,9 @@ const panels = [businessContent.customOrder, businessContent.smallWorks];
             </div>
             <div class="grid gap-x-7 gap-y-3 px-5 py-6 md:grid-cols-3 md:px-7">
               {panel.items.map((item) => (
-                <div class="flex items-center gap-2.5">
-                  <span class="h-0.5 w-3.5 bg-primary" aria-hidden="true"></span>
-                  <p class="min-w-0 text-body leading-normal text-text">
+                <div class="flex items-start gap-2.5 text-body leading-normal">
+                  <span class="mt-[calc(0.5lh-1px)] h-0.5 w-3.5 shrink-0 bg-primary" aria-hidden="true"></span>
+                  <p class="min-w-0 text-text">
                     {item}
                   </p>
                 </div>

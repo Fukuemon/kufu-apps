@@ -651,7 +651,7 @@
     display: flex;
     position: static;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     border-bottom: 0;
     background: transparent;
   }
@@ -664,5 +664,11 @@
   .flow-panel {
     position: sticky;
     top: 7rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .site-nav-menu {
+    gap: 1.5rem;
   }
 }
