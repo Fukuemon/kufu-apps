@@ -1,7 +1,5 @@
 # Kufu のデザインシステム
 
-Kufu のコーポレートサイトと共有の UI のデザインシステムの文書である。DADS の値をコピーして持ち、Kufu の色、書体、ロゴを残す。構成の判断は [ADR-0027](../../docs/adr/0027-design-tokens-three-layers.md)、[ADR-0028](../../docs/adr/0028-ui-components-native-elements.md)、[ADR-0029](../../docs/adr/0029-storybook-catalog.md)、[ADR-0030](../../docs/adr/0030-keep-kufu-identity.md) にある。カタログの URL は、公開先が決まったときに書く。
-
 <!-- 冒頭の 2 文から 3 文に、読む人、元にしたデザインシステム、構成の判断の ADR へのリンクを書く。カタログの URL と、ローカルで開くコマンドも書く -->
 
 ## 話題ごとの文書
