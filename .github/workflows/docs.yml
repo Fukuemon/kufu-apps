@@ -59,6 +59,9 @@ jobs:
       - run: node .claude/hooks/docs/hooks/check-history.mjs
       - run: node .claude/hooks/docs/hooks/check-links.mjs
 
+      # 画面仕様書の規約の点検。スクリプトは apm の配置先にある
+      - run: pnpm check:screens
+
       # 実装が変わった文書の一覧。失敗にはしない
       - run: node .claude/hooks/docs/hooks/list-drift.mjs
         continue-on-error: true

@@ -15,9 +15,14 @@ export default defineConfig({
       "pnpm-lock.yaml",
       // スキル setup-e2e-lint から写した規則。配布元と diff で比べるため、配布元のままの書式で残す
       "e2e/lint/e2e-authoring-rule.mjs",
+      // スキル write-screen-spec から写した雛形と共通の処理。整形すると、雛形を写し直すときに配布元との差分が出る
+      "docs/screens/_common/**",
+      "docs/screens/_template/**",
     ],
   },
   lint: {
+    // スキル write-screen-spec から写した共通の処理。配布元のまま残すので、このリポジトリの規則を掛けない
+    ignorePatterns: ["docs/screens/_common/**"],
     plugins: ["typescript"],
     categories: {
       correctness: "error",

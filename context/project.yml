@@ -10,6 +10,11 @@ docs:
 e2e:
   dir: e2e
 
+# パッケージ screens が読む。tokens_css と catalog_url は、design_system と同じく、足す条件が整うまで省く
+# e2e_dir は、E2E の testid を画面仕様書のモックと照らすと決めたときに足す
+screens:
+  dir: docs/screens
+
 # パッケージ design-system が読む。tokens_css と catalog_url は、足す条件が整うまで省く
 design_system: {}
 

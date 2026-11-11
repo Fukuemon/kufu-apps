@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><画面 ID> 入力のダイアログ</title>
+    <link rel="stylesheet" href="../../_common/mock.css" />
+    <link rel="stylesheet" href="../../_common/wireframe.css" />
+    <link rel="stylesheet" href="screen-id.css" />
+  </head>
+  <body data-view="desktop">
+    <div class="stage">
+      <div class="screen">
+        <div class="screen-body">
+          <!-- 画面を書く。構成要素の表の要素に data-m="<番号>" を、テストが指す要素に data-testid を付ける -->
+          <!-- 画面の中の操作は、data-go、data-toggle、data-choice、data-open と data-close で付ける。書き方は画面仕様書の規約の「画面の中の操作」にある -->
+          <main class="wf-page">
+            <h1 class="wf-heading">ページのタイトル</h1>
+            <div><span class="wf-btn wf-btn--primary" data-testid="<画面 ID>-new">登録</span></div>
+          </main>
+          <!-- 入力のダイアログの形。× を置かず、フッターの右に「キャンセル」と主ボタンを置く。形は画面仕様書の規約の「ダイアログ」にある -->
+          <div class="wf-overlay" tabindex="-1" data-m="1" data-go="01-initial.html"></div>
+          <div class="wf-dialog" role="dialog" aria-modal="true" aria-labelledby="form-title" data-testid="<画面 ID>-form-dialog">
+            <div class="wf-dialog__header">
+              <h2 class="wf-dialog__title" id="form-title" data-m="2">登録する</h2>
+            </div>
+            <div class="wf-dialog__body">
+              <div class="wf-field">
+                <span class="wf-label">名前</span>
+                <div class="wf-input wf-field__input" data-m="3" data-testid="<画面 ID>-form-name"><span class="wf-text"></span></div>
+                <span class="wf-hint">欄の下の補足</span>
+              </div>
+            </div>
+            <div class="wf-dialog__footer">
+              <span class="wf-btn" data-escape data-m="4" data-testid="<画面 ID>-form-cancel" data-go="01-initial.html">キャンセル</span>
+              <span class="wf-btn wf-btn--primary" data-m="5" data-testid="<画面 ID>-form-submit">登録する</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="markers"></div>
+    </div>
+    <script src="../../_common/mock.js"></script>
+    <script src="../../_common/interact.js"></script>
+  </body>
+</html>

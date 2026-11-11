@@ -10,6 +10,7 @@
     "check": "vp check && pnpm check:design && pnpm -r check",
     "check:design": "node scripts/check-contrast.mjs && node scripts/check-contrast.mjs --root .surface-inverse ./packages/ui/src/tokens/primitive.css ./packages/ui/src/tokens/semantic.css ./packages/ui/src/tokens/surface-inverse.css && node scripts/check-raw-values.mjs && node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md",
     "check:fix": "vp check --fix",
+    "check:screens": "node .claude/skills/write-screen-spec/scripts/check-screens.mjs",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test && node --test scripts/check-utilities.test.mjs",
     "e2e": "pnpm --filter @kufu/e2e e2e",

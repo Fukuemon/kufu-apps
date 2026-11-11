@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>contact-info 初期表示</title>
+    <link rel="stylesheet" href="../../_common/mock.css" />
+    <link rel="stylesheet" href="../../_common/wireframe.css" />
+    <link rel="stylesheet" href="contact-info.css" />
+  </head>
+  <body data-view="desktop">
+    <div class="stage">
+      <div class="screen">
+        <div class="screen-body cs-body">
+          <header
+            class="wf-site-header cs-header"
+            data-m="1"
+            data-testid="site-header"
+          >
+            <strong class="wf-site-header__brand">株式会社サンプル</strong>
+            <button
+              type="button"
+              class="wf-btn wf-btn--icon cs-nav-toggle"
+              data-m="3"
+              data-testid="site-nav-toggle"
+              data-open="nav"
+              aria-expanded="false"
+              aria-label="メニュー"
+            >
+              ≡
+            </button>
+            <nav
+              class="cs-nav"
+              data-m="2"
+              data-testid="site-nav-menu"
+              data-panel="nav"
+            >
+              <a
+                data-testid="site-nav-home"
+                data-go="../../site-home_トップ/mocks/01-initial.html"
+                >トップ</a
+              >
+              <a
+                data-testid="site-nav-business"
+                data-go="../../site-home_トップ/mocks/01-initial.html"
+                >事業内容</a
+              >
+              <a
+                data-testid="site-nav-products"
+                data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                >取扱製品</a
+              >
+              <a
+                data-testid="site-nav-company"
+                data-go="../../site-home_トップ/mocks/01-initial.html"
+                >会社概要</a
+              >
+              <a
+                class="wf-btn wf-btn--primary"
+                data-m="4"
+                data-testid="site-nav-contact"
+                data-go="01-initial.html"
+                >お問い合わせ</a
+              >
+            </nav>
+          </header>
+          <main>
+            <section class="cs-section">
+              <div class="wf-stack">
+                <nav class="wf-label" data-m="5">トップ / お問い合わせ</nav>
+                <h1 class="cs-h1" data-m="6">お問い合わせ・お見積り</h1>
+                <p><span class="wf-text wf-text--full"></span></p>
+                <p><span class="wf-text wf-text--l"></span></p>
+              </div>
+              <div class="cs-two">
+                <div
+                  class="wf-panel cs-pad wf-stack"
+                  data-m="7"
+                  data-testid="contact-section-info"
+                >
+                  <span class="wf-label">Tel</span
+                  ><a class="cs-big" data-m="8">000-000-0000</a
+                  ><small>受付時間 / 平日 9:00-18:00</small>
+                  <span class="wf-label">Fax</span><span>000-000-0001</span>
+                  <span class="wf-label">E-mail</span
+                  ><a class="cs-big" data-m="9">info@example.com</a>
+                  <span class="wf-label">所在地</span
+                  ><span>〒000-0000 サンプル県サンプル市 0-0-0</span>
+                </div>
+                <div
+                  class="wf-panel cs-pad wf-fields"
+                  data-m="10"
+                  data-testid="contact-form-slot"
+                >
+                  <div class="wf-row">
+                    <label class="wf-field"
+                      >会社名<span class="wf-input"></span></label
+                    ><label class="wf-field"
+                      >ご担当者名<span class="wf-input"></span
+                    ></label>
+                  </div>
+                  <div class="wf-row">
+                    <label class="wf-field"
+                      >メールアドレス<span class="wf-input"></span></label
+                    ><label class="wf-field"
+                      >電話番号<span class="wf-input"></span
+                    ></label>
+                  </div>
+                  <label class="wf-field"
+                    >住所<span class="wf-input"></span
+                  ></label>
+                  <label class="wf-field"
+                    >お問い合わせ内容<span
+                      class="wf-input wf-input--area"
+                    ></span
+                  ></label>
+                  <button
+                    type="button"
+                    class="wf-btn wf-btn--primary"
+                    data-m="11"
+                    aria-disabled="true"
+                  >
+                    送信する
+                  </button>
+                </div>
+              </div>
+            </section>
+          </main>
+          <footer class="cs-footer" data-m="12" data-testid="site-footer">
+            <div>
+              <strong>株式会社サンプル</strong>
+              <p><span class="wf-text wf-text--l"></span></p>
+            </div>
+            <div class="wf-stack">
+              <span>事業内容</span><span>取扱製品</span><span>会社概要</span
+              ><span>お問い合わせ・お見積り</span>
+            </div>
+            <div class="wf-stack">
+              <span>〒000-0000 サンプル県サンプル市 0-0-0</span
+              ><span>TEL 000-000-0000</span><span>FAX 000-000-0001</span>
+            </div>
+          </footer>
+        </div>
+      </div>
+      <div class="markers"></div>
+    </div>
+    <script src="../../_common/mock.js"></script>
+    <script src="../../_common/interact.js"></script>
+  </body>
+</html>
