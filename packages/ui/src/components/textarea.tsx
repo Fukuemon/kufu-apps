@@ -10,7 +10,7 @@ function Textarea(props: TextareaProps) {
   return (
     <textarea
       data-slot="textarea"
-      className="flex field-sizing-content min-h-36 w-full rounded-lg border border-field bg-transparent px-3.5 py-3.5 text-body-dense leading-[25px] transition-colors placeholder:text-text-secondary enabled:not-aria-invalid:hover:border-text focus-ring disabled:cursor-not-allowed disabled:bg-surface-subtle disabled:opacity-50 aria-invalid:border-danger aria-invalid:ring-3 aria-invalid:ring-danger/20"
+      className="flex field-sizing-content min-h-36 w-full rounded-lg border border-field bg-transparent px-3.5 py-3.5 text-body-dense leading-[25px] transition-colors placeholder:text-text-secondary enabled:not-aria-invalid:hover:border-text focus-ring disabled:cursor-not-allowed disabled:bg-surface-subtle disabled:opacity-50 aria-invalid:border-danger"
       {...props}
       {...control}
     />

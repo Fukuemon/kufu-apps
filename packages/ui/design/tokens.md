@@ -53,7 +53,8 @@
 - 色と太さは DADS のボタンのフォーカスの表示と同じで、DADS が変えないとする要件である。コンポーネントごとに変えない。
 - 表示は要素の外へ 6px 広がる（outline 4px と離す 2px）。祖先の `overflow` と画面の端で切れないかは、要素を置くときに確認する。
 - 暗い面の中では、黒の outline は `surface-canvas` に 1.18:1 で見分けられず、黄の影が表示を担う。明るい面では、黄の影は `surface` に 1.43:1 で見分けにくく、黒の outline が担う。このため、コントラストのチェックの組は、明るい面を `focus-outline`、暗い面を `focus-halo` にしている。
-- `focus-outline` と `focus-halo` は、`focus-ring` のほかに使わない。入力欄の枠の色を替える、`ring` を足すといった書き方は `FOCUS-ONE` のチェックが止める。エラーの状態の `aria-invalid:ring-*` は止めない（#81）。
+- `focus-outline` と `focus-halo` は、`focus-ring` のほかに使わない。フォーカスの変種で入力欄の枠の色を替える、`ring` を足すといった書き方は `FOCUS-ONE` のチェックが止める。
+- 入力欄の誤りの状態は、枠の色（`aria-invalid:border-danger`）だけで示し、`ring` を足さない。`ring` は `box-shadow` で描くので、`focus-ring` の黄の影と重なる。
 
 ## テーマ
 
@@ -64,14 +65,15 @@
 | 通常の面 | なし                               | `node scripts/check-contrast.mjs`                                                                                                                                                   |
 | 暗い面   | 要素に `.surface-inverse` を付ける | `node scripts/check-contrast.mjs --root .surface-inverse ./packages/ui/src/tokens/primitive.css ./packages/ui/src/tokens/semantic.css ./packages/ui/src/tokens/surface-inverse.css` |
 
-- 暗い面の条件では、暗い面に載る組だけを確認する。暗い面の中には白の面がなく、主の色の文字は `primary-soft` で書くためである。組は `scripts/check-contrast.mjs` の定数にある。
+- 暗い面の中に、明るい面（`surface`、`surface-subtle`）を置かない。暗い面の `text-secondary` は `gray-500` で、明るい面の上では 4.5:1 に届かないためである。
+- 暗い面の条件では、暗い面に載る組だけを確認する。暗い面の中に明るい面を置かず、主の色の文字は `primary-soft` で書くためである。組は `scripts/check-contrast.mjs` の定数にある。
 
 ### コントラストのチェックから外している組
 
-| 組                                                                                                                                          | 条件     | 比         | 外す理由                                                                                                               | 戻す時期                                               |
-| ------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| `text-secondary` と `surface`、`surface-subtle`                                                                                             | 暗い面   | 3.69、3.20 | 暗い面の `text-secondary` は `gray-500` で、明るい面に載せると 4.5:1 に届かない。今の暗い面の中に明るい面はない        | `gray-500` の文字を暗い面だけで使うよう直すとき（#81） |
-| `color-mix()` の式を持つ組（`overlay-panel`、`overlay-photo`、`text-ghost`、`surface-subtle-hover`、`primary-tint`、`text-secondary-tint`） | 通常の面 | 未確認     | チェックのスクリプトが `color-mix()` を色に解決できない。`text-ghost` は、ウォーターマークの数字で読ませる文字ではない | 未定                                                   |
+| 組                                                                                                                                          | 条件     | 比         | 外す理由                                                                                                                      | 戻す時期                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| `text-secondary` と `surface`、`surface-subtle`                                                                                             | 暗い面   | 3.69、3.20 | 暗い面の中に明るい面を置かない（「テーマ」）。暗い面の `text-secondary` は `gray-500` で、明るい面に載せると 4.5:1 に届かない | 暗い面の中に明るい面を置くとき |
+| `color-mix()` の式を持つ組（`overlay-panel`、`overlay-photo`、`text-ghost`、`surface-subtle-hover`、`primary-tint`、`text-secondary-tint`） | 通常の面 | 未確認     | チェックのスクリプトが `color-mix()` を色に解決できない。`text-ghost` は、ウォーターマークの数字で読ませる文字ではない        | 未定                           |
 
 ## 文字
 

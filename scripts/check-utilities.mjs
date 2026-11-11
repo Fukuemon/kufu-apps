@@ -59,7 +59,7 @@ const RULES = [
     //   CSS のセレクタの :focus、:focus-visible、:focus-within（変種を除くと、この名前だけが残る）
     //   outline のユーティリティ（outline-none、outline-2、outline-offset-2、outline-focus-outline など）。outline はフォーカスの表示にだけ使う
     //   フォーカスのセマンティックトークンの色（border-focus-outline、ring-focus-halo/50 など）。この色は focus-ring だけが使う
-    // 見ないもの: ring-*（エラーの状態の ring を含むので、名前では止めない）と、JavaScript の focusin、.focus() の呼び出し
+    // 見ないもの: フォーカスの変種の無い ring-*（名前では、フォーカスの表示かを見分けられない）と、JavaScript の focusin、.focus() の呼び出し
     test: (variants, utility) =>
       utility !== "focus-ring" &&
       (variants.some((v) => /\bfocus(?:-visible|-within)?\b/.test(v)) ||

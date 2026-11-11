@@ -17,7 +17,7 @@ function Select({ children, ...props }: SelectProps) {
   return (
     <span data-slot="select" className="relative inline-grid w-full">
       <select
-        className="peer h-12 w-full min-w-0 appearance-none rounded-lg border border-field bg-transparent py-3.5 pr-10 pl-3.5 text-body-dense leading-5 text-text transition-colors enabled:not-aria-invalid:hover:border-text focus-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-danger aria-invalid:ring-3 aria-invalid:ring-danger/20 [&:has(option[value='']:checked)]:text-text-secondary"
+        className="peer h-12 w-full min-w-0 appearance-none rounded-lg border border-field bg-transparent py-3.5 pr-10 pl-3.5 text-body-dense leading-5 text-text transition-colors enabled:not-aria-invalid:hover:border-text focus-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-danger [&:has(option[value='']:checked)]:text-text-secondary"
         {...props}
         {...control}
       >

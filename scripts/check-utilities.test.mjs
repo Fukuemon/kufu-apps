@@ -226,10 +226,9 @@ await test("--doc の文書が読めないか、値が無いときは 2", () => 
   }
 });
 
-await test("focus-ring だけなら FOCUS-ONE は 0。エラーの ring と focusin は見ない", () => {
+await test("focus-ring だけなら FOCUS-ONE は 0。変種の無い ring と focusin は見ない", () => {
   const r = run({
-    [`${UI}/a.tsx`]:
-      '<input className="focus-ring aria-invalid:ring-3 aria-invalid:ring-danger/20" />\n',
+    [`${UI}/a.tsx`]: '<input className="focus-ring ring-1 ring-divider" />\n',
     [`${SITE}/a.astro`]:
       '<a class="focus-ring hover:text-primary" href="/">x</a>\n<script>carousel.addEventListener("focusin", () => el.focus());</script>\n',
   });

@@ -38,7 +38,7 @@ export const Focused: Story = {
   },
 };
 
-// エラーの欄でも、フォーカスの黒の線と黄の影が aria-invalid の ring に上書きされないことを確かめる。
+// エラーの欄でも、フォーカスの黒の線と黄の影が出ることを確かめる。
 // 表示は欄の外へ広がり、内容の大きさで切る story の画像には写らないので、VRT ではなく計算したスタイルで見る。
 export const InvalidFocused: Story = {
   args: {
