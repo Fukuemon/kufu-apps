@@ -48,6 +48,14 @@ pnpm typecheck
 
 層、testid の名前、書き方の規則の更新の手順は、[context/testing/e2e.md](context/testing/e2e.md) にある。
 
+## デザインシステムを直すとき
+
+トークン、コンポーネント、デザインシステムの文書、カタログのページは、同じ変更で直す。書き方の規則は、スキル write-design-system と [DESIGN.md](packages/ui/DESIGN.md) にある。
+
+文書は `packages/ui/DESIGN.md` と `packages/ui/design/` にある。トークンの 3 つの層は `packages/ui/src/tokens/` にある。
+
+チェックのスクリプトは、まだ置いていない。置いたら、流すコマンドをこのセクションに書く。
+
 ## spec を書くとき
 
 spec の節の構成と書き方は、スキル write-design-docs が持つ。このリポジトリだけの取り決めを次に書く。

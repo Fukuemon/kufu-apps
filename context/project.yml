@@ -10,6 +10,9 @@ docs:
 e2e:
   dir: e2e
 
+# パッケージ design-system が読む。tokens_css と catalog_url は、足す条件が整うまで省く
+design_system: {}
+
 process:
   defaults:
     processes:

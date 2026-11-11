@@ -149,8 +149,18 @@ ADR-0008: [Astro と React island の方針](../docs/adr/0008-astro-react-island
 
 ## Placement Rules
 
+### デザインシステムの文書と 3 つの層
+
+- デザインシステムの文書は `packages/ui/DESIGN.md` と、`packages/ui/design/` の `tokens.md`、`components.md`、`catalog.md` に置く。
+- トークンの 3 つの層は `packages/ui/src/tokens/` に置く。
+  - プリミティブトークンは `primitive.css` に置く。接頭辞は `--kufu-primitive-` である。
+  - セマンティックトークンは `semantic.css` に置く。接頭辞は `--kufu-color-` である。
+  - テーマ変数は `theme.css` に置く。
+- 層の分け方は ADR-0027: [デザイントークンの 3 つの層](../docs/adr/0027-design-tokens-three-layers.md)にある。
+
 ### 新しいコンポーネント
 
+- 画面とコンポーネントのコードを書く前に、`packages/ui/DESIGN.md` と `packages/ui/design/` の 3 つの文書を全て読む。
 - 新しいコンポーネントは、まず section の中に置く。
 - app の中で複数の section か route が使うものは、`components/common/` へ移す。
 - 複数の app で使うものは、`packages/ui` へ移す。
