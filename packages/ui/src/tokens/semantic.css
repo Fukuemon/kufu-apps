@@ -46,7 +46,7 @@
 
   /* 枠: border は飾りの区切りの線、border-field は入力欄と押せるものの枠 */
   --kufu-color-border: var(--kufu-primitive-color-gray-300);
-  --kufu-color-border-field: var(--kufu-primitive-color-gray-300);
+  --kufu-color-border-field: var(--kufu-primitive-color-gray-600);
 
   /* 操作 */
   --kufu-color-primary: var(--kufu-primitive-color-teal-600);
@@ -59,8 +59,8 @@
   --kufu-color-focus-outline: var(--kufu-primitive-color-neutral-black);
   --kufu-color-focus-halo: var(--kufu-primitive-color-primitive-yellow-300);
 
-  /* 状態 */
-  --kufu-color-danger: var(--kufu-primitive-color-red-legacy);
+  /* 状態: エラーの文字と枠。DADS の Error-1（Red-800）は gray-50 と gray-100 の面で 4.5:1 に届かないので、Error-2（Red-900）に当てる（packages/ui/design/tokens.md） */
+  --kufu-color-danger: var(--kufu-primitive-color-primitive-red-900);
 
   /*
    * site の演出の線、影、色の付いた面。:root で値を決めるので、.surface-inverse の中で使っても暗い面の値にならない。

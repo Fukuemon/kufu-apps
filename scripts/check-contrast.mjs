@@ -43,6 +43,8 @@ const TEXT_PAIRS = INVERSE
       ...["surface", "surface-canvas", "surface-subtle"].flatMap((bg) => [
         ["text", bg],
         ["text-secondary", bg],
+        // 誤りの文
+        ["danger", bg],
       ]),
       ["primary", "surface"],
       ["primary", "surface-canvas"],
@@ -61,6 +63,11 @@ const NON_TEXT_PAIRS = INVERSE
       ["primary", "surface"],
       ["focus-outline", "surface"],
       ["focus-outline", "surface-canvas"],
+      // 入力欄の枠。デフォルト（border-field）、hover（text）、誤り（danger）の 3 つの色を、欄の面と、欄を置く画面の面の上で見る
+      ...["border-field", "text", "danger"].flatMap((fg) => [
+        [fg, "surface"],
+        [fg, "surface-canvas"],
+      ]),
     ];
 
 const MAX_DEPTH = 10;

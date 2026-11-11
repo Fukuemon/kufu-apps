@@ -21,15 +21,15 @@ const isFull = variant === "full";
           <p class="font-serif text-heading-22 font-semibold">
             {companyProfile.name}
           </p>
-          <p class="text-caption leading-normal text-kufu-gray-200">
+          <p class="text-caption leading-normal text-text-inverse-secondary">
             {companyProfile.tagline}
           </p>
         </div>
         <div class="grid gap-1.5 md:justify-items-end">
-          <p class="font-mono text-caption tracking-[0.14em] text-kufu-gray-200">
+          <p class="font-mono text-caption tracking-[0.14em] text-text-inverse-secondary">
             TEL {contactInfo.tel}
           </p>
-          <p class="text-caption text-kufu-gray-200">
+          <p class="text-caption text-text-inverse-secondary">
             {companyProfile.streetAddress}
           </p>
         </div>
@@ -43,13 +43,13 @@ const isFull = variant === "full";
       <p class="font-serif text-heading-16 font-semibold leading-normal tracking-[0.0625rem] text-primary-soft">
         {companyProfile.philosophy}
       </p>
-      <p class="max-w-75 text-caption leading-[1.9] text-kufu-gray-200">
+      <p class="max-w-75 text-caption leading-[1.9] text-text-inverse-secondary">
         機械工具と関連機器の販売、各種別作加工、小規模工事。兵庫県加古郡稲美町より、製造現場の調達と加工、設備の工事を支えます。
       </p>
     </div>
 
     <nav class="grid gap-3" aria-label="フッターナビゲーション">
-      <p class="font-mono text-eyebrow font-normal tracking-[0.18em] text-kufu-gray-500">
+      <p class="font-mono text-eyebrow font-normal tracking-[0.18em] text-text-secondary">
         SITEMAP
       </p>
       <a class="focus-ring footer-link" href="/#business">
@@ -67,19 +67,19 @@ const isFull = variant === "full";
     </nav>
 
     <div class="grid gap-3">
-      <p class="font-mono text-eyebrow font-normal tracking-[0.18em] text-kufu-gray-500">
+      <p class="font-mono text-eyebrow font-normal tracking-[0.18em] text-text-secondary">
         CONTACT
       </p>
-      <p class="text-caption leading-7 text-kufu-gray-200">
+      <p class="text-caption leading-7 text-text-inverse-secondary">
         {companyProfile.postalCode}
       </p>
-      <p class="text-caption leading-7 text-kufu-gray-200">
+      <p class="text-caption leading-7 text-text-inverse-secondary">
         {companyProfile.streetAddress}
       </p>
       <a class="focus-ring footer-link" href={`tel:${contactInfo.tel.replaceAll("-", "")}`}>
         TEL {contactInfo.tel}
       </a>
-      <p class="text-caption leading-7 text-kufu-gray-200">FAX {contactInfo.fax}</p>
+      <p class="text-caption leading-7 text-text-inverse-secondary">FAX {contactInfo.fax}</p>
       <a class="focus-ring footer-link" href={`mailto:${contactInfo.email}`}>
         {contactInfo.email}
       </a>

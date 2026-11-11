@@ -26,6 +26,7 @@
   --color-text: var(--kufu-color-text);
   --color-text-secondary: var(--kufu-color-text-secondary);
   --color-text-inverse: var(--kufu-color-text-inverse);
+  --color-text-inverse-secondary: var(--kufu-color-text-inverse-secondary);
   --color-text-ghost: var(--kufu-color-text-ghost);
   --color-text-secondary-tint: var(--kufu-color-text-secondary-tint);
   /* 枠の色は、名前の頭に border を付けない。border のユーティリティの名前に border が 2 回並ぶのを避けるためである */
