@@ -4,6 +4,8 @@ import { footerLink } from "../../selectors/home";
 
 test.describe("トップ", () => {
   test.describe("ヘッダーのナビ", () => {
+    test.use({ viewport: { width: 1280, height: 800 } });
+
     // ヘッダーとフッターに同じ文言のリンクが並び、role では一意にならないため testid で拾う
     test("デスクトップの幅で取扱製品とお問い合わせを順に押した場合、それぞれの画面が開くこと", async ({
       page,

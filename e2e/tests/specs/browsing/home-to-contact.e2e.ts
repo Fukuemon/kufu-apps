@@ -6,8 +6,8 @@ import {
 } from "../../selectors/products";
 
 test.describe("トップ", () => {
-  test.describe("取扱製品からお問い合わせまでの回遊", () => {
-    test("取扱製品の導線から検索してお問い合わせの導線を押した場合、検索の条件が URL に残り、お問い合わせが開くこと", async ({
+  test.describe("お問い合わせまでの回遊", () => {
+    test("取扱製品の導線から検索してお問い合わせの導線を押した場合、検索の条件が URL と読み直した後の検索欄に残り、空にすると消え、お問い合わせが開くこと", async ({
       page,
     }) => {
       await page.goto("/");
@@ -20,7 +20,9 @@ test.describe("トップ", () => {
 
       await test.step("メーカーの名前で検索すると、条件が URL に残る", async () => {
         await productsSearchBox(page).fill("住友重機械工業");
-        await expect(page).toHaveURL(/\/products\?q=/);
+        await expect(page).toHaveURL(
+          (url) => url.searchParams.get("q") === "住友重機械工業",
+        );
         await expect(productsSearchResult(page)).toContainText(
           "件のカテゴリが一致",
         );
