@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 
 import { FormField } from "./form-field.js";
@@ -25,6 +25,14 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+// VRT は内容の高さで撮るので、最後の行の下端が画像で切れる。足した story だけ、下に余白を置く。
+// 既存の story に付けると、baseline の画像が変わる。
+const withBottomSpace: Decorator = (Story) => (
+  <div className="pb-4">
+    <Story />
+  </div>
+);
 
 export const Default: Story = {
   render: () => (
@@ -86,6 +94,7 @@ export const Disabled: Story = {
 };
 
 export const ErrorWithDescription: Story = {
+  decorators: [withBottomSpace],
   render: () => (
     <FormField
       label="Field label"
@@ -108,6 +117,7 @@ export const ErrorWithDescription: Story = {
 };
 
 export const Required: Story = {
+  decorators: [withBottomSpace],
   render: () => (
     <FormField
       label="Field label"
@@ -128,6 +138,7 @@ export const Required: Story = {
 };
 
 export const Optional: Story = {
+  decorators: [withBottomSpace],
   render: () => (
     <FormField label="Field label" optional>
       <Input placeholder="Input value" />
@@ -143,6 +154,7 @@ export const Optional: Story = {
 };
 
 export const SelectRequiredError: Story = {
+  decorators: [withBottomSpace],
   render: () => (
     <FormField
       label="Field label"
@@ -169,6 +181,7 @@ export const SelectRequiredError: Story = {
 };
 
 export const TextareaRequiredError: Story = {
+  decorators: [withBottomSpace],
   render: () => (
     <FormField
       label="Field label"
