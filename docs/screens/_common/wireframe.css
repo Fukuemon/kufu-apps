@@ -865,3 +865,230 @@ body {
     width: calc(100% - 16px);
   }
 }
+
+/*
+ * コーポレートサイトの 3 つの画面が共に使う見た目（cs-*）。
+ * ヘッダー、フッター、セクション、問い合わせの帯を、箱と線で示す。
+ */
+.cs-body {
+  background: var(--wf-surface);
+}
+
+.cs-body a {
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.cs-body a.wf-btn,
+.cs-body a.wf-panel {
+  text-decoration: none;
+}
+
+.cs-header {
+  position: relative;
+}
+
+.cs-body .wf-undecided {
+  justify-self: start;
+  margin-bottom: 8px;
+}
+
+.cs-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cs-nav-toggle {
+  display: none;
+}
+
+.cs-section {
+  display: grid;
+  gap: 24px;
+  padding: 40px 24px;
+  border-bottom: 1px solid var(--wf-line-soft);
+}
+
+.cs-hero,
+.cs-two {
+  display: grid;
+  gap: 24px;
+}
+
+.cs-h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.3;
+}
+
+.cs-section-head {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+
+.cs-number {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.cs-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.cs-lines {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cs-lines > li {
+  display: grid;
+  gap: 6px;
+  padding: 12px 0;
+  border-top: 1px solid var(--wf-line-soft);
+}
+
+.cs-photo {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  color: var(--wf-muted);
+}
+
+.cs-pad {
+  padding: 16px;
+}
+
+.cs-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.cs-card {
+  display: grid;
+  gap: 8px;
+  padding: 8px;
+}
+
+.cs-thumb {
+  display: grid;
+  place-items: center;
+  height: 72px;
+  color: var(--wf-muted);
+}
+
+.cs-index {
+  display: grid;
+  gap: 8px;
+}
+
+.cs-band {
+  display: grid;
+  gap: 16px;
+  padding: 32px 24px;
+  background: var(--wf-fill-strong);
+}
+
+.cs-tel {
+  padding: 10px 14px;
+}
+
+.cs-big {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.cs-footer {
+  display: grid;
+  gap: 16px;
+  padding: 32px 24px;
+  background: var(--wf-fill);
+}
+
+.cs-makers,
+.cs-index-body {
+  display: none;
+}
+
+.cs-makers.is-open,
+.cs-index-body.is-open {
+  display: flex;
+}
+
+.cs-backtop {
+  margin: 16px 24px;
+  justify-self: end;
+}
+
+@container screen (width < 768px) {
+  .cs-nav-toggle {
+    display: inline-flex;
+  }
+
+  .cs-nav {
+    position: absolute;
+    top: 56px;
+    right: 0;
+    left: 0;
+    z-index: 2;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--wf-line);
+    background: var(--wf-surface);
+  }
+
+  .cs-nav.is-open {
+    display: flex;
+  }
+}
+
+@container screen (width >= 768px) {
+  .cs-hero,
+  .cs-two {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+  }
+
+  .cs-two--even {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+  }
+
+  .cs-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .cs-index {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cs-band,
+  .cs-footer {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  .cs-footer {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@container screen (width >= 1024px) {
+  .cs-index-toggle {
+    display: none;
+  }
+
+  .cs-index-body,
+  .cs-makers {
+    display: flex;
+  }
+}

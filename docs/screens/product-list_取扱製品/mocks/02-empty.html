@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>product-list 検索の結果が 0 件</title>
+    <link rel="stylesheet" href="../../_common/mock.css" />
+    <link rel="stylesheet" href="../../_common/wireframe.css" />
+    <link rel="stylesheet" href="product-list.css" />
+  </head>
+  <body data-view="desktop">
+    <div class="stage">
+      <div class="screen">
+        <div class="screen-body cs-body">
+          <header
+            class="wf-site-header cs-header"
+            data-m="1"
+            data-testid="site-header"
+          >
+            <strong class="wf-site-header__brand">株式会社サンプル</strong>
+            <button
+              type="button"
+              class="wf-btn wf-btn--icon cs-nav-toggle"
+              data-m="3"
+              data-testid="site-nav-toggle"
+              data-open="nav"
+              aria-expanded="false"
+              aria-label="メニュー"
+            >
+              ≡
+            </button>
+            <nav
+              class="cs-nav"
+              data-m="2"
+              data-testid="site-nav-menu"
+              data-panel="nav"
+            >
+              <a data-go="../../site-home_トップ/mocks/01-initial.html"
+                >トップ</a
+              >
+              <a data-go="../../site-home_トップ/mocks/01-initial.html"
+                >事業内容</a
+              >
+              <a aria-current="page" data-go="01-initial.html">取扱製品</a>
+              <a data-go="../../site-home_トップ/mocks/01-initial.html"
+                >会社情報</a
+              >
+              <a
+                class="wf-btn wf-btn--primary"
+                data-m="4"
+                data-testid="site-nav-contact"
+                data-go="../../contact-info_お問い合わせ/mocks/01-initial.html"
+                >お問い合わせ</a
+              >
+            </nav>
+          </header>
+          <main>
+            <section class="cs-section cs-hero">
+              <div class="wf-stack">
+                <nav class="wf-label" data-m="5">トップ / 取扱製品</nav>
+                <span class="wf-label wf-undecided">見出しの上のラベル</span>
+                <h1 class="cs-h1" data-m="6">
+                  製造現場に必要な製品を、確かなメーカー網で。
+                </h1>
+                <p><span class="wf-text wf-text--full"></span></p>
+                <p><span class="wf-text wf-text--l"></span></p>
+                <div class="cs-actions">
+                  <a
+                    class="wf-btn wf-btn--primary"
+                    data-m="7"
+                    data-testid="products-link-contact"
+                    data-go="../../contact-info_お問い合わせ/mocks/01-initial.html"
+                    >製品について相談する</a
+                  >
+                  <a class="wf-btn wf-btn--text" data-m="8"
+                    >カテゴリ一覧を見る</a
+                  >
+                </div>
+              </div>
+              <div class="wf-box cs-photo">写真</div>
+            </section>
+            <section class="cs-section">
+              <div class="wf-split">
+                <aside class="wf-panel cs-pad wf-stack" data-m="9">
+                  <button
+                    type="button"
+                    class="wf-btn wf-btn--text cs-index-toggle"
+                    data-open="index"
+                    aria-expanded="false"
+                  >
+                    カテゴリを探す
+                  </button>
+                  <div class="wf-stack cs-index-body" data-panel="index">
+                    <label class="wf-search" data-m="10"
+                      >カテゴリ・メーカー名で検索</label
+                    >
+                    <div class="cs-actions">
+                      <button type="button" class="wf-btn" data-m="11">
+                        すべて開く</button
+                      ><button type="button" class="wf-btn" data-m="12">
+                        すべて閉じる
+                      </button>
+                    </div>
+                    <a data-m="13">01 カテゴリ <small>00社</small></a>
+                    <a data-m="13">02 カテゴリ <small>00社</small></a>
+                    <a data-m="13">03 カテゴリ <small>00社</small></a>
+                    <a data-m="13">… 18 まで</a>
+                  </div>
+                </aside>
+                <div class="wf-stack">
+                  <p class="wf-message" data-m="14">
+                    該当するカテゴリ・メーカーが見つかりませんでした。検索条件を変えてお試しください。
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section class="cs-band" data-m="15">
+              <div>
+                <span class="wf-label wf-undecided">見出しの上のラベル</span>
+                <h2 class="wf-heading">
+                  掲載のないメーカー・型番も確認します。
+                </h2>
+                <p><span class="wf-text wf-text--full"></span></p>
+                <p><span class="wf-text wf-text--l"></span></p>
+              </div>
+              <div class="wf-stack">
+                <a
+                  class="wf-btn wf-btn--primary"
+                  data-m="16"
+                  data-go="../../contact-info_お問い合わせ/mocks/01-initial.html"
+                  >お問い合わせ・お見積り</a
+                >
+              </div>
+            </section>
+            <button type="button" class="wf-btn cs-backtop" data-m="17">
+              カテゴリ先頭へ
+            </button>
+          </main>
+          <footer class="cs-footer" data-m="18" data-testid="site-footer">
+            <div>
+              <strong>株式会社サンプル</strong>
+              <p><span class="wf-text wf-text--l"></span></p>
+            </div>
+            <div class="wf-stack">
+              <span>事業内容</span><span>取扱製品</span><span>会社概要</span
+              ><span>お問い合わせ・お見積り</span>
+            </div>
+            <div class="wf-stack">
+              <span>〒000-0000 サンプル県サンプル市 0-0-0</span
+              ><span>TEL 000-000-0000</span><span>FAX 000-000-0001</span>
+            </div>
+          </footer>
+        </div>
+      </div>
+      <div class="markers"></div>
+    </div>
+    <script src="../../_common/mock.js"></script>
+    <script src="../../_common/interact.js"></script>
+  </body>
+</html>

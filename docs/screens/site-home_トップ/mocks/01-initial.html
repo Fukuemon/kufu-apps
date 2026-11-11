@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>site-home 初期表示</title>
+    <link rel="stylesheet" href="../../_common/mock.css" />
+    <link rel="stylesheet" href="../../_common/wireframe.css" />
+    <link rel="stylesheet" href="site-home.css" />
+  </head>
+  <body data-view="desktop">
+    <div class="stage">
+      <div class="screen">
+        <div class="screen-body cs-body">
+          <header
+            class="wf-site-header cs-header"
+            data-m="1"
+            data-testid="site-header"
+          >
+            <strong class="wf-site-header__brand">株式会社サンプル</strong>
+            <button
+              type="button"
+              class="wf-btn wf-btn--icon cs-nav-toggle"
+              data-m="3"
+              data-testid="site-nav-toggle"
+              data-open="nav"
+              aria-expanded="false"
+              aria-label="メニュー"
+            >
+              ≡
+            </button>
+            <nav
+              class="cs-nav"
+              data-m="2"
+              data-testid="site-nav-menu"
+              data-panel="nav"
+            >
+              <a aria-current="page" data-go="01-initial.html">トップ</a>
+              <a data-go="01-initial.html">事業内容</a>
+              <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                >取扱製品</a
+              >
+              <a data-go="01-initial.html">会社情報</a>
+              <a
+                class="wf-btn wf-btn--primary"
+                data-m="4"
+                data-testid="site-nav-contact"
+                data-go="../../contact-info_お問い合わせ/mocks/01-initial.html"
+                >お問い合わせ</a
+              >
+            </nav>
+          </header>
+          <main>
+            <section class="cs-section cs-hero" data-testid="home-section-hero">
+              <div class="wf-stack">
+                <span class="wf-label wf-undecided">見出しの上のラベル</span>
+                <h1 class="cs-h1" data-m="5">
+                  機械工具の調達と、<br />特注加工から現場工事まで
+                </h1>
+                <p><span class="wf-text wf-text--full"></span></p>
+                <p><span class="wf-text wf-text--full"></span></p>
+                <p><span class="wf-text wf-text--l"></span></p>
+                <div class="cs-actions">
+                  <a
+                    class="wf-btn wf-btn--primary"
+                    data-m="7"
+                    data-testid="home-link-contact"
+                    data-go="../../contact-info_お問い合わせ/mocks/01-initial.html"
+                    >お見積り・お問い合わせ</a
+                  >
+                  <a
+                    class="wf-btn wf-btn--text"
+                    data-m="8"
+                    data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                    >取扱製品を見る</a
+                  >
+                </div>
+                <ul class="cs-lines" data-m="6">
+                  <li>
+                    <strong>見積もり・販売</strong
+                    ><span class="wf-text wf-text--full"></span>
+                  </li>
+                  <li>
+                    <strong>加工</strong
+                    ><span class="wf-text wf-text--full"></span>
+                  </li>
+                  <li>
+                    <strong>小規模工事</strong
+                    ><span class="wf-text wf-text--full"></span>
+                  </li>
+                </ul>
+              </div>
+              <div class="wf-box cs-photo">写真</div>
+            </section>
+
+            <section
+              class="cs-section"
+              data-m="9"
+              data-testid="home-section-consultation"
+            >
+              <div class="cs-section-head">
+                <span class="cs-number">00</span
+                ><span class="wf-label wf-undecided">見出しの上のラベル</span>
+                <h2 class="wf-heading">こんな相談に対応できます</h2>
+                <p><span class="wf-text wf-text--full"></span></p>
+                <p><span class="wf-text wf-text--l"></span></p>
+              </div>
+              <div class="cs-two">
+                <ul class="cs-lines">
+                  <li>
+                    <strong>相談の事例</strong
+                    ><span class="wf-text wf-text--full"></span>
+                  </li>
+                  <li>
+                    <strong>相談の事例</strong
+                    ><span class="wf-text wf-text--full"></span>
+                  </li>
+                  <li>
+                    <strong>相談の事例</strong
+                    ><span class="wf-text wf-text--full"></span>
+                  </li>
+                  <li>
+                    <strong>相談の事例</strong
+                    ><span class="wf-text wf-text--full"></span>
+                  </li>
+                </ul>
+                <aside class="wf-panel cs-pad" data-m="10">
+                  <h3 class="wf-heading">相談から納品まで</h3>
+                  <ol>
+                    <li>相談</li>
+                    <li>調査・提案</li>
+                    <li>見積・手配</li>
+                    <li>納品</li>
+                  </ol>
+                </aside>
+              </div>
+            </section>
+
+            <section
+              class="cs-section"
+              data-m="11"
+              data-testid="home-section-business"
+            >
+              <div class="cs-section-head">
+                <span class="cs-number">01</span
+                ><span class="wf-label wf-undecided">見出しの上のラベル</span>
+                <h2 class="wf-heading">販売と加工、小規模工事の三本柱</h2>
+                <p><span class="wf-text wf-text--full"></span></p>
+                <p><span class="wf-text wf-text--l"></span></p>
+              </div>
+              <div class="cs-two cs-two--even">
+                <div class="wf-stack">
+                  <h3 class="wf-heading">見積もり・販売</h3>
+                  <p><span class="wf-text wf-text--full"></span></p>
+                  <p><span class="wf-text wf-text--l"></span></p>
+                  <div class="wf-chips">
+                    <span class="wf-chip">タグ</span
+                    ><span class="wf-chip">タグ</span
+                    ><span class="wf-chip">タグ</span>
+                  </div>
+                </div>
+                <div class="wf-box cs-photo">写真</div>
+              </div>
+              <div class="cs-two cs-two--even">
+                <div class="wf-box cs-photo">写真</div>
+                <div class="wf-stack">
+                  <h3 class="wf-heading">加工</h3>
+                  <p><span class="wf-text wf-text--full"></span></p>
+                  <p><span class="wf-text wf-text--l"></span></p>
+                  <div class="wf-chips">
+                    <span class="wf-chip">タグ</span
+                    ><span class="wf-chip">タグ</span
+                    ><span class="wf-chip">タグ</span>
+                  </div>
+                </div>
+              </div>
+              <div class="wf-stack" data-m="12">
+                <div class="wf-panel cs-pad">
+                  <h3 class="wf-heading">別作・特注対応</h3>
+                  <p><span class="wf-text wf-text--full"></span></p>
+                  <p><span class="wf-text wf-text--l"></span></p>
+                </div>
+                <div class="wf-panel cs-pad">
+                  <h3 class="wf-heading">小規模工事 事例</h3>
+                  <p><span class="wf-text wf-text--l"></span></p>
+                </div>
+              </div>
+            </section>
+
+            <section
+              class="cs-section"
+              data-m="13"
+              data-testid="home-section-products"
+            >
+              <div class="cs-section-head">
+                <span class="cs-number">02</span
+                ><span class="wf-label wf-undecided">見出しの上のラベル</span>
+                <h2 class="wf-heading">取扱製品カテゴリ</h2>
+                <p><span class="wf-text wf-text--full"></span></p>
+                <p><span class="wf-text wf-text--l"></span></p>
+              </div>
+              <div class="cs-cards">
+                <a
+                  class="wf-panel cs-card"
+                  data-m="14"
+                  data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  ><span class="wf-box cs-thumb">写真</span>カテゴリ 17社</a
+                >
+                <a
+                  class="wf-panel cs-card"
+                  data-m="14"
+                  data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  ><span class="wf-box cs-thumb">写真</span>カテゴリ 20社</a
+                >
+                <a
+                  class="wf-panel cs-card"
+                  data-m="14"
+                  data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  ><span class="wf-box cs-thumb">写真</span>カテゴリ 29社</a
+                >
+                <a
+                  class="wf-panel cs-card"
+                  data-m="14"
+                  data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  ><span class="wf-box cs-thumb">写真</span>カテゴリ 14社</a
+                >
+              </div>
+              <div
+                class="wf-panel cs-pad cs-index"
+                data-m="15"
+                data-testid="products-category-list"
+              >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >01 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >02 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >03 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >04 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >05 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >06 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >07 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >08 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >09 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >10 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >11 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >12 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >13 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >14 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >15 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >16 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >17 カテゴリ <small>00社</small></a
+                >
+                <a data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                  >18 カテゴリ <small>00社</small></a
+                >
+              </div>
+              <a
+                class="wf-btn"
+                data-m="16"
+                data-testid="home-link-products"
+                data-go="../../product-list_取扱製品/mocks/01-initial.html"
+                >取扱製品ページへ</a
+              >
+            </section>
+
+            <section
+              class="cs-section"
+              data-m="17"
+              data-testid="home-section-company"
+            >
+              <div class="cs-section-head">
+                <span class="cs-number">03</span
+                ><span class="wf-label wf-undecided">見出しの上のラベル</span>
+                <h2 class="wf-heading">会社概要</h2>
+                <p><span class="wf-text wf-text--full"></span></p>
+                <p><span class="wf-text wf-text--l"></span></p>
+              </div>
+              <div class="wf-stack">
+                <h3 class="wf-heading">経営理念</h3>
+                <p><span class="wf-text wf-text--full"></span></p>
+                <p><span class="wf-text wf-text--l"></span></p>
+              </div>
+              <div class="cs-two cs-two--even">
+                <div class="wf-stack">
+                  <h3 class="wf-heading">基本情報</h3>
+                  <dl class="wf-rows">
+                    <div>
+                      <dt>会社名</dt>
+                      <dd>株式会社サンプル</dd>
+                    </div>
+                    <div>
+                      <dt>代表者</dt>
+                      <dd><span class="wf-text"></span></dd>
+                    </div>
+                    <div>
+                      <dt>所在地</dt>
+                      <dd><span class="wf-text wf-text--l"></span></dd>
+                    </div>
+                    <div>
+                      <dt>電話 / FAX</dt>
+                      <dd>000-000-0000</dd>
+                    </div>
+                  </dl>
+                </div>
+                <div class="wf-stack">
+                  <h3 class="wf-heading">ご挨拶</h3>
+                  <p><span class="wf-text wf-text--full"></span></p>
+                  <p><span class="wf-text wf-text--full"></span></p>
+                  <p><span class="wf-text wf-text--full"></span></p>
+                  <p><span class="wf-text wf-text--full"></span></p>
+                  <p><span class="wf-text wf-text--l"></span></p>
+                  <h3 class="wf-heading">アクセス</h3>
+                  <div
+                    class="wf-box cs-photo"
+                    data-m="18"
+                    data-testid="company-access-map"
+                  >
+                    地図
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="cs-band" data-m="19">
+              <div>
+                <span class="wf-label wf-undecided">見出しの上のラベル</span>
+                <h2 class="wf-heading">お問い合わせ・お見積り</h2>
+                <p><span class="wf-text wf-text--full"></span></p>
+                <p><span class="wf-text wf-text--l"></span></p>
+              </div>
+              <div class="wf-stack">
+                <a
+                  class="wf-btn wf-btn--primary"
+                  data-m="20"
+                  data-go="../../contact-info_お問い合わせ/mocks/01-initial.html"
+                  >お見積り・お問い合わせ</a
+                >
+                <a class="wf-panel cs-tel" data-m="21"
+                  >TEL 000-000-0000<br /><small
+                    >受付時間 / 平日 9:00-18:00</small
+                  ></a
+                >
+              </div>
+            </section>
+          </main>
+          <footer class="cs-footer" data-m="22" data-testid="site-footer">
+            <div>
+              <strong>株式会社サンプル</strong>
+              <p><span class="wf-text wf-text--l"></span></p>
+            </div>
+            <div class="wf-stack">
+              <span>事業内容</span><span>取扱製品</span><span>会社概要</span
+              ><span>お問い合わせ・お見積り</span>
+            </div>
+            <div class="wf-stack">
+              <span>〒000-0000 サンプル県サンプル市 0-0-0</span
+              ><span>TEL 000-000-0000</span><span>FAX 000-000-0001</span>
+            </div>
+          </footer>
+        </div>
+      </div>
+      <div class="markers"></div>
+    </div>
+    <script src="../../_common/mock.js"></script>
+    <script src="../../_common/interact.js"></script>
+  </body>
+</html>
