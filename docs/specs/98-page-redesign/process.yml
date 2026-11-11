@@ -15,7 +15,7 @@ tasks: [design, impl, verify]
 
 progress:
   requirements: done
-  # 運営者が論点を全て決めた。ADR-0037 の承認と、残る論点 3 つを待つ。分解はタスクの下書きまで行い、起票は運営者の確認の後
+  # 運営者が論点を全て決め、ADR-0037 を承認した。分解はタスクの下書きまで行い、起票は親のセッションが行う
   design: in-review
   breakdown: in-review
   implementation: not-started

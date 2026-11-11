@@ -96,7 +96,7 @@
   - `apps/corporate-site/src/components/common/SiteFooter.astro:61-63` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/common/SiteFooter.astro#L61-L63)
   - `apps/corporate-site/src/components/sections/products-detail/ProductsHero.astro:12-16` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/products-detail/ProductsHero.astro#L12-L16)
   - `apps/corporate-site/src/components/sections/contact/ContactSection.astro:8-12` / [GitHub](https://github.com/Fukuemon/kufu-apps/blob/6beb42f461260fc53745cfb172cfcb3a0a6e4001/apps/corporate-site/src/components/sections/contact/ContactSection.astro#L8-L12)
-- どちらの語にそろえるかは、文言の変更に当たるので、運営者が決める（[spec の本文](index.md) の Open Points）。
+- どちらの語にそろえるかは、文言の変更に当たるので、運営者が決めた（[spec の本文](index.md) の Decisions の決定 3）。
 
 ### 下層のページのフッターに、ほかのページへのリンクがない（導線）
 
