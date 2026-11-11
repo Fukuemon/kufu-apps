@@ -56,17 +56,20 @@ pnpm typecheck
 
 トークンの 3 つの層と、暗い面（`.surface-inverse`）のファイル `surface-inverse.css` は、`packages/ui/src/tokens/` にある。
 
-コントラストと色の値のチェックは、次のコマンドで流す。`pnpm check` と CI も、このコマンドを流す。
+コントラスト、色の値、原則に反するユーティリティのチェックは、次のコマンドで流す。`pnpm check` と CI も、このコマンドを流す。
 
 ```sh
 pnpm check:design
 ```
 
-`check:design` は、次の 3 つを順に流す。
+`check:design` は、次の 4 つを順に流す。
 
 - `node scripts/check-contrast.mjs`: 通常の面のセマンティックトークンの組のコントラスト
 - `node scripts/check-contrast.mjs --root .surface-inverse <3 つのファイル>`: 暗い面の組のコントラスト
 - `node scripts/check-raw-values.mjs`: corporate-site と `packages/ui` のコードの、色の値とプリミティブトークンの名前
+- `node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md`: コードの、原則に反するユーティリティ。今の規則は `TEXT-MIN-SIZE` だけ
+
+`check-utilities.mjs` の規則を直したら、`pnpm test` でテスト（`scripts/check-utilities.test.mjs`）も流す。
 
 チェックから外している組と理由は、[packages/ui/design/tokens.md](packages/ui/design/tokens.md) にある。
 
