@@ -61,6 +61,12 @@ test.describe("トップ", () => {
         page.getByTestId("home-section-consultation"),
       ).not.toContainText("CONSULTATION");
       await expect(company).not.toContainText("PHILOSOPHY");
+      await expect(page.getByTestId("site-nav-menu")).not.toContainText(
+        "BUSINESS",
+      );
+      await expect(page.getByTestId("site-footer")).not.toContainText(
+        "SITEMAP",
+      );
     });
 
     test("開いた場合、問い合わせの帯に、見出しと受付時間と、お問い合わせへのボタンと電話のリンクが出ること", async ({
@@ -97,6 +103,10 @@ test.describe("取扱製品", () => {
       await expect(productsCategoryArticles(page)).toHaveCount(18);
       await expect(productsText(page, "住友重機械工業（株）")).toBeVisible();
       await expect(productsText(page, "三菱電機（株）").first()).toBeVisible();
+      // 上の確認で一覧の描画を待ってから、番号の前の英字が無いことを見る
+      await expect(
+        page.getByTestId("products-section-index"),
+      ).not.toContainText("CATEGORY");
     });
 
     test("開いた場合、問い合わせの帯に、見出しと受付時間と、お問い合わせへのボタンと電話のリンクが出ること", async ({

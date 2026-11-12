@@ -27,6 +27,13 @@ export const Center = {
   },
 };
 
+export const NumberOnly = {
+  args: {
+    number: "04",
+    title: "会社概要",
+  },
+};
+
 export const Minimal = {
   args: {
     title: "タイトルのみの最小構成",
