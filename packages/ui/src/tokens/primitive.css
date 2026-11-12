@@ -59,7 +59,6 @@
   --kufu-motion-slow: 0.7s;
   --kufu-motion-drift: 0.9s; /* 大きい要素の緩やかな transform */
   --kufu-motion-glide: 1.2s; /* carousel 等の移動 */
-  --kufu-motion-cue: 1.8s; /* ループ演出 */
   --kufu-motion-stagger: 0.12s; /* 段差 delay */
   --kufu-ease: ease;
   --kufu-ease-out: ease-out;
