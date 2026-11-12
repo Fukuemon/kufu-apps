@@ -33,6 +33,36 @@ test.describe("トップ", () => {
       await expect(productsCategoryLinks(page)).toHaveCount(18);
     });
 
+    test("開いた場合、見出しの上に、01 から始まるセクションの番号と和文のラベルだけが出ること", async ({
+      page,
+    }) => {
+      await page.goto("/");
+
+      await expect(page.getByTestId("home-section-consultation")).toContainText(
+        /01\s*ご相談内容/,
+      );
+      await expect(page.getByTestId("home-section-business")).toContainText(
+        /02\s*事業内容/,
+      );
+      await expect(page.getByTestId("home-section-products")).toContainText(
+        /03\s*取扱製品・取扱メーカー/,
+      );
+      const company = page.getByTestId("home-section-company");
+      await expect(company).toContainText(/04\s*会社概要/);
+      await expect(company).toContainText("経営理念");
+      // 上の確認で描画を待ってから、外した英字のラベルが無いことを見る
+      await expect(page.getByTestId("home-section-hero")).not.toContainText(
+        "INDUSTRIAL SUPPLY",
+      );
+      await expect(page.getByTestId("home-section-hero")).not.toContainText(
+        "SCROLL",
+      );
+      await expect(
+        page.getByTestId("home-section-consultation"),
+      ).not.toContainText("CONSULTATION");
+      await expect(company).not.toContainText("PHILOSOPHY");
+    });
+
     test("開いた場合、問い合わせの帯に、見出しと受付時間と、お問い合わせへのボタンと電話のリンクが出ること", async ({
       page,
     }) => {
