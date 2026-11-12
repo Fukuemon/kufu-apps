@@ -90,3 +90,22 @@ test.describe("トップ", () => {
     });
   });
 });
+
+test.describe("取扱製品", () => {
+  test.describe("ヘッダーのナビ", () => {
+    test.use({ viewport: { width: 1280, height: 800 } });
+
+    test("会社概要を押した場合、トップの会社概要のセクションへ移ること", async ({
+      page,
+    }) => {
+      await page.goto("/products");
+
+      const companyLink = page.getByTestId("site-nav-company");
+      await expect(companyLink).toHaveText("会社概要");
+      await companyLink.click();
+
+      await expect(page).toHaveURL("/#company");
+      await expect(page.getByTestId("home-section-company")).toBeInViewport();
+    });
+  });
+});
