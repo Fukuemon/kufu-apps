@@ -35,6 +35,9 @@ Astro の静的なコンポーネントは E2E で確認する。
 ADR-0028: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../docs/adr/0028-e2e-test-code-layers.md)
 
 - React の island の play テストの対象の基準は未定。最初の island を足すときに決める。
+- 例外として、トップの取扱製品カテゴリのカルーセル（`FeaturedCategoryCarousel`）は、story の play で矢印の送りと端の無効を確認する。
+  - corporate-site の Storybook では、Astro のコンポーネントの `<script>` が動かない。そのため、操作の処理を `featured-carousel.ts` の関数に置き、Astro の `<script>` と play の両方がその関数を呼ぶ。
+  - 本番の `<script>` が関数を呼ぶことと、時間が経っても動かないことは、E2E で確認する。story の test-runner は動きを減らす設定で開くので、play では自動で動く処理の有無を見分けられない。
 
 E2E は、route をまたいだ到達を見る。  
 1 つのコンポーネントの中で閉じる操作は、play が受け持つ。
