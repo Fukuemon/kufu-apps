@@ -23,7 +23,7 @@
 | 文字       | `text-secondary-tint`                  | `text-secondary-tint`    | 任意の印の面                                                                                                                                                                                  |
 | 枠         | `border`                               | `divider`                | 飾りの区切りの線。入力欄と押せるものの枠には使わない                                                                                                                                          |
 | 枠         | `border-field`                         | `field`                  | 入力欄と押せるものの枠。区切りの線と、面の色には使わない。マウスを乗せた入力欄の枠は `text`                                                                                                   |
-| 操作       | `primary`                              | `primary`                | 主のボタンの面、リンクの文字、選んだ状態                                                                                                                                                      |
+| 操作       | `primary`                              | `primary`                | 主のボタンの面、hover のリンクの文字、選んだ状態                                                                                                                                              |
 | 操作       | `primary-soft`                         | `primary-soft`           | 暗い面の上の、主の色の文字                                                                                                                                                                    |
 | 操作       | `primary-tint`                         | `primary-tint`           | 必須の印の面                                                                                                                                                                                  |
 | 操作       | `action-strong`、`action-strong-hover` | `action-strong-hover`    | 明るい面に置く、暗い色のリンクのボタンの面と、マウスを乗せたときの面。`action-strong-hover` は `Button` と `LinkButton` の `default` の hover の面にも使う。`action-strong` は CSS の変数だけ |
@@ -33,7 +33,7 @@
 
 - DADS から外れる点: 主の色（teal）と寒色のグレーは、DADS の階調の値でない。DADS は、キーカラーを同じ色相の階調から選ぶことを求める。Kufu の色を変えないために外れる。コントラストは、DADS の階調の指針に頼らず、`check-contrast.mjs` の組で確認する。色を足すときは、チェックの組も足す（[ADR-0037](../../../docs/adr/0037-kufu-identity-japanese-labels.md)）。
 - DADS から外れる点: `text-ghost` のウォーターマークの数字は、面とのコントラストが低い。DADS は、文字を 4.5:1 以上にすることを求める。読ませる文字でない面の飾りで、支援技術から隠すため、外れる。
-- 明るい面は、`surface-canvas` と `surface-subtle` を section ごとに交互に置く。フッターと、強い CTA の帯は、暗い面にする（「テーマ」）。暗い面の上の、主の色の文字は `primary-soft` で書く。
+- 明るい面の section は、`surface-canvas`、`surface`、`surface-subtle` のどれかを面にする。フッターと、強い CTA の帯は、暗い面にする（「テーマ」）。暗い面の上の、主の色の文字は `primary-soft` で書く。
 - 使っていない名前を残さない。名前を足すのは、使うコンポーネントか画面を足すときにする。誤りの面の色（`danger-surface`）は、使うコンポーネントが無いので置いていない。
 - `danger` は、DADS のエラーの色のうち Error-2（Red-900）に当てている。DADS の実装例は、入力欄の誤りの枠に Error-1（Red-800）を使う。Error-1（Red-800）は、`surface-canvas` の上で 4.33、`surface-subtle` の上で 3.99 で、文字の 4.5:1 に届かない。
 - 枠の 2 つは、ユーティリティの名前を `divider` と `field` にしている。テーマ変数をセマンティックトークンと同じ名前にすると、`border` が 2 回並ぶユーティリティの名前になるためである。
@@ -83,14 +83,15 @@
 
 書体は、次の 3 つのユーティリティで書く。読み込みは `@kufu/ui/fonts.css` が持つ。
 
-| ユーティリティ | 書体                                    | 使う場面                                                                                 |
-| -------------- | --------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `font-serif`   | Noto Serif JP。見出しは 600 の太さ      | 見出し、経営理念、ブランド名                                                             |
-| `font-sans`    | Noto Sans JP                            | 本文、リード、UI の文字、見出しの上の和文のラベル                                        |
-| `font-mono`    | Geist Mono。letter-spacing を広めにする | 番号、値の種類のラベル（Tel、Fax、E-mail）、連絡先の値。和文を含む文とラベルには使わない |
+| ユーティリティ | 書体                                    | 使う場面                                                                         |
+| -------------- | --------------------------------------- | -------------------------------------------------------------------------------- |
+| `font-serif`   | Noto Serif JP。見出しは 600 の太さ      | 見出し、経営理念、ブランド名                                                     |
+| `font-sans`    | Noto Sans JP                            | 本文、リード、UI の文字、見出しの上の和文のラベル                                |
+| `font-mono`    | Geist Mono。letter-spacing を広めにする | 番号、値の種類のラベル（Tel、Fax、E-mail）、連絡先の値。和文を含む文には使わない |
 
 - DADS から外れる点: 見出しが明朝である。DADS は Noto Sans JP を勧める。明朝の見出しが、Kufu の信頼感の表現の中心であるため、外れる。本文と UI の文字は Noto Sans JP にする（[ADR-0037](../../../docs/adr/0037-kufu-identity-japanese-labels.md)）。
 - DADS から外れる点: ラベルが Geist Mono である。DADS は、等幅の書体に Noto Sans Mono を勧める。欧文と数字のラベルの字形が、工業的な印象を作っているため、外れる。
+- 今のコードは、必須と任意の印（`Tag` の `required` と `optional`）と、`DefinitionRow` の `compact` の見出しを、和文でも `font-mono` で出している。和文のラベルの書体の扱いは、[DESIGN.md](../DESIGN.md#決まっていない選択) の「決まっていない選択」にある。
 
 ### 文字のスタイル
 
@@ -130,6 +131,6 @@
 | 影               | なし                                            | 影のユーティリティは置いていない。写真の枠と浮いたパネルの影は、CSS の変数（`shadow-media`、`shadow-floating`）だけで使う（「色」） |
 | 動き             | `--kufu-motion-*`、`--kufu-ease*` の変数        | 時間と緩急。`packages/ui/src/tokens/primitive.css` にある。名前は、値の数でなく役割で付ける                                         |
 
-- corporate-site の section は、広い画面で、縦の padding を 80px（`md:py-20`）、横を 56px（`lg:px-14`）にし、コンテナの幅を 1440px（`max-w-360`）までにする。
+- corporate-site の多くの section は、広い画面で、縦の padding を 80px（`md:py-20`）にする。横は 56px（`lg:px-14`）にし、コンテナの幅を 1440px（`max-w-360`）までにする。
 - site だけで使う演出の keyframes は、app の `src/styles/animations.css` に置く。時間と緩急は、上の変数で書く。
 - 動きを減らす設定のときの止め方は、`packages/ui/src/tokens/theme.css` の 1 か所にある（`MOTION-REDUCE`）。全ての要素のアニメーションを止め、遷移を透明度だけにし、滑らかなスクロールを止める。app の CSS に、この設定の条件を書かない。

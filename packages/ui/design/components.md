@@ -16,7 +16,7 @@ Astro のページでは、コンポーネントを `client:*` なしで静的�
 - 変種
   - `variant`: `default`（塗り。hover で面を `action-strong-hover` の暗い色にする）、`cta`（問い合わせへの導線の塗り。hover で面を変えない）
   - `size`: `default`（高さ 48px、角丸 8px）、`cta-sm`（最小の高さ 44px）、`cta-md`（48px）、`cta-lg`（52px）、`cta-hero`（54px）。`cta-` の 4 つは角丸 4px で、`cta-md` を除き hover で全体を薄くする
-  - `cta-` の大きさは、置く場所で選ぶ。`cta-sm` はヘッダー、`cta-hero` はページの最初の画面、`cta-lg` は section の中の導線、`cta-md` はフォームの送信のボタンに使う
+  - `cta-` の大きさは、置く場所で選ぶ。`cta-sm` はヘッダー、`cta-hero` はトップの最初の画面、`cta-lg` は section の中の導線、`cta-md` はフォームの送信のボタンに使う
 - 状態: デフォルト、hover、押下、フォーカス、無効
 - 内容の制約
   - ラベルは折り返さない。狭い画面の幅に収まる長さにする
@@ -59,13 +59,14 @@ Astro のページでは、コンポーネントを `client:*` なしで静的�
   - 線は、`default` が行の下、`compact` が行の上に出る。`compact` は最後の行の下に線が出ないので、要るときは包む要素に下の線を付ける
 - 状態: デフォルト
 - 内容の制約: 見出しは、列の幅（12rem か 6.5rem）に収まる短い語にする
-- 良い例: 会社概要の「基本情報」を、`dl` の中の `layout="compact"` の行で並べる
+- 良い例: 見出しと値の組を、`dl` の中の `DefinitionRow` の行で並べる
+- 今の会社概要の「基本情報」は、行を `div` で包んでいて、`dl` の中に無い
 - 悪い例: 見出しと値の組でない文を、行に見せるために `DefinitionRow` に入れる
 
 ### Divider
 
 - 使う場面: 内容の区切りを、線で示すとき。`hr` の要素で、支援技術にも区切りとして伝わる
-- 使わない場面: 飾りだけの線と、カードや欄の枠。区切りの意味を持たない線は、`border-divider` か `bg-divider` のユーティリティで書き、`bg-divider` の要素は `aria-hidden` で隠す
+- 使わない場面: 飾りだけの線と、カードの枠。区切りの意味を持たない線は、`border-divider` か `bg-divider` のユーティリティで書き、`bg-divider` の要素は `aria-hidden` で隠す
 - 変種: `orientation` の `horizontal`、`vertical`。`vertical` は、横に並べた要素の間に、親の高さの線を引く
 - 状態: デフォルト
 - 余白で区切るときとの使い分けは、[DESIGN.md](../DESIGN.md#決まっていない選択) の「決まっていない選択」にある
