@@ -1,16 +1,23 @@
 ---
 import SectionHeading from "../../common/SectionHeading.astro";
 import { consultationContent } from "../../../content/consultation.js";
+
+export interface Props {
+  number: string;
+}
+
+const { number } = Astro.props;
 ---
 
 <section
   id="consultation"
-  class="consultation-industrial reveal-section border-b border-divider bg-surface"
+  data-reveal
+  class="consultation-industrial border-b border-divider bg-surface"
   data-testid="home-section-consultation"
 >
   <div class="mx-auto grid w-full max-w-360 gap-10 px-5 py-14 sm:px-8 md:gap-12 md:py-18 lg:px-14">
     <SectionHeading
-      number={consultationContent.heading.number}
+      number={number}
       eyebrow={consultationContent.heading.eyebrow}
       title={consultationContent.heading.title}
       description={consultationContent.heading.description}
@@ -20,7 +27,7 @@ import { consultationContent } from "../../../content/consultation.js";
       <div class="grid content-start">
         {
           consultationContent.cases.map((item, index) => (
-            <article class="consultation-case grid gap-2 border-t border-divider py-6 last:border-b sm:grid-cols-[4rem_1fr] sm:gap-5">
+            <article data-reveal class="grid gap-2 border-t border-divider py-6 last:border-b sm:grid-cols-[4rem_1fr] sm:gap-5">
               <p class="font-mono text-eyebrow font-medium tracking-[0.18em] text-primary">
                 {String(index + 1).padStart(2, "0")}
               </p>
@@ -40,10 +47,10 @@ import { consultationContent } from "../../../content/consultation.js";
       <aside class="flow-panel grid content-start border border-divider bg-surface-subtle">
         <div class="flex items-baseline justify-between gap-4 border-b border-divider px-5 py-5 md:px-6">
           <h3 class="font-serif text-heading-24 font-semibold leading-normal">
-            相談から納品まで
+            {consultationContent.flowHeading.title}
           </h3>
           <span class="font-mono text-caption font-medium tracking-[0.2em] text-text-secondary">
-            全4ステップ
+            {consultationContent.flowHeading.count}
           </span>
         </div>
         <ol class="consultation-flow grid list-none px-5 py-6 md:px-6">

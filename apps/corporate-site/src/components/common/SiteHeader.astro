@@ -3,6 +3,8 @@ import { Image } from "astro:assets";
 
 import ContactCtaLink from "./ContactCtaLink.astro";
 import fukuuraMark from "../../assets/fukuura-mark.png";
+import { companyProfile } from "../../content/company.js";
+import { headerContactCta, headerNavItems } from "../../content/navigation.js";
 
 export interface Props {
   currentPath: string;
@@ -10,31 +12,6 @@ export interface Props {
 
 const { currentPath } = Astro.props;
 const isCurrent = (href: string) => !href.includes("#") && currentPath === href;
-
-const navItems = [
-  { href: "/", label: "トップ", subLabel: "TOP", testId: "site-nav-home", isPage: false },
-  {
-    href: "/#business",
-    label: "事業内容",
-    subLabel: "BUSINESS",
-    testId: "site-nav-business",
-    isPage: false,
-  },
-  {
-    href: "/products",
-    label: "取扱製品",
-    subLabel: "PRODUCTS",
-    testId: "site-nav-products",
-    isPage: true,
-  },
-  {
-    href: "/#company",
-    label: "会社情報",
-    subLabel: "COMPANY",
-    testId: "site-nav-company",
-    isPage: false,
-  },
-] as const;
 ---
 
 <header
@@ -56,12 +33,12 @@ const navItems = [
       />
       <span class="grid gap-0.5">
         <span class="font-serif text-heading-17 font-semibold leading-none md:text-heading-20">
-          有限会社フクウラ
+          {companyProfile.name}
         </span>
         <span
           class="font-mono text-eyebrow font-medium tracking-[0.18em] text-primary"
         >
-          FUKUURA
+          {companyProfile.nameRoman}
         </span>
       </span>
     </a>
@@ -86,7 +63,7 @@ const navItems = [
       data-testid="site-nav-menu"
     >
       {
-        navItems.map((item) => (
+        headerNavItems.map((item) => (
           <a
             class:list={["focus-ring", "site-nav-link", { "site-nav-link--page": item.isPage }]}
             href={item.href}
@@ -105,8 +82,8 @@ const navItems = [
           </a>
         ))
       }
-      <ContactCtaLink href="/contact" size="sm" data-testid="site-nav-contact">
-        お問い合わせ
+      <ContactCtaLink href={headerContactCta.href} size="sm" data-testid={headerContactCta.testId}>
+        {headerContactCta.label}{" "}
         <span class="font-mono" aria-hidden="true">→</span>
       </ContactCtaLink>
     </nav>

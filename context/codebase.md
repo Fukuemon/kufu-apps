@@ -8,7 +8,7 @@ governs:
   - packages/
   - .dependency-cruiser.cjs
   - apps/corporate-site/scripts/check-section-boundary.mjs
-verified_commit: 81f85da2744f320f44040307f1ec854f705f7c79
+verified_commit: 024faa45b95265c6ffe7a383092ea28f915ad08b
 ---
 
 # コードベースの構造
@@ -201,6 +201,24 @@ content 層の方式は、内容の性質で選ぶ。
 
 `aria-label`、`alt`、sr-only のような機能の文言と、1 か所だけで使う一時的な値は、直接書いてよい。  
 同じ値が 2 か所以上に現れたら定数にする。
+
+### corporate-site の中の置き場
+
+文言、連絡先、ナビの項目、番号の置き場は、次のとおりにする。後のタスクが 1 か所を直せば済むようにするためである。
+
+| 対象           | 置き場                                | 規則                                                                                                                                                                    |
+| -------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 文言           | `src/content/<feature>.ts`            | ページと section の見出し、リード、ボタンの文言、キャプションを、コンポーネントに直接書かない。改行が描画に出る文言は、`\n` を含む文字列で持つ                          |
+| 連絡先         | `src/content/contact.ts`              | 電話、FAX、メールの値を、このファイルの 1 か所だけに書く。リンク（`tel:`、`mailto:`）と「TEL … ／ FAX …」の行は、`contactInfo` から組む。ほかのファイルに値を書かない   |
+| ナビの項目     | `src/content/navigation.ts`           | ヘッダーとフッターが読む。項目の追加、並べ替え、リンク先の変更は、このファイルだけを直す。ヘッダーの項目は `data-testid` を持つ                                         |
+| section の番号 | 番号を並べる側                        | section を並べるページ（`src/pages/*.astro`）が props で渡す。section と `content` 層は、番号を持たない                                                                 |
+| 問い合わせの帯 | `components/common/ContactBand.astro` | 複数の route に出るので、`common/` に 1 つだけ置き、ページが呼ぶ。section の中に帯を作らない。帯を共通にするタスクで置く。今は `ProductsDetailSection.astro` の中にある |
+| reveal の対象  | 要素の `data-reveal` 属性             | 現れる動きの対象は、この属性 1 つで指す。クラスの名前を `BaseLayout.astro` の script と `components.css` に並べない                                                     |
+| 写真           | `content` 層の `id`                   | section が、配列の順でなく、`features` の `id` をキーにして画像を引く                                                                                                   |
+
+- 番号の並びは「ページが持つ」ことで決まる。section を並べ替えるときも、足すときも、直すのはページだけにする。
+- 項目の中の連番（`features[].number`、`servicePillars[].number`、フローの `step`）は、その項目の内容の一部なので、`content` 層に置く。
+- 問い合わせのフォームの項目の文言は、フォームを実装する issue の範囲なので、今は section に直接書いている。
 
 ### スタイルのファイル
 

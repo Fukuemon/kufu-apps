@@ -36,7 +36,8 @@ const { categoryGroups } = Astro.props;
         {group.items.map(({ category, makers }) => (
           <article
             id={category.id}
-            class="reveal-section grid scroll-mt-28 border-t border-divider"
+            data-reveal
+            class="grid scroll-mt-28 border-t border-divider"
             data-testid={`products-category-${category.id}`}
             data-category-item
             data-category-name={category.data.name}

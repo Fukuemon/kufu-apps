@@ -95,12 +95,7 @@
   position: relative;
 }
 
-.js .reveal-section,
-.js .consultation-case,
-.js .business-row,
-.js .featured-category-card,
-.js .catalog-board,
-.js .custom-order-panel {
+.js [data-reveal] {
   opacity: 0;
   transform: translateY(1.25rem);
   transition:
@@ -108,12 +103,7 @@
     transform var(--kufu-motion-slow) var(--kufu-ease);
 }
 
-.reveal-section.is-visible,
-.consultation-case.is-visible,
-.business-row.is-visible,
-.featured-category-card.is-visible,
-.catalog-board.is-visible,
-.custom-order-panel.is-visible {
+[data-reveal].is-visible {
   opacity: 1;
   transform: translateY(0);
 }

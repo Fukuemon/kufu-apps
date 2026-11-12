@@ -3,7 +3,6 @@ import { companyProfileSource } from "./source-references.js";
 export const businessContent = {
   sourceReferences: [companyProfileSource],
   heading: {
-    number: "01",
     eyebrow: "BUSINESS / 事業内容",
     title: "販売と加工、小規模工事の三本柱",
     description:
@@ -11,6 +10,7 @@ export const businessContent = {
   },
   features: [
     {
+      id: "sales",
       number: "01",
       eyebrow: "BUSINESS 01 / SALES & SUPPLY",
       title: "見積もり・販売",
@@ -28,6 +28,7 @@ export const businessContent = {
       mediaPosition: "right",
     },
     {
+      id: "machining",
       number: "02",
       eyebrow: "BUSINESS 02 / MACHINING & CUSTOM",
       title: "加工",

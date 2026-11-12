@@ -15,5 +15,5 @@ const meta = {
 export default meta;
 
 export const Default = {
-  args: {},
+  args: { number: "03" },
 };

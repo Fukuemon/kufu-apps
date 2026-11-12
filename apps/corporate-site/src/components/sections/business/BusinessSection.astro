@@ -3,21 +3,31 @@ import SectionHeading from "../../common/SectionHeading.astro";
 import BusinessFeatureRow from "./BusinessFeatureRow.astro";
 import machiningImage from "../../../assets/corporate-machining-service.png";
 import supplyImage from "../../../assets/corporate-products-supply.png";
+import type { ImageMetadata } from "astro";
 import { businessContent } from "../../../content/business.js";
 
-const featureImages = [supplyImage, machiningImage] as const;
+export interface Props {
+  number: string;
+}
+
+const { number } = Astro.props;
+const featureImages: Record<(typeof businessContent.features)[number]["id"], ImageMetadata> = {
+  sales: supplyImage,
+  machining: machiningImage,
+};
 // FB の原本では、小規模工事の事例を別作・特注対応のパネルの直後に同じ形で置いている
 const panels = [businessContent.customOrder, businessContent.smallWorks];
 ---
 
 <section
   id="business"
-  class="business-industrial reveal-section border-b border-divider bg-surface"
+  data-reveal
+  class="business-industrial border-b border-divider bg-surface"
   data-testid="home-section-business"
 >
   <div class="mx-auto grid w-full max-w-360 gap-16 px-5 py-14 sm:px-8 md:gap-20 md:py-20 lg:px-14">
     <SectionHeading
-      number={businessContent.heading.number}
+      number={number}
       eyebrow={businessContent.heading.eyebrow}
       title={businessContent.heading.title}
       description={businessContent.heading.description}
@@ -25,7 +35,7 @@ const panels = [businessContent.customOrder, businessContent.smallWorks];
 
     <div class="business-rows grid">
       {
-        businessContent.features.map((feature, index) => (
+        businessContent.features.map((feature) => (
           <BusinessFeatureRow
             number={feature.number}
             eyebrow={feature.eyebrow}
@@ -35,7 +45,7 @@ const panels = [businessContent.customOrder, businessContent.smallWorks];
             mediaLabel={feature.mediaLabel}
             mediaCaption={feature.mediaCaption}
             mediaPosition={feature.mediaPosition}
-            image={featureImages[index]}
+            image={featureImages[feature.id]}
           />
         ))
       }
@@ -44,7 +54,7 @@ const panels = [businessContent.customOrder, businessContent.smallWorks];
     <div class="grid gap-6">
       {
         panels.map((panel) => (
-          <div class="custom-order-panel grid border border-divider bg-surface md:grid-cols-[13.125rem_1fr]">
+          <div data-reveal class="custom-order-panel grid border border-divider bg-surface md:grid-cols-[13.125rem_1fr]">
             <div class="border-b border-divider px-5 py-5 md:border-b-0 md:border-r md:px-7 md:py-6">
               <p class="font-mono text-eyebrow font-medium tracking-[0.2em] text-primary">
                 {panel.eyebrow}

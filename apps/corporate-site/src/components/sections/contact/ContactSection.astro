@@ -1,23 +1,26 @@
 ---
 import { Button, Tag } from "@kufu/ui";
+
+import { companyProfile } from "../../../content/company.js";
+import { contactInfo, contactPageContent } from "../../../content/contact.js";
 ---
 
 <section class="bg-surface-canvas">
   <div class="mx-auto grid w-full max-w-360 gap-8 px-5 pb-18 pt-12 sm:px-8 md:gap-10 lg:px-14">
     <div class="grid gap-4">
       <nav class="flex gap-2 font-mono text-label tracking-[0.14em] text-text-secondary" aria-label="パンくず">
-        <a class="focus-ring" href="/">ホーム</a>
+        <a class="focus-ring" href="/">{contactPageContent.breadcrumb.home}</a>
         <span>/</span>
-        <span>お問い合わせ</span>
+        <span>{contactPageContent.breadcrumb.current}</span>
       </nav>
       <h1 class="font-serif text-heading-36 font-semibold leading-tight md:text-display-57">
-        お問い合わせ・お見積り
+        {contactPageContent.title}
       </h1>
       <p class="font-mono text-eyebrow tracking-[0.2em] text-primary">
-        Contact &amp; Estimate
+        {contactPageContent.eyebrow}
       </p>
       <p class="max-w-190 text-body leading-[1.75] text-text-secondary">
-        製品のお見積り、加工のご相談、掲載のないメーカー・製品のお取り寄せまで。お電話・FAX・メール・フォームよりお気軽にご連絡ください。
+        {contactPageContent.lead}
       </p>
     </div>
 
@@ -27,30 +30,30 @@ import { Button, Tag } from "@kufu/ui";
         data-testid="contact-section-info"
       >
         <div class="grid gap-1.5">
-          <p class="font-mono text-eyebrow tracking-[0.16em] text-primary">Tel</p>
-          <a class="focus-ring text-body" href="tel:0794926465">
-            079-492-6465
+          <p class="font-mono text-eyebrow tracking-[0.16em] text-primary">{contactPageContent.infoLabels.tel}</p>
+          <a class="focus-ring text-body" href={contactInfo.telHref}>
+            {contactInfo.tel}
           </a>
         </div>
         <div class="grid gap-1.5">
-          <p class="font-mono text-eyebrow tracking-[0.16em] text-primary">Fax</p>
-          <p class="text-body">079-492-6429</p>
+          <p class="font-mono text-eyebrow tracking-[0.16em] text-primary">{contactPageContent.infoLabels.fax}</p>
+          <p class="text-body">{contactInfo.fax}</p>
         </div>
         <div class="grid gap-1.5">
-          <p class="font-mono text-eyebrow tracking-[0.16em] text-primary">E-mail</p>
-          <a class="focus-ring text-body" href="mailto:fukuura@mist.ocn.ne.jp">
-            fukuura&#64;mist.ocn.ne.jp
+          <p class="font-mono text-eyebrow tracking-[0.16em] text-primary">{contactPageContent.infoLabels.email}</p>
+          <a class="focus-ring text-body" href={contactInfo.emailHref}>
+            {contactInfo.email}
           </a>
         </div>
         <div class="grid gap-1.5">
-          <p class="font-mono text-caption tracking-[0.16em] text-primary">所在地</p>
+          <p class="font-mono text-caption tracking-[0.16em] text-primary">{contactPageContent.infoLabels.address}</p>
           <p class="text-body">
-            〒675-1114<br />兵庫県加古郡稲美町国安973番地の10
+            {companyProfile.postalCode}<br />{companyProfile.streetAddress}
           </p>
         </div>
         <p class="pt-2 text-caption leading-[1.75] text-text-secondary">
-          受付時間 / 平日 9:00-18:00<br />
-          お見積りはお電話・FAX・メールでも承ります。図面がある場合はメール添付いただくとスムーズです。
+          {contactPageContent.notice.hours}<br />
+          {contactPageContent.notice.estimate}
         </p>
       </section>
 
@@ -81,7 +84,7 @@ import { Button, Tag } from "@kufu/ui";
         </div>
         <label class="grid gap-2 text-label">
           <span class="flex items-center gap-2">住所<Tag size="sm" tone="required">必須</Tag></span>
-          <input class="focus-ring min-h-12 border border-field bg-surface-canvas px-3 text-body-dense" type="text" name="address" autocomplete="street-address" placeholder="〒675-1114 兵庫県加古郡稲美町国安973番地の10" required aria-required="true" />
+          <input class="focus-ring min-h-12 border border-field bg-surface-canvas px-3 text-body-dense" type="text" name="address" autocomplete="street-address" placeholder={companyProfile.address} required aria-required="true" />
         </label>
         <div class="grid gap-4 md:grid-cols-2">
           <label class="grid gap-2 text-label">
