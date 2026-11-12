@@ -34,11 +34,8 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
           {companyProfile.philosophyEyebrow}
         </p>
         <p class="font-serif text-heading-28 font-semibold leading-[1.65] md:text-heading-36">
-          {
-            companyProfile.philosophyParts.map((part) =>
-              "accent" in part ? <span class="text-primary">{part.text}</span> : part.text,
-            )
-          }
+          <span class="text-primary">「創意」</span>と
+          <span class="text-primary">「誠意」</span>で真心奉仕
         </p>
         <p class="whitespace-pre-line text-body leading-[1.75] text-text-secondary">
           {companyProfile.philosophyLead}

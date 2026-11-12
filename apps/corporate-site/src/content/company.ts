@@ -36,13 +36,6 @@ export const companyProfile = {
     title: "会社概要",
   },
   philosophyEyebrow: "PHILOSOPHY / 経営理念",
-  // 強調の「」は文字を分けて持つ。区切りの空白は描画に出るので、text に含める
-  philosophyParts: [
-    { text: "「創意」", accent: true },
-    { text: "と " },
-    { text: "「誠意」", accent: true },
-    { text: "で真心奉仕" },
-  ],
   profileSection: { eyebrow: "PROFILE / 基本情報", title: "基本情報" },
   messageSection: { eyebrow: "MESSAGE / 代表挨拶", title: "ご挨拶" },
   portraitPlaceholder: "顔写真",
