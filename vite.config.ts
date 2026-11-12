@@ -33,7 +33,7 @@ export default defineConfig({
     jsPlugins: ["./e2e/lint/plugin.mjs"],
     overrides: [
       {
-        // テストの書き方の規則（ADR-0032）。options は、vp check を流す場所に依らないよう絶対パスで渡す
+        // テストの書き方の規則（ADR-0029）。options は、vp check を流す場所に依らないよう絶対パスで渡す
         files: ["e2e/tests/**"],
         rules: {
           "e2e/e2e-authoring-rule": [

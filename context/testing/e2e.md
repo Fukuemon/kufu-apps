@@ -11,7 +11,7 @@ status: draft
 
 - テストのツールは Playwright（`@playwright/test`）である。バージョンは `e2e/package.json` にある。
 - E2E のテストのディレクトリは、`context/project.yml` の `e2e.dir`（`e2e`）にある。テストのコードは `e2e/tests/` の層に置く。
-  - ADR-0031: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../../docs/adr/0031-e2e-test-code-layers.md)
+  - ADR-0028: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../../docs/adr/0028-e2e-test-code-layers.md)
 - テストのコードの書き方は、スキル write-e2e-test に従う。スキルの語は、Playwright の次の API に当たる。
 
 | スキルの語                               | Playwright の API                                 |
@@ -43,7 +43,7 @@ status: draft
 ## Lint Rule Options
 
 - テストの書き方の規則は、`e2e/lint/e2e-authoring-rule.mjs` にある。スキル setup-e2e-lint の規則を、変えずに写したものである。ESLint は入れず、oxlint の JS プラグインとして流す。
-  - ADR-0032: [テストの書き方の規則を、ESLint を入れずに oxlint の JS プラグインで流す](../../docs/adr/0032-oxlint-js-plugin-for-e2e-authoring-rule.md)
+  - ADR-0029: [テストの書き方の規則を、ESLint を入れずに oxlint の JS プラグインで流す](../../docs/adr/0029-oxlint-js-plugin-for-e2e-authoring-rule.md)
 - 規則は `e2e/lint/plugin.mjs` で JS プラグインにし、ルートの `vite.config.ts` の `lint.jsPlugins` で読む。`lint.overrides` で、`e2e/tests/` の下のファイルにだけ掛ける。
 - `e2e/` のファイルには、ほかのファイルと同じ oxlint の組み込みの規則（`correctness` と型を使う規則）も掛かる。
 - 規則に渡す値は、次のとおり。

@@ -78,7 +78,7 @@ feature の Design Doc は、対象のコードと同じディレクトリの `D
 
 デザインの制作物（依頼文と内容の一次情報）は `docs/design/features/<feature>/` に置く。  
 デザインの実体は実装の側にある。  
-ADR-0012: [デザインの基準を実装にする](../docs/adr/0012-design-source-of-truth-implementation.md)
+ADR-0013: [デザインの基準を実装にする](../docs/adr/0013-design-source-of-truth-implementation.md)
 
 - Claude Design への依頼文は `docs/design/features/<feature>/<screen>.prompt.md` に置き、commit する。
   - 採用した方向の依頼文だけを残す。却下した方向の依頼文は残さない。
@@ -90,12 +90,12 @@ ADR-0012: [デザインの基準を実装にする](../docs/adr/0012-design-sour
 - 実装するときは、プロトタイプの構造をそのまま持ち込まず、`@kufu/ui` のコンポーネントとセマンティックな HTML へ写す。
   - プロトタイプの HTML になくても、状態（hover、focus、error、empty）、データ量の違い、検索と絞り込みの結果、レスポンシブを実装で補う。
   - 表示は実データ（company-profile、manufacturers）で確認する。
-- 制作のフローを変えるときは、先に ADR-0012 を更新する。
+- 制作のフローを変えるときは、先に ADR-0013 を更新する。
 
 ## Shared Configuration
 
 設定を配る package は置かない。  
-ADR-0026: [workspace の package はソースを export し、ビルドの成果物、project references、packages/config を持たない](../docs/adr/0026-workspace-package-contract.md)
+ADR-0010: [workspace の package はソースを export し、ビルドの成果物、project references、packages/config を持たない](../docs/adr/0010-workspace-package-contract.md)
 
 - `tsconfig.json` と Vitest の設定のファイルは、各 workspace が自分で持ち、ほかの workspace の設定を `extends` も import もしない。
   - 共通の値（`target`、`strict`、`skipLibCheck`、`noEmit`）を変えるときは、全ての workspace の `tsconfig.json` を直す。
@@ -148,7 +148,7 @@ ADR-0016: [CI とローカルのフックの分担](../docs/adr/0016-ci-local-ho
 - VRT を CI だけで撮って判定する理由は [testing.md](testing.md#test-types-and-guarantees) にある。
 
 `pnpm check:specs` は、close した issue の spec のディレクトリが `docs/specs/` に残っていないかを確認する。  
-ADR-0011: [spec の後始末の強制](../docs/adr/0011-specs-closeout-enforcement.md)
+ADR-0015: [spec の後始末の強制](../docs/adr/0015-specs-closeout-enforcement.md)
 
 - issue を close した直後と、文書を整理する pull request で実行する。
   - close する前に実行しても、対象の issue はまだ OPEN なので、その spec の消し忘れは検出できない。
@@ -173,7 +173,7 @@ ADR-0011: [spec の後始末の強制](../docs/adr/0011-specs-closeout-enforceme
 - spacing は、Tailwind のスケール（0.25rem のグリッド）の canonical な書き方を優先する。例は、`gap-[1.125rem]` より `gap-4.5`。
   - スケールにない line-height と letter-spacing は arbitrary value でよい。
 - class の差で表せる見た目の variant と状態の分岐を持つ Astro のコンポーネントは、variant ごとの class を frontmatter の中のオブジェクトに書き、`class:list` で条件つきで組み立てる。
-  - ADR-0028: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0028-ui-components-native-elements.md)
+  - ADR-0020: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0020-ui-components-native-elements.md)
   - markup の構造ごと分岐する見た目の variant（`SiteFooter` の `full` と `compact` など）は、条件分岐のまま保つ。
   - variant のない固定の class のコンポーネントは、Tailwind の utility を直接書いてよい。
 - motion のトークンは役割で名前を付ける（`--kufu-motion-fast` など）。値と 1 対 1 の数値のトークンは作らない。
@@ -188,4 +188,4 @@ pull request では、[PULL_REQUEST_TEMPLATE.md](../.github/PULL_REQUEST_TEMPLAT
 - トークンの直接の記述のチェック（`check-raw-values.mjs`）は、サイズと余白の arbitrary value を対象にしない。文字の大きさの arbitrary value は、`check-utilities.mjs` の `TEXT-MIN-SIZE` が止める。
 - `space-*` は CSS のトークンを持たず、Tailwind の標準のスケール（4px のグリッド）への写像として扱う。トークンの記述のチェックの対象にしない。
   - 余白の段は [トークンの文書](../packages/ui/design/tokens.md#レイアウト角丸影動き) の「レイアウト、角丸、影、動き」にある。
-  - ADR-0027: [トークンの 3 つの層](../docs/adr/0027-design-tokens-three-layers.md)
+  - ADR-0018: [トークンの 3 つの層](../docs/adr/0018-design-tokens-three-layers.md)

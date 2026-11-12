@@ -25,7 +25,7 @@
   E2E がローカルで受けていた `127.0.0.1:4321` への bind の制約は、ローカルの sandbox に固有で、GitHub Actions の runner には当てはまらない。
 - **VRT の撮影と判定は、CI の環境だけで行う。**
   ローカルと CI ではフォントの描画が違い、baseline を撮る環境を固定しないと恒常的な差分が出るため。
-  - ADR-0015: [VRT を story と route の 2 系統で導入する](0015-visual-regression-testing-policy.md)
+  - ADR-0026: [VRT を story と route の 2 系統で導入する](0026-visual-regression-testing-policy.md)
 - **CI の実行時間の目標値は置かない。**
   ジョブを足した後に実行時間を測り、その値を見て Turbo の remote cache と required status checks の要否を判断する。
 - **Turbo の remote cache は入れない。**

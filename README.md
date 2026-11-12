@@ -34,7 +34,7 @@ PR では `pr-preview/pr-<number>/` へ、`develop` への push 後は Pages roo
 
 ## Visual Regression Testing (VRT)
 
-story 側と route 側の 2 系統がある。方針の基準は [docs/adr/0018](docs/adr/0018-story-vrt-on-storybook-test-integrations.md) と [docs/adr/0015](docs/adr/0015-visual-regression-testing-policy.md)、責務分担は [context/testing.md](context/testing.md)。ここには実行手順だけを書く。
+story 側と route 側の 2 系統がある。方針の基準は [docs/adr/0026](docs/adr/0026-visual-regression-testing-policy.md)、責務分担は [context/testing.md](context/testing.md)。ここには実行手順だけを書く。
 
 | 系統  | 撮影対象                              | 撮影                          | 実行             |
 | ----- | ------------------------------------- | ----------------------------- | ---------------- |

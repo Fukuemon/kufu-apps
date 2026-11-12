@@ -41,7 +41,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - dependency-cruiser: 依存を解析する。ルートで管理する。
 - Tailwind CSS v4 と `@tailwindcss/vite`: スタイリングに使う。
 - clsx: `packages/ui` のコンポーネントの class の組み立てに使う。コンポーネントは、React とネイティブの HTML の要素で書く。
-  - ADR-0028: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0028-ui-components-native-elements.md)
+  - ADR-0020: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0020-ui-components-native-elements.md)
 - `@astrojs/react`: React のコンポーネントを Astro で描画する。使い方は [codebase.md](codebase.md#react-island-の境界) にある。
 - lefthook: Git のフックからチェックを実行する。
 - textlint: Markdown の文章をチェックする。
@@ -85,7 +85,7 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 ## Scaffolding
 
 app の最初の scaffold は、公式の `create` のコマンドを優先する。  
-ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](../docs/adr/0025-vite-plus-toolchain.md)
+ADR-0009: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](../docs/adr/0009-vite-plus-toolchain.md)
 
 - `apps/corporate-site`: `pnpm create astro@latest apps/corporate-site`
 - React の app: `pnpm create vite ... --template react-ts`

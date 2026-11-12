@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 引数で渡した pnpm script を Playwright 公式 container の中で実行する。
-// 撮影環境を固定しないとホストと CI で baseline が一致しない (docs/adr/0015、README.md の VRT 節)。
+// 撮影環境を固定しないとホストと CI で baseline が一致しない (docs/adr/0026、README.md の VRT 節)。
 //
 //   node scripts/vrt-container.mjs <pnpm script> [追加引数...]
 

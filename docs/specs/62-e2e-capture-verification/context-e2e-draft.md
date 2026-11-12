@@ -37,7 +37,7 @@
 
 ## Lint Rule Options
 
-- テストの書き方の規則は、`e2e/lint/e2e-authoring-rule.mjs` にある。スキル setup-e2e-lint の規則を写したものである。ESLint は入れず、oxlint の JS プラグインとして流す（ADR-0032）。
+- テストの書き方の規則は、`e2e/lint/e2e-authoring-rule.mjs` にある。スキル setup-e2e-lint の規則を写したものである。ESLint は入れず、oxlint の JS プラグインとして流す（ADR-0029）。
 - 設定は `e2e/.oxlintrc.json` の `jsPlugins` と、規則の options にある。渡す値は次のとおり。
 
 | 値                                | 渡すもの                       |

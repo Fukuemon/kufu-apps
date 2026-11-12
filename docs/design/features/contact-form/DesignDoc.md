@@ -11,7 +11,7 @@ status: draft
 
 `/contact` の問い合わせフォームから、訪問者の問い合わせを Kufu へメールで知らせる。  
 コーポレートサイトの静的な配信を保ったまま、送信だけを Cloudflare Pages Functions（Workers）で中継する。  
-ADR-0009: [corporate-site の問い合わせフォームの backend](../../../adr/0009-corporate-site-contact-form-backend.md)
+ADR-0005: [corporate-site の問い合わせフォームの backend](../../../adr/0005-corporate-site-contact-form-backend.md)
 
 全体像は [design/DesignDoc.md](../../DesignDoc.md) に、フォームを置くページは [コーポレートサイトの Design Doc](../../../../apps/corporate-site/DesignDoc.md#問い合わせフォーム) にある。  
 まだ実装していないので、この文書は設計文書のディレクトリに置く。

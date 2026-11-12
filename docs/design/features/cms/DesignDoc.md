@@ -11,7 +11,7 @@ status: draft
 
 `apps/cms` は、コーポレートサイトに掲載する投稿を管理する app の候補である。  
 Phase 1 では実装せず、React の app の暫定の標準の候補と、それを採るときの条件だけを置く。  
-ADR-0003: [Phase 1 は corporate-site だけを実装する](../../../adr/0003-phase1-corporate-site-only-and-cms-deferred.md)
+ADR-0001: [Phase 1 は corporate-site だけを実装する](../../../adr/0001-phase1-corporate-site-only-and-cms-deferred.md)
 
 全体像は [design/DesignDoc.md](../../DesignDoc.md) に、立ち上げるかの判断の条件は [PRD の Open Questions](../../../PRD.md#open-questions) にある。  
 実装に着手するときに、spec と ADR で採否、バージョン、互換性、運用の責務を確認し直して決める。

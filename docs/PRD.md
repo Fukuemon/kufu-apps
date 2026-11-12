@@ -53,7 +53,7 @@ app と package の責務と、AI エージェント向けの規則を文書に�
 - コーポレートサイトに掲載する投稿を管理する app（`apps/cms`）
   - 掲載する投稿を管理画面で作って更新し、コーポレートサイトへ公開する。
   - 立ち上げるかの判断は [Open Questions](#open-questions) にある。
-  - ADR-0003: [Phase 1 は corporate-site だけを実装する](adr/0003-phase1-corporate-site-only-and-cms-deferred.md)
+  - ADR-0001: [Phase 1 は corporate-site だけを実装する](adr/0001-phase1-corporate-site-only-and-cms-deferred.md)
 
 ## Non-Goals
 
@@ -101,7 +101,7 @@ flowchart LR
 ### コーポレートサイト
 
 コーポレートサイトは、トップ、取扱製品、お問い合わせの 3 つのページと、全ページに共通のヘッダーとフッターで構成する。  
-ADR-0006: [corporate-site の IA を 3 route にする](adr/0006-corporate-site-three-route-ia.md)
+ADR-0003: [corporate-site の IA を 3 route にする](adr/0003-corporate-site-three-route-ia.md)
 
 - トップ（`/`）: 経営理念と事業の要約、販売、加工、小規模工事の事業の紹介、取扱製品の 18 のカテゴリの索引、会社の情報を載せる。
 - 取扱製品（`/products`）: 18 のカテゴリごとに、取り扱うメーカーをすべて並べる。カテゴリとメーカーを検索できる。
@@ -117,7 +117,7 @@ ADR-0006: [corporate-site の IA を 3 route にする](adr/0006-corporate-site-
 入力した内容は問い合わせへの対応にだけ使い、Kufu へメールで知らせる。
 
 送信の仕組みは決めてあるが、まだ作っていない。  
-ADR-0009: [corporate-site の問い合わせフォームの backend](adr/0009-corporate-site-contact-form-backend.md)
+ADR-0005: [corporate-site の問い合わせフォームの backend](adr/0005-corporate-site-contact-form-backend.md)
 
 ### 掲載する内容の基準
 
@@ -131,7 +131,7 @@ ADR-0009: [corporate-site の問い合わせフォームの backend](adr/0009-co
 コーポレートサイトの 3 つのページと、掲載する内容の基準を提供する。  
 問い合わせフォームの送信を提供する時期は未定。  
 app を実装する対象は `apps/corporate-site` だけにする。  
-ADR-0003: [Phase 1 は corporate-site だけを実装する](adr/0003-phase1-corporate-site-only-and-cms-deferred.md)
+ADR-0001: [Phase 1 は corporate-site だけを実装する](adr/0001-phase1-corporate-site-only-and-cms-deferred.md)
 
 確認する問いは未定。
 

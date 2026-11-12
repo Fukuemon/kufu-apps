@@ -14,7 +14,7 @@ verified_commit: 81f85da2744f320f44040307f1ec854f705f7c79
 公開の基盤は Cloudflare で、Pages を第一の候補にする。  
 Workers は、API か BFF が要るときだけ使う。  
 Terraform の実体は別のリポジトリ `kufu-infra` が持ち、このリポジトリには置かない。  
-ADR-0001: [Terraform を基盤のリポジトリに分ける](../docs/adr/0001-terraform-infra-repository-boundary.md)
+ADR-0006: [Terraform を基盤のリポジトリに分ける](../docs/adr/0006-terraform-infra-repository-boundary.md)
 
 - `apps/corporate-site` は Astro で静的に生成し、build の artifact を Cloudflare Pages から配信する。
 - API か BFF を入れない限り、Node.js の常駐するサーバーと専用の VM を前提にしない。
@@ -50,7 +50,7 @@ app の側から基盤のリポジトリへ、次のものを渡す。
 
 問い合わせフォームの送信は、Cloudflare Pages Functions（Workers）を中継する。  
 静的な生成（`output: "static"`）を保ち、送信の endpoint だけに Functions を使う。  
-ADR-0009: [corporate-site の問い合わせフォームの backend](../docs/adr/0009-corporate-site-contact-form-backend.md)
+ADR-0005: [corporate-site の問い合わせフォームの backend](../docs/adr/0005-corporate-site-contact-form-backend.md)
 
 - Workers に依存する。送信の endpoint は `/api/contact` である。
 - 必要な secret の名前は、Resend の API key、メールの宛先、Cloudflare Turnstile の secret key の 3 つである。
