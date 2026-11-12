@@ -132,6 +132,7 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 | How: 全体像    | [docs/design/DesignDoc.md](docs/design/DesignDoc.md) | 全体像 / モジュール責務 / 横断方針                                                         |
 | How: feature   | 対象コードの隣の `DesignDoc.md`                      | feature 単位の設計。一覧は [docs/design/DesignDoc.md](docs/design/DesignDoc.md#components) |
 | How: 技術規約  | [context/](context/index.md)                         | 技術スタック規約 / codebase architecture / 運用契約                                        |
+| How: デザイン  | [packages/ui/DESIGN.md](packages/ui/DESIGN.md)       | デザインシステムの原則、トークンとコンポーネントの使い方、Kufu の見た目として残すもの      |
 | Decision       | [docs/adr/](docs/adr/)                               | 長期参照する意思決定                                                                       |
 | Issue 作業文書 | [docs/specs/](docs/specs/)                           | Issue / 機能単位の要求・設計・テスト観点                                                   |
 

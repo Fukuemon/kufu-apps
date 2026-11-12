@@ -60,7 +60,7 @@ ADR-0014: [corporate-site の sections 構成](../docs/adr/0014-corporate-site-s
   - Astro の file-based routing を使う。Next.js App Router の route segment colocation は前提にしない。
 
 `packages/ui` に置いてよいのは、Base だけで意味が通る共有の primitive と共有のパターンである。  
-例は `Button`、`LinkButton`、`Tag`、`Separator`、`FormField`、`Input`、`Select`、`Textarea`、`DefinitionRow`。  
+例は `Button`、`LinkButton`、`Tag`、`Divider`、`FormField`、`TextInput`、`Select`、`Textarea`、`DefinitionRow`。  
 次のものは `packages/ui` に置かない。
 
 - corporate-site のページの section
@@ -111,26 +111,26 @@ dependency-cruiser と oxlint はどちらも `.astro` を解析しないため�
   - route 固有の副作用を持つ。
   - 内容と fixture をコンポーネントの中に直接書く。story の fixture は除く。
 
-cva は `@kufu/ui/lib` を通して使う。  
-app の `package.json` に `class-variance-authority` を直接足さない。  
-共有のユーティリティを読み込む先を、`cn` と同じ 1 つに保つためである。
+class の組み立てには、`packages/ui` のコンポーネントは `clsx` を、Astro のコンポーネントは `class:list` を使う。  
+class を組み立てるほかのライブラリを足さない。`@kufu/ui` のコンポーネントは `className` を受け取らないので、呼び出す側から class で見た目を上書きしない。  
+ADR-0028: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0028-ui-components-native-elements.md)
 
-### shadcn の使い方と React island の境界
+### React island の境界
 
-Astro は React と shadcn のコンポーネントもビルド時に静的な HTML へ描画し、`client:*` を付けない限りクライアントの JavaScript を配らない。  
+Astro は React のコンポーネントもビルド時に静的な HTML へ描画し、`client:*` を付けない限りクライアントの JavaScript を配らない。  
 JavaScript を配るのは island にしたときだけである。  
-ADR-0008: [Astro と React island の方針](../docs/adr/0008-astro-react-island-policy.md)
+ADR-0038: [corporate-site の island の方針](../docs/adr/0038-corporate-site-island-policy.md)
 
 - `apps/corporate-site` は静的な配信を基本にする。
-- 表示だけの UI（リンクのボタン、Card、Badge、Tag、section など）は、`@kufu/ui` の shadcn のコンポーネントを `.astro` の中で `client:*` なしで使う。
+- 表示だけの UI（`Button`、`LinkButton`、`Tag`、`DefinitionRow`、`Divider` など）は、`@kufu/ui` のコンポーネントを `.astro` の中で `client:*` なしで使う。
   - `.astro` で作り直さず、コンポーネントの定義を `@kufu/ui` の 1 か所に保つ。
 - `@astrojs/react` は入れてよい。island がなければランタイムは配られない。
 - `client:*` の island は、操作が要るものに限る。
-  - 対象は、問い合わせフォームと、Radix のインタラクティブな primitive（Dialog、Dropdown、Popover、Tooltip、Accordion、Tabs、Select など）である。
+  - 対象は、問い合わせフォームと、ネイティブの要素で足りない操作の UI のためにライブラリを入れたコンポーネントである。
   - モバイルのナビの開閉のように素の script で足りるものは、`.astro` と最小の script で作り、island にしない。
 - island のデフォルトのディレクティブは `client:visible` か `client:idle` にする。
   - `client:load` は、above-the-fold で即時の操作が要るときだけ使う。
-- インタラクティブな Radix の primitive を、`client:*` なしで静的に描画しない。見た目だけ出て動かない。
+- ライブラリを入れた操作のコンポーネントを、`client:*` なしで静的に描画しない。見た目だけ出て動かない。
 - Astro で解決できるものを React の island にしない。
 - `client:*` の総数は、[PRD](../docs/PRD.md#success-metrics) の悪化させない指標「不要なクライアントの JavaScript の数」で監視する。
 
@@ -168,18 +168,18 @@ ADR-0008: [Astro と React island の方針](../docs/adr/0008-astro-react-island
   - `packages/ui` へ移したコンポーネントは Storybook の story を持つ。必須の story は [testing.md](testing.md#required-tests) にある。
 - `common/` には、1 コンポーネントにつき 1 ディレクトリを作らず、ファイルを平らに並べる。`index.ts` を置かない。
 - section の中も平らに並べ、`internal/` のようなサブディレクトリを作らない。
-- 各 app で UI を独自に作らない。app で shadcn/ui を直接 init しない。
+- 各 app で UI を独自に作らない。
 - 共有していない utility の関数を散在させない。
 
-### shadcn/ui で表せないとき
+### 今のコンポーネントで表せないとき
 
-shadcn/ui はコードを repo に写して所有するモデルなので、次の順に試す。  
-別のデザインシステムを並べず、`packages/ui` だけを元にして、トークン、primitive、独自のコンポーネントの順に積む。
+別のデザインシステムを並べず、`packages/ui` だけを元にして、次の順に試す。規則は [デザインシステムの文書](../packages/ui/DESIGN.md) にある。  
+ADR-0028: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0028-ui-components-native-elements.md)
 
-1. 配色、radius、spacing、typography は、`semantic.css` のセマンティックトークンを上書きして変える。コンポーネントは書き換えない。
-2. 既存のコンポーネントを直接編集する。CVA の variant を足すか、markup を変える。
-3. 既存のコンポーネントにロジックや layout を足すときは、base を変えずに wrapper で包む。
-4. 独自のコンポーネントを `packages/ui` に足す。shadcn の流儀（CVA の variants、セマンティックトークン、a11y は Radix の primitive）に沿う。
+1. 置く位置と余白は、呼び出す側が、コンポーネントを包む要素で決める。コンポーネントは書き換えない。
+2. 今の props で表せない見た目が要るときは、コンポーネントに変種（`variant`、`size`、`tone` など）を足す。呼び出す側の class と、app の CSS のセレクタで上書きしない。
+3. 要るトークンが無いときは、画面のコードに値を書かず、セマンティックトークンに足す。使っていない名前は足さない。
+4. 新しいコンポーネントは、React とネイティブの HTML の要素で `packages/ui` に足す。ネイティブの要素で足りない操作の UI が要るときは、そのコンポーネントだけライブラリを比べて決め、入れたコンポーネントは island にする。
 
 ### content 層の方式
 
@@ -204,14 +204,14 @@ content 層の方式は、内容の性質で選ぶ。
 
 ### スタイルのファイル
 
-- トークンを Tailwind の utility へ写す `@theme` は、`@kufu/ui/theme.css` だけに置く。`styles.css` と app の entry の両方がこれを import する。
-- corporate-site は `@kufu/ui/styles.css` の全体を取り込まず、app の Tailwind v4 の entry `src/styles/globals.css` を持つ。
+- トークンを Tailwind の utility へ写す `@theme` は、`@kufu/ui/theme.css` だけに置く。app の entry がこれを import する。
+- corporate-site は、app の Tailwind v4 の entry `src/styles/globals.css` を持つ。
   - ADR-0027: [トークンの 3 つの層](../docs/adr/0027-design-tokens-three-layers.md)
 - Tailwind の走査は Vite plugin の module graph に任せ、app のソースへの `@source` を app に置かない。
-  - `packages/ui` のソースの走査は、`@kufu/ui/theme.css`（実体は `packages/ui/src/tokens/theme.css`）が `@source "../components"` で指す。app の entry に書かない。
+  - `packages/ui` のソースの走査は、`@kufu/ui/theme.css`（実体は `packages/ui/src/tokens/theme.css`）が `@source "../base"` で指す。app の entry に書かない。
 - app の `src/styles/` は役割で分け、`globals.css` は `@import` だけの entry にする。
   - `base.css` は、`:root` のカスタムプロパティと、要素セレクタへの base のスタイルを持つ。
-  - `components.css` は、クラスセレクタを持つ。cva と utility へ移して減らし、最後は消す。
+  - `components.css` は、クラスセレクタを持つ。utility へ移して減らし、最後は消す。
   - `animations.css` は、`@keyframes` を持つ。
   - `utilities.css` は、`@utility` の拡張が要るときに足す。使う前に空のファイルを作らない。
 - 分けるときはファイルを動かすだけにし、`@layer` で包まない。素のセレクタの CSS を `@layer components` に入れると、Tailwind の utility との優先順位が変わり、表示が崩れる。

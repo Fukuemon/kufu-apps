@@ -14,7 +14,7 @@
 ## Design Doc
 
 - [kufu-apps PRD](../docs/PRD.md) — 工業製品と機械工具の取引先と見込み顧客が、Kufu の取扱領域と連絡先を短時間で確認して連絡できるコーポレートサイトを公開する（draft）
-- [コーポレートサイト](../apps/corporate-site/DesignDoc.md) — Astro のコーポレートサイトの設計。ページの構成と情報の置き場、section の構成、掲載する内容の一次情報、デザイントークンの参照先、ブランドの指針、E2E と VRT の対象
+- [コーポレートサイト](../apps/corporate-site/DesignDoc.md) — Astro のコーポレートサイトの設計。ページの構成と情報の置き場、section の構成、掲載する内容の一次情報、デザインシステムの文書への参照、ページだけの表現の決め、E2E と VRT の対象
 - [kufu-apps Design Doc](../docs/design/DesignDoc.md) — コーポレートサイトと共有の UI、E2E の monorepo の全体像。C4 の L2、構成要素の責務と依存、設計の方針と判断の優先順位、ディレクトリの構成
 - [CMS の app の候補](../docs/design/features/cms/DesignDoc.md) — コーポレートサイトに掲載する投稿を管理する app（apps/cms）の候補。React の app の暫定の標準の候補と、採るときの条件（draft）
 - [問い合わせフォーム](../docs/design/features/contact-form/DesignDoc.md) — corporate-site の /contact の問い合わせフォームの設計。入力の項目と検証、送信の流れ、/api/contact の契約とエラーのコード、セキュリティの規則、テストの範囲（draft）

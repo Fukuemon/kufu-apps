@@ -1,7 +1,7 @@
 ---
 type: feature-design
 title: コーポレートサイト
-description: Astro のコーポレートサイトの設計。ページの構成と情報の置き場、section の構成、掲載する内容の一次情報、デザイントークンの参照先、ブランドの指針、E2E と VRT の対象
+description: Astro のコーポレートサイトの設計。ページの構成と情報の置き場、section の構成、掲載する内容の一次情報、デザインシステムの文書への参照、ページだけの表現の決め、E2E と VRT の対象
 status: stable
 governs:
   - apps/corporate-site/
@@ -29,7 +29,7 @@ Astro によるコーポレートサイトを、高い表示の速さと保守�
 - Astro で完結できる機能の React 化
 - CMS による内容の管理。候補は [CMS の Design Doc](../../docs/design/features/cms/DesignDoc.md) にある。
 - 問い合わせフォームの入力の項目、送信、API の設計。[問い合わせフォームの Design Doc](../../docs/design/features/contact-form/DesignDoc.md) にある。
-- デザイントークンの値。`packages/ui` の stylesheet にある。
+- デザイントークンの値と、ブランドの表現の基準。[デザインシステムの文書](../../packages/ui/DESIGN.md) にある。
 
 ## Design
 
@@ -37,8 +37,8 @@ Astro によるコーポレートサイトを、高い表示の速さと保守�
 
 - Astro の `.astro` のコンポーネントを基本にする。
 - React の island は、フォーム、動的な UI、外部の widget のように操作が要る箇所に限る。
-  - 表示だけの UI は、`@kufu/ui` の shadcn のコンポーネントを `client:*` なしで静的に描画する。
-  - ADR-0008: [Astro と React island の方針](../../docs/adr/0008-astro-react-island-policy.md)
+  - 表示だけの UI は、`@kufu/ui` のコンポーネントを `client:*` なしで静的に描画する。
+  - ADR-0038: [corporate-site の island の方針](../../docs/adr/0038-corporate-site-island-policy.md)
 - 画像、フォント、スクリプトは、性能予算を意識して管理する。
 - コンポーネントは `components/sections/<section>/` の 1 階層に並べ、各 section の公開面は `index.ts` の再輸出だけにする。
   - 層と依存の向き、共有へ移す条件は [context/codebase.md](../../context/codebase.md#app-の中の層) にある。
@@ -196,46 +196,28 @@ ADR-0014: [corporate-site の sections 構成](../../docs/adr/0014-corporate-sit
 
 ### デザイントークン
 
-トークン（CSS の変数と値）の基準は `packages/ui` の stylesheet で、この文書には値を写さない。
+トークンの値、名前、使う場面は、デザインシステムが持つ。この文書には写さない。
 
-- CSS の変数の定義（primitive と semantic）: `packages/ui/src/styles/tokens.css`
-- font-face の登録: `packages/ui/src/styles/fonts.css`
-- トークンを utility へ写す `@theme inline`: `packages/ui/src/styles/theme.css`（`@kufu/ui/theme.css`）
-- React の app 用のすべてを含むエントリ: `packages/ui/src/styles/globals.css`（`@kufu/ui/styles.css`）
-- 体系（2 層の構成、shadcn の語彙、inverse のスコープ）
-  - ADR-0007: [デザイントークンの構成](../../docs/adr/0007-design-token-architecture.md)
-
-CSS のトークンを持たないガイドは、次の 3 つ。
-
-- spacing: CSS のトークンを持たない。4px のグリッドと、推奨のリズム 12、16、24、32、48、80（Tailwind の `3/4/6/8/12/20`）を使う。
-  - `space-*` はこの写像として扱い、トークンの記述のチェックの対象にしない。チェックの除外は [context/conventions.md](../../context/conventions.md#check-exclusions) にある。
-- radius: shadcn の `--radius` に揃え、基準の値は `tokens.css` の 4px にする。Button の 8px、Tag の 4px のようなコンポーネント固有の値は、`@kufu/ui` のコンポーネントの variant で管理する。
-- type scale: Tailwind の標準を使う。見出しの階層との対応は [トーンとマナー](#トーンとマナー) にある。
+- 規則: [デザインシステムの文書](../../packages/ui/DESIGN.md)。色、文字、余白、角丸、動きの使う場面は、[トークンの文書](../../packages/ui/design/tokens.md) にある。
+- 値: `packages/ui/src/tokens/` の `primitive.css`、`semantic.css`、`theme.css`。暗い面の参照先は `surface-inverse.css` に、font-face の登録は `fonts.css` にある。
+- コンポーネントの使い方: [コンポーネントの文書](../../packages/ui/design/components.md)
+- 層の分け方
+  - ADR-0027: [トークンを、Kufu の色と DADS の値を持つプリミティブトークン、セマンティックトークン、テーマ変数の 3 つの層にし、shadcn の語彙をやめる](../../docs/adr/0027-design-tokens-three-layers.md)
 
 ### トーンとマナー
 
-ブランドの表現の基準は、この節に置く。  
-いまの利用者は corporate-site だけで、cms のような利用者が増えたら、複数の app が参照できる場所へ移す。
+ブランドの表現の基準は、デザインシステムの文書が持つ。
 
-- デザインの言語: 工業的な直線の構成を基調にし、基準 4px の控えめな角丸と 1px の細い罫線（`--border`）で面を区切る。寒色のグレーを基調に、teal をアクセントにする。
-- 書体の役割
-  - `--font-serif`（Noto Serif JP、weight 600）: 見出し、経営理念、ブランド名。信頼感の中心にする。
-  - `--font-sans`（Noto Sans JP）: 本文、リード、UI の文字
-  - `--font-mono`（Geist Mono）: 番号、値の種類のラベル（Tel、Fax、E-mail）、連絡先。letter-spacing を広め（1〜2.2px）にして、工業的なアクセントにする。和文を含むラベルには使わない。
-    - ADR-0037: [Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせ、見出しの上のラベルを日本語だけにする](../../docs/adr/0037-kufu-identity-japanese-labels.md)
+- 残す色、書体、ロゴ、装飾の語彙と、使う場所: [デザインシステムの文書](../../packages/ui/DESIGN.md#kufu-の見た目として残すもの) の「Kufu の見た目として残すもの」
+- 書体と文字のスタイルの使う場面、面の構成、余白の段、section の余白: [トークンの文書](../../packages/ui/design/tokens.md)
+  - ADR-0037: [Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせ、見出しの上のラベルを日本語だけにする](../../docs/adr/0037-kufu-identity-japanese-labels.md)
+
+この節には、corporate-site のページだけの決めを書く。
+
+- 書体の読み込み
   - 読み込みは `@fontsource-variable/*`（可変フォント）を使う。日本語は unicode-range で分けたサブセットにし、すべての glyph を一度に読み込まない。`font-display: swap`（FOUT を許す）にする。
   - `components/common/BaseLayout.astro` が `@kufu/ui/fonts.css?url` を preload と link で読み込み、フォントの配信を document の head の側で制御する。
-- 見出しの階層（type scale は Tailwind の標準で、トークンにしない）
-  - hero の見出し: serif の 48〜56px、行間 1.2
-  - section の見出し: serif の 34〜44px。mono の番号と、見出しにない情報を持つ和文のラベル（sans）を並べる。見出しと同じ意味のラベルと、英字だけのラベルは置かない。
-  - カードの見出し: serif の 20px。本文: sans の 13.5〜17px、行間 1.7〜1.85
-- 装飾の語彙
-  - 大きなウォーターマークの数字（`--ghost-foreground`、140px の mono）
-  - 写真への色の被せ（`--photo-overlay` の multiply と彩度の調整）
-  - 写真の上のキャプションのパネル（`--card-overlay`）
-- 面の構成: 明るい面は `--background` と `--muted` を交互に置いて、section のリズムを作る。フッターと強い CTA の帯は暗い面（inverse のスコープ）に切り替え、アクセントの文字は `--primary-soft` を使う。
-- 余白: [デザイントークン](#デザイントークン) の spacing のガイドに従う。section の縦の padding は 80、横は 56（コンテナの幅 1440）にする。
-- アクセントの使いどころ: CTA のボタン（`--primary` の塗りと白の文字）、番号と見出しの上のラベル、理念の強調の語だけに使う。面積を絞り、信頼感を優先する。
+- section の見出し: 見出しの上に、mono の番号と、見出しにない情報を持つ和文のラベル（sans）を並べる。見出しと同じ意味のラベルと、英字だけのラベルは置かない。
 - 使わない表現
   - 飾りの em-dash。区切りは `/` を使う。
   - 順も索引も表さない並びの番号。番号は、セクション、手順、カテゴリのように順か索引の意味があるものにだけ付ける。

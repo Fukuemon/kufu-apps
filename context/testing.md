@@ -96,11 +96,12 @@ Cloudflare Pages Functions か Workers を伴う feature は、ローカルの E
 - app の Storybook は、section の presentation のコンポーネントのレビューに使う。
   - story のファイルは `<Component>.stories.*` にする。
 - presentation のコンポーネントには、次の 2 つの story を必須にする。
-  - 見た目の variant（cva の variants か、markup の分岐による variant）のすべての組み合わせを args で並べる story
+  - 見た目の variant（props の変種か、markup の分岐による variant）のすべての組み合わせを args で並べる story
   - edge state（長い文、空のデータ、最小の構成）の story
 - section assembly の story は、ページの文脈で確認するために catalog に入れてよい。
   - fixture は story の中に限り、代表のケースだけでよい。variant を網羅する主な対象は presentation である。
-- すべての story に autodocs を適用する。`.storybook/preview` の `tags: ['autodocs']` で掛け、例外は story の側で `!autodocs` を指定する。
+- corporate-site の Storybook は、すべての story に autodocs を適用する。`.storybook/preview` の `tags: ['autodocs']` で掛け、例外は story の側で `!autodocs` を指定する。
+- `packages/ui` の Storybook は、autodocs を使わない。コンポーネントごとの MDX（`src/base/<名前>/<名前>.mdx`）を docs のページにする。
 - 公開の判断には、deploy の成功だけでなく、preview での導線の確認を含める。条件は [operations.md](operations.md#deployment-conditions) にある。
 - `apps/cms` を足すときの採用判断のテストの観点は [CMS の Design Doc](../docs/design/features/cms/DesignDoc.md) にある。
 
