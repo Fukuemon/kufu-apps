@@ -6,6 +6,10 @@ import {
   contactTelLink,
 } from "../../selectors/contact";
 import {
+  contactBandCtaLink,
+  contactBandTelLink,
+} from "../../selectors/contact-band";
+import {
   productsCategoryArticles,
   productsCategoryLinks,
   productsText,
@@ -28,6 +32,25 @@ test.describe("トップ", () => {
       // 索引リストは18カテゴリを連番で全件並べる (画像カードはカルーセルで別掲)
       await expect(productsCategoryLinks(page)).toHaveCount(18);
     });
+
+    test("開いた場合、問い合わせの帯に、見出しと受付時間と、お問い合わせへのボタンと電話のリンクが出ること", async ({
+      page,
+    }) => {
+      await page.goto("/");
+
+      const band = page.getByTestId("home-section-contact-band");
+      await expect(band).toBeVisible();
+      await expect(band).toContainText("お問い合わせ・お見積り");
+      await expect(band).toContainText("受付時間 / 平日 9:00-18:00");
+      await expect(contactBandCtaLink(band)).toHaveAttribute(
+        "href",
+        "/contact",
+      );
+      await expect(contactBandTelLink(band)).toHaveAttribute(
+        "href",
+        "tel:0794926465",
+      );
+    });
   });
 });
 
@@ -44,6 +67,27 @@ test.describe("取扱製品", () => {
       await expect(productsCategoryArticles(page)).toHaveCount(18);
       await expect(productsText(page, "住友重機械工業（株）")).toBeVisible();
       await expect(productsText(page, "三菱電機（株）").first()).toBeVisible();
+    });
+
+    test("開いた場合、問い合わせの帯に、見出しと受付時間と、お問い合わせへのボタンと電話のリンクが出ること", async ({
+      page,
+    }) => {
+      await page.goto("/products");
+
+      const band = page.getByTestId("products-section-contact-band");
+      await expect(band).toBeVisible();
+      await expect(band).toContainText(
+        "掲載のないメーカー・型番も確認します。",
+      );
+      await expect(band).toContainText("受付時間 / 平日 9:00-18:00");
+      await expect(contactBandCtaLink(band)).toHaveAttribute(
+        "href",
+        "/contact",
+      );
+      await expect(contactBandTelLink(band)).toHaveAttribute(
+        "href",
+        "tel:0794926465",
+      );
     });
   });
 });

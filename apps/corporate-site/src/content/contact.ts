@@ -32,3 +32,10 @@ export const contactPageContent = {
       "お見積りはお電話・FAX・メールでも承ります。図面がある場合はメール添付いただくとスムーズです。",
   },
 } as const;
+
+/** 問い合わせの帯の、ページによらない文言。見出しとリードは、帯を置くページが渡す。 */
+export const contactBandContent = {
+  cta: { label: "お見積り・お問い合わせ", href: "/contact" },
+  telLabel: "TEL",
+  hours: contactPageContent.notice.hours,
+} as const;

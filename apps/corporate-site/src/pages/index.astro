@@ -1,10 +1,12 @@
 ---
 import BaseLayout from "../components/common/BaseLayout.astro";
+import ContactBand from "../components/common/ContactBand.astro";
 import { BusinessSection } from "../components/sections/business";
 import { CompanySection } from "../components/sections/company";
 import { ConsultationSection } from "../components/sections/consultation";
 import { Hero } from "../components/sections/hero";
 import { ProductsCategorySection } from "../components/sections/products-category";
+import { contactPageContent } from "../content/contact.js";
 ---
 
 <BaseLayout
@@ -17,4 +19,9 @@ import { ProductsCategorySection } from "../components/sections/products-categor
   <BusinessSection number="01" />
   <ProductsCategorySection number="02" />
   <CompanySection number="03" />
+  <ContactBand
+    title={contactPageContent.title}
+    lead={contactPageContent.lead}
+    data-testid="home-section-contact-band"
+  />
 </BaseLayout>
