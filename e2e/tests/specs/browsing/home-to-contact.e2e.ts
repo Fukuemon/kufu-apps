@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 
+import { contactBandCtaLink } from "../../selectors/contact-band";
 import {
   productsSearchBox,
   productsSearchResult,
@@ -49,6 +50,19 @@ test.describe("トップ", () => {
       await page.goto("/");
 
       await page.getByTestId("home-link-contact").click();
+
+      await expect(page).toHaveURL("/contact");
+      await expect(page.getByTestId("contact-section-info")).toBeVisible();
+    });
+
+    test("トップの末尾の問い合わせの帯のボタンを押した場合、お問い合わせが開くこと", async ({
+      page,
+    }) => {
+      await page.goto("/");
+
+      await contactBandCtaLink(
+        page.getByTestId("home-section-contact-band"),
+      ).click();
 
       await expect(page).toHaveURL("/contact");
       await expect(page.getByTestId("contact-section-info")).toBeVisible();
