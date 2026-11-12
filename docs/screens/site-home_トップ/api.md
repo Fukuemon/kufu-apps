@@ -37,6 +37,7 @@
 | 17   | 取扱製品ページへ       | `home-link-products`        |
 | 18   | 会社概要               | `home-section-company`      |
 | 19   | アクセスの地図         | `company-access-map`        |
+| 20   | 問い合わせの帯         | `home-section-contact-band` |
 | 23   | フッター               | `site-footer`               |
 
 最初の画面のセクションの `home-section-hero` は、番号のない入れ物に付けているので、表に載せない。
