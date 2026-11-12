@@ -11,11 +11,6 @@ export const heroContent = {
     "別作加工 / 樹脂 / 板金溶接 / ゴム加工",
     "設備修繕 / 小規模工事",
   ],
-  scrollCue: {
-    label: "SCROLL",
-    href: "#consultation",
-    ariaLabel: "相談内容セクションへスクロール",
-  },
   primaryCta: {
     label: "お見積り・お問い合わせ",
     href: "/contact",
