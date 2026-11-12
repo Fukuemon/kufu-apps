@@ -131,7 +131,7 @@ test.describe("取扱製品", () => {
       );
     });
 
-    test("開いた場合、フッターに、トップと同じサイトマップのリンクと連絡先が出ること", async ({
+    test("開いた場合、フッターに、サイトマップのリンクと連絡先が出ること", async ({
       page,
     }) => {
       await page.goto("/products");
@@ -176,7 +176,7 @@ test.describe("お問い合わせ", () => {
       await expect(page.getByTestId("contact-form-slot")).toBeVisible();
     });
 
-    test("開いた場合、フッターに、トップと同じサイトマップのリンクと連絡先が出ること", async ({
+    test("開いた場合、フッターに、サイトマップのリンクと連絡先が出ること", async ({
       page,
     }) => {
       await page.goto("/contact");

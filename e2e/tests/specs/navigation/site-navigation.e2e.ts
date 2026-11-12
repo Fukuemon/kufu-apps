@@ -95,7 +95,7 @@ test.describe("取扱製品", () => {
   test.describe("ヘッダーのナビ", () => {
     test.use({ viewport: { width: 1280, height: 800 } });
 
-    test("会社概要を押した場合、トップの会社概要のセクションへ移ること", async ({
+    test("デスクトップの幅で会社概要を押した場合、トップの会社概要のセクションへ移ること", async ({
       page,
     }) => {
       await page.goto("/products");
