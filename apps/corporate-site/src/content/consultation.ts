@@ -1,6 +1,5 @@
 export const consultationContent = {
   heading: {
-    number: "00",
     eyebrow: "CONSULTATION / ご相談内容",
     title: "こんな相談に対応できます",
     description:
@@ -28,6 +27,7 @@ export const consultationContent = {
         "用途・寸法・現物情報から、調達可能な製品や代替案を検討します。",
     },
   ],
+  flowHeading: { title: "相談から納品まで", count: "全4ステップ" },
   flow: [
     {
       step: "01",

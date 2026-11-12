@@ -3,6 +3,13 @@ import { getCollection } from "astro:content";
 
 import SectionHeading from "../../common/SectionHeading.astro";
 import FeaturedCategoryCarousel from "./FeaturedCategoryCarousel.astro";
+import { productsCategoryContent } from "../../../content/products.js";
+
+export interface Props {
+  number: string;
+}
+
+const { number } = Astro.props;
 
 const productCategories = (await getCollection("productCategories")).sort(
   (a, b) => a.data.order - b.data.order,
@@ -27,16 +34,17 @@ const categoryColumns = Array.from({ length: columnCount }, (_, index) =>
 
 <section
   id="products"
-  class="products-catalog reveal-section border-b border-divider bg-surface-subtle"
+  data-reveal
+  class="products-catalog border-b border-divider bg-surface-subtle"
   data-testid="home-section-products"
 >
   <div class="mx-auto grid w-full max-w-360 gap-14 px-5 py-14 sm:px-8 md:gap-16 md:py-20 lg:px-14">
     <div class="grid gap-8">
       <SectionHeading
-        number="02"
-        eyebrow="PRODUCTS & MAKERS / 取扱製品・取扱メーカー"
-        title="取扱製品カテゴリ"
-        description={"減速機や軸受などの駆動・伝動部品から、空圧・油圧、工具、測定機器、工場設備まで。\n調達のご相談に応える領域を18のカテゴリに整理しています。"}
+        number={number}
+        eyebrow={productsCategoryContent.heading.eyebrow}
+        title={productsCategoryContent.heading.title}
+        description={productsCategoryContent.heading.description}
       />
     </div>
 
@@ -46,7 +54,7 @@ const categoryColumns = Array.from({ length: columnCount }, (_, index) =>
         makerCountsByCategoryId={makerCountsByCategoryId}
       />
 
-      <div class="catalog-board border border-divider bg-surface p-4 md:p-7">
+      <div data-reveal class="catalog-board border border-divider bg-surface p-4 md:p-7">
         <ol
           class="grid list-none gap-7 md:grid-cols-3 md:gap-12"
           data-testid="products-category-list"
@@ -82,11 +90,11 @@ const categoryColumns = Array.from({ length: columnCount }, (_, index) =>
 
       <a
         class="focus-ring products-summary-cta grid min-h-16 grid-cols-[1fr_auto] items-center gap-6 px-7 py-[1.375rem] text-label leading-normal font-medium"
-        href="/products"
+        href={productsCategoryContent.summaryCta.href}
         data-testid="home-link-products"
       >
-        <span>各カテゴリの取扱メーカー一覧は、取扱製品ページに掲載しています。</span>
-        <span class="font-semibold">取扱製品ページへ →</span>
+        <span>{productsCategoryContent.summaryCta.text}</span>
+        <span class="font-semibold">{productsCategoryContent.summaryCta.label}</span>
       </a>
     </div>
   </div>

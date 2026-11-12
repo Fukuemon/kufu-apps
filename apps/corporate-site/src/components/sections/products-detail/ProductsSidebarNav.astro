@@ -13,7 +13,7 @@ export interface Props {
 const { categoryGroups, makerCountById } = Astro.props;
 ---
 
-<aside class="products-nav-rail reveal-section lg:sticky lg:top-28 lg:self-start">
+<aside data-reveal class="products-nav-rail lg:sticky lg:top-28 lg:self-start">
   <details class="products-nav border border-divider bg-surface" open data-products-nav>
     <summary class="focus-ring products-nav-summary flex cursor-pointer items-center justify-between gap-3 px-5 py-4 lg:hidden">
       <span class="flex items-baseline gap-3">

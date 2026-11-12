@@ -1,3 +1,4 @@
+import { contactInfo } from "./contact.js";
 import { companyProfileSource } from "./source-references.js";
 
 const postalCode = "〒675-1114";
@@ -6,6 +7,9 @@ const streetAddress = "兵庫県加古郡稲美町国安973番地の10";
 export const companyProfile = {
   sourceReferences: [companyProfileSource],
   name: "有限会社フクウラ",
+  nameRoman: "FUKUURA",
+  footerSummary:
+    "機械工具と関連機器の販売、各種別作加工、小規模工事。兵庫県加古郡稲美町より、製造現場の調達と加工、設備の工事を支えます。",
   tagline: "機械工具と関連機器 / 販売・加工・小規模工事",
   postalCode,
   streetAddress,
@@ -24,9 +28,28 @@ export const companyProfile = {
     ],
     ["創立", "1996年（平成8年）6月"],
     ["所在地", `${postalCode} ${streetAddress}`],
-    ["電話 / FAX", "TEL 079-492-6465 ／ FAX 079-492-6429"],
-    ["E-mail", "fukuura@mist.ocn.ne.jp"],
+    ["電話 / FAX", contactInfo.telFax],
+    ["E-mail", contactInfo.email],
   ],
+  heading: {
+    eyebrow: "COMPANY / 会社概要",
+    title: "会社概要",
+  },
+  philosophyEyebrow: "PHILOSOPHY / 経営理念",
+  // 強調の「」は文字を分けて持つ。区切りの空白は描画に出るので、text に含める
+  philosophyParts: [
+    { text: "「創意」", accent: true },
+    { text: "と " },
+    { text: "「誠意」", accent: true },
+    { text: "で真心奉仕" },
+  ],
+  profileSection: { eyebrow: "PROFILE / 基本情報", title: "基本情報" },
+  messageSection: { eyebrow: "MESSAGE / 代表挨拶", title: "ご挨拶" },
+  portraitPlaceholder: "顔写真",
+  representativeName: "福浦 崇志",
+  representativeTitle: "代表取締役",
+  accessSection: { eyebrow: "ACCESS / アクセス", title: "アクセス" },
+  mapTitle: "有限会社フクウラ 所在地の地図",
   philosophyLead:
     "創意工夫と誠実な対応で、お客様の信頼に応える。\n創業以来変わらない、私たちの仕事の指針です。",
   // 段落ごとの本文。強調したい区間だけ emphasis を立てる (出典の太字指定を保持するため)

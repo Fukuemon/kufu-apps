@@ -1,6 +1,7 @@
 ---
 import { companyProfile } from "../../content/company.js";
 import { contactInfo } from "../../content/contact.js";
+import { footerNav } from "../../content/navigation.js";
 
 export interface Props {
   variant?: "full" | "compact";
@@ -44,31 +45,26 @@ const isFull = variant === "full";
         {companyProfile.philosophy}
       </p>
       <p class="max-w-75 text-caption leading-[1.9] text-text-inverse-secondary">
-        機械工具と関連機器の販売、各種別作加工、小規模工事。兵庫県加古郡稲美町より、製造現場の調達と加工、設備の工事を支えます。
+        {companyProfile.footerSummary}
       </p>
     </div>
 
     <nav class="grid gap-3" aria-label="フッターナビゲーション">
       <p class="font-mono text-eyebrow font-normal tracking-[0.18em] text-text-secondary">
-        SITEMAP
+        {footerNav.heading}
       </p>
-      <a class="focus-ring footer-link" href="/#business">
-        事業内容
-      </a>
-      <a class="focus-ring footer-link" href="/products">
-        取扱製品
-      </a>
-      <a class="focus-ring footer-link" href="/#company">
-        会社概要
-      </a>
-      <a class="focus-ring footer-link" href="/contact">
-        お問い合わせ・お見積り
-      </a>
+      {
+        footerNav.items.map((item) => (
+          <a class="focus-ring footer-link" href={item.href}>
+            {item.label}
+          </a>
+        ))
+      }
     </nav>
 
     <div class="grid gap-3">
       <p class="font-mono text-eyebrow font-normal tracking-[0.18em] text-text-secondary">
-        CONTACT
+        {contactInfo.heading}
       </p>
       <p class="text-caption leading-7 text-text-inverse-secondary">
         {companyProfile.postalCode}
@@ -76,11 +72,11 @@ const isFull = variant === "full";
       <p class="text-caption leading-7 text-text-inverse-secondary">
         {companyProfile.streetAddress}
       </p>
-      <a class="focus-ring footer-link" href={`tel:${contactInfo.tel.replaceAll("-", "")}`}>
+      <a class="focus-ring footer-link" href={contactInfo.telHref}>
         TEL {contactInfo.tel}
       </a>
       <p class="text-caption leading-7 text-text-inverse-secondary">FAX {contactInfo.fax}</p>
-      <a class="focus-ring footer-link" href={`mailto:${contactInfo.email}`}>
+      <a class="focus-ring footer-link" href={contactInfo.emailHref}>
         {contactInfo.email}
       </a>
     </div>
