@@ -10,7 +10,6 @@
 - E2E、route の VRT、story の VRT の 4 つの CI の job は、同じバージョンの Playwright の公式の image で動く。ローカルの route の VRT は、入っている `@playwright/test` のバージョンから image を決める。
 - VRT の baseline は、CI で撮った画像を基準にする。許す差分は 0 から始め、差分が出たら CI を失敗させる。
   - ADR-0015: [VRT を story と route の 2 系統で導入する](0015-visual-regression-testing-policy.md)
-  - ADR-0018: [story の側の VRT を Storybook の公式のテストの基盤に載せ、baseline をリポジトリで管理する](0018-story-vrt-on-storybook-test-integrations.md)
 - agent-harness のパッケージ capture の撮影の仕組みは、録画に字幕と操作の枠を重ねる機能を使う。Playwright は 1.64 以上が要る。
 - buddy は、`@playwright/test` を 1.64.1 に固定している。
   - 出典: [buddy の packages/e2e/package.json](https://github.com/Fukuemon/buddy/blob/c53390a6e64f4ef39d468dedd529425ae4aca0e5/packages/e2e/package.json)

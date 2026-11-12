@@ -108,7 +108,7 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
-  # story 側の VRT。撮影と判定は CI に一本化する (docs/adr/0018)。runner は amd64 なので、
+  # story 側の VRT。撮影と判定は CI に一本化する (docs/adr/0015)。runner は amd64 なので、
   # ここで撮った baseline が正になる。Storybook 単位に job を分けて撮影を並列にする。
   # 各 job は自分の baseline とだけ比べるため、job 間に順序依存は生まれない。
   vrt-story-ui:

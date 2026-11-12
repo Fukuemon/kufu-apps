@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // story 側 VRT。Storybook を撮影し、reg-cli で baseline と比べる。
-// 手順と設計の理由は README.md の VRT 節、判断は docs/adr/0018。
+// 手順と設計の理由は README.md の VRT 節、判断は docs/adr/0015。
 //
 //   node scripts/vrt-story.mjs [--update] [--target=ui|corporate-site]
 //

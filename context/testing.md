@@ -42,8 +42,7 @@ E2E は、route をまたいだ到達を見る。
 ### VRT
 
 VRT は、story と route の 2 系統で撮る。  
-ADR-0015: [VRT の方針](../docs/adr/0015-visual-regression-testing-policy.md)  
-ADR-0018: [Storybook の test の仕組みの上の story の VRT](../docs/adr/0018-story-vrt-on-storybook-test-integrations.md)
+ADR-0015: [VRT の方針](../docs/adr/0015-visual-regression-testing-policy.md)
 
 | 系統  | 撮る対象                                        | 撮る手段                         | baseline の置き場 | コマンド         |
 | ----- | ----------------------------------------------- | -------------------------------- | ----------------- | ---------------- |
@@ -59,7 +58,7 @@ ADR-0018: [Storybook の test の仕組みの上の story の VRT](../docs/adr/0
   - Playwright の baseline はファイル名に platform を含み、ホスト（macOS）で撮った画像は CI では使われない。
   - `pnpm vrt:route` を通さない実行は skip される。
 - story は container を使わず、CI だけで撮る。撮影が Vite の bundle を伴い、エミュレーションの下の container の実行と両立しないため。
-  - ADR-0018: [Storybook の test の仕組みの上の story の VRT](../docs/adr/0018-story-vrt-on-storybook-test-integrations.md)
+  - ADR-0015: [VRT の方針](../docs/adr/0015-visual-regression-testing-policy.md)
 - VRT を外部のサービスの応答に依存させない。外部の埋め込みと画像はリクエストごと止め、残る枠はマスクする。
 
 手順とコマンドの詳細は、[README.md](../README.md#visual-regression-testing-vrt) の VRT の節にある。
