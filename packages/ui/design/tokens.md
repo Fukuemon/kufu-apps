@@ -37,10 +37,9 @@
 - 使っていない名前を残さない。名前を足すのは、使うコンポーネントか画面を足すときにする。誤りの面の色（`danger-surface`）は、使うコンポーネントが無いので置いていない。
 - `danger` は、DADS のエラーの色のうち Error-2（Red-900）に当てている。DADS の実装例は、入力欄の誤りの枠に Error-1（Red-800）を使う。Error-1（Red-800）は、`surface-canvas` の上で 4.33、`surface-subtle` の上で 3.99 で、文字の 4.5:1 に届かない。
 - 枠の 2 つは、ユーティリティの名前を `divider` と `field` にしている。テーマ変数をセマンティックトークンと同じ名前にすると、`border` が 2 回並ぶユーティリティの名前になるためである。
-- 次の 10 個は、corporate-site の演出の線、影、色の付いた面で、CSS の変数だけで使う。値は `:root` で決まるので、暗い面の中で使っても暗い面の値にならない。
-  - 方眼の線: `grid-line`、`grid-line-subtle`、`media-grid-line`、`media-ruler`
+- 次の 5 個は、corporate-site の演出の線、影、色の付いた面で、CSS の変数だけで使う。値は `:root` で決まるので、暗い面の中で使っても暗い面の値にならない。
   - 影: `shadow-media`、`shadow-floating`
-  - 主の色を薄くしたもの: `primary-glow`、`primary-hairline`、`primary-connector`
+  - 主の色を薄くしたもの: `primary-hairline`、`primary-connector`
   - そのほか: `scrollbar-thumb`（スクロールできる一覧のつまみ）
 
 ## フォーカス
