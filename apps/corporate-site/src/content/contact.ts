@@ -6,7 +6,6 @@ const email = "fukuura@mist.ocn.ne.jp";
 
 export const contactInfo = {
   sourceReferences: [companyProfileSource],
-  heading: "CONTACT",
   tel,
   telHref: `tel:${tel.replaceAll("-", "")}`,
   fax,

@@ -50,9 +50,6 @@ const isFull = variant === "full";
     </div>
 
     <nav class="grid gap-3" aria-label="フッターナビゲーション">
-      <p class="font-mono text-eyebrow font-normal tracking-[0.18em] text-text-secondary">
-        {footerNav.heading}
-      </p>
       {
         footerNav.items.map((item) => (
           <a class="focus-ring footer-link" href={item.href}>
@@ -63,9 +60,6 @@ const isFull = variant === "full";
     </nav>
 
     <div class="grid gap-3">
-      <p class="font-mono text-eyebrow font-normal tracking-[0.18em] text-text-secondary">
-        {contactInfo.heading}
-      </p>
       <p class="text-caption leading-7 text-text-inverse-secondary">
         {companyProfile.postalCode}
       </p>

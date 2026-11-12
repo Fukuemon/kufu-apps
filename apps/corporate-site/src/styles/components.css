@@ -553,15 +553,6 @@
   transform: translate(0.0625rem, -0.0625rem);
 }
 
-.site-nav-sub-label {
-  color: var(--kufu-color-text-secondary);
-  font-family: var(--font-mono);
-  font-size: var(--kufu-text-eyebrow-font-size);
-  line-height: var(--kufu-text-eyebrow-line-height);
-  font-weight: 400;
-  letter-spacing: 0.14em;
-}
-
 .site-nav-link:hover,
 .site-nav-link[aria-current="page"] {
   color: var(--kufu-color-primary);
