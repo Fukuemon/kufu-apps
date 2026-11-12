@@ -84,7 +84,7 @@ import { contactInfo, contactPageContent } from "../../../content/contact.js";
         </div>
         <label class="grid gap-2 text-label">
           <span class="flex items-center gap-2">住所<Tag size="sm" tone="required">必須</Tag></span>
-          <input class="focus-ring min-h-12 border border-field bg-surface-canvas px-3 text-body-dense" type="text" name="address" autocomplete="street-address" placeholder="〒675-1114 兵庫県加古郡稲美町国安973番地の10" required aria-required="true" />
+          <input class="focus-ring min-h-12 border border-field bg-surface-canvas px-3 text-body-dense" type="text" name="address" autocomplete="street-address" placeholder={companyProfile.address} required aria-required="true" />
         </label>
         <div class="grid gap-4 md:grid-cols-2">
           <label class="grid gap-2 text-label">

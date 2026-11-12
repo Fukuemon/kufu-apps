@@ -13,22 +13,6 @@ export const contactInfo = {
   email,
   emailHref: `mailto:${email}`,
   telFax: `TEL ${tel} ／ FAX ${fax}`,
-  rows: [
-    {
-      label: "TEL",
-      value: tel,
-      href: `tel:${tel.replaceAll("-", "")}`,
-    },
-    {
-      label: "FAX",
-      value: fax,
-    },
-    {
-      label: "E MAIL",
-      value: email,
-      href: `mailto:${email}`,
-    },
-  ],
 } as const;
 
 export const contactPageContent = {
