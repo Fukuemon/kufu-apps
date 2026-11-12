@@ -214,9 +214,15 @@
     opacity var(--kufu-motion-fast) var(--kufu-ease);
 }
 
-.featured-carousel-arrow:hover {
+.featured-carousel-arrow:hover:not(:disabled) {
   border-color: var(--kufu-color-primary);
   color: var(--kufu-color-primary);
+}
+
+/* 端では押せない。Button の無効と同じく、見た目を薄くするだけにする。
+   pointer-events は止めない。止めると、下に重なるカードのリンクへクリックが通る */
+.featured-carousel-arrow:disabled {
+  opacity: 0.5;
 }
 
 .featured-carousel-arrow--prev {

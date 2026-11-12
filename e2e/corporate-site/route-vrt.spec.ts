@@ -23,7 +23,7 @@ test.skip(
 );
 
 test.use({
-  // reveal (IntersectionObserver) とカルーセルの自動スクロールを、既存実装が持つ
+  // reveal (IntersectionObserver) の動きを、既存実装が持つ
   // prefers-reduced-motion の分岐で止める。test.use の直下に書くと Playwright 1.59 は
   // 黙って無視するため contextOptions 経由で渡す。
   contextOptions: { reducedMotion: "reduce" },
