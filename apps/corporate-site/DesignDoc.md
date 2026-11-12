@@ -36,7 +36,7 @@ Astro によるコーポレートサイトを、高い表示の速さと保守�
 ### 設計の方針
 
 - Astro の `.astro` のコンポーネントを基本にする。
-- React の island は、フォーム、動的な UI、外部の widget のように操作が要る箇所に限る。
+- React の island は、問い合わせフォームと、ネイティブの要素で足りない操作の UI のためにライブラリを入れたコンポーネントに限る。
   - 表示だけの UI は、`@kufu/ui` のコンポーネントを `client:*` なしで静的に描画する。
   - ADR-0038: [corporate-site の island の方針](../../docs/adr/0038-corporate-site-island-policy.md)
 - 画像、フォント、スクリプトは、性能予算を意識して管理する。
