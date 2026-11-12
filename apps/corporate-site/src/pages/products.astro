@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../components/common/BaseLayout.astro";
+import ContactBand from "../components/common/ContactBand.astro";
 import { ProductsDetailSection } from "../components/sections/products-detail";
+import { productsContactBandContent } from "../content/products.js";
 ---
 
 <BaseLayout
@@ -9,4 +11,10 @@ import { ProductsDetailSection } from "../components/sections/products-detail";
   footerVariant="compact"
 >
   <ProductsDetailSection />
+  <ContactBand
+    eyebrow={productsContactBandContent.eyebrow}
+    title={productsContactBandContent.title}
+    lead={productsContactBandContent.lead}
+    data-testid="products-section-contact-band"
+  />
 </BaseLayout>

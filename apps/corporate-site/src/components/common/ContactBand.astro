@@ -1,0 +1,54 @@
+---
+import ContactCtaLink from "./ContactCtaLink.astro";
+import { contactBandContent, contactInfo } from "../../content/contact.js";
+
+export interface Props {
+  title: string;
+  lead: string;
+  /** 見出しの上のラベル。渡さなければ出さない。 */
+  eyebrow?: string;
+  "data-testid": string;
+}
+
+const { title, lead, eyebrow, "data-testid": testId } = Astro.props;
+---
+
+<section class="surface-inverse bg-surface-canvas text-text" data-testid={testId}>
+  <div class="mx-auto grid w-full max-w-360 gap-8 px-5 py-16 sm:px-8 md:grid-cols-[1fr_auto] md:items-center md:gap-12 lg:px-14">
+    <div class="grid gap-3">
+      {
+        eyebrow && (
+          <p class="font-mono text-eyebrow font-medium tracking-[0.22em] text-primary-soft">
+            {eyebrow}
+          </p>
+        )
+      }
+      <h2 class="font-serif text-heading-32 font-semibold leading-normal">
+        {title}
+      </h2>
+      <p class="max-w-180 text-body leading-[1.8] text-text-inverse-secondary">
+        {lead}
+      </p>
+    </div>
+    <div class="grid gap-4 md:w-80">
+      <ContactCtaLink href={contactBandContent.cta.href} size="lg">
+        {contactBandContent.cta.label}{" "}
+        <span class="font-mono" aria-hidden="true">→</span>
+      </ContactCtaLink>
+      <a
+        class="focus-ring grid min-h-11 gap-1 rounded-4 border border-text px-5 py-3"
+        href={contactInfo.telHref}
+      >
+        <span class="font-mono text-eyebrow tracking-[0.16em] text-primary-soft">
+          {contactBandContent.telLabel}
+        </span>
+        <span class="font-mono text-heading-24 font-medium tracking-[0.06em]">
+          {contactInfo.tel}
+        </span>
+        <span class="text-caption text-text-inverse-secondary">
+          {contactBandContent.hours}
+        </span>
+      </a>
+    </div>
+  </div>
+</section>

@@ -39,5 +39,4 @@ export const productsContactBandContent = {
   eyebrow: "MAKER SEARCH",
   title: "掲載のないメーカー・型番も確認します。",
   lead: "メーカー名、型番、数量、希望納期が分かる場合は、問い合わせ時にご記入ください。代替品や別作加工の可否も含めて確認します。",
-  cta: { label: "お問い合わせ・お見積り", href: "/contact" },
 } as const;

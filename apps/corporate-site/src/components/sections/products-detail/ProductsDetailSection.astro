@@ -1,15 +1,11 @@
 ---
 import { getCollection } from "astro:content";
 
-import ContactCtaLink from "../../common/ContactCtaLink.astro";
 import ProductsCategoryAccordionList from "./ProductsCategoryAccordionList.astro";
 import ProductsHero from "./ProductsHero.astro";
 import ProductsSidebarNav from "./ProductsSidebarNav.astro";
 import { productGroups } from "../../../content/product-groups.js";
-import {
-  productsContactBandContent,
-  productsIndexContent,
-} from "../../../content/products.js";
+import { productsIndexContent } from "../../../content/products.js";
 
 const productCategories = (await getCollection("productCategories")).sort(
   (a, b) => a.data.order - b.data.order,
@@ -95,26 +91,6 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
     <span class="font-mono text-label leading-none" aria-hidden="true">↑</span>
     <span class="products-backtop-label">カテゴリ先頭へ</span>
   </button>
-</section>
-
-<section class="surface-inverse bg-surface-canvas text-text">
-  <div class="mx-auto grid w-full max-w-360 gap-8 px-5 py-16 sm:px-8 md:grid-cols-[1fr_auto] md:items-center lg:px-14">
-    <div class="grid gap-3">
-      <p class="font-mono text-eyebrow font-medium tracking-[0.22em] text-primary-soft">
-        {productsContactBandContent.eyebrow}
-      </p>
-      <h2 class="font-serif text-heading-32 font-semibold leading-normal">
-        {productsContactBandContent.title}
-      </h2>
-      <p class="max-w-180 text-body leading-[1.8] text-text-inverse-secondary">
-        {productsContactBandContent.lead}
-      </p>
-    </div>
-    <ContactCtaLink href={productsContactBandContent.cta.href} size="lg">
-      {productsContactBandContent.cta.label}{" "}
-      <span class="font-mono" aria-hidden="true">→</span>
-    </ContactCtaLink>
-  </div>
 </section>
 
 <script>
