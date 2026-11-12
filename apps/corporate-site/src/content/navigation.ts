@@ -19,7 +19,7 @@ export const headerNavItems = [
   },
   {
     href: "/#company",
-    label: "会社情報",
+    label: "会社概要",
     testId: "site-nav-company",
     isPage: false,
   },
