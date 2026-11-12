@@ -10,7 +10,7 @@ test.describe("トップ", () => {
   test.describe("JavaScript を使わない表示", () => {
     test.use({ javaScriptEnabled: false });
 
-    test("JavaScript が無効の場合、事業内容と取扱製品と会社情報の領域が出ること", async ({
+    test("JavaScript が無効の場合、事業内容と取扱製品と会社概要の領域が出ること", async ({
       page,
     }) => {
       await page.goto("/");

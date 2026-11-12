@@ -9,6 +9,7 @@ import {
   contactBandCtaLink,
   contactBandTelLink,
 } from "../../selectors/contact-band";
+import { footerLink } from "../../selectors/home";
 import {
   productsCategoryArticles,
   productsCategoryLinks,
@@ -129,6 +130,33 @@ test.describe("取扱製品", () => {
         "tel:0794926465",
       );
     });
+
+    test("開いた場合、フッターに、サイトマップのリンクと連絡先が出ること", async ({
+      page,
+    }) => {
+      await page.goto("/products");
+
+      await expect(footerLink(page, "事業内容")).toHaveAttribute(
+        "href",
+        "/#business",
+      );
+      await expect(footerLink(page, "取扱製品")).toHaveAttribute(
+        "href",
+        "/products",
+      );
+      await expect(footerLink(page, "会社概要")).toHaveAttribute(
+        "href",
+        "/#company",
+      );
+      await expect(footerLink(page, "お問い合わせ・お見積り")).toHaveAttribute(
+        "href",
+        "/contact",
+      );
+      await expect(footerLink(page, "TEL 079-492-6465")).toHaveAttribute(
+        "href",
+        "tel:0794926465",
+      );
+    });
   });
 });
 
@@ -146,6 +174,33 @@ test.describe("お問い合わせ", () => {
       await expect(contactFaxText(page)).toBeVisible();
       await expect(contactEmailLink(page)).toBeVisible();
       await expect(page.getByTestId("contact-form-slot")).toBeVisible();
+    });
+
+    test("開いた場合、フッターに、サイトマップのリンクと連絡先が出ること", async ({
+      page,
+    }) => {
+      await page.goto("/contact");
+
+      await expect(footerLink(page, "事業内容")).toHaveAttribute(
+        "href",
+        "/#business",
+      );
+      await expect(footerLink(page, "取扱製品")).toHaveAttribute(
+        "href",
+        "/products",
+      );
+      await expect(footerLink(page, "会社概要")).toHaveAttribute(
+        "href",
+        "/#company",
+      );
+      await expect(footerLink(page, "お問い合わせ・お見積り")).toHaveAttribute(
+        "href",
+        "/contact",
+      );
+      await expect(footerLink(page, "TEL 079-492-6465")).toHaveAttribute(
+        "href",
+        "tel:0794926465",
+      );
     });
   });
 });

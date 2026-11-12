@@ -174,7 +174,7 @@ ADR-0015: [spec の後始末の強制](../docs/adr/0015-specs-closeout-enforceme
   - スケールにない line-height と letter-spacing は arbitrary value でよい。
 - class の差で表せる見た目の variant と状態の分岐を持つ Astro のコンポーネントは、variant ごとの class を frontmatter の中のオブジェクトに書き、`class:list` で条件つきで組み立てる。
   - ADR-0020: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0020-ui-components-native-elements.md)
-  - markup の構造ごと分岐する見た目の variant（`SiteFooter` の `full` と `compact` など）は、条件分岐のまま保つ。
+  - markup の構造ごと分岐する見た目の variant は、条件分岐のまま保つ。
   - variant のない固定の class のコンポーネントは、Tailwind の utility を直接書いてよい。
 - motion のトークンは役割で名前を付ける（`--kufu-motion-fast` など）。値と 1 対 1 の数値のトークンは作らない。
 - app の Storybook でも Tailwind を適用するため、`.storybook/preview.ts` で `globals.css` を import する。

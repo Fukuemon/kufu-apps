@@ -15,7 +15,7 @@ export const contactInfo = {
 } as const;
 
 export const contactPageContent = {
-  breadcrumb: { home: "ホーム", current: "お問い合わせ" },
+  breadcrumb: { home: "トップ", current: "お問い合わせ" },
   title: "お問い合わせ・お見積り",
   lead: "製品のお見積り、加工のご相談、掲載のないメーカー・製品のお取り寄せまで。お電話・FAX・メール・フォームよりお気軽にご連絡ください。",
   infoLabels: {
