@@ -38,7 +38,6 @@ const panels = [businessContent.customOrder, businessContent.smallWorks];
         businessContent.features.map((feature) => (
           <BusinessFeatureRow
             number={feature.number}
-            eyebrow={feature.eyebrow}
             title={feature.title}
             description={feature.description}
             items={[...feature.items]}
@@ -56,10 +55,7 @@ const panels = [businessContent.customOrder, businessContent.smallWorks];
         panels.map((panel) => (
           <div data-reveal class="custom-order-panel grid border border-divider bg-surface md:grid-cols-[13.125rem_1fr]">
             <div class="border-b border-divider px-5 py-5 md:border-b-0 md:border-r md:px-7 md:py-6">
-              <p class="font-mono text-eyebrow font-medium tracking-[0.2em] text-primary">
-                {panel.eyebrow}
-              </p>
-              <p class="mt-2 font-serif text-heading-20 font-semibold leading-normal break-keep">
+              <p class="font-serif text-heading-20 font-semibold leading-normal break-keep">
                 {panel.title}
               </p>
             </div>

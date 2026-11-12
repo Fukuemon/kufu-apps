@@ -10,7 +10,7 @@ export default meta;
 export const Default = {
   args: {
     number: "01",
-    eyebrow: "Products",
+    eyebrow: "事業内容",
     title: "製造現場を支える機器を、用途から探す",
     description:
       "駆動・変減速機器から搬送・省力化機器まで、現場の課題に合わせて最適な製品カテゴリを確認できます。",
@@ -19,7 +19,7 @@ export const Default = {
 
 export const Center = {
   args: {
-    eyebrow: "Contact",
+    eyebrow: "ご相談内容",
     title: "加工や部品調達の相談を受け付けています",
     description:
       "図面や仕様が固まりきっていない段階でも、必要な条件整理から相談できます。",
@@ -36,7 +36,7 @@ export const Minimal = {
 export const LongText = {
   args: {
     number: "18",
-    eyebrow: "LONG CONTENT EDGE CASE",
+    eyebrow: "取扱製品・取扱メーカー",
     title:
       "見出しが複数行に折り返される長さになった場合の行間と字間を確認するための冗長なタイトル",
     description:

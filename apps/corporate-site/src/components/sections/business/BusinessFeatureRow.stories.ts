@@ -10,7 +10,6 @@ export default meta;
 export const MediaRight = {
   args: {
     number: "01",
-    eyebrow: "BUSINESS 01 / SALES & SUPPLY",
     title: "金属加工の相談を、初期段階から伴走",
     description:
       "小ロットの試作から継続生産まで、仕様整理と加工条件の検討を並行して進めます。",
@@ -24,7 +23,6 @@ export const MediaRight = {
 export const MediaLeft = {
   args: {
     number: "02",
-    eyebrow: "BUSINESS 02 / MACHINING & CUSTOM",
     title: "精密加工の現場知見を、設計へ戻す",
     description:
       "加工方法や治具の検討で得た知見を共有し、量産を見据えた形状・工程へ調整します。",
@@ -38,7 +36,6 @@ export const MediaLeft = {
 export const LongContent = {
   args: {
     number: "03",
-    eyebrow: "BUSINESS 03 / LONG CONTENT EDGE CASE FOR CATALOG REVIEW",
     title:
       "長い見出しが複数行に折り返されるケースを確認するための、意図的に冗長なタイトル表現の確認",
     description:
@@ -58,7 +55,6 @@ export const LongContent = {
 
 export const Minimal = {
   args: {
-    eyebrow: "BUSINESS",
     title: "最小構成",
     description: "number と image を省略した最小構成。",
     items: ["項目 1"],

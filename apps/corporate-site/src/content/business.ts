@@ -3,7 +3,7 @@ import { companyProfileSource } from "./source-references.js";
 export const businessContent = {
   sourceReferences: [companyProfileSource],
   heading: {
-    eyebrow: "BUSINESS / 事業内容",
+    eyebrow: "事業内容",
     title: "販売と加工、小規模工事の三本柱",
     description:
       "必要な「もの」を確かなメーカー網で届ける販売と、図面・現物一個から請け負う加工。各種工事に対応。\n仕入れから特注対応まで一社で完結します。",
@@ -12,7 +12,6 @@ export const businessContent = {
     {
       id: "sales",
       number: "01",
-      eyebrow: "BUSINESS 01 / SALES & SUPPLY",
       title: "見積もり・販売",
       description:
         "機械工具から省力化機器まで、延べ約320社の取扱メーカーから現場に必要な製品を調達し供給する。",
@@ -30,7 +29,6 @@ export const businessContent = {
     {
       id: "machining",
       number: "02",
-      eyebrow: "BUSINESS 02 / MACHINING & CUSTOM",
       title: "加工",
       description:
         "図面一枚、現物一個から。別作・特注の加工を一括して請け負う。",
@@ -41,7 +39,6 @@ export const businessContent = {
     },
   ],
   customOrder: {
-    eyebrow: "CUSTOM ORDER",
     title: "別作・特注対応",
     items: [
       "ギヤー・プーリー・スプロケット他 軸穴キー加工",
@@ -53,7 +50,6 @@ export const businessContent = {
     ],
   },
   smallWorks: {
-    eyebrow: "SMALL WORKS",
     title: "小規模工事　事例",
     items: [
       "各種小規模装置製作",

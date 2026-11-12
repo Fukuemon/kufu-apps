@@ -1,6 +1,6 @@
 export const consultationContent = {
   heading: {
-    eyebrow: "CONSULTATION / ご相談内容",
+    eyebrow: "ご相談内容",
     title: "こんな相談に対応できます",
     description:
       "型番だけ分かっている調達相談から、図面・現物をもとにした別作加工まで。まずは状況を伺い、調達品・代替品・加工方法を整理します。",

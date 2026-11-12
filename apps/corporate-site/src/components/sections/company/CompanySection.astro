@@ -26,11 +26,10 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
     <div class="grid gap-10">
       <SectionHeading
         number={number}
-        eyebrow={companyProfile.heading.eyebrow}
         title={companyProfile.heading.title}
       />
       <div class="grid gap-4 md:max-w-[38.75rem]">
-        <p class="font-mono text-eyebrow font-medium tracking-[0.2em] text-primary">
+        <p class="font-sans text-caption font-medium text-primary">
           {companyProfile.philosophyEyebrow}
         </p>
         <p class="font-serif text-heading-28 font-semibold leading-[1.65] md:text-heading-36">
@@ -46,10 +45,7 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
     <div class="grid gap-10 lg:grid-cols-[30rem_1fr] lg:gap-14">
       <div class="grid content-start">
         <div class="pb-4">
-          <p class="font-mono text-eyebrow font-medium tracking-[0.2em] text-primary">
-            {companyProfile.profileSection.eyebrow}
-          </p>
-          <h3 class="mt-2 font-serif text-heading-28 font-semibold leading-normal">
+          <h3 class="font-serif text-heading-28 font-semibold leading-normal">
             {companyProfile.profileSection.title}
           </h3>
         </div>
@@ -66,14 +62,9 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
 
       <div class="grid gap-9">
         <div class="grid gap-5 border-b border-divider pb-9">
-          <div>
-            <p class="font-mono text-eyebrow font-medium tracking-[0.2em] text-primary">
-              {companyProfile.messageSection.eyebrow}
-            </p>
-            <h3 class="mt-2 font-serif text-heading-28 font-semibold leading-normal">
-              {companyProfile.messageSection.title}
-            </h3>
-          </div>
+          <h3 class="font-serif text-heading-28 font-semibold leading-normal">
+            {companyProfile.messageSection.title}
+          </h3>
           <div class="grid max-w-[40.5rem] gap-4 text-body leading-[1.75] text-text-secondary">
             {
               companyProfile.greeting.map((paragraph) => (
@@ -101,14 +92,9 @@ const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&z=16&hl=ja&output=emb
         </div>
 
         <div class="grid gap-5">
-          <div>
-            <p class="font-mono text-eyebrow font-medium tracking-[0.2em] text-primary">
-              {companyProfile.accessSection.eyebrow}
-            </p>
-            <h3 class="mt-2 font-serif text-heading-28 font-semibold leading-normal">
-              {companyProfile.accessSection.title}
-            </h3>
-          </div>
+          <h3 class="font-serif text-heading-28 font-semibold leading-normal">
+            {companyProfile.accessSection.title}
+          </h3>
           <iframe
             title={companyProfile.mapTitle}
             src={mapSrc}
