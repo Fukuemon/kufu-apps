@@ -33,7 +33,7 @@
 
 - DADS から外れる点: 主の色（teal）と寒色のグレーは、DADS の階調の値でない。DADS は、キーカラーを同じ色相の階調から選ぶことを求める。Kufu の色を変えないために外れる。コントラストは、DADS の階調の指針に頼らず、`check-contrast.mjs` の組で確認する。色を足すときは、チェックの組も足す（[ADR-0037](../../../docs/adr/0037-kufu-identity-japanese-labels.md)）。
 - DADS から外れる点: `text-ghost` のウォーターマークの数字は、面とのコントラストが低い。DADS は、文字を 4.5:1 以上にすることを求める。読ませる文字でない面の飾りで、支援技術から隠すため、外れる。
-- 明るい面の section は、`surface-canvas`、`surface`、`surface-subtle` のどれかを面にし、面の違いで section のリズムを作る。フッターと、強い CTA の帯は、暗い面にする（「テーマ」）。暗い面の上の、主の色の文字は `primary-soft` で書く。
+- 明るい面の section は、`surface-canvas`、`surface`、`surface-subtle` のどれかを面にする。section の面を替えて、まとまりの区切りとリズムを作る。フッターと、強い CTA の帯は、暗い面にする（「テーマ」）。暗い面の上の、主の色の文字は `primary-soft` で書く。
 - 使っていない名前を残さない。名前を足すのは、使うコンポーネントか画面を足すときにする。誤りの面の色（`danger-surface`）は、使うコンポーネントが無いので置いていない。
 - `danger` は、DADS のエラーの色のうち Error-2（Red-900）に当てている。DADS の実装例は、入力欄の誤りの枠に Error-1（Red-800）を使う。Error-1（Red-800）は、`surface-canvas` の上で 4.33、`surface-subtle` の上で 3.99 で、文字の 4.5:1 に届かない。
 - 枠の 2 つは、ユーティリティの名前を `divider` と `field` にしている。テーマ変数をセマンティックトークンと同じ名前にすると、`border` が 2 回並ぶユーティリティの名前になるためである。
