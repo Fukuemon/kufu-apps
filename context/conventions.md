@@ -62,7 +62,7 @@ corporate-site のような静的なサイトでは、route、section、内容�
 title は物理的な配置から機械的に決め、story を作るときに分類を判断しない。
 
 - app の story: `Sections/<Section>/<Component>` か `Common/<Component>`
-- `packages/ui` の story: `UI/<Component>`
+- `packages/ui` の story: `コンポーネント/Base/<名前>`。はじめにとトークンのページを含む題の決め方は、[カタログの文書](../packages/ui/design/catalog.md#題の決め方) にある。
 - `<Section>` は、section のディレクトリの名前（kebab-case）を PascalCase にしたものにする。例は `products-category` から `ProductsCategory`。ほかの変換の規則は使わない。
 
 ## Comments
@@ -160,22 +160,22 @@ ADR-0011: [spec の後始末の強制](../docs/adr/0011-specs-closeout-enforceme
 
 ### スタイリングの共有と書き方
 
-トークンの値は `@kufu/ui/tokens.css` だけに置く。  
-置き場とファイルの分け方は [codebase.md](codebase.md#スタイルのファイル) にある。
+トークンの値は `packages/ui/src/tokens/` だけに置く。  
+置き場とファイルの分け方は [codebase.md](codebase.md#スタイルのファイル) に、トークンとコンポーネントの使い方の規則は [デザインシステムの文書](../packages/ui/DESIGN.md) にある。
 
 - corporate-site の Astro のコンポーネントは、Tailwind の utility でスタイリングする。scoped な `<style>` と素の CSS は原則として使わない。
-  - `packages/ui`（shadcn）と記法を揃え、トークンの統制を保つため。
+  - `packages/ui` と記法を揃え、トークンの統制を保つため。
 - 色とフォントは、セマンティックトークンの utility で指定する。
-  - 例は `text-foreground`、`bg-secondary`、`text-muted-foreground`、`border-border`、`font-mono`、`font-serif`。
+  - 例は `text-text`、`bg-surface-subtle`、`text-text-secondary`、`border-divider`、`font-mono`、`font-serif`。
 - 実装のコードにトークンの値を直接書かない。raw hex と、色の arbitrary value（`text-[#fff]` など）を書かない。
   - サイズと余白の arbitrary value は書いてよい。例は、`h-[4.1875rem]`。
   - 文字の大きさは、文字のスタイル（`text-body`、`text-heading-36` など）で指定する。arbitrary value（`text-[8.75rem]` など）は書かない。`pnpm check:design` の `TEXT-MIN-SIZE` のチェックが止める。文字のスタイルの表は [tokens.md](../packages/ui/design/tokens.md) にある。
 - spacing は、Tailwind のスケール（0.25rem のグリッド）の canonical な書き方を優先する。例は、`gap-[1.125rem]` より `gap-4.5`。
   - スケールにない line-height と letter-spacing は arbitrary value でよい。
-- class の差で表せる見た目の variant と状態の分岐を持つコンポーネントは、cva で variants を定義し、frontmatter で class を条件つきで組み立てる書き方を置き換える。
-  - markup の構造ごと分岐する見た目の variant（`SiteFooter` の `full` と `compact` など）は cva の対象にせず、条件分岐のまま保つ。
+- class の差で表せる見た目の variant と状態の分岐を持つ Astro のコンポーネントは、variant ごとの class を frontmatter の中のオブジェクトに書き、`class:list` で条件つきで組み立てる。
+  - ADR-0028: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0028-ui-components-native-elements.md)
+  - markup の構造ごと分岐する見た目の variant（`SiteFooter` の `full` と `compact` など）は、条件分岐のまま保つ。
   - variant のない固定の class のコンポーネントは、Tailwind の utility を直接書いてよい。
-- 条件つきの class（variant、align、media の位置）は、frontmatter で class の文字列を組み立てて渡す。
 - motion のトークンは役割で名前を付ける（`--kufu-motion-fast` など）。値と 1 対 1 の数値のトークンは作らない。
 - app の Storybook でも Tailwind を適用するため、`.storybook/preview.ts` で `globals.css` を import する。
   - `@storybook-astro/framework` は `astro.config.mjs` の Vite plugin を読み込むので、Tailwind v4 は Astro と同じ `@tailwindcss/vite` の設定で動く。
@@ -187,5 +187,5 @@ pull request では、[PULL_REQUEST_TEMPLATE.md](../.github/PULL_REQUEST_TEMPLAT
 - knip と dependency-cruiser は、誤検出を避けるため、生成されたファイルとルートが管理する設定ファイルをルートの設定で除外する。
 - トークンの直接の記述のチェック（`check-raw-values.mjs`）は、サイズと余白の arbitrary value を対象にしない。文字の大きさの arbitrary value は、`check-utilities.mjs` の `TEXT-MIN-SIZE` が止める。
 - `space-*` は CSS のトークンを持たず、Tailwind の標準のスケール（4px のグリッド）への写像として扱う。トークンの記述のチェックの対象にしない。
-  - 写像は [コーポレートサイトの Design Doc](../apps/corporate-site/DesignDoc.md#デザイントークン) のデザイントークンの節にある。
-  - ADR-0007: [デザイントークンの構成](../docs/adr/0007-design-token-architecture.md)
+  - 余白の段は [トークンの文書](../packages/ui/design/tokens.md#レイアウト角丸影動き) の「レイアウト、角丸、影、動き」にある。
+  - ADR-0027: [トークンの 3 つの層](../docs/adr/0027-design-tokens-three-layers.md)

@@ -44,10 +44,10 @@ spec のパスを、撮ったコミットの SHA の blob link で示す。コ�
 
 ## Design Guard (UI / デザイン変更がある場合のみ)
 
-> トークンの参照の規則: [context/conventions.md](../context/conventions.md#スタイリングの共有と書き方)
+> トークンとコンポーネントの規則: [packages/ui/DESIGN.md](../packages/ui/DESIGN.md)、[context/conventions.md](../context/conventions.md#スタイリングの共有と書き方)
 
-- [ ] 実装が `@kufu/ui` のセマンティックトークン (`tokens.css`) を参照している (raw hex / arbitrary value なし)
-- [ ] app 配下で独自トークンを定義して `packages/ui` を fork していない
+- [ ] 色、文字、角丸を、`@kufu/ui` のテーマ変数のユーティリティ（`bg-surface`、`text-body` など）で書いている。`pnpm check:design` が通る
+- [ ] app の配下でトークンを定義せず、`@kufu/ui` のコンポーネントの見た目を class と CSS のセレクタで上書きしていない
 
 ## 影響
 

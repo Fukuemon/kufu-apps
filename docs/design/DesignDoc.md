@@ -47,7 +47,7 @@ ADR-0019: [コーポレートサイトを Astro の静的な生成で作る](../
   - ADR-0003: [Phase 1 は corporate-site だけを実装する](../adr/0003-phase1-corporate-site-only-and-cms-deferred.md)
 - UI はコーポレートサイトの中に置くことを第一の原則にし、複数の利用者がはっきりしたものを `packages/ui` へ移す。
   - デザイントークンは、最初から `packages/ui` を基準にする。
-  - ADR-0007: [デザイントークンの構成](../adr/0007-design-token-architecture.md)
+  - ADR-0027: [トークンの 3 つの層](../adr/0027-design-tokens-three-layers.md)
 - 整形と lint の設定はルートの `vite.config.ts` に置く。
   - ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](../adr/0025-vite-plus-toolchain.md)
 - pnpm workspace を使い、workspace のタスクは `pnpm -r` で束ねる。
@@ -89,7 +89,7 @@ app の中の Storybook で、section のコンポーネントをレビューす
 
 デザイントークン、フォント、共有のスタイルシートの基準と、再利用がはっきりした共有の UI の primitive を置く。  
 Storybook で共有のカタログを提供する。  
-ADR-0007: [デザイントークンの構成](../adr/0007-design-token-architecture.md)
+ADR-0027: [トークンの 3 つの層](../adr/0027-design-tokens-three-layers.md)
 
 - 持たないもの: ページの section、業務の文言を持つコンポーネント、app のデータの形に依存するコンポーネント
 - 置いてよいものの規則は [context/codebase.md](../../context/codebase.md#app-の中の層) にある。
@@ -112,7 +112,7 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 
 ## Interfaces
 
-- `@kufu/ui` は、コンポーネント、hooks、utility と、スタイルシートの 4 つのエントリ（`styles.css`、`tokens.css`、`theme.css`、`fonts.css`）を export する。
+- `@kufu/ui` は、コンポーネントのエントリ（`.`）と、スタイルシートの 2 つのエントリ（`theme.css`、`fonts.css`）を export する。
   - 一覧は `packages/ui/package.json` の `exports` にある。
   - スタイルシートの使い分けは [context/codebase.md](../../context/codebase.md#スタイルのファイル) にある。
 - ルートのコマンドは [context/tech-stack.md](../../context/tech-stack.md#ルートのコマンド) にある。
@@ -134,7 +134,7 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 
 - コーポレートサイトの性能と SEO を最も優先する。
 - Astro で解決できるものを React の island にしない。
-  - ADR-0008: [Astro と React island の方針](../adr/0008-astro-react-island-policy.md)
+  - ADR-0038: [corporate-site の island の方針](../adr/0038-corporate-site-island-policy.md)
 - 基盤は Cloudflare の標準の機能で閉じ、独自のサーバーの運用を前提にしない。
 - Terraform は別のリポジトリで管理し、app のリポジトリに本番の基盤を apply する流れを持ち込まない。
   - ADR-0001: [Terraform を基盤のリポジトリに分ける](../adr/0001-terraform-infra-repository-boundary.md)

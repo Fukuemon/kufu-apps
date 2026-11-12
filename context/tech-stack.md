@@ -40,9 +40,9 @@ Node.js のバージョンは、`mise.toml` に書いてある。
 - knip: 使っていないコードと export を検出する。ルートで管理する。
 - dependency-cruiser: 依存を解析する。ルートで管理する。
 - Tailwind CSS v4 と `@tailwindcss/vite`: スタイリングに使う。
-- shadcn/ui: `packages/ui` の共有のコンポーネントの元にする。
-  - ADR-0010: [shadcn の primitive に Base UI を採る](../docs/adr/0010-shadcn-base-ui-primitive-policy.md)
-- `@astrojs/react`: React のコンポーネントを Astro で描画する。使い方は [codebase.md](codebase.md#shadcn-の使い方と-react-island-の境界) にある。
+- clsx: `packages/ui` のコンポーネントの class の組み立てに使う。コンポーネントは、React とネイティブの HTML の要素で書く。
+  - ADR-0028: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0028-ui-components-native-elements.md)
+- `@astrojs/react`: React のコンポーネントを Astro で描画する。使い方は [codebase.md](codebase.md#react-island-の境界) にある。
 - lefthook: Git のフックからチェックを実行する。
 - textlint: Markdown の文章をチェックする。
 
