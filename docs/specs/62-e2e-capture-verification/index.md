@@ -40,7 +40,7 @@ issue 62 の受け入れ条件を使う。
 - 案 B: 写さず、apm が配置したスキルのディレクトリのファイルを、設定から直接読む。lint と E2E の CI の job に、apm の配置とトークンが要る。fork からの pull request では動かない。
 - 案 C: buddy と同じ npm の `@fukuemon/e2e-kit` 0.2.1 を使う。パッケージ e2e の今のバージョンは kit を持たず、スキルの手順と合わない。
 - 録画を mp4 にまとめるスクリプトは、写さずに、apm が配置したスキルのディレクトリのものを使う。apm を使えない人は、mp4 を作れない。
-- 詳細は、[ADR-0032](../../adr/0032-oxlint-js-plugin-for-e2e-authoring-rule.md) と [ADR-0036](../../adr/0036-capture-evidence-with-playwright.md) にある。
+- 詳細は、[ADR-0029](../../adr/0029-oxlint-js-plugin-for-e2e-authoring-rule.md) と [ADR-0033](../../adr/0033-capture-evidence-with-playwright.md) にある。
 
 ### 論点 1: Playwright を上げるか
 
@@ -48,7 +48,7 @@ issue 62 の受け入れ条件を使う。
 - 案 A の別のバージョン: 最新の 1.65.0 にする。手元で確認していない。
 - 案 B: E2E だけ 1.64.1 にし、VRT は 1.59.1 のままにする。
 - 案 C: 上げない。受け入れ条件 2 を満たせない。
-- 比較と試行の結果は、[ADR-0034](../../adr/0034-playwright-upgrade.md) にある。撮影の試行の結果は、[ADR-0036](../../adr/0036-capture-evidence-with-playwright.md) にある。
+- 比較と試行の結果は、[ADR-0031](../../adr/0031-playwright-upgrade.md) にある。撮影の試行の結果は、[ADR-0033](../../adr/0033-capture-evidence-with-playwright.md) にある。
 
 ### 論点 2: ページ単位の Page Object を、パッケージ e2e の層に置き換えるか
 
@@ -56,7 +56,7 @@ issue 62 の受け入れ条件を使う。
 - 案 A の別の形: 操作の対象にも testid を足し、testid だけで拾う。production の markup に testid を足す。
 - 案 B: Page Object のクラスを残し、規則が止める拾い方だけを `selectors/` に移す。
 - 案 C: Page Object を残し、規則を掛けない。受け入れ条件 1 を満たせない。
-- 比較は、[ADR-0031](../../adr/0031-e2e-test-code-layers.md) にある。ADR-0031 は、ADR-0017 の全体を置き換える。play の対象、locator の使い分け、ジャーニーの定義は、変えずに引き継ぐ。
+- 比較は、[ADR-0028](../../adr/0028-e2e-test-code-layers.md) にある。ADR-0028 は、ADR-0027 の全体を置き換える。play の対象、locator の使い分け、ジャーニーの定義は、変えずに引き継ぐ。
 
 ### 論点 3: テストの書き方の規則を、何で流すか
 
@@ -66,7 +66,7 @@ issue 62 の受け入れ条件を使う。
   - 規則は、lint を流すディレクトリからの相対パスで、テストのディレクトリを判定する。流す場所がずれると、報告が 0 件のまま成功する。
 - 案 A（元の推奨）: E2E の workspace にだけ ESLint と parser を入れ、書き方の規則だけを掛ける。スキルと buddy と同じ形で、alpha の機能に頼らない。lint のツールが 2 つになり、依存が 2 つ増える。
 - 案 C: 規則を入れない。受け入れ条件 1 を満たせない。
-- 流す場所の固め方、規則を更新するときのテスト、違反で失敗することの確認、ESLint に戻す条件は、[ADR-0032](../../adr/0032-oxlint-js-plugin-for-e2e-authoring-rule.md) にある。
+- 流す場所の固め方、規則を更新するときのテスト、違反で失敗することの確認、ESLint に戻す条件は、[ADR-0029](../../adr/0029-oxlint-js-plugin-for-e2e-authoring-rule.md) にある。
 - 決定に合わせて、次の 2 つも決めた。
   - T1 の順: T1 の前提から構成とツールチェーンの要求の T6 を外し、`vp check` のタスク（issue 71）の前に進める。T1 は今のコマンド（`pnpm lint`、`pnpm typecheck`）で書く。issue 71 の実施内容と完了の条件に、`e2e/.oxlintrc.json` をルートの `lint.overrides` に移し、わざと書いた違反でルートと `e2e/` の両方で失敗することを確認する作業を足す。
     - 別の案: T1 を T6 の後に置き、初めからルートの `lint.overrides` に書く。設定の移動は無いが、決定の「`e2e/.oxlintrc.json` で始める」と違い、issue 7 が構成とツールチェーンの要求の全てを待つ。
@@ -79,9 +79,9 @@ issue 62 の受け入れ条件を使う。
 - 案 B: buddy と同じ `packages/e2e` に移す。
 - 案 C: ルートの `e2e/` のまま、workspace にしない。
 - 案 A で、承認済みの取り決めを 2 つ変える。
-  - ルートの `tsc` を外す。確認する対象が `e2e/` に移り、ルートに残らないためである。構成とツールチェーンの要求の ADR-0025 は、`pnpm typecheck` でルートの `tsc` も実行するとしている。
+  - ルートの `tsc` を外す。確認する対象が `e2e/` に移り、ルートに残らないためである。構成とツールチェーンの要求の ADR-0009 は、`pnpm typecheck` でルートの `tsc` も実行するとしている。
   - `E2E_TARGET` は、起動する app と port を選ぶ値として残し、テストのディレクトリ（`e2e/<target>/`）は切り替えない。2 つ目の app を E2E の対象にするときに、spec の分け方を決める。
-- 比較は、[ADR-0033](../../adr/0033-e2e-workspace-at-root.md) にある。
+- 比較は、[ADR-0030](../../adr/0030-e2e-workspace-at-root.md) にある。
 
 ### 論点 5: 検証のシナリオとエビデンスの置き場
 
@@ -91,7 +91,7 @@ issue 62 の受け入れ条件を使う。
   - pull request に上げた動画と静止画は、誰でも開ける。
 - 案 B: 動画と静止画を `docs/verification/` にコミットする。
 - 案 C: 動画と静止画を外部のストレージに置く。
-- 比較は、[ADR-0035](../../adr/0035-verification-scenarios-and-evidence.md) にある。
+- 比較は、[ADR-0032](../../adr/0032-verification-scenarios-and-evidence.md) にある。
 
 ### 論点 6: 3 ジャーニーをどの形で書くか
 
@@ -102,7 +102,7 @@ issue 62 の受け入れ条件を使う。
 
 ### 論点 7: section のアクセシビリティと、レイアウトの規則を E2E で確認するか
 
-- デザインシステムの要求の [ADR-0029](../../adr/0029-storybook-catalog.md) は、section のアクセシビリティを E2E のテストの設計で扱うとしている。同じ要求の spec は、`LAYOUT-OVERFLOW` と `MOTION-REDUCE` を E2E で確認するかも、E2E のテストの設計で決めるとしている。
+- デザインシステムの要求の [ADR-0023](../../adr/0023-storybook-catalog.md) は、section のアクセシビリティを E2E のテストの設計で扱うとしている。同じ要求の spec は、`LAYOUT-OVERFLOW` と `MOTION-REDUCE` を E2E で確認するかも、E2E のテストの設計で決めるとしている。
 - 案 A（採用）: この要求の範囲に入れない。デザインシステムの要求の論点が決まった後に、別の issue にする。issue 62 の受け入れ条件にない。入れるときの置き場は、`e2e/tests/specs/` の下の機能のディレクトリになる。
 - 案 B: この要求に含め、3 つの route にアクセシビリティの自動の確認を足すタスクを作る。
 
@@ -110,7 +110,7 @@ issue 62 の受け入れ条件を使う。
 
 - 案 A（採用）: `E2E_BASE_URL` を `BASE_URL` に改める。渡したときは app を起動しない。撮影のスキルが、改修前のアプリの URL を `BASE_URL` で渡すためである。
 - 案 B: `E2E_BASE_URL` を残し、`BASE_URL` も読む。
-- 比較は、[ADR-0036](../../adr/0036-capture-evidence-with-playwright.md) にある。
+- 比較は、[ADR-0033](../../adr/0033-capture-evidence-with-playwright.md) にある。
 
 ### 論点 9: エビデンスを付ける pull request の範囲
 
@@ -130,7 +130,7 @@ issue 62 の受け入れ条件を使う。
 - 書き方の規則の置き場: `e2e/lint/`（規則の `e2e-authoring-rule.mjs` と、oxlint に読ませる `plugin.mjs`）
 - oxlint の入れ方: `e2e/package.json` の devDependencies に足す
 - `e2e/` で規則を流す script: `@kufu/e2e` の `lint`（issue 71 で消す）
-- ADR-0032 のファイル名: `0032-oxlint-js-plugin-for-e2e-authoring-rule.md`
+- ADR-0029 のファイル名: `0029-oxlint-js-plugin-for-e2e-authoring-rule.md`
 
 ## Design
 
@@ -221,13 +221,13 @@ route の VRT の baseline は、次の 2 つで、今と同じパスになる�
 - Runtime Requirements: 正とする設定を `e2e/playwright.config.ts` に、読む場所を `e2e/tests/` の下の spec に替える（T1）。環境変数の `E2E_BASE_URL` を `BASE_URL` に替える（T4）。
 - Required Tests の「Page Object と locator」: 見出しを locator の規約に替え、Page Object の 2 行を、層と `selectors/` の規約に替える。詳細は `context/testing/e2e.md` へリンクする（T1）。
 - frontmatter の `governs`: `playwright.config.ts` を `e2e/` の下のパスに替える（T1）。
-- frontmatter の `description` と、ADR-0017 へのリンク: Page Object の規約を、層と locator の規約に替え、リンクを ADR-0031 に替える（T1）。`context/index.md` の同じ説明も替える。
+- frontmatter の `description` と、ADR-0027 へのリンク: Page Object の規約を、層と locator の規約に替え、リンクを ADR-0028 に替える（T1）。`context/index.md` の同じ説明も替える。
 
 ### ほかの文書の変更の案
 
 - 全体の Design Doc: ルートの Playwright の記述を、workspace の package に替える。対象は、frontmatter の `governs`、e2e のセクション、Architecture の図、Repository Layout である。エビデンスの撮影と、検証のシナリオの spec を持つことを足す（T1、T4）。
-- corporate-site の Design Doc の「E2E が担うジャーニー」: ADR-0017 へのリンクを、ADR-0031 に替える（T1）。
-- `e2e/README.md`: 構成と Page Object のセクションを、層の説明に替える。ADR-0017 へのリンクを、ADR-0031 に替える。ジャーニーの定義は、corporate-site の Design Doc と重なるので、リンクにする（T1）。
+- corporate-site の Design Doc の「E2E が担うジャーニー」: ADR-0027 へのリンクを、ADR-0028 に替える（T1）。
+- `e2e/README.md`: 構成と Page Object のセクションを、層の説明に替える。ADR-0027 へのリンクを、ADR-0028 に替える。ジャーニーの定義は、corporate-site の Design Doc と重なるので、リンクにする（T1）。
 - `context/conventions.md`: 「`e2e` は、package のタスクではなく、ルートで直接実行する」を、workspace の script を呼ぶ形に替える（T1）。
 - `context/tech-stack.md`: Playwright を「ルートで管理する」とした記述と、`pnpm e2e` の説明を替える（T1）。Playwright のバージョンの所在を替える（T1、T3）。
 - `context/project.yml`: `e2e.dir` を足す（T1）。
@@ -267,7 +267,7 @@ route の VRT の baseline は、次の 2 つで、今と同じパスになる�
 - 実施内容: 置き場を `e2e/corporate-site/` から `e2e/tests/specs/` に替える。観点とケースは、テスト設計の表を写す。
 - 制約
   - 「セレクタは Page Object に集約する」を、「role、文言、CSS のセレクタでの指し方は `e2e/tests/selectors/` に置く。確認と手順は spec に書く」に替える。
-  - locator の使い分けの基準の文書を、ADR-0031 と `context/testing/e2e.md` に替える。
+  - locator の使い分けの基準の文書を、ADR-0028 と `context/testing/e2e.md` に替える。
   - 「Page Object と E2E のヘルパを `packages/*` へ昇格させない」を、「E2E のコードを `packages/*` に置かない」に替える。
 - 完了条件
   - 「テスト本体に生の locator が無い（Page Object 経由）」を、「書き方の規則の指摘がない」に替える。

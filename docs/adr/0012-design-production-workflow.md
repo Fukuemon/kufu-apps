@@ -2,7 +2,7 @@
 
 ## Status
 
-ADR-0012 に置換
+ADR-0013 に置換
 
 ## Context
 
@@ -15,7 +15,7 @@ ADR-0012 に置換
   - IA / サイトマップは確定済みである。
   - 本リポは「基準は repo 内に置き、外部のデザインファイルを committed にしない」方針を取る。
 - デザインシステムの _中身_（配色 / タイポ / spacing 等のトークン）は、別の issue が担う。
-  - ADR-0007: [デザイントークンの体系](0007-design-token-architecture.md)
+  - ADR-0017: [デザイントークンの体系](0017-design-token-architecture.md)
 - 本 ADR は、デザインを _どう作るか_ の **プロセス / ツールの選定** を確定し、プラットフォーム共通の基準とする。
 - 調べたときのツールの状況は次のとおり。
   - **Claude Design**（Anthropic Labs, research preview, Pro/Max/Team/Enterprise）: prompt-to-prototype。codebase / 画像 / ドキュメントを入力に design system を自動で構築し、以後自動で適用する。出力は自己完結の HTML アーティファクト。

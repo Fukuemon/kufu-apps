@@ -11,9 +11,9 @@
 - `apps/corporate-site` は、Astro の静的な生成（`output: "static"`）だけで作る。`astro.config.mjs` の integrations に `@astrojs/react` がある。
 - Astro は React のコンポーネントもビルドのときに静的な HTML へ描画し、`client:*` を付けない限りクライアントの JavaScript を配らない。性能のコストが生じるのは、`client:*` を付けて island にし、React のランタイムを配ってハイドレーションするときだけである。
 - `packages/ui` のコンポーネントは、React とネイティブの HTML の要素で書く。shadcn と Base UI は、依存から外した。表示だけのコンポーネントは `client:*` なしで静的に描き、ネイティブの要素で足りない操作の UI は、そのコンポーネントだけライブラリを比べて決め、入れたコンポーネントを island にする。
-  - ADR-0028: [packages/ui のコンポーネントを、ネイティブの要素と clsx で書いた Base と Case にし、shadcn と Base UI を外す](0028-ui-components-native-elements.md)
-- island の方針を決めた ADR-0008 は、決定の 1、3、5 が、shadcn のコンポーネントと Radix の primitive を名指ししている。どちらも、今の `packages/ui` には無い。
-- ADR-0008 の決定の 6 は、Design Doc のガードレール「Unnecessary Client JS Count」を指している。この指標は、今は [PRD](../PRD.md#success-metrics) の悪化させない指標「不要なクライアントの JavaScript の数」にあり、Design Doc には無い。数値の上限は無く、pull request のレビューで見つけた件数で数える。
+  - ADR-0020: [packages/ui のコンポーネントを、ネイティブの要素と clsx で書いた Base と Case にし、shadcn と Base UI を外す](0020-ui-components-native-elements.md)
+- island の方針を決めた ADR-0021 は、決定の 1、3、5 が、shadcn のコンポーネントと Radix の primitive を名指ししている。どちらも、今の `packages/ui` には無い。
+- ADR-0021 の決定の 6 は、Design Doc のガードレール「Unnecessary Client JS Count」を指している。この指標は、今は [PRD](../PRD.md#success-metrics) の悪化させない指標「不要なクライアントの JavaScript の数」にあり、Design Doc には無い。数値の上限は無く、pull request のレビューで見つけた件数で数える。
 - `apps/corporate-site/src` に `client:*` は 0 件で、React のコンポーネントのファイル（`.tsx`）も無い。`@kufu/ui` のコンポーネントは、3 つの `.astro`（`ContactCtaLink.astro`、`CompanySection.astro`、`ContactSection.astro`）が `client:*` なしで使う。
 - 操作の UI は、`.astro` と素の script で作っている。モバイルのナビの開閉（`SiteHeader.astro`）、カルーセル（`FeaturedCategoryCarousel.astro`）、商品の一覧の検索と開閉（`ProductsDetailSection.astro`）である。
 - 問い合わせフォームは、全体を 1 つの React の island にし、ディレクティブを `client:visible` にする設計である。
@@ -39,7 +39,7 @@
 6. **`client:*` の総数を予算として管理する。**
    - [PRD](../PRD.md#success-metrics) の悪化させない指標「不要なクライアントの JavaScript の数」で監視し、増えたときは island にした妥当性をレビューする。
 
-この決定は、ADR-0008 を置き換える。
+この決定は、ADR-0021 を置き換える。
 
 ## Considered Options
 

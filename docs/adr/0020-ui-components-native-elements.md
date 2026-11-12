@@ -9,10 +9,10 @@
 `packages/ui` のコンポーネントの書き方と置き場を決める必要がある。
 
 - `packages/ui` は、shadcn の CLI で取り込んだ source を編集して持ち、primitive の基盤に Base UI を使う。
-  - ADR-0010: [shadcn の primitive の基盤に Base UI を採る](0010-shadcn-base-ui-primitive-policy.md)
+  - ADR-0019: [shadcn の primitive の基盤に Base UI を採る](0019-shadcn-base-ui-primitive-policy.md)
 - corporate-site は island を持たない。`apps/corporate-site/src` に `client:` は 0 件で、React のコンポーネントは、ビルドのときに静的な HTML になる。Base UI のフォーカスの管理とキーボードの操作は、ブラウザで JavaScript が動くときにだけ働く。
 - 表示だけの UI は、React のコンポーネントを `client:*` なしで静的に描く。
-  - ADR-0008: [corporate-site は shadcn を静的に描画して使い、client:\* の island は操作が要るものに限る](0008-astro-react-island-policy.md)
+  - ADR-0021: [corporate-site は shadcn を静的に描画して使い、client:\* の island は操作が要るものに限る](0021-astro-react-island-policy.md)
 - Base UI を import するのは、`packages/ui` の 5 つ（button、input、select、separator、badge）である。corporate-site が使うのは、`Button`、`Tag`、`LinkButton`、`DefinitionRow` の 4 つである。入力のコンポーネントは、問い合わせフォームの要求が使う予定である。
 - `class-variance-authority` は、`packages/ui` の 3 つと、corporate-site の Astro のコンポーネントの 3 つが使う。`tailwind-merge` は、`cn` だけが使う。
 - 呼び出す側が、`@kufu/ui` のコンポーネントの見た目を上書きしている箇所がある。
@@ -26,7 +26,7 @@
 - DADS のボタンは、塗り、アウトライン、テキストの 3 つの種類を持ち、押せる領域を 44 CSS px 以上に保つとしている。
   - 出典: [DADS のボタン](https://design.digital.go.jp/dads/components/button/)
 - `packages/ui` の `exports` には、ワイルドカードのエントリが 3 つある。ワイルドカードを消すことと、エントリの分け方は、この要求の設計に委ねられている。
-  - 出典: [ADR-0026](https://github.com/Fukuemon/kufu-apps/blob/48380362a729fe2d5090af0fa25649d6a95adf75/adr/0026-workspace-package-contract.md)
+  - 出典: [ADR-0010](https://github.com/Fukuemon/kufu-apps/blob/48380362a729fe2d5090af0fa25649d6a95adf75/adr/0026-workspace-package-contract.md)
 
 ## Decision
 
@@ -90,14 +90,14 @@
 - ワイルドカードのエントリ（`./components/*`、`./hooks/*`、`./lib/*`）と、`./components`、`./hooks`、`./lib`、`./lib/utils` を消す。
 - `package.json` の `imports`（`#components/*` など）を消し、相対パスで import する。
 
-この決定は、ADR-0010 を置き換える。
+この決定は、ADR-0019 を置き換える。
 
 ## Considered Options
 
 | 選択肢                                                                            | 強み                                                                                           | 弱み                                                                                                                 |
 | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | **採用:** ネイティブの要素と `clsx` で書き、Base と Case に分ける                 | buddy、fukuemon.dev と同じ形になる。依存が `clsx` だけになる。静的に描いた HTML がそのまま働く | 複雑な操作の UI（コンボボックスなど）が要るときに、自分で書くかライブラリを比べることになる                          |
-| shadcn と Base UI を使い続ける（ADR-0010 のまま）                                 | 複雑な操作の UI を、生成した source から始められる                                             | island が無く、Base UI の振る舞いが働いていない。運営者の決定と合わない                                              |
+| shadcn と Base UI を使い続ける（ADR-0019 のまま）                                 | 複雑な操作の UI を、生成した source から始められる                                             | island が無く、Base UI の振る舞いが働いていない。運営者の決定と合わない                                              |
 | ネイティブの要素で書き、`class-variance-authority` と `tailwind-merge` だけを残す | 変種の定義を、今の書き方のまま残せる                                                           | 呼び出す側の class を混ぜる前提の仕組みが残る。buddy と依存が分かれる                                                |
 | コンポーネントが `className` を受け取り、呼び出す側で上書きできるようにする       | 画面ごとの小さな違いを、コンポーネントを直さずに書ける                                         | 見た目の違いが画面のコードに散る。トークンとコンポーネントの規則で、見た目を確認できなくなる                         |
 | 共有のコンポーネントを Astro で書く                                               | React に依存しない                                                                             | React の app（CMS の候補）から使えない。`packages/ui` の Storybook で開く仕組みが、コミュニティ製の framework になる |
@@ -116,5 +116,5 @@
 - class の上書きと、セレクタでの上書きを、`Tag`、`Button`、`LinkButton` の変種に置き換える。
 - shadcn と Base UI を前提にした文書を直す。
   - 対象は、`context/` の 5 つの文書（codebase、conventions、domain、tech-stack、testing）と、corporate-site の Design Doc である。
-  - ADR-0008 は、決定が shadcn と Radix の primitive を名指ししている。island の方針を、新しい ADR に書き直して置き換える。
+  - ADR-0021 は、決定が shadcn と Radix の primitive を名指ししている。island の方針を、新しい ADR に書き直して置き換える。
 - `Select` は、Base UI の独自の選択肢の一覧から、ネイティブの `select` に替わり、見た目が変わる。ブラウザごとに違う部分も残る。

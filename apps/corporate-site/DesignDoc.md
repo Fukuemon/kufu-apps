@@ -38,11 +38,11 @@ Astro によるコーポレートサイトを、高い表示の速さと保守�
 - Astro の `.astro` のコンポーネントを基本にする。
 - React の island は、問い合わせフォームと、ネイティブの要素で足りない操作の UI のためにライブラリを入れたコンポーネントに限る。
   - 表示だけの UI は、`@kufu/ui` のコンポーネントを `client:*` なしで静的に描画する。
-  - ADR-0038: [corporate-site の island の方針](../../docs/adr/0038-corporate-site-island-policy.md)
+  - ADR-0022: [corporate-site の island の方針](../../docs/adr/0022-corporate-site-island-policy.md)
 - 画像、フォント、スクリプトは、性能予算を意識して管理する。
 - コンポーネントは `components/sections/<section>/` の 1 階層に並べ、各 section の公開面は `index.ts` の再輸出だけにする。
   - 層と依存の向き、共有へ移す条件は [context/codebase.md](../../context/codebase.md#app-の中の層) にある。
-  - ADR-0014: [corporate-site の sections 構成](../../docs/adr/0014-corporate-site-sections-architecture.md)
+  - ADR-0004: [corporate-site の sections 構成](../../docs/adr/0004-corporate-site-sections-architecture.md)
 - `src/styles/` のファイルの分け方は [context/codebase.md](../../context/codebase.md#スタイルのファイル) にある。
 - 画像は `src/assets/` に置き、Astro Image か import で扱う。
   - build の asset graph に載せ、width、height、lazy loading、形式の最適化を適用する。
@@ -52,7 +52,7 @@ Astro によるコーポレートサイトを、高い表示の速さと保守�
 ### ページの構成
 
 3 つの route と、全ページに共通の layout で構成する。  
-ADR-0006: [corporate-site の IA を 3 route にする](../../docs/adr/0006-corporate-site-three-route-ia.md)
+ADR-0003: [corporate-site の IA を 3 route にする](../../docs/adr/0003-corporate-site-three-route-ia.md)
 
 | ページ         | route       | 主な section                                                                                                                                                                 |
 | -------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -157,7 +157,7 @@ flowchart TD
 
 section と、その公開面、使うページの対応は次のとおり。  
 section の名前はドメインで付けるので、ページとの対応はディレクトリから読めず、この表で表す。  
-ADR-0014: [corporate-site の sections 構成](../../docs/adr/0014-corporate-site-sections-architecture.md)
+ADR-0004: [corporate-site の sections 構成](../../docs/adr/0004-corporate-site-sections-architecture.md)
 
 | section             | 公開面（`index.ts` が再輸出する） | 内部の presentation                                                                     | 使うページ  |
 | ------------------- | --------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
@@ -202,7 +202,7 @@ ADR-0014: [corporate-site の sections 構成](../../docs/adr/0014-corporate-sit
 - 値: `packages/ui/src/tokens/` の `primitive.css`、`semantic.css`、`theme.css`。暗い面の参照先は `surface-inverse.css` に、font-face の登録は `fonts.css` にある。
 - コンポーネントの使い方: [コンポーネントの文書](../../packages/ui/design/components.md)
 - 層の分け方
-  - ADR-0027: [トークンを、Kufu の色と DADS の値を持つプリミティブトークン、セマンティックトークン、テーマ変数の 3 つの層にし、shadcn の語彙をやめる](../../docs/adr/0027-design-tokens-three-layers.md)
+  - ADR-0018: [トークンを、Kufu の色と DADS の値を持つプリミティブトークン、セマンティックトークン、テーマ変数の 3 つの層にし、shadcn の語彙をやめる](../../docs/adr/0018-design-tokens-three-layers.md)
 
 ### トーンとマナー
 
@@ -210,7 +210,7 @@ ADR-0014: [corporate-site の sections 構成](../../docs/adr/0014-corporate-sit
 
 - 残す色、書体、ロゴ、装飾の語彙と、使う場所: [デザインシステムの文書](../../packages/ui/DESIGN.md#kufu-の見た目として残すもの) の「Kufu の見た目として残すもの」
 - 書体と文字のスタイルの使う場面、面の構成、余白の段、section の余白: [トークンの文書](../../packages/ui/design/tokens.md)
-  - ADR-0037: [Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせ、見出しの上のラベルを日本語だけにする](../../docs/adr/0037-kufu-identity-japanese-labels.md)
+  - ADR-0025: [Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせ、見出しの上のラベルを日本語だけにする](../../docs/adr/0025-kufu-identity-japanese-labels.md)
 
 この節には、corporate-site のページだけの決めを書く。
 
@@ -267,7 +267,7 @@ sequenceDiagram
 
 route をまたいだ到達を、E2E で確認する。  
 テストの規約は [context/testing.md](../../context/testing.md#test-types-and-guarantees) にある。  
-ADR-0031: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../../docs/adr/0031-e2e-test-code-layers.md)
+ADR-0028: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../../docs/adr/0028-e2e-test-code-layers.md)
 
 - 回遊: `/` から `/products` へ進み、カテゴリを検索し（URL に検索の条件が残る）、`/contact` に着く。
 - ナビゲーション: ヘッダーとフッターのリンクと、モバイルのナビの開閉から、各 route へ着ける。
@@ -277,7 +277,7 @@ ADR-0031: [E2E のテストのコードを層に分けて書き、ページ単�
 
 ### VRT の対象
 
-ADR-0015: [VRT の方針](../../docs/adr/0015-visual-regression-testing-policy.md)
+ADR-0026: [VRT の方針](../../docs/adr/0026-visual-regression-testing-policy.md)
 
 - 3 つの route（`/`、`/products`、`/contact`）を、desktop と mobile の 2 つの幅で撮り、baseline との差分を検出する。
 - app の Storybook の story も撮る。

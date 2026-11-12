@@ -32,7 +32,7 @@ corporate-site で E2E が担うジャーニーは [コーポレートサイト�
 
 play テストの対象は `packages/ui` に限る。  
 Astro の静的なコンポーネントは E2E で確認する。  
-ADR-0031: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../docs/adr/0031-e2e-test-code-layers.md)
+ADR-0028: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../docs/adr/0028-e2e-test-code-layers.md)
 
 - React の island の play テストの対象の基準は未定。最初の island を足すときに決める。
 
@@ -42,7 +42,7 @@ E2E は、route をまたいだ到達を見る。
 ### VRT
 
 VRT は、story と route の 2 系統で撮る。  
-ADR-0015: [VRT の方針](../docs/adr/0015-visual-regression-testing-policy.md)
+ADR-0026: [VRT の方針](../docs/adr/0026-visual-regression-testing-policy.md)
 
 | 系統  | 撮る対象                                        | 撮る手段                         | baseline の置き場 | コマンド         |
 | ----- | ----------------------------------------------- | -------------------------------- | ----------------- | ---------------- |
@@ -58,7 +58,7 @@ ADR-0015: [VRT の方針](../docs/adr/0015-visual-regression-testing-policy.md)
   - Playwright の baseline はファイル名に platform を含み、ホスト（macOS）で撮った画像は CI では使われない。
   - `pnpm vrt:route` を通さない実行は skip される。
 - story は container を使わず、CI だけで撮る。撮影が Vite の bundle を伴い、エミュレーションの下の container の実行と両立しないため。
-  - ADR-0015: [VRT の方針](../docs/adr/0015-visual-regression-testing-policy.md)
+  - ADR-0026: [VRT の方針](../docs/adr/0026-visual-regression-testing-policy.md)
 - VRT を外部のサービスの応答に依存させない。外部の埋め込みと画像はリクエストごと止め、残る枠はマスクする。
 
 手順とコマンドの詳細は、[README.md](../README.md#visual-regression-testing-vrt) の VRT の節にある。

@@ -10,8 +10,8 @@
   - 構成は、トップ `/` / 事業内容 `/services` / 取扱製品 `/products` / 会社情報 `/company` / お問い合わせ `/contact` と、共通のレイアウト G である。
   - feature doc を IA の基準としていた。
 - デザイン制作のワークフローを定めるパイロットの対象を選ぶ中で、「そもそも多ページにする必要があるか」という IA のレベルの問いが出た。
-  - ADR-0004: [デザイン制作のワークフロー](0004-design-production-workflow.md)
-- この問いは、机上の比較ではなく、ADR-0004 で確定した design-workflow（A0 → A 発散 → import → B 収束）を実走して評価し直した。
+  - ADR-0012: [デザイン制作のワークフロー](0012-design-production-workflow.md)
+- この問いは、机上の比較ではなく、ADR-0012 で確定した design-workflow（A0 → A 発散 → import → B 収束）を実走して評価し直した。
   - 実プロト（`design/features/corporate-site/index.pen`）でデザイン方針を 16 版にわたって反復し、IA を評価した。
 - 実走の結果、事業内容と会社情報は LP 内の section で十分な密度を持てることが実プロト上で確認できた。
   - 一方、取扱製品（18 カテゴリ × 延べ約 320 社のメーカーの一覧）は、分量から独立したページが必要である。
@@ -27,7 +27,7 @@
 - IA の基準は、引き続き feature doc の「ページ構成」とする。
   - 出典: [ページの構成](../../apps/corporate-site/DesignDoc.md#ページの構成)
 - デザインの基準は、実装（コード + Storybook）とする。
-  - ADR-0012: [デザインの基準を実装とし、Pencil（`.pen`）を廃止する](0012-design-source-of-truth-implementation.md)
+  - ADR-0013: [デザインの基準を実装とし、Pencil（`.pen`）を廃止する](0013-design-source-of-truth-implementation.md)
 
 ## Considered Options
 

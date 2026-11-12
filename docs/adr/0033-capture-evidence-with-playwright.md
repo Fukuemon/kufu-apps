@@ -17,9 +17,9 @@
 - スキルのディレクトリは apm が配置し、Git で追跡しない。
 - agent-harness は private のリポジトリで、このリポジトリは public である。
 - 撮影の仕組みは、Playwright 1.64 以上が要る。
-  - ADR-0034: [Playwright を 1.64.1 に上げる](0034-playwright-upgrade.md)
+  - ADR-0031: [Playwright を 1.64.1 に上げる](0031-playwright-upgrade.md)
 - E2E は、workspace の package にする。
-  - ADR-0033: [E2E をルートの e2e/ に置いたまま、workspace の package にする](0033-e2e-workspace-at-root.md)
+  - ADR-0030: [E2E をルートの e2e/ に置いたまま、workspace の package にする](0030-e2e-workspace-at-root.md)
 
 ## Decision
 

@@ -1,6 +1,6 @@
 /*
  * Kufu のプリミティブトークン。セマンティックトークン（semantic.css）とテーマ変数（theme.css）が参照する値だけを持つ。
- * 値の出どころは 2 つあり、見出しのコメントで分ける（docs/adr/0027-design-tokens-three-layers.md）。
+ * 値の出どころは 2 つあり、見出しのコメントで分ける（docs/adr/0018-design-tokens-three-layers.md）。
  *   Kufu の値: Kufu の色、書体、動きの時間と緩急。
  *   DADS の値: デジタル庁デザインシステムの @digital-go-jp/design-tokens 2.1.0 の dist/tokens.css からコピーした値。
  *     DADS の --<名前> は --kufu-primitive-<名前> にした。新しい値が要るときは、DADS の同じバージョンから同じ規則の名前で足す。

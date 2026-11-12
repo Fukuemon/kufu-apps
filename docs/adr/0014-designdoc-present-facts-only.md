@@ -22,7 +22,7 @@
   Phase 1/2/3 のような時系列の語と将来の記述を、全節から除く。
 - **将来の計画（cms の構想、UI の本格的な共有への移行など）は、`## Open Questions / Future Work` 節に集める。**
   判断の根拠は ADR へリンクし、Future Work 節のほかには将来の構想を書かない。
-  - ADR-0003: [Phase 1 はコーポレートサイトだけにし、cms を後に回す](0003-phase1-corporate-site-only-and-cms-deferred.md)
+  - ADR-0001: [Phase 1 はコーポレートサイトだけにし、cms を後に回す](0001-phase1-corporate-site-only-and-cms-deferred.md)
 - **C4 の図は L1 と L2 の階層の分け方を保ち、中身を次の基準で描き直す。** 1 枚の図には統合しない。
   - L1（System Context）は、利用者の視点に絞る。
     - 訪問者と内容の更新者、コーポレートサイト、外部のサービスだけを載せる。
@@ -36,7 +36,7 @@
   仕様が決まっていても、未実装のものは Future Work 節で扱う。
   - この基準により、問い合わせの backend は L1 と L2 から外し、Future Work 節で扱う。
   - Cloudflare Pages と CDN は、確定した配信先として図に残す。
-    - ADR-0001: [Terraform の infra code を別のリポジトリで管理する](0001-terraform-infra-repository-boundary.md)
+    - ADR-0006: [Terraform の infra code を別のリポジトリで管理する](0006-terraform-infra-repository-boundary.md)
   - 実装が進んだら、そのときに図へ足す。
 
 ## Considered Options

@@ -19,7 +19,7 @@
   - monorepo の価値は再利用のしやすさと一貫性にあるため。
 - CMS と API を最初から作らない。
   - 主な目的は Astro のコーポレートサイトの構築で、CMS は必要性が具体的になってから判断するため。
-  - ADR-0003: [Phase 1 は corporate-site だけを実装する](0003-phase1-corporate-site-only-and-cms-deferred.md)
+  - ADR-0001: [Phase 1 は corporate-site だけを実装する](0001-phase1-corporate-site-only-and-cms-deferred.md)
 
 ## Considered Options
 

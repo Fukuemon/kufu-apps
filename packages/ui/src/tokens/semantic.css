@@ -1,6 +1,6 @@
 /*
  * Kufu のセマンティックトークン。役割の名前を持ち、値はプリミティブトークン（primitive.css）を参照するだけにする。
- * プリミティブトークンを color-mix() で混ぜた色は、ここに式を持つ（docs/adr/0027-design-tokens-three-layers.md）。
+ * プリミティブトークンを color-mix() で混ぜた色は、ここに式を持つ（docs/adr/0018-design-tokens-three-layers.md）。
  * コンポーネントと画面は、この層をテーマ変数（theme.css）のユーティリティか var() で使い、プリミティブトークンの名前を直に書かない。
  * 使う場面は packages/ui/design/tokens.md にある。
  */

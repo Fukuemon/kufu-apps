@@ -6,8 +6,8 @@
 
 ## Context
 
-- lint は oxlint だけで実行している。構成とツールチェーンの要求の ADR-0025 は、整形と lint を Vite+ の `vp check` に替え、設定をルートの `vite.config.ts` に置く。`pnpm check` は、ルートで `vp check` を 1 回実行する。
-  - ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](0025-vite-plus-toolchain.md)
+- lint は oxlint だけで実行している。構成とツールチェーンの要求の ADR-0009 は、整形と lint を Vite+ の `vp check` に替え、設定をルートの `vite.config.ts` に置く。`pnpm check` は、ルートで `vp check` を 1 回実行する。
+  - ADR-0009: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](0009-vite-plus-toolchain.md)
 - agent-harness のパッケージ e2e は、テストの書き方の規則を、ESLint の規則のファイル 1 つで配る。スキル setup-e2e-lint は、このファイルを利用者のリポジトリに写し、ESLint で流す。
   - 規則は、scope の解析、型の情報、自動の修正、token の API を使わない。
   - 規則は、lint を流すディレクトリ（`context.cwd`）からの相対パスで、テストのディレクトリを判定する。外のファイルでは何も報告しない。
@@ -19,9 +19,9 @@
 - buddy は、同じ規則を E2E の package の `check` の script で、`vp check` に続けて ESLint で流している。
   - 出典: [buddy の packages/e2e/package.json](https://github.com/Fukuemon/buddy/blob/c53390a6e64f4ef39d468dedd529425ae4aca0e5/packages/e2e/package.json)
 - E2E のテストのコードは、層に分けて書く。
-  - ADR-0031: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](0031-e2e-test-code-layers.md)
+  - ADR-0028: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](0028-e2e-test-code-layers.md)
 - E2E は、workspace の package にする。
-  - ADR-0033: [E2E をルートの e2e/ に置いたまま、workspace の package にする](0033-e2e-workspace-at-root.md)
+  - ADR-0030: [E2E をルートの e2e/ に置いたまま、workspace の package にする](0030-e2e-workspace-at-root.md)
 
 ## Decision
 
@@ -70,7 +70,7 @@
 
 | 選択肢                                                                                                                                                                  | 強み                                                                                                                        | 弱み                                                                                                                                             |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **採用:** ESLint を入れず、規則を oxlint の JS プラグインとして流す。`vp check` の前は `e2e/.oxlintrc.json`、後はルートの `lint.overrides` で、options を絶対パスで渡す | lint のツールが 1 つで済む。依存が増えない。ADR-0025 のルートの `vp check` で流れる。規則のすべての報告が ESLint と一致した | JS プラグインは alpha である。スキルの設定の例は ESLint の形なので、このリポジトリの設定に読み替える。配布元のテストを流すときに import を替える |
+| **採用:** ESLint を入れず、規則を oxlint の JS プラグインとして流す。`vp check` の前は `e2e/.oxlintrc.json`、後はルートの `lint.overrides` で、options を絶対パスで渡す | lint のツールが 1 つで済む。依存が増えない。ADR-0009 のルートの `vp check` で流れる。規則のすべての報告が ESLint と一致した | JS プラグインは alpha である。スキルの設定の例は ESLint の形なので、このリポジトリの設定に読み替える。配布元のテストを流すときに import を替える |
 | E2E の workspace にだけ ESLint を入れ、書き方の規則だけを掛ける                                                                                                         | スキルの手順と buddy と同じ形になる。規則のテストと更新の手順を、そのまま使える。alpha の機能に頼らない                     | lint のツールが 2 つになる。ESLint と parser の 2 つの依存が増える                                                                               |
 | JS プラグインで流し、ルートでだけ流すと決め、ルートからの相対パスを渡す                                                                                                 | 報告の文に手元の絶対パスが出ない                                                                                            | `e2e/` で `vp check` を流すと、報告が 0 件のまま成功する。止める仕組みが文書だけになる                                                           |
 | ESLint をリポジトリの全体に入れる                                                                                                                                       | 設定が 1 か所になる                                                                                                         | oxlint と役割が重なる。規則は E2E のコードだけを見る                                                                                             |

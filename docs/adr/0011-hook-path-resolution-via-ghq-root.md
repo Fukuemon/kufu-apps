@@ -48,7 +48,7 @@ hook のコマンドは、次の 3 つを同時に満たしたいが、各候補
 - 根拠は次の 4 つ。
   - **規約との一貫性**: hook を ghq ベースにするのは、**新しい依存の追加ではなく、既存の規約への一貫化**である。
     - `CLAUDE.md` の Repository Reference Rules が、既に「本プロジェクトは ghq 管理」「path の記載は `$(ghq root)/<repository-path>/...` を優先」と宣言している。
-    - ADR-0001: [infra repo の配置先も ghq を前提にする](0001-terraform-infra-repository-boundary.md)
+    - ADR-0006: [infra repo の配置先も ghq を前提にする](0006-terraform-infra-repository-boundary.md)
   - **cwd に完全に依存しない**: `ghq root` は cwd に依存せず、固定の管理ルートを返す。
     - `cd` でどこに逸れても、別の repo 内にいても、常に正しい repo root を解決する（観測された障害を構造的に排除する）。
   - **provider に依存しない**: 素のシェルの置換なので、claudecode / codexcli / cursor のいずれの runner でも同一に動く。

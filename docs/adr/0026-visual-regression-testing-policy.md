@@ -8,12 +8,12 @@
 
 - UI を変える作業を守るテストは、要素があることと文言を見る Playwright の smoke テストしかなかった。
   opacity やカスケードによる見た目の崩れを検出できない。
-- ADR-0014 の styles の組み替えでは、出力の CSS のバイトの比較と目視で代えた。
+- ADR-0004 の styles の組み替えでは、出力の CSS のバイトの比較と目視で代えた。
   しかし、`apps/corporate-site/src/styles/components.css` を utility と cva へ colocation で移す残りの作業では、出力の CSS の形が必ず変わり、バイトの比較が使えない。
   見た目の回帰を検出する手段が、移す作業の前提になる。
-  - ADR-0014: [corporate-site の component を section 単位のフラットな構成にする](0014-corporate-site-sections-architecture.md)
-- ADR-0012 がデザインの基準を「実装と Storybook」と定めているので、Storybook の story が見た目の回帰を確認する対象として最も自然である。
-  - ADR-0012: [デザインの基準を実装（コードと Storybook）にし、Pencil を廃止する](0012-design-source-of-truth-implementation.md)
+  - ADR-0004: [corporate-site の component を section 単位のフラットな構成にする](0004-corporate-site-sections-architecture.md)
+- ADR-0013 がデザインの基準を「実装と Storybook」と定めているので、Storybook の story が見た目の回帰を確認する対象として最も自然である。
+  - ADR-0013: [デザインの基準を実装（コードと Storybook）にし、Pencil を廃止する](0013-design-source-of-truth-implementation.md)
 - 決定のときの数は次のとおり。
   - story は `packages/ui` が 47、`apps/corporate-site` が 34 の計 81。`*.stories.*` のファイルの数 29 とは別に数える。
   - route は `/`、`/products`、`/contact` の 3 つ。
@@ -68,7 +68,7 @@
 | 選択肢                                                                                                                                                                    | 強み                                                                                                                                                        | 弱み                                                                                                                                                                           |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **採用:** story の側を `storycap-testrun` と `reg-cli` で、route の側を Playwright の `toHaveScreenshot` で撮る 2 系統を併用し、許す差分を 0 にして差分で CI を失敗させる | デザインの基準（Storybook）と確認する対象が一致する。ページ全体の崩れも story 単位の崩れも検出できる                                                        | 実行の仕組みと baseline が 2 系統になり、保守する対象が増える。許す差分 0 は、環境の差が出たときに初めの対応の手間が大きい                                                     |
-| Playwright の `toHaveScreenshot` だけで統一する                                                                                                                           | 実行の仕組みと baseline が 1 系統に収まり、保守の手間が小さい。外部のストレージが要らず、baseline を Git で管理するので差分が pull request のレビューに載る | story 単位の撮影を素直に書けず、ADR-0012 が定めるデザインの基準（Storybook）をそのまま対象にできない。ページを story にして 1 系統へ寄せる案は、実装の手間と二重の管理が生じる |
+| Playwright の `toHaveScreenshot` だけで統一する                                                                                                                           | 実行の仕組みと baseline が 1 系統に収まり、保守の手間が小さい。外部のストレージが要らず、baseline を Git で管理するので差分が pull request のレビューに載る | story 単位の撮影を素直に書けず、ADR-0013 が定めるデザインの基準（Storybook）をそのまま対象にできない。ページを story にして 1 系統へ寄せる案は、実装の手間と二重の管理が生じる |
 | reg-suit と storycap だけで統一する                                                                                                                                       | story 単位で最も広く網羅できる                                                                                                                              | storycap は story しか撮れず、ページ全体のレイアウトの合成や `globals.css` による崩れを捉えられない                                                                            |
 | 許す差分に、最初から小さい閾値（差分のピクセルの比 0.1% など）を置く                                                                                                      | 導入した直後の flake への対応の手間が下がる                                                                                                                 | 撮る環境を固定している前提では、小さな崩れを見逃す副作用の方が大きい                                                                                                           |
 | VRT のジョブを required status checks から外して運用する                                                                                                                  | 導入した直後のノイズで開発が止まらない                                                                                                                      | 赤を放っておく習慣がつくと VRT が使われなくなり、許す差分 0 という決定が実質的に意味を失う                                                                                     |

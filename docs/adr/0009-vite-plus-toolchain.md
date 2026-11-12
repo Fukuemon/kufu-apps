@@ -7,7 +7,7 @@
 ## Context
 
 - ツールチェーンは、Turborepo、oxlint、oxfmt、tsc、Vitest を個別に入れている。Vite+ は入れないと決めていた。
-  - ADR-0002: [Monorepo の app の scaffold は公式の create command を優先し、Vite+ は見送る](0002-monorepo-scaffold-create-command-policy.md)
+  - ADR-0008: [Monorepo の app の scaffold は公式の create command を優先し、Vite+ は見送る](0008-monorepo-scaffold-create-command-policy.md)
 - buddy は、Vite+（`vp`）で整形、lint、Vitest を実行する。設定はルートの `vite.config.ts` に置く。Turborepo は使わず、CI は `pnpm -r check`、`pnpm -r typecheck`、`pnpm -r test` を実行する。
   - 出典: [buddy の context/tech-stack.md](https://github.com/Fukuemon/buddy/blob/c53390a6e64f4ef39d468dedd529425ae4aca0e5/context/tech-stack.md)
   - 出典: [buddy の .github/workflows/ci.yml](https://github.com/Fukuemon/buddy/blob/c53390a6e64f4ef39d468dedd529425ae4aca0e5/.github/workflows/ci.yml#L65-L75)
@@ -69,7 +69,7 @@
 
 ### 6. app の最初の scaffold は、公式の create のコマンドを優先する
 
-ADR-0002 の scaffold の判断を、変えずに引き継ぐ。
+ADR-0008 の scaffold の判断を、変えずに引き継ぐ。
 
 - `apps/corporate-site` の初期の scaffold は、`pnpm create astro@latest apps/corporate-site` を正とする。
 - React の app の初期の scaffold は、`pnpm create vite ... --template react-ts` を正とする。
@@ -81,7 +81,7 @@ ADR-0002 の scaffold の判断を、変えずに引き継ぐ。
 - 差分が出たら、HTML の空白を Astro 6 と同じにする設定で、差分が消えるかを確認する。
 - 設定で消えない差分は、運営者が画面を見て、baseline を撮り直すかを決める。
 
-この決定は、ADR-0002 を置き換える。
+この決定は、ADR-0008 を置き換える。
 
 ## Verification
 

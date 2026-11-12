@@ -15,13 +15,13 @@
 - corporate-site は静的なサイトで、ログインと利用者のデータを持たない。画面に出るのは、公開のサイトと同じ内容である。
 - 検証環境はない。配信は Cloudflare Pages で、基盤の要求が配信の形を変える。
 - story の VRT の baseline を Git で管理したとき、PNG の履歴でリポジトリが大きくなった。
-  - ADR-0015: [VRT を story と route の 2 系統で導入する](0015-visual-regression-testing-policy.md)
-- 構成とツールチェーンの要求の ADR-0024 は、文書を `docs/` の下に集める。
-  - ADR-0024: [PRD、Design Doc、ADR、spec を `docs/` の下に集める](0024-documents-under-docs.md)
+  - ADR-0026: [VRT を story と route の 2 系統で導入する](0026-visual-regression-testing-policy.md)
+- 構成とツールチェーンの要求の ADR-0007 は、文書を `docs/` の下に集める。
+  - ADR-0007: [PRD、Design Doc、ADR、spec を `docs/` の下に集める](0007-documents-under-docs.md)
 - buddy は、検証の設計とシナリオを `docs/verification/<要求の番号>-<主題>/` に置く。
   - 出典: [buddy の docs/verification](https://github.com/Fukuemon/buddy/tree/c53390a6e64f4ef39d468dedd529425ae4aca0e5/docs/verification)
 - エビデンスは、Playwright の録画と字幕で撮る。
-  - ADR-0036: [エビデンスを、Playwright の録画と字幕で撮る](0036-capture-evidence-with-playwright.md)
+  - ADR-0033: [エビデンスを、Playwright の録画と字幕で撮る](0033-capture-evidence-with-playwright.md)
 
 ## Decision
 

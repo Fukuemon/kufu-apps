@@ -2,7 +2,7 @@
 
 ## Status
 
-[ADR-0028](0028-ui-components-native-elements.md) に置換
+[ADR-0020](0020-ui-components-native-elements.md) に置換
 
 ## Context
 
@@ -19,7 +19,7 @@
 - Radix UI Primitives は、実績のある unstyled で accessible な React の primitive である。WAI-ARIA、キーボードの操作、focus の管理が成熟している。
   - 一方で、新しく shadcn の catalog を育てる段階では、shadcn が Base UI への対応を公式の導線として持ち始めていることを優先できる。
 - corporate-site は、表示だけの React の component を Astro で静的に描画し、インタラクティブな primitive だけを `client:*` の island にする。Base UI へ移っても、この方針は保つ必要がある。
-  ADR-0008: [Astro と React island の方針](0008-astro-react-island-policy.md)
+  ADR-0021: [Astro と React island の方針](0021-astro-react-island-policy.md)
 
 ## Decision
 
@@ -32,7 +32,7 @@
 3. **shadcn の source を自分で持つ方式を保つ。**
    - Base UI を採っても、`@base-ui/react` を app から直接あちこちで import しない。
    - shadcn の CLI で `packages/ui/src/components/` に取り込んだ source を `@kufu/ui` の component の基準として編集し、token に合わせる。
-4. **表示だけの component とインタラクティブな component の境界は、ADR-0008 を引き継ぐ。**
+4. **表示だけの component とインタラクティブな component の境界は、ADR-0021 を引き継ぐ。**
    - Base UI の component も React の component なので、表示だけの component は Astro の静的な描画で使う。
    - Dialog、Select、Popover、Tooltip のように client での操作が要る component は、`client:*` の island にする。
 5. **Base UI への移行の完了条件をはっきりさせる。** 少なくとも次を確認する。
@@ -64,4 +64,4 @@
 - 既存の `radix-nova` の component を生成し直し、差分を調整する移行の作業が生じる。
 - Base UI は Radix と API が近いが、完全には互換でない。Select、Dialog、Popover のようなインタラクティブな component の story と island の境界を確認し直す必要がある。
 - Base UI を採った後も、React の component であることは変わらない。
-  - corporate-site で ADR-0008 の `client:*` の規則を続けないと、インタラクティブな component が静的な HTML だけで表示される誤りが残る。
+  - corporate-site で ADR-0021 の `client:*` の規則を続けないと、インタラクティブな component が静的な HTML だけで表示される誤りが残る。

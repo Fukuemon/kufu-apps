@@ -7,9 +7,9 @@
 - ファイル名: `docs/adr/NNNN-<title>.md`
 - 番号が、先にマージされた pull request の ADR と重なったら、後からマージする pull request が番号を振り直す。
 - 例 (実在 ADR):
-  - [`docs/adr/0001-terraform-infra-repository-boundary.md`](0001-terraform-infra-repository-boundary.md)
-  - [`docs/adr/0007-design-token-architecture.md`](0007-design-token-architecture.md)
-  - [`docs/adr/0009-corporate-site-contact-form-backend.md`](0009-corporate-site-contact-form-backend.md)
+  - [`docs/adr/0006-terraform-infra-repository-boundary.md`](0006-terraform-infra-repository-boundary.md)
+  - [`docs/adr/0017-design-token-architecture.md`](0017-design-token-architecture.md)
+  - [`docs/adr/0005-corporate-site-contact-form-backend.md`](0005-corporate-site-contact-form-backend.md)
 
 ## ADR にする判断
 

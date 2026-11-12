@@ -26,7 +26,7 @@ app や feature の中で閉じる UI と utility は、その中に置く。
 移す条件は [Placement Rules](#placement-rules) にある。
 
 デザインシステムの資産は、資産の種類ごとに置き場と移す条件を決める。  
-ADR-0027: [トークンの 3 つの層](../docs/adr/0027-design-tokens-three-layers.md)
+ADR-0018: [トークンの 3 つの層](../docs/adr/0018-design-tokens-three-layers.md)
 
 | 資産の種類                     | 置き場                              | 移す条件                                   |
 | ------------------------------ | ----------------------------------- | ------------------------------------------ |
@@ -37,14 +37,14 @@ ADR-0027: [トークンの 3 つの層](../docs/adr/0027-design-tokens-three-lay
 
 実装のコードと Storybook を、デザインの基準にする。  
 中間のデザインファイルを基準にしない。  
-ADR-0012: [デザインの基準を実装にする](../docs/adr/0012-design-source-of-truth-implementation.md)
+ADR-0013: [デザインの基準を実装にする](../docs/adr/0013-design-source-of-truth-implementation.md)
 
 ### app の中の層
 
 Astro の app は、`content`、section、`common`、`pages` に分ける。  
 section は `components/sections/<section>/` の 1 階層に並べ、route の層を作らない。  
 IA を変えてもディレクトリを動かさずに済むよう、構造をページの構成から切り離すためである。  
-ADR-0014: [corporate-site の sections 構成](../docs/adr/0014-corporate-site-sections-architecture.md)
+ADR-0004: [corporate-site の sections 構成](../docs/adr/0004-corporate-site-sections-architecture.md)
 
 ロジックと UI は、`content` 層、section assembly、presentation の 3 つで分ける。  
 末端のコンポーネントごとに Container を被せない。
@@ -80,7 +80,7 @@ package の間の依存の向きは次のとおり。
   - チェックはルートの `.dependency-cruiser.cjs` が行う。
 
 app の中のコンポーネントの依存は、`pages` → section の `index.ts` → `common` → `@kufu/ui` の 1 方向にする。  
-ADR-0014: [corporate-site の sections 構成](../docs/adr/0014-corporate-site-sections-architecture.md)
+ADR-0004: [corporate-site の sections 構成](../docs/adr/0004-corporate-site-sections-architecture.md)
 
 - `pages` から section の内部のファイルを直接 import しない。各 section の `index.ts` を通す。
   - ディレクトリを指定した named import（`.../sections/hero`）で書き、`.../hero/index` や `.../hero/index.ts` は書かない。チェックを単純に保つため、形式を 1 つに固定する。
@@ -113,13 +113,13 @@ dependency-cruiser と oxlint はどちらも `.astro` を解析しないため�
 
 class の組み立てには、`packages/ui` のコンポーネントは `clsx` を、Astro のコンポーネントは `class:list` を使う。  
 class を組み立てるほかのライブラリを足さない。`@kufu/ui` のコンポーネントは `className` を受け取らないので、呼び出す側から class で見た目を上書きしない。  
-ADR-0028: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0028-ui-components-native-elements.md)
+ADR-0020: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0020-ui-components-native-elements.md)
 
 ### React island の境界
 
 Astro は React のコンポーネントもビルド時に静的な HTML へ描画し、`client:*` を付けない限りクライアントの JavaScript を配らない。  
 JavaScript を配るのは island にしたときだけである。  
-ADR-0038: [corporate-site の island の方針](../docs/adr/0038-corporate-site-island-policy.md)
+ADR-0022: [corporate-site の island の方針](../docs/adr/0022-corporate-site-island-policy.md)
 
 - `apps/corporate-site` は静的な配信を基本にする。
 - 表示だけの UI（`Button`、`LinkButton`、`Tag`、`DefinitionRow`、`Divider` など）は、`@kufu/ui` のコンポーネントを `.astro` の中で `client:*` なしで使う。
@@ -145,7 +145,7 @@ ADR-0038: [corporate-site の island の方針](../docs/adr/0038-corporate-site-
 - 問い合わせフォームの内容は、アプリ側（Workers）で永続化しない。DB、ストレージ、ログに残さず、メールで通知するだけにする。
   - フォームの近くに利用目的を示す。
   - 永続化しないのはアプリ側に限る。通知の流れ（Resend からのメールの送信、受信箱、Resend 側の一時的な保持）には、通知という目的の範囲でデータが残る。
-  - ADR-0009: [corporate-site の問い合わせフォームの backend](../docs/adr/0009-corporate-site-contact-form-backend.md)
+  - ADR-0005: [corporate-site の問い合わせフォームの backend](../docs/adr/0005-corporate-site-contact-form-backend.md)
 
 ## Placement Rules
 
@@ -157,7 +157,7 @@ ADR-0038: [corporate-site の island の方針](../docs/adr/0038-corporate-site-
   - セマンティックトークンは `semantic.css` に置く。色の接頭辞は `--kufu-color-` である。
   - 文字のスタイルの大きさと行高も、`semantic.css` に `--kufu-text-<名前>-font-size` と `--kufu-text-<名前>-line-height` で置く。プリミティブトークンを参照し、`theme.css` のテーマ変数と、`packages/ui` の外の CSS（`components.css` など）から読む。外の CSS はプリミティブトークンを読めないためである。
   - テーマ変数は `theme.css` に置く。
-- 層の分け方は ADR-0027: [デザイントークンの 3 つの層](../docs/adr/0027-design-tokens-three-layers.md)にある。
+- 層の分け方は ADR-0018: [デザイントークンの 3 つの層](../docs/adr/0018-design-tokens-three-layers.md)にある。
 
 ### 新しいコンポーネント
 
@@ -174,7 +174,7 @@ ADR-0038: [corporate-site の island の方針](../docs/adr/0038-corporate-site-
 ### 今のコンポーネントで表せないとき
 
 別のデザインシステムを並べず、`packages/ui` だけを元にして、次の順に試す。規則は [デザインシステムの文書](../packages/ui/DESIGN.md) にある。  
-ADR-0028: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0028-ui-components-native-elements.md)
+ADR-0020: [packages/ui のコンポーネントをネイティブの要素と clsx で書く](../docs/adr/0020-ui-components-native-elements.md)
 
 1. 置く位置と余白は、呼び出す側が、コンポーネントを包む要素で決める。コンポーネントは書き換えない。
 2. 今の props で表せない見た目が要るときは、コンポーネントに変種（`variant`、`size`、`tone` など）を足す。呼び出す側の class と、app の CSS のセレクタで上書きしない。
@@ -206,7 +206,7 @@ content 層の方式は、内容の性質で選ぶ。
 
 - トークンを Tailwind の utility へ写す `@theme` は、`@kufu/ui/theme.css` だけに置く。app の entry がこれを import する。
 - corporate-site は、app の Tailwind v4 の entry `src/styles/globals.css` を持つ。
-  - ADR-0027: [トークンの 3 つの層](../docs/adr/0027-design-tokens-three-layers.md)
+  - ADR-0018: [トークンの 3 つの層](../docs/adr/0018-design-tokens-three-layers.md)
 - Tailwind の走査は Vite plugin の module graph に任せ、app のソースへの `@source` を app に置かない。
   - `packages/ui` のソースの走査は、`@kufu/ui/theme.css`（実体は `packages/ui/src/tokens/theme.css`）が `@source "../base"` で指す。app の entry に書かない。
 - app の `src/styles/` は役割で分け、`globals.css` は `@import` だけの entry にする。

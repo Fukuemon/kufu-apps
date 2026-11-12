@@ -8,7 +8,7 @@
 
 - `apps/corporate-site` は Astro の静的な生成（`output: "static"`）で、Cloudflare Pages へ配信する前提にしている。動的なサーバーの処理は持たない。
   - 出典: [operations.md](../../context/operations.md#environments)
-  - ADR-0003: [Phase 1 は corporate-site だけを作る](0003-phase1-corporate-site-only-and-cms-deferred.md)
+  - ADR-0001: [Phase 1 は corporate-site だけを作る](0001-phase1-corporate-site-only-and-cms-deferred.md)
 - 情報設計で、お問い合わせのページ（`/contact`）に問い合わせフォームを置くと決めた。送信の方式は、情報設計の範囲の外に残した。
 - フォームの送信には、入力の検証、スパムの判定、メールの通知を行うサーバーの処理が要る。静的な配信だけの前提では、その置き場が決まっていなかった。
 - 既存の方針は、ブラウザから第三者の API を直接呼ぶ構成を標準にせず、必要なら Workers を中継点にすると定める。シークレットを client の bundle に含めないとも定める。
@@ -21,7 +21,7 @@
 corporate-site の問い合わせの送信を、**Cloudflare Pages Functions（Workers）で中継**して作る。
 
 1. **送信の流れ**: フォーム（React の island）から、同じオリジンの `/api/contact`（Cloudflare Pages Functions、つまり Workers）へ HTTP の POST を送る。ブラウザから第三者の API を直接呼ばない。
-   - ADR-0008: [フォームは corporate-site の最初の主な React の island](0008-astro-react-island-policy.md)
+   - ADR-0021: [フォームは corporate-site の最初の主な React の island](0021-astro-react-island-policy.md)
 2. **配信の構成**: 静的な生成（`output: "static"`）を保ち、送信の endpoint だけに Pages Functions を使う。Node.js の常駐するサーバーと専用の VM は、引き続き持たない。
 3. **検証**: Workers が入力をサーバーの側で検証し直し、client を信頼しない。スパムの対策として、Cloudflare Turnstile の token の `siteverify` での検証と、honeypot の判定を行う。
 4. **通知**: 検証を通った後、Workers が Resend の HTTP API でメールを通知する。

@@ -9,7 +9,7 @@
 kufu-apps のデザインシステムを、デジタル庁デザインシステム（DADS）と buddy を参考に作り直す。トークンの持ち方を決める必要がある。
 
 - トークンは、primitive と shadcn の語彙の semantic の 2 層である。
-  - ADR-0007: [デザイントークンを primitive と shadcn の語彙の 2 層に分け、tokens、fonts、theme、全量の entry で配る](0007-design-token-architecture.md)
+  - ADR-0017: [デザイントークンを primitive と shadcn の語彙の 2 層に分け、tokens、fonts、theme、全量の entry で配る](0017-design-token-architecture.md)
 - 運営者は、shadcn と Base UI を外し、shadcn の語彙のトークンを DADS の考え方のセマンティックトークンに置き換えると決めた。Kufu の色、書体、ロゴは変えない。
 - shadcn の語彙のユーティリティ（`text-muted-foreground`、`border-border` など）は、corporate-site と `packages/ui` に約 260 か所ある。使っていない `--sidebar-*`、`--chart-*`、`--popover` も、名前を消さない規則で残っている。
 - corporate-site は、プリミティブトークンの名前のユーティリティ（`text-kufu-gray-200`、`bg-kufu-gray-950` など）を、暗い面で直に書いている。
@@ -27,7 +27,7 @@ kufu-apps のデザインシステムを、デジタル庁デザインシステ�
   - `gray-500` の文字は、明るい面で 3.47、暗い面（`gray-950`）で 4.81 である。
 - フッターは、`.surface-inverse` のスコープで semantic の変数を上書きして、暗い面にしている。ダークモードは持たない。
 - workspace の package は、ソースを export する。`packages/ui` の `exports` の分け方は、この要求の設計に委ねられている。
-  - 出典: [ADR-0026](https://github.com/Fukuemon/kufu-apps/blob/48380362a729fe2d5090af0fa25649d6a95adf75/adr/0026-workspace-package-contract.md)
+  - 出典: [ADR-0010](https://github.com/Fukuemon/kufu-apps/blob/48380362a729fe2d5090af0fa25649d6a95adf75/adr/0026-workspace-package-contract.md)
 
 ## Decision
 
@@ -96,7 +96,7 @@ kufu-apps のデザインシステムを、デジタル庁デザインシステ�
 - `fonts.css` は、今と同じく document の head から読む。
 - `./tokens.css` と `./styles.css`（shadcn の層を含む全量の entry）の export を消す。
 
-この決定は、ADR-0007 を置き換える。
+この決定は、ADR-0017 を置き換える。
 
 ## Considered Options
 
@@ -106,7 +106,7 @@ kufu-apps のデザインシステムを、デジタル庁デザインシステ�
 | グレーも DADS の solid-gray に替え、teal だけを残す                                             | グレーの組み合わせを DADS の指針に頼れる                                                                        | 寒色のグレーが無彩色になり、Kufu の色が変わる                                                                         |
 | `@digital-go-jp/design-tokens` を依存のパッケージから読む                                       | DADS の修正を、バージョンを上げて取り込める                                                                     | 使わない値も全て読む。buddy、fukuemon.dev と持ち方が分かれる                                                          |
 | 今の 2 層のまま、shadcn の語彙の名前だけを改める                                                | 変更が小さい                                                                                                    | テーマ変数の層がなく、Tailwind のデフォルトの色と文字の大きさを画面のコードで書ける。チェックが前提にする形と合わない |
-| shadcn の語彙を残す（ADR-0007 のまま）                                                          | 約 260 か所を付け替えずに済む                                                                                   | shadcn を外すと、使わない名前を残す理由がなくなる。運営者の決定と合わない                                             |
+| shadcn の語彙を残す（ADR-0017 のまま）                                                          | 約 260 か所を付け替えずに済む                                                                                   | shadcn を外すと、使わない名前を残す理由がなくなる。運営者の決定と合わない                                             |
 
 ## Consequences
 

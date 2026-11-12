@@ -16,7 +16,7 @@
 - buddy のドキュメントサイトは、`docs/` を入力のディレクトリにしている。
   - 出典: [buddy の zensical.toml](https://github.com/Fukuemon/buddy/blob/c53390a6e64f4ef39d468dedd529425ae4aca0e5/zensical.toml#L5)
 - spec は issue を閉じるときに削除する。
-  - ADR-0011: [spec の closeout を CI で強制する](0011-specs-closeout-enforcement.md)
+  - ADR-0015: [spec の closeout を CI で強制する](0015-specs-closeout-enforcement.md)
 - `adr/README.md` と `adr/TEMPLATE.md` は、スキル write-design-docs が前提にする名前（`index.md`、`template.md`）と違う。
 
 ## Decision
@@ -50,7 +50,7 @@
 | **採用:** PRD、Design Doc、ADR、spec を `docs/` に移す   | buddy と同じ場所になり、同じ手順とスキルで読み書きできる。ドキュメントサイトの入力を 1 つのディレクトリにできる | 文書、設定、app のデータにある移す前のパスを直す。開いている pull request（#49、#57）が同じファイルを変えている |
 | ルートに置いたままにする                                 | 何も変えない                                                                                                    | 3 つのリポジトリで文書の場所が分かれる。ドキュメントサイトの入力が 4 か所になる                                 |
 | PRD、Design Doc、ADR だけを移し、`specs/` はルートに残す | spec の README とワークフローを変えずに済む                                                                     | buddy と spec の場所だけが違う。`docs.spec` を読むスクリプトは、値を変えれば動くので、残す理由が小さい          |
-| spec を Git で追跡しない場所（`.ai-out/`）に置く         | closeout のチェックが要らなくなる                                                                               | レビューする人が pull request で spec を読めない。ADR-0011 の判断を変える                                       |
+| spec を Git で追跡しない場所（`.ai-out/`）に置く         | closeout のチェックが要らなくなる                                                                               | レビューする人が pull request で spec を読めない。ADR-0015 の判断を変える                                       |
 
 ## Consequences
 

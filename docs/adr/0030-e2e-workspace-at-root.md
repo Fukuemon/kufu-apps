@@ -10,12 +10,12 @@
 - route の VRT の baseline は、`e2e/corporate-site/route-vrt.spec.ts-snapshots/` にある。
   - Playwright は、baseline の置き場をテストのファイルの場所から決める。
   - baseline のファイル名には、Playwright の project の名前が入る。今の設定は project を持たないので、名前は入っていない。
-  - ADR-0015: [VRT を story と route の 2 系統で導入する](0015-visual-regression-testing-policy.md)
+  - ADR-0026: [VRT を story と route の 2 系統で導入する](0026-visual-regression-testing-policy.md)
 - ルートの Playwright の設定は、環境変数 `E2E_TARGET` で `e2e/<target>/` を切り替える。対象は `corporate-site` の 1 つだけである。
-- buddy は、E2E を `packages/e2e` に置く。構成とツールチェーンの要求の ADR-0024 は、`e2e/` をルートに残し、置き場は E2E のテストの設計で決めるとしている。
-  - ADR-0024: [PRD、Design Doc、ADR、spec を `docs/` の下に集める](0024-documents-under-docs.md)
-- 同じ要求の ADR-0025 は、workspace が自分に要る script だけを持ち、ルートが `pnpm -r` で束ねると決めた。`pnpm typecheck` は、ルートの `tsc` と `pnpm -r typecheck` を実行する。`pnpm test` は、ブラウザのない CI の job で流れる。
-  - ADR-0025: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](0025-vite-plus-toolchain.md)
+- buddy は、E2E を `packages/e2e` に置く。構成とツールチェーンの要求の ADR-0007 は、`e2e/` をルートに残し、置き場は E2E のテストの設計で決めるとしている。
+  - ADR-0007: [PRD、Design Doc、ADR、spec を `docs/` の下に集める](0007-documents-under-docs.md)
+- 同じ要求の ADR-0009 は、workspace が自分に要る script だけを持ち、ルートが `pnpm -r` で束ねると決めた。`pnpm typecheck` は、ルートの `tsc` と `pnpm -r typecheck` を実行する。`pnpm test` は、ブラウザのない CI の job で流れる。
+  - ADR-0009: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](0009-vite-plus-toolchain.md)
 - ルートの `tsc` が確認するのは、`playwright.config.ts` と `e2e/` の下のファイルだけである。
 - このリポジトリの `packages/` は、app が import する共有のものを置く場所である。E2E は、どの app からも import されない。
 - テストの書き方の規則は、lint を流すディレクトリから見たテストのディレクトリだけを見る。ほかのディレクトリから流すと、違反があっても報告しない。
@@ -49,7 +49,7 @@
   - ルートの `pnpm test` は、ブラウザのない job で workspace の `test` を流す。E2E が入ると、その job が失敗する。
   - ルートの `pnpm e2e` と `pnpm vrt:route` は、名前を変えずに、この workspace の script を呼ぶ。
 - 型のチェックは、`@kufu/e2e` の `typecheck` に移す。ルートの `tsc` は、対象がなくなるので外す。
-  - ADR-0025 の「`pnpm typecheck` は、ルートの `tsc` と `pnpm -r typecheck` を実行する」のうち、ルートの `tsc` をやめる。運営者が、ADR-0025 の決定を変えるものとして認めた。
+  - ADR-0009 の「`pnpm typecheck` は、ルートの `tsc` と `pnpm -r typecheck` を実行する」のうち、ルートの `tsc` をやめる。運営者が、ADR-0009 の決定を変えるものとして認めた。
 - buddy と同じ `packages/e2e` にはしない。
   - `packages/` の意味（app が import する共有のもの）を変えない。
   - route の VRT の baseline、CI の artifact のパス、文書のパスを変えずに済む。

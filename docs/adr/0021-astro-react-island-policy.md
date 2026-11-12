@@ -2,13 +2,13 @@
 
 ## Status
 
-[ADR-0038](0038-corporate-site-island-policy.md) に置換
+[ADR-0022](0022-corporate-site-island-policy.md) に置換
 
 ## Context
 
 - `apps/corporate-site` は Astro の静的な生成（`output: "static"`）だけで作り、`@astrojs/react` を入れていなかった。
 - `packages/ui` は shadcn/ui（React と Radix）を基盤に持つ。
-  ADR-0007: [デザイントークンの 2 層と配る entry](0007-design-token-architecture.md)
+  ADR-0017: [デザイントークンの 2 層と配る entry](0017-design-token-architecture.md)
 - corporate-site の UI を作るにあたり、shadcn（React）を `.astro` でどう使うか、どこから `client:*`（React の island）にするかが決まっていなかった。
 - Astro は React のコンポーネントも**ビルドのときに静的な HTML へ描画し**、`client:*` を付けない限りクライアントの JavaScript を一切配らない。
   性能のコストが生じるのは、`client:*` を付けて island にし、React のランタイムを配ってハイドレーションするときだけである。
@@ -42,7 +42,7 @@
 | 選択肢                                                                                        | 強み                                                                                                               | 弱み                                                                                                                                    |
 | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
 | **採用:** 表示だけの UI は shadcn を静的に描画し、`client:*` の island は操作が要るものに限る | 表示だけの UI が JavaScript なしで `@kufu/ui` を再利用でき、二重の実装が起きない。性能のコストが island に限られる | `@astrojs/react` の依存とビルドのときの React の SSR が加わる。インタラクティブな primitive を静的に描画する誤りが起こりうる            |
-| `.astro` で shadcn のスタイルを作り直す（React を一切使わない）                               | クライアントの JavaScript がない点は同じ                                                                           | shadcn のコンポーネントと `.astro` 版の二重の実装が生まれ、`@kufu/ui` とずれる。トークンを二重に管理しない方針（ADR-0007）と一貫しない  |
+| `.astro` で shadcn のスタイルを作り直す（React を一切使わない）                               | クライアントの JavaScript がない点は同じ                                                                           | shadcn のコンポーネントと `.astro` 版の二重の実装が生まれ、`@kufu/ui` とずれる。トークンを二重に管理しない方針（ADR-0017）と一貫しない  |
 | すべてを React の island（`client:load`）で作る                                               | 開発者の体験が単純                                                                                                 | 表示だけの UI にまで React のランタイムを配り、性能の予算を圧迫する。corporate-site の主な価値である高速な静的配信に反する              |
 | `@astrojs/react` を入れず、Astro だけで完結させる                                             | 一見、性能の面で安全                                                                                               | shadcn のコンポーネントを corporate-site で再利用できず、二重の実装を強いる。静的な描画にランタイムのコストがない以上、過剰な制約である |
 

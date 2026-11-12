@@ -6,9 +6,9 @@
 
 ## Context
 
-- ADR-0004 は、デザインの制作を「Claude Design（発散）、Pencil（`.pen` がデザインの基準）、実装」の 3 段にしていた。ADR-0004 の状態は提案のままで、承認されていなかった。
+- ADR-0012 は、デザインの制作を「Claude Design（発散）、Pencil（`.pen` がデザインの基準）、実装」の 3 段にしていた。ADR-0012 の状態は提案のままで、承認されていなかった。
   - `design/features/corporate-site/index.pen` をデザインの基準として commit する運用を定めていた。
-  - ADR-0004: [デザインの制作の流れを 3 段にする](0004-design-production-workflow.md)
+  - ADR-0012: [デザインの制作の流れを 3 段にする](0012-design-production-workflow.md)
 - `.pen` は実装の更新に追従できず、実態と食い違った。
   - デザインの基準が `.pen`、実装の基準がコードという 2 つの基準を持つと、実装の側だけが進むたびに、仕組みの上で必ずずれが生じる。
 - corporate-site の主な画面は実装済みで、Storybook（コンポーネントのカタログ）も整っている。
@@ -18,7 +18,7 @@
 ## Decision
 
 **デザインの基準を実装（コードと Storybook）にする。** `.pen` を含む中間のデザインの基準を持たない。  
-この ADR は ADR-0004 を置き換える。
+この ADR は ADR-0012 を置き換える。
 
 ### デザインの制作の流れ
 
@@ -39,7 +39,7 @@
   - 基準は実装という原則に照らし、design の側の重複したコピーを削除する。
   - design source と配信用のコピーを分けて持つ取り決めは、この ADR に含めて廃止する。
 - デザイントークンの基準は、これまでどおり `packages/ui` にする。この ADR はトークンの体系を変えない。
-  ADR-0007: [デザイントークンの 2 層と配る entry](0007-design-token-architecture.md)
+  ADR-0017: [デザイントークンの 2 層と配る entry](0017-design-token-architecture.md)
 
 ### Figma を使う条件
 

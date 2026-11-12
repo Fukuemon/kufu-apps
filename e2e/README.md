@@ -1,8 +1,8 @@
 # @kufu/e2e
 
 `pnpm e2e` と `pnpm vrt:route` が読む Playwright の workspace。取り決めは [context/testing.md](../context/testing.md) と [context/testing/e2e.md](../context/testing/e2e.md) が持ち、食い違ったらそちらに従う。  
-ADR-0031: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../docs/adr/0031-e2e-test-code-layers.md)  
-ADR-0033: [E2E をルートの e2e/ に置いたまま、workspace の package にする](../docs/adr/0033-e2e-workspace-at-root.md)
+ADR-0028: [E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる](../docs/adr/0028-e2e-test-code-layers.md)  
+ADR-0030: [E2E をルートの e2e/ に置いたまま、workspace の package にする](../docs/adr/0030-e2e-workspace-at-root.md)
 
 ## 構成
 

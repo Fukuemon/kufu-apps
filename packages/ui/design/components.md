@@ -4,10 +4,10 @@
 
 ## コンポーネント
 
-コンポーネントは `packages/ui/src/base/<名前>/` に置き、ネイティブの HTML の要素と `clsx` で書く（[ADR-0028](../../../docs/adr/0028-ui-components-native-elements.md)）。  
+コンポーネントは `packages/ui/src/base/<名前>/` に置き、ネイティブの HTML の要素と `clsx` で書く（[ADR-0020](../../../docs/adr/0020-ui-components-native-elements.md)）。  
 見た目は `variant`、`size`、`tone`、`layout` の props で変え、コンポーネントは `className` を受け取らない。今の props で表せない見た目が要るときは、コンポーネントに変種を足す。置く位置と余白は、呼び出す側が包む要素で決める。
 
-Astro のページでは、コンポーネントを `client:*` なしで静的に描く。island にする条件は [ADR-0038](../../../docs/adr/0038-corporate-site-island-policy.md) にある。
+Astro のページでは、コンポーネントを `client:*` なしで静的に描く。island にする条件は [ADR-0022](../../../docs/adr/0022-corporate-site-island-policy.md) にある。
 
 ### Button
 

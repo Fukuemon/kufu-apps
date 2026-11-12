@@ -6,8 +6,8 @@
 
 ## Context
 
-- ADR-0017 は、play と E2E の役割、ページ単位の Page Object、locator の使い分け、E2E が受け持つジャーニーを決めた。
-  - ADR-0017: [play テストと E2E の役割を分け、Page Object と locator の規約を定める](0017-ui-test-structure-policy.md)
+- ADR-0027 は、play と E2E の役割、ページ単位の Page Object、locator の使い分け、E2E が受け持つジャーニーを決めた。
+  - ADR-0027: [play テストと E2E の役割を分け、Page Object と locator の規約を定める](0027-ui-test-structure-policy.md)
 - E2E は、`e2e/corporate-site/smoke.spec.ts` の 5 件と、3 つの route の Page Object のクラスである。3 本のジャーニーは、まだ書いていない。
 - agent-harness のパッケージ e2e を `apm.yml` に入れた。パッケージのスキル write-e2e-test は、テストのコードを次の層に分ける。テスト用のクラスは作らず、ページを引数に取る関数を並べる。
 
@@ -27,8 +27,8 @@
 
 ## Decision
 
-ADR-0017 の 4 つの判断のうち、Page Object の判断を変える。ほかの 3 つは、変えずに引き継ぐ。  
-この決定は、ADR-0017 を置き換える。
+ADR-0027 の 4 つの判断のうち、Page Object の判断を変える。ほかの 3 つは、変えずに引き継ぐ。  
+この決定は、ADR-0027 を置き換える。
 
 ### 1. play テストの対象は packages/ui に限る
 

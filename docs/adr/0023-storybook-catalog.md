@@ -10,8 +10,8 @@
 
 - Storybook は、`packages/ui`（React の Vite）と `apps/corporate-site`（`@storybook-astro/framework`）に 1 つずつある。2 つを build して、gh-pages のブランチへ push している。
 - corporate-site の section は、Astro のコンポーネントである。Astro の Storybook の framework はコミュニティ製で、`@storybook/addon-vitest` が求める renderer に含まれない。
-  - ADR-0014: [corporate-site の component を section 単位のフラットな構成にし、公開面を index.ts と独自のチェックで固定する](0014-corporate-site-sections-architecture.md)
-  - ADR-0015: [VRT を story と route の 2 系統で導入する](0015-visual-regression-testing-policy.md)
+  - ADR-0004: [corporate-site の component を section 単位のフラットな構成にし、公開面を index.ts と独自のチェックで固定する](0004-corporate-site-sections-architecture.md)
+  - ADR-0026: [VRT を story と route の 2 系統で導入する](0026-visual-regression-testing-policy.md)
 - story の title は、`packages/ui` が `UI/<Component>`、app が `Sections/<Section>/<Component>` か `Common/<Component>` である。story の VRT の baseline のファイル名は、story の id から決まる。
 - 運営者は、buddy の `packages/ui` と同じ形の Storybook で、トークンとコンポーネントを確認したい。
 - buddy の `packages/ui` の Storybook は、a11y、docs、vitest のアドオンと、hover の見た目を出すアドオンを使い、ページを「はじめに、トークン、コンポーネント、パターン、画面」の順に並べる。story は Vitest のブラウザのテストとして動かし、a11y のアドオンの違反をテストの失敗にする。
@@ -61,7 +61,7 @@
 | 選択肢                                                                                                    | 強み                                                                                         | 弱み                                                                                                          |
 | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | **採用:** `packages/ui` の Storybook を本体にし、corporate-site の Storybook を画面のカタログとして並べる | section を書き直さない。buddy と同じ形でトークンとコンポーネントを確認できる                 | Storybook が 2 つのままで、設定とテストの載せ方が 2 通り残る。composition が公開先で動くかは未確認である      |
-| section を React に書き直し、Storybook を 1 つにする                                                      | Storybook、テスト、a11y の確認が 1 通りになる。コミュニティ製の framework への依存がなくなる | 18 個の Astro のコンポーネントを書き直す。ADR-0014 を変える。画面の構成を変えない、という要求の範囲から外れる |
+| section を React に書き直し、Storybook を 1 つにする                                                      | Storybook、テスト、a11y の確認が 1 通りになる。コミュニティ製の framework への依存がなくなる | 18 個の Astro のコンポーネントを書き直す。ADR-0004 を変える。画面の構成を変えない、という要求の範囲から外れる |
 | corporate-site の Storybook をやめ、画面は route の VRT と E2E で確認する                                 | Storybook が 1 つになる                                                                      | section を状態ごとに開ける場所がなくなる。section ごとの story の VRT がなくなる                              |
 | カタログを Cloudflare Access で開ける人を絞って公開する                                                   | 作りかけの見た目を外に見せない                                                               | リポジトリが public なので、隠せるのは組み立てた結果だけである。設定が増える                                  |
 | カタログを公開せず、CI で build だけを確認する                                                            | 公開の仕組みが要らない                                                                       | レビューする人が、手元で Storybook を起動することになる。要求の受け入れ条件を満たさない                       |

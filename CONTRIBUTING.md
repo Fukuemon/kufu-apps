@@ -112,7 +112,7 @@ spec の節の構成と書き方は、スキル write-design-docs が持つ。�
 
 ### spec を閉じるとき
 
-spec は issue の作業文書なので、issue を閉じるときに削除する。判断の根拠は [ADR-0011](docs/adr/0011-specs-closeout-enforcement.md) にある。次の順に進める。
+spec は issue の作業文書なので、issue を閉じるときに削除する。判断の根拠は [ADR-0015](docs/adr/0015-specs-closeout-enforcement.md) にある。次の順に進める。
 
 1. 残す設計（IA、データモデル、フロー、アーキテクチャの判断）が、Design Doc、context、ADR に反映済みかを確認する。
 2. 反映していない分を反映する。選択肢を比べて決めた判断は ADR にする。

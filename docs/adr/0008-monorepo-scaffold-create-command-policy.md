@@ -2,7 +2,7 @@
 
 ## Status
 
-ADR-0025 に置換
+ADR-0009 に置換
 
 ## Context
 

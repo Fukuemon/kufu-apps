@@ -5,10 +5,10 @@ Kufu の画面を作る人とコーディングエージェントが、画面と
 出典と、構成を決めた理由の ADR は次のとおり。
 
 - 出典: [デジタル庁デザインシステム](https://design.digital.go.jp/dads/)
-- ADR-0027: [トークンを、Kufu の色と DADS の値を持つプリミティブトークン、セマンティックトークン、テーマ変数の 3 つの層にし、shadcn の語彙をやめる](../../docs/adr/0027-design-tokens-three-layers.md)
-- ADR-0028: [packages/ui のコンポーネントを、ネイティブの要素と clsx で書いた Base と Case にし、shadcn と Base UI を外す](../../docs/adr/0028-ui-components-native-elements.md)
-- ADR-0029: [packages/ui の Storybook をカタログの本体にし、corporate-site の Storybook を画面のカタログとして並べて公開する](../../docs/adr/0029-storybook-catalog.md)
-- ADR-0037: [Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせ、見出しの上のラベルを日本語だけにする](../../docs/adr/0037-kufu-identity-japanese-labels.md)
+- ADR-0018: [トークンを、Kufu の色と DADS の値を持つプリミティブトークン、セマンティックトークン、テーマ変数の 3 つの層にし、shadcn の語彙をやめる](../../docs/adr/0018-design-tokens-three-layers.md)
+- ADR-0020: [packages/ui のコンポーネントを、ネイティブの要素と clsx で書いた Base と Case にし、shadcn と Base UI を外す](../../docs/adr/0020-ui-components-native-elements.md)
+- ADR-0023: [packages/ui の Storybook をカタログの本体にし、corporate-site の Storybook を画面のカタログとして並べて公開する](../../docs/adr/0023-storybook-catalog.md)
+- ADR-0025: [Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせ、見出しの上のラベルを日本語だけにする](../../docs/adr/0025-kufu-identity-japanese-labels.md)
 
 トークンとコンポーネントの見た目は、カタログ（Storybook）で見る。ローカルでは `pnpm storybook:ui` で開く。  
 カタログは GitHub Pages に公開している。公開先の URL は、配信の基盤が決まった後に `context/project.yml` の `design_system.catalog_url` に書く。
@@ -64,7 +64,7 @@ Kufu の色、書体、ロゴ、装飾の語彙は、DADS に合わせずに残�
 | ロゴ         | 今のマークと favicon                                                                                     | ヘッダー、favicon                                      |
 | 装飾の語彙   | 4px の角丸、1px の罫線、ウォーターマークの数字、写真への色の被せ、写真の上のパネル、1 つのトーンの暗い面 | section の面と写真                                     |
 
-- ADR-0037: [Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせ、見出しの上のラベルを日本語だけにする](../../docs/adr/0037-kufu-identity-japanese-labels.md)
+- ADR-0025: [Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせ、見出しの上のラベルを日本語だけにする](../../docs/adr/0025-kufu-identity-japanese-labels.md)
 - 残すものを変える案は、運営者が決める。
 - teal のアクセントは、主の操作と強調に使う。面積を絞り、信頼感を優先する。
 
@@ -90,13 +90,13 @@ DADS の指針から外れる規則は、この節に並べない。その規則
     - 良い例: 入力の誤りの欄に、赤い枠と一緒に誤りの文を出す（`FormField` の `error`）。
     - 悪い例: 必須の欄を、印の文字を出さずに見出しの色だけで示す。
 - `TEXT-MIN-SIZE`: 14px より小さい文字を使わない。本文と操作の文字は 16px にし、14px は補足だけに使う。文字の大きさは、トークンの文書の「文字」の表のユーティリティだけで書く。Tailwind のデフォルトの名前（`text-sm`、`text-base` など）と、任意値（`text-[0.8125rem]`、`text-[clamp(...)]`）は書かない。
-  - 例外: 12px の `eyebrow` だけを置く。DADS は 14 CSS px 未満を原則として認めない。`eyebrow` は、見出しに添える欧文と数字の短いラベルと、番号のラベルで、同じ内容を見出しが伝えるため、外す（[ADR-0030](../../docs/adr/0030-keep-kufu-identity.md)）。文、操作の文字、和文の補足には使わない。
+  - 例外: 12px の `eyebrow` だけを置く。DADS は 14 CSS px 未満を原則として認めない。`eyebrow` は、見出しに添える欧文と数字の短いラベルと、番号のラベルで、同じ内容を見出しが伝えるため、外す（[ADR-0024](../../docs/adr/0024-keep-kufu-identity.md)）。文、操作の文字、和文の補足には使わない。
   - 確認: `pnpm check:design` の中の `node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md`。`eyebrow` の使い道は、レビューで見る。
 - `PRIMARY-ACTION-ONE`: 主のボタンは、1 つの画面かダイアログに 1 つまでにする。
   - 確認: レビューで、画面の主の操作が 1 つに決まるかを見る。ヘッダーの導線のように、全てのページに共通の領域のボタンを数えるかは、「決まっていない選択」にある。
     - 良い例: 問い合わせのフォームで、送信のボタンだけを塗りのボタンにする。
     - 悪い例: 一覧の項目ごとに、塗りのボタンを置く。
-- `FOCUS-ONE`: フォーカスの表示は 1 つのユーティリティ（`focus-ring`）だけで付け、コンポーネントごとに色や太さを変えない。リンク、ボタン、入力欄、`summary`、`tabindex` を付けた要素のように、操作できる要素の全てに付ける。表示は DADS の黒の outline と Yellow-300 の影の 2 重で、DADS が変えないとする要件である（[ADR-0037](../../docs/adr/0037-kufu-identity-japanese-labels.md)）。`focus`、`focus-visible`、`focus-within` の変種、`outline` のユーティリティ、フォーカスのトークンの色（`focus-outline`、`focus-halo`）を、ほかに書かない。
+- `FOCUS-ONE`: フォーカスの表示は 1 つのユーティリティ（`focus-ring`）だけで付け、コンポーネントごとに色や太さを変えない。リンク、ボタン、入力欄、`summary`、`tabindex` を付けた要素のように、操作できる要素の全てに付ける。表示は DADS の黒の outline と Yellow-300 の影の 2 重で、DADS が変えないとする要件である（[ADR-0025](../../docs/adr/0025-kufu-identity-japanese-labels.md)）。`focus`、`focus-visible`、`focus-within` の変種、`outline` のユーティリティ、フォーカスのトークンの色（`focus-outline`、`focus-halo`）を、ほかに書かない。
   - 確認: `pnpm check:design` の中の `node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md`。操作できる要素に `focus-ring` が付いているかは、レビューで見る。
 - `TARGET-SIZE`: 押せる領域は 44×44 CSS px 以上にする。WCAG 2.2 の AA（2.5.8）の 24×24 より厳しい、AAA（2.5.5）の値を選んでいる。見た目を小さくするときは、見た目の外に押せる領域を広げる。
   - 確認: `packages/ui` の押せるコンポーネントの story の play が、描画した幅と高さを `expectTargetSize` で確認する。対象は `Button`、`LinkButton`、`TextInput`、`Select`、`Textarea` で、関数は `packages/ui/src/test/target-size.ts` にある。

@@ -2,7 +2,7 @@
 
 ## Status
 
-[ADR-0037](0037-kufu-identity-japanese-labels.md) に置換
+[ADR-0025](0025-kufu-identity-japanese-labels.md) に置換
 
 ## Context
 
@@ -14,7 +14,7 @@ DADS の考え方でデザインシステムを作り直すときに、Kufu の�
   - 書体: 見出しは Noto Serif JP の 600、本文は Noto Sans JP、eyebrow とラベルと番号は Geist Mono で、letter-spacing を広めにする。
   - 装飾: 4px の角丸、1px の罫線、大きなウォーターマークの数字、写真への色の被せ、写真の上のパネル。
 - トークンは、Kufu の色をプリミティブトークンに残し、状態とフォーカスの色、文字、角丸を DADS からコピーする。
-  - ADR-0027: [トークンを、Kufu の色と DADS の値を持つプリミティブトークン、セマンティックトークン、テーマ変数の 3 つの層にし、shadcn の語彙をやめる](0027-design-tokens-three-layers.md)
+  - ADR-0018: [トークンを、Kufu の色と DADS の値を持つプリミティブトークン、セマンティックトークン、テーマ変数の 3 つの層にし、shadcn の語彙をやめる](0018-design-tokens-three-layers.md)
 - DADS は、次のことを定めている。
   - キーカラーは使う側が選ぶ。主要な背景とのコントラストは 4.5:1 以上にする。
   - 状態の色相と、フォーカスの表示（Yellow-300 と黒の 2 重）は変えない。
