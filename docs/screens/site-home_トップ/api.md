@@ -6,14 +6,16 @@
 
 ## 値の対応
 
-| 要素名                 | 表示する値       | 画面の型の項目                          | API の項目 |
-| ---------------------- | ---------------- | --------------------------------------- | ---------- |
-| ページのタイトル       | タイトルの 2 行  | `heroContent.titleLines`                | なし       |
-| 3 本の柱               | 題と説明         | `servicePillars` の `title` と `lead`   | なし       |
-| お見積り・お問い合わせ | リンクの文言     | `heroContent.primaryCta.label`          | なし       |
-| 相談の内容             | 事例の題と説明   | `consultationContent.cases`             | なし       |
-| カテゴリの索引         | 番号、名前、社数 | content collection の取扱製品のカテゴリ | なし       |
-| 帯の電話               | 電話の番号       | `contactInfo.tel`                       | なし       |
+| 要素名                     | 表示する値           | 画面の型の項目                                  | API の項目 |
+| -------------------------- | -------------------- | ----------------------------------------------- | ---------- |
+| ページのタイトル           | タイトルの 2 行      | `heroContent.titleLines`                        | なし       |
+| 3 本の柱                   | 題と説明             | `servicePillars` の `title` と `lead`           | なし       |
+| お見積り・お問い合わせ     | リンクの文言         | `heroContent.primaryCta.label`                  | なし       |
+| 相談の内容                 | 事例の題と説明       | `consultationContent.cases`                     | なし       |
+| カテゴリの索引             | 番号、名前、社数     | content collection の取扱製品のカテゴリ         | なし       |
+| 問い合わせの帯             | 見出しとリード       | `contactPageContent` の `title` と `lead`       | なし       |
+| 帯のお見積り・お問い合わせ | リンクの文言         | `contactBandContent.cta.label`                  | なし       |
+| 帯の電話                   | 電話の番号と受付時間 | `contactInfo.tel` と `contactBandContent.hours` | なし       |
 
 ## 条件の対応
 
