@@ -7,14 +7,4 @@ const meta = {
 
 export default meta;
 
-export const Compact = {
-  args: {
-    variant: "compact",
-  },
-};
-
-export const Full = {
-  args: {
-    variant: "full",
-  },
-};
+export const Default = {};

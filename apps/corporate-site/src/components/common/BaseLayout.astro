@@ -10,10 +10,9 @@ import SiteHeader from "./SiteHeader.astro";
 export interface Props {
   title: string;
   description: string;
-  footerVariant?: "full" | "compact";
 }
 
-const { title, description, footerVariant = "compact" } = Astro.props;
+const { title, description } = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
 
@@ -37,7 +36,7 @@ const currentPath = Astro.url.pathname;
     <main>
       <slot />
     </main>
-    <SiteFooter variant={footerVariant} />
+    <SiteFooter />
     <script>
       const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)"); // design-system-allow: 表示のきっかけ（IntersectionObserver）は CSS で止められない（MOTION-REDUCE）
       const revealTargets = document.querySelectorAll<HTMLElement>("[data-reveal]");

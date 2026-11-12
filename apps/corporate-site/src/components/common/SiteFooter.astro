@@ -2,40 +2,12 @@
 import { companyProfile } from "../../content/company.js";
 import { contactInfo } from "../../content/contact.js";
 import { footerNav } from "../../content/navigation.js";
-
-export interface Props {
-  variant?: "full" | "compact";
-}
-
-const { variant = "compact" } = Astro.props;
-const isFull = variant === "full";
 ---
 
 <footer
   class="surface-inverse bg-surface-canvas text-text"
   data-testid="site-footer"
 >
-  {
-    !isFull ? (
-      <div class="mx-auto grid w-full max-w-360 gap-6 px-5 py-7 sm:px-8 md:grid-cols-[1fr_auto] md:items-center lg:px-14">
-        <div class="grid gap-1.5">
-          <p class="font-serif text-heading-22 font-semibold">
-            {companyProfile.name}
-          </p>
-          <p class="text-caption leading-normal text-text-inverse-secondary">
-            {companyProfile.tagline}
-          </p>
-        </div>
-        <div class="grid gap-1.5 md:justify-items-end">
-          <p class="font-mono text-caption tracking-[0.14em] text-text-inverse-secondary">
-            TEL {contactInfo.tel}
-          </p>
-          <p class="text-caption text-text-inverse-secondary">
-            {companyProfile.streetAddress}
-          </p>
-        </div>
-      </div>
-    ) : (
   <div
     class="mx-auto grid w-full max-w-360 gap-10 px-5 py-12 sm:px-8 md:grid-cols-[1fr_1.2fr_1fr] md:py-16 lg:px-14"
   >
@@ -75,6 +47,4 @@ const isFull = variant === "full";
       </a>
     </div>
   </div>
-    )
-  }
 </footer>
