@@ -26,19 +26,14 @@ const { number } = Astro.props;
     <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_25rem] lg:items-start lg:gap-12">
       <div class="grid content-start">
         {
-          consultationContent.cases.map((item, index) => (
-            <article data-reveal class="grid gap-2 border-t border-divider py-6 last:border-b sm:grid-cols-[4rem_1fr] sm:gap-5">
-              <p class="font-mono text-eyebrow font-medium tracking-[0.18em] text-primary">
-                {String(index + 1).padStart(2, "0")}
+          consultationContent.cases.map((item) => (
+            <article data-reveal class="grid gap-2 border-t border-divider py-6 last:border-b">
+              <p class="font-serif text-heading-17 font-semibold leading-[1.55]">
+                {item.title}
               </p>
-              <div class="grid gap-2">
-                <p class="font-serif text-heading-17 font-semibold leading-[1.55]">
-                  {item.title}
-                </p>
-                <p class="max-w-170 text-caption leading-[1.8] text-text-secondary">
-                  {item.description}
-                </p>
-              </div>
+              <p class="max-w-170 text-caption leading-[1.8] text-text-secondary">
+                {item.description}
+              </p>
             </article>
           ))
         }

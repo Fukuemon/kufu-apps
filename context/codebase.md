@@ -217,7 +217,7 @@ content 層の方式は、内容の性質で選ぶ。
 | 写真           | `content` 層の `id`                   | section が、配列の順でなく、`features` の `id` をキーにして画像を引く                                                                                                              |
 
 - 番号の並びは「ページが持つ」ことで決まる。section を並べ替えるときも、足すときも、直すのはページだけにする。
-- 項目の中の連番（`features[].number`、`servicePillars[].number`、フローの `step`）は、その項目の内容の一部なので、`content` 層に置く。
+- 項目の中の連番（`features[].number`、フローの `step`）は、その項目の内容の一部なので、`content` 層に置く。
 - 問い合わせのフォームの項目の文言は、フォームを実装する issue の範囲なので、今は section に直接書いている。
 
 ### スタイルのファイル

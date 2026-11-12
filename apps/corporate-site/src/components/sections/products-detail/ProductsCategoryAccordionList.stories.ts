@@ -32,7 +32,7 @@ const makers = (categoryId: string, makerNames: string[]) => ({
 
 const categoryGroups = [
   {
-    eyebrow: "CATEGORY 01–01",
+    eyebrow: "01–01",
     title: "駆動・伝動",
     items: [
       {
@@ -63,7 +63,7 @@ export const EmptyMakers = {
   args: {
     categoryGroups: [
       {
-        eyebrow: "CATEGORY 99",
+        eyebrow: "99",
         title: "掲載メーカー準備中",
         items: [
           {

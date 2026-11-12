@@ -66,30 +66,6 @@
    * site の演出の線、影、色の付いた面。:root で値を決めるので、.surface-inverse の中で使っても暗い面の値にならない。
    * 暗い面で使うときは、.surface-inverse のブロックにも同じ名前で式を書く。
    */
-  /* hero の背景の方眼 */
-  --kufu-color-grid-line: color-mix(
-    in srgb,
-    var(--kufu-color-border) 52%,
-    transparent
-  );
-  /* 取扱製品の一覧の背景の方眼 */
-  --kufu-color-grid-line-subtle: color-mix(
-    in srgb,
-    var(--kufu-color-border) 42%,
-    transparent
-  );
-  /* 写真の上の方眼 */
-  --kufu-color-media-grid-line: color-mix(
-    in srgb,
-    var(--kufu-primitive-color-white) 20%,
-    transparent
-  );
-  /* 写真の上の目盛りの破線 */
-  --kufu-color-media-ruler: color-mix(
-    in srgb,
-    var(--kufu-primitive-color-white) 60%,
-    transparent
-  );
   /* hero の写真の影 */
   --kufu-color-shadow-media: color-mix(
     in srgb,
@@ -100,12 +76,6 @@
   --kufu-color-shadow-floating: color-mix(
     in srgb,
     var(--kufu-primitive-color-gray-950) 14%,
-    transparent
-  );
-  /* 事業内容の section の背景の帯 */
-  --kufu-color-primary-glow: color-mix(
-    in srgb,
-    var(--kufu-color-primary) 7%,
     transparent
   );
   /* 主の色の細い内側の枠 */

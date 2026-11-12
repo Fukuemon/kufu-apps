@@ -6,7 +6,6 @@ const email = "fukuura@mist.ocn.ne.jp";
 
 export const contactInfo = {
   sourceReferences: [companyProfileSource],
-  heading: "CONTACT",
   tel,
   telHref: `tel:${tel.replaceAll("-", "")}`,
   fax,
@@ -18,7 +17,6 @@ export const contactInfo = {
 export const contactPageContent = {
   breadcrumb: { home: "ホーム", current: "お問い合わせ" },
   title: "お問い合わせ・お見積り",
-  eyebrow: "Contact & Estimate",
   lead: "製品のお見積り、加工のご相談、掲載のないメーカー・製品のお取り寄せまで。お電話・FAX・メール・フォームよりお気軽にご連絡ください。",
   infoLabels: {
     tel: "Tel",

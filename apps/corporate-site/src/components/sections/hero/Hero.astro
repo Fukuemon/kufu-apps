@@ -15,9 +15,6 @@ import { servicePillars } from "../../../content/services.js";
     class="relative z-1 mx-auto grid w-full max-w-360 gap-6 px-5 pb-16 pt-10 sm:px-8 md:min-h-[46.75rem] md:grid-cols-[minmax(0,43.75rem)_minmax(24rem,36.25rem)] md:items-start md:gap-12 md:pb-24 md:pt-14 lg:px-14 xl:gap-12"
   >
     <div class="hero-copy grid gap-6 md:col-start-1 md:row-start-1 md:pt-6 lg:pt-20">
-      <p class="font-mono text-eyebrow font-medium leading-none tracking-[0.22em] text-primary">
-        {heroContent.eyebrow}
-      </p>
       <h1 class="font-serif text-heading-36 font-semibold leading-[1.18] md:text-display-48 md:leading-[1.16] xl:text-heading-45 2xl:text-display-57">
         {heroContent.titleLines.map((line) => <span class="block">{line}</span>)}
       </h1>
@@ -45,7 +42,6 @@ import { servicePillars } from "../../../content/services.js";
         class="absolute inset-0 h-full w-full object-cover"
       />
       <div class="hero-media-overlay absolute inset-0 bg-overlay-photo" aria-hidden="true"></div>
-      <div class="hero-media-ruler" aria-hidden="true"></div>
       <p
         class="hero-media-caption absolute bottom-7 left-7 z-1 bg-overlay-panel px-4 py-3 font-mono text-caption font-medium leading-5 tracking-[0.16em] text-text"
       >
@@ -63,20 +59,13 @@ import { servicePillars } from "../../../content/services.js";
     <div class="grid max-w-[38.75rem] md:col-start-1 md:row-start-2">
       {
         servicePillars.map((pillar) => (
-          <div class="border-t border-divider py-4">
-            <div class="grid gap-2 sm:grid-cols-[4.5rem_1fr] sm:gap-4">
-              <p class="font-mono text-eyebrow font-medium tracking-[0.18em] text-primary">
-                {pillar.number}
-              </p>
-              <div class="grid gap-2">
-                <p class="font-serif text-heading-16 font-semibold leading-normal">
-                  {pillar.title}
-                </p>
-                <p class="text-caption leading-[1.7] text-text-secondary">
-                  {pillar.lead}
-                </p>
-              </div>
-            </div>
+          <div class="grid gap-2 border-t border-divider py-4">
+            <p class="font-serif text-heading-16 font-semibold leading-normal">
+              {pillar.title}
+            </p>
+            <p class="text-caption leading-[1.7] text-text-secondary">
+              {pillar.lead}
+            </p>
           </div>
         ))
       }
@@ -98,16 +87,5 @@ import { servicePillars } from "../../../content/services.js";
         {heroContent.secondaryCta.label}
       </a>
     </div>
-
-    <a
-      class="focus-ring scroll-cue hidden items-center gap-3 justify-self-end font-mono text-label font-medium tracking-[0.2em] text-text-secondary transition hover:text-primary md:col-start-2 md:row-start-3 md:flex"
-      href={heroContent.scrollCue.href}
-      aria-label={heroContent.scrollCue.ariaLabel}
-    >
-      <span>{heroContent.scrollCue.label}</span>
-      <span class="scroll-cue-icon grid size-9 place-items-center border border-divider text-primary" aria-hidden="true">
-        ↓
-      </span>
-    </a>
   </div>
 </section>

@@ -19,7 +19,6 @@ export const Home = {
 
 export const Products = {
   args: {
-    eyebrow: productsContactBandContent.eyebrow,
     title: productsContactBandContent.title,
     lead: productsContactBandContent.lead,
     "data-testid": "products-section-contact-band",

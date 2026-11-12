@@ -17,7 +17,6 @@ const category = (id: string, order: number, name: string) => ({
 
 const categoryGroups = [
   {
-    eyebrow: "CATEGORY 01–02",
     title: "駆動・伝動",
     items: [
       { category: category("drive-reducers", 1, "駆動・変減速機器") },
@@ -49,7 +48,6 @@ export const LongNames = {
   args: {
     categoryGroups: [
       {
-        eyebrow: "CATEGORY 17–18",
         title: "空圧・油圧・真空とその他周辺機器",
         items: [
           {

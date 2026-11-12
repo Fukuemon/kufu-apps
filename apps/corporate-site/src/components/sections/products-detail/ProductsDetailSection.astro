@@ -52,7 +52,7 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
   const orders = items.map(({ category }) => category.data.order);
 
   return {
-    eyebrow: `CATEGORY ${String(Math.min(...orders)).padStart(2, "0")}–${String(Math.max(...orders)).padStart(2, "0")}`,
+    eyebrow: `${String(Math.min(...orders)).padStart(2, "0")}–${String(Math.max(...orders)).padStart(2, "0")}`,
     title: groupTitleById[groupId] ?? groupId,
     items,
   };
@@ -64,9 +64,6 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
 <section class="bg-surface-subtle" data-testid="products-section-index">
   <div class="mx-auto grid w-full max-w-360 gap-8 px-5 py-14 sm:px-8 md:gap-10 md:py-20 lg:px-14">
     <div class="grid gap-4">
-      <p class="font-mono text-eyebrow font-medium tracking-[0.22em] text-primary">
-        {productsIndexContent.eyebrow}
-      </p>
       <h2 class="font-serif text-heading-32 font-semibold leading-[1.45] md:text-heading-45">
         {productsIndexContent.title}
       </h2>

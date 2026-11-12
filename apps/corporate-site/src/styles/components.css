@@ -1,15 +1,3 @@
-.hero-industrial::before {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(to right, var(--kufu-color-grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--kufu-color-grid-line) 1px, transparent 1px);
-  background-size: 4rem 4rem;
-  content: "";
-  mask-image: linear-gradient(to bottom, black, transparent 75%);
-  opacity: 0.55;
-}
-
 .hero-copy {
   animation: section-rise var(--kufu-motion-slow) var(--kufu-ease-out) both;
 }
@@ -20,20 +8,6 @@
 
 .hero-media img {
   transform: scale(1.03);
-}
-
-.hero-media-ruler {
-  position: absolute;
-  top: 0;
-  right: 5rem;
-  bottom: 0;
-  width: 1px;
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--kufu-color-media-ruler) 0 0.75rem,
-    transparent 0.75rem 1.5rem
-  );
-  opacity: 0.6;
 }
 
 /* デスクトップ: ヒーロー画像を右へフルブリードで広げ、左(コピー側)は
@@ -59,7 +33,6 @@
   }
 
   .hero-industrial .hero-media-overlay,
-  .hero-industrial .hero-media-ruler,
   .hero-industrial .hero-media-caption {
     display: none;
   }
@@ -108,31 +81,6 @@
   transform: translateY(0);
 }
 
-.business-industrial {
-  background-image: linear-gradient(
-    90deg,
-    transparent,
-    var(--kufu-color-primary-glow),
-    transparent
-  );
-}
-
-.business-row-copy::after {
-  width: 4.5rem;
-  height: 2px;
-  margin-top: 0.5rem;
-  background: var(--kufu-color-primary);
-  content: "";
-  transform-origin: left;
-  transform: scaleX(0);
-  transition: transform var(--kufu-motion-drift) var(--kufu-ease)
-    var(--kufu-motion-stagger);
-}
-
-.business-row.is-visible .business-row-copy::after {
-  transform: scaleX(1);
-}
-
 .business-tag {
   border-left: 2px solid var(--kufu-color-primary);
 }
@@ -154,24 +102,6 @@
 
 .business-row.is-visible .business-media-image {
   transform: scale(1.08) translateY(0.75rem);
-}
-
-.business-media-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(
-      to right,
-      var(--kufu-color-media-grid-line) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      var(--kufu-color-media-grid-line) 1px,
-      transparent 1px
-    );
-  background-size: 3.25rem 3.25rem;
-  opacity: 0.22;
 }
 
 .custom-order-panel {
@@ -305,21 +235,6 @@
   .featured-carousel-arrow--next {
     right: -1.375rem;
   }
-}
-
-.catalog-board {
-  background-image:
-    linear-gradient(
-      to right,
-      var(--kufu-color-grid-line-subtle) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      var(--kufu-color-grid-line-subtle) 1px,
-      transparent 1px
-    );
-  background-size: 2.75rem 2.75rem;
 }
 
 .catalog-row {
@@ -553,15 +468,6 @@
   transform: translate(0.0625rem, -0.0625rem);
 }
 
-.site-nav-sub-label {
-  color: var(--kufu-color-text-secondary);
-  font-family: var(--font-mono);
-  font-size: var(--kufu-text-eyebrow-font-size);
-  line-height: var(--kufu-text-eyebrow-line-height);
-  font-weight: 400;
-  letter-spacing: 0.14em;
-}
-
 .site-nav-link:hover,
 .site-nav-link[aria-current="page"] {
   color: var(--kufu-color-primary);
@@ -607,10 +513,6 @@
 
 .products-summary-cta:hover {
   background: var(--kufu-color-action-strong-hover);
-}
-
-.scroll-cue-icon {
-  animation: scroll-cue var(--kufu-motion-cue) var(--kufu-ease-in-out) infinite;
 }
 
 @media (min-width: 48rem) {

@@ -5,24 +5,15 @@ import { contactBandContent, contactInfo } from "../../content/contact.js";
 export interface Props {
   title: string;
   lead: string;
-  /** 見出しの上のラベル。渡さなければ出さない。 */
-  eyebrow?: string;
   "data-testid": string;
 }
 
-const { title, lead, eyebrow, "data-testid": testId } = Astro.props;
+const { title, lead, "data-testid": testId } = Astro.props;
 ---
 
 <section class="surface-inverse bg-surface-canvas text-text" data-testid={testId}>
   <div class="mx-auto grid w-full max-w-360 gap-8 px-5 py-16 sm:px-8 md:grid-cols-[1fr_auto] md:items-center md:gap-12 lg:px-14">
     <div class="grid gap-3">
-      {
-        eyebrow && (
-          <p class="font-mono text-eyebrow font-medium tracking-[0.22em] text-primary-soft">
-            {eyebrow}
-          </p>
-        )
-      }
       <h2 class="font-serif text-heading-32 md:text-heading-36 lg:text-heading-45 font-semibold leading-[1.45]">
         {title}
       </h2>
