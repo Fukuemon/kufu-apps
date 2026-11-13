@@ -87,7 +87,7 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
 
         const url = new URL(window.location.href);
         const hasQuery = (url.searchParams.get("q") ?? "").trim() !== "";
-        // カテゴリと索引の id は ASCII なので、hash をデコードせずに比べる
+        // カテゴリと索引の id は ASCII なので、hash をデコードせずに比べる。ASCII でない id を足すときは、try で包んでデコードする
         const hashId = url.hash.slice(1);
         const hashTarget = hashId === "" ? null : document.getElementById(hashId);
         const nav = document.querySelector("[data-products-nav]");
@@ -125,7 +125,7 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
   //   - [data-category-item] [data-products-group] [data-maker-list]
   //     [data-products-empty] #products-category-groups : ProductsCategoryAccordionList.astro
   //   - [data-products-backtop] : このファイル (assembly 層)
-  // 上記コンポーネントの data-* / id を変更する場合は、このスクリプトと上の is:inline のスクリプトも合わせて更新する。
+  // 上記コンポーネントの data-* / id と、幅の条件と `q` の名前を変更する場合は、このスクリプトと上の is:inline のスクリプトも合わせて更新する。
   const normalize = (value: string) =>
     value.toLowerCase().normalize("NFKC").replace(/\s+/g, "");
 

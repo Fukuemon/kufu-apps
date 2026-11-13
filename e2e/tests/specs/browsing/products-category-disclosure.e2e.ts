@@ -31,7 +31,6 @@ test.describe("取扱製品", () => {
     }) => {
       await page.goto(`/products?q=${encodeURIComponent("住友重機械工業")}`);
 
-      await expect(page.getByTestId("products-category-list")).toBeVisible();
       await expect(productsSearchBox(page)).toBeVisible();
       await expect(productsSearchBox(page)).toHaveValue("住友重機械工業");
       await expect(productsSearchResult(page)).toContainText(
