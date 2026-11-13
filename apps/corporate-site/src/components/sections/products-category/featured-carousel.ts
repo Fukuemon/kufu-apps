@@ -1,5 +1,5 @@
 /**
- * トップの取扱製品カテゴリのカルーセルに、矢印、端の無効、マウスのドラッグの操作を付ける。
+ * トップの取扱製品カテゴリのカルーセルに、矢印、端の無効、マウスのドラッグの操作を付ける。矢印は横にあふれるときだけ出す。
  * 自動では送らない。並びは端で止まる。
  * Astro の <script> と、Storybook の story の play の両方から呼ぶ。Storybook では Astro の <script> が動かないためである。
  */
@@ -25,26 +25,49 @@ export function initFeaturedCarousel(carousel: HTMLElement): void {
   const isOff = (button: HTMLButtonElement) =>
     button.getAttribute("aria-disabled") === "true";
 
+  const maxScroll = () => track.scrollWidth - track.clientWidth;
+
+  // 矢印は hidden で描いておき、横にあふれるときだけ出す。JS が無効のときと、カードが全て収まるときは出さない
   const updateArrows = () => {
-    const maxScroll = track.scrollWidth - track.clientWidth;
+    const overflows = maxScroll() > edgeTolerance;
+    for (const button of [prev, next]) {
+      if (!overflows && button.contains(document.activeElement)) track.focus();
+      button.hidden = !overflows;
+    }
     setOff(prev, track.scrollLeft <= edgeTolerance);
-    setOff(next, track.scrollLeft >= maxScroll - edgeTolerance);
+    setOff(next, track.scrollLeft >= maxScroll() - edgeTolerance);
   };
 
-  const stepWidth = () => {
-    const first = track.children[0] as HTMLElement | undefined;
-    const second = track.children[1] as HTMLElement | undefined;
-    if (!first) return 0;
-    return second
-      ? second.offsetLeft - first.offsetLeft
-      : first.getBoundingClientRect().width;
+  // 送り先にするカードの左の端の位置。末尾の位置を超えるものは末尾の位置にまとめる
+  const stops = () => {
+    const items = [...track.children] as HTMLElement[];
+    const origin = items[0]?.offsetLeft ?? 0;
+    const max = maxScroll();
+    return [
+      ...new Set(items.map((item) => Math.min(item.offsetLeft - origin, max))),
+    ];
   };
 
-  const move = (direction: number) => {
-    track.scrollBy({
-      left: stepWidth() * direction,
+  // 滑らかな送りの途中で続けて押したとき、途中の位置ではなく、送り先から 1 枚分を数える
+  let target: number | null = null;
+
+  const move = (direction: 1 | -1) => {
+    const from = target ?? track.scrollLeft;
+    const positions = stops();
+    const to =
+      direction > 0
+        ? (positions.find((p) => p > from + edgeTolerance) ?? maxScroll())
+        : ([...positions].reverse().find((p) => p < from - edgeTolerance) ?? 0);
+    target = Math.abs(to - track.scrollLeft) <= edgeTolerance ? null : to;
+    track.scrollTo({
+      left: to,
       behavior: reduceMotion.matches ? "auto" : "smooth",
     });
+  };
+
+  // 送り先に着いたか、利用者が自分で動かし始めたら、送り先を忘れる
+  const forgetTarget = () => {
+    target = null;
   };
 
   prev.addEventListener("click", () => {
@@ -53,8 +76,21 @@ export function initFeaturedCarousel(carousel: HTMLElement): void {
   next.addEventListener("click", () => {
     if (!isOff(next)) move(1);
   });
-  track.addEventListener("scroll", updateArrows, { passive: true });
-  window.addEventListener("resize", updateArrows);
+  track.addEventListener(
+    "scroll",
+    () => {
+      if (
+        target !== null &&
+        Math.abs(track.scrollLeft - target) <= edgeTolerance
+      )
+        forgetTarget();
+      updateArrows();
+    },
+    { passive: true },
+  );
+  track.addEventListener("touchstart", forgetTarget, { passive: true });
+  track.addEventListener("wheel", forgetTarget, { passive: true });
+  new ResizeObserver(updateArrows).observe(track);
   updateArrows();
 
   // マウスのドラッグで左右に動かす。タッチは native の横スクロールに任せる。
@@ -76,6 +112,7 @@ export function initFeaturedCarousel(carousel: HTMLElement): void {
 
   track.addEventListener("pointerdown", (event) => {
     dragging = false;
+    forgetTarget();
     if (event.pointerType !== "mouse" || event.button !== 0) return;
     pointerId = event.pointerId;
     startX = event.clientX;

@@ -39,12 +39,14 @@ const { categories, makerCountsByCategoryId } = Astro.props;
       ))
     }
   </div>
+  {/* 矢印は、initFeaturedCarousel が横にあふれるときだけ出す。JS が無効のときは、横のスクロールだけで送る */}
   <button
     type="button"
     class="focus-ring featured-carousel-arrow featured-carousel-arrow--prev"
     data-carousel-prev
     aria-label="前のカテゴリ"
     aria-disabled="true"
+    hidden
   >
     ←
   </button>
@@ -53,6 +55,7 @@ const { categories, makerCountsByCategoryId } = Astro.props;
     class="focus-ring featured-carousel-arrow featured-carousel-arrow--next"
     data-carousel-next
     aria-label="次のカテゴリ"
+    hidden
   >
     →
   </button>

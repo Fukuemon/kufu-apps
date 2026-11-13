@@ -96,6 +96,9 @@ export const Default = {
         await expect(isOff(next)).toBe(track.scrollLeft >= maxScroll - 1);
       });
 
+    // 横にあふれるので、init が矢印を出す
+    await expect(prev).toBeVisible();
+    await expect(next).toBeVisible();
     await expect(track.scrollLeft).toBe(0);
     await expect(prev).toHaveAttribute("aria-disabled", "true");
     await expect(next).toHaveAttribute("aria-disabled", "false");
@@ -134,5 +137,20 @@ export const Empty = {
   args: {
     categories: [],
     makerCountsByCategoryId: {},
+  },
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const carousel = canvasElement.querySelector<HTMLElement>(
+      "[data-featured-carousel]",
+    );
+    if (!carousel) throw new Error("カルーセルが描画されていない");
+    initFeaturedCarousel(carousel);
+
+    // 送る先が無いので、矢印を出さない。hidden の要素は名前で拾えないため、data 属性で拾う
+    await expect(
+      carousel.querySelector("[data-carousel-prev]"),
+    ).not.toBeVisible();
+    await expect(
+      carousel.querySelector("[data-carousel-next]"),
+    ).not.toBeVisible();
   },
 };

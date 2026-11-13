@@ -59,8 +59,40 @@ test.describe("トップ", () => {
       await expect(carouselPrevButton(carousel)).toBeEnabled();
     });
 
+    test("次のカテゴリを続けて 2 回押した場合、2 枚先のカードの境目で止まること", async ({
+      page,
+    }) => {
+      const carousel = await openCarousel(page);
+      const next = carouselNextButton(carousel);
+
+      // 1 回目の滑らかな送りが終わる前に、2 回目を押す
+      await next.click();
+      await next.click();
+
+      await expect(
+        carouselCategoryCard(carousel, "工場設備関連"),
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        carouselCategoryCard(carousel, "空圧・油圧機器"),
+      ).not.toBeInViewport();
+    });
+
+    test("カードが全て収まる幅に広げた場合、矢印が消え、フォーカスがカードの並びに移ること", async ({
+      page,
+    }) => {
+      const carousel = await openCarousel(page);
+      const next = carouselNextButton(carousel);
+      await next.focus();
+
+      await page.setViewportSize({ width: 1280, height: 900 });
+
+      await expect(next).toBeHidden();
+      await expect(carouselPrevButton(carousel)).toBeHidden();
+      await expect(carouselTrack(carousel)).toBeFocused();
+    });
+
     test.describe("動きを減らす設定のとき", () => {
-      // 送りを瞬時にし、1 回の送りが終わる前に次を押さないようにする。送っている途中に押すと、送る量が足りなくなる
+      // 送りを瞬時にし、1 枚ずつ送った結果を確かめる
       test.use({ contextOptions: { reducedMotion: "reduce" } });
 
       test("末尾のカードまで送った場合、次のカテゴリが押せなくなること", async ({
