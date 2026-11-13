@@ -28,7 +28,7 @@ import { contactInfo, contactPageContent } from "../../../content/contact.js";
       >
         <div class="grid gap-1.5">
           <p class="font-mono text-eyebrow tracking-[0.16em] text-primary">{contactPageContent.infoLabels.tel}</p>
-          <a class="focus-ring text-body" href={contactInfo.telHref}>
+          <a class="focus-ring inline-flex min-h-11 items-center justify-self-start text-heading-20 font-semibold" href={contactInfo.telHref}>
             {contactInfo.tel}
           </a>
         </div>
@@ -38,7 +38,7 @@ import { contactInfo, contactPageContent } from "../../../content/contact.js";
         </div>
         <div class="grid gap-1.5">
           <p class="font-mono text-eyebrow tracking-[0.16em] text-primary">{contactPageContent.infoLabels.email}</p>
-          <a class="focus-ring text-body" href={contactInfo.emailHref}>
+          <a class="focus-ring inline-flex min-h-11 items-center justify-self-start text-heading-20 font-semibold" href={contactInfo.emailHref}>
             {contactInfo.email}
           </a>
         </div>

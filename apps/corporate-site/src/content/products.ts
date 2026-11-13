@@ -19,7 +19,7 @@ export const productsHeroContent = {
   primaryCta: { label: "製品について相談する", href: "/contact" },
   secondaryCta: {
     label: "カテゴリ一覧を見る",
-    href: "#products-category-list",
+    href: "#products-nav",
   },
   imageAlt: "機械工具・関連機器",
   mediaCaption: {

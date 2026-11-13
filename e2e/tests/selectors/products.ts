@@ -24,3 +24,13 @@ export const productsSearchResult = (page: Page): Locator =>
 /** 表示内容の確認に使う文言。 */
 export const productsText = (page: Page, value: string): Locator =>
   page.getByText(value);
+
+/**
+ * 幅 1024px 未満で索引を開閉する `<summary>`。`summary` は role を持たないので文言で拾う。
+ */
+export const productsIndexToggle = (page: Page): Locator =>
+  page.getByText("カテゴリを探す", { exact: true });
+
+/** 最初の画面の「カテゴリ一覧を見る」。testid を持たないので role と文言で拾う。 */
+export const productsHeroCategoryLink = (page: Page): Locator =>
+  page.getByRole("link", { name: "カテゴリ一覧を見る" });
