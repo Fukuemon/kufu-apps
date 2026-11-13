@@ -18,3 +18,7 @@ export const carouselPrevButton = (carousel: Locator): Locator =>
 
 export const carouselNextButton = (carousel: Locator): Locator =>
   carousel.getByRole("button", { name: "次のカテゴリ" });
+
+/** カードを並べた横スクロールの領域。testid を持たないので、role=group で拾う。 */
+export const carouselTrack = (carousel: Locator): Locator =>
+  carousel.getByRole("group");

@@ -4,6 +4,7 @@ import {
   carouselCategoryCard,
   carouselNextButton,
   carouselPrevButton,
+  carouselTrack,
 } from "../../selectors/home";
 
 /**
@@ -97,6 +98,55 @@ test.describe("トップ", () => {
 
         await expect(lastCard).toBeInViewport({ ratio: 1 });
         await expect(next).toBeFocused();
+      });
+    });
+
+    test.describe("タッチの画面のとき", () => {
+      test.use({ hasTouch: true, isMobile: true });
+
+      /**
+       * カルーセルの track の中央から、タッチでスワイプする。
+       * Playwright の touchscreen はタップだけで、JS で作った touch のイベントでは native のスクロールが起きないため、Chromium の CDP で指の動きを合成する。
+       */
+      const swipe = async (
+        page: Page,
+        carousel: Locator,
+        distance: { xDistance?: number; yDistance?: number },
+      ) => {
+        const box = await carouselTrack(carousel).boundingBox();
+        if (!box) throw new Error("カルーセルの位置が取れない");
+        const cdp = await page.context().newCDPSession(page);
+        await cdp.send("Input.synthesizeScrollGesture", {
+          x: box.x + box.width / 2,
+          y: box.y + box.height / 2,
+          ...distance,
+          gestureSourceType: "touch",
+        });
+      };
+
+      test("カルーセルの上を縦にスワイプした場合、ページが縦に送られること", async ({
+        page,
+      }) => {
+        const carousel = await openCarousel(page);
+        const before = await page.evaluate(() => window.scrollY);
+
+        await swipe(page, carousel, { yDistance: -300 });
+
+        await expect
+          .poll(() => page.evaluate(() => window.scrollY))
+          .toBeGreaterThan(before + 200);
+      });
+
+      test("カルーセルの上を横にスワイプした場合、カードが送られること", async ({
+        page,
+      }) => {
+        const carousel = await openCarousel(page);
+        const firstCard = carouselCategoryCard(carousel, "駆動・変減速機器");
+
+        await swipe(page, carousel, { xDistance: -200 });
+
+        await expect(carouselPrevButton(carousel)).toBeEnabled();
+        await expect(firstCard).not.toBeInViewport({ ratio: 1 });
       });
     });
 
