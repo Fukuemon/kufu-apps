@@ -39,15 +39,15 @@
 }
 
 /* 取扱製品ヒーローは lg で 2カラム化するため lg からブリード。
-   写真はコピーの列（左の余白 3.5rem + 列 38.125rem + 列の間 2.5rem）より右にだけ置き、
-   リードの背面に掛けない。トップと共有の幅（--hero-bleed-width）は使わない */
+   写真をコピーの列より右にだけ置き、リードの背面に掛けない。left は ProductsHero.astro の
+   lg:px-14 と lg:grid-cols-[38.125rem_1fr] と gap-10 の和で、どれかを変えたら合わせる */
 @media (min-width: 64rem) {
   .products-hero-media {
     position: absolute;
     top: 0;
     bottom: 0;
     right: calc(50% - 50vw);
-    left: 44.125rem;
+    left: calc(3.5rem + 38.125rem + 2.5rem);
     z-index: -1;
     min-height: 0;
     border: 0;
@@ -411,11 +411,7 @@
 }
 
 @media (min-width: 64rem) {
-  /* デスクトップは常時展開（折りたたみ無効）し、フローティングボタンは不要 */
-  .products-nav > .products-nav-body {
-    display: grid !important;
-  }
-
+  /* デスクトップはフローティングボタンが不要 */
   .products-backtop {
     display: none;
   }
