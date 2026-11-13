@@ -8,16 +8,14 @@ import {
 
 /**
  * トップを開き、カルーセルを画面に入れて返す。
- * ページの滑らかな縦のスクロール（html の scroll-behavior）を止めてから送る。並べて流すと縦の送りが遅れ、
- * 送りの途中で確認と操作が進み、カードが画面の下にはみ出す。カルーセルの送りは scrollBy の behavior で決まり、この設定に左右されない。
+ * カルーセルは画面に入ると下から現れる（data-reveal の translateY の遷移）。
+ * 動きが終わる前に押すと、カードの位置がずれて確認が落ちるため、元の位置に着くまで待つ。
  */
 const openCarousel = async (page: Page): Promise<Locator> => {
   await page.goto("/");
-  await page.addStyleTag({
-    content: "html { scroll-behavior: auto !important; }",
-  });
   const carousel = page.getByTestId("home-products-carousel");
   await carousel.scrollIntoViewIfNeeded();
+  await expect(carousel).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
   return carousel;
 };
 
@@ -38,7 +36,7 @@ test.describe("トップ", () => {
   });
 
   test.describe("取扱製品カテゴリのカルーセル", () => {
-    test("開いて 10 秒経った場合、カードが送られず、次のカテゴリを押すと送りが始まること", async ({
+    test("開いて 10 秒経った場合、カードが送られず、次のカテゴリを押すと次のカードへ送られること", async ({
       page,
     }) => {
       await page.clock.install();
@@ -51,11 +49,12 @@ test.describe("トップ", () => {
       await expect(firstCard).toBeInViewport({ ratio: 1 });
       await expect(carouselPrevButton(carousel)).toBeDisabled();
 
-      // 後に起きる側の確認。時計を差し替えると、滑らかな送りが途中で止まるため、送りが始まったことだけを見る。
-      // 1 枚分を送ることは、動きを減らす設定のテストと story の play が確認する
       await carouselNextButton(carousel).click();
 
-      await expect(firstCard).not.toBeInViewport({ ratio: 1 });
+      await expect(
+        carouselCategoryCard(carousel, "空圧・油圧機器"),
+      ).toBeInViewport({ ratio: 1 });
+      await expect(firstCard).not.toBeInViewport();
       await expect(carouselPrevButton(carousel)).toBeEnabled();
     });
 
