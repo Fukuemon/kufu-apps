@@ -76,6 +76,33 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
       <ProductsSidebarNav categoryGroups={categoryGroups} makerCountById={makerCountById} />
       <ProductsCategoryAccordionList categoryGroups={categoryGroups} />
     </div>
+    <script is:inline>
+      // 幅 1024px 未満では、索引と一覧を閉じて始める。HTML は開いた形で持つので、
+      // スクリプトを動かせない端末では開いた形で出る。開いた形が描画されてから閉じると
+      // ページの高さが跳ねるので、モジュールのスクリプトを待たずに、ここで同期に閉じる。
+      // - `q` があるときは、検索の語と件数が見えるよう索引を開いたままにする。
+      //   当たったカテゴリは、下のモジュールのスクリプトの検索が開く。
+      // - URL の hash が指すカテゴリは開いたままにする。hash が索引の中を指すときは索引も開いたままにする。
+      (() => {
+        if (window.matchMedia("(min-width: 64rem)").matches) return;
+
+        const url = new URL(window.location.href);
+        const hasQuery = (url.searchParams.get("q") ?? "").trim() !== "";
+        const hashId = decodeURIComponent(url.hash.slice(1));
+        const hashTarget = hashId === "" ? null : document.getElementById(hashId);
+        const nav = document.querySelector("[data-products-nav]");
+
+        if (nav && !hasQuery && !(hashTarget && nav.contains(hashTarget))) {
+          nav.open = false;
+        }
+        document.querySelectorAll("[data-category-item]").forEach((item) => {
+          const details = item.querySelector("details");
+          if (details && item.id !== hashId) {
+            details.open = false;
+          }
+        });
+      })();
+    </script>
   </div>
 
   <button
@@ -91,13 +118,13 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
 </section>
 
 <script>
+  // 幅 1024px 未満で閉じて始める処理は、上の is:inline のスクリプトにある。
   // このセクション横断スクリプトが依存する DOM の所有元:
-  //   - [data-products-search] [data-expand-all] [data-collapse-all]
-  //     [data-nav-target] : ProductsSidebarNav.astro
+  //   - [data-products-nav] [data-products-search] [data-expand-all]
+  //     [data-collapse-all] [data-nav-target] : ProductsSidebarNav.astro
   //   - [data-category-item] [data-products-group] [data-maker-list]
   //     [data-products-empty] : ProductsCategoryAccordionList.astro
-  //   - [data-products-backtop] #products-category-groups
-  //     #products-category-list : このファイル (assembly 層)
+  //   - [data-products-backtop] #products-category-groups : このファイル (assembly 層)
   // 上記コンポーネントの data-* / id を変更する場合はこのスクリプトも合わせて更新する。
   const normalize = (value: string) =>
     value.toLowerCase().normalize("NFKC").replace(/\s+/g, "");
@@ -114,6 +141,13 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
   const navLinks = Array.from(
     document.querySelectorAll<HTMLAnchorElement>("[data-nav-target]"),
   );
+
+  // 幅 1024px 以上では索引の見出しを隠すので、狭い幅で閉じた索引は、広げたときに開く
+  const nav = document.querySelector<HTMLDetailsElement>("[data-products-nav]");
+  const wideQuery = window.matchMedia("(min-width: 64rem)");
+  wideQuery.addEventListener("change", (event) => {
+    if (event.matches && nav) nav.open = true;
+  });
 
   // 検索: カテゴリ名 / メーカー名で絞り込み、一致した accordion を開く
   const applyFilter = (raw: string) => {
@@ -250,9 +284,8 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
   // カテゴリ一覧セクションにいる間だけ「先頭へ戻る」ボタンを表示
   const backtop = document.querySelector<HTMLButtonElement>("[data-products-backtop]");
   const categoryGroups = document.getElementById("products-category-groups");
-  const indexTop = document.getElementById("products-category-list");
 
-  if (backtop && categoryGroups && indexTop) {
+  if (backtop && categoryGroups && nav) {
     const sectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -265,7 +298,8 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
 
     backtop.addEventListener("click", () => {
       // behavior を書かず、html の scroll-behavior に従わせる。動きを減らす設定のときは theme.css が滑らかなスクロールを止める
-      indexTop.scrollIntoView({ block: "start" });
+      // 索引を閉じていても移れるよう、閉じても描画される索引の外枠へ移る
+      nav.scrollIntoView({ block: "start" });
     });
   }
 </script>
