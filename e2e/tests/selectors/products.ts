@@ -30,3 +30,7 @@ export const productsText = (page: Page, value: string): Locator =>
  */
 export const productsIndexToggle = (page: Page): Locator =>
   page.getByText("カテゴリを探す", { exact: true });
+
+/** 最初の画面の「カテゴリ一覧を見る」。testid を持たないので role と文言で拾う。 */
+export const productsHeroCategoryLink = (page: Page): Locator =>
+  page.getByRole("link", { name: "カテゴリ一覧を見る" });

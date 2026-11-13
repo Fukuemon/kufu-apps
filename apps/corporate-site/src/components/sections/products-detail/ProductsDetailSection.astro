@@ -92,7 +92,9 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
         const hashTarget = hashId === "" ? null : document.getElementById(hashId);
         const nav = document.querySelector("[data-products-nav]");
 
-        if (nav && !hasQuery && !(hashTarget && nav.contains(hashTarget))) {
+        // hash が索引の外枠そのもの（ヒーローの「カテゴリ一覧を見る」の行き先）のときは、閉じて始める
+        const hashInsideNav = hashTarget !== null && hashTarget !== nav && nav?.contains(hashTarget);
+        if (nav && !hasQuery && !hashInsideNav) {
           nav.open = false;
         }
         document.querySelectorAll("[data-category-item]").forEach((item) => {
