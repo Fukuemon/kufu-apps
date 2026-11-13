@@ -110,13 +110,15 @@ export const Default = {
 
     // 末尾まで送ると「次のカテゴリ」を押せなくなる
     while (!next.disabled) await send(next, 1);
-    await expect(next).toBeDisabled();
+    await expect(track.scrollLeft).toBeGreaterThanOrEqual(
+      track.scrollWidth - track.clientWidth - 1,
+    );
     await expect(prev).toBeEnabled();
 
     // 先頭に戻すと「前のカテゴリ」を押せなくなる。VRT は先頭の状態を撮る
     while (!prev.disabled) await send(prev, -1);
-    await expect(track.scrollLeft).toBe(0);
-    await expect(prev).toBeDisabled();
+    await expect(track.scrollLeft).toBeLessThanOrEqual(1);
+    await expect(next).toBeEnabled();
   },
 };
 

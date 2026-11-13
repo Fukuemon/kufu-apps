@@ -54,16 +54,30 @@ export function initFeaturedCarousel(carousel: HTMLElement): void {
   let startX = 0;
   let startScroll = 0;
 
+  const endDrag = () => {
+    if (pointerId === null) return;
+    if (track.hasPointerCapture(pointerId)) {
+      track.releasePointerCapture(pointerId);
+    }
+    pointerId = null;
+    track.classList.remove("is-dragging");
+  };
+
   track.addEventListener("pointerdown", (event) => {
+    dragging = false;
     if (event.pointerType !== "mouse" || event.button !== 0) return;
     pointerId = event.pointerId;
-    dragging = false;
     startX = event.clientX;
     startScroll = track.scrollLeft;
   });
 
   track.addEventListener("pointermove", (event) => {
     if (pointerId !== event.pointerId) return;
+    // 閾値の前に track の外で離すと pointerup が届かない。ボタンを離した後の移動で終える
+    if ((event.buttons & 1) === 0) {
+      endDrag();
+      return;
+    }
     const deltaX = event.clientX - startX;
     if (!dragging) {
       if (Math.abs(deltaX) < dragThreshold) return;
@@ -71,21 +85,14 @@ export function initFeaturedCarousel(carousel: HTMLElement): void {
       track.classList.add("is-dragging");
       track.setPointerCapture(event.pointerId);
     }
-    event.preventDefault();
     track.scrollLeft = startScroll - deltaX;
   });
 
-  const endDrag = (event: PointerEvent) => {
-    if (pointerId !== event.pointerId) return;
-    pointerId = null;
-    track.classList.remove("is-dragging");
-    if (track.hasPointerCapture(event.pointerId)) {
-      track.releasePointerCapture(event.pointerId);
-    }
-  };
-
   track.addEventListener("pointerup", endDrag);
-  track.addEventListener("pointercancel", endDrag);
+  track.addEventListener("pointercancel", () => {
+    endDrag();
+    dragging = false;
+  });
 
   // ドラッグの後に続くクリックで、カードのリンクを開かない。キーボードのクリック（detail が 0）は通す
   track.addEventListener(
@@ -99,6 +106,6 @@ export function initFeaturedCarousel(carousel: HTMLElement): void {
     { capture: true },
   );
 
-  // リンクと画像の native のドラッグが、横のドラッグを奪わないようにする
+  // リンクの native のドラッグが、横のドラッグを奪わないようにする
   track.addEventListener("dragstart", (event) => event.preventDefault());
 }
