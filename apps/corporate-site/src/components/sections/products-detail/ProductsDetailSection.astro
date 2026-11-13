@@ -87,14 +87,11 @@ const categoryGroups = [...itemsByGroupId.entries()].map(([groupId, items]) => {
 
         const url = new URL(window.location.href);
         const hasQuery = (url.searchParams.get("q") ?? "").trim() !== "";
-        // カテゴリと索引の id は ASCII なので、hash をデコードせずに比べる。ASCII でない id を足すときは、try で包んでデコードする
+        // カテゴリの id は ASCII なので、hash をデコードせずに比べる。ASCII でない id を足すときは、try で包んでデコードする
         const hashId = url.hash.slice(1);
-        const hashTarget = hashId === "" ? null : document.getElementById(hashId);
         const nav = document.querySelector("[data-products-nav]");
 
-        // hash が索引の外枠そのもの（ヒーローの「カテゴリ一覧を見る」の行き先）のときは、閉じて始める
-        const hashInsideNav = hashTarget !== null && hashTarget !== nav && nav?.contains(hashTarget);
-        if (nav && !hasQuery && !hashInsideNav) {
+        if (nav && !hasQuery) {
           nav.open = false;
         }
         document.querySelectorAll("[data-category-item]").forEach((item) => {
