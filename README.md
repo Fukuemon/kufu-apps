@@ -93,7 +93,7 @@ Playwright の baseline はファイル名に platform を含み、macOS で撮�
 
 - 外部への通信を落とす。Google Maps とカテゴリ写真 (Unsplash) は内容も応答時間も実行ごとに変わるため、`page.route` で same-origin 以外を abort する
 - 地図 iframe は通信を落としても枠が残るため `mask` で隠す
-- reveal とカルーセルの自動スクロールは、既存実装が持つ `prefers-reduced-motion` の分岐で止める
+- reveal の動きは、既存実装が持つ `prefers-reduced-motion` の分岐で止める
 
 差分画像は `e2e/test-results/` に出る。`.gitignore` 済み。
 

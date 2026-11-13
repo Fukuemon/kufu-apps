@@ -4,12 +4,17 @@ export interface Props {
   count?: string;
   title: string;
   image?: string;
+  href: string;
 }
 
-const { category, count, title, image } = Astro.props;
+const { category, count, title, image, href } = Astro.props;
 ---
 
-<article data-reveal class="featured-category-card flex min-w-0 flex-col overflow-hidden border border-divider bg-surface text-text">
+<a
+  data-reveal
+  href={href}
+  class="focus-ring featured-category-card flex min-w-0 flex-col overflow-hidden border border-divider bg-surface text-text"
+>
   <div
     class="featured-category-media h-[9.375rem] bg-surface-subtle bg-cover bg-center bg-blend-multiply"
     style={image ? `background-image: linear-gradient(var(--kufu-color-overlay-photo), var(--kufu-color-overlay-photo)), url(${image})` : undefined}
@@ -33,4 +38,4 @@ const { category, count, title, image } = Astro.props;
       {title}
     </p>
   </div>
-</article>
+</a>
