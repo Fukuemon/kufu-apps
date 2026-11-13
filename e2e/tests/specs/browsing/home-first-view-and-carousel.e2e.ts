@@ -21,7 +21,7 @@ const openCarousel = async (page: Page): Promise<Locator> => {
 };
 
 test.describe("トップ", () => {
-  // 狭い幅で確かめる。1280px では写真のあるカードが全て収まり、送る先が無い
+  // 狭い幅で確かめる。1280px ではカードが全て収まり、送る先が無い
   test.use({ viewport: { width: 390, height: 900 } });
 
   test.describe("最初の画面", () => {
@@ -66,14 +66,34 @@ test.describe("トップ", () => {
       const next = carouselNextButton(carousel);
 
       // 1 回目の滑らかな送りが終わる前に、2 回目を押す
-      await next.click();
-      await next.click();
+      await next.click({ clickCount: 2 });
 
       await expect(
         carouselCategoryCard(carousel, "工場設備関連"),
       ).toBeInViewport({ ratio: 1 });
       await expect(
         carouselCategoryCard(carousel, "空圧・油圧機器"),
+      ).not.toBeInViewport();
+    });
+
+    test("次のカテゴリの送りの途中にフォーカスの移動で末尾まで動いた場合、前のカテゴリで 1 枚だけ戻ること", async ({
+      page,
+    }) => {
+      const carousel = await openCarousel(page);
+
+      const lastCard = carouselCategoryCard(carousel, "切削工具");
+
+      await carouselNextButton(carousel).click();
+      // Tab で末尾のカードへ移ったときと同じく、フォーカスの移動で並びを末尾まで動かす
+      await lastCard.focus();
+      await expect(lastCard).toBeInViewport({ ratio: 1 });
+      await carouselPrevButton(carousel).click();
+
+      await expect(
+        carouselCategoryCard(carousel, "工場設備関連"),
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        carouselCategoryCard(carousel, "駆動・変減速機器"),
       ).not.toBeInViewport();
     });
 
@@ -165,6 +185,7 @@ test.describe("トップ", () => {
           type: "touchEnd",
           touchPoints: [],
         });
+        await cdp.detach();
       };
 
       test("カルーセルの上を縦にスワイプした場合、ページが縦に送られること", async ({
