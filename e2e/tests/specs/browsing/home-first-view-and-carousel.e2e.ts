@@ -105,22 +105,33 @@ test.describe("トップ", () => {
       test.use({ hasTouch: true, isMobile: true });
 
       /**
-       * カルーセルの track の中央から、タッチでスワイプする。
-       * Playwright の touchscreen はタップだけで、JS で作った touch のイベントでは native のスクロールが起きないため、Chromium の CDP で指の動きを合成する。
+       * カルーセルの track の中央に指を置き、dx、dy だけ動かして離す。
+       * Playwright の touchscreen はタップだけで、JS で作った touch のイベントでは native のスクロールが起きないため、Chromium の CDP で指の動きを送る。
        */
       const swipe = async (
         page: Page,
         carousel: Locator,
-        distance: { xDistance?: number; yDistance?: number },
+        { dx = 0, dy = 0 }: { dx?: number; dy?: number },
       ) => {
         const box = await carouselTrack(carousel).boundingBox();
         if (!box) throw new Error("カルーセルの位置が取れない");
+        const x = box.x + box.width / 2;
+        const y = box.y + box.height / 2;
         const cdp = await page.context().newCDPSession(page);
-        await cdp.send("Input.synthesizeScrollGesture", {
-          x: box.x + box.width / 2,
-          y: box.y + box.height / 2,
-          ...distance,
-          gestureSourceType: "touch",
+        const steps = 10;
+        await cdp.send("Input.dispatchTouchEvent", {
+          type: "touchStart",
+          touchPoints: [{ x, y }],
+        });
+        for (let i = 1; i <= steps; i += 1) {
+          await cdp.send("Input.dispatchTouchEvent", {
+            type: "touchMove",
+            touchPoints: [{ x: x + (dx * i) / steps, y: y + (dy * i) / steps }],
+          });
+        }
+        await cdp.send("Input.dispatchTouchEvent", {
+          type: "touchEnd",
+          touchPoints: [],
         });
       };
 
@@ -130,7 +141,7 @@ test.describe("トップ", () => {
         const carousel = await openCarousel(page);
         const before = await page.evaluate(() => window.scrollY);
 
-        await swipe(page, carousel, { yDistance: -300 });
+        await swipe(page, carousel, { dy: -300 });
 
         await expect
           .poll(() => page.evaluate(() => window.scrollY))
@@ -143,7 +154,7 @@ test.describe("トップ", () => {
         const carousel = await openCarousel(page);
         const firstCard = carouselCategoryCard(carousel, "駆動・変減速機器");
 
-        await swipe(page, carousel, { xDistance: -200 });
+        await swipe(page, carousel, { dx: -200 });
 
         await expect(carouselPrevButton(carousel)).toBeEnabled();
         await expect(firstCard).not.toBeInViewport({ ratio: 1 });
