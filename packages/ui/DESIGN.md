@@ -112,7 +112,7 @@ DADS の指針から外れる規則は、この節に並べない。その規則
 - `MOTION-REDUCE`: 利用者が OS で動きを減らす設定（`prefers-reduced-motion: reduce`）にしたときは、位置、大きさ、回転を動かすアニメーションと遷移、スクロールに合わせた動きを止める。残すのは、状態の変化を伝える短い透明度の変化だけにする。機能に欠かせない動きは、今は無い。WCAG 2.2 の AA に無い、AAA（2.3.3）の基準を選んでいる。止め方はテーマ変数のファイル（`theme.css`）の 1 か所に置き、画面のコードに設定ごとの条件を書かない。
   - `theme.css` は、設定が `reduce` のとき、全ての要素のアニメーションを止め、遷移を透明度だけにし、滑らかなスクロールを止める。
   - 例外: JavaScript が動かすものは CSS で止められないので、JavaScript で設定を読む。
-    - 今は 2 か所で、トップのカルーセルの自動の流れ（`requestAnimationFrame`）と、section を表示するきっかけ（`IntersectionObserver`）である。
+    - 今は 2 か所で、トップのカルーセルの矢印の送り（`scrollBy` の `behavior`）と、section を表示するきっかけ（`IntersectionObserver`）である。
     - どちらの行にも、`design-system-allow` と理由を書いている。
   - 確認: `pnpm check:design` の中の `node scripts/check-utilities.mjs --doc packages/ui/DESIGN.md` が、設定の条件を止める。
     - 止めるのは、画面とコンポーネントのコードの `motion-reduce:`、`motion-safe:` の変種と、`prefers-reduced-motion` の条件である。
