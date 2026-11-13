@@ -105,5 +105,15 @@ test.describe("取扱製品", () => {
         page.getByTestId("products-maker-list-materials-bolts"),
       ).toBeVisible();
     });
+
+    test("最初の画面のカテゴリ一覧を見るを押した場合、カテゴリの索引の検索が画面に入っていること", async ({
+      page,
+    }) => {
+      await page.goto("/products");
+
+      await productsHeroCategoryLink(page).click();
+
+      await expect(productsSearchBox(page)).toBeInViewport();
+    });
   });
 });
