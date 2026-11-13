@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 
 import { contactBandCtaLink } from "../../selectors/contact-band";
 import {
+  productsIndexToggle,
   productsSearchBox,
   productsSearchResult,
 } from "../../selectors/products";
@@ -41,6 +42,38 @@ test.describe("トップ", () => {
         await page.getByTestId("products-link-contact").click();
         await expect(page).toHaveURL("/contact");
         await expect(page.getByTestId("contact-section-info")).toBeVisible();
+      });
+    });
+
+    test.describe("モバイルの幅", () => {
+      test.use({ viewport: { width: 390, height: 900 } });
+
+      test("取扱製品の導線から索引を開いて検索した場合、当たったカテゴリが開いていること", async ({
+        page,
+      }) => {
+        await page.goto("/");
+
+        await test.step("トップの取扱製品の導線から取扱製品を開く", async () => {
+          await page.getByTestId("home-link-products").click();
+          await expect(page).toHaveURL("/products");
+          await expect(
+            page.getByTestId("products-maker-list-drive-reducers"),
+          ).toBeHidden();
+        });
+
+        await test.step("閉じて始まる索引を開き、メーカーの名前で検索する", async () => {
+          await productsIndexToggle(page).click();
+          await productsSearchBox(page).fill("住友重機械工業");
+          await expect(productsSearchResult(page)).toContainText(
+            "件のカテゴリが一致",
+          );
+        });
+
+        await test.step("当たったカテゴリのメーカーの一覧が開いている", async () => {
+          await expect(
+            page.getByTestId("products-maker-list-drive-reducers"),
+          ).toBeVisible();
+        });
       });
     });
 

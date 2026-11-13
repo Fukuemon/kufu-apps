@@ -49,6 +49,24 @@ test.describe("取扱製品", () => {
       await expect(productsCategoryArticles(page)).toHaveCount(18);
       await expect(productsText(page, "住友重機械工業（株）")).toBeVisible();
     });
+
+    test.describe("モバイルの幅", () => {
+      test.use({ viewport: { width: 390, height: 900 } });
+
+      test("JavaScript が無効の場合、カテゴリの索引と全てのカテゴリのメーカーの一覧が開いた形で出ること", async ({
+        page,
+      }) => {
+        await page.goto("/products");
+
+        await expect(page.getByTestId("products-category-list")).toBeVisible();
+        await expect(
+          page.getByTestId("products-maker-list-drive-reducers"),
+        ).toBeVisible();
+        await expect(
+          page.getByTestId("products-maker-list-materials-bolts"),
+        ).toBeVisible();
+      });
+    });
   });
 });
 
