@@ -209,8 +209,7 @@
   transform: translateY(-50%);
   transition:
     border-color var(--kufu-motion-fast) var(--kufu-ease),
-    color var(--kufu-motion-fast) var(--kufu-ease),
-    opacity var(--kufu-motion-fast) var(--kufu-ease);
+    color var(--kufu-motion-fast) var(--kufu-ease);
 }
 
 .featured-carousel-arrow:hover:not([aria-disabled="true"]) {
@@ -218,10 +217,10 @@
   color: var(--kufu-color-primary);
 }
 
-/* 端では押せない。Button の無効と同じく、見た目を薄くするだけにする。
+/* 端では押せない。文字の色だけを薄くし、枠とフォーカスの表示はほかの要素と同じ色で残す（FOCUS-ONE）。
    pointer-events は止めない。止めると、下に重なるカードのリンクへクリックが通る */
 .featured-carousel-arrow[aria-disabled="true"] {
-  opacity: 0.5;
+  color: var(--kufu-color-text-disabled);
 }
 
 .featured-carousel-arrow--prev {
