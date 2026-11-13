@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 import {
   carouselCategoryCard,
@@ -6,12 +6,27 @@ import {
   carouselPrevButton,
 } from "../../selectors/home";
 
+/**
+ * トップを開き、カルーセルを画面に入れて返す。
+ * ページの滑らかな縦のスクロール（html の scroll-behavior）を止めてから送る。並べて流すと縦の送りが遅れ、
+ * 送りの途中で確認と操作が進み、カードが画面の下にはみ出す。カルーセルの送りは scrollBy の behavior で決まり、この設定に左右されない。
+ */
+const openCarousel = async (page: Page): Promise<Locator> => {
+  await page.goto("/");
+  await page.addStyleTag({
+    content: "html { scroll-behavior: auto !important; }",
+  });
+  const carousel = page.getByTestId("home-products-carousel");
+  await carousel.scrollIntoViewIfNeeded();
+  return carousel;
+};
+
 test.describe("トップ", () => {
   // 狭い幅で確かめる。1280px では写真のあるカードが全て収まり、送る先が無い
   test.use({ viewport: { width: 390, height: 900 } });
 
   test.describe("最初の画面", () => {
-    test("モバイルの幅で開いた場合、スクロールせずにお見積り・お問い合わせのボタンが全て見えること", async ({
+    test("モバイルの幅で開いた場合、スクロールせずにお見積り・お問い合わせのボタンの全体が見えること", async ({
       page,
     }) => {
       await page.goto("/");
@@ -23,15 +38,12 @@ test.describe("トップ", () => {
   });
 
   test.describe("取扱製品カテゴリのカルーセル", () => {
-    test("開いて 10 秒経った場合、カードが送られず、次のカテゴリを押すと次のカードへ送られること", async ({
+    test("開いて 10 秒経った場合、カードが送られず、次のカテゴリを押すと送りが始まること", async ({
       page,
     }) => {
       await page.clock.install();
-      await page.goto("/");
-      const carousel = page.getByTestId("home-products-carousel");
+      const carousel = await openCarousel(page);
       const firstCard = carouselCategoryCard(carousel, "駆動・変減速機器");
-      const secondCard = carouselCategoryCard(carousel, "空圧・油圧機器");
-      await carousel.scrollIntoViewIfNeeded();
       await expect(firstCard).toBeInViewport({ ratio: 1 });
 
       await page.clock.runFor(10_000);
@@ -39,10 +51,11 @@ test.describe("トップ", () => {
       await expect(firstCard).toBeInViewport({ ratio: 1 });
       await expect(carouselPrevButton(carousel)).toBeDisabled();
 
+      // 後に起きる側の確認。時計を差し替えると、滑らかな送りが途中で止まるため、送りが始まったことだけを見る。
+      // 1 枚分を送ることは、動きを減らす設定のテストと story の play が確認する
       await carouselNextButton(carousel).click();
 
-      await expect(secondCard).toBeInViewport({ ratio: 1 });
-      await expect(firstCard).not.toBeInViewport();
+      await expect(firstCard).not.toBeInViewport({ ratio: 1 });
       await expect(carouselPrevButton(carousel)).toBeEnabled();
     });
 
@@ -53,8 +66,7 @@ test.describe("トップ", () => {
       test("末尾のカードまで送った場合、次のカテゴリが押せなくなること", async ({
         page,
       }) => {
-        await page.goto("/");
-        const carousel = page.getByTestId("home-products-carousel");
+        const carousel = await openCarousel(page);
         const next = carouselNextButton(carousel);
 
         for (const name of ["空圧・油圧機器", "工場設備関連", "切削工具"]) {
@@ -73,8 +85,7 @@ test.describe("トップ", () => {
     test("カードを押した場合、取扱製品のそのカテゴリの位置が開くこと", async ({
       page,
     }) => {
-      await page.goto("/");
-      const carousel = page.getByTestId("home-products-carousel");
+      const carousel = await openCarousel(page);
 
       await carouselCategoryCard(carousel, "駆動・変減速機器").click();
 
@@ -82,6 +93,51 @@ test.describe("トップ", () => {
       await expect(
         page.getByTestId("products-category-drive-reducers"),
       ).toBeInViewport();
+    });
+
+    test("カードをマウスで左へドラッグした場合、カードが送られ、取扱製品が開かないこと", async ({
+      page,
+    }) => {
+      const carousel = await openCarousel(page);
+      const firstCard = carouselCategoryCard(carousel, "駆動・変減速機器");
+      const box = await firstCard.boundingBox();
+      if (!box) throw new Error("カードの位置が取れない");
+      const y = box.y + box.height / 2;
+
+      await page.mouse.move(box.x + 200, y);
+      await page.mouse.down();
+      await page.mouse.move(box.x + 50, y, { steps: 10 });
+      await page.mouse.up();
+
+      await expect(carouselPrevButton(carousel)).toBeEnabled();
+      await expect(firstCard).not.toBeInViewport({ ratio: 1 });
+      await expect(page).toHaveURL("/");
+    });
+
+    test("カードを押したまま外へ出て離した場合、その後のホバーでカードが送られず、カードを押すと取扱製品が開くこと", async ({
+      page,
+    }) => {
+      const carousel = await openCarousel(page);
+      const firstCard = carouselCategoryCard(carousel, "駆動・変減速機器");
+      const box = await firstCard.boundingBox();
+      if (!box) throw new Error("カードの位置が取れない");
+      const y = box.y + box.height / 2;
+
+      // 横に閾値まで動かさずに、縦に外へ出て離す
+      await page.mouse.move(box.x + 100, y);
+      await page.mouse.down();
+      await page.mouse.move(box.x + 100, box.y - 100, { steps: 5 });
+      await page.mouse.up();
+      // ボタンを押さずに、カードの上を横切る
+      await page.mouse.move(box.x + 200, y);
+      await page.mouse.move(box.x + 20, y, { steps: 10 });
+
+      await expect(firstCard).toBeInViewport({ ratio: 1 });
+      await expect(carouselPrevButton(carousel)).toBeDisabled();
+
+      await firstCard.click();
+
+      await expect(page).toHaveURL("/products#drive-reducers");
     });
   });
 });
