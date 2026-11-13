@@ -34,6 +34,8 @@
   /* 文字 */
   --kufu-color-text: var(--kufu-primitive-color-gray-900);
   --kufu-color-text-secondary: var(--kufu-primitive-color-gray-600);
+  /* 押せない操作の文字。読ませる文字ではなく、WCAG のコントラストの基準の対象外 */
+  --kufu-color-text-disabled: var(--kufu-primitive-color-gray-500);
   --kufu-color-text-inverse: var(--kufu-primitive-color-white);
   /* 暗い面の上のリンクと補足の文字 */
   --kufu-color-text-inverse-secondary: var(--kufu-primitive-color-gray-200);
