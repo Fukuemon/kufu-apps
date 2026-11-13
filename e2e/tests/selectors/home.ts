@@ -16,6 +16,12 @@ export const carouselCategoryCard = (
 export const carouselPrevButton = (carousel: Locator): Locator =>
   carousel.getByRole("button", { name: "前のカテゴリ" });
 
+/** 矢印のボタン。hidden で描かれたものも拾い、隠れていることを確かめるときに使う。 */
+export const carouselArrowIncludingHidden = (
+  carousel: Locator,
+  name: "前のカテゴリ" | "次のカテゴリ",
+): Locator => carousel.getByRole("button", { name, includeHidden: true });
+
 export const carouselNextButton = (carousel: Locator): Locator =>
   carousel.getByRole("button", { name: "次のカテゴリ" });
 

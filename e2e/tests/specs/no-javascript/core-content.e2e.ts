@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { contactEmailLink, contactTelLink } from "../../selectors/contact";
+import { carouselArrowIncludingHidden } from "../../selectors/home";
 import {
   productsCategoryArticles,
   productsText,
@@ -18,6 +19,19 @@ test.describe("トップ", () => {
       await expect(page.getByTestId("home-section-business")).toBeVisible();
       await expect(page.getByTestId("home-section-products")).toBeVisible();
       await expect(page.getByTestId("home-section-company")).toBeVisible();
+    });
+
+    test("JavaScript が無効の場合、取扱製品カテゴリのカルーセルに、押しても動かない矢印が出ないこと", async ({
+      page,
+    }) => {
+      await page.goto("/");
+      const carousel = page.getByTestId("home-products-carousel");
+
+      for (const name of ["前のカテゴリ", "次のカテゴリ"] as const) {
+        const arrow = carouselArrowIncludingHidden(carousel, name);
+        await expect(arrow).toHaveCount(1);
+        await expect(arrow).toBeHidden();
+      }
     });
   });
 });
