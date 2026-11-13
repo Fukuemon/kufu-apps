@@ -110,6 +110,7 @@ test.describe("取扱製品", () => {
       page,
     }) => {
       await page.goto("/products");
+      await expect(productsSearchBox(page)).not.toBeInViewport();
 
       await productsHeroCategoryLink(page).click();
 
