@@ -53,7 +53,7 @@ test.describe("取扱製品", () => {
     test.describe("モバイルの幅", () => {
       test.use({ viewport: { width: 390, height: 900 } });
 
-      test("JavaScript が無効の場合、カテゴリの索引と全てのカテゴリのメーカーの一覧が開いた形で出ること", async ({
+      test("JavaScript が無効の場合、カテゴリの索引と、先頭と末尾のカテゴリのメーカーの一覧が開いた形で出ること", async ({
         page,
       }) => {
         await page.goto("/products");

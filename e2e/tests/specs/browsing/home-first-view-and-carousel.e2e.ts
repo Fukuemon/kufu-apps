@@ -214,7 +214,7 @@ test.describe("トップ", () => {
       });
     });
 
-    test("カードを押した場合、取扱製品のそのカテゴリの位置が開くこと", async ({
+    test("カードを押した場合、取扱製品のそのカテゴリの位置が開き、メーカーの一覧が開いていること", async ({
       page,
     }) => {
       const carousel = await openCarousel(page);
@@ -225,6 +225,9 @@ test.describe("トップ", () => {
       await expect(
         page.getByTestId("products-category-drive-reducers"),
       ).toBeInViewport();
+      await expect(
+        page.getByTestId("products-maker-list-drive-reducers"),
+      ).toBeVisible();
     });
 
     test("カードをマウスで左へドラッグした場合、カードが送られ、取扱製品が開かないこと", async ({

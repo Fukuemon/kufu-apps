@@ -56,6 +56,10 @@ test.describe("トップ", () => {
         await test.step("トップの取扱製品の導線から取扱製品を開く", async () => {
           await page.getByTestId("home-link-products").click();
           await expect(page).toHaveURL("/products");
+          // 一覧が描画されてから、閉じていることを見る
+          await expect(
+            page.getByTestId("products-category-drive-reducers"),
+          ).toBeVisible();
           await expect(
             page.getByTestId("products-maker-list-drive-reducers"),
           ).toBeHidden();
