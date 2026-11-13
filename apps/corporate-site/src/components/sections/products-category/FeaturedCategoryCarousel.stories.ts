@@ -84,17 +84,21 @@ export const Default = {
       name: "次のカテゴリ",
     });
 
+    // 端の矢印は aria-disabled で押せなくする。jest-dom の toBeDisabled は aria-disabled を見ないので、属性で比べる
+    const isOff = (button: HTMLButtonElement) =>
+      button.getAttribute("aria-disabled") === "true";
+
     // 矢印の無効は scroll のイベントで変わり、位置より遅れる。位置に追い付くまで待つ
     const waitArrowsMatchPosition = () =>
       waitFor(async () => {
         const maxScroll = track.scrollWidth - track.clientWidth;
-        await expect(prev.disabled).toBe(track.scrollLeft <= 1);
-        await expect(next.disabled).toBe(track.scrollLeft >= maxScroll - 1);
+        await expect(isOff(prev)).toBe(track.scrollLeft <= 1);
+        await expect(isOff(next)).toBe(track.scrollLeft >= maxScroll - 1);
       });
 
     await expect(track.scrollLeft).toBe(0);
-    await expect(prev).toBeDisabled();
-    await expect(next).toBeEnabled();
+    await expect(prev).toHaveAttribute("aria-disabled", "true");
+    await expect(next).toHaveAttribute("aria-disabled", "false");
 
     const send = async (button: HTMLButtonElement, direction: 1 | -1) => {
       const before = track.scrollLeft;
@@ -106,19 +110,23 @@ export const Default = {
     };
 
     await send(next, 1);
-    await expect(prev).toBeEnabled();
+    await expect(prev).toHaveAttribute("aria-disabled", "false");
 
-    // 末尾まで送ると「次のカテゴリ」を押せなくなる
-    while (!next.disabled) await send(next, 1);
-    await expect(track.scrollLeft).toBeGreaterThanOrEqual(
+    // 末尾まで送ると「次のカテゴリ」を押せなくなる。押しても送らず、フォーカスは矢印に残る
+    while (!isOff(next)) await send(next, 1);
+    const end = track.scrollLeft;
+    await expect(end).toBeGreaterThanOrEqual(
       track.scrollWidth - track.clientWidth - 1,
     );
-    await expect(prev).toBeEnabled();
+    await expect(prev).toHaveAttribute("aria-disabled", "false");
+    await userEvent.click(next);
+    await expect(track.scrollLeft).toBe(end);
+    await expect(next).toHaveFocus();
 
     // 先頭に戻すと「前のカテゴリ」を押せなくなる。VRT は先頭の状態を撮る
-    while (!prev.disabled) await send(prev, -1);
+    while (!isOff(prev)) await send(prev, -1);
     await expect(track.scrollLeft).toBeLessThanOrEqual(1);
-    await expect(next).toBeEnabled();
+    await expect(next).toHaveAttribute("aria-disabled", "false");
   },
 };
 

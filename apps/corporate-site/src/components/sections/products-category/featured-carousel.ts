@@ -18,10 +18,17 @@ export function initFeaturedCarousel(carousel: HTMLElement): void {
   // スクロールの位置は小数になるため、1px の誤差を端とみなす
   const edgeTolerance = 1;
 
+  // 端の矢印は disabled にせず aria-disabled にする。disabled にすると、押していた矢印からフォーカスが外れる
+  const setOff = (button: HTMLButtonElement, off: boolean) => {
+    button.setAttribute("aria-disabled", String(off));
+  };
+  const isOff = (button: HTMLButtonElement) =>
+    button.getAttribute("aria-disabled") === "true";
+
   const updateArrows = () => {
     const maxScroll = track.scrollWidth - track.clientWidth;
-    prev.disabled = track.scrollLeft <= edgeTolerance;
-    next.disabled = track.scrollLeft >= maxScroll - edgeTolerance;
+    setOff(prev, track.scrollLeft <= edgeTolerance);
+    setOff(next, track.scrollLeft >= maxScroll - edgeTolerance);
   };
 
   const stepWidth = () => {
@@ -40,8 +47,12 @@ export function initFeaturedCarousel(carousel: HTMLElement): void {
     });
   };
 
-  prev.addEventListener("click", () => move(-1));
-  next.addEventListener("click", () => move(1));
+  prev.addEventListener("click", () => {
+    if (!isOff(prev)) move(-1);
+  });
+  next.addEventListener("click", () => {
+    if (!isOff(next)) move(1);
+  });
   track.addEventListener("scroll", updateArrows, { passive: true });
   window.addEventListener("resize", updateArrows);
   updateArrows();

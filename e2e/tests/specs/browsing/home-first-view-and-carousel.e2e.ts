@@ -79,6 +79,25 @@ test.describe("トップ", () => {
         await expect(next).toBeDisabled();
         await expect(carouselPrevButton(carousel)).toBeEnabled();
       });
+
+      test("キーボードで末尾のカードまで送った場合、フォーカスが次のカテゴリに残り、もう一度押しても送られないこと", async ({
+        page,
+      }) => {
+        const carousel = await openCarousel(page);
+        const next = carouselNextButton(carousel);
+        const lastCard = carouselCategoryCard(carousel, "切削工具");
+
+        await next.focus();
+        for (let i = 0; i < 3; i += 1) await page.keyboard.press("Enter");
+        await expect(lastCard).toBeInViewport({ ratio: 1 });
+        await expect(next).toBeDisabled();
+        await expect(next).toBeFocused();
+
+        await page.keyboard.press("Enter");
+
+        await expect(lastCard).toBeInViewport({ ratio: 1 });
+        await expect(next).toBeFocused();
+      });
     });
 
     test("カードを押した場合、取扱製品のそのカテゴリの位置が開くこと", async ({
