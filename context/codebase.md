@@ -223,6 +223,7 @@ content 層の方式は、内容の性質で選ぶ。
 ### スタイルのファイル
 
 - トークンを Tailwind の utility へ写す `@theme` は、`@kufu/ui/theme.css` だけに置く。app の entry がこれを import する。
+- デザインシステムの規則として app をまたいで働かせる要素の base のスタイル（例: 見出しの折り返し）と、動きを減らす設定の止め方は、`@kufu/ui/theme.css` に置く。app に固有の要素の base のスタイルは、app の `base.css` に置く。
 - corporate-site は、app の Tailwind v4 の entry `src/styles/globals.css` を持つ。
   - ADR-0018: [トークンの 3 つの層](../docs/adr/0018-design-tokens-three-layers.md)
 - Tailwind の走査は Vite plugin の module graph に任せ、app のソースへの `@source` を app に置かない。

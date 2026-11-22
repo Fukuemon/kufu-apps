@@ -89,6 +89,24 @@
 }
 
 /*
+ * 見出しの要素の折り返し。規則は packages/ui/design/tokens.md の「文字のスタイル」にある。
+ * Chromium は、auto-phrase を lang が ja か ko の文字だけに働かせる。対応しないブラウザは、この宣言を無視する。
+ * 出典: https://github.com/mdn/browser-compat-data の css.properties.word-break.auto-phrase
+ * @layer base に置き、break-keep のような要素ごとのユーティリティが上書きできるようにする。
+ */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    word-break: auto-phrase;
+    text-wrap: balance;
+  }
+}
+
+/*
  * フォーカスの表示。操作できる要素は、このユーティリティだけでフォーカスの表示を付ける（FOCUS-ONE）。
  * DADS の黒の outline（4px、2px 離す）と、その間を埋める Yellow-300 の 2px の影の 2 重にする。
  * outline の太さと位置はコンポーネントごとに変えない。
