@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";async function t(e){let{width:t,height:i}=e.getBoundingClientRect();await n(t).toBeGreaterThanOrEqual(r),await n(i).toBeGreaterThanOrEqual(r)}var n,r;function i(){return(i=e((()=>{({expect:n}=__STORYBOOK_MODULE_TEST__),r=44})))()}export{i as n,t};
