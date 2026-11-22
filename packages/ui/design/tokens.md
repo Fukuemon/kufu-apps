@@ -101,6 +101,9 @@
 - 名前の数字は、DADS の文字の大きさの段（px）である。見出しの大きさを画面の幅で替えるときは、`text-heading-32 md:text-heading-36 lg:text-heading-45` のように、ブレークポイントごとに段の名前を替える。画面の幅で滑らかに変わる大きさ（`clamp()`）は使わない。
 - 書体と太さは、文字のスタイルに含めない。`font-serif`、`font-mono`、`font-semibold` などと組み合わせる。
 - 同じ要素に `leading-*` を書くと、文字のスタイルの行高より `leading-*` が優先される。
+- 見出しの要素（`h1` から `h6`）は、文節の切れ目で折り返し、行の長さをそろえる（`word-break: auto-phrase` と `text-wrap: balance`）。指定は `theme.css` の `@layer base` の 1 か所にあり、画面のコードに書かない。
+  - `auto-phrase` は、`lang` が `ja` の文字だけに働く。対応しないブラウザでは、`balance` だけが働く。
+  - 見出しの見た目を持つ `p` と `span` には働かない。
 - `packages/ui` の外の CSS で書くときは、`var(--kufu-text-<名前>-font-size)` と `var(--kufu-text-<名前>-line-height)` で書く。
   - 文字のスタイルの大きさと行高は、`semantic.css` にこの名前で置き、`theme.css` のテーマ変数はこの変数を参照する。[ADR-0018](../../../docs/adr/0018-design-tokens-three-layers.md) の層の表は、テーマ変数の文字がプリミティブトークンを直に参照するとしている。`packages/ui` の外の CSS は、チェックによりプリミティブトークンの名前を書けないので、セマンティックトークンの層を挟んでいる。
 

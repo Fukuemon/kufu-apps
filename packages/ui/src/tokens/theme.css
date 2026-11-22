@@ -89,6 +89,23 @@
 }
 
 /*
+ * 見出しの折り返し。見出しの要素は、文節の切れ目で折り返し、行の長さをそろえる。
+ * auto-phrase は、lang が ja の文字だけに働き、対応しないブラウザでは normal と同じになる。
+ * @layer base に置き、break-keep のような要素ごとのユーティリティが上書きできるようにする。
+ */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    word-break: auto-phrase;
+    text-wrap: balance;
+  }
+}
+
+/*
  * フォーカスの表示。操作できる要素は、このユーティリティだけでフォーカスの表示を付ける（FOCUS-ONE）。
  * DADS の黒の outline（4px、2px 離す）と、その間を埋める Yellow-300 の 2px の影の 2 重にする。
  * outline の太さと位置はコンポーネントごとに変えない。
