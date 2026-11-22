@@ -176,6 +176,26 @@ test.describe("お問い合わせ", () => {
       await expect(page.getByTestId("contact-form-slot")).toBeVisible();
     });
 
+    test.describe("モバイルの幅", () => {
+      test.use({ viewport: { width: 390, height: 900 } });
+
+      test("開いた場合、電話とメールのリンクの押せる高さが 44px 以上で、行き先が tel: と mailto: であること", async ({
+        page,
+      }) => {
+        await page.goto("/contact");
+
+        for (const [link, href] of [
+          [contactTelLink(page), "tel:0794926465"],
+          [contactEmailLink(page), "mailto:fukuura@mist.ocn.ne.jp"],
+        ] as const) {
+          await expect(link).toHaveAttribute("href", href);
+          // 押せる高さは要素の状態で表せないので、描画した箱を読んで比べる
+          const box = await link.boundingBox();
+          expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+        }
+      });
+    });
+
     test("開いた場合、フッターに、サイトマップのリンクと連絡先が出ること", async ({
       page,
     }) => {
