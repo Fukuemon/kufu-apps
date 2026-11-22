@@ -63,7 +63,9 @@ ADR-0026: [VRT の方針](../docs/adr/0026-visual-regression-testing-policy.md)
   - `pnpm vrt:route` を通さない実行は skip される。
 - story は container を使わず、CI だけで撮る。撮影が Vite の bundle を伴い、エミュレーションの下の container の実行と両立しないため。
   - ADR-0026: [VRT の方針](../docs/adr/0026-visual-regression-testing-policy.md)
-  - Storybook の iframe は `lang="en"` である。そのため story の VRT の画像では、`lang` によって働きが変わる CSS が働かない。見出しの `word-break: auto-phrase` がその例である。その見た目は route の VRT で確認する。
+- story の VRT では、`lang` によって描画が変わる CSS を、`lang` が `ja` のときの見た目で撮れない。
+  - Storybook のデフォルトの `iframe.html` が `lang="en"` であるためである。例えば、見出しの `word-break: auto-phrase` は文節で折り返さず、通常の折り返しになる。
+  - その見た目は route の VRT で確認する。
 - VRT を外部のサービスの応答に依存させない。外部の埋め込みと画像はリクエストごと止め、残る枠はマスクする。
 
 手順とコマンドの詳細は、[README.md](../README.md#visual-regression-testing-vrt) の VRT の節にある。
