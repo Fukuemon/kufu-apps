@@ -154,19 +154,20 @@ backend "s3" {
 3. 変わらない場合、変更が本番の可用性かドメインへの到達に影響するなら Terraform。
 4. どれでもなければ Terraform をデフォルトにする。変更の履歴と review を残せるためである。
 
-| リソース                                              | 管轄      | 根拠                                                                        |
-| ----------------------------------------------------- | --------- | --------------------------------------------------------------------------- |
-| Zone / DNS record / TLS                               | Terraform | deploy と独立し、ドメインへの到達に直結する                                 |
-| `cloudflare_worker`（箱）                             | Terraform | 名前、`tags`、`logpush` だけを持つ。`observability` は設定しない            |
-| `cloudflare_workers_custom_domain`                    | Terraform | 必須の項目は `account_id` / `hostname` / `service` の 3 つ                  |
-| Rate Limiting ルール（`/api/contact`）                | Terraform | deploy と独立した、濫用を抑える設定                                         |
-| R2 バケット（Terraform state 用）                     | Terraform | `infra/bootstrap/` が作る                                                   |
-| `workers_dev` / `preview_urls`                        | Wrangler  | `wrangler.jsonc` に `false` と書く。wrangler のデフォルト値との衝突を避ける |
-| Previews（`previews` ブロックと preview 用の secret） | Wrangler  | branch ごとに作り直され、deploy のたびに変わる                              |
-| `cloudflare_worker_version`（中身）                   | Wrangler  | assets、bindings、secret を持ち、deploy のたびに変わる                      |
-| `cloudflare_workers_deployment`                       | Wrangler  | どの version を live にするかを決める。deploy そのもの                      |
-| runtime secret（Resend / Turnstile）                  | Wrangler  | Terraform の state に載せない                                               |
-| binding（R2 / KV など）                               | Wrangler  | 決定のときは該当がない。要るときは `wrangler.jsonc` に置く                  |
+| リソース                                                           | 管轄      | 根拠                                                                                                  |
+| ------------------------------------------------------------------ | --------- | ----------------------------------------------------------------------------------------------------- |
+| Zone / DNS record / TLS                                            | Terraform | deploy と独立し、ドメインへの到達に直結する                                                           |
+| `cloudflare_worker`（箱）                                          | Terraform | 名前、`tags`、`logpush` だけを持つ。`observability` は設定しない                                      |
+| `cloudflare_workers_custom_domain`                                 | Terraform | 必須の項目は `account_id` / `hostname` / `service` の 3 つ                                            |
+| Rate Limiting ルール（`/api/contact`）                             | Terraform | deploy と独立した、濫用を抑える設定                                                                   |
+| R2 バケット（Terraform state 用）                                  | Terraform | `infra/bootstrap/` が作る                                                                             |
+| `workers_dev` / `preview_urls`                                     | Wrangler  | `wrangler.jsonc` に `false` と書く。wrangler のデフォルト値との衝突を避ける                           |
+| Previews（`previews` ブロックと preview 用の secret）              | Wrangler  | branch ごとに作り直され、deploy のたびに変わる                                                        |
+| Preview 用の custom domain（ワイルドカードの DNS record と証明書） | Terraform | ドメインへの到達に関わる。provider で持てるかは実装のときに確認し、持てなければ Wrangler の管轄にする |
+| `cloudflare_worker_version`（中身）                                | Wrangler  | assets、bindings、secret を持ち、deploy のたびに変わる                                                |
+| `cloudflare_workers_deployment`                                    | Wrangler  | どの version を live にするかを決める。deploy そのもの                                                |
+| runtime secret（Resend / Turnstile）                               | Wrangler  | Terraform の state に載せない                                                                         |
+| binding（R2 / KV など）                                            | Wrangler  | 決定のときは該当がない。要るときは `wrangler.jsonc` に置く                                            |
 
 - `cloudflare_workers_script` を使わない。
   使うと deploy が Terraform を経由し、apply の権限が日常の CI へ降りる。
@@ -175,7 +176,7 @@ backend "s3" {
   そのため、この 3 つは Wrangler の管轄にし、`wrangler.jsonc` に明示する。
 - `workers_dev` は `false` にする。
   有効にすると、本番の Worker が `workers.dev` のホスト名でも開き、zone の Rate Limiting を通らずに `/api/contact` へ届く見込みである（未確認）。
-  `preview_urls`（Version URL）は、7 のとおり使わないので `false` にする。
+  `preview_urls` は、Version URL と、Previews の `workers.dev` の URL の両方を切り替える。7 のとおりどちらも使わないので `false` にする。
   `logpush` と `tags` は wrangler が送らないので、Terraform が持つ。
   `cloudflare_workers_script_subdomain` は Terraform で管理しない。
 - この分担は、値の受け渡しを増やす。
@@ -215,12 +216,15 @@ Version URL（version ごとの URL）は使わない。
   変数と binding は `wrangler.jsonc` の `previews` ブロックに書き、preview 用の secret は `wrangler preview base-config secret put` で本番と別に入れる。
   - 出典: [Cloudflare: Previews](https://developers.cloudflare.com/workers/previews/)
 - Previews には Wrangler 4.135.0 以上が要る。
-- Preview の URL を `workers.dev` と custom domain のどちらに出すかは、`workers_dev` を `false` にしたときの扱いを確認して、実装のときに決める。
+- Preview の URL は、Preview 用の custom domain に出す。
+  Cloudflare は、custom domain にワイルドカードの DNS record と証明書を作る。
+  本番のサブドメインとワイルドカードがぶつからないよう、専用のホスト名（`previews.<ドメイン>`）にし、ADR-0009 の割り当ての表に載せる。
+  - 出典: [Cloudflare: Previews の Custom domains](https://developers.cloudflare.com/workers/previews/custom-domains/)
 
 ### 8. runtime secret を Terraform の state に載せない
 
 - secret の値は `wrangler secret put` で入れる。
-- 日常の deploy の workflow からは入れない。
+- 日常の deploy の workflow からは入れない。preview 用の secret（`wrangler preview base-config secret put`）も同じである。
   手動で起動する特権の workflow（`workflow_dispatch` と GitHub の environment protection rules）か、運用者のローカルの実行に限る。
 - Terraform は secret の**名前**だけを変数として扱い、値を扱わない。
 - Cloudflare Secrets Store は採らない。
@@ -245,12 +249,12 @@ deploy より強い権限を使う操作は、2 と 4 に限る。
 
 ![権限の図: 基盤を変える操作ごとの credential](../design/diagrams/infra-permission-flow.drawio.svg)
 
-| 操作                 | 使う権限                                                  | 誰が           | いつ                                          | 記録の残し方                                                                                                                           |
-| -------------------- | --------------------------------------------------------- | -------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 deploy             | deploy の scope に限った token（`Workers Scripts Write`） | 運用者（push） | push のたび。pull request では Preview を作る | GitHub Actions の実行の記録                                                                                                            |
-| 2 Terraform の apply | apply 用の token と R2 の S3 互換のキー                   | 運用者         | `infra/cloudflare/` を変えたとき              | GitHub Actions の実行の記録と、environment の承認の記録                                                                                |
-| 3 secret の投入      | deploy と同じ権限の token（`Workers Scripts Write`）      | 運用者         | secret の値を変えるとき                       | 特権の workflow なら GitHub Actions の実行の記録。ローカル環境で実行したときの残し方は、実装のときに決め、context/operations.md に書く |
-| 4 bootstrap          | R2 を作る権限の token                                     | 運用者         | 初回に 1 回                                   | token の範囲と記録の残し方は、実装のときに決め、context/operations.md に書く                                                           |
+| 操作                                 | 使う権限                                                  | 誰が           | いつ                                          | 記録の残し方                                                                                                                           |
+| ------------------------------------ | --------------------------------------------------------- | -------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 deploy                             | deploy の scope に限った token（`Workers Scripts Write`） | 運用者（push） | push のたび。pull request では Preview を作る | GitHub Actions の実行の記録                                                                                                            |
+| 2 Terraform の apply                 | apply 用の token と R2 の S3 互換のキー                   | 運用者         | `infra/cloudflare/` を変えたとき              | GitHub Actions の実行の記録と、environment の承認の記録                                                                                |
+| 3 secret の投入（本番と preview 用） | deploy と同じ権限の token（`Workers Scripts Write`）      | 運用者         | secret の値を変えるとき                       | 特権の workflow なら GitHub Actions の実行の記録。ローカル環境で実行したときの残し方は、実装のときに決め、context/operations.md に書く |
+| 4 bootstrap                          | R2 を作る権限の token                                     | 運用者         | 初回に 1 回                                   | token の範囲と記録の残し方は、実装のときに決め、context/operations.md に書く                                                           |
 
 ### 10. monorepo に同居する欠点に、1 つずつ対処する
 
@@ -317,6 +321,7 @@ custom domain は同時に 2 つの宛先へ張れないので、手順 2 と 3 
 
 - Previews には Wrangler 4.135.0 以上が要る（2026-11-28 に Cloudflare の文書で確認した）。Version URL は本番の resource で動き、Previews は変数、secret、binding を別に持つ。
 - 今の Cloudflare の文書は、`preview_urls` を書かないときは `workers_dev` に従うと書く。この ADR は 2 つを `false` と明示するので、デフォルト値に依らない。
+- Preview の URL は、`workers.dev` か custom domain の少なくとも 1 つを有効にしないと出ない。この ADR は custom domain を使う。
 - `@astrojs/cloudflare` 14.2.5 は、Workers を配信先とする adapter である。peer dependency は `astro ^7.2.0` で、このリポジトリの Astro は 7.4.8 である。
 
 ## Considered Options
