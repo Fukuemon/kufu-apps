@@ -1,4 +1,4 @@
-# ADR-0006: Terraform の infra code は kufu-apps と別のリポジトリで管理する
+# ADR-0007: Terraform の infra code は kufu-apps と別のリポジトリで管理する
 
 ## Status
 

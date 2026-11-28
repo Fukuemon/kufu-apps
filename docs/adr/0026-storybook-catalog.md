@@ -1,4 +1,4 @@
-# ADR-0023: packages/ui の Storybook をカタログの本体にし、corporate-site の Storybook を画面のカタログとして並べて公開する
+# ADR-0026: packages/ui の Storybook をカタログの本体にし、corporate-site の Storybook を画面のカタログとして並べて公開する
 
 ## Status
 
@@ -11,7 +11,7 @@
 - Storybook は、`packages/ui`（React の Vite）と `apps/corporate-site`（`@storybook-astro/framework`）に 1 つずつある。2 つを build して、gh-pages のブランチへ push している。
 - corporate-site の section は、Astro のコンポーネントである。Astro の Storybook の framework はコミュニティ製で、`@storybook/addon-vitest` が求める renderer に含まれない。
   - ADR-0004: [corporate-site の component を section 単位のフラットな構成にし、公開面を index.ts と独自のチェックで固定する](0004-corporate-site-sections-architecture.md)
-  - ADR-0026: [VRT を story と route の 2 系統で導入する](0026-visual-regression-testing-policy.md)
+  - ADR-0029: [VRT を story と route の 2 系統で導入する](0029-visual-regression-testing-policy.md)
 - story の title は、`packages/ui` が `UI/<Component>`、app が `Sections/<Section>/<Component>` か `Common/<Component>` である。story の VRT の baseline のファイル名は、story の id から決まる。
 - 運営者は、buddy の `packages/ui` と同じ形の Storybook で、トークンとコンポーネントを確認したい。
 - buddy の `packages/ui` の Storybook は、a11y、docs、vitest のアドオンと、hover の見た目を出すアドオンを使い、ページを「はじめに、トークン、コンポーネント、パターン、画面」の順に並べる。story は Vitest のブラウザのテストとして動かし、a11y のアドオンの違反をテストの失敗にする。

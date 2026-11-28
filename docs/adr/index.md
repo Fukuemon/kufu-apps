@@ -20,29 +20,29 @@
 
 | ADR                                                     | 題                                                              | Status |
 | ------------------------------------------------------- | --------------------------------------------------------------- | ------ |
-| [ADR-0006](0006-terraform-infra-repository-boundary.md) | Terraform の infra code は kufu-apps と別のリポジトリで管理する | 承認   |
+| [ADR-0007](0007-terraform-infra-repository-boundary.md) | Terraform の infra code は kufu-apps と別のリポジトリで管理する | 承認   |
 
 ### リポジトリとツールチェーン
 
 | ADR                                                   | 題                                                                                                        | Status |
 | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------ |
-| [ADR-0007](0007-documents-under-docs.md)              | PRD、Design Doc、ADR、spec を `docs/` の下に集める                                                        | 承認   |
-| [ADR-0009](0009-vite-plus-toolchain.md)               | 整形、lint、unit test を Vite+ で実行し、Turborepo を外す                                                 | 承認   |
-| [ADR-0010](0010-workspace-package-contract.md)        | workspace の package はソースを export し、ビルドの成果物、project references、packages/config を持たない | 承認   |
-| [ADR-0011](0011-hook-path-resolution-via-ghq-root.md) | AI エージェントの hook の PATH の解決を `$(ghq root)/<repo-path>` ベースに統一する                        | 承認   |
+| [ADR-0010](0010-documents-under-docs.md)              | PRD、Design Doc、ADR、spec を `docs/` の下に集める                                                        | 承認   |
+| [ADR-0012](0012-vite-plus-toolchain.md)               | 整形、lint、unit test を Vite+ で実行し、Turborepo を外す                                                 | 承認   |
+| [ADR-0013](0013-workspace-package-contract.md)        | workspace の package はソースを export し、ビルドの成果物、project references、packages/config を持たない | 承認   |
+| [ADR-0014](0014-hook-path-resolution-via-ghq-root.md) | AI エージェントの hook の PATH の解決を `$(ghq root)/<repo-path>` ベースに統一する                        | 承認   |
 
-- ADR-0008（[Monorepo の app の scaffold は公式の create command を優先し、Vite+ は見送る](0008-monorepo-scaffold-create-command-policy.md)）は、ADR-0009 に置換した。
+- ADR-0011（[Monorepo の app の scaffold は公式の create command を優先し、Vite+ は見送る](0011-monorepo-scaffold-create-command-policy.md)）は、ADR-0012 に置換した。
 
 ### 開発の流れと文書
 
 | ADR                                                       | 題                                                                                            | Status |
 | --------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------ |
-| [ADR-0013](0013-design-source-of-truth-implementation.md) | デザインの基準を実装（コードと Storybook）にし、Pencil（.pen）を廃止する                      | 承認   |
-| [ADR-0014](0014-designdoc-present-facts-only.md)          | Design Doc の各節には今の事実だけを書き、将来の計画は Open Questions / Future Work 節に集める | 承認   |
-| [ADR-0015](0015-specs-closeout-enforcement.md)            | spec を残し、issue を閉じるときの削除をチェックと削除の pull request の自動の起票で徹底する   | 承認   |
-| [ADR-0016](0016-ci-local-hook-responsibility.md)          | CI とローカルのフックの役割を、同じチェックを両方で動かすことを許す形で分ける                 | 承認   |
+| [ADR-0016](0016-design-source-of-truth-implementation.md) | デザインの基準を実装（コードと Storybook）にし、Pencil（.pen）を廃止する                      | 承認   |
+| [ADR-0017](0017-designdoc-present-facts-only.md)          | Design Doc の各節には今の事実だけを書き、将来の計画は Open Questions / Future Work 節に集める | 承認   |
+| [ADR-0018](0018-specs-closeout-enforcement.md)            | spec を残し、issue を閉じるときの削除をチェックと削除の pull request の自動の起票で徹底する   | 承認   |
+| [ADR-0019](0019-ci-local-hook-responsibility.md)          | CI とローカルのフックの役割を、同じチェックを両方で動かすことを許す形で分ける                 | 承認   |
 
-- ADR-0012（[デザイン制作のワークフローを Claude Design → Pencil.dev → AI Agent の 3 段構成で確定する](0012-design-production-workflow.md)）は、ADR-0013 に置換した。
+- ADR-0015（[デザイン制作のワークフローを Claude Design → Pencil.dev → AI Agent の 3 段構成で確定する](0015-design-production-workflow.md)）は、ADR-0016 に置換した。
 
 ### デザインシステム
 
@@ -50,30 +50,30 @@
 
 | ADR                                               | 題                                                                                                                                                  | Status |
 | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| [ADR-0018](0018-design-tokens-three-layers.md)    | トークンを、Kufu の色と DADS の値を持つプリミティブトークン、セマンティックトークン、テーマ変数の 3 つの層にし、shadcn の語彙をやめる               | 承認   |
-| [ADR-0020](0020-ui-components-native-elements.md) | packages/ui のコンポーネントを、ネイティブの要素と clsx で書いた Base と Case にし、shadcn と Base UI を外す                                        | 承認   |
-| [ADR-0022](0022-corporate-site-island-policy.md)  | corporate-site は @kufu/ui のコンポーネントを静的に描画して使い、client:\* の island は操作が要るものに限る                                         | 承認   |
-| [ADR-0023](0023-storybook-catalog.md)             | packages/ui の Storybook をカタログの本体にし、corporate-site の Storybook を画面のカタログとして並べて公開する                                     | 承認   |
-| [ADR-0025](0025-kufu-identity-japanese-labels.md) | Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせ、見出しの上のラベルを日本語だけにする | 承認   |
+| [ADR-0021](0021-design-tokens-three-layers.md)    | トークンを、Kufu の色と DADS の値を持つプリミティブトークン、セマンティックトークン、テーマ変数の 3 つの層にし、shadcn の語彙をやめる               | 承認   |
+| [ADR-0023](0023-ui-components-native-elements.md) | packages/ui のコンポーネントを、ネイティブの要素と clsx で書いた Base と Case にし、shadcn と Base UI を外す                                        | 承認   |
+| [ADR-0025](0025-corporate-site-island-policy.md)  | corporate-site は @kufu/ui のコンポーネントを静的に描画して使い、client:\* の island は操作が要るものに限る                                         | 承認   |
+| [ADR-0026](0026-storybook-catalog.md)             | packages/ui の Storybook をカタログの本体にし、corporate-site の Storybook を画面のカタログとして並べて公開する                                     | 承認   |
+| [ADR-0028](0028-kufu-identity-japanese-labels.md) | Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせ、見出しの上のラベルを日本語だけにする | 承認   |
 
-- ADR-0017（[デザイントークンを primitive と shadcn の語彙の 2 層に分け、tokens、fonts、theme、全量の entry で配る](0017-design-token-architecture.md)）は、ADR-0018 に置換した。
-- ADR-0019（[shadcn の primitive の基盤に Base UI を採る](0019-shadcn-base-ui-primitive-policy.md)）は、ADR-0020 に置換した。
-- ADR-0021（[corporate-site は shadcn を静的に描画して使い、client:\* の island は操作が要るものに限る](0021-astro-react-island-policy.md)）は、ADR-0022 に置換した。
-- ADR-0024（[Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせる](0024-keep-kufu-identity.md)）は、ADR-0025 に置換した。
+- ADR-0020（[デザイントークンを primitive と shadcn の語彙の 2 層に分け、tokens、fonts、theme、全量の entry で配る](0020-design-token-architecture.md)）は、ADR-0021 に置換した。
+- ADR-0022（[shadcn の primitive の基盤に Base UI を採る](0022-shadcn-base-ui-primitive-policy.md)）は、ADR-0023 に置換した。
+- ADR-0024（[corporate-site は shadcn を静的に描画して使い、client:\* の island は操作が要るものに限る](0024-astro-react-island-policy.md)）は、ADR-0025 に置換した。
+- ADR-0027（[Kufu の色、書体、ロゴ、装飾の語彙を残し、状態の色、フォーカス、文字の最小の大きさ、押せる領域を DADS に合わせる](0027-keep-kufu-identity.md)）は、ADR-0028 に置換した。
 
 ### テスト
 
 | ADR                                                         | 題                                                                      | Status |
 | ----------------------------------------------------------- | ----------------------------------------------------------------------- | ------ |
-| [ADR-0026](0026-visual-regression-testing-policy.md)        | VRT（visual regression testing）を story と route の 2 系統で導入する   | 承認   |
-| [ADR-0028](0028-e2e-test-code-layers.md)                    | E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる | 承認   |
-| [ADR-0029](0029-oxlint-js-plugin-for-e2e-authoring-rule.md) | テストの書き方の規則を、ESLint を入れずに oxlint の JS プラグインで流す | 承認   |
-| [ADR-0030](0030-e2e-workspace-at-root.md)                   | E2E をルートの e2e/ に置いたまま、workspace の package にする           | 承認   |
-| [ADR-0031](0031-playwright-upgrade.md)                      | Playwright を 1.64.1 に上げる                                           | 承認   |
-| [ADR-0032](0032-verification-scenarios-and-evidence.md)     | 検証のシナリオを文書として置き、エビデンスを pull request に載せる      | 承認   |
-| [ADR-0033](0033-capture-evidence-with-playwright.md)        | エビデンスを、Playwright の録画と字幕で撮る                             | 承認   |
+| [ADR-0029](0029-visual-regression-testing-policy.md)        | VRT（visual regression testing）を story と route の 2 系統で導入する   | 承認   |
+| [ADR-0031](0031-e2e-test-code-layers.md)                    | E2E のテストのコードを層に分けて書き、ページ単位の Page Object をやめる | 承認   |
+| [ADR-0032](0032-oxlint-js-plugin-for-e2e-authoring-rule.md) | テストの書き方の規則を、ESLint を入れずに oxlint の JS プラグインで流す | 承認   |
+| [ADR-0033](0033-e2e-workspace-at-root.md)                   | E2E をルートの e2e/ に置いたまま、workspace の package にする           | 承認   |
+| [ADR-0034](0034-playwright-upgrade.md)                      | Playwright を 1.64.1 に上げる                                           | 承認   |
+| [ADR-0035](0035-verification-scenarios-and-evidence.md)     | 検証のシナリオを文書として置き、エビデンスを pull request に載せる      | 承認   |
+| [ADR-0036](0036-capture-evidence-with-playwright.md)        | エビデンスを、Playwright の録画と字幕で撮る                             | 承認   |
 
-- ADR-0027（[play テストと E2E の役割を分け、Page Object と locator の規約を定める](0027-ui-test-structure-policy.md)）は、ADR-0028 に置換した。
+- ADR-0030（[play テストと E2E の役割を分け、Page Object と locator の規約を定める](0030-ui-test-structure-policy.md)）は、ADR-0031 に置換した。
 
 ## ADR の間の依存
 
@@ -90,108 +90,138 @@ flowchart TB
         A0005["0005"]
     end
     subgraph repo["リポジトリとツールチェーン"]
-        A0007["0007"]
-        A0009["0009"]
         A0010["0010"]
+        A0012["0012"]
+        A0013["0013"]
     end
     subgraph flow["開発の流れと文書"]
-        A0013["0013"]
-        A0015["0015"]
+        A0016["0016"]
+        A0018["0018"]
     end
     subgraph ds["デザインシステム"]
-        A0018["0018"]
-        A0020["0020"]
-        A0022["0022"]
+        A0021["0021"]
         A0023["0023"]
         A0025["0025"]
-    end
-    subgraph test["テスト"]
         A0026["0026"]
         A0028["0028"]
+    end
+    subgraph test["テスト"]
         A0029["0029"]
-        A0030["0030"]
         A0031["0031"]
         A0032["0032"]
         A0033["0033"]
+        A0034["0034"]
+        A0035["0035"]
+        A0036["0036"]
     end
 
-    A0003 --> A0013
+    A0003 --> A0016
     A0005 --> A0001
-    A0007 --> A0015
-    A0010 --> A0009
-    A0020 --> A0022
-    A0022 --> A0020
-    A0023 --> A0004
-    A0023 --> A0026
-    A0025 --> A0018
+    A0010 --> A0018
+    A0013 --> A0012
+    A0023 --> A0025
+    A0025 --> A0023
     A0026 --> A0004
-    A0026 --> A0013
-    A0029 --> A0009
-    A0029 --> A0028
-    A0029 --> A0030
-    A0030 --> A0026
-    A0030 --> A0007
-    A0030 --> A0009
-    A0031 --> A0026
-    A0032 --> A0026
-    A0032 --> A0007
+    A0026 --> A0029
+    A0028 --> A0021
+    A0029 --> A0004
+    A0029 --> A0016
+    A0032 --> A0012
+    A0032 --> A0031
     A0032 --> A0033
-    A0033 --> A0031
-    A0033 --> A0030
+    A0033 --> A0029
+    A0033 --> A0010
+    A0033 --> A0012
+    A0034 --> A0029
+    A0035 --> A0029
+    A0035 --> A0010
+    A0035 --> A0036
+    A0036 --> A0034
+    A0036 --> A0033
 ```
 
-- ADR-0002、ADR-0006、ADR-0011、ADR-0014、ADR-0016 は、Context でほかの ADR を前提にせず、前提にもされないので、図に描かない。
+- ADR-0002、ADR-0007、ADR-0014、ADR-0017、ADR-0019 は、Context でほかの ADR を前提にせず、前提にもされないので、図に描かない。
 
 ## 旧番号と新番号
 
-#115 で、ADR を話題の順に並べるために番号を振り直し、旧 ADR-0018 を旧 ADR-0015 に統合して今の ADR-0026 にした。  
+#115 で、ADR を話題の順に並べるために番号を振り直し、旧 ADR-0018 を旧 ADR-0015 に統合して今の ADR-0029 にした。  
+#47 で、ADR-0006、ADR-0008、ADR-0009 に新しい ADR を入れるために、後ろの番号をずらした。  
+同じ旧番号が 2 つの issue にあるときは、変えた issue の列で見分ける。  
 コミット、issue、pull request に書いた旧番号は、この表で今の ADR を探す。  
 統合した ADR の行は、統合した判断を今持つ ADR を指す。
 
 | 旧番号   | 今の番号         | 変えた issue |
 | -------- | ---------------- | ------------ |
-| ADR-0001 | ADR-0006         | #115         |
-| ADR-0002 | ADR-0008         | #115         |
+| ADR-0001 | ADR-0007         | #115         |
+| ADR-0002 | ADR-0011         | #115         |
 | ADR-0003 | ADR-0001         | #115         |
-| ADR-0004 | ADR-0012         | #115         |
-| ADR-0005 | ADR-0011         | #115         |
+| ADR-0004 | ADR-0015         | #115         |
+| ADR-0005 | ADR-0014         | #115         |
 | ADR-0006 | ADR-0003         | #115         |
-| ADR-0007 | ADR-0017         | #115         |
-| ADR-0008 | ADR-0021         | #115         |
+| ADR-0007 | ADR-0020         | #115         |
+| ADR-0008 | ADR-0024         | #115         |
 | ADR-0009 | ADR-0005         | #115         |
-| ADR-0010 | ADR-0019         | #115         |
-| ADR-0011 | ADR-0015         | #115         |
-| ADR-0012 | ADR-0013         | #115         |
-| ADR-0013 | ADR-0014         | #115         |
+| ADR-0010 | ADR-0022         | #115         |
+| ADR-0011 | ADR-0018         | #115         |
+| ADR-0012 | ADR-0016         | #115         |
+| ADR-0013 | ADR-0017         | #115         |
 | ADR-0014 | ADR-0004         | #115         |
-| ADR-0015 | ADR-0026（統合） | #115         |
-| ADR-0016 | ADR-0016         | #115         |
-| ADR-0017 | ADR-0027         | #115         |
-| ADR-0018 | ADR-0026（統合） | #115         |
+| ADR-0015 | ADR-0029（統合） | #115         |
+| ADR-0016 | ADR-0019         | #115         |
+| ADR-0017 | ADR-0030         | #115         |
+| ADR-0018 | ADR-0029（統合） | #115         |
 | ADR-0019 | ADR-0002         | #115         |
-| ADR-0024 | ADR-0007         | #115         |
-| ADR-0025 | ADR-0009         | #115         |
-| ADR-0026 | ADR-0010         | #115         |
-| ADR-0027 | ADR-0018         | #115         |
-| ADR-0028 | ADR-0020         | #115         |
-| ADR-0029 | ADR-0023         | #115         |
-| ADR-0030 | ADR-0024         | #115         |
-| ADR-0031 | ADR-0028         | #115         |
-| ADR-0032 | ADR-0029         | #115         |
-| ADR-0033 | ADR-0030         | #115         |
-| ADR-0034 | ADR-0031         | #115         |
-| ADR-0035 | ADR-0032         | #115         |
-| ADR-0036 | ADR-0033         | #115         |
-| ADR-0037 | ADR-0025         | #115         |
-| ADR-0038 | ADR-0022         | #115         |
+| ADR-0024 | ADR-0010         | #115         |
+| ADR-0025 | ADR-0012         | #115         |
+| ADR-0026 | ADR-0013         | #115         |
+| ADR-0027 | ADR-0021         | #115         |
+| ADR-0028 | ADR-0023         | #115         |
+| ADR-0029 | ADR-0026         | #115         |
+| ADR-0030 | ADR-0027         | #115         |
+| ADR-0031 | ADR-0031         | #115         |
+| ADR-0032 | ADR-0032         | #115         |
+| ADR-0033 | ADR-0033         | #115         |
+| ADR-0034 | ADR-0034         | #115         |
+| ADR-0035 | ADR-0035         | #115         |
+| ADR-0036 | ADR-0036         | #115         |
+| ADR-0037 | ADR-0028         | #115         |
+| ADR-0038 | ADR-0025         | #115         |
+| ADR-0006 | ADR-0007         | #47          |
+| ADR-0007 | ADR-0010         | #47          |
+| ADR-0008 | ADR-0011         | #47          |
+| ADR-0009 | ADR-0012         | #47          |
+| ADR-0010 | ADR-0013         | #47          |
+| ADR-0011 | ADR-0014         | #47          |
+| ADR-0012 | ADR-0015         | #47          |
+| ADR-0013 | ADR-0016         | #47          |
+| ADR-0014 | ADR-0017         | #47          |
+| ADR-0015 | ADR-0018         | #47          |
+| ADR-0016 | ADR-0019         | #47          |
+| ADR-0017 | ADR-0020         | #47          |
+| ADR-0018 | ADR-0021         | #47          |
+| ADR-0019 | ADR-0022         | #47          |
+| ADR-0020 | ADR-0023         | #47          |
+| ADR-0021 | ADR-0024         | #47          |
+| ADR-0022 | ADR-0025         | #47          |
+| ADR-0023 | ADR-0026         | #47          |
+| ADR-0024 | ADR-0027         | #47          |
+| ADR-0025 | ADR-0028         | #47          |
+| ADR-0026 | ADR-0029         | #47          |
+| ADR-0027 | ADR-0030         | #47          |
+| ADR-0028 | ADR-0031         | #47          |
+| ADR-0029 | ADR-0032         | #47          |
+| ADR-0030 | ADR-0033         | #47          |
+| ADR-0031 | ADR-0034         | #47          |
+| ADR-0032 | ADR-0035         | #47          |
+| ADR-0033 | ADR-0036         | #47          |
 
 ## 命名規約
 
 - ファイル名: `docs/adr/NNNN-<title>.md`
 - 番号が、先にマージされた pull request の ADR と重なったら、後からマージする pull request が番号を振り直す。
 - 例 (実在 ADR):
-  - [`docs/adr/0006-terraform-infra-repository-boundary.md`](0006-terraform-infra-repository-boundary.md)
-  - [`docs/adr/0018-design-tokens-three-layers.md`](0018-design-tokens-three-layers.md)
+  - [`docs/adr/0007-terraform-infra-repository-boundary.md`](0007-terraform-infra-repository-boundary.md)
+  - [`docs/adr/0021-design-tokens-three-layers.md`](0021-design-tokens-three-layers.md)
   - [`docs/adr/0005-corporate-site-contact-form-backend.md`](0005-corporate-site-contact-form-backend.md)
 
 ## ADR にする判断

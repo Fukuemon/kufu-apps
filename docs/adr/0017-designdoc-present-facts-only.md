@@ -1,4 +1,4 @@
-# ADR-0014: Design Doc の各節には今の事実だけを書き、将来の計画は Open Questions / Future Work 節に集める
+# ADR-0017: Design Doc の各節には今の事実だけを書き、将来の計画は Open Questions / Future Work 節に集める
 
 ## Status
 
@@ -36,7 +36,7 @@
   仕様が決まっていても、未実装のものは Future Work 節で扱う。
   - この基準により、問い合わせの backend は L1 と L2 から外し、Future Work 節で扱う。
   - Cloudflare Pages と CDN は、確定した配信先として図に残す。
-    - ADR-0006: [Terraform の infra code を別のリポジトリで管理する](0006-terraform-infra-repository-boundary.md)
+    - ADR-0007: [Terraform の infra code を別のリポジトリで管理する](0007-terraform-infra-repository-boundary.md)
   - 実装が進んだら、そのときに図へ足す。
 
 ## Considered Options

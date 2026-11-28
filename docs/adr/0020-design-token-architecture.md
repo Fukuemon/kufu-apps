@@ -1,8 +1,8 @@
-# ADR-0017: デザイントークンを primitive と shadcn の語彙の 2 層に分け、tokens、fonts、theme、全量の entry で配る
+# ADR-0020: デザイントークンを primitive と shadcn の語彙の 2 層に分け、tokens、fonts、theme、全量の entry で配る
 
 ## Status
 
-[ADR-0018](0018-design-tokens-three-layers.md) に置換
+[ADR-0021](0021-design-tokens-three-layers.md) に置換
 
 ## Context
 
@@ -17,7 +17,7 @@
   workspace の package の component の class を生成するには、その package のソースを `@source` で指す必要がある。
 - `.pen` は後に廃止した。
   トークンの基準は `packages/ui` の実装だけになり、デザインのツールへの同期は要らない。
-  ADR-0013: [デザインの基準を実装にし、Pencil を廃止する](0013-design-source-of-truth-implementation.md)
+  ADR-0016: [デザインの基準を実装にし、Pencil を廃止する](0016-design-source-of-truth-implementation.md)
 
 ## Decision
 

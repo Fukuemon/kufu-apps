@@ -1,8 +1,8 @@
-# ADR-0008: Monorepo の app の scaffold は公式の create command を優先し、Vite+ は見送る
+# ADR-0011: Monorepo の app の scaffold は公式の create command を優先し、Vite+ は見送る
 
 ## Status
 
-ADR-0009 に置換
+ADR-0012 に置換
 
 ## Context
 
