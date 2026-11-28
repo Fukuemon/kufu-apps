@@ -2,13 +2,13 @@
 
 ## Status
 
-提案
+承認
 
 ## Context
 
 - `apps/corporate-site` は Astro の静的な生成（`output: "static"`）で、動的なサーバーの処理は持たない。
   - ADR-0001: [Phase 1 は `apps/corporate-site` だけを実装し、`apps/cms` の設計を後続へ送る](0001-phase1-corporate-site-only-and-cms-deferred.md)
-- 配信を Cloudflare Pages から Workers static assets へ移し、`/api/contact` を同じ Worker の Worker script で処理すると、同時に提案する ADR で決める。
+- 配信を Cloudflare Pages から Workers static assets へ移し、`/api/contact` を同じ Worker の Worker script で処理すると、ADR-0008 で決めた。
   - ADR-0008: [infra code を Kufu Monorepo に置き、Workers static assets で配信し、基盤を Terraform、deploy と runtime の設定を Wrangler で管理する](0008-infra-monorepo-workers-terraform-wrangler.md)
 - ADR-0005 は、送信の実行基盤を Pages Functions にした。この ADR は、ADR-0005 の判断をすべて写し、実行基盤だけを Worker script に替えて、ADR-0005 を置き換える。
   - ADR-0005: [corporate-site の問い合わせの送信は Cloudflare Pages Functions（Workers）で中継する](0005-corporate-site-contact-form-backend.md)

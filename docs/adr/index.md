@@ -14,13 +14,18 @@
 | [ADR-0002](0002-astro-static-corporate-site.md)                 | コーポレートサイトを Astro の静的な生成で作り、UI を共有の package に置き、CMS を最初から作らない             | 承認   |
 | [ADR-0003](0003-corporate-site-three-route-ia.md)               | corporate-site の IA を 5 ページ構成から 3 route の統合構成へ変更する                                         | 承認   |
 | [ADR-0004](0004-corporate-site-sections-architecture.md)        | corporate-site の component を section 単位のフラットな構成にし、公開面を index.ts と独自のチェックで固定する | 承認   |
-| [ADR-0005](0005-corporate-site-contact-form-backend.md)         | corporate-site の問い合わせの送信は Cloudflare Pages Functions（Workers）で中継する                           | 承認   |
+| [ADR-0006](0006-corporate-site-contact-form-on-worker.md)       | corporate-site の問い合わせの送信は Cloudflare Workers の Worker script で中継する                            | 承認   |
+
+- ADR-0005（[corporate-site の問い合わせの送信は Cloudflare Pages Functions（Workers）で中継する](0005-corporate-site-contact-form-backend.md)）は、ADR-0006 に置換した。
 
 ### 基盤と配信
 
-| ADR                                                     | 題                                                              | Status |
-| ------------------------------------------------------- | --------------------------------------------------------------- | ------ |
-| [ADR-0007](0007-terraform-infra-repository-boundary.md) | Terraform の infra code は kufu-apps と別のリポジトリで管理する | 承認   |
+| ADR                                                           | 題                                                                                                                                   | Status |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------ |
+| [ADR-0008](0008-infra-monorepo-workers-terraform-wrangler.md) | infra code を Kufu Monorepo に置き、Workers static assets で配信し、基盤を Terraform、deploy と runtime の設定を Wrangler で管理する | 承認   |
+| [ADR-0009](0009-subdomains-and-workers.md)                    | サブドメインに分ける規則を決め、1 つの配信物を 1 つの Worker とホスト名に割り当てる                                                  | 承認   |
+
+- ADR-0007（[Terraform の infra code は kufu-apps と別のリポジトリで管理する](0007-terraform-infra-repository-boundary.md)）は、ADR-0008 に置換した。
 
 ### リポジトリとツールチェーン
 
@@ -87,7 +92,11 @@ flowchart TB
         A0001["0001"]
         A0003["0003"]
         A0004["0004"]
-        A0005["0005"]
+        A0006["0006"]
+    end
+    subgraph infra["基盤と配信"]
+        A0008["0008"]
+        A0009["0009"]
     end
     subgraph repo["リポジトリとツールチェーン"]
         A0010["0010"]
@@ -116,7 +125,11 @@ flowchart TB
     end
 
     A0003 --> A0016
-    A0005 --> A0001
+    A0006 --> A0001
+    A0006 --> A0008
+    A0009 --> A0001
+    A0009 --> A0008
+    A0009 --> A0026
     A0010 --> A0018
     A0013 --> A0012
     A0023 --> A0025
@@ -140,7 +153,7 @@ flowchart TB
     A0036 --> A0033
 ```
 
-- ADR-0002、ADR-0007、ADR-0014、ADR-0017、ADR-0019 は、Context でほかの ADR を前提にせず、前提にもされないので、図に描かない。
+- ADR-0002、ADR-0014、ADR-0017、ADR-0019 は、Context でほかの ADR を前提にせず、前提にもされないので、図に描かない。
 
 ## 旧番号と新番号
 
