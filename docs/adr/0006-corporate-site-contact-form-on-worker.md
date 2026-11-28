@@ -7,7 +7,7 @@
 ## Context
 
 - `apps/corporate-site` は Astro の静的な生成（`output: "static"`）で、動的なサーバーの処理は持たない。
-  - ADR-0001: [Phase 1 は corporate-site だけを作る](0001-phase1-corporate-site-only-and-cms-deferred.md)
+  - ADR-0001: [Phase 1 は `apps/corporate-site` だけを実装し、`apps/cms` の設計を後続へ送る](0001-phase1-corporate-site-only-and-cms-deferred.md)
 - 配信を Cloudflare Pages から Workers static assets へ移し、`/api/contact` を同じ Worker の Worker script で処理すると、同時に提案する ADR で決める。
   - ADR-0008: [infra code を Kufu Monorepo に置き、Workers static assets で配信し、基盤を Terraform、deploy と runtime の設定を Wrangler で管理する](0008-infra-monorepo-workers-terraform-wrangler.md)
 - ADR-0005 は、送信の実行基盤を Pages Functions にした。この ADR は、ADR-0005 の判断をすべて写し、実行基盤だけを Worker script に替えて、ADR-0005 を置き換える。
@@ -24,7 +24,7 @@
 corporate-site の問い合わせの送信を、**Cloudflare Workers の Worker script で中継**して作る。
 
 1. **送信の流れ**: フォーム（React の island）から、同じオリジンの `/api/contact`（静的なアセットを配る Worker と同じ Worker の Worker script）へ HTTP の POST を送る。ブラウザから第三者の API を直接呼ばない。
-   - ADR-0024: [フォームは corporate-site の最初の主な React の island](0024-astro-react-island-policy.md)
+   - ADR-0025: [corporate-site は @kufu/ui のコンポーネントを静的に描画して使い、client:\* の island は操作が要るものに限る](0025-corporate-site-island-policy.md)
 2. **配信の構成**: 静的な生成（`output: "static"`）を保ち、送信の endpoint だけを Worker script で処理する。Node.js の常駐するサーバーと専用の VM は、引き続き持たない。
 3. **検証**: Workers が入力をサーバーの側で検証し直し、client を信頼しない。スパムの対策として、Cloudflare Turnstile の token の `siteverify` での検証と、honeypot の判定を行う。
 4. **通知**: 検証を通った後、Workers が Resend の HTTP API でメールを通知する。
@@ -43,7 +43,7 @@ corporate-site の問い合わせの送信を、**Cloudflare Workers の Worker 
 
 | 選択肢                                                                                | 強み                                                                                              | 弱み                                                                                                                                                                |
 | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **採用:** Cloudflare Workers の Worker script で中継し、Resend でメールを通知する     | secret をサーバーの側に隠せる。第三者の API をブラウザから直接呼ばない。Cloudflare の中で完結する | 静的な配信だけの前提から一歩出て、Workers への依存が増える。Resend への依存と、SPF と DKIM の設定が要る                                                             |
+| **採用:** Cloudflare Workers の Worker script で中継し、Resend でメールを通知する     | secret をサーバーの側に隠せる。第三者の API をブラウザから直接呼ばない。Cloudflare の中で完結する | 静的なアセットだけを配る Worker に、実行するコード（Worker script）が加わる。Resend への依存と、SPF と DKIM の設定が要る                                            |
 | 第三者のフォームのサービス（Formspree、Web3Forms など）へ、ブラウザから直接 POST する | 実装が最も短い                                                                                    | 第三者の API をブラウザから直接呼ぶ構成を標準にしない方針に反し、endpoint と token が client に出る。外部の SaaS への依存、無料の枠の制限、ベンダーロックインもある |
 | mailto: のリンクで代える（フォームの送信をやめる）                                    | バックエンドが要らない                                                                            | 情報設計の「フォームを置く」決定を満たさず、UX も劣る                                                                                                               |
 | MailChannels（Workers から無料で送る）                                                | Workers から追加の費用なしで送れた                                                                | 2024 に Cloudflare Workers 向けの無料の提供が終わり、Resend に対する利点がなくなった                                                                                |
@@ -60,9 +60,12 @@ corporate-site の問い合わせの送信を、**Cloudflare Workers の Worker 
 
 ### Negative
 
-- 静的な生成（`output: "static"`）だけの前提から Worker script の併用へ一歩出て、基盤の側に Workers への依存が増える。
+- 静的なアセットだけを配る Worker に、実行するコード（Worker script）が加わる。
 - Resend（外部のメールの送信のサービス）への依存と、送信のドメインの SPF と DKIM の設定が要る。
 - 実際のメールの送信を避けるため、テストの層を分ける必要がある。
   - E2E では、Playwright の route intercept で `/api/contact` をモックする。
   - Workers のロジック（二重の検証、honeypot、Turnstile の分岐、エラーの code の対応）は Vitest の unit で確認する。
-  - Worker script との実際の結線は、Worker の preview URL で手で確認する。
+  - Worker script との実際の結線は、preview 用の secret で動く Worker の Preview で手で確認する。
+- 実装した後に、Pages Functions を前提に書いた文書を直す。
+  - [問い合わせフォームの Design Doc](../design/features/contact-form/DesignDoc.md): runtime、図、smoke test の環境
+  - [context/codebase.md](../../context/codebase.md): 「Cloudflare Pages Functions か Workers で」の記述
