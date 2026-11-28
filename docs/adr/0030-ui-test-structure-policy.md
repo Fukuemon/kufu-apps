@@ -1,8 +1,8 @@
-# ADR-0027: play テストと E2E の役割を分け、Page Object と locator の規約を定める
+# ADR-0030: play テストと E2E の役割を分け、Page Object と locator の規約を定める
 
 ## Status
 
-[ADR-0028](0028-e2e-test-code-layers.md) に置換
+[ADR-0031](0031-e2e-test-code-layers.md) に置換
 
 ## Context
 
@@ -16,7 +16,7 @@
     `data-testid` を定義した箇所は 20 ある。
   - React の island は **0 件**で、`client:*` を使った箇所はない。
     island を必要な最小限にする方針に沿っている。
-    - ADR-0021: [shadcn は静的な描画を既定にし、island はインタラクションに限る](0021-astro-react-island-policy.md)
+    - ADR-0024: [shadcn は静的な描画を既定にし、island はインタラクションに限る](0024-astro-react-island-policy.md)
   - `apps/corporate-site/src/components/sections/contact/ContactSection.astro` に `<form>` の要素はない。
     `data-testid="contact-form-slot"` の枠に、デザインの確認用のフォームの枠であると注記した入力欄と、`type="button"` の送信のボタンがある。
 

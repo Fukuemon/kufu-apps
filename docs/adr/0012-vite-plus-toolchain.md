@@ -1,4 +1,4 @@
-# ADR-0009: 整形、lint、unit test を Vite+ で実行し、Turborepo を外す
+# ADR-0012: 整形、lint、unit test を Vite+ で実行し、Turborepo を外す
 
 ## Status
 
@@ -7,7 +7,7 @@
 ## Context
 
 - ツールチェーンは、Turborepo、oxlint、oxfmt、tsc、Vitest を個別に入れている。Vite+ は入れないと決めていた。
-  - ADR-0008: [Monorepo の app の scaffold は公式の create command を優先し、Vite+ は見送る](0008-monorepo-scaffold-create-command-policy.md)
+  - ADR-0011: [Monorepo の app の scaffold は公式の create command を優先し、Vite+ は見送る](0011-monorepo-scaffold-create-command-policy.md)
 - buddy は、Vite+（`vp`）で整形、lint、Vitest を実行する。設定はルートの `vite.config.ts` に置く。Turborepo は使わず、CI は `pnpm -r check`、`pnpm -r typecheck`、`pnpm -r test` を実行する。
   - 出典: [buddy の context/tech-stack.md](https://github.com/Fukuemon/buddy/blob/c53390a6e64f4ef39d468dedd529425ae4aca0e5/context/tech-stack.md)
   - 出典: [buddy の .github/workflows/ci.yml](https://github.com/Fukuemon/buddy/blob/c53390a6e64f4ef39d468dedd529425ae4aca0e5/.github/workflows/ci.yml#L65-L75)
@@ -47,7 +47,7 @@
 - タスクのキャッシュは持たない。workspace が 3 つで、キャッシュで縮む時間が小さいためである。
   - build の時間が問題になったら、fukuemon.dev の ADR-0017 と同じく、build だけを `vp run` のキャッシュに載せる。
   - Turbo の remote cache を入れるかの判断は、対象がなくなる。
-    - ADR-0016: [CI とローカルのフックの役割を分ける](0016-ci-local-hook-responsibility.md)
+    - ADR-0019: [CI とローカルのフックの役割を分ける](0019-ci-local-hook-responsibility.md)
 
 ### 3. Astro の開発サーバーと build は、Astro の CLI で実行する
 
@@ -69,7 +69,7 @@
 
 ### 6. app の最初の scaffold は、公式の create のコマンドを優先する
 
-ADR-0008 の scaffold の判断を、変えずに引き継ぐ。
+ADR-0011 の scaffold の判断を、変えずに引き継ぐ。
 
 - `apps/corporate-site` の初期の scaffold は、`pnpm create astro@latest apps/corporate-site` を正とする。
 - React の app の初期の scaffold は、`pnpm create vite ... --template react-ts` を正とする。
@@ -81,7 +81,7 @@ ADR-0008 の scaffold の判断を、変えずに引き継ぐ。
 - 差分が出たら、HTML の空白を Astro 6 と同じにする設定で、差分が消えるかを確認する。
 - 設定で消えない差分は、運営者が画面を見て、baseline を撮り直すかを決める。
 
-この決定は、ADR-0008 を置き換える。
+この決定は、ADR-0011 を置き換える。
 
 ## Verification
 

@@ -37,7 +37,7 @@ ADR-0002: [コーポレートサイトを Astro の静的な生成で作る](../
 - Astro で完結できるコーポレートサイトの機能の React 化
 - 用途が決まらない `packages/ui` の抽象化と、汎用の UI のライブラリ
 - 本番の基盤を apply する仕組み。Terraform は別のリポジトリ `kufu-infra` が持つ。
-  - ADR-0006: [Terraform を基盤のリポジトリに分ける](../adr/0006-terraform-infra-repository-boundary.md)
+  - ADR-0007: [Terraform を基盤のリポジトリに分ける](../adr/0007-terraform-infra-repository-boundary.md)
 
 ## Assumptions and Constraints
 
@@ -47,13 +47,13 @@ ADR-0002: [コーポレートサイトを Astro の静的な生成で作る](../
   - ADR-0001: [Phase 1 は corporate-site だけを実装する](../adr/0001-phase1-corporate-site-only-and-cms-deferred.md)
 - UI はコーポレートサイトの中に置くことを第一の原則にし、複数の利用者がはっきりしたものを `packages/ui` へ移す。
   - デザイントークンは、最初から `packages/ui` を基準にする。
-  - ADR-0018: [トークンの 3 つの層](../adr/0018-design-tokens-three-layers.md)
+  - ADR-0021: [トークンの 3 つの層](../adr/0021-design-tokens-three-layers.md)
 - 整形と lint の設定はルートの `vite.config.ts` に置く。
-  - ADR-0009: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](../adr/0009-vite-plus-toolchain.md)
+  - ADR-0012: [整形、lint、unit test を Vite+ で実行し、Turborepo を外す](../adr/0012-vite-plus-toolchain.md)
 - pnpm workspace を使い、workspace のタスクは `pnpm -r` で束ねる。
 - `tsconfig.json` は各 workspace が持つ。
 - workspace の package はソースを export し、ビルドの成果物を持たない。
-  - ADR-0010: [workspace の package はソースを export し、ビルドの成果物、project references、packages/config を持たない](../adr/0010-workspace-package-contract.md)
+  - ADR-0013: [workspace の package はソースを export し、ビルドの成果物、project references、packages/config を持たない](../adr/0013-workspace-package-contract.md)
 - 基盤は Cloudflare の標準の機能で閉じ、独自のサーバーの運用を前提にしない。
 
 ## Architecture
@@ -89,7 +89,7 @@ app の中の Storybook で、section のコンポーネントをレビューす
 
 デザイントークン、フォント、共有のスタイルシートの基準と、再利用がはっきりした共有の UI の primitive を置く。  
 Storybook で共有のカタログを提供する。  
-ADR-0018: [トークンの 3 つの層](../adr/0018-design-tokens-three-layers.md)
+ADR-0021: [トークンの 3 つの層](../adr/0021-design-tokens-three-layers.md)
 
 - 持たないもの: ページの section、業務の文言を持つコンポーネント、app のデータの形に依存するコンポーネント
 - 置いてよいものの規則は [context/codebase.md](../../context/codebase.md#app-の中の層) にある。
@@ -99,7 +99,7 @@ ADR-0018: [トークンの 3 つの層](../adr/0018-design-tokens-three-layers.m
 workspace の package `@kufu/e2e` で、Playwright による公開の前の検証と、主な導線の回帰のテストを担う。  
 route の VRT もここで撮る。  
 テストのコードは `e2e/tests/` の層に置き、書き方の規則を oxlint の JS プラグインで掛ける。  
-ADR-0030: [E2E をルートの e2e/ に置いたまま、workspace の package にする](../adr/0030-e2e-workspace-at-root.md)
+ADR-0033: [E2E をルートの e2e/ に置いたまま、workspace の package にする](../adr/0033-e2e-workspace-at-root.md)
 
 - 持たないもの: 1 つのコンポーネントの中で閉じる操作の検証。Storybook の play が担う。
 - テストの種類ごとの責務は [context/testing.md](../../context/testing.md#test-types-and-guarantees) にある。
@@ -134,13 +134,13 @@ React の app の標準の候補は [CMS の Design Doc](features/cms/DesignDoc.
 
 - コーポレートサイトの性能と SEO を最も優先する。
 - Astro で解決できるものを React の island にしない。
-  - ADR-0022: [corporate-site の island の方針](../adr/0022-corporate-site-island-policy.md)
+  - ADR-0025: [corporate-site の island の方針](../adr/0025-corporate-site-island-policy.md)
 - 基盤は Cloudflare の標準の機能で閉じ、独自のサーバーの運用を前提にしない。
 - Terraform は別のリポジトリで管理し、app のリポジトリに本番の基盤を apply する流れを持ち込まない。
-  - ADR-0006: [Terraform を基盤のリポジトリに分ける](../adr/0006-terraform-infra-repository-boundary.md)
+  - ADR-0007: [Terraform を基盤のリポジトリに分ける](../adr/0007-terraform-infra-repository-boundary.md)
 - AI エージェントは、Design Doc、ADR、package の境界を参照し、対象の外の実装を避ける。
 - デザインの基準は、実装のコードと Storybook にする。
-  - ADR-0013: [デザインの基準を実装にする](../adr/0013-design-source-of-truth-implementation.md)
+  - ADR-0016: [デザインの基準を実装にする](../adr/0016-design-source-of-truth-implementation.md)
 
 ### 取り決めの所在
 

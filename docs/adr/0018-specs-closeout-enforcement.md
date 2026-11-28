@@ -1,4 +1,4 @@
-# ADR-0015: spec を残し、issue を閉じるときの削除をチェックと削除の pull request の自動の起票で徹底する
+# ADR-0018: spec を残し、issue を閉じるときの削除をチェックと削除の pull request の自動の起票で徹底する
 
 ## Status
 

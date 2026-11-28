@@ -14,7 +14,7 @@ verified_commit: 81f85da2744f320f44040307f1ec854f705f7c79
 公開の基盤は Cloudflare で、Pages を第一の候補にする。  
 Workers は、API か BFF が要るときだけ使う。  
 Terraform の実体は別のリポジトリ `kufu-infra` が持ち、このリポジトリには置かない。  
-ADR-0006: [Terraform を基盤のリポジトリに分ける](../docs/adr/0006-terraform-infra-repository-boundary.md)
+ADR-0007: [Terraform を基盤のリポジトリに分ける](../docs/adr/0007-terraform-infra-repository-boundary.md)
 
 - `apps/corporate-site` は Astro で静的に生成し、build の artifact を Cloudflare Pages から配信する。
 - API か BFF を入れない限り、Node.js の常駐するサーバーと専用の VM を前提にしない。
