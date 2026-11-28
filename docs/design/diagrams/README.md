@@ -8,7 +8,7 @@
 
 生成元と生成物が同一ファイルであるため、**両者がずれる余地がない**。図の生成スクリプト、生成コマンドの CI 実行、生成物との差分の確認のいずれも要らない。
 
-`.drawio` (XML のみ) を別に置かない。置くと編集の元が 2 つになり、この利点を失う。
+`.drawio`（XML のみ）を別に置かない。置くと編集の元が 2 つになり、この利点を失う。
 
 ## 図の一覧
 
@@ -19,7 +19,7 @@
 
 ## 編集手順
 
-1. draw.io Desktop で `.drawio.svg` を直接開く (`brew install --cask drawio` で導入する)。
+1. draw.io Desktop で `.drawio.svg` を直接開く（`brew install --cask drawio` で導入する）。
 2. 編集して保存する。
 3. 次のコマンドで書き出す。出力先は入力と同じファイルにする。
 
@@ -40,7 +40,7 @@ drawio --export --format svg --embed-diagram --uncompressed --theme light \
 
 ## 制約: ラベルは `html=0` で作る
 
-draw.io のデフォルトはラベルを HTML (`foreignObject`) で出力する。GitHub の SVG サニタイズは `foreignObject` を除去するため、**文字が消えて「Text is not SVG - cannot display」の警告画像に置き換わる**。エラーにはならず、図の枠だけが表示される。
+draw.io のデフォルトはラベルを HTML（`foreignObject`）で出力する。GitHub の SVG サニタイズは `foreignObject` を除去するため、**文字が消えて「Text is not SVG - cannot display」の警告画像に置き換わる**。エラーにはならず、図の枠だけが表示される。
 
 図形のスタイルに `html=0` を指定すると、文字は SVG のテキストとして出力される。太字の見出しとグレーの説明文のように書式を分ける場合は、1 つの図形に詰め込まず、テキスト要素を分けて配置する。
 
@@ -53,22 +53,20 @@ grep -o '<foreignObject' docs/design/diagrams/<name>.drawio.svg | wc -l     # 0 
 
 ## Cloudflare アイコン
 
-`cloudflare-icons.xml` は draw.io のシェイプライブラリである。Cloudflare の製品アイコン 251 個を収録する。draw.io の `File > Open Library from > Device` で読み込むと、左のパネルからドラッグして使える。
+図の Cloudflare の製品アイコンは、`data:image/svg+xml,` の data URI として図に埋め込んである。外部への参照は発生しないため、GitHub 上でも欠けない。
 
-draw.io の公式 stencil に Cloudflare は含まれない (AWS / Azure / GCP / IBM Cloud などはある)。iconify にも R2 や DNS の製品アイコンは存在しない。このため公式 npm パッケージから独自に生成した。
+アイコンの draw.io のライブラリは、このリポジトリに置かない。BSD-3-Clause が求める著作権表示の原文が上流に無く、公開のリポジトリで再配布の条件を満たせるかを確認していないためである。
 
-アイコンは `data:image/svg+xml,` の data URI として図に埋め込まれる。外部への参照は発生しないため、GitHub 上でも欠けない。
+新しいアイコンが要るときは、次の手順でライブラリをローカル環境で作る。
 
-### 由来とライセンス
+1. [`@cloudflare/component-icon`](https://www.npmjs.com/package/@cloudflare/component-icon) v13.15.3 を入れる。ライセンスは、パッケージの `package.json` の `license` フィールドによれば BSD-3-Clause である。
+2. React コンポーネントとして配られているアイコンを静的な SVG に描画し、draw.io のライブラリの形式（`<mxlibrary>`）に変換する。図形そのものは変えない。
+3. draw.io の `File > Open Library from > Device` で読み込み、使うアイコンを図に置く。ライブラリのファイルはコミットしない。
 
-- 出典: [`@cloudflare/component-icon`](https://www.npmjs.com/package/@cloudflare/component-icon) v13.15.3 (author: Cloudflare Frontend Team)
-- ライセンス: BSD-3-Clause。パッケージの `package.json` の `license` フィールドに基づく
-- 加工内容: React コンポーネントとして配布されているものを静的 SVG へ描画し、draw.io のライブラリ形式へ変換した。図形そのものは改変していない。
-
-**未確認**: 当該パッケージは `LICENSE` ファイルと著作権表示を同梱していない。BSD-3-Clause は再配布時に著作権表示の保持を求めるが、保持すべき原文が上流に存在しない。厳密な遵守を要する場合は Cloudflare へ確認する。
+draw.io の公式の stencil に Cloudflare は含まれない（AWS、Azure、GCP、IBM Cloud などはある）。iconify にも R2 や DNS の製品アイコンは無い。
 
 ## 新しい図を追加するとき
 
 1. draw.io で新規作成し、`docs/design/diagrams/<name>.drawio.svg` として上記コマンドで書き出す。
-2. 本 README の一覧へ行を足す。
+2. この README の一覧へ行を足す。
 3. 参照元の文書から `![説明](../design/diagrams/<name>.drawio.svg)` の形で埋め込む。
