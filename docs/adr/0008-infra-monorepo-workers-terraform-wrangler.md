@@ -240,7 +240,7 @@ Version URL（version ごとの URL）は使わない。
   - 出典: [Cloudflare API: Update a Worker script secret](https://developers.cloudflare.com/api/resources/workers/subresources/scripts/subresources/secrets/methods/update/) の Accepted Permissions
 
 操作ごとの権限を次の図と表に示す。  
-apply の権限を使う操作は、2 と 4 に限る。  
+deploy より強い権限を使う操作は、2 と 4 に限る。  
 3 は deploy と同じ権限を、通常の workflow の外で使う。
 
 ![権限の図: 基盤を変える操作ごとの credential](../design/diagrams/infra-permission-flow.drawio.svg)
@@ -280,8 +280,8 @@ ADR-0007 が monorepo に同居する欠点として挙げた点は、集約し�
 
 稼働中のサイトは、次の順で Pages から Worker へ切り替える。
 
-1. Worker を作り、production とは別の URL で内容を確認する。
-2. `cloudflare_workers_custom_domain` を張る前に、Pages の側の custom domain を外す。
+1. Worker を作り、Preview の URL で内容を確認する。`/api/contact` は preview 用の secret で動くので、本番の secret での確認は手順 4 に残る。
+2. `cloudflare_workers_custom_domain` を張る前に、Pages の側の custom domain を外し、サイトのホスト名の CNAME の record を消す。
 3. Worker の側へ custom domain を張り、DNS が Worker を指すことを確認する。
 4. 表示と `/api/contact` を確認した後で、Pages の GitHub 連携を外し、Pages project を消す。
 
