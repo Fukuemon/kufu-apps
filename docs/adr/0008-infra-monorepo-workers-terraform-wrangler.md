@@ -220,6 +220,9 @@ Version URL（version ごとの URL）は使わない。
   Cloudflare は、custom domain にワイルドカードの DNS record と証明書を作る。
   本番のサブドメインとワイルドカードがぶつからないよう、専用のホスト名（`previews.<ドメイン>`）にし、ADR-0009 の割り当ての表に載せる。
   - 出典: [Cloudflare: Previews の Custom domains](https://developers.cloudflare.com/workers/previews/custom-domains/)
+- 実装のときに、次の 2 つを確認して決め、context/operations.md に書く。
+  - custom domain の Preview を公開のままにするか。Preview の URL は誰でも開け、Cloudflare は custom domain の Preview に `X-Robots-Tag: noindex` を付けない。Cloudflare Access で閉じるか、`noindex` を返すかを決める。
+  - `*.previews.<ドメイン>` を、corporate-site とほかの配信物の Preview で共有できるか。共有できなければ、配信物ごとのホスト名を決める。
 
 ### 8. runtime secret を Terraform の state に載せない
 
