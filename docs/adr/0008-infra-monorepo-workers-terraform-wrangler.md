@@ -23,10 +23,7 @@
   一方で、同じリソースを複数のツールから管理しないことを要件にしている。
   - 出典: [Cloudflare Terraform Best Practices](https://developers.cloudflare.com/terraform/advanced-topics/best-practices/) の「Manage some resources outside of Terraform」
 - corporate-site は Astro で静的に生成し、Pages の GitHub 連携で公開している。
-  問い合わせフォームの送信は Pages Functions（Workers）で処理する設計だが、未実装である（`apps/corporate-site/functions/` がなく、issue #26 は open）。
-  - ADR-0005: [corporate-site の問い合わせの送信は Cloudflare Pages Functions（Workers）で中継する](0005-corporate-site-contact-form-backend.md)
-- 送信の実行基盤を Worker script に替えた問い合わせフォームの ADR を、この ADR と同時に提案する。
-  - ADR-0006: [corporate-site の問い合わせの送信は Cloudflare Workers の Worker script で中継する](0006-corporate-site-contact-form-on-worker.md)
+  問い合わせフォームの送信の endpoint `/api/contact` は、未実装である（`apps/corporate-site/functions/` がなく、issue #26 は open）。
 - Cloudflare は Pages からの移行ガイドと機能の比較表を公開している。
   `wrangler` は、非対話で失敗したときのメッセージで、新規の project を Workers へ勧める。
   - 出典: [Cloudflare: Migrate from Pages to Workers](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/)
@@ -44,7 +41,10 @@
   **Workers は、箱と中身が別の resource に分かれている。**
 
 - 開発は 1 名なので、自分の変更を自分が承認することになり、レビューによる職務の分離は成り立たない。
-- 手本にした fukuemon.dev は、同じ構成（monorepo の `infra/`、Workers static assets、Terraform と Wrangler の分担）を承認し、初回の apply まで済ませている。
+- 手本にした fukuemon.dev は、次の 5 つを承認し、初回の apply まで済ませている。
+  monorepo の `infra/`、Workers static assets、custom domain を Terraform が持つこと、R2 の state、credential の 2 系統である。
+  Worker の箱と Rate Limiting は Terraform で持たず、Worker は `wrangler deploy` が作る。
+  この点は、この ADR と違う。
   - 出典: [fukuemon.dev の ADR-0005](https://github.com/Fukuemon/fukuemon.dev/blob/bb59afc0353a92d0137b3aa014f644176bf027a4/docs/adr/0005-workers-terraform-wrangler-boundary.md)
 
 ## Decision
@@ -105,6 +105,9 @@ infra/
   | 2    | staging などの環境を足す   | `infra/cloudflare/<account>/...`                    | 2 つ目の Cloudflare アカウントを使う                         |
   | 3    | AWS や GCP を併用する      | `infra/aws/` や `infra/gcp/` を並べる               | 別の provider を導入する                                     |
 
+  root module を分けるときは、state を分ける作業（`terraform state mv` か import）が一度要る。
+  最初から分けると、少ないリソースに常に運用のコストを払うことになるので、一度きりの作業として受け入れる。
+
 ### 3. state は R2 に置き、`s3` backend の AWS 向けの検証を切る
 
 R2 は S3 互換だが AWS ではない。  
@@ -151,24 +154,33 @@ backend "s3" {
 3. 変わらない場合、変更が本番の可用性かドメインへの到達に影響するなら Terraform。
 4. どれでもなければ Terraform をデフォルトにする。変更の履歴と review を残せるためである。
 
-| リソース                               | 管轄      | 根拠                                                             |
-| -------------------------------------- | --------- | ---------------------------------------------------------------- |
-| Zone / DNS record / TLS                | Terraform | deploy と独立し、ドメインへの到達に直結する                      |
-| `cloudflare_worker`（箱）              | Terraform | 名前と `tags` だけを持つ。`observability` は設定しない           |
-| `cloudflare_workers_custom_domain`     | Terraform | 必須の項目は `account_id` / `hostname` / `service` の 3 つ       |
-| Rate Limiting ルール（`/api/contact`） | Terraform | deploy と独立した、濫用を抑える設定                              |
-| R2 バケット（Terraform state 用）      | Terraform | `infra/bootstrap/` が作る                                        |
-| `workers_dev` / `preview_urls`         | Wrangler  | `wrangler.jsonc` に書く。wrangler のデフォルト値との衝突を避ける |
-| `cloudflare_worker_version`（中身）    | Wrangler  | assets、bindings、secret を持ち、deploy のたびに変わる           |
-| `cloudflare_workers_deployment`        | Wrangler  | どの version を live にするかを決める。deploy そのもの           |
-| runtime secret（Resend / Turnstile）   | Wrangler  | Terraform の state に載せない                                    |
-| binding（R2 / KV など）                | Wrangler  | 決定のときは該当がない。要るときは `wrangler.jsonc` に置く       |
+| リソース                                              | 管轄      | 根拠                                                                        |
+| ----------------------------------------------------- | --------- | --------------------------------------------------------------------------- |
+| Zone / DNS record / TLS                               | Terraform | deploy と独立し、ドメインへの到達に直結する                                 |
+| `cloudflare_worker`（箱）                             | Terraform | 名前、`tags`、`logpush` だけを持つ。`observability` は設定しない            |
+| `cloudflare_workers_custom_domain`                    | Terraform | 必須の項目は `account_id` / `hostname` / `service` の 3 つ                  |
+| Rate Limiting ルール（`/api/contact`）                | Terraform | deploy と独立した、濫用を抑える設定                                         |
+| R2 バケット（Terraform state 用）                     | Terraform | `infra/bootstrap/` が作る                                                   |
+| `workers_dev` / `preview_urls`                        | Wrangler  | `wrangler.jsonc` に `false` と書く。wrangler のデフォルト値との衝突を避ける |
+| Previews（`previews` ブロックと preview 用の secret） | Wrangler  | branch ごとに作り直され、deploy のたびに変わる                              |
+| `cloudflare_worker_version`（中身）                   | Wrangler  | assets、bindings、secret を持ち、deploy のたびに変わる                      |
+| `cloudflare_workers_deployment`                       | Wrangler  | どの version を live にするかを決める。deploy そのもの                      |
+| runtime secret（Resend / Turnstile）                  | Wrangler  | Terraform の state に載せない                                               |
+| binding（R2 / KV など）                               | Wrangler  | 決定のときは該当がない。要るときは `wrangler.jsonc` に置く                  |
 
 - `cloudflare_workers_script` を使わない。
   使うと deploy が Terraform を経由し、apply の権限が日常の CI へ降りる。
 - `observability`、`workers_dev`、`preview_urls` は、`wrangler.jsonc` に書かなくても wrangler がデフォルト値を送る。
   Terraform でも持つと、deploy のたびに値を取り合う。
   そのため、この 3 つは Wrangler の管轄にし、`wrangler.jsonc` に明示する。
+- `workers_dev` は `false` にする。
+  有効にすると、本番の Worker が `workers.dev` のホスト名でも開き、zone の Rate Limiting を通らずに `/api/contact` へ届く見込みである（未確認）。
+  `preview_urls`（Version URL）は、7 のとおり使わないので `false` にする。
+  `logpush` と `tags` は wrangler が送らないので、Terraform が持つ。
+  `cloudflare_workers_script_subdomain` は Terraform で管理しない。
+- この分担は、値の受け渡しを増やす。
+  Worker の名前は、Terraform（箱と custom domain の `service`）と `wrangler.jsonc` の両方に現れる。
+  受け渡しの方法は基盤への取り決めとして定め、対象が 2 つ目になる前に整える。
 - 運用で使う管轄の表は context/operations.md に置き、リソースが増減したらそちらを更新する。
   この ADR の表は決定のときの割り当てで、後から書き換えない。
 
@@ -184,15 +196,26 @@ runtime secret の値は、どの IaC のファイルにも置かない。
 Terraform が Worker の箱を作れるので、Pages のように運用者が手で project を作る手順はない。  
 初回に運用者の手元で `infra/bootstrap/` を apply して state の置き場を作った後、次の順にする。
 
-1. `terraform apply` が `cloudflare_worker` と Zone / DNS / TLS を作る。
+1. `terraform apply` が `cloudflare_worker` を作る。Zone / DNS / TLS は、11 のとおり import する。
 2. deploy の workflow が `wrangler deploy` で version を上げ、deployment を切り替える。
 3. `terraform apply` が `cloudflare_workers_custom_domain` を張る。
 
+手順 1 と手順 3 は、同じ root module `infra/cloudflare/` の apply である。  
+2 回に分ける方法（`-target` か、コミットを分けるか）は、実装のときに決める。
+
 ### 7. preview
 
-preview URL は version ごとに自動で作られる。  
-作るかどうかは `wrangler.jsonc` の `preview_urls` で宣言する。  
-CI では alias を付け、pull request の番号から preview を開けるようにする。
+pull request の確認には、Cloudflare の Previews（`wrangler preview`）を使う。  
+Version URL（version ごとの URL）は使わない。
+
+- Version URL は、本番の resource と secret で動く。
+  preview から本番の Resend の key でメールが送られ、1 の「preview と production で secret の実値を共有しない」と両立しない。
+  - 出典: [Cloudflare: Version URLs](https://developers.cloudflare.com/workers/configuration/previews/)
+- Previews は、branch ごとに同じ Worker の下に作られ、本番の設定を引き継がない。
+  変数と binding は `wrangler.jsonc` の `previews` ブロックに書き、preview 用の secret は `wrangler preview base-config secret put` で本番と別に入れる。
+  - 出典: [Cloudflare: Previews](https://developers.cloudflare.com/workers/previews/)
+- Previews には Wrangler 4.135.0 以上が要る。
+- Preview の URL を `workers.dev` と custom domain のどちらに出すかは、`workers_dev` を `false` にしたときの扱いを確認して、実装のときに決める。
 
 ### 8. runtime secret を Terraform の state に載せない
 
@@ -204,25 +227,30 @@ CI では alias を付け、pull request の番号から preview を開けるよ
   open beta であり、消費者は Worker 1 つで共有する相手がおらず、参照が `env.X` から `await env.X.get()` に変わるためである。
   GA になり、secret を共有する 2 つ目の消費者が現れたら見直す。
 
-### 9. credential を 2 系統に分け、通常の CI に apply と secret の投入の権限を持たせない
+### 9. credential を 2 系統に分け、apply の権限を通常の CI から外す
 
 - 通常の deploy の workflow は、push を起点に自動で動き、deploy の scope に限った token だけを持つ。
-- apply の workflow は、手で起動し（`workflow_dispatch`）、GitHub の environment protection rules を通し、apply 用の token を持つ。
+- apply の workflow は、手で起動し（`workflow_dispatch`）、GitHub の environment protection rules を通す。
+  apply 用の token と、state を読み書きする R2 の S3 互換のキーを持つ。
 - 1 名の体制でも成り立つ分離は、apply を自動で実行せず必ず手動で起動することと、通常の CI に apply 用の credential を持たせないことの 2 つである。
   `.github/CODEOWNERS` での所有者の宣言は分離にならないため、設定しない。
-- apply 用と secret の書き込み用の token を 1 つに束ねるかは、実装のときに決める。
+- secret の投入は、credential では分けられない。
+  secret を書き込む API の権限は `Workers Scripts Write` で、deploy に要る権限と同じである。
+  そのため、secret の投入は「通常の workflow から呼ばない」という運用の決まりとする。
+  - 出典: [Cloudflare API: Update a Worker script secret](https://developers.cloudflare.com/api/resources/workers/subresources/scripts/subresources/secrets/methods/update/) の Accepted Permissions
 
 操作ごとの権限を次の図と表に示す。  
-特権を使う操作は、2〜4 の 3 つに限る。
+apply の権限を使う操作は、2 と 4 に限る。  
+3 は deploy と同じ権限を、通常の workflow の外で使う。
 
 ![権限の図: 基盤を変える操作ごとの credential](../design/diagrams/infra-permission-flow.drawio.svg)
 
-| 操作                 | 使う権限                            | 誰が           | いつ                             | 記録の残し方                                                                               |
-| -------------------- | ----------------------------------- | -------------- | -------------------------------- | ------------------------------------------------------------------------------------------ |
-| 1 deploy             | deploy の scope に限った token      | 運用者（push） | push のたび                      | GitHub Actions の実行の記録                                                                |
-| 2 Terraform の apply | apply 用の token                    | 運用者         | `infra/cloudflare/` を変えたとき | GitHub Actions の実行の記録と、environment の承認の記録                                    |
-| 3 secret の投入      | secret の書き込み用の token         | 運用者         | secret の値を変えるとき          | 特権の workflow なら GitHub Actions の実行の記録。ローカル環境で実行したときの残し方は未決 |
-| 4 bootstrap          | R2 を作る権限の token（範囲は未決） | 運用者         | 初回に 1 回                      | 未決                                                                                       |
+| 操作                 | 使う権限                                                  | 誰が           | いつ                                          | 記録の残し方                                                                                                                           |
+| -------------------- | --------------------------------------------------------- | -------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 deploy             | deploy の scope に限った token（`Workers Scripts Write`） | 運用者（push） | push のたび。pull request では Preview を作る | GitHub Actions の実行の記録                                                                                                            |
+| 2 Terraform の apply | apply 用の token と R2 の S3 互換のキー                   | 運用者         | `infra/cloudflare/` を変えたとき              | GitHub Actions の実行の記録と、environment の承認の記録                                                                                |
+| 3 secret の投入      | deploy と同じ権限の token（`Workers Scripts Write`）      | 運用者         | secret の値を変えるとき                       | 特権の workflow なら GitHub Actions の実行の記録。ローカル環境で実行したときの残し方は、実装のときに決め、context/operations.md に書く |
+| 4 bootstrap          | R2 を作る権限の token                                     | 運用者         | 初回に 1 回                                   | token の範囲と記録の残し方は、実装のときに決め、context/operations.md に書く                                                           |
 
 ### 10. monorepo に同居する欠点に、1 つずつ対処する
 
@@ -235,12 +263,18 @@ ADR-0007 が monorepo に同居する欠点として挙げた点は、集約し�
 - DNS、secret のような本番への影響が大きい変更が、通常の pull request に埋もれる。
   - Terraform の管轄は、apply を自動で実行しない。merge しても、apply の workflow を手動で起動しなければ本番に反映されない。
   - Worker script の変更には対処しない。Worker のコードは app の側にあるので、リポジトリをどう分けても push で自動で deploy される。緩和は通常の pull request のレビューと自動テストに任せる。
+  - runtime secret は、この欠点に当たらない。値が pull request の差分に現れず、通常の pull request に埋もれることがない。
 - どこまで触ってよいかの境界が曖昧になる。
   - ディレクトリの構成で境界を定める。実装した後、その事実を [context/codebase.md](../../context/codebase.md) に書く。
+- 将来 Cloudflare の基盤を複数の app やリポジトリで共有すると、monorepo の責務が広がりすぎる。
+  - 対処せず、12 の見直しの条件を満たしたら再検討する。
 
 ### 11. 既存の Dashboard の設定は import し、稼働中のサイトを切り替える
 
 - Zone、DNS record、TLS は、`cf-terraforming` で Terraform の state へ import する。公開中のサイトが依存しており、作り直さない。
+- サイトのホスト名の DNS record は、import の対象から外し、custom domain に作らせる。
+  custom domain は DNS record を自動で作り、既に CNAME があるホスト名には張れないためである。
+  - 出典: [Cloudflare: Custom Domains](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
 - custom domain、Worker の箱、`/api/contact` の Rate Limiting のルール、state 用の R2 バケットは、新しく作る。
 - apply の前に Dashboard を棚卸しして実在するリソースを確定し、見込みと食い違ったら棚卸しの結果を正とする。
 
@@ -249,14 +283,14 @@ ADR-0007 が monorepo に同居する欠点として挙げた点は、集約し�
 1. Worker を作り、production とは別の URL で内容を確認する。
 2. `cloudflare_workers_custom_domain` を張る前に、Pages の側の custom domain を外す。
 3. Worker の側へ custom domain を張り、DNS が Worker を指すことを確認する。
-4. 表示と `/api/contact` を確認した後で、Pages project を消す。
+4. 表示と `/api/contact` を確認した後で、Pages の GitHub 連携を外し、Pages project を消す。
 
 custom domain は同時に 2 つの宛先へ張れないので、手順 2 と 3 の間はサイトが落ちる。  
 作業の時間帯を決め、切り戻しの手順（Pages の側へ custom domain を戻す）を残す。
 
 ### 12. 見直しの条件
 
-次のどれかが起きたら、この決定を再検討する。
+次のどちらかが起きたら、この決定を再検討する。
 
 - Kufu Monorepo の外の app が、同じ Cloudflare アカウントの基盤を共有する必要が生じた。
 - 人が増え、infra の変更のレビューを担う人と app の開発を担う人を分けられるようになった。
@@ -267,8 +301,8 @@ custom domain は同時に 2 つの宛先へ張れないので、手順 2 と 3 
   - `init` と `apply` が通り、state が `cloudflare/main/terraform.tfstate` に書かれた。
   - apply の間は `terraform.tfstate.tflock` が現れ、ロックを持ったまま別の apply を実行すると `Error acquiring the state lock` で拒まれた。
   - R2 での読み書きとロックは、fukuemon.dev の初回の apply で、`skip_s3_checksum` を含む同じ設定で確認されている。S3 互換のキーは、R2 の画面で発行したものに限る。
-- `kufu-infra` の全ブランチ（`develop`、`feature/1`）を確認した（2026-08-25）。
-  - `.tf` は 1 つもない。2026-11-28 にも変わっていない。
+- `kufu-infra` のブランチ（`develop`、`feature/1`）を確認した（2026-08-25）。
+  - `.tf` は 1 つもない。2026-11-28 に `main` を含む 3 つのブランチを見直しても、変わっていない。
   - デフォルトのブランチは `main` ではなく `develop` である。アーカイブの前に内容を取り出すときは、参照するブランチを間違えない。
 - `cloudflare_pages_project` の `deployment_configs` は secret を含む（`env_vars` の `secret_text` に `sensitive` が付く）。
 - `wrangler` 4.126.0 の同梱の schema と bundle で、`wrangler.jsonc` に書かないときに送るデフォルト値を確認した。
@@ -281,19 +315,28 @@ custom domain は同時に 2 つの宛先へ張れないので、手順 2 と 3 
   | `logpush`       | 送らない              | `cloudflare_worker`                   | Terraform |
   | `tags`          | キーがない            | `cloudflare_worker`                   | Terraform |
 
-- alias のない preview URL は `wrangler` 3.74.0 以上、alias 付きは 4.21.0 以上で使える。
+- Previews には Wrangler 4.135.0 以上が要る（2026-11-28 に Cloudflare の文書で確認した）。Version URL は本番の resource で動き、Previews は変数、secret、binding を別に持つ。
+- 今の Cloudflare の文書は、`preview_urls` を書かないときは `workers_dev` に従うと書く。この ADR は 2 つを `false` と明示するので、デフォルト値に依らない。
 - `@astrojs/cloudflare` 14.2.5 は、Workers を配信先とする adapter である。peer dependency は `astro ^7.2.0` で、このリポジトリの Astro は 7.4.8 である。
 
 ## Considered Options
 
-| 選択肢                                                                                                                                    | 強み                                                                                                                                                                         | 弱み                                                                                                                                                                                                 |
-| ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **採用:** monorepo の `infra/` に集約し、Workers static assets で配信し、基盤を Terraform、deploy と runtime の設定を Wrangler で管理する | 1 つの pull request で app と infra の変更を揃えられる。管轄の原則が例外なく当てはまる。apply と secret の投入の権限を通常の CI から外せる。Terraform state に機密が入らない | 管理するツールが 2 つになる。権限の分離をリポジトリの境界ではなく、ディレクトリと workflow の組み合わせで行う。稼働中のサイトの切り替えで、サイトが落ちる時間が出る                                  |
-| 別リポジトリのまま Terraform を書き始める（ADR-0007 を保つ）                                                                              | 決定を変えずに済む。apply の権限と credential を app の開発の導線から切り離す狙いを、設計どおりに実現できる                                                                  | 着手されなかった原因に対処していない。同じ構造なら同じ結果になる見込みが高い。同期のコストを払い続ける                                                                                               |
-| Terraform を使わず Dashboard で運用する                                                                                                   | 追加の学習と state の運用が要らない。今からの変更が最も小さい                                                                                                                | ADR-0007 が挙げた欠点（変更の履歴、review、再現性、環境の差分の管理が弱く、secret と binding の運用が属人化する）がそのまま当たる                                                                    |
-| すべてを Terraform で管理する（`cloudflare_workers_script` を使う）                                                                       | 管理するツールが 1 つに揃う。すべての変更が `terraform plan` の差分に出る                                                                                                    | deploy のたびに apply するので、apply の権限が日常の CI に降りる。Worker の binding と secret を Terraform が持ち、state が機密になる                                                                |
-| Cloudflare Pages を続ける                                                                                                                 | 稼働中のサイトを触らず、サイトが落ちない                                                                                                                                     | Pages project を丸ごと Wrangler へ渡すか、Terraform に持たせて `ignore_changes` で管理の外の範囲を作るしかない。運用者が手で作る初回の手順が残る。Cloudflare が新規を Workers へ勧める向きと逆に進む |
-| 3 層の module の構成を採る                                                                                                                | Terraform の一般的なベストプラクティスに沿う。app や provider が増えても構成を変えずに広げられる                                                                             | Cloudflare が module を避けるよう定める。括り出す重複がなく、薄いラッパーにしかならない                                                                                                              |
+| 選択肢                                                                                                                                    | 強み                                                                                                                                                         | 弱み                                                                                                                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **採用:** monorepo の `infra/` に集約し、Workers static assets で配信し、基盤を Terraform、deploy と runtime の設定を Wrangler で管理する | 1 つの pull request で app と infra の変更を揃えられる。管轄の原則が例外なく当てはまる。apply の権限を通常の CI から外せる。Terraform state に機密が入らない | 管理するツールが 2 つになる。権限の分離をリポジトリの境界ではなく、ディレクトリと workflow の組み合わせで行う。稼働中のサイトの切り替えで、サイトが落ちる時間が出る                                  |
+| 別リポジトリのまま Terraform を書き始める（ADR-0007 を保つ）                                                                              | 決定を変えずに済む。apply の権限と credential を app の開発の導線から切り離す狙いを、設計どおりに実現できる                                                  | 着手されなかった原因に対処していない。同じ構造なら同じ結果になる見込みが高い。同期のコストを払い続ける                                                                                               |
+| Terraform を使わず Dashboard で運用する                                                                                                   | 追加の学習と state の運用が要らない。今からの変更が最も小さい                                                                                                | ADR-0007 が挙げた欠点（変更の履歴、review、再現性、環境の差分の管理が弱く、secret と binding の運用が属人化する）がそのまま当たる                                                                    |
+| すべてを Terraform で管理する（`cloudflare_workers_script` を使う）                                                                       | 管理するツールが 1 つに揃う。すべての変更が `terraform plan` の差分に出る                                                                                    | deploy のたびに apply するので、apply の権限が日常の CI に降りる。Worker の binding と secret を Terraform が持ち、state が機密になる                                                                |
+| Cloudflare Pages を続ける                                                                                                                 | 稼働中のサイトを触らず、サイトが落ちない                                                                                                                     | Pages project を丸ごと Wrangler へ渡すか、Terraform に持たせて `ignore_changes` で管理の外の範囲を作るしかない。運用者が手で作る初回の手順が残る。Cloudflare が新規を Workers へ勧める向きと逆に進む |
+| 3 層の module の構成を採る                                                                                                                | Terraform の一般的なベストプラクティスに沿う。app や provider が増えても構成を変えずに広げられる                                                             | Cloudflare が module を避けるよう定める。括り出す重複がなく、薄いラッパーにしかならない                                                                                                              |
+| 集約するが、ディレクトリを分けず app と同じ並びに置く                                                                                     | 構成が最も単純になる                                                                                                                                         | 境界が曖昧になる欠点とレビューの観点が入り交じる欠点に対処できない。`infra/` の接頭辞がなく、CI の path filter で infra の変更だけを対象にできない                                                   |
+| すべてを Wrangler と Dashboard で管理する                                                                                                 | 初期のセットアップが最も速い。Terraform の学習と state の運用が要らない                                                                                      | DNS、custom domain、Rate Limiting が Dashboard 上の属人的な設定として残る。変更の履歴、review、再現性が弱い                                                                                          |
+| Pages と Workers を並べて使う                                                                                                             | 段階的に移せる                                                                                                                                               | 管轄の表とツールの分担が 2 系統になり、「どちらの管轄か」の判断が増える。このプロジェクトは app が 1 つで、分ける単位がない                                                                          |
+
+Cloudflare は Pages の利点を 4 つ挙げる。Early Hints のネイティブの対応、file-based routing、Cloudflare の zone の外の custom domain、Pages Plugins である。  
+このプロジェクトは、どれも使わない。  
+ドメインは Cloudflare の zone の中にあり、API は `/api/contact` の 1 本で、Plugins は使っていない。  
+Early Hints は、Workers でも `Link` header で出せる。
 
 ## Consequences
 
@@ -306,6 +349,7 @@ custom domain は同時に 2 つの宛先へ張れないので、手順 2 と 3 
 - Terraform state に機密が入らないので、state backend を守る要件が下がる。
 - bootstrap が Terraform から始まり、運用者が手で作る手順がない。
 - 将来 `/api/*` を足すときは、同じ Worker にハンドラを足すだけで済む。
+- 将来 SSR へ移る道は残る。`@astrojs/cloudflare` は Workers を配信先とする adapter で、今の Astro のバージョンで入れられる。
 
 ### Negative
 
@@ -315,9 +359,11 @@ custom domain は同時に 2 つの宛先へ張れないので、手順 2 と 3 
 - `wrangler.jsonc` が Worker の設定の基準になるので、このファイルを review の対象として扱う。
 - secret の投入を自動化しないので、値を変えるたびに手で操作する。ローテーションの手順を、運用として残す。
 - 稼働中のサイトの切り替えで、custom domain を付け替える間だけサイトが落ちる。落ちる時間の長さは見積もっていない。
+- Pages の GitHub 連携を外す作業が、切り替えと同時になる。
 - 初回の deploy の後に `terraform plan` が空になることを、まだ確認していない。実装の最初に確認する。
 - 実装した後に、ADR-0007 と Pages を前提に書いた文書を直す。
   - [context/operations.md](../../context/operations.md): 基盤への取り決めの位置づけ、管轄の表、bootstrap の順序、state と secret の扱い
   - [context/codebase.md](../../context/codebase.md): `infra/` のディレクトリの境界
-  - [context/project.yml](../../context/project.yml): `repos.infra`、`infra:plan` と `infra:apply`
+  - [context/tech-stack.md](../../context/tech-stack.md): root の script の `infra:plan` と `infra:apply`
   - [docs/design/DesignDoc.md](../design/DesignDoc.md): 「Terraform は別のリポジトリで管理する」の記述と、配信先の図
+  - [docs/PRD.md](../PRD.md): 配信先の図と、Pages と Terraform をまたぐ未決事項
