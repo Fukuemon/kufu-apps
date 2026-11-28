@@ -173,15 +173,16 @@ backend "s3" {
   この ADR の表は決定のときの割り当てで、後から書き換えない。
 
 管轄の境界を次の図に描く。  
-同じリソースへ両方のツールから実線が入っていないので、二重の管理は生じていない。  
-破線は参照で、管理ではない。
+どのリソースも、Terraform の枠か Wrangler の枠のどちらか一方にだけ入るので、二重の管理は生じていない。  
+破線は名前での参照で、管理ではない。  
+runtime secret の値は、どの IaC のファイルにも置かない。
 
-![Cloudflare リソースの Terraform / Wrangler 管轄境界](../design/diagrams/infra-tool-boundary.drawio.svg)
+![管理の境界図: リポジトリのどこが Cloudflare のどのリソースを作るか](../design/diagrams/infra-tool-boundary.drawio.svg)
 
 ### 6. bootstrap の順序
 
-Terraform が Worker の箱を作れるので、次の順にする。  
-運用者が手で実行する初回の手順はない。
+Terraform が Worker の箱を作れるので、Pages のように運用者が手で project を作る手順はない。  
+初回に運用者の手元で `infra/bootstrap/` を apply して state の置き場を作った後、次の順にする。
 
 1. `terraform apply` が `cloudflare_worker` と Zone / DNS / TLS を作る。
 2. deploy の workflow が `wrangler deploy` で version を上げ、deployment を切り替える。
@@ -209,8 +210,19 @@ CI では alias を付け、pull request の番号から preview を開けるよ
 - apply の workflow は、手で起動し（`workflow_dispatch`）、GitHub の environment protection rules を通し、apply 用の token を持つ。
 - 1 名の体制でも成り立つ分離は、apply を自動で実行せず必ず手動で起動することと、通常の CI に apply 用の credential を持たせないことの 2 つである。
   `.github/CODEOWNERS` での所有者の宣言は分離にならないため、設定しない。
+- apply 用と secret の書き込み用の token を 1 つに束ねるかは、実装のときに決める。
 
-![credential と実行経路の権限分離](../design/diagrams/infra-permission-flow.drawio.svg)
+操作ごとの権限を次の図と表に示す。  
+特権を使う操作は、2〜4 の 3 つに限る。
+
+![権限の図: 基盤を変える操作ごとの credential](../design/diagrams/infra-permission-flow.drawio.svg)
+
+| 操作                 | 使う権限                            | 誰が           | いつ                             | 記録の残し方                                                                               |
+| -------------------- | ----------------------------------- | -------------- | -------------------------------- | ------------------------------------------------------------------------------------------ |
+| 1 deploy             | deploy の scope に限った token      | 運用者（push） | push のたび                      | GitHub Actions の実行の記録                                                                |
+| 2 Terraform の apply | apply 用の token                    | 運用者         | `infra/cloudflare/` を変えたとき | GitHub Actions の実行の記録と、environment の承認の記録                                    |
+| 3 secret の投入      | secret の書き込み用の token         | 運用者         | secret の値を変えるとき          | 特権の workflow なら GitHub Actions の実行の記録。ローカル環境で実行したときの残し方は未決 |
+| 4 bootstrap          | R2 を作る権限の token（範囲は未決） | 運用者         | 初回に 1 回                      | 未決                                                                                       |
 
 ### 10. monorepo に同居する欠点に、1 つずつ対処する
 

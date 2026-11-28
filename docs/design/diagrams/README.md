@@ -12,10 +12,10 @@
 
 ## 図の一覧
 
-| ファイル                           | 内容                                                | 参照元   |
-| ---------------------------------- | --------------------------------------------------- | -------- |
-| `infra-tool-boundary.drawio.svg`   | Cloudflare リソースの Terraform / Wrangler 管轄境界 | ADR-0008 |
-| `infra-permission-flow.drawio.svg` | credential と、実行する workflow の権限の分離       | ADR-0008 |
+| ファイル                           | 内容                                                               | 参照元   |
+| ---------------------------------- | ------------------------------------------------------------------ | -------- |
+| `infra-tool-boundary.drawio.svg`   | 管理の境界図。リポジトリのどこが Cloudflare のどのリソースを作るか | ADR-0008 |
+| `infra-permission-flow.drawio.svg` | 権限の図。基盤を変える操作ごとの credential                        | ADR-0008 |
 
 ## 編集手順
 
